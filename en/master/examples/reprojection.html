@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -134,29 +141,29 @@ proj4.defs(&#x27;ESRI:54009&#x27;, &#x27;+proj&#x3D;moll +lon_0&#x3D;0 +x_0&#x3D
     &#x27;+units&#x3D;m +no_defs&#x27;);
 register(proj4);
 
-const proj27700 &#x3D; getProjection(&#x27;EPSG:27700&#x27;);
+var proj27700 &#x3D; getProjection(&#x27;EPSG:27700&#x27;);
 proj27700.setExtent([0, 0, 700000, 1300000]);
 
-const proj23032 &#x3D; getProjection(&#x27;EPSG:23032&#x27;);
+var proj23032 &#x3D; getProjection(&#x27;EPSG:23032&#x27;);
 proj23032.setExtent([-1206118.71, 4021309.92, 1295389.00, 8051813.28]);
 
-const proj5479 &#x3D; getProjection(&#x27;EPSG:5479&#x27;);
+var proj5479 &#x3D; getProjection(&#x27;EPSG:5479&#x27;);
 proj5479.setExtent([6825737.53, 4189159.80, 9633741.96, 5782472.71]);
 
-const proj21781 &#x3D; getProjection(&#x27;EPSG:21781&#x27;);
+var proj21781 &#x3D; getProjection(&#x27;EPSG:21781&#x27;);
 proj21781.setExtent([485071.54, 75346.36, 828515.78, 299941.84]);
 
-const proj3413 &#x3D; getProjection(&#x27;EPSG:3413&#x27;);
+var proj3413 &#x3D; getProjection(&#x27;EPSG:3413&#x27;);
 proj3413.setExtent([-4194304, -4194304, 4194304, 4194304]);
 
-const proj2163 &#x3D; getProjection(&#x27;EPSG:2163&#x27;);
+var proj2163 &#x3D; getProjection(&#x27;EPSG:2163&#x27;);
 proj2163.setExtent([-8040784.5135, -2577524.9210, 3668901.4484, 4785105.1096]);
 
-const proj54009 &#x3D; getProjection(&#x27;ESRI:54009&#x27;);
+var proj54009 &#x3D; getProjection(&#x27;ESRI:54009&#x27;);
 proj54009.setExtent([-18e6, -9e6, 18e6, 9e6]);
 
 
-const layers &#x3D; {};
+var layers &#x3D; {};
 
 layers[&#x27;bng&#x27;] &#x3D; new TileLayer({
   source: new XYZ({
@@ -197,14 +204,14 @@ layers[&#x27;wms21781&#x27;] &#x3D; new TileLayer({
   })
 });
 
-const parser &#x3D; new WMTSCapabilities();
-const url &#x3D; &#x27;https://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
+var parser &#x3D; new WMTSCapabilities();
+var url &#x3D; &#x27;https://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
     &#x27;wmts.cgi?SERVICE&#x3D;WMTS&amp;request&#x3D;GetCapabilities&#x27;;
 fetch(url).then(function(response) {
   return response.text();
 }).then(function(text) {
-  const result &#x3D; parser.read(text);
-  const options &#x3D; optionsFromCapabilities(result, {
+  var result &#x3D; parser.read(text);
+  var options &#x3D; optionsFromCapabilities(result, {
     layer: &#x27;OSM_Land_Mask&#x27;,
     matrixSet: &#x27;EPSG3413_250m&#x27;
   });
@@ -227,10 +234,10 @@ layers[&#x27;grandcanyon&#x27;] &#x3D; new TileLayer({
   })
 });
 
-const startResolution &#x3D;
+var startResolution &#x3D;
     getWidth(getProjection(&#x27;EPSG:3857&#x27;).getExtent()) / 256;
-const resolutions &#x3D; new Array(22);
-for (let i &#x3D; 0, ii &#x3D; resolutions.length; i &lt; ii; ++i) {
+var resolutions &#x3D; new Array(22);
+for (var i &#x3D; 0, ii &#x3D; resolutions.length; i &lt; ii; ++i) {
   resolutions[i] &#x3D; startResolution / Math.pow(2, i);
 }
 
@@ -250,7 +257,7 @@ layers[&#x27;states&#x27;] &#x3D; new TileLayer({
 });
 
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     layers[&#x27;osm&#x27;],
     layers[&#x27;bng&#x27;]
@@ -264,16 +271,16 @@ const map &#x3D; new Map({
 });
 
 
-const baseLayerSelect &#x3D; document.getElementById(&#x27;base-layer&#x27;);
-const overlayLayerSelect &#x3D; document.getElementById(&#x27;overlay-layer&#x27;);
-const viewProjSelect &#x3D; document.getElementById(&#x27;view-projection&#x27;);
-const renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
-let renderEdges &#x3D; false;
+var baseLayerSelect &#x3D; document.getElementById(&#x27;base-layer&#x27;);
+var overlayLayerSelect &#x3D; document.getElementById(&#x27;overlay-layer&#x27;);
+var viewProjSelect &#x3D; document.getElementById(&#x27;view-projection&#x27;);
+var renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
+var renderEdges &#x3D; false;
 
 function updateViewProjection() {
-  const newProj &#x3D; getProjection(viewProjSelect.value);
-  const newProjExtent &#x3D; newProj.getExtent();
-  const newView &#x3D; new View({
+  var newProj &#x3D; getProjection(viewProjSelect.value);
+  var newProjExtent &#x3D; newProj.getExtent();
+  var newView &#x3D; new View({
     projection: newProj,
     center: getCenter(newProjExtent || [0, 0, 0, 0]),
     zoom: 0,
@@ -299,9 +306,9 @@ viewProjSelect.onchange &#x3D; function() {
 
 updateViewProjection();
 
-const updateRenderEdgesOnLayer &#x3D; function(layer) {
+var updateRenderEdgesOnLayer &#x3D; function(layer) {
   if (layer instanceof TileLayer) {
-    const source &#x3D; layer.getSource();
+    var source &#x3D; layer.getSource();
     if (source instanceof TileImage) {
       source.setRenderReprojectionEdges(renderEdges);
     }
@@ -313,7 +320,7 @@ const updateRenderEdgesOnLayer &#x3D; function(layer) {
  * Handle change event.
  */
 baseLayerSelect.onchange &#x3D; function() {
-  const layer &#x3D; layers[baseLayerSelect.value];
+  var layer &#x3D; layers[baseLayerSelect.value];
   if (layer) {
     layer.setOpacity(1);
     updateRenderEdgesOnLayer(layer);
@@ -326,7 +333,7 @@ baseLayerSelect.onchange &#x3D; function() {
  * Handle change event.
  */
 overlayLayerSelect.onchange &#x3D; function() {
-  const layer &#x3D; layers[overlayLayerSelect.value];
+  var layer &#x3D; layers[overlayLayerSelect.value];
   if (layer) {
     layer.setOpacity(0.7);
     updateRenderEdgesOnLayer(layer);
@@ -390,7 +397,7 @@ renderEdgesCheckbox.onchange &#x3D; function() {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Raster Reprojection&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -467,29 +474,29 @@ renderEdgesCheckbox.onchange &#x3D; function() {
           &#x27;+units&#x3D;m +no_defs&#x27;);
       register(proj4);
 
-      const proj27700 &#x3D; getProjection(&#x27;EPSG:27700&#x27;);
+      var proj27700 &#x3D; getProjection(&#x27;EPSG:27700&#x27;);
       proj27700.setExtent([0, 0, 700000, 1300000]);
 
-      const proj23032 &#x3D; getProjection(&#x27;EPSG:23032&#x27;);
+      var proj23032 &#x3D; getProjection(&#x27;EPSG:23032&#x27;);
       proj23032.setExtent([-1206118.71, 4021309.92, 1295389.00, 8051813.28]);
 
-      const proj5479 &#x3D; getProjection(&#x27;EPSG:5479&#x27;);
+      var proj5479 &#x3D; getProjection(&#x27;EPSG:5479&#x27;);
       proj5479.setExtent([6825737.53, 4189159.80, 9633741.96, 5782472.71]);
 
-      const proj21781 &#x3D; getProjection(&#x27;EPSG:21781&#x27;);
+      var proj21781 &#x3D; getProjection(&#x27;EPSG:21781&#x27;);
       proj21781.setExtent([485071.54, 75346.36, 828515.78, 299941.84]);
 
-      const proj3413 &#x3D; getProjection(&#x27;EPSG:3413&#x27;);
+      var proj3413 &#x3D; getProjection(&#x27;EPSG:3413&#x27;);
       proj3413.setExtent([-4194304, -4194304, 4194304, 4194304]);
 
-      const proj2163 &#x3D; getProjection(&#x27;EPSG:2163&#x27;);
+      var proj2163 &#x3D; getProjection(&#x27;EPSG:2163&#x27;);
       proj2163.setExtent([-8040784.5135, -2577524.9210, 3668901.4484, 4785105.1096]);
 
-      const proj54009 &#x3D; getProjection(&#x27;ESRI:54009&#x27;);
+      var proj54009 &#x3D; getProjection(&#x27;ESRI:54009&#x27;);
       proj54009.setExtent([-18e6, -9e6, 18e6, 9e6]);
 
 
-      const layers &#x3D; {};
+      var layers &#x3D; {};
 
       layers[&#x27;bng&#x27;] &#x3D; new TileLayer({
         source: new XYZ({
@@ -530,14 +537,14 @@ renderEdgesCheckbox.onchange &#x3D; function() {
         })
       });
 
-      const parser &#x3D; new WMTSCapabilities();
-      const url &#x3D; &#x27;https://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
+      var parser &#x3D; new WMTSCapabilities();
+      var url &#x3D; &#x27;https://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
           &#x27;wmts.cgi?SERVICE&#x3D;WMTS&amp;request&#x3D;GetCapabilities&#x27;;
       fetch(url).then(function(response) {
         return response.text();
       }).then(function(text) {
-        const result &#x3D; parser.read(text);
-        const options &#x3D; optionsFromCapabilities(result, {
+        var result &#x3D; parser.read(text);
+        var options &#x3D; optionsFromCapabilities(result, {
           layer: &#x27;OSM_Land_Mask&#x27;,
           matrixSet: &#x27;EPSG3413_250m&#x27;
         });
@@ -560,10 +567,10 @@ renderEdgesCheckbox.onchange &#x3D; function() {
         })
       });
 
-      const startResolution &#x3D;
+      var startResolution &#x3D;
           getWidth(getProjection(&#x27;EPSG:3857&#x27;).getExtent()) / 256;
-      const resolutions &#x3D; new Array(22);
-      for (let i &#x3D; 0, ii &#x3D; resolutions.length; i &lt; ii; ++i) {
+      var resolutions &#x3D; new Array(22);
+      for (var i &#x3D; 0, ii &#x3D; resolutions.length; i &lt; ii; ++i) {
         resolutions[i] &#x3D; startResolution / Math.pow(2, i);
       }
 
@@ -583,7 +590,7 @@ renderEdgesCheckbox.onchange &#x3D; function() {
       });
 
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           layers[&#x27;osm&#x27;],
           layers[&#x27;bng&#x27;]
@@ -597,16 +604,16 @@ renderEdgesCheckbox.onchange &#x3D; function() {
       });
 
 
-      const baseLayerSelect &#x3D; document.getElementById(&#x27;base-layer&#x27;);
-      const overlayLayerSelect &#x3D; document.getElementById(&#x27;overlay-layer&#x27;);
-      const viewProjSelect &#x3D; document.getElementById(&#x27;view-projection&#x27;);
-      const renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
-      let renderEdges &#x3D; false;
+      var baseLayerSelect &#x3D; document.getElementById(&#x27;base-layer&#x27;);
+      var overlayLayerSelect &#x3D; document.getElementById(&#x27;overlay-layer&#x27;);
+      var viewProjSelect &#x3D; document.getElementById(&#x27;view-projection&#x27;);
+      var renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
+      var renderEdges &#x3D; false;
 
       function updateViewProjection() {
-        const newProj &#x3D; getProjection(viewProjSelect.value);
-        const newProjExtent &#x3D; newProj.getExtent();
-        const newView &#x3D; new View({
+        var newProj &#x3D; getProjection(viewProjSelect.value);
+        var newProjExtent &#x3D; newProj.getExtent();
+        var newView &#x3D; new View({
           projection: newProj,
           center: getCenter(newProjExtent || [0, 0, 0, 0]),
           zoom: 0,
@@ -632,9 +639,9 @@ renderEdgesCheckbox.onchange &#x3D; function() {
 
       updateViewProjection();
 
-      const updateRenderEdgesOnLayer &#x3D; function(layer) {
+      var updateRenderEdgesOnLayer &#x3D; function(layer) {
         if (layer instanceof TileLayer) {
-          const source &#x3D; layer.getSource();
+          var source &#x3D; layer.getSource();
           if (source instanceof TileImage) {
             source.setRenderReprojectionEdges(renderEdges);
           }
@@ -646,7 +653,7 @@ renderEdgesCheckbox.onchange &#x3D; function() {
        * Handle change event.
        */
       baseLayerSelect.onchange &#x3D; function() {
-        const layer &#x3D; layers[baseLayerSelect.value];
+        var layer &#x3D; layers[baseLayerSelect.value];
         if (layer) {
           layer.setOpacity(1);
           updateRenderEdgesOnLayer(layer);
@@ -659,7 +666,7 @@ renderEdgesCheckbox.onchange &#x3D; function() {
        * Handle change event.
        */
       overlayLayerSelect.onchange &#x3D; function() {
-        const layer &#x3D; layers[overlayLayerSelect.value];
+        var layer &#x3D; layers[overlayLayerSelect.value];
         if (layer) {
           layer.setOpacity(0.7);
           updateRenderEdgesOnLayer(layer);
@@ -698,7 +705,7 @@ renderEdgesCheckbox.onchange &#x3D; function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

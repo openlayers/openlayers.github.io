@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -73,15 +80,15 @@ import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile.js&#x27;;
 import {Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-const key &#x3D; &#x27;Your Mapzen API key from https://mapzen.com/developers&#x27;;
+var key &#x3D; &#x27;Your Mapzen API key from https://mapzen.com/developers&#x27;;
 
-const roadStyleCache &#x3D; {};
-const roadColor &#x3D; {
+var roadStyleCache &#x3D; {};
+var roadColor &#x3D; {
   &#x27;major_road&#x27;: &#x27;#776&#x27;,
   &#x27;minor_road&#x27;: &#x27;#ccb&#x27;,
   &#x27;highway&#x27;: &#x27;#f39&#x27;
 };
-const buildingStyle &#x3D; new Style({
+var buildingStyle &#x3D; new Style({
   fill: new Fill({
     color: &#x27;#666&#x27;,
     opacity: 0.4
@@ -91,19 +98,19 @@ const buildingStyle &#x3D; new Style({
     width: 1
   })
 });
-const waterStyle &#x3D; new Style({
+var waterStyle &#x3D; new Style({
   fill: new Fill({
     color: &#x27;#9db9e8&#x27;
   })
 });
-const roadStyle &#x3D; function(feature) {
-  const kind &#x3D; feature.get(&#x27;kind&#x27;);
-  const railway &#x3D; feature.get(&#x27;railway&#x27;);
-  const sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
-  const styleKey &#x3D; kind + &#x27;/&#x27; + railway + &#x27;/&#x27; + sort_key;
-  let style &#x3D; roadStyleCache[styleKey];
+var roadStyle &#x3D; function(feature) {
+  var kind &#x3D; feature.get(&#x27;kind&#x27;);
+  var railway &#x3D; feature.get(&#x27;railway&#x27;);
+  var sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
+  var styleKey &#x3D; kind + &#x27;/&#x27; + railway + &#x27;/&#x27; + sort_key;
+  var style &#x3D; roadStyleCache[styleKey];
   if (!style) {
-    let color, width;
+    var color, width;
     if (railway) {
       color &#x3D; &#x27;#7de&#x27;;
       width &#x3D; 1;
@@ -123,7 +130,7 @@ const roadStyle &#x3D; function(feature) {
   return style;
 };
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     new VectorTileLayer({
       source: new VectorTileSource({
@@ -166,7 +173,7 @@ const map &#x3D; new Map({
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;OSM Vector Tiles&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -187,15 +194,15 @@ const map &#x3D; new Map({
       import VectorTileSource from &#x27;ol/source/VectorTile.js&#x27;;
       import {Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-      const key &#x3D; &#x27;Your Mapzen API key from https://mapzen.com/developers&#x27;;
+      var key &#x3D; &#x27;Your Mapzen API key from https://mapzen.com/developers&#x27;;
 
-      const roadStyleCache &#x3D; {};
-      const roadColor &#x3D; {
+      var roadStyleCache &#x3D; {};
+      var roadColor &#x3D; {
         &#x27;major_road&#x27;: &#x27;#776&#x27;,
         &#x27;minor_road&#x27;: &#x27;#ccb&#x27;,
         &#x27;highway&#x27;: &#x27;#f39&#x27;
       };
-      const buildingStyle &#x3D; new Style({
+      var buildingStyle &#x3D; new Style({
         fill: new Fill({
           color: &#x27;#666&#x27;,
           opacity: 0.4
@@ -205,19 +212,19 @@ const map &#x3D; new Map({
           width: 1
         })
       });
-      const waterStyle &#x3D; new Style({
+      var waterStyle &#x3D; new Style({
         fill: new Fill({
           color: &#x27;#9db9e8&#x27;
         })
       });
-      const roadStyle &#x3D; function(feature) {
-        const kind &#x3D; feature.get(&#x27;kind&#x27;);
-        const railway &#x3D; feature.get(&#x27;railway&#x27;);
-        const sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
-        const styleKey &#x3D; kind + &#x27;/&#x27; + railway + &#x27;/&#x27; + sort_key;
-        let style &#x3D; roadStyleCache[styleKey];
+      var roadStyle &#x3D; function(feature) {
+        var kind &#x3D; feature.get(&#x27;kind&#x27;);
+        var railway &#x3D; feature.get(&#x27;railway&#x27;);
+        var sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
+        var styleKey &#x3D; kind + &#x27;/&#x27; + railway + &#x27;/&#x27; + sort_key;
+        var style &#x3D; roadStyleCache[styleKey];
         if (!style) {
-          let color, width;
+          var color, width;
           if (railway) {
             color &#x3D; &#x27;#7de&#x27;;
             width &#x3D; 1;
@@ -237,7 +244,7 @@ const map &#x3D; new Map({
         return style;
       };
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           new VectorTileLayer({
             source: new VectorTileSource({
@@ -288,7 +295,7 @@ const map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

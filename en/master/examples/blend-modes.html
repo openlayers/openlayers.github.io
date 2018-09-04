@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -125,7 +132,7 @@ import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;
 //
 // Every layer has one feature that is styled with a circle, together the
 // features form the corners of an equilateral triangle and their styles overlap
-const redLayer &#x3D; new VectorLayer({
+var redLayer &#x3D; new VectorLayer({
   source: new VectorSource({
     features: [new Feature(new Point([0, 0]))]
   }),
@@ -142,7 +149,7 @@ const redLayer &#x3D; new VectorLayer({
     })
   })
 });
-const greenLayer &#x3D; new VectorLayer({
+var greenLayer &#x3D; new VectorLayer({
   source: new VectorSource({
     // 433.013 is roughly 250 * Math.sqrt(3)
     features: [new Feature(new Point([250, 433.013]))]
@@ -160,7 +167,7 @@ const greenLayer &#x3D; new VectorLayer({
     })
   })
 });
-const blueLayer &#x3D; new VectorLayer({
+var blueLayer &#x3D; new VectorLayer({
   source: new VectorSource({
     features: [new Feature(new Point([500, 0]))]
   }),
@@ -180,7 +187,7 @@ const blueLayer &#x3D; new VectorLayer({
 
 // Create the map, the view is centered on the triangle. Zooming and panning is
 // restricted to a sane area
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     redLayer,
     greenLayer,
@@ -197,10 +204,10 @@ const map &#x3D; new Map({
 });
 
 // Get the form elements and bind the listeners
-const select &#x3D; document.getElementById(&#x27;blend-mode&#x27;);
-const affectRed &#x3D; document.getElementById(&#x27;affect-red&#x27;);
-const affectGreen &#x3D; document.getElementById(&#x27;affect-green&#x27;);
-const affectBlue &#x3D; document.getElementById(&#x27;affect-blue&#x27;);
+var select &#x3D; document.getElementById(&#x27;blend-mode&#x27;);
+var affectRed &#x3D; document.getElementById(&#x27;affect-red&#x27;);
+var affectGreen &#x3D; document.getElementById(&#x27;affect-green&#x27;);
+var affectBlue &#x3D; document.getElementById(&#x27;affect-blue&#x27;);
 
 
 /**
@@ -209,7 +216,7 @@ const affectBlue &#x3D; document.getElementById(&#x27;affect-blue&#x27;);
  *
  * @param {module:ol/render/Event~RenderEvent} evt The render event.
  */
-const setBlendModeFromSelect &#x3D; function(evt) {
+var setBlendModeFromSelect &#x3D; function(evt) {
   evt.context.globalCompositeOperation &#x3D; select.value;
 };
 
@@ -220,7 +227,7 @@ const setBlendModeFromSelect &#x3D; function(evt) {
  *
  * @param {module:ol/render/Event~RenderEvent} evt The render event.
  */
-const resetBlendModeFromSelect &#x3D; function(evt) {
+var resetBlendModeFromSelect &#x3D; function(evt) {
   evt.context.globalCompositeOperation &#x3D; &#x27;source-over&#x27;;
 };
 
@@ -230,7 +237,7 @@ const resetBlendModeFromSelect &#x3D; function(evt) {
  *
  * @param {module:ol/layer/Vector} layer The layer to bind the handlers to.
  */
-const bindLayerListeners &#x3D; function(layer) {
+var bindLayerListeners &#x3D; function(layer) {
   layer.on(&#x27;precompose&#x27;, setBlendModeFromSelect);
   layer.on(&#x27;postcompose&#x27;, resetBlendModeFromSelect);
 };
@@ -241,7 +248,7 @@ const bindLayerListeners &#x3D; function(layer) {
  *
  * @param {module:ol/layer/Vector} layer The layer to unbind the handlers from.
  */
-const unbindLayerListeners &#x3D; function(layer) {
+var unbindLayerListeners &#x3D; function(layer) {
   layer.un(&#x27;precompose&#x27;, setBlendModeFromSelect);
   layer.un(&#x27;postcompose&#x27;, resetBlendModeFromSelect);
 };
@@ -252,8 +259,8 @@ const unbindLayerListeners &#x3D; function(layer) {
  *
  * @this {HTMLInputElement}
  */
-const affectLayerClicked &#x3D; function() {
-  let layer;
+var affectLayerClicked &#x3D; function() {
+  var layer;
   if (this.id &#x3D;&#x3D; &#x27;affect-red&#x27;) {
     layer &#x3D; redLayer;
   } else if (this.id &#x3D;&#x3D; &#x27;affect-green&#x27;) {
@@ -344,7 +351,7 @@ bindLayerListeners(blueLayer);
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Blend Modes&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -416,7 +423,7 @@ bindLayerListeners(blueLayer);
       //
       // Every layer has one feature that is styled with a circle, together the
       // features form the corners of an equilateral triangle and their styles overlap
-      const redLayer &#x3D; new VectorLayer({
+      var redLayer &#x3D; new VectorLayer({
         source: new VectorSource({
           features: [new Feature(new Point([0, 0]))]
         }),
@@ -433,7 +440,7 @@ bindLayerListeners(blueLayer);
           })
         })
       });
-      const greenLayer &#x3D; new VectorLayer({
+      var greenLayer &#x3D; new VectorLayer({
         source: new VectorSource({
           // 433.013 is roughly 250 * Math.sqrt(3)
           features: [new Feature(new Point([250, 433.013]))]
@@ -451,7 +458,7 @@ bindLayerListeners(blueLayer);
           })
         })
       });
-      const blueLayer &#x3D; new VectorLayer({
+      var blueLayer &#x3D; new VectorLayer({
         source: new VectorSource({
           features: [new Feature(new Point([500, 0]))]
         }),
@@ -471,7 +478,7 @@ bindLayerListeners(blueLayer);
 
       // Create the map, the view is centered on the triangle. Zooming and panning is
       // restricted to a sane area
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           redLayer,
           greenLayer,
@@ -488,10 +495,10 @@ bindLayerListeners(blueLayer);
       });
 
       // Get the form elements and bind the listeners
-      const select &#x3D; document.getElementById(&#x27;blend-mode&#x27;);
-      const affectRed &#x3D; document.getElementById(&#x27;affect-red&#x27;);
-      const affectGreen &#x3D; document.getElementById(&#x27;affect-green&#x27;);
-      const affectBlue &#x3D; document.getElementById(&#x27;affect-blue&#x27;);
+      var select &#x3D; document.getElementById(&#x27;blend-mode&#x27;);
+      var affectRed &#x3D; document.getElementById(&#x27;affect-red&#x27;);
+      var affectGreen &#x3D; document.getElementById(&#x27;affect-green&#x27;);
+      var affectBlue &#x3D; document.getElementById(&#x27;affect-blue&#x27;);
 
 
       /**
@@ -500,7 +507,7 @@ bindLayerListeners(blueLayer);
        *
        * @param {module:ol/render/Event~RenderEvent} evt The render event.
        */
-      const setBlendModeFromSelect &#x3D; function(evt) {
+      var setBlendModeFromSelect &#x3D; function(evt) {
         evt.context.globalCompositeOperation &#x3D; select.value;
       };
 
@@ -511,7 +518,7 @@ bindLayerListeners(blueLayer);
        *
        * @param {module:ol/render/Event~RenderEvent} evt The render event.
        */
-      const resetBlendModeFromSelect &#x3D; function(evt) {
+      var resetBlendModeFromSelect &#x3D; function(evt) {
         evt.context.globalCompositeOperation &#x3D; &#x27;source-over&#x27;;
       };
 
@@ -521,7 +528,7 @@ bindLayerListeners(blueLayer);
        *
        * @param {module:ol/layer/Vector} layer The layer to bind the handlers to.
        */
-      const bindLayerListeners &#x3D; function(layer) {
+      var bindLayerListeners &#x3D; function(layer) {
         layer.on(&#x27;precompose&#x27;, setBlendModeFromSelect);
         layer.on(&#x27;postcompose&#x27;, resetBlendModeFromSelect);
       };
@@ -532,7 +539,7 @@ bindLayerListeners(blueLayer);
        *
        * @param {module:ol/layer/Vector} layer The layer to unbind the handlers from.
        */
-      const unbindLayerListeners &#x3D; function(layer) {
+      var unbindLayerListeners &#x3D; function(layer) {
         layer.un(&#x27;precompose&#x27;, setBlendModeFromSelect);
         layer.un(&#x27;postcompose&#x27;, resetBlendModeFromSelect);
       };
@@ -543,8 +550,8 @@ bindLayerListeners(blueLayer);
        *
        * @this {HTMLInputElement}
        */
-      const affectLayerClicked &#x3D; function() {
-        let layer;
+      var affectLayerClicked &#x3D; function() {
+        var layer;
         if (this.id &#x3D;&#x3D; &#x27;affect-red&#x27;) {
           layer &#x3D; redLayer;
         } else if (this.id &#x3D;&#x3D; &#x27;affect-green&#x27;) {
@@ -597,7 +604,7 @@ bindLayerListeners(blueLayer);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

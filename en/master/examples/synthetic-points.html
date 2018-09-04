@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -73,10 +80,10 @@ import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
 
-const count &#x3D; 20000;
-const features &#x3D; new Array(count);
-const e &#x3D; 18000000;
-for (let i &#x3D; 0; i &lt; count; ++i) {
+var count &#x3D; 20000;
+var features &#x3D; new Array(count);
+var e &#x3D; 18000000;
+for (var i &#x3D; 0; i &lt; count; ++i) {
   features[i] &#x3D; new Feature({
     &#x27;geometry&#x27;: new Point(
       [2 * e * Math.random() - e, 2 * e * Math.random() - e]),
@@ -85,7 +92,7 @@ for (let i &#x3D; 0; i &lt; count; ++i) {
   });
 }
 
-const styles &#x3D; {
+var styles &#x3D; {
   &#x27;10&#x27;: new Style({
     image: new CircleStyle({
       radius: 5,
@@ -102,18 +109,18 @@ const styles &#x3D; {
   })
 };
 
-const vectorSource &#x3D; new VectorSource({
+var vectorSource &#x3D; new VectorSource({
   features: features,
   wrapX: false
 });
-const vector &#x3D; new VectorLayer({
+var vector &#x3D; new VectorLayer({
   source: vectorSource,
   style: function(feature) {
     return styles[feature.get(&#x27;size&#x27;)];
   }
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
@@ -122,16 +129,16 @@ const map &#x3D; new Map({
   })
 });
 
-let point &#x3D; null;
-let line &#x3D; null;
-const displaySnap &#x3D; function(coordinate) {
-  const closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
+var point &#x3D; null;
+var line &#x3D; null;
+var displaySnap &#x3D; function(coordinate) {
+  var closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
   if (closestFeature &#x3D;&#x3D;&#x3D; null) {
     point &#x3D; null;
     line &#x3D; null;
   } else {
-    const geometry &#x3D; closestFeature.getGeometry();
-    const closestPoint &#x3D; geometry.getClosestPoint(coordinate);
+    var geometry &#x3D; closestFeature.getGeometry();
+    var closestPoint &#x3D; geometry.getClosestPoint(coordinate);
     if (point &#x3D;&#x3D;&#x3D; null) {
       point &#x3D; new Point(closestPoint);
     } else {
@@ -150,7 +157,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  const coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
+  var coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
   displaySnap(coordinate);
 });
 
@@ -158,11 +165,11 @@ map.on(&#x27;click&#x27;, function(evt) {
   displaySnap(evt.coordinate);
 });
 
-const stroke &#x3D; new Stroke({
+var stroke &#x3D; new Stroke({
   color: &#x27;rgba(255,255,0,0.9)&#x27;,
   width: 3
 });
-const style &#x3D; new Style({
+var style &#x3D; new Style({
   stroke: stroke,
   image: new CircleStyle({
     radius: 10,
@@ -171,7 +178,7 @@ const style &#x3D; new Style({
 });
 
 map.on(&#x27;postcompose&#x27;, function(evt) {
-  const vectorContext &#x3D; evt.vectorContext;
+  var vectorContext &#x3D; evt.vectorContext;
   vectorContext.setStyle(style);
   if (point !&#x3D;&#x3D; null) {
     vectorContext.drawGeometry(point);
@@ -185,8 +192,8 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
-  const hit &#x3D; map.hasFeatureAtPixel(pixel);
+  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
+  var hit &#x3D; map.hasFeatureAtPixel(pixel);
   if (hit) {
     map.getTarget().style.cursor &#x3D; &#x27;pointer&#x27;;
   } else {
@@ -203,7 +210,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Synthetic Points&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -220,10 +227,10 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
       import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
 
-      const count &#x3D; 20000;
-      const features &#x3D; new Array(count);
-      const e &#x3D; 18000000;
-      for (let i &#x3D; 0; i &lt; count; ++i) {
+      var count &#x3D; 20000;
+      var features &#x3D; new Array(count);
+      var e &#x3D; 18000000;
+      for (var i &#x3D; 0; i &lt; count; ++i) {
         features[i] &#x3D; new Feature({
           &#x27;geometry&#x27;: new Point(
             [2 * e * Math.random() - e, 2 * e * Math.random() - e]),
@@ -232,7 +239,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         });
       }
 
-      const styles &#x3D; {
+      var styles &#x3D; {
         &#x27;10&#x27;: new Style({
           image: new CircleStyle({
             radius: 5,
@@ -249,18 +256,18 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         })
       };
 
-      const vectorSource &#x3D; new VectorSource({
+      var vectorSource &#x3D; new VectorSource({
         features: features,
         wrapX: false
       });
-      const vector &#x3D; new VectorLayer({
+      var vector &#x3D; new VectorLayer({
         source: vectorSource,
         style: function(feature) {
           return styles[feature.get(&#x27;size&#x27;)];
         }
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [vector],
         target: document.getElementById(&#x27;map&#x27;),
         view: new View({
@@ -269,16 +276,16 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         })
       });
 
-      let point &#x3D; null;
-      let line &#x3D; null;
-      const displaySnap &#x3D; function(coordinate) {
-        const closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
+      var point &#x3D; null;
+      var line &#x3D; null;
+      var displaySnap &#x3D; function(coordinate) {
+        var closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
         if (closestFeature &#x3D;&#x3D;&#x3D; null) {
           point &#x3D; null;
           line &#x3D; null;
         } else {
-          const geometry &#x3D; closestFeature.getGeometry();
-          const closestPoint &#x3D; geometry.getClosestPoint(coordinate);
+          var geometry &#x3D; closestFeature.getGeometry();
+          var closestPoint &#x3D; geometry.getClosestPoint(coordinate);
           if (point &#x3D;&#x3D;&#x3D; null) {
             point &#x3D; new Point(closestPoint);
           } else {
@@ -297,7 +304,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         if (evt.dragging) {
           return;
         }
-        const coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
+        var coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
         displaySnap(coordinate);
       });
 
@@ -305,11 +312,11 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         displaySnap(evt.coordinate);
       });
 
-      const stroke &#x3D; new Stroke({
+      var stroke &#x3D; new Stroke({
         color: &#x27;rgba(255,255,0,0.9)&#x27;,
         width: 3
       });
-      const style &#x3D; new Style({
+      var style &#x3D; new Style({
         stroke: stroke,
         image: new CircleStyle({
           radius: 10,
@@ -318,7 +325,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
       });
 
       map.on(&#x27;postcompose&#x27;, function(evt) {
-        const vectorContext &#x3D; evt.vectorContext;
+        var vectorContext &#x3D; evt.vectorContext;
         vectorContext.setStyle(style);
         if (point !&#x3D;&#x3D; null) {
           vectorContext.drawGeometry(point);
@@ -332,8 +339,8 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         if (evt.dragging) {
           return;
         }
-        const pixel &#x3D; map.getEventPixel(evt.originalEvent);
-        const hit &#x3D; map.hasFeatureAtPixel(pixel);
+        var pixel &#x3D; map.getEventPixel(evt.originalEvent);
+        var hit &#x3D; map.hasFeatureAtPixel(pixel);
         if (hit) {
           map.getTarget().style.cursor &#x3D; &#x27;pointer&#x27;;
         } else {
@@ -361,7 +368,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

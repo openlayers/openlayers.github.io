@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -76,9 +83,9 @@ import BingMaps from &#x27;ol/source/BingMaps.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-let map &#x3D; null;
+var map &#x3D; null;
 
-const styles &#x3D; {
+var styles &#x3D; {
   &#x27;amenity&#x27;: {
     &#x27;parking&#x27;: new Style({
       stroke: new Stroke({
@@ -140,19 +147,19 @@ const styles &#x3D; {
   }
 };
 
-const vectorSource &#x3D; new VectorSource({
+var vectorSource &#x3D; new VectorSource({
   format: new OSMXML(),
   loader: function(extent, resolution, projection) {
-    const epsg4326Extent &#x3D; transformExtent(extent, projection, &#x27;EPSG:4326&#x27;);
-    const client &#x3D; new XMLHttpRequest();
+    var epsg4326Extent &#x3D; transformExtent(extent, projection, &#x27;EPSG:4326&#x27;);
+    var client &#x3D; new XMLHttpRequest();
     client.open(&#x27;POST&#x27;, &#x27;https://overpass-api.de/api/interpreter&#x27;);
     client.addEventListener(&#x27;load&#x27;, function() {
-      const features &#x3D; new OSMXML().readFeatures(client.responseText, {
+      var features &#x3D; new OSMXML().readFeatures(client.responseText, {
         featureProjection: map.getView().getProjection()
       });
       vectorSource.addFeatures(features);
     });
-    const query &#x3D; &#x27;(node(&#x27; +
+    var query &#x3D; &#x27;(node(&#x27; +
         epsg4326Extent[1] + &#x27;,&#x27; + epsg4326Extent[0] + &#x27;,&#x27; +
         epsg4326Extent[3] + &#x27;,&#x27; + epsg4326Extent[2] +
         &#x27;);rel(bn)-&gt;.foo;way(bn);node(w)-&gt;.foo;rel(bw););out meta;&#x27;;
@@ -161,13 +168,13 @@ const vectorSource &#x3D; new VectorSource({
   strategy: bboxStrategy
 });
 
-const vector &#x3D; new VectorLayer({
+var vector &#x3D; new VectorLayer({
   source: vectorSource,
   style: function(feature) {
-    for (const key in styles) {
-      const value &#x3D; feature.get(key);
+    for (var key in styles) {
+      var value &#x3D; feature.get(key);
       if (value !&#x3D;&#x3D; undefined) {
-        for (const regexp in styles[key]) {
+        for (var regexp in styles[key]) {
           if (new RegExp(regexp).test(value)) {
             return styles[key][regexp];
           }
@@ -178,7 +185,7 @@ const vector &#x3D; new VectorLayer({
   }
 });
 
-const raster &#x3D; new TileLayer({
+var raster &#x3D; new TileLayer({
   source: new BingMaps({
     imagerySet: &#x27;Aerial&#x27;,
     key: &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;
@@ -209,7 +216,7 @@ map &#x3D; new Map({
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;OSM XML&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -228,9 +235,9 @@ map &#x3D; new Map({
       import VectorSource from &#x27;ol/source/Vector.js&#x27;;
       import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-      let map &#x3D; null;
+      var map &#x3D; null;
 
-      const styles &#x3D; {
+      var styles &#x3D; {
         &#x27;amenity&#x27;: {
           &#x27;parking&#x27;: new Style({
             stroke: new Stroke({
@@ -292,19 +299,19 @@ map &#x3D; new Map({
         }
       };
 
-      const vectorSource &#x3D; new VectorSource({
+      var vectorSource &#x3D; new VectorSource({
         format: new OSMXML(),
         loader: function(extent, resolution, projection) {
-          const epsg4326Extent &#x3D; transformExtent(extent, projection, &#x27;EPSG:4326&#x27;);
-          const client &#x3D; new XMLHttpRequest();
+          var epsg4326Extent &#x3D; transformExtent(extent, projection, &#x27;EPSG:4326&#x27;);
+          var client &#x3D; new XMLHttpRequest();
           client.open(&#x27;POST&#x27;, &#x27;https://overpass-api.de/api/interpreter&#x27;);
           client.addEventListener(&#x27;load&#x27;, function() {
-            const features &#x3D; new OSMXML().readFeatures(client.responseText, {
+            var features &#x3D; new OSMXML().readFeatures(client.responseText, {
               featureProjection: map.getView().getProjection()
             });
             vectorSource.addFeatures(features);
           });
-          const query &#x3D; &#x27;(node(&#x27; +
+          var query &#x3D; &#x27;(node(&#x27; +
               epsg4326Extent[1] + &#x27;,&#x27; + epsg4326Extent[0] + &#x27;,&#x27; +
               epsg4326Extent[3] + &#x27;,&#x27; + epsg4326Extent[2] +
               &#x27;);rel(bn)-&gt;.foo;way(bn);node(w)-&gt;.foo;rel(bw););out meta;&#x27;;
@@ -313,13 +320,13 @@ map &#x3D; new Map({
         strategy: bboxStrategy
       });
 
-      const vector &#x3D; new VectorLayer({
+      var vector &#x3D; new VectorLayer({
         source: vectorSource,
         style: function(feature) {
-          for (const key in styles) {
-            const value &#x3D; feature.get(key);
+          for (var key in styles) {
+            var value &#x3D; feature.get(key);
             if (value !&#x3D;&#x3D; undefined) {
-              for (const regexp in styles[key]) {
+              for (var regexp in styles[key]) {
                 if (new RegExp(regexp).test(value)) {
                   return styles[key][regexp];
                 }
@@ -330,7 +337,7 @@ map &#x3D; new Map({
         }
       });
 
-      const raster &#x3D; new TileLayer({
+      var raster &#x3D; new TileLayer({
         source: new BingMaps({
           imagerySet: &#x27;Aerial&#x27;,
           key: &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;
@@ -372,7 +379,7 @@ map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

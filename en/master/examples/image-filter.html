@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -80,13 +87,13 @@ import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 import BingMaps from &#x27;ol/source/BingMaps.js&#x27;;
 
-const key &#x3D; &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;;
+var key &#x3D; &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;;
 
-const imagery &#x3D; new TileLayer({
+var imagery &#x3D; new TileLayer({
   source: new BingMaps({key: key, imagerySet: &#x27;Aerial&#x27;})
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [imagery],
   target: &#x27;map&#x27;,
   view: new View({
@@ -95,7 +102,7 @@ const map &#x3D; new Map({
   })
 });
 
-const kernels &#x3D; {
+var kernels &#x3D; {
   none: [
     0, 0, 0,
     0, 1, 0,
@@ -134,9 +141,9 @@ const kernels &#x3D; {
 };
 
 function normalize(kernel) {
-  const len &#x3D; kernel.length;
-  const normal &#x3D; new Array(len);
-  let i, sum &#x3D; 0;
+  var len &#x3D; kernel.length;
+  var normal &#x3D; new Array(len);
+  var i, sum &#x3D; 0;
   for (i &#x3D; 0; i &lt; len; ++i) {
     sum +&#x3D; kernel[i];
   }
@@ -152,8 +159,8 @@ function normalize(kernel) {
   return normal;
 }
 
-const select &#x3D; document.getElementById(&#x27;kernel&#x27;);
-let selectedKernel &#x3D; normalize(kernels[select.value]);
+var select &#x3D; document.getElementById(&#x27;kernel&#x27;);
+var selectedKernel &#x3D; normalize(kernels[select.value]);
 
 
 /**
@@ -177,40 +184,40 @@ imagery.on(&#x27;postcompose&#x27;, function(event) {
  * Apply a convolution kernel to canvas.  This works for any size kernel, but
  * performance starts degrading above 3 x 3.
  * @param {CanvasRenderingContext2D} context Canvas 2d context.
- * @param {Array.&lt;number&gt;} kernel Kernel.
+ * @param {Array&lt;number&gt;} kernel Kernel.
  */
 function convolve(context, kernel) {
-  const canvas &#x3D; context.canvas;
-  const width &#x3D; canvas.width;
-  const height &#x3D; canvas.height;
+  var canvas &#x3D; context.canvas;
+  var width &#x3D; canvas.width;
+  var height &#x3D; canvas.height;
 
-  const size &#x3D; Math.sqrt(kernel.length);
-  const half &#x3D; Math.floor(size / 2);
+  var size &#x3D; Math.sqrt(kernel.length);
+  var half &#x3D; Math.floor(size / 2);
 
-  const inputData &#x3D; context.getImageData(0, 0, width, height).data;
+  var inputData &#x3D; context.getImageData(0, 0, width, height).data;
 
-  const output &#x3D; context.createImageData(width, height);
-  const outputData &#x3D; output.data;
+  var output &#x3D; context.createImageData(width, height);
+  var outputData &#x3D; output.data;
 
-  for (let pixelY &#x3D; 0; pixelY &lt; height; ++pixelY) {
-    const pixelsAbove &#x3D; pixelY * width;
-    for (let pixelX &#x3D; 0; pixelX &lt; width; ++pixelX) {
-      let r &#x3D; 0, g &#x3D; 0, b &#x3D; 0, a &#x3D; 0;
-      for (let kernelY &#x3D; 0; kernelY &lt; size; ++kernelY) {
-        for (let kernelX &#x3D; 0; kernelX &lt; size; ++kernelX) {
-          const weight &#x3D; kernel[kernelY * size + kernelX];
-          const neighborY &#x3D; Math.min(
+  for (var pixelY &#x3D; 0; pixelY &lt; height; ++pixelY) {
+    var pixelsAbove &#x3D; pixelY * width;
+    for (var pixelX &#x3D; 0; pixelX &lt; width; ++pixelX) {
+      var r &#x3D; 0, g &#x3D; 0, b &#x3D; 0, a &#x3D; 0;
+      for (var kernelY &#x3D; 0; kernelY &lt; size; ++kernelY) {
+        for (var kernelX &#x3D; 0; kernelX &lt; size; ++kernelX) {
+          var weight &#x3D; kernel[kernelY * size + kernelX];
+          var neighborY &#x3D; Math.min(
             height - 1, Math.max(0, pixelY + kernelY - half));
-          const neighborX &#x3D; Math.min(
+          var neighborX &#x3D; Math.min(
             width - 1, Math.max(0, pixelX + kernelX - half));
-          const inputIndex &#x3D; (neighborY * width + neighborX) * 4;
+          var inputIndex &#x3D; (neighborY * width + neighborX) * 4;
           r +&#x3D; inputData[inputIndex] * weight;
           g +&#x3D; inputData[inputIndex + 1] * weight;
           b +&#x3D; inputData[inputIndex + 2] * weight;
           a +&#x3D; inputData[inputIndex + 3] * weight;
         }
       }
-      const outputIndex &#x3D; (pixelsAbove + pixelX) * 4;
+      var outputIndex &#x3D; (pixelsAbove + pixelX) * 4;
       outputData[outputIndex] &#x3D; r;
       outputData[outputIndex + 1] &#x3D; g;
       outputData[outputIndex + 2] &#x3D; b;
@@ -238,7 +245,7 @@ function convolve(context, kernel) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Image Filters&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -261,13 +268,13 @@ function convolve(context, kernel) {
       import {fromLonLat} from &#x27;ol/proj.js&#x27;;
       import BingMaps from &#x27;ol/source/BingMaps.js&#x27;;
 
-      const key &#x3D; &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;;
+      var key &#x3D; &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;;
 
-      const imagery &#x3D; new TileLayer({
+      var imagery &#x3D; new TileLayer({
         source: new BingMaps({key: key, imagerySet: &#x27;Aerial&#x27;})
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [imagery],
         target: &#x27;map&#x27;,
         view: new View({
@@ -276,7 +283,7 @@ function convolve(context, kernel) {
         })
       });
 
-      const kernels &#x3D; {
+      var kernels &#x3D; {
         none: [
           0, 0, 0,
           0, 1, 0,
@@ -315,9 +322,9 @@ function convolve(context, kernel) {
       };
 
       function normalize(kernel) {
-        const len &#x3D; kernel.length;
-        const normal &#x3D; new Array(len);
-        let i, sum &#x3D; 0;
+        var len &#x3D; kernel.length;
+        var normal &#x3D; new Array(len);
+        var i, sum &#x3D; 0;
         for (i &#x3D; 0; i &lt; len; ++i) {
           sum +&#x3D; kernel[i];
         }
@@ -333,8 +340,8 @@ function convolve(context, kernel) {
         return normal;
       }
 
-      const select &#x3D; document.getElementById(&#x27;kernel&#x27;);
-      let selectedKernel &#x3D; normalize(kernels[select.value]);
+      var select &#x3D; document.getElementById(&#x27;kernel&#x27;);
+      var selectedKernel &#x3D; normalize(kernels[select.value]);
 
 
       /**
@@ -358,40 +365,40 @@ function convolve(context, kernel) {
        * Apply a convolution kernel to canvas.  This works for any size kernel, but
        * performance starts degrading above 3 x 3.
        * @param {CanvasRenderingContext2D} context Canvas 2d context.
-       * @param {Array.&lt;number&gt;} kernel Kernel.
+       * @param {Array&lt;number&gt;} kernel Kernel.
        */
       function convolve(context, kernel) {
-        const canvas &#x3D; context.canvas;
-        const width &#x3D; canvas.width;
-        const height &#x3D; canvas.height;
+        var canvas &#x3D; context.canvas;
+        var width &#x3D; canvas.width;
+        var height &#x3D; canvas.height;
 
-        const size &#x3D; Math.sqrt(kernel.length);
-        const half &#x3D; Math.floor(size / 2);
+        var size &#x3D; Math.sqrt(kernel.length);
+        var half &#x3D; Math.floor(size / 2);
 
-        const inputData &#x3D; context.getImageData(0, 0, width, height).data;
+        var inputData &#x3D; context.getImageData(0, 0, width, height).data;
 
-        const output &#x3D; context.createImageData(width, height);
-        const outputData &#x3D; output.data;
+        var output &#x3D; context.createImageData(width, height);
+        var outputData &#x3D; output.data;
 
-        for (let pixelY &#x3D; 0; pixelY &lt; height; ++pixelY) {
-          const pixelsAbove &#x3D; pixelY * width;
-          for (let pixelX &#x3D; 0; pixelX &lt; width; ++pixelX) {
-            let r &#x3D; 0, g &#x3D; 0, b &#x3D; 0, a &#x3D; 0;
-            for (let kernelY &#x3D; 0; kernelY &lt; size; ++kernelY) {
-              for (let kernelX &#x3D; 0; kernelX &lt; size; ++kernelX) {
-                const weight &#x3D; kernel[kernelY * size + kernelX];
-                const neighborY &#x3D; Math.min(
+        for (var pixelY &#x3D; 0; pixelY &lt; height; ++pixelY) {
+          var pixelsAbove &#x3D; pixelY * width;
+          for (var pixelX &#x3D; 0; pixelX &lt; width; ++pixelX) {
+            var r &#x3D; 0, g &#x3D; 0, b &#x3D; 0, a &#x3D; 0;
+            for (var kernelY &#x3D; 0; kernelY &lt; size; ++kernelY) {
+              for (var kernelX &#x3D; 0; kernelX &lt; size; ++kernelX) {
+                var weight &#x3D; kernel[kernelY * size + kernelX];
+                var neighborY &#x3D; Math.min(
                   height - 1, Math.max(0, pixelY + kernelY - half));
-                const neighborX &#x3D; Math.min(
+                var neighborX &#x3D; Math.min(
                   width - 1, Math.max(0, pixelX + kernelX - half));
-                const inputIndex &#x3D; (neighborY * width + neighborX) * 4;
+                var inputIndex &#x3D; (neighborY * width + neighborX) * 4;
                 r +&#x3D; inputData[inputIndex] * weight;
                 g +&#x3D; inputData[inputIndex + 1] * weight;
                 b +&#x3D; inputData[inputIndex + 2] * weight;
                 a +&#x3D; inputData[inputIndex + 3] * weight;
               }
             }
-            const outputIndex &#x3D; (pixelsAbove + pixelX) * 4;
+            var outputIndex &#x3D; (pixelsAbove + pixelX) * 4;
             outputData[outputIndex] &#x3D; r;
             outputData[outputIndex + 1] &#x3D; g;
             outputData[outputIndex + 2] &#x3D; b;
@@ -421,7 +428,7 @@ function convolve(context, kernel) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -75,7 +82,7 @@ import {BingMaps, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
 
-const defaultStyle &#x3D; {
+var defaultStyle &#x3D; {
   &#x27;Point&#x27;: new Style({
     image: new CircleStyle({
       fill: new Fill({
@@ -132,8 +139,8 @@ const defaultStyle &#x3D; {
   })
 };
 
-const styleFunction &#x3D; function(feature, resolution) {
-  const featureStyleFunction &#x3D; feature.getStyleFunction();
+var styleFunction &#x3D; function(feature, resolution) {
+  var featureStyleFunction &#x3D; feature.getStyleFunction();
   if (featureStyleFunction) {
     return featureStyleFunction.call(feature, resolution);
   } else {
@@ -141,7 +148,7 @@ const styleFunction &#x3D; function(feature, resolution) {
   }
 };
 
-const dragAndDropInteraction &#x3D; new DragAndDrop({
+var dragAndDropInteraction &#x3D; new DragAndDrop({
   formatConstructors: [
     GPX,
     GeoJSON,
@@ -151,7 +158,7 @@ const dragAndDropInteraction &#x3D; new DragAndDrop({
   ]
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   interactions: defaultInteractions().extend([dragAndDropInteraction]),
   layers: [
     new TileLayer({
@@ -169,7 +176,7 @@ const map &#x3D; new Map({
 });
 
 dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function(event) {
-  const vectorSource &#x3D; new VectorSource({
+  var vectorSource &#x3D; new VectorSource({
     features: event.features
   });
   map.addLayer(new VectorLayer({
@@ -179,14 +186,14 @@ dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function(event) {
   map.getView().fit(vectorSource.getExtent());
 });
 
-const displayFeatureInfo &#x3D; function(pixel) {
-  const features &#x3D; [];
+var displayFeatureInfo &#x3D; function(pixel) {
+  var features &#x3D; [];
   map.forEachFeatureAtPixel(pixel, function(feature) {
     features.push(feature);
   });
   if (features.length &gt; 0) {
-    const info &#x3D; [];
-    let i, ii;
+    var info &#x3D; [];
+    var i, ii;
     for (i &#x3D; 0, ii &#x3D; features.length; i &lt; ii; ++i) {
       info.push(features[i].get(&#x27;name&#x27;));
     }
@@ -200,7 +207,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
+  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
   displayFeatureInfo(pixel);
 });
 
@@ -218,7 +225,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Drag-and-Drop&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -236,7 +243,7 @@ map.on(&#x27;click&#x27;, function(evt) {
       import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
 
-      const defaultStyle &#x3D; {
+      var defaultStyle &#x3D; {
         &#x27;Point&#x27;: new Style({
           image: new CircleStyle({
             fill: new Fill({
@@ -293,8 +300,8 @@ map.on(&#x27;click&#x27;, function(evt) {
         })
       };
 
-      const styleFunction &#x3D; function(feature, resolution) {
-        const featureStyleFunction &#x3D; feature.getStyleFunction();
+      var styleFunction &#x3D; function(feature, resolution) {
+        var featureStyleFunction &#x3D; feature.getStyleFunction();
         if (featureStyleFunction) {
           return featureStyleFunction.call(feature, resolution);
         } else {
@@ -302,7 +309,7 @@ map.on(&#x27;click&#x27;, function(evt) {
         }
       };
 
-      const dragAndDropInteraction &#x3D; new DragAndDrop({
+      var dragAndDropInteraction &#x3D; new DragAndDrop({
         formatConstructors: [
           GPX,
           GeoJSON,
@@ -312,7 +319,7 @@ map.on(&#x27;click&#x27;, function(evt) {
         ]
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         interactions: defaultInteractions().extend([dragAndDropInteraction]),
         layers: [
           new TileLayer({
@@ -330,7 +337,7 @@ map.on(&#x27;click&#x27;, function(evt) {
       });
 
       dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function(event) {
-        const vectorSource &#x3D; new VectorSource({
+        var vectorSource &#x3D; new VectorSource({
           features: event.features
         });
         map.addLayer(new VectorLayer({
@@ -340,14 +347,14 @@ map.on(&#x27;click&#x27;, function(evt) {
         map.getView().fit(vectorSource.getExtent());
       });
 
-      const displayFeatureInfo &#x3D; function(pixel) {
-        const features &#x3D; [];
+      var displayFeatureInfo &#x3D; function(pixel) {
+        var features &#x3D; [];
         map.forEachFeatureAtPixel(pixel, function(feature) {
           features.push(feature);
         });
         if (features.length &gt; 0) {
-          const info &#x3D; [];
-          let i, ii;
+          var info &#x3D; [];
+          var i, ii;
           for (i &#x3D; 0, ii &#x3D; features.length; i &lt; ii; ++i) {
             info.push(features[i].get(&#x27;name&#x27;));
           }
@@ -361,7 +368,7 @@ map.on(&#x27;click&#x27;, function(evt) {
         if (evt.dragging) {
           return;
         }
-        const pixel &#x3D; map.getEventPixel(evt.originalEvent);
+        var pixel &#x3D; map.getEventPixel(evt.originalEvent);
         displayFeatureInfo(pixel);
       });
 
@@ -389,7 +396,7 @@ map.on(&#x27;click&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -85,18 +92,18 @@ import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 
-const raster &#x3D; new TileLayer({
+var raster &#x3D; new TileLayer({
   source: new OSM()
 });
 
-const vector &#x3D; new VectorLayer({
+var vector &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/countries.geojson&#x27;,
     format: new GeoJSON()
   })
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new View({
@@ -105,34 +112,34 @@ const map &#x3D; new Map({
   })
 });
 
-let select &#x3D; null;  // ref to currently selected interaction
+var select &#x3D; null; // ref to currently selected interaction
 
 // select interaction working on &quot;singleclick&quot;
-const selectSingleClick &#x3D; new Select();
+var selectSingleClick &#x3D; new Select();
 
 // select interaction working on &quot;click&quot;
-const selectClick &#x3D; new Select({
+var selectClick &#x3D; new Select({
   condition: click
 });
 
 // select interaction working on &quot;pointermove&quot;
-const selectPointerMove &#x3D; new Select({
+var selectPointerMove &#x3D; new Select({
   condition: pointerMove
 });
 
-const selectAltClick &#x3D; new Select({
+var selectAltClick &#x3D; new Select({
   condition: function(mapBrowserEvent) {
     return click(mapBrowserEvent) &amp;&amp; altKeyOnly(mapBrowserEvent);
   }
 });
 
-const selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
+var selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
 
-const changeInteraction &#x3D; function() {
+var changeInteraction &#x3D; function() {
   if (select !&#x3D;&#x3D; null) {
     map.removeInteraction(select);
   }
-  const value &#x3D; selectElement.value;
+  var value &#x3D; selectElement.value;
   if (value &#x3D;&#x3D; &#x27;singleclick&#x27;) {
     select &#x3D; selectSingleClick;
   } else if (value &#x3D;&#x3D; &#x27;click&#x27;) {
@@ -182,7 +189,7 @@ changeInteraction();
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Select Features&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -210,18 +217,18 @@ changeInteraction();
       import OSM from &#x27;ol/source/OSM.js&#x27;;
       import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 
-      const raster &#x3D; new TileLayer({
+      var raster &#x3D; new TileLayer({
         source: new OSM()
       });
 
-      const vector &#x3D; new VectorLayer({
+      var vector &#x3D; new VectorLayer({
         source: new VectorSource({
           url: &#x27;data/geojson/countries.geojson&#x27;,
           format: new GeoJSON()
         })
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [raster, vector],
         target: &#x27;map&#x27;,
         view: new View({
@@ -230,34 +237,34 @@ changeInteraction();
         })
       });
 
-      let select &#x3D; null;  // ref to currently selected interaction
+      var select &#x3D; null; // ref to currently selected interaction
 
       // select interaction working on &quot;singleclick&quot;
-      const selectSingleClick &#x3D; new Select();
+      var selectSingleClick &#x3D; new Select();
 
       // select interaction working on &quot;click&quot;
-      const selectClick &#x3D; new Select({
+      var selectClick &#x3D; new Select({
         condition: click
       });
 
       // select interaction working on &quot;pointermove&quot;
-      const selectPointerMove &#x3D; new Select({
+      var selectPointerMove &#x3D; new Select({
         condition: pointerMove
       });
 
-      const selectAltClick &#x3D; new Select({
+      var selectAltClick &#x3D; new Select({
         condition: function(mapBrowserEvent) {
           return click(mapBrowserEvent) &amp;&amp; altKeyOnly(mapBrowserEvent);
         }
       });
 
-      const selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
+      var selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
 
-      const changeInteraction &#x3D; function() {
+      var changeInteraction &#x3D; function() {
         if (select !&#x3D;&#x3D; null) {
           map.removeInteraction(select);
         }
-        const value &#x3D; selectElement.value;
+        var value &#x3D; selectElement.value;
         if (value &#x3D;&#x3D; &#x27;singleclick&#x27;) {
           select &#x3D; selectSingleClick;
         } else if (value &#x3D;&#x3D; &#x27;click&#x27;) {
@@ -307,7 +314,7 @@ changeInteraction();
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

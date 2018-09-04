@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -73,21 +80,21 @@ import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
 import BingMaps from &#x27;ol/source/BingMaps.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 
-const raster &#x3D; new TileLayer({
+var raster &#x3D; new TileLayer({
   source: new BingMaps({
     imagerySet: &#x27;Aerial&#x27;,
     key: &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;
   })
 });
 
-const vector &#x3D; new VectorLayer({
+var vector &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/kml/2012-02-10.kml&#x27;,
     format: new KML()
   })
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
@@ -97,14 +104,14 @@ const map &#x3D; new Map({
   })
 });
 
-const displayFeatureInfo &#x3D; function(pixel) {
-  const features &#x3D; [];
+var displayFeatureInfo &#x3D; function(pixel) {
+  var features &#x3D; [];
   map.forEachFeatureAtPixel(pixel, function(feature) {
     features.push(feature);
   });
   if (features.length &gt; 0) {
-    const info &#x3D; [];
-    let i, ii;
+    var info &#x3D; [];
+    var i, ii;
     for (i &#x3D; 0, ii &#x3D; features.length; i &lt; ii; ++i) {
       info.push(features[i].get(&#x27;name&#x27;));
     }
@@ -120,7 +127,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   if (evt.dragging) {
     return;
   }
-  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
+  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
   displayFeatureInfo(pixel);
 });
 
@@ -138,7 +145,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;KML&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -154,21 +161,21 @@ map.on(&#x27;click&#x27;, function(evt) {
       import BingMaps from &#x27;ol/source/BingMaps.js&#x27;;
       import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 
-      const raster &#x3D; new TileLayer({
+      var raster &#x3D; new TileLayer({
         source: new BingMaps({
           imagerySet: &#x27;Aerial&#x27;,
           key: &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;
         })
       });
 
-      const vector &#x3D; new VectorLayer({
+      var vector &#x3D; new VectorLayer({
         source: new VectorSource({
           url: &#x27;data/kml/2012-02-10.kml&#x27;,
           format: new KML()
         })
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [raster, vector],
         target: document.getElementById(&#x27;map&#x27;),
         view: new View({
@@ -178,14 +185,14 @@ map.on(&#x27;click&#x27;, function(evt) {
         })
       });
 
-      const displayFeatureInfo &#x3D; function(pixel) {
-        const features &#x3D; [];
+      var displayFeatureInfo &#x3D; function(pixel) {
+        var features &#x3D; [];
         map.forEachFeatureAtPixel(pixel, function(feature) {
           features.push(feature);
         });
         if (features.length &gt; 0) {
-          const info &#x3D; [];
-          let i, ii;
+          var info &#x3D; [];
+          var i, ii;
           for (i &#x3D; 0, ii &#x3D; features.length; i &lt; ii; ++i) {
             info.push(features[i].get(&#x27;name&#x27;));
           }
@@ -201,7 +208,7 @@ map.on(&#x27;click&#x27;, function(evt) {
         if (evt.dragging) {
           return;
         }
-        const pixel &#x3D; map.getEventPixel(evt.originalEvent);
+        var pixel &#x3D; map.getEventPixel(evt.originalEvent);
         displayFeatureInfo(pixel);
       });
 
@@ -229,7 +236,7 @@ map.on(&#x27;click&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

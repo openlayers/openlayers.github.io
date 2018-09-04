@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -76,18 +83,18 @@ import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
 
 if (!WEBGL) {
-  const info &#x3D; document.getElementById(&#x27;no-webgl&#x27;);
+  var info &#x3D; document.getElementById(&#x27;no-webgl&#x27;);
   /**
    * display error message
    */
   info.style.display &#x3D; &#x27;&#x27;;
 } else {
 
-  const osm &#x3D; new TileLayer({
+  var osm &#x3D; new TileLayer({
     source: new OSM()
   });
 
-  const map &#x3D; new Map({
+  var map &#x3D; new Map({
     layers: [osm],
     target: &#x27;map&#x27;,
     controls: defaultControls({
@@ -101,13 +108,13 @@ if (!WEBGL) {
     })
   });
 
-  const fragmentShaderSource &#x3D; [
+  var fragmentShaderSource &#x3D; [
     &#x27;precision mediump float;&#x27;,
     &#x27;void main() {&#x27;,
     &#x27;}&#x27;
   ].join(&#x27;&#x27;);
 
-  const vertexShaderSource &#x3D; [
+  var vertexShaderSource &#x3D; [
     &#x27;attribute vec2 a_position;&#x27;,
     &#x27;void main() {&#x27;,
     &#x27;  gl_Position &#x3D; vec4(a_position, 0, 1);&#x27;,
@@ -115,17 +122,17 @@ if (!WEBGL) {
   ].join(&#x27;&#x27;);
 
   osm.on(&#x27;precompose&#x27;, function(event) {
-    const context &#x3D; event.glContext;
+    var context &#x3D; event.glContext;
 
-    const gl &#x3D; context.getGL();
-    const program &#x3D; gl.createProgram();
+    var gl &#x3D; context.getGL();
+    var program &#x3D; gl.createProgram();
 
-    const vertexShader &#x3D; gl.createShader(gl.VERTEX_SHADER);
+    var vertexShader &#x3D; gl.createShader(gl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, vertexShaderSource);
     gl.compileShader(vertexShader);
     gl.attachShader(program, vertexShader);
 
-    const fragmentShader &#x3D; gl.createShader(gl.FRAGMENT_SHADER);
+    var fragmentShader &#x3D; gl.createShader(gl.FRAGMENT_SHADER);
     gl.shaderSource(fragmentShader, fragmentShaderSource);
     gl.compileShader(fragmentShader);
     gl.attachShader(program, fragmentShader);
@@ -133,14 +140,14 @@ if (!WEBGL) {
     gl.linkProgram(program);
     context.useProgram(program);
 
-    const positionLocation &#x3D; gl.getAttribLocation(program, &#x27;a_position&#x27;);
+    var positionLocation &#x3D; gl.getAttribLocation(program, &#x27;a_position&#x27;);
 
     gl.enable(gl.STENCIL_TEST);
     gl.colorMask(false, false, false, false);
     gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
     gl.stencilFunc(gl.ALWAYS, 1, 0xff);
 
-    const buffer &#x3D; gl.createBuffer();
+    var buffer &#x3D; gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
       // first band
@@ -170,8 +177,8 @@ if (!WEBGL) {
   });
 
   osm.on(&#x27;postcompose&#x27;, function(event) {
-    const context &#x3D; event.glContext;
-    const gl &#x3D; context.getGL();
+    var context &#x3D; event.glContext;
+    var gl &#x3D; context.getGL();
     gl.disable(gl.STENCIL_TEST);
   });
 }
@@ -188,7 +195,7 @@ if (!WEBGL) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Layer Clipping with WebGL&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -207,18 +214,18 @@ if (!WEBGL) {
       import OSM from &#x27;ol/source/OSM.js&#x27;;
 
       if (!WEBGL) {
-        const info &#x3D; document.getElementById(&#x27;no-webgl&#x27;);
+        var info &#x3D; document.getElementById(&#x27;no-webgl&#x27;);
         /**
          * display error message
          */
         info.style.display &#x3D; &#x27;&#x27;;
       } else {
 
-        const osm &#x3D; new TileLayer({
+        var osm &#x3D; new TileLayer({
           source: new OSM()
         });
 
-        const map &#x3D; new Map({
+        var map &#x3D; new Map({
           layers: [osm],
           target: &#x27;map&#x27;,
           controls: defaultControls({
@@ -232,13 +239,13 @@ if (!WEBGL) {
           })
         });
 
-        const fragmentShaderSource &#x3D; [
+        var fragmentShaderSource &#x3D; [
           &#x27;precision mediump float;&#x27;,
           &#x27;void main() {&#x27;,
           &#x27;}&#x27;
         ].join(&#x27;&#x27;);
 
-        const vertexShaderSource &#x3D; [
+        var vertexShaderSource &#x3D; [
           &#x27;attribute vec2 a_position;&#x27;,
           &#x27;void main() {&#x27;,
           &#x27;  gl_Position &#x3D; vec4(a_position, 0, 1);&#x27;,
@@ -246,17 +253,17 @@ if (!WEBGL) {
         ].join(&#x27;&#x27;);
 
         osm.on(&#x27;precompose&#x27;, function(event) {
-          const context &#x3D; event.glContext;
+          var context &#x3D; event.glContext;
 
-          const gl &#x3D; context.getGL();
-          const program &#x3D; gl.createProgram();
+          var gl &#x3D; context.getGL();
+          var program &#x3D; gl.createProgram();
 
-          const vertexShader &#x3D; gl.createShader(gl.VERTEX_SHADER);
+          var vertexShader &#x3D; gl.createShader(gl.VERTEX_SHADER);
           gl.shaderSource(vertexShader, vertexShaderSource);
           gl.compileShader(vertexShader);
           gl.attachShader(program, vertexShader);
 
-          const fragmentShader &#x3D; gl.createShader(gl.FRAGMENT_SHADER);
+          var fragmentShader &#x3D; gl.createShader(gl.FRAGMENT_SHADER);
           gl.shaderSource(fragmentShader, fragmentShaderSource);
           gl.compileShader(fragmentShader);
           gl.attachShader(program, fragmentShader);
@@ -264,14 +271,14 @@ if (!WEBGL) {
           gl.linkProgram(program);
           context.useProgram(program);
 
-          const positionLocation &#x3D; gl.getAttribLocation(program, &#x27;a_position&#x27;);
+          var positionLocation &#x3D; gl.getAttribLocation(program, &#x27;a_position&#x27;);
 
           gl.enable(gl.STENCIL_TEST);
           gl.colorMask(false, false, false, false);
           gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
           gl.stencilFunc(gl.ALWAYS, 1, 0xff);
 
-          const buffer &#x3D; gl.createBuffer();
+          var buffer &#x3D; gl.createBuffer();
           gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
           gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
             // first band
@@ -301,8 +308,8 @@ if (!WEBGL) {
         });
 
         osm.on(&#x27;postcompose&#x27;, function(event) {
-          const context &#x3D; event.glContext;
-          const gl &#x3D; context.getGL();
+          var context &#x3D; event.glContext;
+          var gl &#x3D; context.getGL();
           gl.disable(gl.STENCIL_TEST);
         });
       }
@@ -327,7 +334,7 @@ if (!WEBGL) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

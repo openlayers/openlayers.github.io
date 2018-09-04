@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -41,7 +48,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -78,15 +85,15 @@ import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {Fill, Circle as CircleStyle, Stroke, Style, Text} from &#x27;ol/style.js&#x27;;
 import MousePosition from &#x27;ol/control/MousePosition.js&#x27;;
 
-const raster &#x3D; new TileLayer({
+var raster &#x3D; new TileLayer({
   source: new OSM()
 });
 
-const nodes &#x3D; new VectorSource({wrapX: false});
-const nodesLayer &#x3D; new VectorLayer({
+var nodes &#x3D; new VectorSource({wrapX: false});
+var nodesLayer &#x3D; new VectorLayer({
   source: nodes,
   style: function(f) {
-    const style &#x3D; new Style({
+    var style &#x3D; new Style({
       image: new CircleStyle({
         radius: 8,
         fill: new Fill({color: &#x27;rgba(255, 0, 0, 0.2)&#x27;}),
@@ -105,11 +112,11 @@ const nodesLayer &#x3D; new VectorLayer({
   }
 });
 
-const edges &#x3D; new VectorSource({wrapX: false});
-const edgesLayer &#x3D; new VectorLayer({
+var edges &#x3D; new VectorSource({wrapX: false});
+var edgesLayer &#x3D; new VectorLayer({
   source: edges,
   style: function(f) {
-    const style &#x3D; new Style({
+    var style &#x3D; new Style({
       stroke: new Stroke({
         color: &#x27;blue&#x27;,
         width: 1
@@ -127,11 +134,11 @@ const edgesLayer &#x3D; new VectorLayer({
   }
 });
 
-const faces &#x3D; new VectorSource({wrapX: false});
-const facesLayer &#x3D; new VectorLayer({
+var faces &#x3D; new VectorSource({wrapX: false});
+var facesLayer &#x3D; new VectorLayer({
   source: faces,
   style: function(f) {
-    const style &#x3D; new Style({
+    var style &#x3D; new Style({
       stroke: new Stroke({
         color: &#x27;black&#x27;,
         width: 1
@@ -153,7 +160,7 @@ const facesLayer &#x3D; new VectorLayer({
   }
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [raster, facesLayer, edgesLayer, nodesLayer],
   target: &#x27;map&#x27;,
   view: new View({
@@ -162,7 +169,7 @@ const map &#x3D; new Map({
   })
 });
 
-const topo &#x3D; topolis.createTopology();
+var topo &#x3D; topolis.createTopology();
 
 topo.on(&#x27;addnode&#x27;, nodeToFeature);
 topo.on(&#x27;removenode&#x27;, function(e) {
@@ -170,7 +177,7 @@ topo.on(&#x27;removenode&#x27;, function(e) {
 });
 topo.on(&#x27;addedge&#x27;, edgeToFeature);
 topo.on(&#x27;modedge&#x27;, function(e) {
-  const feature &#x3D; edges.getFeatureById(e.id);
+  var feature &#x3D; edges.getFeatureById(e.id);
   feature.setGeometry(new LineString(e.coordinates));
 });
 topo.on(&#x27;removeedge&#x27;, function(e) {
@@ -182,12 +189,12 @@ topo.on(&#x27;removeface&#x27;, function(e) {
 });
 
 function removeElementFeature(source, element) {
-  const feature &#x3D; source.getFeatureById(element.id);
+  var feature &#x3D; source.getFeatureById(element.id);
   source.removeFeature(feature);
 }
 
 function nodeToFeature(node) {
-  const feature &#x3D; new Feature({
+  var feature &#x3D; new Feature({
     geometry: new Point(node.coordinate),
     node: node
   });
@@ -196,7 +203,7 @@ function nodeToFeature(node) {
 }
 
 function edgeToFeature(edge) {
-  const feature &#x3D; new Feature({
+  var feature &#x3D; new Feature({
     geometry: new LineString(edge.coordinates),
     edge: edge
   });
@@ -205,8 +212,8 @@ function edgeToFeature(edge) {
 }
 
 function faceToFeature(face) {
-  const coordinates &#x3D; topo.getFaceGeometry(face);
-  const feature &#x3D; new Feature({
+  var coordinates &#x3D; topo.getFaceGeometry(face);
+  var feature &#x3D; new Feature({
     geometry: new Polygon(coordinates),
     face: face
   });
@@ -215,8 +222,8 @@ function faceToFeature(face) {
 }
 
 function createNode(topo, coord) {
-  let node;
-  const existingEdge &#x3D; topo.getEdgeByPoint(coord, 5)[0];
+  var node;
+  var existingEdge &#x3D; topo.getEdgeByPoint(coord, 5)[0];
   if (existingEdge) {
     node &#x3D; topo.modEdgeSplit(existingEdge, coord);
   } else {
@@ -226,16 +233,16 @@ function createNode(topo, coord) {
 }
 
 function onDrawend(e) {
-  const edgeGeom &#x3D; e.feature.getGeometry().getCoordinates();
-  const startCoord &#x3D; edgeGeom[0];
-  const endCoord &#x3D; edgeGeom[edgeGeom.length - 1];
-  let start, end;
+  var edgeGeom &#x3D; e.feature.getGeometry().getCoordinates();
+  var startCoord &#x3D; edgeGeom[0];
+  var endCoord &#x3D; edgeGeom[edgeGeom.length - 1];
+  var start, end;
   try {
     start &#x3D; topo.getNodeByPoint(startCoord);
     end &#x3D; topo.getNodeByPoint(endCoord);
-    const edgesAtStart &#x3D; topo.getEdgeByPoint(startCoord, 5);
-    const edgesAtEnd &#x3D; topo.getEdgeByPoint(endCoord, 5);
-    const crossing &#x3D; topo.getEdgesByLine(edgeGeom);
+    var edgesAtStart &#x3D; topo.getEdgeByPoint(startCoord, 5);
+    var edgesAtEnd &#x3D; topo.getEdgeByPoint(endCoord, 5);
+    var crossing &#x3D; topo.getEdgesByLine(edgeGeom);
     if (crossing.length &#x3D;&#x3D;&#x3D; 1 &amp;&amp; !start &amp;&amp; !end &amp;&amp; edgesAtStart.length &#x3D;&#x3D;&#x3D; 0 &amp;&amp; edgesAtEnd.length &#x3D;&#x3D;&#x3D; 0) {
       topo.remEdgeNewFace(crossing[0]);
       start &#x3D; crossing[0].start;
@@ -262,12 +269,12 @@ function onDrawend(e) {
   }
 }
 
-const draw &#x3D; new Draw({
+var draw &#x3D; new Draw({
   type: &#x27;LineString&#x27;
 });
 draw.on(&#x27;drawend&#x27;, onDrawend);
 map.addInteraction(draw);
-const snap &#x3D; new Snap({
+var snap &#x3D; new Snap({
   source: edges
 });
 map.addInteraction(snap);
@@ -282,7 +289,7 @@ map.addControl(new MousePosition());
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;topolis integration&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://cdn.rawgit.com/bjornharrtell/topolis/releases/0.1.1/topolis.min.js&quot;&gt;&lt;/script&gt;
@@ -303,15 +310,15 @@ map.addControl(new MousePosition());
       import {Fill, Circle as CircleStyle, Stroke, Style, Text} from &#x27;ol/style.js&#x27;;
       import MousePosition from &#x27;ol/control/MousePosition.js&#x27;;
 
-      const raster &#x3D; new TileLayer({
+      var raster &#x3D; new TileLayer({
         source: new OSM()
       });
 
-      const nodes &#x3D; new VectorSource({wrapX: false});
-      const nodesLayer &#x3D; new VectorLayer({
+      var nodes &#x3D; new VectorSource({wrapX: false});
+      var nodesLayer &#x3D; new VectorLayer({
         source: nodes,
         style: function(f) {
-          const style &#x3D; new Style({
+          var style &#x3D; new Style({
             image: new CircleStyle({
               radius: 8,
               fill: new Fill({color: &#x27;rgba(255, 0, 0, 0.2)&#x27;}),
@@ -330,11 +337,11 @@ map.addControl(new MousePosition());
         }
       });
 
-      const edges &#x3D; new VectorSource({wrapX: false});
-      const edgesLayer &#x3D; new VectorLayer({
+      var edges &#x3D; new VectorSource({wrapX: false});
+      var edgesLayer &#x3D; new VectorLayer({
         source: edges,
         style: function(f) {
-          const style &#x3D; new Style({
+          var style &#x3D; new Style({
             stroke: new Stroke({
               color: &#x27;blue&#x27;,
               width: 1
@@ -352,11 +359,11 @@ map.addControl(new MousePosition());
         }
       });
 
-      const faces &#x3D; new VectorSource({wrapX: false});
-      const facesLayer &#x3D; new VectorLayer({
+      var faces &#x3D; new VectorSource({wrapX: false});
+      var facesLayer &#x3D; new VectorLayer({
         source: faces,
         style: function(f) {
-          const style &#x3D; new Style({
+          var style &#x3D; new Style({
             stroke: new Stroke({
               color: &#x27;black&#x27;,
               width: 1
@@ -378,7 +385,7 @@ map.addControl(new MousePosition());
         }
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [raster, facesLayer, edgesLayer, nodesLayer],
         target: &#x27;map&#x27;,
         view: new View({
@@ -387,7 +394,7 @@ map.addControl(new MousePosition());
         })
       });
 
-      const topo &#x3D; topolis.createTopology();
+      var topo &#x3D; topolis.createTopology();
 
       topo.on(&#x27;addnode&#x27;, nodeToFeature);
       topo.on(&#x27;removenode&#x27;, function(e) {
@@ -395,7 +402,7 @@ map.addControl(new MousePosition());
       });
       topo.on(&#x27;addedge&#x27;, edgeToFeature);
       topo.on(&#x27;modedge&#x27;, function(e) {
-        const feature &#x3D; edges.getFeatureById(e.id);
+        var feature &#x3D; edges.getFeatureById(e.id);
         feature.setGeometry(new LineString(e.coordinates));
       });
       topo.on(&#x27;removeedge&#x27;, function(e) {
@@ -407,12 +414,12 @@ map.addControl(new MousePosition());
       });
 
       function removeElementFeature(source, element) {
-        const feature &#x3D; source.getFeatureById(element.id);
+        var feature &#x3D; source.getFeatureById(element.id);
         source.removeFeature(feature);
       }
 
       function nodeToFeature(node) {
-        const feature &#x3D; new Feature({
+        var feature &#x3D; new Feature({
           geometry: new Point(node.coordinate),
           node: node
         });
@@ -421,7 +428,7 @@ map.addControl(new MousePosition());
       }
 
       function edgeToFeature(edge) {
-        const feature &#x3D; new Feature({
+        var feature &#x3D; new Feature({
           geometry: new LineString(edge.coordinates),
           edge: edge
         });
@@ -430,8 +437,8 @@ map.addControl(new MousePosition());
       }
 
       function faceToFeature(face) {
-        const coordinates &#x3D; topo.getFaceGeometry(face);
-        const feature &#x3D; new Feature({
+        var coordinates &#x3D; topo.getFaceGeometry(face);
+        var feature &#x3D; new Feature({
           geometry: new Polygon(coordinates),
           face: face
         });
@@ -440,8 +447,8 @@ map.addControl(new MousePosition());
       }
 
       function createNode(topo, coord) {
-        let node;
-        const existingEdge &#x3D; topo.getEdgeByPoint(coord, 5)[0];
+        var node;
+        var existingEdge &#x3D; topo.getEdgeByPoint(coord, 5)[0];
         if (existingEdge) {
           node &#x3D; topo.modEdgeSplit(existingEdge, coord);
         } else {
@@ -451,16 +458,16 @@ map.addControl(new MousePosition());
       }
 
       function onDrawend(e) {
-        const edgeGeom &#x3D; e.feature.getGeometry().getCoordinates();
-        const startCoord &#x3D; edgeGeom[0];
-        const endCoord &#x3D; edgeGeom[edgeGeom.length - 1];
-        let start, end;
+        var edgeGeom &#x3D; e.feature.getGeometry().getCoordinates();
+        var startCoord &#x3D; edgeGeom[0];
+        var endCoord &#x3D; edgeGeom[edgeGeom.length - 1];
+        var start, end;
         try {
           start &#x3D; topo.getNodeByPoint(startCoord);
           end &#x3D; topo.getNodeByPoint(endCoord);
-          const edgesAtStart &#x3D; topo.getEdgeByPoint(startCoord, 5);
-          const edgesAtEnd &#x3D; topo.getEdgeByPoint(endCoord, 5);
-          const crossing &#x3D; topo.getEdgesByLine(edgeGeom);
+          var edgesAtStart &#x3D; topo.getEdgeByPoint(startCoord, 5);
+          var edgesAtEnd &#x3D; topo.getEdgeByPoint(endCoord, 5);
+          var crossing &#x3D; topo.getEdgesByLine(edgeGeom);
           if (crossing.length &#x3D;&#x3D;&#x3D; 1 &amp;&amp; !start &amp;&amp; !end &amp;&amp; edgesAtStart.length &#x3D;&#x3D;&#x3D; 0 &amp;&amp; edgesAtEnd.length &#x3D;&#x3D;&#x3D; 0) {
             topo.remEdgeNewFace(crossing[0]);
             start &#x3D; crossing[0].start;
@@ -487,12 +494,12 @@ map.addControl(new MousePosition());
         }
       }
 
-      const draw &#x3D; new Draw({
+      var draw &#x3D; new Draw({
         type: &#x27;LineString&#x27;
       });
       draw.on(&#x27;drawend&#x27;, onDrawend);
       map.addInteraction(draw);
-      const snap &#x3D; new Snap({
+      var snap &#x3D; new Snap({
         source: edges
       });
       map.addInteraction(snap);
@@ -518,7 +525,7 @@ map.addControl(new MousePosition());
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

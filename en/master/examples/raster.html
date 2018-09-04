@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -87,21 +94,21 @@ import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
 import BingMaps from &#x27;ol/source/BingMaps.js&#x27;;
 import RasterSource from &#x27;ol/source/Raster.js&#x27;;
 
-const minVgi &#x3D; 0;
-const maxVgi &#x3D; 0.25;
-const bins &#x3D; 10;
+var minVgi &#x3D; 0;
+var maxVgi &#x3D; 0.25;
+var bins &#x3D; 10;
 
 
 /**
  * Calculate the Vegetation Greenness Index (VGI) from an input pixel.  This
  * is a rough estimate assuming that pixel values correspond to reflectance.
- * @param {Array.&lt;number&gt;} pixel An array of [R, G, B, A] values.
+ * @param {Array&lt;number&gt;} pixel An array of [R, G, B, A] values.
  * @return {number} The VGI value for the given pixel.
  */
 function vgi(pixel) {
-  const r &#x3D; pixel[0] / 255;
-  const g &#x3D; pixel[1] / 255;
-  const b &#x3D; pixel[2] / 255;
+  var r &#x3D; pixel[0] / 255;
+  var g &#x3D; pixel[1] / 255;
+  var b &#x3D; pixel[2] / 255;
   return (2 * g - r - b) / (2 * g + r + b);
 }
 
@@ -112,15 +119,15 @@ function vgi(pixel) {
  * @param {Object} counts An object for keeping track of VGI counts.
  */
 function summarize(value, counts) {
-  const min &#x3D; counts.min;
-  const max &#x3D; counts.max;
-  const num &#x3D; counts.values.length;
+  var min &#x3D; counts.min;
+  var max &#x3D; counts.max;
+  var num &#x3D; counts.values.length;
   if (value &lt; min) {
     // do nothing
   } else if (value &gt;&#x3D; max) {
     counts.values[num - 1] +&#x3D; 1;
   } else {
-    const index &#x3D; Math.floor((value - min) / counts.delta);
+    var index &#x3D; Math.floor((value - min) / counts.delta);
     counts.values[index] +&#x3D; 1;
   }
 }
@@ -129,7 +136,7 @@ function summarize(value, counts) {
 /**
  * Use aerial imagery as the input data for the raster source.
  */
-const bing &#x3D; new BingMaps({
+var bing &#x3D; new BingMaps({
   key: &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;,
   imagerySet: &#x27;Aerial&#x27;
 });
@@ -139,7 +146,7 @@ const bing &#x3D; new BingMaps({
  * Create a raster source where pixels with VGI values above a threshold will
  * be colored green.
  */
-const raster &#x3D; new RasterSource({
+var raster &#x3D; new RasterSource({
   sources: [bing],
   /**
    * Run calculations on pixel data.
@@ -148,8 +155,8 @@ const raster &#x3D; new RasterSource({
    * @return {Array} The output pixel.
    */
   operation: function(pixels, data) {
-    const pixel &#x3D; pixels[0];
-    const value &#x3D; vgi(pixel);
+    var pixel &#x3D; pixels[0];
+    var value &#x3D; vgi(pixel);
     summarize(value, data.counts);
     if (value &gt;&#x3D; data.threshold) {
       pixel[0] &#x3D; 0;
@@ -169,8 +176,8 @@ const raster &#x3D; new RasterSource({
 raster.set(&#x27;threshold&#x27;, 0.1);
 
 function createCounts(min, max, num) {
-  const values &#x3D; new Array(num);
-  for (let i &#x3D; 0; i &lt; num; ++i) {
+  var values &#x3D; new Array(num);
+  for (var i &#x3D; 0; i &lt; num; ++i) {
     values[i] &#x3D; 0;
   }
   return {
@@ -190,7 +197,7 @@ raster.on(&#x27;afteroperations&#x27;, function(event) {
   schedulePlot(event.resolution, event.data.counts, event.data.threshold);
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: bing
@@ -209,7 +216,7 @@ const map &#x3D; new Map({
 });
 
 
-let timer &#x3D; null;
+var timer &#x3D; null;
 function schedulePlot(resolution, counts, threshold) {
   if (timer) {
     clearTimeout(timer);
@@ -218,28 +225,28 @@ function schedulePlot(resolution, counts, threshold) {
   timer &#x3D; setTimeout(plot.bind(null, resolution, counts, threshold), 1000 / 60);
 }
 
-const barWidth &#x3D; 15;
-const plotHeight &#x3D; 150;
-const chart &#x3D; d3.select(&#x27;#plot&#x27;).append(&#x27;svg&#x27;)
+var barWidth &#x3D; 15;
+var plotHeight &#x3D; 150;
+var chart &#x3D; d3.select(&#x27;#plot&#x27;).append(&#x27;svg&#x27;)
   .attr(&#x27;width&#x27;, barWidth * bins)
   .attr(&#x27;height&#x27;, plotHeight);
 
-const chartRect &#x3D; chart.node().getBoundingClientRect();
+var chartRect &#x3D; chart.node().getBoundingClientRect();
 
-const tip &#x3D; d3.select(document.body).append(&#x27;div&#x27;)
+var tip &#x3D; d3.select(document.body).append(&#x27;div&#x27;)
   .attr(&#x27;class&#x27;, &#x27;tip&#x27;);
 
 function plot(resolution, counts, threshold) {
-  const yScale &#x3D; d3.scaleLinear()
+  var yScale &#x3D; d3.scaleLinear()
     .domain([0, d3.max(counts.values)])
     .range([0, plotHeight]);
 
-  const bar &#x3D; chart.selectAll(&#x27;rect&#x27;).data(counts.values);
+  var bar &#x3D; chart.selectAll(&#x27;rect&#x27;).data(counts.values);
 
   bar.enter().append(&#x27;rect&#x27;);
 
   bar.attr(&#x27;class&#x27;, function(count, index) {
-    const value &#x3D; counts.min + (index * counts.delta);
+    var value &#x3D; counts.min + (index * counts.delta);
     return &#x27;bar&#x27; + (value &gt;&#x3D; threshold ? &#x27; selected&#x27; : &#x27;&#x27;);
   })
     .attr(&#x27;width&#x27;, barWidth - 2);
@@ -251,7 +258,7 @@ function plot(resolution, counts, threshold) {
     .attr(&#x27;height&#x27;, yScale);
 
   bar.on(&#x27;mousemove&#x27;, function(count, index) {
-    const threshold &#x3D; counts.min + (index * counts.delta);
+    var threshold &#x3D; counts.min + (index * counts.delta);
     if (raster.get(&#x27;threshold&#x27;) !&#x3D;&#x3D; threshold) {
       raster.set(&#x27;threshold&#x27;, threshold);
       raster.changed();
@@ -259,8 +266,8 @@ function plot(resolution, counts, threshold) {
   });
 
   bar.on(&#x27;mouseover&#x27;, function(count, index) {
-    let area &#x3D; 0;
-    for (let i &#x3D; counts.values.length - 1; i &gt;&#x3D; index; --i) {
+    var area &#x3D; 0;
+    for (var i &#x3D; counts.values.length - 1; i &gt;&#x3D; index; --i) {
       area +&#x3D; resolution * resolution * counts.values[i];
     }
     tip.html(message(counts.min + (index * counts.delta), area));
@@ -281,7 +288,7 @@ function plot(resolution, counts, threshold) {
 }
 
 function message(value, area) {
-  const acres &#x3D; (area / 4046.86).toFixed(0).replace(/\B(?&#x3D;(\d{3})+(?!\d))/g, &#x27;,&#x27;);
+  var acres &#x3D; (area / 4046.86).toFixed(0).replace(/\B(?&#x3D;(\d{3})+(?!\d))/g, &#x27;,&#x27;);
   return acres + &#x27; acres at&lt;br&gt;&#x27; + value.toFixed(2) + &#x27; VGI or above&#x27;;
 }
 </textarea>
@@ -328,7 +335,7 @@ function message(value, area) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Raster Source&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://unpkg.com/d3@4.12.0/build/d3.js&quot;&gt;&lt;/script&gt;
@@ -378,21 +385,21 @@ function message(value, area) {
       import BingMaps from &#x27;ol/source/BingMaps.js&#x27;;
       import RasterSource from &#x27;ol/source/Raster.js&#x27;;
 
-      const minVgi &#x3D; 0;
-      const maxVgi &#x3D; 0.25;
-      const bins &#x3D; 10;
+      var minVgi &#x3D; 0;
+      var maxVgi &#x3D; 0.25;
+      var bins &#x3D; 10;
 
 
       /**
        * Calculate the Vegetation Greenness Index (VGI) from an input pixel.  This
        * is a rough estimate assuming that pixel values correspond to reflectance.
-       * @param {Array.&lt;number&gt;} pixel An array of [R, G, B, A] values.
+       * @param {Array&lt;number&gt;} pixel An array of [R, G, B, A] values.
        * @return {number} The VGI value for the given pixel.
        */
       function vgi(pixel) {
-        const r &#x3D; pixel[0] / 255;
-        const g &#x3D; pixel[1] / 255;
-        const b &#x3D; pixel[2] / 255;
+        var r &#x3D; pixel[0] / 255;
+        var g &#x3D; pixel[1] / 255;
+        var b &#x3D; pixel[2] / 255;
         return (2 * g - r - b) / (2 * g + r + b);
       }
 
@@ -403,15 +410,15 @@ function message(value, area) {
        * @param {Object} counts An object for keeping track of VGI counts.
        */
       function summarize(value, counts) {
-        const min &#x3D; counts.min;
-        const max &#x3D; counts.max;
-        const num &#x3D; counts.values.length;
+        var min &#x3D; counts.min;
+        var max &#x3D; counts.max;
+        var num &#x3D; counts.values.length;
         if (value &lt; min) {
           // do nothing
         } else if (value &gt;&#x3D; max) {
           counts.values[num - 1] +&#x3D; 1;
         } else {
-          const index &#x3D; Math.floor((value - min) / counts.delta);
+          var index &#x3D; Math.floor((value - min) / counts.delta);
           counts.values[index] +&#x3D; 1;
         }
       }
@@ -420,7 +427,7 @@ function message(value, area) {
       /**
        * Use aerial imagery as the input data for the raster source.
        */
-      const bing &#x3D; new BingMaps({
+      var bing &#x3D; new BingMaps({
         key: &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;,
         imagerySet: &#x27;Aerial&#x27;
       });
@@ -430,7 +437,7 @@ function message(value, area) {
        * Create a raster source where pixels with VGI values above a threshold will
        * be colored green.
        */
-      const raster &#x3D; new RasterSource({
+      var raster &#x3D; new RasterSource({
         sources: [bing],
         /**
          * Run calculations on pixel data.
@@ -439,8 +446,8 @@ function message(value, area) {
          * @return {Array} The output pixel.
          */
         operation: function(pixels, data) {
-          const pixel &#x3D; pixels[0];
-          const value &#x3D; vgi(pixel);
+          var pixel &#x3D; pixels[0];
+          var value &#x3D; vgi(pixel);
           summarize(value, data.counts);
           if (value &gt;&#x3D; data.threshold) {
             pixel[0] &#x3D; 0;
@@ -460,8 +467,8 @@ function message(value, area) {
       raster.set(&#x27;threshold&#x27;, 0.1);
 
       function createCounts(min, max, num) {
-        const values &#x3D; new Array(num);
-        for (let i &#x3D; 0; i &lt; num; ++i) {
+        var values &#x3D; new Array(num);
+        for (var i &#x3D; 0; i &lt; num; ++i) {
           values[i] &#x3D; 0;
         }
         return {
@@ -481,7 +488,7 @@ function message(value, area) {
         schedulePlot(event.resolution, event.data.counts, event.data.threshold);
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           new TileLayer({
             source: bing
@@ -500,7 +507,7 @@ function message(value, area) {
       });
 
 
-      let timer &#x3D; null;
+      var timer &#x3D; null;
       function schedulePlot(resolution, counts, threshold) {
         if (timer) {
           clearTimeout(timer);
@@ -509,28 +516,28 @@ function message(value, area) {
         timer &#x3D; setTimeout(plot.bind(null, resolution, counts, threshold), 1000 / 60);
       }
 
-      const barWidth &#x3D; 15;
-      const plotHeight &#x3D; 150;
-      const chart &#x3D; d3.select(&#x27;#plot&#x27;).append(&#x27;svg&#x27;)
+      var barWidth &#x3D; 15;
+      var plotHeight &#x3D; 150;
+      var chart &#x3D; d3.select(&#x27;#plot&#x27;).append(&#x27;svg&#x27;)
         .attr(&#x27;width&#x27;, barWidth * bins)
         .attr(&#x27;height&#x27;, plotHeight);
 
-      const chartRect &#x3D; chart.node().getBoundingClientRect();
+      var chartRect &#x3D; chart.node().getBoundingClientRect();
 
-      const tip &#x3D; d3.select(document.body).append(&#x27;div&#x27;)
+      var tip &#x3D; d3.select(document.body).append(&#x27;div&#x27;)
         .attr(&#x27;class&#x27;, &#x27;tip&#x27;);
 
       function plot(resolution, counts, threshold) {
-        const yScale &#x3D; d3.scaleLinear()
+        var yScale &#x3D; d3.scaleLinear()
           .domain([0, d3.max(counts.values)])
           .range([0, plotHeight]);
 
-        const bar &#x3D; chart.selectAll(&#x27;rect&#x27;).data(counts.values);
+        var bar &#x3D; chart.selectAll(&#x27;rect&#x27;).data(counts.values);
 
         bar.enter().append(&#x27;rect&#x27;);
 
         bar.attr(&#x27;class&#x27;, function(count, index) {
-          const value &#x3D; counts.min + (index * counts.delta);
+          var value &#x3D; counts.min + (index * counts.delta);
           return &#x27;bar&#x27; + (value &gt;&#x3D; threshold ? &#x27; selected&#x27; : &#x27;&#x27;);
         })
           .attr(&#x27;width&#x27;, barWidth - 2);
@@ -542,7 +549,7 @@ function message(value, area) {
           .attr(&#x27;height&#x27;, yScale);
 
         bar.on(&#x27;mousemove&#x27;, function(count, index) {
-          const threshold &#x3D; counts.min + (index * counts.delta);
+          var threshold &#x3D; counts.min + (index * counts.delta);
           if (raster.get(&#x27;threshold&#x27;) !&#x3D;&#x3D; threshold) {
             raster.set(&#x27;threshold&#x27;, threshold);
             raster.changed();
@@ -550,8 +557,8 @@ function message(value, area) {
         });
 
         bar.on(&#x27;mouseover&#x27;, function(count, index) {
-          let area &#x3D; 0;
-          for (let i &#x3D; counts.values.length - 1; i &gt;&#x3D; index; --i) {
+          var area &#x3D; 0;
+          for (var i &#x3D; counts.values.length - 1; i &gt;&#x3D; index; --i) {
             area +&#x3D; resolution * resolution * counts.values[i];
           }
           tip.html(message(counts.min + (index * counts.delta), area));
@@ -572,7 +579,7 @@ function message(value, area) {
       }
 
       function message(value, area) {
-        const acres &#x3D; (area / 4046.86).toFixed(0).replace(/\B(?&#x3D;(\d{3})+(?!\d))/g, &#x27;,&#x27;);
+        var acres &#x3D; (area / 4046.86).toFixed(0).replace(/\B(?&#x3D;(\d{3})+(?!\d))/g, &#x27;,&#x27;);
         return acres + &#x27; acres at&lt;br&gt;&#x27; + value.toFixed(2) + &#x27; VGI or above&#x27;;
       }
     &lt;/script&gt;
@@ -596,7 +603,7 @@ function message(value, area) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

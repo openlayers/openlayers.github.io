@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -82,7 +89,7 @@ import {Circle as CircleStyle, Fill, Icon, Stroke, Style} from &#x27;ol/style.js
 
 // This long string is placed here due to jsFiddle limitations.
 // It is usually loaded with AJAX.
-const polyline &#x3D; [
+var polyline &#x3D; [
   &#x27;hldhx@lnau&#x60;BCG_EaC??cFjAwDjF??uBlKMd@}@z@??aC^yk@z_@se@b[wFdE??wFfE}N&#x27;,
   &#x27;fIoGxB_I\\gG}@eHoCyTmPqGaBaHOoD\\??yVrGotA|N??o[N_STiwAtEmHGeHcAkiA}^&#x27;,
   &#x27;aMyBiHOkFNoI&#x60;CcVvM??gG^gF_@iJwC??eCcA]OoL}DwFyCaCgCcCwDcGwHsSoX??wI_E&#x27;,
@@ -124,34 +131,34 @@ const polyline &#x3D; [
   &#x27;~@ym@yjA??a@cFd@kBrCgDbAUnAcBhAyAdk@et@??kF}D??OL&#x27;
 ].join(&#x27;&#x27;);
 
-const route &#x3D; /** @type {module:ol/geom/LineString~LineString} */ (new Polyline({
+var route &#x3D; /** @type {module:ol/geom/LineString~LineString} */ (new Polyline({
   factor: 1e6
 }).readGeometry(polyline, {
   dataProjection: &#x27;EPSG:4326&#x27;,
   featureProjection: &#x27;EPSG:3857&#x27;
 }));
 
-const routeCoords &#x3D; route.getCoordinates();
-const routeLength &#x3D; routeCoords.length;
+var routeCoords &#x3D; route.getCoordinates();
+var routeLength &#x3D; routeCoords.length;
 
-const routeFeature &#x3D; new Feature({
+var routeFeature &#x3D; new Feature({
   type: &#x27;route&#x27;,
   geometry: route
 });
-const geoMarker &#x3D; new Feature({
+var geoMarker &#x3D; new Feature({
   type: &#x27;geoMarker&#x27;,
   geometry: new Point(routeCoords[0])
 });
-const startMarker &#x3D; new Feature({
+var startMarker &#x3D; new Feature({
   type: &#x27;icon&#x27;,
   geometry: new Point(routeCoords[0])
 });
-const endMarker &#x3D; new Feature({
+var endMarker &#x3D; new Feature({
   type: &#x27;icon&#x27;,
   geometry: new Point(routeCoords[routeLength - 1])
 });
 
-const styles &#x3D; {
+var styles &#x3D; {
   &#x27;route&#x27;: new Style({
     stroke: new Stroke({
       width: 6, color: [237, 212, 0, 0.8]
@@ -166,7 +173,6 @@ const styles &#x3D; {
   &#x27;geoMarker&#x27;: new Style({
     image: new CircleStyle({
       radius: 7,
-      snapToPixel: false,
       fill: new Fill({color: &#x27;black&#x27;}),
       stroke: new Stroke({
         color: &#x27;white&#x27;, width: 2
@@ -175,12 +181,12 @@ const styles &#x3D; {
   })
 };
 
-let animating &#x3D; false;
-let speed, now;
-const speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
-const startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
+var animating &#x3D; false;
+var speed, now;
+var speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
+var startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
 
-const vectorLayer &#x3D; new VectorLayer({
+var vectorLayer &#x3D; new VectorLayer({
   source: new VectorSource({
     features: [routeFeature, geoMarker, startMarker, endMarker]
   }),
@@ -193,8 +199,8 @@ const vectorLayer &#x3D; new VectorLayer({
   }
 });
 
-const center &#x3D; [-5639523.95, -3501274.52];
-const map &#x3D; new Map({
+var center &#x3D; [-5639523.95, -3501274.52];
+var map &#x3D; new Map({
   target: document.getElementById(&#x27;map&#x27;),
   loadTilesWhileAnimating: true,
   view: new View({
@@ -214,23 +220,23 @@ const map &#x3D; new Map({
   ]
 });
 
-const moveFeature &#x3D; function(event) {
-  const vectorContext &#x3D; event.vectorContext;
-  const frameState &#x3D; event.frameState;
+var moveFeature &#x3D; function(event) {
+  var vectorContext &#x3D; event.vectorContext;
+  var frameState &#x3D; event.frameState;
 
   if (animating) {
-    const elapsedTime &#x3D; frameState.time - now;
+    var elapsedTime &#x3D; frameState.time - now;
     // here the trick to increase speed is to jump some indexes
     // on lineString coordinates
-    const index &#x3D; Math.round(speed * elapsedTime / 1000);
+    var index &#x3D; Math.round(speed * elapsedTime / 1000);
 
     if (index &gt;&#x3D; routeLength) {
       stopAnimation(true);
       return;
     }
 
-    const currentPoint &#x3D; new Point(routeCoords[index]);
-    const feature &#x3D; new Feature(currentPoint);
+    var currentPoint &#x3D; new Point(routeCoords[index]);
+    var feature &#x3D; new Feature(currentPoint);
     vectorContext.drawFeature(feature, styles.geoMarker);
   }
   // tell OpenLayers to continue the postcompose animation
@@ -263,7 +269,7 @@ function stopAnimation(ended) {
   startButton.textContent &#x3D; &#x27;Start Animation&#x27;;
 
   // if animation cancelled set the marker at the beginning
-  const coord &#x3D; ended ? routeCoords[routeLength - 1] : routeCoords[0];
+  var coord &#x3D; ended ? routeCoords[routeLength - 1] : routeCoords[0];
   /** @type {module:ol/geom/Point~Point} */ (geoMarker.getGeometry())
     .setCoordinates(coord);
   //remove listener
@@ -286,7 +292,7 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Marker Animation&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -311,7 +317,7 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
 
       // This long string is placed here due to jsFiddle limitations.
       // It is usually loaded with AJAX.
-      const polyline &#x3D; [
+      var polyline &#x3D; [
         &#x27;hldhx@lnau&#x60;BCG_EaC??cFjAwDjF??uBlKMd@}@z@??aC^yk@z_@se@b[wFdE??wFfE}N&#x27;,
         &#x27;fIoGxB_I\\gG}@eHoCyTmPqGaBaHOoD\\??yVrGotA|N??o[N_STiwAtEmHGeHcAkiA}^&#x27;,
         &#x27;aMyBiHOkFNoI&#x60;CcVvM??gG^gF_@iJwC??eCcA]OoL}DwFyCaCgCcCwDcGwHsSoX??wI_E&#x27;,
@@ -353,34 +359,34 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
         &#x27;~@ym@yjA??a@cFd@kBrCgDbAUnAcBhAyAdk@et@??kF}D??OL&#x27;
       ].join(&#x27;&#x27;);
 
-      const route &#x3D; /** @type {module:ol/geom/LineString~LineString} */ (new Polyline({
+      var route &#x3D; /** @type {module:ol/geom/LineString~LineString} */ (new Polyline({
         factor: 1e6
       }).readGeometry(polyline, {
         dataProjection: &#x27;EPSG:4326&#x27;,
         featureProjection: &#x27;EPSG:3857&#x27;
       }));
 
-      const routeCoords &#x3D; route.getCoordinates();
-      const routeLength &#x3D; routeCoords.length;
+      var routeCoords &#x3D; route.getCoordinates();
+      var routeLength &#x3D; routeCoords.length;
 
-      const routeFeature &#x3D; new Feature({
+      var routeFeature &#x3D; new Feature({
         type: &#x27;route&#x27;,
         geometry: route
       });
-      const geoMarker &#x3D; new Feature({
+      var geoMarker &#x3D; new Feature({
         type: &#x27;geoMarker&#x27;,
         geometry: new Point(routeCoords[0])
       });
-      const startMarker &#x3D; new Feature({
+      var startMarker &#x3D; new Feature({
         type: &#x27;icon&#x27;,
         geometry: new Point(routeCoords[0])
       });
-      const endMarker &#x3D; new Feature({
+      var endMarker &#x3D; new Feature({
         type: &#x27;icon&#x27;,
         geometry: new Point(routeCoords[routeLength - 1])
       });
 
-      const styles &#x3D; {
+      var styles &#x3D; {
         &#x27;route&#x27;: new Style({
           stroke: new Stroke({
             width: 6, color: [237, 212, 0, 0.8]
@@ -395,7 +401,6 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
         &#x27;geoMarker&#x27;: new Style({
           image: new CircleStyle({
             radius: 7,
-            snapToPixel: false,
             fill: new Fill({color: &#x27;black&#x27;}),
             stroke: new Stroke({
               color: &#x27;white&#x27;, width: 2
@@ -404,12 +409,12 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
         })
       };
 
-      let animating &#x3D; false;
-      let speed, now;
-      const speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
-      const startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
+      var animating &#x3D; false;
+      var speed, now;
+      var speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
+      var startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
 
-      const vectorLayer &#x3D; new VectorLayer({
+      var vectorLayer &#x3D; new VectorLayer({
         source: new VectorSource({
           features: [routeFeature, geoMarker, startMarker, endMarker]
         }),
@@ -422,8 +427,8 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
         }
       });
 
-      const center &#x3D; [-5639523.95, -3501274.52];
-      const map &#x3D; new Map({
+      var center &#x3D; [-5639523.95, -3501274.52];
+      var map &#x3D; new Map({
         target: document.getElementById(&#x27;map&#x27;),
         loadTilesWhileAnimating: true,
         view: new View({
@@ -443,23 +448,23 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
         ]
       });
 
-      const moveFeature &#x3D; function(event) {
-        const vectorContext &#x3D; event.vectorContext;
-        const frameState &#x3D; event.frameState;
+      var moveFeature &#x3D; function(event) {
+        var vectorContext &#x3D; event.vectorContext;
+        var frameState &#x3D; event.frameState;
 
         if (animating) {
-          const elapsedTime &#x3D; frameState.time - now;
+          var elapsedTime &#x3D; frameState.time - now;
           // here the trick to increase speed is to jump some indexes
           // on lineString coordinates
-          const index &#x3D; Math.round(speed * elapsedTime / 1000);
+          var index &#x3D; Math.round(speed * elapsedTime / 1000);
 
           if (index &gt;&#x3D; routeLength) {
             stopAnimation(true);
             return;
           }
 
-          const currentPoint &#x3D; new Point(routeCoords[index]);
-          const feature &#x3D; new Feature(currentPoint);
+          var currentPoint &#x3D; new Point(routeCoords[index]);
+          var feature &#x3D; new Feature(currentPoint);
           vectorContext.drawFeature(feature, styles.geoMarker);
         }
         // tell OpenLayers to continue the postcompose animation
@@ -492,7 +497,7 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
         startButton.textContent &#x3D; &#x27;Start Animation&#x27;;
 
         // if animation cancelled set the marker at the beginning
-        const coord &#x3D; ended ? routeCoords[routeLength - 1] : routeCoords[0];
+        var coord &#x3D; ended ? routeCoords[routeLength - 1] : routeCoords[0];
         /** @type {module:ol/geom/Point~Point} */ (geoMarker.getGeometry())
           .setCoordinates(coord);
         //remove listener
@@ -521,7 +526,7 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -71,19 +78,19 @@ import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 import BingMaps from &#x27;ol/source/BingMaps.js&#x27;;
 
-const key &#x3D; &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;;
+var key &#x3D; &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;;
 
-const roads &#x3D; new TileLayer({
+var roads &#x3D; new TileLayer({
   source: new BingMaps({key: key, imagerySet: &#x27;Road&#x27;})
 });
 
-const imagery &#x3D; new TileLayer({
+var imagery &#x3D; new TileLayer({
   source: new BingMaps({key: key, imagerySet: &#x27;Aerial&#x27;})
 });
 
-const container &#x3D; document.getElementById(&#x27;map&#x27;);
+var container &#x3D; document.getElementById(&#x27;map&#x27;);
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [roads, imagery],
   target: container,
   view: new View({
@@ -92,7 +99,7 @@ const map &#x3D; new Map({
   })
 });
 
-let radius &#x3D; 75;
+var radius &#x3D; 75;
 document.addEventListener(&#x27;keydown&#x27;, function(evt) {
   if (evt.which &#x3D;&#x3D;&#x3D; 38) {
     radius &#x3D; Math.min(radius + 5, 150);
@@ -106,7 +113,7 @@ document.addEventListener(&#x27;keydown&#x27;, function(evt) {
 });
 
 // get the pixel position with every move
-let mousePosition &#x3D; null;
+var mousePosition &#x3D; null;
 
 container.addEventListener(&#x27;mousemove&#x27;, function(event) {
   mousePosition &#x3D; map.getEventPixel(event);
@@ -120,8 +127,8 @@ container.addEventListener(&#x27;mouseout&#x27;, function() {
 
 // before rendering the layer, do some clipping
 imagery.on(&#x27;precompose&#x27;, function(event) {
-  const ctx &#x3D; event.context;
-  const pixelRatio &#x3D; event.frameState.pixelRatio;
+  var ctx &#x3D; event.context;
+  var pixelRatio &#x3D; event.frameState.pixelRatio;
   ctx.save();
   ctx.beginPath();
   if (mousePosition) {
@@ -137,7 +144,7 @@ imagery.on(&#x27;precompose&#x27;, function(event) {
 
 // after rendering the layer, restore the canvas context
 imagery.on(&#x27;postcompose&#x27;, function(event) {
-  const ctx &#x3D; event.context;
+  var ctx &#x3D; event.context;
   ctx.restore();
 });
 </textarea>
@@ -150,7 +157,7 @@ imagery.on(&#x27;postcompose&#x27;, function(event) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Layer Spy&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -164,19 +171,19 @@ imagery.on(&#x27;postcompose&#x27;, function(event) {
       import {fromLonLat} from &#x27;ol/proj.js&#x27;;
       import BingMaps from &#x27;ol/source/BingMaps.js&#x27;;
 
-      const key &#x3D; &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;;
+      var key &#x3D; &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;;
 
-      const roads &#x3D; new TileLayer({
+      var roads &#x3D; new TileLayer({
         source: new BingMaps({key: key, imagerySet: &#x27;Road&#x27;})
       });
 
-      const imagery &#x3D; new TileLayer({
+      var imagery &#x3D; new TileLayer({
         source: new BingMaps({key: key, imagerySet: &#x27;Aerial&#x27;})
       });
 
-      const container &#x3D; document.getElementById(&#x27;map&#x27;);
+      var container &#x3D; document.getElementById(&#x27;map&#x27;);
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [roads, imagery],
         target: container,
         view: new View({
@@ -185,7 +192,7 @@ imagery.on(&#x27;postcompose&#x27;, function(event) {
         })
       });
 
-      let radius &#x3D; 75;
+      var radius &#x3D; 75;
       document.addEventListener(&#x27;keydown&#x27;, function(evt) {
         if (evt.which &#x3D;&#x3D;&#x3D; 38) {
           radius &#x3D; Math.min(radius + 5, 150);
@@ -199,7 +206,7 @@ imagery.on(&#x27;postcompose&#x27;, function(event) {
       });
 
       // get the pixel position with every move
-      let mousePosition &#x3D; null;
+      var mousePosition &#x3D; null;
 
       container.addEventListener(&#x27;mousemove&#x27;, function(event) {
         mousePosition &#x3D; map.getEventPixel(event);
@@ -213,8 +220,8 @@ imagery.on(&#x27;postcompose&#x27;, function(event) {
 
       // before rendering the layer, do some clipping
       imagery.on(&#x27;precompose&#x27;, function(event) {
-        const ctx &#x3D; event.context;
-        const pixelRatio &#x3D; event.frameState.pixelRatio;
+        var ctx &#x3D; event.context;
+        var pixelRatio &#x3D; event.frameState.pixelRatio;
         ctx.save();
         ctx.beginPath();
         if (mousePosition) {
@@ -230,7 +237,7 @@ imagery.on(&#x27;postcompose&#x27;, function(event) {
 
       // after rendering the layer, restore the canvas context
       imagery.on(&#x27;postcompose&#x27;, function(event) {
-        const ctx &#x3D; event.context;
+        var ctx &#x3D; event.context;
         ctx.restore();
       });
     &lt;/script&gt;
@@ -254,7 +261,7 @@ imagery.on(&#x27;postcompose&#x27;, function(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

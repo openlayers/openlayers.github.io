@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -75,13 +82,13 @@ import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 
 
-const vectorSource &#x3D; new VectorSource({
+var vectorSource &#x3D; new VectorSource({
   url: &#x27;data/geojson/countries.geojson&#x27;,
   format: new GeoJSON()
 });
 
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM()
@@ -98,13 +105,13 @@ const map &#x3D; new Map({
 });
 
 // a normal select interaction to handle click
-const select &#x3D; new Select();
+var select &#x3D; new Select();
 map.addInteraction(select);
 
-const selectedFeatures &#x3D; select.getFeatures();
+var selectedFeatures &#x3D; select.getFeatures();
 
 // a DragBox interaction used to select features by drawing boxes
-const dragBox &#x3D; new DragBox({
+var dragBox &#x3D; new DragBox({
   condition: platformModifierKeyOnly
 });
 
@@ -113,7 +120,7 @@ map.addInteraction(dragBox);
 dragBox.on(&#x27;boxend&#x27;, function() {
   // features that intersect the box are added to the collection of
   // selected features
-  const extent &#x3D; dragBox.getGeometry().getExtent();
+  var extent &#x3D; dragBox.getGeometry().getExtent();
   vectorSource.forEachFeatureIntersectingExtent(extent, function(feature) {
     selectedFeatures.push(feature);
   });
@@ -124,10 +131,10 @@ dragBox.on(&#x27;boxstart&#x27;, function() {
   selectedFeatures.clear();
 });
 
-const infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
+var infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
 
 selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
-  const names &#x3D; selectedFeatures.getArray().map(function(feature) {
+  var names &#x3D; selectedFeatures.getArray().map(function(feature) {
     return feature.get(&#x27;name&#x27;);
   });
   if (names.length &gt; 0) {
@@ -151,7 +158,7 @@ selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Box Selection&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -175,13 +182,13 @@ selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
       import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 
 
-      const vectorSource &#x3D; new VectorSource({
+      var vectorSource &#x3D; new VectorSource({
         url: &#x27;data/geojson/countries.geojson&#x27;,
         format: new GeoJSON()
       });
 
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           new TileLayer({
             source: new OSM()
@@ -198,13 +205,13 @@ selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
       });
 
       // a normal select interaction to handle click
-      const select &#x3D; new Select();
+      var select &#x3D; new Select();
       map.addInteraction(select);
 
-      const selectedFeatures &#x3D; select.getFeatures();
+      var selectedFeatures &#x3D; select.getFeatures();
 
       // a DragBox interaction used to select features by drawing boxes
-      const dragBox &#x3D; new DragBox({
+      var dragBox &#x3D; new DragBox({
         condition: platformModifierKeyOnly
       });
 
@@ -213,7 +220,7 @@ selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
       dragBox.on(&#x27;boxend&#x27;, function() {
         // features that intersect the box are added to the collection of
         // selected features
-        const extent &#x3D; dragBox.getGeometry().getExtent();
+        var extent &#x3D; dragBox.getGeometry().getExtent();
         vectorSource.forEachFeatureIntersectingExtent(extent, function(feature) {
           selectedFeatures.push(feature);
         });
@@ -224,10 +231,10 @@ selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
         selectedFeatures.clear();
       });
 
-      const infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
+      var infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
 
       selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
-        const names &#x3D; selectedFeatures.getArray().map(function(feature) {
+        var names &#x3D; selectedFeatures.getArray().map(function(feature) {
           return feature.get(&#x27;name&#x27;);
         });
         if (names.length &gt; 0) {
@@ -257,7 +264,7 @@ selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

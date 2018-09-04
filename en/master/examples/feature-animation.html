@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -78,7 +85,7 @@ import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {Circle as CircleStyle, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM({
@@ -98,41 +105,40 @@ const map &#x3D; new Map({
   })
 });
 
-const source &#x3D; new VectorSource({
+var source &#x3D; new VectorSource({
   wrapX: false
 });
-const vector &#x3D; new VectorLayer({
+var vector &#x3D; new VectorLayer({
   source: source
 });
 map.addLayer(vector);
 
 function addRandomFeature() {
-  const x &#x3D; Math.random() * 360 - 180;
-  const y &#x3D; Math.random() * 180 - 90;
-  const geom &#x3D; new Point(fromLonLat([x, y]));
-  const feature &#x3D; new Feature(geom);
+  var x &#x3D; Math.random() * 360 - 180;
+  var y &#x3D; Math.random() * 180 - 90;
+  var geom &#x3D; new Point(fromLonLat([x, y]));
+  var feature &#x3D; new Feature(geom);
   source.addFeature(feature);
 }
 
-const duration &#x3D; 3000;
+var duration &#x3D; 3000;
 function flash(feature) {
-  const start &#x3D; new Date().getTime();
-  const listenerKey &#x3D; map.on(&#x27;postcompose&#x27;, animate);
+  var start &#x3D; new Date().getTime();
+  var listenerKey &#x3D; map.on(&#x27;postcompose&#x27;, animate);
 
   function animate(event) {
-    const vectorContext &#x3D; event.vectorContext;
-    const frameState &#x3D; event.frameState;
-    const flashGeom &#x3D; feature.getGeometry().clone();
-    const elapsed &#x3D; frameState.time - start;
-    const elapsedRatio &#x3D; elapsed / duration;
+    var vectorContext &#x3D; event.vectorContext;
+    var frameState &#x3D; event.frameState;
+    var flashGeom &#x3D; feature.getGeometry().clone();
+    var elapsed &#x3D; frameState.time - start;
+    var elapsedRatio &#x3D; elapsed / duration;
     // radius will be 5 at start and 30 at end.
-    const radius &#x3D; easeOut(elapsedRatio) * 25 + 5;
-    const opacity &#x3D; easeOut(1 - elapsedRatio);
+    var radius &#x3D; easeOut(elapsedRatio) * 25 + 5;
+    var opacity &#x3D; easeOut(1 - elapsedRatio);
 
-    const style &#x3D; new Style({
+    var style &#x3D; new Style({
       image: new CircleStyle({
         radius: radius,
-        snapToPixel: false,
         stroke: new Stroke({
           color: &#x27;rgba(255, 0, 0, &#x27; + opacity + &#x27;)&#x27;,
           width: 0.25 + opacity
@@ -166,7 +172,7 @@ window.setInterval(addRandomFeature, 1000);
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Custom Animation&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -187,7 +193,7 @@ window.setInterval(addRandomFeature, 1000);
       import {Circle as CircleStyle, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           new TileLayer({
             source: new OSM({
@@ -207,41 +213,40 @@ window.setInterval(addRandomFeature, 1000);
         })
       });
 
-      const source &#x3D; new VectorSource({
+      var source &#x3D; new VectorSource({
         wrapX: false
       });
-      const vector &#x3D; new VectorLayer({
+      var vector &#x3D; new VectorLayer({
         source: source
       });
       map.addLayer(vector);
 
       function addRandomFeature() {
-        const x &#x3D; Math.random() * 360 - 180;
-        const y &#x3D; Math.random() * 180 - 90;
-        const geom &#x3D; new Point(fromLonLat([x, y]));
-        const feature &#x3D; new Feature(geom);
+        var x &#x3D; Math.random() * 360 - 180;
+        var y &#x3D; Math.random() * 180 - 90;
+        var geom &#x3D; new Point(fromLonLat([x, y]));
+        var feature &#x3D; new Feature(geom);
         source.addFeature(feature);
       }
 
-      const duration &#x3D; 3000;
+      var duration &#x3D; 3000;
       function flash(feature) {
-        const start &#x3D; new Date().getTime();
-        const listenerKey &#x3D; map.on(&#x27;postcompose&#x27;, animate);
+        var start &#x3D; new Date().getTime();
+        var listenerKey &#x3D; map.on(&#x27;postcompose&#x27;, animate);
 
         function animate(event) {
-          const vectorContext &#x3D; event.vectorContext;
-          const frameState &#x3D; event.frameState;
-          const flashGeom &#x3D; feature.getGeometry().clone();
-          const elapsed &#x3D; frameState.time - start;
-          const elapsedRatio &#x3D; elapsed / duration;
+          var vectorContext &#x3D; event.vectorContext;
+          var frameState &#x3D; event.frameState;
+          var flashGeom &#x3D; feature.getGeometry().clone();
+          var elapsed &#x3D; frameState.time - start;
+          var elapsedRatio &#x3D; elapsed / duration;
           // radius will be 5 at start and 30 at end.
-          const radius &#x3D; easeOut(elapsedRatio) * 25 + 5;
-          const opacity &#x3D; easeOut(1 - elapsedRatio);
+          var radius &#x3D; easeOut(elapsedRatio) * 25 + 5;
+          var opacity &#x3D; easeOut(1 - elapsedRatio);
 
-          const style &#x3D; new Style({
+          var style &#x3D; new Style({
             image: new CircleStyle({
               radius: radius,
-              snapToPixel: false,
               stroke: new Stroke({
                 color: &#x27;rgba(255, 0, 0, &#x27; + opacity + &#x27;)&#x27;,
                 width: 0.25 + opacity
@@ -286,7 +291,7 @@ window.setInterval(addRandomFeature, 1000);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

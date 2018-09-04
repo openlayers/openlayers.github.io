@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -72,14 +79,14 @@ import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
 
 // default zoom, center and rotation
-let zoom &#x3D; 2;
-let center &#x3D; [0, 0];
-let rotation &#x3D; 0;
+var zoom &#x3D; 2;
+var center &#x3D; [0, 0];
+var rotation &#x3D; 0;
 
 if (window.location.hash !&#x3D;&#x3D; &#x27;&#x27;) {
   // try to restore center, zoom-level and rotation from the URL
-  const hash &#x3D; window.location.hash.replace(&#x27;#map&#x3D;&#x27;, &#x27;&#x27;);
-  const parts &#x3D; hash.split(&#x27;/&#x27;);
+  var hash &#x3D; window.location.hash.replace(&#x27;#map&#x3D;&#x27;, &#x27;&#x27;);
+  var parts &#x3D; hash.split(&#x27;/&#x27;);
   if (parts.length &#x3D;&#x3D;&#x3D; 4) {
     zoom &#x3D; parseInt(parts[0], 10);
     center &#x3D; [
@@ -90,7 +97,7 @@ if (window.location.hash !&#x3D;&#x3D; &#x27;&#x27;) {
   }
 }
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM()
@@ -109,22 +116,22 @@ const map &#x3D; new Map({
   })
 });
 
-let shouldUpdate &#x3D; true;
-const view &#x3D; map.getView();
-const updatePermalink &#x3D; function() {
+var shouldUpdate &#x3D; true;
+var view &#x3D; map.getView();
+var updatePermalink &#x3D; function() {
   if (!shouldUpdate) {
     // do not update the URL when the view was changed in the &#x27;popstate&#x27; handler
     shouldUpdate &#x3D; true;
     return;
   }
 
-  const center &#x3D; view.getCenter();
-  const hash &#x3D; &#x27;#map&#x3D;&#x27; +
+  var center &#x3D; view.getCenter();
+  var hash &#x3D; &#x27;#map&#x3D;&#x27; +
       view.getZoom() + &#x27;/&#x27; +
       Math.round(center[0] * 100) / 100 + &#x27;/&#x27; +
       Math.round(center[1] * 100) / 100 + &#x27;/&#x27; +
       view.getRotation();
-  const state &#x3D; {
+  var state &#x3D; {
     zoom: view.getZoom(),
     center: view.getCenter(),
     rotation: view.getRotation()
@@ -155,7 +162,7 @@ window.addEventListener(&#x27;popstate&#x27;, function(event) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Permalink&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -170,14 +177,14 @@ window.addEventListener(&#x27;popstate&#x27;, function(event) {
       import OSM from &#x27;ol/source/OSM.js&#x27;;
 
       // default zoom, center and rotation
-      let zoom &#x3D; 2;
-      let center &#x3D; [0, 0];
-      let rotation &#x3D; 0;
+      var zoom &#x3D; 2;
+      var center &#x3D; [0, 0];
+      var rotation &#x3D; 0;
 
       if (window.location.hash !&#x3D;&#x3D; &#x27;&#x27;) {
         // try to restore center, zoom-level and rotation from the URL
-        const hash &#x3D; window.location.hash.replace(&#x27;#map&#x3D;&#x27;, &#x27;&#x27;);
-        const parts &#x3D; hash.split(&#x27;/&#x27;);
+        var hash &#x3D; window.location.hash.replace(&#x27;#map&#x3D;&#x27;, &#x27;&#x27;);
+        var parts &#x3D; hash.split(&#x27;/&#x27;);
         if (parts.length &#x3D;&#x3D;&#x3D; 4) {
           zoom &#x3D; parseInt(parts[0], 10);
           center &#x3D; [
@@ -188,7 +195,7 @@ window.addEventListener(&#x27;popstate&#x27;, function(event) {
         }
       }
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           new TileLayer({
             source: new OSM()
@@ -207,22 +214,22 @@ window.addEventListener(&#x27;popstate&#x27;, function(event) {
         })
       });
 
-      let shouldUpdate &#x3D; true;
-      const view &#x3D; map.getView();
-      const updatePermalink &#x3D; function() {
+      var shouldUpdate &#x3D; true;
+      var view &#x3D; map.getView();
+      var updatePermalink &#x3D; function() {
         if (!shouldUpdate) {
           // do not update the URL when the view was changed in the &#x27;popstate&#x27; handler
           shouldUpdate &#x3D; true;
           return;
         }
 
-        const center &#x3D; view.getCenter();
-        const hash &#x3D; &#x27;#map&#x3D;&#x27; +
+        var center &#x3D; view.getCenter();
+        var hash &#x3D; &#x27;#map&#x3D;&#x27; +
             view.getZoom() + &#x27;/&#x27; +
             Math.round(center[0] * 100) / 100 + &#x27;/&#x27; +
             Math.round(center[1] * 100) / 100 + &#x27;/&#x27; +
             view.getRotation();
-        const state &#x3D; {
+        var state &#x3D; {
           zoom: view.getZoom(),
           center: view.getCenter(),
           rotation: view.getRotation()
@@ -264,7 +271,7 @@ window.addEventListener(&#x27;popstate&#x27;, function(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

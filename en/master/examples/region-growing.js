@@ -1,2 +1,152 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[68],{298:function(e,t,n){"use strict";n.r(t);var o=n(5),a=n(4),c=n(10),i=n(7),r=n(46),s=n(153);function l(e){const t=e[0],n=e[1];return[[t+1,n],[t-1,n],[t,n+1],[t,n-1]]}const u=new c.d({source:new r.a({key:"As1HiMj1PvLPlqc_gtM7AqZfBL8ZL3VrjaS3zIb22Uvb9WKhuJObROC-qUpa81U5",imagerySet:"Aerial"})}),d=new s.a({sources:[u.getSource()],operationType:"image",operation:function(e,t){const n=e[0];let o=t.pixel;const a=parseInt(t.delta);if(!o)return n;o=o.map(Math.round);const c=n.width,i=n.height,r=n.data,s=new Uint8ClampedArray(r),u=4*(o[1]*c+o[0]),d=r[u],h=r[u+1],p=r[u+2];let g=[o];for(;g.length;){const e=[];for(let t=0,n=g.length;t<n;t++){const n=l(g[t]);for(let t=0,o=n.length;t<o;t++){const o=n[t][0],l=n[t][1];if(o>=0&&o<c&&l>=0&&l<i){const t=4*(l*c+o),n=r[t],i=r[t+1],u=r[t+2];if(0===r[t+3])continue;Math.abs(d-n)<a&&Math.abs(h-i)<a&&Math.abs(p-u)<a&&(s[t]=255,s[t+1]=0,s[t+2]=0,s[t+3]=255,e.push([o,l])),r[t+3]=0}}}g=e}return{data:s,width:c,height:i}},lib:{next4Edges:l}}),h=new c.c({opacity:.7,source:d}),p=new o.a({layers:[u,h],target:"map",view:new a.a({center:Object(i.g)([-119.07,47.65]),zoom:11})});let g;p.on("click",function(e){g=e.coordinate,d.changed()});const w=document.getElementById("threshold");function f(){document.getElementById("threshold-value").innerText=w.value}d.on("beforeoperations",function(e){const t=e.data;t.delta=w.value,g&&(t.pixel=p.getPixelFromCoordinate(g))}),f(),w.addEventListener("input",function(){f(),d.changed()})}},[[298,0]]]);
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[100],{
+
+/***/ 323:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(72);
+/* harmony import */ var _src_ol_proj_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(2);
+/* harmony import */ var _src_ol_source_BingMaps_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(40);
+/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(151);
+
+
+
+
+
+
+
+function growRegion(inputs, data) {
+  var image = inputs[0];
+  var seed = data.pixel;
+  var delta = parseInt(data.delta);
+  if (!seed) {
+    return image;
+  }
+
+  seed = seed.map(Math.round);
+  var width = image.width;
+  var height = image.height;
+  var inputData = image.data;
+  var outputData = new Uint8ClampedArray(inputData);
+  var seedIdx = (seed[1] * width + seed[0]) * 4;
+  var seedR = inputData[seedIdx];
+  var seedG = inputData[seedIdx + 1];
+  var seedB = inputData[seedIdx + 2];
+  var edge = [seed];
+  while (edge.length) {
+    var newedge = [];
+    for (var i = 0, ii = edge.length; i < ii; i++) {
+      // As noted in the Raster source constructor, this function is provided
+      // using the `lib` option. Other functions will NOT be visible unless
+      // provided using the `lib` option.
+      var next = next4Edges(edge[i]);
+      for (var j = 0, jj = next.length; j < jj; j++) {
+        var s = next[j][0];
+        var t = next[j][1];
+        if (s >= 0 && s < width && t >= 0 && t < height) {
+          var ci = (t * width + s) * 4;
+          var cr = inputData[ci];
+          var cg = inputData[ci + 1];
+          var cb = inputData[ci + 2];
+          var ca = inputData[ci + 3];
+          // if alpha is zero, carry on
+          if (ca === 0) {
+            continue;
+          }
+          if (Math.abs(seedR - cr) < delta && Math.abs(seedG - cg) < delta &&
+              Math.abs(seedB - cb) < delta) {
+            outputData[ci] = 255;
+            outputData[ci + 1] = 0;
+            outputData[ci + 2] = 0;
+            outputData[ci + 3] = 255;
+            newedge.push([s, t]);
+          }
+          // mark as visited
+          inputData[ci + 3] = 0;
+        }
+      }
+    }
+    edge = newedge;
+  }
+  return {data: outputData, width: width, height: height};
+}
+
+function next4Edges(edge) {
+  var x = edge[0];
+  var y = edge[1];
+  return [
+    [x + 1, y],
+    [x - 1, y],
+    [x, y + 1],
+    [x, y - 1]
+  ];
+}
+
+var key = 'As1HiMj1PvLPlqc_gtM7AqZfBL8ZL3VrjaS3zIb22Uvb9WKhuJObROC-qUpa81U5';
+
+var imagery = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]({
+  source: new _src_ol_source_BingMaps_js__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"]({key: key, imagerySet: 'Aerial'})
+});
+
+var raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"]({
+  sources: [imagery.getSource()],
+  operationType: 'image',
+  operation: growRegion,
+  // Functions in the `lib` object will be available to the operation run in
+  // the web worker.
+  lib: {
+    next4Edges: next4Edges
+  }
+});
+
+var rasterImage = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"]({
+  opacity: 0.7,
+  source: raster
+});
+
+var map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]({
+  layers: [imagery, rasterImage],
+  target: 'map',
+  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"]({
+    center: Object(_src_ol_proj_js__WEBPACK_IMPORTED_MODULE_4__[/* fromLonLat */ "f"])([-119.07, 47.65]),
+    zoom: 11
+  })
+});
+
+var coordinate;
+
+map.on('click', function(event) {
+  coordinate = event.coordinate;
+  raster.changed();
+});
+
+var thresholdControl = document.getElementById('threshold');
+
+raster.on('beforeoperations', function(event) {
+  // the event.data object will be passed to operations
+  var data = event.data;
+  data.delta = thresholdControl.value;
+  if (coordinate) {
+    data.pixel = map.getPixelFromCoordinate(coordinate);
+  }
+});
+
+function updateControlValue() {
+  document.getElementById('threshold-value').innerText = thresholdControl.value;
+}
+updateControlValue();
+
+thresholdControl.addEventListener('input', function() {
+  updateControlValue();
+  raster.changed();
+});
+
+
+/***/ })
+
+},[[323,0]]]);
 //# sourceMappingURL=region-growing.js.map

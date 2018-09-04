@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -73,13 +80,13 @@ import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import {AtlasManager, Circle as CircleStyle, Fill, RegularShape, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-const atlasManager &#x3D; new AtlasManager({
+var atlasManager &#x3D; new AtlasManager({
   // we increase the initial size so that all symbols fit into
   // a single atlas image
   initialSize: 512
 });
 
-const symbolInfo &#x3D; [{
+var symbolInfo &#x3D; [{
   opacity: 1.0,
   scale: 1.0,
   fillColor: &#x27;rgba(255, 153, 0, 0.4)&#x27;,
@@ -101,12 +108,12 @@ const symbolInfo &#x3D; [{
   strokeColor: &#x27;rgba(145, 43, 20, 0.2)&#x27;
 }];
 
-const radiuses &#x3D; [3, 6, 9, 15, 19, 25];
-const symbolCount &#x3D; symbolInfo.length * radiuses.length * 2;
-const symbols &#x3D; [];
-let i, j;
+var radiuses &#x3D; [3, 6, 9, 15, 19, 25];
+var symbolCount &#x3D; symbolInfo.length * radiuses.length * 2;
+var symbols &#x3D; [];
+var i, j;
 for (i &#x3D; 0; i &lt; symbolInfo.length; ++i) {
-  const info &#x3D; symbolInfo[i];
+  var info &#x3D; symbolInfo[i];
   for (j &#x3D; 0; j &lt; radiuses.length; ++j) {
     // circle symbol
     symbols.push(new CircleStyle({
@@ -145,10 +152,10 @@ for (i &#x3D; 0; i &lt; symbolInfo.length; ++i) {
   }
 }
 
-const featureCount &#x3D; 50000;
-const features &#x3D; new Array(featureCount);
-let feature, geometry;
-const e &#x3D; 25000000;
+var featureCount &#x3D; 50000;
+var features &#x3D; new Array(featureCount);
+var feature, geometry;
+var e &#x3D; 25000000;
 for (i &#x3D; 0; i &lt; featureCount; ++i) {
   geometry &#x3D; new Point(
     [2 * e * Math.random() - e, 2 * e * Math.random() - e]);
@@ -161,14 +168,14 @@ for (i &#x3D; 0; i &lt; featureCount; ++i) {
   features[i] &#x3D; feature;
 }
 
-const vectorSource &#x3D; new VectorSource({
+var vectorSource &#x3D; new VectorSource({
   features: features
 });
-const vector &#x3D; new VectorLayer({
+var vector &#x3D; new VectorLayer({
   source: vectorSource
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
@@ -186,7 +193,7 @@ const map &#x3D; new Map({
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Symbols with WebGL&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -202,13 +209,13 @@ const map &#x3D; new Map({
       import VectorSource from &#x27;ol/source/Vector.js&#x27;;
       import {AtlasManager, Circle as CircleStyle, Fill, RegularShape, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-      const atlasManager &#x3D; new AtlasManager({
+      var atlasManager &#x3D; new AtlasManager({
         // we increase the initial size so that all symbols fit into
         // a single atlas image
         initialSize: 512
       });
 
-      const symbolInfo &#x3D; [{
+      var symbolInfo &#x3D; [{
         opacity: 1.0,
         scale: 1.0,
         fillColor: &#x27;rgba(255, 153, 0, 0.4)&#x27;,
@@ -230,12 +237,12 @@ const map &#x3D; new Map({
         strokeColor: &#x27;rgba(145, 43, 20, 0.2)&#x27;
       }];
 
-      const radiuses &#x3D; [3, 6, 9, 15, 19, 25];
-      const symbolCount &#x3D; symbolInfo.length * radiuses.length * 2;
-      const symbols &#x3D; [];
-      let i, j;
+      var radiuses &#x3D; [3, 6, 9, 15, 19, 25];
+      var symbolCount &#x3D; symbolInfo.length * radiuses.length * 2;
+      var symbols &#x3D; [];
+      var i, j;
       for (i &#x3D; 0; i &lt; symbolInfo.length; ++i) {
-        const info &#x3D; symbolInfo[i];
+        var info &#x3D; symbolInfo[i];
         for (j &#x3D; 0; j &lt; radiuses.length; ++j) {
           // circle symbol
           symbols.push(new CircleStyle({
@@ -274,10 +281,10 @@ const map &#x3D; new Map({
         }
       }
 
-      const featureCount &#x3D; 50000;
-      const features &#x3D; new Array(featureCount);
-      let feature, geometry;
-      const e &#x3D; 25000000;
+      var featureCount &#x3D; 50000;
+      var features &#x3D; new Array(featureCount);
+      var feature, geometry;
+      var e &#x3D; 25000000;
       for (i &#x3D; 0; i &lt; featureCount; ++i) {
         geometry &#x3D; new Point(
           [2 * e * Math.random() - e, 2 * e * Math.random() - e]);
@@ -290,14 +297,14 @@ const map &#x3D; new Map({
         features[i] &#x3D; feature;
       }
 
-      const vectorSource &#x3D; new VectorSource({
+      var vectorSource &#x3D; new VectorSource({
         features: features
       });
-      const vector &#x3D; new VectorLayer({
+      var vector &#x3D; new VectorLayer({
         source: vectorSource
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [vector],
         target: document.getElementById(&#x27;map&#x27;),
         view: new View({
@@ -326,7 +333,7 @@ const map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

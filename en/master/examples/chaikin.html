@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -89,9 +96,9 @@ function makeSmooth(path, numIterations) {
   return path;
 }
 
-const vectorSource &#x3D; new VectorSource({});
+var vectorSource &#x3D; new VectorSource({});
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
@@ -108,10 +115,10 @@ const map &#x3D; new Map({
   })
 });
 
-const shallSmoothen &#x3D; document.getElementById(&#x27;shall-smoothen&#x27;);
-const numIterations &#x3D; document.getElementById(&#x27;iterations&#x27;);
+var shallSmoothen &#x3D; document.getElementById(&#x27;shall-smoothen&#x27;);
+var numIterations &#x3D; document.getElementById(&#x27;iterations&#x27;);
 
-const draw &#x3D; new Draw({
+var draw &#x3D; new Draw({
   source: vectorSource,
   type: &#x27;LineString&#x27;
 });
@@ -120,10 +127,10 @@ draw.on(&#x27;drawend&#x27;, function(event) {
   if (!shallSmoothen.checked) {
     return;
   }
-  const feat &#x3D; event.feature;
-  const geometry &#x3D; feat.getGeometry();
-  const coords &#x3D; geometry.getCoordinates();
-  const smoothened &#x3D; makeSmooth(coords, parseInt(numIterations.value, 10) || 5);
+  var feat &#x3D; event.feature;
+  var geometry &#x3D; feat.getGeometry();
+  var coords &#x3D; geometry.getCoordinates();
+  var smoothened &#x3D; makeSmooth(coords, parseInt(numIterations.value, 10) || 5);
   geometry.setCoordinates(smoothened);
 });
 </textarea>
@@ -142,7 +149,7 @@ draw.on(&#x27;drawend&#x27;, function(event) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Smoothing lines using Chaikins algorithm&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -173,9 +180,9 @@ draw.on(&#x27;drawend&#x27;, function(event) {
         return path;
       }
 
-      const vectorSource &#x3D; new VectorSource({});
+      var vectorSource &#x3D; new VectorSource({});
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           new TileLayer({
             source: new OSM(),
@@ -192,10 +199,10 @@ draw.on(&#x27;drawend&#x27;, function(event) {
         })
       });
 
-      const shallSmoothen &#x3D; document.getElementById(&#x27;shall-smoothen&#x27;);
-      const numIterations &#x3D; document.getElementById(&#x27;iterations&#x27;);
+      var shallSmoothen &#x3D; document.getElementById(&#x27;shall-smoothen&#x27;);
+      var numIterations &#x3D; document.getElementById(&#x27;iterations&#x27;);
 
-      const draw &#x3D; new Draw({
+      var draw &#x3D; new Draw({
         source: vectorSource,
         type: &#x27;LineString&#x27;
       });
@@ -204,10 +211,10 @@ draw.on(&#x27;drawend&#x27;, function(event) {
         if (!shallSmoothen.checked) {
           return;
         }
-        const feat &#x3D; event.feature;
-        const geometry &#x3D; feat.getGeometry();
-        const coords &#x3D; geometry.getCoordinates();
-        const smoothened &#x3D; makeSmooth(coords, parseInt(numIterations.value, 10) || 5);
+        var feat &#x3D; event.feature;
+        var geometry &#x3D; feat.getGeometry();
+        var coords &#x3D; geometry.getCoordinates();
+        var smoothened &#x3D; makeSmooth(coords, parseInt(numIterations.value, 10) || 5);
         geometry.setCoordinates(smoothened);
       });
     &lt;/script&gt;
@@ -231,7 +238,7 @@ draw.on(&#x27;drawend&#x27;, function(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

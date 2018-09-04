@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -40,7 +47,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -83,11 +90,11 @@ import {fromLonLat, toLonLat} from &#x27;ol/proj.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
 
 
-const layer &#x3D; new TileLayer({
+var layer &#x3D; new TileLayer({
   source: new OSM()
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [layer],
   target: &#x27;map&#x27;,
   view: new View({
@@ -96,10 +103,10 @@ const map &#x3D; new Map({
   })
 });
 
-const pos &#x3D; fromLonLat([16.3725, 48.208889]);
+var pos &#x3D; fromLonLat([16.3725, 48.208889]);
 
 // Vienna marker
-const marker &#x3D; new Overlay({
+var marker &#x3D; new Overlay({
   position: pos,
   positioning: &#x27;center-center&#x27;,
   element: document.getElementById(&#x27;marker&#x27;),
@@ -108,22 +115,22 @@ const marker &#x3D; new Overlay({
 map.addOverlay(marker);
 
 // Vienna label
-const vienna &#x3D; new Overlay({
+var vienna &#x3D; new Overlay({
   position: pos,
   element: document.getElementById(&#x27;vienna&#x27;)
 });
 map.addOverlay(vienna);
 
 // Popup showing the position the user clicked
-const popup &#x3D; new Overlay({
+var popup &#x3D; new Overlay({
   element: document.getElementById(&#x27;popup&#x27;)
 });
 map.addOverlay(popup);
 
 map.on(&#x27;click&#x27;, function(evt) {
-  const element &#x3D; popup.getElement();
-  const coordinate &#x3D; evt.coordinate;
-  const hdms &#x3D; toStringHDMS(toLonLat(coordinate));
+  var element &#x3D; popup.getElement();
+  var coordinate &#x3D; evt.coordinate;
+  var hdms &#x3D; toStringHDMS(toLonLat(coordinate));
 
   $(element).popover(&#x27;destroy&#x27;);
   popup.setPosition(coordinate);
@@ -170,7 +177,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Overlay&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-2.2.3.min.js&quot;&gt;&lt;/script&gt;
@@ -216,11 +223,11 @@ map.on(&#x27;click&#x27;, function(evt) {
       import OSM from &#x27;ol/source/OSM.js&#x27;;
 
 
-      const layer &#x3D; new TileLayer({
+      var layer &#x3D; new TileLayer({
         source: new OSM()
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [layer],
         target: &#x27;map&#x27;,
         view: new View({
@@ -229,10 +236,10 @@ map.on(&#x27;click&#x27;, function(evt) {
         })
       });
 
-      const pos &#x3D; fromLonLat([16.3725, 48.208889]);
+      var pos &#x3D; fromLonLat([16.3725, 48.208889]);
 
       // Vienna marker
-      const marker &#x3D; new Overlay({
+      var marker &#x3D; new Overlay({
         position: pos,
         positioning: &#x27;center-center&#x27;,
         element: document.getElementById(&#x27;marker&#x27;),
@@ -241,22 +248,22 @@ map.on(&#x27;click&#x27;, function(evt) {
       map.addOverlay(marker);
 
       // Vienna label
-      const vienna &#x3D; new Overlay({
+      var vienna &#x3D; new Overlay({
         position: pos,
         element: document.getElementById(&#x27;vienna&#x27;)
       });
       map.addOverlay(vienna);
 
       // Popup showing the position the user clicked
-      const popup &#x3D; new Overlay({
+      var popup &#x3D; new Overlay({
         element: document.getElementById(&#x27;popup&#x27;)
       });
       map.addOverlay(popup);
 
       map.on(&#x27;click&#x27;, function(evt) {
-        const element &#x3D; popup.getElement();
-        const coordinate &#x3D; evt.coordinate;
-        const hdms &#x3D; toStringHDMS(toLonLat(coordinate));
+        var element &#x3D; popup.getElement();
+        var coordinate &#x3D; evt.coordinate;
+        var hdms &#x3D; toStringHDMS(toLonLat(coordinate));
 
         $(element).popover(&#x27;destroy&#x27;);
         popup.setPosition(coordinate);
@@ -289,7 +296,7 @@ map.on(&#x27;click&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

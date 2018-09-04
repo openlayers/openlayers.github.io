@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -92,39 +99,39 @@ import {Raster as RasterSource, Stamen} from &#x27;ol/source.js&#x27;;
  * Color manipulation functions below are adapted from
  * https://github.com/d3/d3-color.
  */
-const Xn &#x3D; 0.950470;
-const Yn &#x3D; 1;
-const Zn &#x3D; 1.088830;
-const t0 &#x3D; 4 / 29;
-const t1 &#x3D; 6 / 29;
-const t2 &#x3D; 3 * t1 * t1;
-const t3 &#x3D; t1 * t1 * t1;
-const twoPi &#x3D; 2 * Math.PI;
+var Xn &#x3D; 0.950470;
+var Yn &#x3D; 1;
+var Zn &#x3D; 1.088830;
+var t0 &#x3D; 4 / 29;
+var t1 &#x3D; 6 / 29;
+var t2 &#x3D; 3 * t1 * t1;
+var t3 &#x3D; t1 * t1 * t1;
+var twoPi &#x3D; 2 * Math.PI;
 
 
 /**
  * Convert an RGB pixel into an HCL pixel.
- * @param {Array.&lt;number&gt;} pixel A pixel in RGB space.
- * @return {Array.&lt;number&gt;} A pixel in HCL space.
+ * @param {Array&lt;number&gt;} pixel A pixel in RGB space.
+ * @return {Array&lt;number&gt;} A pixel in HCL space.
  */
 function rgb2hcl(pixel) {
-  const red &#x3D; rgb2xyz(pixel[0]);
-  const green &#x3D; rgb2xyz(pixel[1]);
-  const blue &#x3D; rgb2xyz(pixel[2]);
+  var red &#x3D; rgb2xyz(pixel[0]);
+  var green &#x3D; rgb2xyz(pixel[1]);
+  var blue &#x3D; rgb2xyz(pixel[2]);
 
-  const x &#x3D; xyz2lab(
+  var x &#x3D; xyz2lab(
     (0.4124564 * red + 0.3575761 * green + 0.1804375 * blue) / Xn);
-  const y &#x3D; xyz2lab(
+  var y &#x3D; xyz2lab(
     (0.2126729 * red + 0.7151522 * green + 0.0721750 * blue) / Yn);
-  const z &#x3D; xyz2lab(
+  var z &#x3D; xyz2lab(
     (0.0193339 * red + 0.1191920 * green + 0.9503041 * blue) / Zn);
 
-  const l &#x3D; 116 * y - 16;
-  const a &#x3D; 500 * (x - y);
-  const b &#x3D; 200 * (y - z);
+  var l &#x3D; 116 * y - 16;
+  var a &#x3D; 500 * (x - y);
+  var b &#x3D; 200 * (y - z);
 
-  const c &#x3D; Math.sqrt(a * a + b * b);
-  let h &#x3D; Math.atan2(b, a);
+  var c &#x3D; Math.sqrt(a * a + b * b);
+  var h &#x3D; Math.atan2(b, a);
   if (h &lt; 0) {
     h +&#x3D; twoPi;
   }
@@ -139,20 +146,20 @@ function rgb2hcl(pixel) {
 
 /**
  * Convert an HCL pixel into an RGB pixel.
- * @param {Array.&lt;number&gt;} pixel A pixel in HCL space.
- * @return {Array.&lt;number&gt;} A pixel in RGB space.
+ * @param {Array&lt;number&gt;} pixel A pixel in HCL space.
+ * @return {Array&lt;number&gt;} A pixel in RGB space.
  */
 function hcl2rgb(pixel) {
-  const h &#x3D; pixel[0];
-  const c &#x3D; pixel[1];
-  const l &#x3D; pixel[2];
+  var h &#x3D; pixel[0];
+  var c &#x3D; pixel[1];
+  var l &#x3D; pixel[2];
 
-  const a &#x3D; Math.cos(h) * c;
-  const b &#x3D; Math.sin(h) * c;
+  var a &#x3D; Math.cos(h) * c;
+  var b &#x3D; Math.sin(h) * c;
 
-  let y &#x3D; (l + 16) / 116;
-  let x &#x3D; isNaN(a) ? y : y + a / 500;
-  let z &#x3D; isNaN(b) ? y : y - b / 200;
+  var y &#x3D; (l + 16) / 116;
+  var x &#x3D; isNaN(a) ? y : y + a / 500;
+  var z &#x3D; isNaN(b) ? y : y - b / 200;
 
   y &#x3D; Yn * lab2xyz(y);
   x &#x3D; Xn * lab2xyz(x);
@@ -182,15 +189,15 @@ function xyz2rgb(x) {
     12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
 }
 
-const raster &#x3D; new RasterSource({
+var raster &#x3D; new RasterSource({
   sources: [new Stamen({
     layer: &#x27;watercolor&#x27;,
     transition: 0
   })],
   operation: function(pixels, data) {
-    const hcl &#x3D; rgb2hcl(pixels[0]);
+    var hcl &#x3D; rgb2hcl(pixels[0]);
 
-    let h &#x3D; hcl[0] + Math.PI * data.hue / 180;
+    var h &#x3D; hcl[0] + Math.PI * data.hue / 180;
     if (h &lt; 0) {
       h +&#x3D; twoPi;
     } else if (h &gt; twoPi) {
@@ -221,16 +228,16 @@ const raster &#x3D; new RasterSource({
   }
 });
 
-const controls &#x3D; {};
+var controls &#x3D; {};
 
 raster.on(&#x27;beforeoperations&#x27;, function(event) {
-  const data &#x3D; event.data;
-  for (const id in controls) {
+  var data &#x3D; event.data;
+  for (var id in controls) {
     data[id] &#x3D; Number(controls[id].value);
   }
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     new ImageLayer({
       source: raster
@@ -244,10 +251,10 @@ const map &#x3D; new Map({
   })
 });
 
-const controlIds &#x3D; [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
+var controlIds &#x3D; [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
 controlIds.forEach(function(id) {
-  const control &#x3D; document.getElementById(id);
-  const output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
+  var control &#x3D; document.getElementById(id);
+  var output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
   control.addEventListener(&#x27;input&#x27;, function() {
     output.innerText &#x3D; control.value;
     raster.changed();
@@ -287,7 +294,7 @@ controlIds.forEach(function(id) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Color Manipulation&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -329,39 +336,39 @@ controlIds.forEach(function(id) {
        * Color manipulation functions below are adapted from
        * https://github.com/d3/d3-color.
        */
-      const Xn &#x3D; 0.950470;
-      const Yn &#x3D; 1;
-      const Zn &#x3D; 1.088830;
-      const t0 &#x3D; 4 / 29;
-      const t1 &#x3D; 6 / 29;
-      const t2 &#x3D; 3 * t1 * t1;
-      const t3 &#x3D; t1 * t1 * t1;
-      const twoPi &#x3D; 2 * Math.PI;
+      var Xn &#x3D; 0.950470;
+      var Yn &#x3D; 1;
+      var Zn &#x3D; 1.088830;
+      var t0 &#x3D; 4 / 29;
+      var t1 &#x3D; 6 / 29;
+      var t2 &#x3D; 3 * t1 * t1;
+      var t3 &#x3D; t1 * t1 * t1;
+      var twoPi &#x3D; 2 * Math.PI;
 
 
       /**
        * Convert an RGB pixel into an HCL pixel.
-       * @param {Array.&lt;number&gt;} pixel A pixel in RGB space.
-       * @return {Array.&lt;number&gt;} A pixel in HCL space.
+       * @param {Array&lt;number&gt;} pixel A pixel in RGB space.
+       * @return {Array&lt;number&gt;} A pixel in HCL space.
        */
       function rgb2hcl(pixel) {
-        const red &#x3D; rgb2xyz(pixel[0]);
-        const green &#x3D; rgb2xyz(pixel[1]);
-        const blue &#x3D; rgb2xyz(pixel[2]);
+        var red &#x3D; rgb2xyz(pixel[0]);
+        var green &#x3D; rgb2xyz(pixel[1]);
+        var blue &#x3D; rgb2xyz(pixel[2]);
 
-        const x &#x3D; xyz2lab(
+        var x &#x3D; xyz2lab(
           (0.4124564 * red + 0.3575761 * green + 0.1804375 * blue) / Xn);
-        const y &#x3D; xyz2lab(
+        var y &#x3D; xyz2lab(
           (0.2126729 * red + 0.7151522 * green + 0.0721750 * blue) / Yn);
-        const z &#x3D; xyz2lab(
+        var z &#x3D; xyz2lab(
           (0.0193339 * red + 0.1191920 * green + 0.9503041 * blue) / Zn);
 
-        const l &#x3D; 116 * y - 16;
-        const a &#x3D; 500 * (x - y);
-        const b &#x3D; 200 * (y - z);
+        var l &#x3D; 116 * y - 16;
+        var a &#x3D; 500 * (x - y);
+        var b &#x3D; 200 * (y - z);
 
-        const c &#x3D; Math.sqrt(a * a + b * b);
-        let h &#x3D; Math.atan2(b, a);
+        var c &#x3D; Math.sqrt(a * a + b * b);
+        var h &#x3D; Math.atan2(b, a);
         if (h &lt; 0) {
           h +&#x3D; twoPi;
         }
@@ -376,20 +383,20 @@ controlIds.forEach(function(id) {
 
       /**
        * Convert an HCL pixel into an RGB pixel.
-       * @param {Array.&lt;number&gt;} pixel A pixel in HCL space.
-       * @return {Array.&lt;number&gt;} A pixel in RGB space.
+       * @param {Array&lt;number&gt;} pixel A pixel in HCL space.
+       * @return {Array&lt;number&gt;} A pixel in RGB space.
        */
       function hcl2rgb(pixel) {
-        const h &#x3D; pixel[0];
-        const c &#x3D; pixel[1];
-        const l &#x3D; pixel[2];
+        var h &#x3D; pixel[0];
+        var c &#x3D; pixel[1];
+        var l &#x3D; pixel[2];
 
-        const a &#x3D; Math.cos(h) * c;
-        const b &#x3D; Math.sin(h) * c;
+        var a &#x3D; Math.cos(h) * c;
+        var b &#x3D; Math.sin(h) * c;
 
-        let y &#x3D; (l + 16) / 116;
-        let x &#x3D; isNaN(a) ? y : y + a / 500;
-        let z &#x3D; isNaN(b) ? y : y - b / 200;
+        var y &#x3D; (l + 16) / 116;
+        var x &#x3D; isNaN(a) ? y : y + a / 500;
+        var z &#x3D; isNaN(b) ? y : y - b / 200;
 
         y &#x3D; Yn * lab2xyz(y);
         x &#x3D; Xn * lab2xyz(x);
@@ -419,15 +426,15 @@ controlIds.forEach(function(id) {
           12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
       }
 
-      const raster &#x3D; new RasterSource({
+      var raster &#x3D; new RasterSource({
         sources: [new Stamen({
           layer: &#x27;watercolor&#x27;,
           transition: 0
         })],
         operation: function(pixels, data) {
-          const hcl &#x3D; rgb2hcl(pixels[0]);
+          var hcl &#x3D; rgb2hcl(pixels[0]);
 
-          let h &#x3D; hcl[0] + Math.PI * data.hue / 180;
+          var h &#x3D; hcl[0] + Math.PI * data.hue / 180;
           if (h &lt; 0) {
             h +&#x3D; twoPi;
           } else if (h &gt; twoPi) {
@@ -458,16 +465,16 @@ controlIds.forEach(function(id) {
         }
       });
 
-      const controls &#x3D; {};
+      var controls &#x3D; {};
 
       raster.on(&#x27;beforeoperations&#x27;, function(event) {
-        const data &#x3D; event.data;
-        for (const id in controls) {
+        var data &#x3D; event.data;
+        for (var id in controls) {
           data[id] &#x3D; Number(controls[id].value);
         }
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           new ImageLayer({
             source: raster
@@ -481,10 +488,10 @@ controlIds.forEach(function(id) {
         })
       });
 
-      const controlIds &#x3D; [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
+      var controlIds &#x3D; [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
       controlIds.forEach(function(id) {
-        const control &#x3D; document.getElementById(id);
-        const output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
+        var control &#x3D; document.getElementById(id);
+        var output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
         control.addEventListener(&#x27;input&#x27;, function() {
           output.innerText &#x3D; control.value;
           raster.changed();
@@ -513,7 +520,7 @@ controlIds.forEach(function(id) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

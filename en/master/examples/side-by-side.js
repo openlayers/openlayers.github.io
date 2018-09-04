@@ -1,2 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[53],{283:function(e,a,n){"use strict";n.r(a);var w=n(5),s=n(154),o=n(4),r=n(11),t=n(18);const c=new r.a({source:new t.b}),p=new o.a({center:[0,0],zoom:1});new w.a({target:"canvasMap",layers:[c],view:p}),new s.a({target:"webglMap",layers:[c],view:p})}},[[283,0]]]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[115],{338:function(e,a,w){"use strict";w.r(a);var n=w(1),r=w(146),s=w(0),o=w(3),t=w(4),c=new o.a({source:new t.b}),p=new s.a({center:[0,0],zoom:1});new n.a({target:"canvasMap",layers:[c],view:p}),new r.a({target:"webglMap",layers:[c],view:p})}},[[338,0]]]);
 //# sourceMappingURL=side-by-side.js.map

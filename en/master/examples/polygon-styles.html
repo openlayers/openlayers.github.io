@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -77,7 +84,7 @@ import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-const styles &#x3D; [
+var styles &#x3D; [
   /* We are using two different styles for the polygons:
    *  - The first style is for the polygons themselves.
    *  - The second style is to draw the vertices of the polygons.
@@ -103,13 +110,13 @@ const styles &#x3D; [
     }),
     geometry: function(feature) {
       // return the coordinates of the first ring of the polygon
-      const coordinates &#x3D; feature.getGeometry().getCoordinates()[0];
+      var coordinates &#x3D; feature.getGeometry().getCoordinates()[0];
       return new MultiPoint(coordinates);
     }
   })
 ];
 
-const geojsonObject &#x3D; {
+var geojsonObject &#x3D; {
   &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
   &#x27;crs&#x27;: {
     &#x27;type&#x27;: &#x27;name&#x27;,
@@ -148,16 +155,16 @@ const geojsonObject &#x3D; {
   }]
 };
 
-const source &#x3D; new VectorSource({
+var source &#x3D; new VectorSource({
   features: (new GeoJSON()).readFeatures(geojsonObject)
 });
 
-const layer &#x3D; new VectorLayer({
+var layer &#x3D; new VectorLayer({
   source: source,
   style: styles
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [layer],
   target: &#x27;map&#x27;,
   view: new View({
@@ -175,7 +182,7 @@ const map &#x3D; new Map({
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Custom Polygon Styles&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -191,7 +198,7 @@ const map &#x3D; new Map({
       import VectorSource from &#x27;ol/source/Vector.js&#x27;;
       import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-      const styles &#x3D; [
+      var styles &#x3D; [
         /* We are using two different styles for the polygons:
          *  - The first style is for the polygons themselves.
          *  - The second style is to draw the vertices of the polygons.
@@ -217,13 +224,13 @@ const map &#x3D; new Map({
           }),
           geometry: function(feature) {
             // return the coordinates of the first ring of the polygon
-            const coordinates &#x3D; feature.getGeometry().getCoordinates()[0];
+            var coordinates &#x3D; feature.getGeometry().getCoordinates()[0];
             return new MultiPoint(coordinates);
           }
         })
       ];
 
-      const geojsonObject &#x3D; {
+      var geojsonObject &#x3D; {
         &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
         &#x27;crs&#x27;: {
           &#x27;type&#x27;: &#x27;name&#x27;,
@@ -262,16 +269,16 @@ const map &#x3D; new Map({
         }]
       };
 
-      const source &#x3D; new VectorSource({
+      var source &#x3D; new VectorSource({
         features: (new GeoJSON()).readFeatures(geojsonObject)
       });
 
-      const layer &#x3D; new VectorLayer({
+      var layer &#x3D; new VectorLayer({
         source: source,
         style: styles
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [layer],
         target: &#x27;map&#x27;,
         view: new View({
@@ -300,7 +307,7 @@ const map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

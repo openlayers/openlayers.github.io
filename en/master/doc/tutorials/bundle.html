@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>OpenLayers - Basic project setup using NPM and Browserify</title>
+    <title>OpenLayers - Basic project setup using NPM and Parcel</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link href='https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -39,41 +46,39 @@
 
 <div class='container'>
 <h1 id="introduction">Introduction</h1>
-<p>When going beyond modifying existing examples you might be looking for a way to setup your own code with dependency management together with external dependencies like OpenLayers.</p>
-<p>This tutorial serves as a suggested project setup using NPM and Browserify for the most basic needs. There are several other options, and in particular you might be interested in a more modern one (ES2015) <a href="https://gist.github.com/tschaub/79025aef325cd2837364400a105405b8">using Webpack with OpenLayers</a>.</p>
+<p>Modern JavaScript works best when using and authoring modules. The recommended way of using OpenLayers is installing the <a href="https://npmjs.com/package/ol"><code>ol</code></a> package. This tutorial walks you through setting up a simple dev environment, which requires <a href="https://nodejs.org">node</a> for everything to work.</p>
+<p>In this tutorial, we will be using <a href="https://parceljs.org">Parcel</a> to bundle our application. There are several other options, some of which are linked from the <a href="https://npmjs.com/package/ol">README</a>.</p>
 <h2 id="initial-steps">Initial steps</h2>
 <p>Create a new empty directory for your project and navigate to it by running <code>mkdir new-project &amp;&amp; cd new-project</code>. Initialize your project using <code>npm init</code> and answer the questions asked.</p>
-<p>Add OpenLayers as dependency to your application with <code>npm install --save ol</code>.</p>
+<p>Add OpenLayers as dependency to your application with</p>
+<pre><code>npm install ol</code></pre>
 <p>At this point you can ask NPM to add required development dependencies by running</p>
-<pre><code>npm install --save-dev cssify browserify cssify http-server uglify-js watchify
-npm install --save-dev babelify babel-plugin-transform-es2015-modules-commonjs</code></pre>
-<p>We will be using <code>cssify</code> to include the css definitions required by OpenLayers in our bundle. <code>watchify</code>, <code>http-server</code> and <code>uglify-js</code> are used to monitor for changes and to build into a minified bundle. <code>babelify</code> and <code>babel-plugin-transform-es2015-modules-commonjs</code> are used to make the <code>ol</code> package, which was created using ES2015 modules, work with CommonJS.</p>
+<pre><code>npm install --save-dev parcel-bundler</code></pre>
 <h2 id="application-code-and-index-html">Application code and index.html</h2>
 <p>Place your application code in <code>index.js</code>. Here is a simple starting point:</p>
-<pre><code class="language-js">require(<span class="string">'ol/ol.css'</span>);
-<span class="keyword">var</span> ol_Map = require(<span class="string">'ol/map'</span>).<span class="keyword">default</span>;
-<span class="keyword">var</span> ol_layer_Tile = require(<span class="string">'ol/layer/tile'</span>).<span class="keyword">default</span>;
-<span class="keyword">var</span> ol_source_OSM = require(<span class="string">'ol/source/osm'</span>).<span class="keyword">default</span>;
-<span class="keyword">var</span> ol_View = require(<span class="string">'ol/view'</span>).<span class="keyword">default</span>;
+<pre><code class="language-js">import <span class="string">'ol/ol.css'</span>;
+import {Map, View} from <span class="string">'ol'</span>;
+import TileLayer from <span class="string">'ol/layer/Tile'</span>;
+import OSM from <span class="string">'ol/source/OSM'</span>;
 
-<span class="keyword">var</span> map = <span class="keyword">new</span> ol_Map({
+<span class="keyword">const</span> map = <span class="keyword">new</span> Map({
   target: <span class="string">'map'</span>,
   layers: [
-    <span class="keyword">new</span> ol_layer_Tile({
-      source: <span class="keyword">new</span> ol_source_OSM()
+    <span class="keyword">new</span> TileLayer({
+      source: <span class="keyword">new</span> OSM()
     })
   ],
-  view: <span class="keyword">new</span> ol_View({
+  view: <span class="keyword">new</span> View({
     center: [<span class="number">0</span>, <span class="number">0</span>],
     zoom: <span class="number">0</span>
   })
 });</code></pre>
-<p>You will also need an <code>ìndex.html</code> file that will use your bundle. Here is a simple example:</p>
+<p>You will also need an <code>index.html</code> file that will use your bundle. Here is a simple example:</p>
 <pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;meta charset=&quot;utf-8&quot;&gt;
-    &lt;title&gt;Using Browserify with OpenLayers&lt;/title&gt;
+    &lt;title&gt;Using Parcel with OpenLayers&lt;/title&gt;
     &lt;style&gt;
       #map {
         width: 400px;
@@ -83,18 +88,23 @@ npm install --save-dev babelify babel-plugin-transform-es2015-modules-commonjs</
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id=&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;script src=&quot;bundle.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;./index.js&quot;&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 <h2 id="creating-a-bundle">Creating a bundle</h2>
 <p>With simple scripts you can introduce the commands <code>npm run build</code> and <code>npm start</code> to manually build your bundle and watch for changes, respectively. Add the following to the script section in <code>package.json</code>:</p>
 <pre><code class="language-json">"scripts": {
-  "start": "watchify index.js -g cssify --outfile bundle.js &amp; http-server",
-  "build": "browserify -g cssify index.js | uglifyjs --compress --output bundle.js"
+  "test": "echo \"Error: no test specified\" &amp;&amp; exit 1",
+  "start": "parcel index.html",
+  "build": "parcel build --public-url . index.html"
 }</code></pre>
-<p>Now to test your application open <a href="http://localhost:8080/">http://localhost:8080/</a> in your browser. <code>watchify</code> will update <code>bundle.js</code> whenever you change something. You simply need to reload the page in your browser to see the changes.</p>
-<pre><code>$ npm start</code></pre>
-<p>Note that <code>bundle.js</code> will contain your application code and all dependencies used in your application. From OpenLayers, it only contains the required components.</p>
+<p>That&#39;s it. Now to run your application, enter</p>
+<pre><code>npm start</code></pre>
+<p>in your console. To test your application, open <a href="http://localhost:1234/">http://localhost:1234/</a> in your browser. Whenever you change something, the page will reload automatically to show the result of your changes.</p>
+<p>Note that a single JavaScript file with all your application code and all dependencies used in your application has been created. From the OpenLayers package, it only contains the required components.</p>
+<p>To create a production bundle of your application, simply type</p>
+<pre><code>npm run build</code></pre>
+<p>and copy the <code>dist/</code> folder to your production server.</p>
 
 </div>
 

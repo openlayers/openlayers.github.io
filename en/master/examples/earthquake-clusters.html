@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -75,21 +82,21 @@ import {Cluster, Stamen, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {Circle as CircleStyle, Fill, RegularShape, Stroke, Style, Text} from &#x27;ol/style.js&#x27;;
 
 
-const earthquakeFill &#x3D; new Fill({
+var earthquakeFill &#x3D; new Fill({
   color: &#x27;rgba(255, 153, 0, 0.8)&#x27;
 });
-const earthquakeStroke &#x3D; new Stroke({
+var earthquakeStroke &#x3D; new Stroke({
   color: &#x27;rgba(255, 204, 0, 0.2)&#x27;,
   width: 1
 });
-const textFill &#x3D; new Fill({
+var textFill &#x3D; new Fill({
   color: &#x27;#fff&#x27;
 });
-const textStroke &#x3D; new Stroke({
+var textStroke &#x3D; new Stroke({
   color: &#x27;rgba(0, 0, 0, 0.6)&#x27;,
   width: 3
 });
-const invisibleFill &#x3D; new Fill({
+var invisibleFill &#x3D; new Fill({
   color: &#x27;rgba(255, 255, 255, 0.01)&#x27;
 });
 
@@ -97,9 +104,9 @@ function createEarthquakeStyle(feature) {
   // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
   // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it
   // from the Placemark&#x27;s name instead.
-  const name &#x3D; feature.get(&#x27;name&#x27;);
-  const magnitude &#x3D; parseFloat(name.substr(2));
-  const radius &#x3D; 5 + 20 * (magnitude - 5);
+  var name &#x3D; feature.get(&#x27;name&#x27;);
+  var magnitude &#x3D; parseFloat(name.substr(2));
+  var radius &#x3D; 5 + 20 * (magnitude - 5);
 
   return new Style({
     geometry: feature.getGeometry(),
@@ -114,17 +121,17 @@ function createEarthquakeStyle(feature) {
   });
 }
 
-let maxFeatureCount;
-let vector &#x3D; null;
-const calculateClusterInfo &#x3D; function(resolution) {
+var maxFeatureCount;
+var vector &#x3D; null;
+var calculateClusterInfo &#x3D; function(resolution) {
   maxFeatureCount &#x3D; 0;
-  const features &#x3D; vector.getSource().getFeatures();
-  let feature, radius;
-  for (let i &#x3D; features.length - 1; i &gt;&#x3D; 0; --i) {
+  var features &#x3D; vector.getSource().getFeatures();
+  var feature, radius;
+  for (var i &#x3D; features.length - 1; i &gt;&#x3D; 0; --i) {
     feature &#x3D; features[i];
-    const originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
-    const extent &#x3D; createEmpty();
-    let j, jj;
+    var originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
+    var extent &#x3D; createEmpty();
+    var j &#x3D; (void 0), jj &#x3D; (void 0);
     for (j &#x3D; 0, jj &#x3D; originalFeatures.length; j &lt; jj; ++j) {
       extend(extent, originalFeatures[j].getGeometry().getExtent());
     }
@@ -135,14 +142,14 @@ const calculateClusterInfo &#x3D; function(resolution) {
   }
 };
 
-let currentResolution;
+var currentResolution;
 function styleFunction(feature, resolution) {
   if (resolution !&#x3D; currentResolution) {
     calculateClusterInfo(resolution);
     currentResolution &#x3D; resolution;
   }
-  let style;
-  const size &#x3D; feature.get(&#x27;features&#x27;).length;
+  var style;
+  var size &#x3D; feature.get(&#x27;features&#x27;).length;
   if (size &gt; 1) {
     style &#x3D; new Style({
       image: new CircleStyle({
@@ -158,22 +165,22 @@ function styleFunction(feature, resolution) {
       })
     });
   } else {
-    const originalFeature &#x3D; feature.get(&#x27;features&#x27;)[0];
+    var originalFeature &#x3D; feature.get(&#x27;features&#x27;)[0];
     style &#x3D; createEarthquakeStyle(originalFeature);
   }
   return style;
 }
 
 function selectStyleFunction(feature) {
-  const styles &#x3D; [new Style({
+  var styles &#x3D; [new Style({
     image: new CircleStyle({
       radius: feature.get(&#x27;radius&#x27;),
       fill: invisibleFill
     })
   })];
-  const originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
-  let originalFeature;
-  for (let i &#x3D; originalFeatures.length - 1; i &gt;&#x3D; 0; --i) {
+  var originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
+  var originalFeature;
+  for (var i &#x3D; originalFeatures.length - 1; i &gt;&#x3D; 0; --i) {
     originalFeature &#x3D; originalFeatures[i];
     styles.push(createEarthquakeStyle(originalFeature));
   }
@@ -193,17 +200,17 @@ vector &#x3D; new VectorLayer({
   style: styleFunction
 });
 
-const raster &#x3D; new TileLayer({
+var raster &#x3D; new TileLayer({
   source: new Stamen({
     layer: &#x27;toner&#x27;
   })
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [raster, vector],
   interactions: defaultInteractions().extend([new Select({
     condition: function(evt) {
-      return  evt.type &#x3D;&#x3D; &#x27;pointermove&#x27; ||
+      return evt.type &#x3D;&#x3D; &#x27;pointermove&#x27; ||
           evt.type &#x3D;&#x3D; &#x27;singleclick&#x27;;
     },
     style: selectStyleFunction
@@ -242,7 +249,7 @@ const map &#x3D; new Map({
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Earthquake Clusters&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -280,21 +287,21 @@ const map &#x3D; new Map({
       import {Circle as CircleStyle, Fill, RegularShape, Stroke, Style, Text} from &#x27;ol/style.js&#x27;;
 
 
-      const earthquakeFill &#x3D; new Fill({
+      var earthquakeFill &#x3D; new Fill({
         color: &#x27;rgba(255, 153, 0, 0.8)&#x27;
       });
-      const earthquakeStroke &#x3D; new Stroke({
+      var earthquakeStroke &#x3D; new Stroke({
         color: &#x27;rgba(255, 204, 0, 0.2)&#x27;,
         width: 1
       });
-      const textFill &#x3D; new Fill({
+      var textFill &#x3D; new Fill({
         color: &#x27;#fff&#x27;
       });
-      const textStroke &#x3D; new Stroke({
+      var textStroke &#x3D; new Stroke({
         color: &#x27;rgba(0, 0, 0, 0.6)&#x27;,
         width: 3
       });
-      const invisibleFill &#x3D; new Fill({
+      var invisibleFill &#x3D; new Fill({
         color: &#x27;rgba(255, 255, 255, 0.01)&#x27;
       });
 
@@ -302,9 +309,9 @@ const map &#x3D; new Map({
         // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
         // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it
         // from the Placemark&#x27;s name instead.
-        const name &#x3D; feature.get(&#x27;name&#x27;);
-        const magnitude &#x3D; parseFloat(name.substr(2));
-        const radius &#x3D; 5 + 20 * (magnitude - 5);
+        var name &#x3D; feature.get(&#x27;name&#x27;);
+        var magnitude &#x3D; parseFloat(name.substr(2));
+        var radius &#x3D; 5 + 20 * (magnitude - 5);
 
         return new Style({
           geometry: feature.getGeometry(),
@@ -319,17 +326,17 @@ const map &#x3D; new Map({
         });
       }
 
-      let maxFeatureCount;
-      let vector &#x3D; null;
-      const calculateClusterInfo &#x3D; function(resolution) {
+      var maxFeatureCount;
+      var vector &#x3D; null;
+      var calculateClusterInfo &#x3D; function(resolution) {
         maxFeatureCount &#x3D; 0;
-        const features &#x3D; vector.getSource().getFeatures();
-        let feature, radius;
-        for (let i &#x3D; features.length - 1; i &gt;&#x3D; 0; --i) {
+        var features &#x3D; vector.getSource().getFeatures();
+        var feature, radius;
+        for (var i &#x3D; features.length - 1; i &gt;&#x3D; 0; --i) {
           feature &#x3D; features[i];
-          const originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
-          const extent &#x3D; createEmpty();
-          let j, jj;
+          var originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
+          var extent &#x3D; createEmpty();
+          var j &#x3D; (void 0), jj &#x3D; (void 0);
           for (j &#x3D; 0, jj &#x3D; originalFeatures.length; j &lt; jj; ++j) {
             extend(extent, originalFeatures[j].getGeometry().getExtent());
           }
@@ -340,14 +347,14 @@ const map &#x3D; new Map({
         }
       };
 
-      let currentResolution;
+      var currentResolution;
       function styleFunction(feature, resolution) {
         if (resolution !&#x3D; currentResolution) {
           calculateClusterInfo(resolution);
           currentResolution &#x3D; resolution;
         }
-        let style;
-        const size &#x3D; feature.get(&#x27;features&#x27;).length;
+        var style;
+        var size &#x3D; feature.get(&#x27;features&#x27;).length;
         if (size &gt; 1) {
           style &#x3D; new Style({
             image: new CircleStyle({
@@ -363,22 +370,22 @@ const map &#x3D; new Map({
             })
           });
         } else {
-          const originalFeature &#x3D; feature.get(&#x27;features&#x27;)[0];
+          var originalFeature &#x3D; feature.get(&#x27;features&#x27;)[0];
           style &#x3D; createEarthquakeStyle(originalFeature);
         }
         return style;
       }
 
       function selectStyleFunction(feature) {
-        const styles &#x3D; [new Style({
+        var styles &#x3D; [new Style({
           image: new CircleStyle({
             radius: feature.get(&#x27;radius&#x27;),
             fill: invisibleFill
           })
         })];
-        const originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
-        let originalFeature;
-        for (let i &#x3D; originalFeatures.length - 1; i &gt;&#x3D; 0; --i) {
+        var originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
+        var originalFeature;
+        for (var i &#x3D; originalFeatures.length - 1; i &gt;&#x3D; 0; --i) {
           originalFeature &#x3D; originalFeatures[i];
           styles.push(createEarthquakeStyle(originalFeature));
         }
@@ -398,17 +405,17 @@ const map &#x3D; new Map({
         style: styleFunction
       });
 
-      const raster &#x3D; new TileLayer({
+      var raster &#x3D; new TileLayer({
         source: new Stamen({
           layer: &#x27;toner&#x27;
         })
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [raster, vector],
         interactions: defaultInteractions().extend([new Select({
           condition: function(evt) {
-            return  evt.type &#x3D;&#x3D; &#x27;pointermove&#x27; ||
+            return evt.type &#x3D;&#x3D; &#x27;pointermove&#x27; ||
                 evt.type &#x3D;&#x3D; &#x27;singleclick&#x27;;
           },
           style: selectStyleFunction
@@ -440,7 +447,7 @@ const map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

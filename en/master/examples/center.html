@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -85,11 +92,11 @@ import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-const source &#x3D; new VectorSource({
+var source &#x3D; new VectorSource({
   url: &#x27;data/geojson/switzerland.geojson&#x27;,
   format: new GeoJSON()
 });
-const style &#x3D; new Style({
+var style &#x3D; new Style({
   fill: new Fill({
     color: &#x27;rgba(255, 255, 255, 0.6)&#x27;
   }),
@@ -108,15 +115,15 @@ const style &#x3D; new Style({
     })
   })
 });
-const vectorLayer &#x3D; new VectorLayer({
+var vectorLayer &#x3D; new VectorLayer({
   source: source,
   style: style
 });
-const view &#x3D; new View({
+var view &#x3D; new View({
   center: [0, 0],
   zoom: 1
 });
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM()
@@ -132,41 +139,41 @@ const map &#x3D; new Map({
   view: view
 });
 
-const zoomtoswitzerlandbest &#x3D; document.getElementById(&#x27;zoomtoswitzerlandbest&#x27;);
+var zoomtoswitzerlandbest &#x3D; document.getElementById(&#x27;zoomtoswitzerlandbest&#x27;);
 zoomtoswitzerlandbest.addEventListener(&#x27;click&#x27;, function() {
-  const feature &#x3D; source.getFeatures()[0];
-  const polygon &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
+  var feature &#x3D; source.getFeatures()[0];
+  var polygon &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
   view.fit(polygon, {padding: [170, 50, 30, 150], constrainResolution: false});
 }, false);
 
-const zoomtoswitzerlandconstrained &#x3D;
+var zoomtoswitzerlandconstrained &#x3D;
     document.getElementById(&#x27;zoomtoswitzerlandconstrained&#x27;);
 zoomtoswitzerlandconstrained.addEventListener(&#x27;click&#x27;, function() {
-  const feature &#x3D; source.getFeatures()[0];
-  const polygon &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
+  var feature &#x3D; source.getFeatures()[0];
+  var polygon &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
   view.fit(polygon, {padding: [170, 50, 30, 150]});
 }, false);
 
-const zoomtoswitzerlandnearest &#x3D;
+var zoomtoswitzerlandnearest &#x3D;
     document.getElementById(&#x27;zoomtoswitzerlandnearest&#x27;);
 zoomtoswitzerlandnearest.addEventListener(&#x27;click&#x27;, function() {
-  const feature &#x3D; source.getFeatures()[0];
-  const polygon &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
+  var feature &#x3D; source.getFeatures()[0];
+  var polygon &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
   view.fit(polygon, {padding: [170, 50, 30, 150], nearest: true});
 }, false);
 
-const zoomtolausanne &#x3D; document.getElementById(&#x27;zoomtolausanne&#x27;);
+var zoomtolausanne &#x3D; document.getElementById(&#x27;zoomtolausanne&#x27;);
 zoomtolausanne.addEventListener(&#x27;click&#x27;, function() {
-  const feature &#x3D; source.getFeatures()[1];
-  const point &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
+  var feature &#x3D; source.getFeatures()[1];
+  var point &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
   view.fit(point, {padding: [170, 50, 30, 150], minResolution: 50});
 }, false);
 
-const centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
+var centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
 centerlausanne.addEventListener(&#x27;click&#x27;, function() {
-  const feature &#x3D; source.getFeatures()[1];
-  const point &#x3D; /** @type {module:ol/geom/Point~Point} */ (feature.getGeometry());
-  const size &#x3D; /** @type {module:ol/size~Size} */ (map.getSize());
+  var feature &#x3D; source.getFeatures()[1];
+  var point &#x3D; /** @type {module:ol/geom/Point~Point} */ (feature.getGeometry());
+  var size &#x3D; /** @type {module:ol/size~Size} */ (map.getSize());
   view.centerOn(point.getCoordinates(), size, [570, 500]);
 }, false);
 </textarea>
@@ -251,7 +258,7 @@ div.ol-rotate {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Advanced View Positioning&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -341,11 +348,11 @@ div.ol-rotate {
       import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
       import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-      const source &#x3D; new VectorSource({
+      var source &#x3D; new VectorSource({
         url: &#x27;data/geojson/switzerland.geojson&#x27;,
         format: new GeoJSON()
       });
-      const style &#x3D; new Style({
+      var style &#x3D; new Style({
         fill: new Fill({
           color: &#x27;rgba(255, 255, 255, 0.6)&#x27;
         }),
@@ -364,15 +371,15 @@ div.ol-rotate {
           })
         })
       });
-      const vectorLayer &#x3D; new VectorLayer({
+      var vectorLayer &#x3D; new VectorLayer({
         source: source,
         style: style
       });
-      const view &#x3D; new View({
+      var view &#x3D; new View({
         center: [0, 0],
         zoom: 1
       });
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           new TileLayer({
             source: new OSM()
@@ -388,41 +395,41 @@ div.ol-rotate {
         view: view
       });
 
-      const zoomtoswitzerlandbest &#x3D; document.getElementById(&#x27;zoomtoswitzerlandbest&#x27;);
+      var zoomtoswitzerlandbest &#x3D; document.getElementById(&#x27;zoomtoswitzerlandbest&#x27;);
       zoomtoswitzerlandbest.addEventListener(&#x27;click&#x27;, function() {
-        const feature &#x3D; source.getFeatures()[0];
-        const polygon &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
+        var feature &#x3D; source.getFeatures()[0];
+        var polygon &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
         view.fit(polygon, {padding: [170, 50, 30, 150], constrainResolution: false});
       }, false);
 
-      const zoomtoswitzerlandconstrained &#x3D;
+      var zoomtoswitzerlandconstrained &#x3D;
           document.getElementById(&#x27;zoomtoswitzerlandconstrained&#x27;);
       zoomtoswitzerlandconstrained.addEventListener(&#x27;click&#x27;, function() {
-        const feature &#x3D; source.getFeatures()[0];
-        const polygon &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
+        var feature &#x3D; source.getFeatures()[0];
+        var polygon &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
         view.fit(polygon, {padding: [170, 50, 30, 150]});
       }, false);
 
-      const zoomtoswitzerlandnearest &#x3D;
+      var zoomtoswitzerlandnearest &#x3D;
           document.getElementById(&#x27;zoomtoswitzerlandnearest&#x27;);
       zoomtoswitzerlandnearest.addEventListener(&#x27;click&#x27;, function() {
-        const feature &#x3D; source.getFeatures()[0];
-        const polygon &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
+        var feature &#x3D; source.getFeatures()[0];
+        var polygon &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
         view.fit(polygon, {padding: [170, 50, 30, 150], nearest: true});
       }, false);
 
-      const zoomtolausanne &#x3D; document.getElementById(&#x27;zoomtolausanne&#x27;);
+      var zoomtolausanne &#x3D; document.getElementById(&#x27;zoomtolausanne&#x27;);
       zoomtolausanne.addEventListener(&#x27;click&#x27;, function() {
-        const feature &#x3D; source.getFeatures()[1];
-        const point &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
+        var feature &#x3D; source.getFeatures()[1];
+        var point &#x3D; /** @type {module:ol/geom/SimpleGeometry~SimpleGeometry} */ (feature.getGeometry());
         view.fit(point, {padding: [170, 50, 30, 150], minResolution: 50});
       }, false);
 
-      const centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
+      var centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
       centerlausanne.addEventListener(&#x27;click&#x27;, function() {
-        const feature &#x3D; source.getFeatures()[1];
-        const point &#x3D; /** @type {module:ol/geom/Point~Point} */ (feature.getGeometry());
-        const size &#x3D; /** @type {module:ol/size~Size} */ (map.getSize());
+        var feature &#x3D; source.getFeatures()[1];
+        var point &#x3D; /** @type {module:ol/geom/Point~Point} */ (feature.getGeometry());
+        var size &#x3D; /** @type {module:ol/size~Size} */ (map.getSize());
         view.centerOn(point.getCoordinates(), size, [570, 500]);
       }, false);
     &lt;/script&gt;
@@ -446,7 +453,7 @@ div.ol-rotate {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -74,7 +81,7 @@ import Stamen from &#x27;ol/source/Stamen.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import {Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new Stamen({
@@ -89,39 +96,39 @@ const map &#x3D; new Map({
   })
 });
 
-const style &#x3D; new Style({
+var style &#x3D; new Style({
   stroke: new Stroke({
     color: &#x27;#EAE911&#x27;,
     width: 2
   })
 });
 
-const flightsSource &#x3D; new VectorSource({
+var flightsSource &#x3D; new VectorSource({
   wrapX: false,
   attributions: &#x27;Flight data by &#x27; +
         &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;,
   loader: function() {
-    const url &#x3D; &#x27;data/openflights/flights.json&#x27;;
+    var url &#x3D; &#x27;data/openflights/flights.json&#x27;;
     fetch(url).then(function(response) {
       return response.json();
     }).then(function(json) {
-      const flightsData &#x3D; json.flights;
-      for (let i &#x3D; 0; i &lt; flightsData.length; i++) {
-        const flight &#x3D; flightsData[i];
-        const from &#x3D; flight[0];
-        const to &#x3D; flight[1];
+      var flightsData &#x3D; json.flights;
+      for (var i &#x3D; 0; i &lt; flightsData.length; i++) {
+        var flight &#x3D; flightsData[i];
+        var from &#x3D; flight[0];
+        var to &#x3D; flight[1];
 
         // create an arc circle between the two locations
-        const arcGenerator &#x3D; new arc.GreatCircle(
+        var arcGenerator &#x3D; new arc.GreatCircle(
           {x: from[1], y: from[0]},
           {x: to[1], y: to[0]});
 
-        const arcLine &#x3D; arcGenerator.Arc(100, {offset: 10});
+        var arcLine &#x3D; arcGenerator.Arc(100, {offset: 10});
         if (arcLine.geometries.length &#x3D;&#x3D;&#x3D; 1) {
-          const line &#x3D; new LineString(arcLine.geometries[0].coords);
+          var line &#x3D; new LineString(arcLine.geometries[0].coords);
           line.transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
 
-          const feature &#x3D; new Feature({
+          var feature &#x3D; new Feature({
             geometry: line,
             finished: false
           });
@@ -135,7 +142,7 @@ const flightsSource &#x3D; new VectorSource({
   }
 });
 
-const flightsLayer &#x3D; new VectorLayer({
+var flightsLayer &#x3D; new VectorLayer({
   source: flightsSource,
   style: function(feature) {
     // if the animation is still active for a feature, do not
@@ -150,27 +157,27 @@ const flightsLayer &#x3D; new VectorLayer({
 
 map.addLayer(flightsLayer);
 
-const pointsPerMs &#x3D; 0.1;
+var pointsPerMs &#x3D; 0.1;
 function animateFlights(event) {
-  const vectorContext &#x3D; event.vectorContext;
-  const frameState &#x3D; event.frameState;
+  var vectorContext &#x3D; event.vectorContext;
+  var frameState &#x3D; event.frameState;
   vectorContext.setStyle(style);
 
-  const features &#x3D; flightsSource.getFeatures();
-  for (let i &#x3D; 0; i &lt; features.length; i++) {
-    const feature &#x3D; features[i];
+  var features &#x3D; flightsSource.getFeatures();
+  for (var i &#x3D; 0; i &lt; features.length; i++) {
+    var feature &#x3D; features[i];
     if (!feature.get(&#x27;finished&#x27;)) {
       // only draw the lines for which the animation has not finished yet
-      const coords &#x3D; feature.getGeometry().getCoordinates();
-      const elapsedTime &#x3D; frameState.time - feature.get(&#x27;start&#x27;);
-      const elapsedPoints &#x3D; elapsedTime * pointsPerMs;
+      var coords &#x3D; feature.getGeometry().getCoordinates();
+      var elapsedTime &#x3D; frameState.time - feature.get(&#x27;start&#x27;);
+      var elapsedPoints &#x3D; elapsedTime * pointsPerMs;
 
       if (elapsedPoints &gt;&#x3D; coords.length) {
         feature.set(&#x27;finished&#x27;, true);
       }
 
-      const maxIndex &#x3D; Math.min(elapsedPoints, coords.length);
-      const currentLine &#x3D; new LineString(coords.slice(0, maxIndex));
+      var maxIndex &#x3D; Math.min(elapsedPoints, coords.length);
+      var currentLine &#x3D; new LineString(coords.slice(0, maxIndex));
 
       // directly draw the line with the vector context
       vectorContext.drawGeometry(currentLine);
@@ -196,7 +203,7 @@ function addLater(feature, timeout) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Flight Animation&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://api.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js&quot;&gt;&lt;/script&gt;
@@ -213,7 +220,7 @@ function addLater(feature, timeout) {
       import VectorSource from &#x27;ol/source/Vector.js&#x27;;
       import {Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           new TileLayer({
             source: new Stamen({
@@ -228,39 +235,39 @@ function addLater(feature, timeout) {
         })
       });
 
-      const style &#x3D; new Style({
+      var style &#x3D; new Style({
         stroke: new Stroke({
           color: &#x27;#EAE911&#x27;,
           width: 2
         })
       });
 
-      const flightsSource &#x3D; new VectorSource({
+      var flightsSource &#x3D; new VectorSource({
         wrapX: false,
         attributions: &#x27;Flight data by &#x27; +
               &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;,
         loader: function() {
-          const url &#x3D; &#x27;data/openflights/flights.json&#x27;;
+          var url &#x3D; &#x27;data/openflights/flights.json&#x27;;
           fetch(url).then(function(response) {
             return response.json();
           }).then(function(json) {
-            const flightsData &#x3D; json.flights;
-            for (let i &#x3D; 0; i &lt; flightsData.length; i++) {
-              const flight &#x3D; flightsData[i];
-              const from &#x3D; flight[0];
-              const to &#x3D; flight[1];
+            var flightsData &#x3D; json.flights;
+            for (var i &#x3D; 0; i &lt; flightsData.length; i++) {
+              var flight &#x3D; flightsData[i];
+              var from &#x3D; flight[0];
+              var to &#x3D; flight[1];
 
               // create an arc circle between the two locations
-              const arcGenerator &#x3D; new arc.GreatCircle(
+              var arcGenerator &#x3D; new arc.GreatCircle(
                 {x: from[1], y: from[0]},
                 {x: to[1], y: to[0]});
 
-              const arcLine &#x3D; arcGenerator.Arc(100, {offset: 10});
+              var arcLine &#x3D; arcGenerator.Arc(100, {offset: 10});
               if (arcLine.geometries.length &#x3D;&#x3D;&#x3D; 1) {
-                const line &#x3D; new LineString(arcLine.geometries[0].coords);
+                var line &#x3D; new LineString(arcLine.geometries[0].coords);
                 line.transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
 
-                const feature &#x3D; new Feature({
+                var feature &#x3D; new Feature({
                   geometry: line,
                   finished: false
                 });
@@ -274,7 +281,7 @@ function addLater(feature, timeout) {
         }
       });
 
-      const flightsLayer &#x3D; new VectorLayer({
+      var flightsLayer &#x3D; new VectorLayer({
         source: flightsSource,
         style: function(feature) {
           // if the animation is still active for a feature, do not
@@ -289,27 +296,27 @@ function addLater(feature, timeout) {
 
       map.addLayer(flightsLayer);
 
-      const pointsPerMs &#x3D; 0.1;
+      var pointsPerMs &#x3D; 0.1;
       function animateFlights(event) {
-        const vectorContext &#x3D; event.vectorContext;
-        const frameState &#x3D; event.frameState;
+        var vectorContext &#x3D; event.vectorContext;
+        var frameState &#x3D; event.frameState;
         vectorContext.setStyle(style);
 
-        const features &#x3D; flightsSource.getFeatures();
-        for (let i &#x3D; 0; i &lt; features.length; i++) {
-          const feature &#x3D; features[i];
+        var features &#x3D; flightsSource.getFeatures();
+        for (var i &#x3D; 0; i &lt; features.length; i++) {
+          var feature &#x3D; features[i];
           if (!feature.get(&#x27;finished&#x27;)) {
             // only draw the lines for which the animation has not finished yet
-            const coords &#x3D; feature.getGeometry().getCoordinates();
-            const elapsedTime &#x3D; frameState.time - feature.get(&#x27;start&#x27;);
-            const elapsedPoints &#x3D; elapsedTime * pointsPerMs;
+            var coords &#x3D; feature.getGeometry().getCoordinates();
+            var elapsedTime &#x3D; frameState.time - feature.get(&#x27;start&#x27;);
+            var elapsedPoints &#x3D; elapsedTime * pointsPerMs;
 
             if (elapsedPoints &gt;&#x3D; coords.length) {
               feature.set(&#x27;finished&#x27;, true);
             }
 
-            const maxIndex &#x3D; Math.min(elapsedPoints, coords.length);
-            const currentLine &#x3D; new LineString(coords.slice(0, maxIndex));
+            var maxIndex &#x3D; Math.min(elapsedPoints, coords.length);
+            var currentLine &#x3D; new LineString(coords.slice(0, maxIndex));
 
             // directly draw the line with the vector context
             vectorContext.drawGeometry(currentLine);
@@ -346,7 +353,7 @@ function addLater(feature, timeout) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

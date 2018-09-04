@@ -2,6 +2,13 @@
 <html>
   <head>
     <title>OpenLayers - Quick Start</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link href='https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -39,19 +46,21 @@
 
 <div class='container'>
 <h1 id="quick-start">Quick Start</h1>
+<p>This primer shows you how to put a simple map on a web page.</p>
+<p><strong>For production, we strongly recommend bundling the application together with its dependencies, as explained in the <a href="./tutorials/bundle.html">Building an OpenLayers Application</a> tutorial.</strong></p>
 <h2 id="put-a-map-on-a-page">Put a map on a page</h2>
 <p>Below you&#39;ll find a complete working example.  Create a new file, copy in the contents below, and open in a browser:</p>
 <pre><code class="language-xml"><span class="doctype">&lt;!doctype html&gt;</span>
 <span class="tag">&lt;<span class="title">html</span> <span class="attribute">lang</span>=<span class="value">"en"</span>&gt;</span>
   <span class="tag">&lt;<span class="title">head</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"https://openlayers.org/en/v4.6.5/css/ol.css"</span> <span class="attribute">type</span>=<span class="value">"text/css"</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">link</span> <span class="attribute">rel</span>=<span class="value">"stylesheet"</span> <span class="attribute">href</span>=<span class="value">"https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/css/ol.css"</span> <span class="attribute">type</span>=<span class="value">"text/css"</span>&gt;</span>
     <span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css">
       <span class="class">.map</span> <span class="rules">{
         <span class="rule"><span class="attribute">height</span>:<span class="value"> <span class="number">400</span>px</span></span>;
         <span class="rule"><span class="attribute">width</span>:<span class="value"> <span class="number">100</span>%</span></span>;
       <span class="rule">}</span></span>
     </span><span class="tag">&lt;/<span class="title">style</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"https://openlayers.org/en/v4.6.5/build/ol.js"</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
     <span class="tag">&lt;<span class="title">title</span>&gt;</span>OpenLayers example<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
   <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
   <span class="tag">&lt;<span class="title">body</span>&gt;</span>
@@ -81,7 +90,7 @@
 <li>JavaScript to create a simple map</li>
 </ol>
 <h3 id="include-openlayers">Include OpenLayers</h3>
-<pre><code class="language-xml">  <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"https://openlayers.org/en/v4.6.5/build/ol.js"</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></code></pre>
+<pre><code class="language-xml">  <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.2.0/build/ol.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></code></pre>
 <p>The first part is to include the JavaScript library. For the purpose of this tutorial, here we simply point to the openlayers.org website to get the whole library. In a production environment, we would build a custom version of the library including only the module needed for our application.</p>
 <p><strong>Optional:</strong> If the application is intended to run on old platforms like Internet Explorer or Android 4.x, another script needs to be included before OpenLayers:</p>
 <pre><code class="language-xml">  <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></code></pre>
@@ -118,7 +127,7 @@
         source: <span class="keyword">new</span> ol.source.OSM()
       })
     ]</code></pre>
-<p>Layers in OpenLayers are defined with a type (Image, Tile or Vector) which contains a source. The source is the protocol used to get the map tiles. You can consult the list of <a href="/en/v4.6.5/apidoc/ol.source.html">available layer sources here</a></p>
+<p>Layers in OpenLayers are defined with a type (Image, Tile or Vector) which contains a source. The source is the protocol used to get the map tiles.</p>
 <p>The next part of the <code>Map</code> object is the <code>View</code>. The view allows to specify the center, resolution, and rotation of the map. The simplest way to define a view is to define a center point and a zoom level.  Note that zoom level 0 is zoomed out.</p>
 <pre><code class="language-js">    view: <span class="keyword">new</span> ol.View({
       center: ol.proj.fromLonLat([<span class="number">37.41</span>, <span class="number">8.82</span>]),

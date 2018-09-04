@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -86,11 +93,11 @@ import OSM from &#x27;ol/source/OSM.js&#x27;;
  * @return {module:ol/PluggableMap} The map instance.
  */
 function createMap(divId) {
-  const source &#x3D; new OSM();
-  const layer &#x3D; new TileLayer({
+  var source &#x3D; new OSM();
+  var layer &#x3D; new TileLayer({
     source: source
   });
-  const map &#x3D; new Map({
+  var map &#x3D; new Map({
     layers: [layer],
     target: divId,
     view: new View({
@@ -98,14 +105,14 @@ function createMap(divId) {
       zoom: 2
     })
   });
-  const zoomslider &#x3D; new ZoomSlider();
+  var zoomslider &#x3D; new ZoomSlider();
   map.addControl(zoomslider);
   return map;
 }
 
-const map1 &#x3D; createMap(&#x27;map1&#x27;);
-const map2 &#x3D; createMap(&#x27;map2&#x27;);
-const map3 &#x3D; createMap(&#x27;map3&#x27;);
+var map1 &#x3D; createMap(&#x27;map1&#x27;);
+var map2 &#x3D; createMap(&#x27;map2&#x27;);
+var map3 &#x3D; createMap(&#x27;map3&#x27;);
 </textarea>
           <textarea class="hidden" name="css">/**
  * The zoomslider in the second map shall be placed between the zoom-in and
@@ -183,7 +190,7 @@ const map3 &#x3D; createMap(&#x27;map3&#x27;);
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Zoom Sliders&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -274,11 +281,11 @@ const map3 &#x3D; createMap(&#x27;map3&#x27;);
        * @return {module:ol/PluggableMap} The map instance.
        */
       function createMap(divId) {
-        const source &#x3D; new OSM();
-        const layer &#x3D; new TileLayer({
+        var source &#x3D; new OSM();
+        var layer &#x3D; new TileLayer({
           source: source
         });
-        const map &#x3D; new Map({
+        var map &#x3D; new Map({
           layers: [layer],
           target: divId,
           view: new View({
@@ -286,14 +293,14 @@ const map3 &#x3D; createMap(&#x27;map3&#x27;);
             zoom: 2
           })
         });
-        const zoomslider &#x3D; new ZoomSlider();
+        var zoomslider &#x3D; new ZoomSlider();
         map.addControl(zoomslider);
         return map;
       }
 
-      const map1 &#x3D; createMap(&#x27;map1&#x27;);
-      const map2 &#x3D; createMap(&#x27;map2&#x27;);
-      const map3 &#x3D; createMap(&#x27;map3&#x27;);
+      var map1 &#x3D; createMap(&#x27;map1&#x27;);
+      var map2 &#x3D; createMap(&#x27;map2&#x27;);
+      var map3 &#x3D; createMap(&#x27;map3&#x27;);
     &lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -315,7 +322,7 @@ const map3 &#x3D; createMap(&#x27;map3&#x27;);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

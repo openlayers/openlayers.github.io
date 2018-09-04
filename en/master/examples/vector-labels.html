@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -399,9 +406,9 @@ import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style, Text} from &#x27;ol/style.js&#x27;;
 
-let openSansAdded &#x3D; false;
+var openSansAdded &#x3D; false;
 
-const myDom &#x3D; {
+var myDom &#x3D; {
   points: {
     text: document.getElementById(&#x27;points-text&#x27;),
     align: document.getElementById(&#x27;points-align&#x27;),
@@ -455,10 +462,10 @@ const myDom &#x3D; {
   }
 };
 
-const getText &#x3D; function(feature, resolution, dom) {
-  const type &#x3D; dom.text.value;
-  const maxResolution &#x3D; dom.maxreso.value;
-  let text &#x3D; feature.get(&#x27;name&#x27;);
+var getText &#x3D; function(feature, resolution, dom) {
+  var type &#x3D; dom.text.value;
+  var maxResolution &#x3D; dom.maxreso.value;
+  var text &#x3D; feature.get(&#x27;name&#x27;);
 
   if (resolution &gt; maxResolution) {
     text &#x3D; &#x27;&#x27;;
@@ -474,28 +481,28 @@ const getText &#x3D; function(feature, resolution, dom) {
 };
 
 
-const createTextStyle &#x3D; function(feature, resolution, dom) {
-  const align &#x3D; dom.align.value;
-  const baseline &#x3D; dom.baseline.value;
-  const size &#x3D; dom.size.value;
-  const offsetX &#x3D; parseInt(dom.offsetX.value, 10);
-  const offsetY &#x3D; parseInt(dom.offsetY.value, 10);
-  const weight &#x3D; dom.weight.value;
-  const placement &#x3D; dom.placement ? dom.placement.value : undefined;
-  const maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
-  const overflow &#x3D; dom.overflow ? (dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
-  const rotation &#x3D; parseFloat(dom.rotation.value);
+var createTextStyle &#x3D; function(feature, resolution, dom) {
+  var align &#x3D; dom.align.value;
+  var baseline &#x3D; dom.baseline.value;
+  var size &#x3D; dom.size.value;
+  var offsetX &#x3D; parseInt(dom.offsetX.value, 10);
+  var offsetY &#x3D; parseInt(dom.offsetY.value, 10);
+  var weight &#x3D; dom.weight.value;
+  var placement &#x3D; dom.placement ? dom.placement.value : undefined;
+  var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
+  var overflow &#x3D; dom.overflow ? (dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
+  var rotation &#x3D; parseFloat(dom.rotation.value);
   if (dom.font.value &#x3D;&#x3D; &#x27;\&#x27;Open Sans\&#x27;&#x27; &amp;&amp; !openSansAdded) {
-    const openSans &#x3D; document.createElement(&#x27;link&#x27;);
+    var openSans &#x3D; document.createElement(&#x27;link&#x27;);
     openSans.href &#x3D; &#x27;https://fonts.googleapis.com/css?family&#x3D;Open+Sans&#x27;;
     openSans.rel &#x3D; &#x27;stylesheet&#x27;;
     document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(openSans);
     openSansAdded &#x3D; true;
   }
-  const font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
-  const fillColor &#x3D; dom.color.value;
-  const outlineColor &#x3D; dom.outline.value;
-  const outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
+  var font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
+  var fillColor &#x3D; dom.color.value;
+  var outlineColor &#x3D; dom.outline.value;
+  var outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
 
   return new Text({
     textAlign: align &#x3D;&#x3D; &#x27;&#x27; ? undefined : align,
@@ -528,7 +535,7 @@ function polygonStyleFunction(feature, resolution) {
   });
 }
 
-const vectorPolygons &#x3D; new VectorLayer({
+var vectorPolygons &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/polygon-samples.geojson&#x27;,
     format: new GeoJSON()
@@ -548,7 +555,7 @@ function lineStyleFunction(feature, resolution) {
   });
 }
 
-const vectorLines &#x3D; new VectorLayer({
+var vectorLines &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/line-samples.geojson&#x27;,
     format: new GeoJSON()
@@ -569,7 +576,7 @@ function pointStyleFunction(feature, resolution) {
   });
 }
 
-const vectorPoints &#x3D; new VectorLayer({
+var vectorPoints &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/point-samples.geojson&#x27;,
     format: new GeoJSON()
@@ -577,7 +584,7 @@ const vectorPoints &#x3D; new VectorLayer({
   style: pointStyleFunction
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM()
@@ -622,18 +629,18 @@ String.prototype.trunc &#x3D; String.prototype.trunc ||
 // http://stackoverflow.com/questions/14484787/wrap-text-in-javascript
 function stringDivider(str, width, spaceReplacer) {
   if (str.length &gt; width) {
-    let p &#x3D; width;
+    var p &#x3D; width;
     while (p &gt; 0 &amp;&amp; (str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;)) {
       p--;
     }
     if (p &gt; 0) {
-      let left;
+      var left;
       if (str.substring(p, p + 1) &#x3D;&#x3D; &#x27;-&#x27;) {
         left &#x3D; str.substring(0, p + 1);
       } else {
         left &#x3D; str.substring(0, p);
       }
-      const right &#x3D; str.substring(p + 1);
+      var right &#x3D; str.substring(p + 1);
       return left + spaceReplacer + stringDivider(right, width, spaceReplacer);
     }
   }
@@ -1021,7 +1028,7 @@ function stringDivider(str, width, spaceReplacer) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Vector Labels&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -1410,9 +1417,9 @@ function stringDivider(str, width, spaceReplacer) {
       import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
       import {Circle as CircleStyle, Fill, Stroke, Style, Text} from &#x27;ol/style.js&#x27;;
 
-      let openSansAdded &#x3D; false;
+      var openSansAdded &#x3D; false;
 
-      const myDom &#x3D; {
+      var myDom &#x3D; {
         points: {
           text: document.getElementById(&#x27;points-text&#x27;),
           align: document.getElementById(&#x27;points-align&#x27;),
@@ -1466,10 +1473,10 @@ function stringDivider(str, width, spaceReplacer) {
         }
       };
 
-      const getText &#x3D; function(feature, resolution, dom) {
-        const type &#x3D; dom.text.value;
-        const maxResolution &#x3D; dom.maxreso.value;
-        let text &#x3D; feature.get(&#x27;name&#x27;);
+      var getText &#x3D; function(feature, resolution, dom) {
+        var type &#x3D; dom.text.value;
+        var maxResolution &#x3D; dom.maxreso.value;
+        var text &#x3D; feature.get(&#x27;name&#x27;);
 
         if (resolution &gt; maxResolution) {
           text &#x3D; &#x27;&#x27;;
@@ -1485,28 +1492,28 @@ function stringDivider(str, width, spaceReplacer) {
       };
 
 
-      const createTextStyle &#x3D; function(feature, resolution, dom) {
-        const align &#x3D; dom.align.value;
-        const baseline &#x3D; dom.baseline.value;
-        const size &#x3D; dom.size.value;
-        const offsetX &#x3D; parseInt(dom.offsetX.value, 10);
-        const offsetY &#x3D; parseInt(dom.offsetY.value, 10);
-        const weight &#x3D; dom.weight.value;
-        const placement &#x3D; dom.placement ? dom.placement.value : undefined;
-        const maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
-        const overflow &#x3D; dom.overflow ? (dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
-        const rotation &#x3D; parseFloat(dom.rotation.value);
+      var createTextStyle &#x3D; function(feature, resolution, dom) {
+        var align &#x3D; dom.align.value;
+        var baseline &#x3D; dom.baseline.value;
+        var size &#x3D; dom.size.value;
+        var offsetX &#x3D; parseInt(dom.offsetX.value, 10);
+        var offsetY &#x3D; parseInt(dom.offsetY.value, 10);
+        var weight &#x3D; dom.weight.value;
+        var placement &#x3D; dom.placement ? dom.placement.value : undefined;
+        var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
+        var overflow &#x3D; dom.overflow ? (dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
+        var rotation &#x3D; parseFloat(dom.rotation.value);
         if (dom.font.value &#x3D;&#x3D; &#x27;\&#x27;Open Sans\&#x27;&#x27; &amp;&amp; !openSansAdded) {
-          const openSans &#x3D; document.createElement(&#x27;link&#x27;);
+          var openSans &#x3D; document.createElement(&#x27;link&#x27;);
           openSans.href &#x3D; &#x27;https://fonts.googleapis.com/css?family&#x3D;Open+Sans&#x27;;
           openSans.rel &#x3D; &#x27;stylesheet&#x27;;
           document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(openSans);
           openSansAdded &#x3D; true;
         }
-        const font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
-        const fillColor &#x3D; dom.color.value;
-        const outlineColor &#x3D; dom.outline.value;
-        const outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
+        var font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
+        var fillColor &#x3D; dom.color.value;
+        var outlineColor &#x3D; dom.outline.value;
+        var outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
 
         return new Text({
           textAlign: align &#x3D;&#x3D; &#x27;&#x27; ? undefined : align,
@@ -1539,7 +1546,7 @@ function stringDivider(str, width, spaceReplacer) {
         });
       }
 
-      const vectorPolygons &#x3D; new VectorLayer({
+      var vectorPolygons &#x3D; new VectorLayer({
         source: new VectorSource({
           url: &#x27;data/geojson/polygon-samples.geojson&#x27;,
           format: new GeoJSON()
@@ -1559,7 +1566,7 @@ function stringDivider(str, width, spaceReplacer) {
         });
       }
 
-      const vectorLines &#x3D; new VectorLayer({
+      var vectorLines &#x3D; new VectorLayer({
         source: new VectorSource({
           url: &#x27;data/geojson/line-samples.geojson&#x27;,
           format: new GeoJSON()
@@ -1580,7 +1587,7 @@ function stringDivider(str, width, spaceReplacer) {
         });
       }
 
-      const vectorPoints &#x3D; new VectorLayer({
+      var vectorPoints &#x3D; new VectorLayer({
         source: new VectorSource({
           url: &#x27;data/geojson/point-samples.geojson&#x27;,
           format: new GeoJSON()
@@ -1588,7 +1595,7 @@ function stringDivider(str, width, spaceReplacer) {
         style: pointStyleFunction
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           new TileLayer({
             source: new OSM()
@@ -1633,18 +1640,18 @@ function stringDivider(str, width, spaceReplacer) {
       // http://stackoverflow.com/questions/14484787/wrap-text-in-javascript
       function stringDivider(str, width, spaceReplacer) {
         if (str.length &gt; width) {
-          let p &#x3D; width;
+          var p &#x3D; width;
           while (p &gt; 0 &amp;&amp; (str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;)) {
             p--;
           }
           if (p &gt; 0) {
-            let left;
+            var left;
             if (str.substring(p, p + 1) &#x3D;&#x3D; &#x27;-&#x27;) {
               left &#x3D; str.substring(0, p + 1);
             } else {
               left &#x3D; str.substring(0, p);
             }
-            const right &#x3D; str.substring(p + 1);
+            var right &#x3D; str.substring(p + 1);
             return left + spaceReplacer + stringDivider(right, width, spaceReplacer);
           }
         }
@@ -1671,7 +1678,7 @@ function stringDivider(str, width, spaceReplacer) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

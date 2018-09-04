@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -75,7 +82,7 @@ import WMTS from &#x27;ol/source/WMTS.js&#x27;;
 import WMTSTileGrid from &#x27;ol/tilegrid/WMTS.js&#x27;;
 
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   controls: defaultControls({
     attributionOptions: {
@@ -88,28 +95,27 @@ const map &#x3D; new Map({
   })
 });
 
-const resolutions &#x3D; [];
-const matrixIds &#x3D; [];
-const proj3857 &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
-const maxResolution &#x3D; getWidth(proj3857.getExtent()) / 256;
+var resolutions &#x3D; [];
+var matrixIds &#x3D; [];
+var proj3857 &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
+var maxResolution &#x3D; getWidth(proj3857.getExtent()) / 256;
 
-for (let i &#x3D; 0; i &lt; 18; i++) {
+for (var i &#x3D; 0; i &lt; 18; i++) {
   matrixIds[i] &#x3D; i.toString();
   resolutions[i] &#x3D; maxResolution / Math.pow(2, i);
 }
 
-const tileGrid &#x3D; new WMTSTileGrid({
+var tileGrid &#x3D; new WMTSTileGrid({
   origin: [-20037508, 20037508],
   resolutions: resolutions,
   matrixIds: matrixIds
 });
 
-// API key valid for &#x27;openlayers.org&#x27; and &#x27;localhost&#x27;.
-// Expiration date is 06/29/2018.
-const key &#x3D; &#x27;2mqbg0z6cx7ube8gsou10nrt&#x27;;
+// For more information about the IGN API key see
+// https://geoservices.ign.fr/blog/2017/06/28/geoportail_sans_compte.html
 
-const ign_source &#x3D; new WMTS({
-  url: &#x27;https://wxs.ign.fr/&#x27; + key + &#x27;/wmts&#x27;,
+var ign_source &#x3D; new WMTS({
+  url: &#x27;https://wxs.ign.fr/pratique/geoportail/wmts&#x27;,
   layer: &#x27;GEOGRAPHICALGRIDSYSTEMS.MAPS&#x27;,
   matrixSet: &#x27;PM&#x27;,
   format: &#x27;image/jpeg&#x27;,
@@ -121,7 +127,7 @@ const ign_source &#x3D; new WMTS({
         &#x27;theme/geoportal/img/logo_gp.gif&quot;&gt;&lt;/a&gt;&#x27;
 });
 
-const ign &#x3D; new TileLayer({
+var ign &#x3D; new TileLayer({
   source: ign_source
 });
 
@@ -136,7 +142,7 @@ map.addLayer(ign);
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;IGN WMTS&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -154,7 +160,7 @@ map.addLayer(ign);
       import WMTSTileGrid from &#x27;ol/tilegrid/WMTS.js&#x27;;
 
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         target: &#x27;map&#x27;,
         controls: defaultControls({
           attributionOptions: {
@@ -167,28 +173,27 @@ map.addLayer(ign);
         })
       });
 
-      const resolutions &#x3D; [];
-      const matrixIds &#x3D; [];
-      const proj3857 &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
-      const maxResolution &#x3D; getWidth(proj3857.getExtent()) / 256;
+      var resolutions &#x3D; [];
+      var matrixIds &#x3D; [];
+      var proj3857 &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
+      var maxResolution &#x3D; getWidth(proj3857.getExtent()) / 256;
 
-      for (let i &#x3D; 0; i &lt; 18; i++) {
+      for (var i &#x3D; 0; i &lt; 18; i++) {
         matrixIds[i] &#x3D; i.toString();
         resolutions[i] &#x3D; maxResolution / Math.pow(2, i);
       }
 
-      const tileGrid &#x3D; new WMTSTileGrid({
+      var tileGrid &#x3D; new WMTSTileGrid({
         origin: [-20037508, 20037508],
         resolutions: resolutions,
         matrixIds: matrixIds
       });
 
-      // API key valid for &#x27;openlayers.org&#x27; and &#x27;localhost&#x27;.
-      // Expiration date is 06/29/2018.
-      const key &#x3D; &#x27;2mqbg0z6cx7ube8gsou10nrt&#x27;;
+      // For more information about the IGN API key see
+      // https://geoservices.ign.fr/blog/2017/06/28/geoportail_sans_compte.html
 
-      const ign_source &#x3D; new WMTS({
-        url: &#x27;https://wxs.ign.fr/&#x27; + key + &#x27;/wmts&#x27;,
+      var ign_source &#x3D; new WMTS({
+        url: &#x27;https://wxs.ign.fr/pratique/geoportail/wmts&#x27;,
         layer: &#x27;GEOGRAPHICALGRIDSYSTEMS.MAPS&#x27;,
         matrixSet: &#x27;PM&#x27;,
         format: &#x27;image/jpeg&#x27;,
@@ -200,7 +205,7 @@ map.addLayer(ign);
               &#x27;theme/geoportal/img/logo_gp.gif&quot;&gt;&lt;/a&gt;&#x27;
       });
 
-      const ign &#x3D; new TileLayer({
+      var ign &#x3D; new TileLayer({
         source: ign_source
       });
 
@@ -226,7 +231,7 @@ map.addLayer(ign);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

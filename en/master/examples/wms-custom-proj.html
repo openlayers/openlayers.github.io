@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -79,7 +86,7 @@ import TileWMS from &#x27;ol/source/TileWMS.js&#x27;;
 // ol/proj~addProjection to make it available to the library for lookup by its
 // code.
 
-const projection &#x3D; new Projection({
+var projection &#x3D; new Projection({
   code: &#x27;EPSG:21781&#x27;,
   // The extent is used to determine zoom level 0. Recommended values for a
   // projection&#x27;s validity extent can be found at https://epsg.io/.
@@ -106,8 +113,8 @@ addCoordinateTransforms(&#x27;EPSG:4326&#x27;, projection,
     ];
   });
 
-const extent &#x3D; [420000, 30000, 900000, 350000];
-const layers &#x3D; [
+var extent &#x3D; [420000, 30000, 900000, 350000];
+var layers &#x3D; [
   new TileLayer({
     extent: extent,
     source: new TileWMS({
@@ -135,7 +142,7 @@ const layers &#x3D; [
   })
 ];
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   controls: defaultControls().extend([
     new ScaleLine({
       units: &#x27;metric&#x27;
@@ -169,11 +176,11 @@ function WGStoCHy(lat, lng) {
   lng &#x3D; DEGtoSEC(lng);
 
   // Axiliary values (% Bern)
-  const lat_aux &#x3D; (lat - 169028.66) / 10000;
-  const lng_aux &#x3D; (lng - 26782.5) / 10000;
+  var lat_aux &#x3D; (lat - 169028.66) / 10000;
+  var lng_aux &#x3D; (lng - 26782.5) / 10000;
 
   // Process Y
-  const y &#x3D; 600072.37 +
+  var y &#x3D; 600072.37 +
       211455.93 * lng_aux -
       10938.51 * lng_aux * lat_aux -
       0.36 * lng_aux * Math.pow(lat_aux, 2) -
@@ -194,11 +201,11 @@ function WGStoCHx(lat, lng) {
   lng &#x3D; DEGtoSEC(lng);
 
   // Axiliary values (% Bern)
-  const lat_aux &#x3D; (lat - 169028.66) / 10000;
-  const lng_aux &#x3D; (lng - 26782.5) / 10000;
+  var lat_aux &#x3D; (lat - 169028.66) / 10000;
+  var lng_aux &#x3D; (lng - 26782.5) / 10000;
 
   // Process X
-  const x &#x3D; 200147.07 +
+  var x &#x3D; 200147.07 +
       308807.95 * lat_aux +
       3745.25 * Math.pow(lng_aux, 2) +
       76.63 * Math.pow(lat_aux, 2) -
@@ -215,11 +222,11 @@ function CHtoWGSlat(y, x) {
 
   // Converts militar to civil and  to unit &#x3D; 1000km
   // Axiliary values (% Bern)
-  const y_aux &#x3D; (y - 600000) / 1000000;
-  const x_aux &#x3D; (x - 200000) / 1000000;
+  var y_aux &#x3D; (y - 600000) / 1000000;
+  var x_aux &#x3D; (x - 200000) / 1000000;
 
   // Process lat
-  let lat &#x3D; 16.9023892 +
+  var lat &#x3D; 16.9023892 +
       3.238272 * x_aux -
       0.270978 * Math.pow(y_aux, 2) -
       0.002528 * Math.pow(x_aux, 2) -
@@ -238,11 +245,11 @@ function CHtoWGSlng(y, x) {
 
   // Converts militar to civil and  to unit &#x3D; 1000km
   // Axiliary values (% Bern)
-  const y_aux &#x3D; (y - 600000) / 1000000;
-  const x_aux &#x3D; (x - 200000) / 1000000;
+  var y_aux &#x3D; (y - 600000) / 1000000;
+  var x_aux &#x3D; (x - 200000) / 1000000;
 
   // Process long
-  let lng &#x3D; 2.6779094 +
+  var lng &#x3D; 2.6779094 +
       4.728982 * y_aux +
       0.791484 * y_aux * x_aux +
       0.1306 * y_aux * Math.pow(x_aux, 2) -
@@ -260,9 +267,9 @@ function CHtoWGSlng(y, x) {
 function DECtoSEX(angle) {
 
   // Extract DMS
-  const deg &#x3D; parseInt(angle, 10);
-  const min &#x3D; parseInt((angle - deg) * 60, 10);
-  const sec &#x3D; (((angle - deg) * 60) - min) * 60;
+  var deg &#x3D; parseInt(angle, 10);
+  var min &#x3D; parseInt((angle - deg) * 60, 10);
+  var sec &#x3D; (((angle - deg) * 60) - min) * 60;
 
   // Result in degrees sex (dd.mmss)
   return deg + min / 100 + sec / 10000;
@@ -273,12 +280,12 @@ function DECtoSEX(angle) {
 function DEGtoSEC(angle) {
 
   // Extract DMS
-  const deg &#x3D; parseInt(angle, 10);
-  let min &#x3D; parseInt((angle - deg) * 100, 10);
-  let sec &#x3D; (((angle - deg) * 100) - min) * 100;
+  var deg &#x3D; parseInt(angle, 10);
+  var min &#x3D; parseInt((angle - deg) * 100, 10);
+  var sec &#x3D; (((angle - deg) * 100) - min) * 100;
 
   // Avoid rounding problems with seconds&#x3D;0
-  const parts &#x3D; String(angle).split(&#x27;.&#x27;);
+  var parts &#x3D; String(angle).split(&#x27;.&#x27;);
   if (parts.length &#x3D;&#x3D; 2 &amp;&amp; parts[1].length &#x3D;&#x3D; 2) {
     min &#x3D; Number(parts[1]);
     sec &#x3D; 0;
@@ -298,7 +305,7 @@ function DEGtoSEC(angle) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Custom Tiled WMS&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -320,7 +327,7 @@ function DEGtoSEC(angle) {
       // ol/proj~addProjection to make it available to the library for lookup by its
       // code.
 
-      const projection &#x3D; new Projection({
+      var projection &#x3D; new Projection({
         code: &#x27;EPSG:21781&#x27;,
         // The extent is used to determine zoom level 0. Recommended values for a
         // projection&#x27;s validity extent can be found at https://epsg.io/.
@@ -347,8 +354,8 @@ function DEGtoSEC(angle) {
           ];
         });
 
-      const extent &#x3D; [420000, 30000, 900000, 350000];
-      const layers &#x3D; [
+      var extent &#x3D; [420000, 30000, 900000, 350000];
+      var layers &#x3D; [
         new TileLayer({
           extent: extent,
           source: new TileWMS({
@@ -376,7 +383,7 @@ function DEGtoSEC(angle) {
         })
       ];
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         controls: defaultControls().extend([
           new ScaleLine({
             units: &#x27;metric&#x27;
@@ -410,11 +417,11 @@ function DEGtoSEC(angle) {
         lng &#x3D; DEGtoSEC(lng);
 
         // Axiliary values (% Bern)
-        const lat_aux &#x3D; (lat - 169028.66) / 10000;
-        const lng_aux &#x3D; (lng - 26782.5) / 10000;
+        var lat_aux &#x3D; (lat - 169028.66) / 10000;
+        var lng_aux &#x3D; (lng - 26782.5) / 10000;
 
         // Process Y
-        const y &#x3D; 600072.37 +
+        var y &#x3D; 600072.37 +
             211455.93 * lng_aux -
             10938.51 * lng_aux * lat_aux -
             0.36 * lng_aux * Math.pow(lat_aux, 2) -
@@ -435,11 +442,11 @@ function DEGtoSEC(angle) {
         lng &#x3D; DEGtoSEC(lng);
 
         // Axiliary values (% Bern)
-        const lat_aux &#x3D; (lat - 169028.66) / 10000;
-        const lng_aux &#x3D; (lng - 26782.5) / 10000;
+        var lat_aux &#x3D; (lat - 169028.66) / 10000;
+        var lng_aux &#x3D; (lng - 26782.5) / 10000;
 
         // Process X
-        const x &#x3D; 200147.07 +
+        var x &#x3D; 200147.07 +
             308807.95 * lat_aux +
             3745.25 * Math.pow(lng_aux, 2) +
             76.63 * Math.pow(lat_aux, 2) -
@@ -456,11 +463,11 @@ function DEGtoSEC(angle) {
 
         // Converts militar to civil and  to unit &#x3D; 1000km
         // Axiliary values (% Bern)
-        const y_aux &#x3D; (y - 600000) / 1000000;
-        const x_aux &#x3D; (x - 200000) / 1000000;
+        var y_aux &#x3D; (y - 600000) / 1000000;
+        var x_aux &#x3D; (x - 200000) / 1000000;
 
         // Process lat
-        let lat &#x3D; 16.9023892 +
+        var lat &#x3D; 16.9023892 +
             3.238272 * x_aux -
             0.270978 * Math.pow(y_aux, 2) -
             0.002528 * Math.pow(x_aux, 2) -
@@ -479,11 +486,11 @@ function DEGtoSEC(angle) {
 
         // Converts militar to civil and  to unit &#x3D; 1000km
         // Axiliary values (% Bern)
-        const y_aux &#x3D; (y - 600000) / 1000000;
-        const x_aux &#x3D; (x - 200000) / 1000000;
+        var y_aux &#x3D; (y - 600000) / 1000000;
+        var x_aux &#x3D; (x - 200000) / 1000000;
 
         // Process long
-        let lng &#x3D; 2.6779094 +
+        var lng &#x3D; 2.6779094 +
             4.728982 * y_aux +
             0.791484 * y_aux * x_aux +
             0.1306 * y_aux * Math.pow(x_aux, 2) -
@@ -501,9 +508,9 @@ function DEGtoSEC(angle) {
       function DECtoSEX(angle) {
 
         // Extract DMS
-        const deg &#x3D; parseInt(angle, 10);
-        const min &#x3D; parseInt((angle - deg) * 60, 10);
-        const sec &#x3D; (((angle - deg) * 60) - min) * 60;
+        var deg &#x3D; parseInt(angle, 10);
+        var min &#x3D; parseInt((angle - deg) * 60, 10);
+        var sec &#x3D; (((angle - deg) * 60) - min) * 60;
 
         // Result in degrees sex (dd.mmss)
         return deg + min / 100 + sec / 10000;
@@ -514,12 +521,12 @@ function DEGtoSEC(angle) {
       function DEGtoSEC(angle) {
 
         // Extract DMS
-        const deg &#x3D; parseInt(angle, 10);
-        let min &#x3D; parseInt((angle - deg) * 100, 10);
-        let sec &#x3D; (((angle - deg) * 100) - min) * 100;
+        var deg &#x3D; parseInt(angle, 10);
+        var min &#x3D; parseInt((angle - deg) * 100, 10);
+        var sec &#x3D; (((angle - deg) * 100) - min) * 100;
 
         // Avoid rounding problems with seconds&#x3D;0
-        const parts &#x3D; String(angle).split(&#x27;.&#x27;);
+        var parts &#x3D; String(angle).split(&#x27;.&#x27;);
         if (parts.length &#x3D;&#x3D; 2 &amp;&amp; parts[1].length &#x3D;&#x3D; 2) {
           min &#x3D; Number(parts[1]);
           sec &#x3D; 0;
@@ -550,7 +557,7 @@ function DEGtoSEC(angle) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

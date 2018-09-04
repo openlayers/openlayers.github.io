@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -92,28 +99,27 @@ import View from &#x27;ol/View.js&#x27;;
 import {defaults as defaultControls} from &#x27;ol/control.js&#x27;;
 import WKT from &#x27;ol/format/WKT.js&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import {unByKey} from &#x27;ol/Observable.js&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 
-const raster &#x3D; new TileLayer({
+var raster &#x3D; new TileLayer({
   source: new OSM()
 });
 
-const format &#x3D; new WKT();
-const feature &#x3D; format.readFeature(
+var format &#x3D; new WKT();
+var feature &#x3D; format.readFeature(
   &#x27;POLYGON((10.689697265625 -25.0927734375, 34.595947265625 &#x27; +
         &#x27;-20.1708984375, 38.814697265625 -35.6396484375, 13.502197265625 &#x27; +
         &#x27;-39.1552734375, 10.689697265625 -25.0927734375))&#x27;);
 feature.getGeometry().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
 
-const vector &#x3D; new VectorLayer({
+var vector &#x3D; new VectorLayer({
   source: new VectorSource({
     features: [feature]
   })
 });
 
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   controls: defaultControls({
@@ -128,7 +134,7 @@ const map &#x3D; new Map({
 });
 
 
-const dims &#x3D; {
+var dims &#x3D; {
   a0: [1189, 841],
   a1: [841, 594],
   a2: [594, 420],
@@ -137,76 +143,38 @@ const dims &#x3D; {
   a5: [210, 148]
 };
 
-let loading &#x3D; 0;
-let loaded &#x3D; 0;
-
-const exportButton &#x3D; document.getElementById(&#x27;export-pdf&#x27;);
+var exportButton &#x3D; document.getElementById(&#x27;export-pdf&#x27;);
 
 exportButton.addEventListener(&#x27;click&#x27;, function() {
 
   exportButton.disabled &#x3D; true;
   document.body.style.cursor &#x3D; &#x27;progress&#x27;;
 
-  const format &#x3D; document.getElementById(&#x27;format&#x27;).value;
-  const resolution &#x3D; document.getElementById(&#x27;resolution&#x27;).value;
-  const dim &#x3D; dims[format];
-  const width &#x3D; Math.round(dim[0] * resolution / 25.4);
-  const height &#x3D; Math.round(dim[1] * resolution / 25.4);
-  const size &#x3D; /** @type {module:ol/size~Size} */ (map.getSize());
-  const extent &#x3D; map.getView().calculateExtent(size);
+  var format &#x3D; document.getElementById(&#x27;format&#x27;).value;
+  var resolution &#x3D; document.getElementById(&#x27;resolution&#x27;).value;
+  var dim &#x3D; dims[format];
+  var width &#x3D; Math.round(dim[0] * resolution / 25.4);
+  var height &#x3D; Math.round(dim[1] * resolution / 25.4);
+  var size &#x3D; /** @type {module:ol/size~Size} */ (map.getSize());
+  var extent &#x3D; map.getView().calculateExtent(size);
 
-  const source &#x3D; raster.getSource();
-
-  const tileLoadStart &#x3D; function() {
-    ++loading;
-  };
-
-  let timer;
-  let keys &#x3D; [];
-
-  function tileLoadEndFactory(canvas) {
-    return () &#x3D;&gt; {
-      ++loaded;
-      if (timer) {
-        clearTimeout(timer);
-        timer &#x3D; null;
-      }
-      if (loading &#x3D;&#x3D;&#x3D; loaded) {
-        timer &#x3D; window.setTimeout(() &#x3D;&gt; {
-          loading &#x3D; 0;
-          loaded &#x3D; 0;
-          const data &#x3D; canvas.toDataURL(&#x27;image/jpeg&#x27;);
-          const pdf &#x3D; new jsPDF(&#x27;landscape&#x27;, undefined, format);
-          pdf.addImage(data, &#x27;JPEG&#x27;, 0, 0, dim[0], dim[1]);
-          pdf.save(&#x27;map.pdf&#x27;);
-          keys.forEach(unByKey);
-          keys &#x3D; [];
-          map.setSize(size);
-          map.getView().fit(extent, {size});
-          map.renderSync();
-          exportButton.disabled &#x3D; false;
-          document.body.style.cursor &#x3D; &#x27;auto&#x27;;
-        }, 500);
-      }
-    };
-  }
-
-  map.once(&#x27;postcompose&#x27;, function(event) {
-    const canvas &#x3D; event.context.canvas;
-    const tileLoadEnd &#x3D; tileLoadEndFactory(canvas);
-    keys &#x3D; [
-      source.on(&#x27;tileloadstart&#x27;, tileLoadStart),
-      source.on(&#x27;tileloadend&#x27;, tileLoadEnd),
-      source.on(&#x27;tileloaderror&#x27;, tileLoadEnd)
-    ];
-    tileLoadEnd();
+  map.once(&#x27;rendercomplete&#x27;, function(event) {
+    var canvas &#x3D; event.context.canvas;
+    var data &#x3D; canvas.toDataURL(&#x27;image/jpeg&#x27;);
+    var pdf &#x3D; new jsPDF(&#x27;landscape&#x27;, undefined, format);
+    pdf.addImage(data, &#x27;JPEG&#x27;, 0, 0, dim[0], dim[1]);
+    pdf.save(&#x27;map.pdf&#x27;);
+    // Reset original map size
+    map.setSize(size);
+    map.getView().fit(extent, {size: size});
+    exportButton.disabled &#x3D; false;
+    document.body.style.cursor &#x3D; &#x27;auto&#x27;;
   });
 
-  const printSize &#x3D; [width, height];
+  // Set print size
+  var printSize &#x3D; [width, height];
   map.setSize(printSize);
   map.getView().fit(extent, {size: printSize});
-  loaded &#x3D; -1;
-  map.renderSync();
 
 }, false);
 </textarea>
@@ -244,7 +212,7 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Export PDF example&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js&quot;&gt;&lt;/script&gt;
@@ -284,28 +252,27 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
       import {defaults as defaultControls} from &#x27;ol/control.js&#x27;;
       import WKT from &#x27;ol/format/WKT.js&#x27;;
       import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-      import {unByKey} from &#x27;ol/Observable.js&#x27;;
       import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 
-      const raster &#x3D; new TileLayer({
+      var raster &#x3D; new TileLayer({
         source: new OSM()
       });
 
-      const format &#x3D; new WKT();
-      const feature &#x3D; format.readFeature(
+      var format &#x3D; new WKT();
+      var feature &#x3D; format.readFeature(
         &#x27;POLYGON((10.689697265625 -25.0927734375, 34.595947265625 &#x27; +
               &#x27;-20.1708984375, 38.814697265625 -35.6396484375, 13.502197265625 &#x27; +
               &#x27;-39.1552734375, 10.689697265625 -25.0927734375))&#x27;);
       feature.getGeometry().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
 
-      const vector &#x3D; new VectorLayer({
+      var vector &#x3D; new VectorLayer({
         source: new VectorSource({
           features: [feature]
         })
       });
 
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [raster, vector],
         target: &#x27;map&#x27;,
         controls: defaultControls({
@@ -320,7 +287,7 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
       });
 
 
-      const dims &#x3D; {
+      var dims &#x3D; {
         a0: [1189, 841],
         a1: [841, 594],
         a2: [594, 420],
@@ -329,76 +296,38 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
         a5: [210, 148]
       };
 
-      let loading &#x3D; 0;
-      let loaded &#x3D; 0;
-
-      const exportButton &#x3D; document.getElementById(&#x27;export-pdf&#x27;);
+      var exportButton &#x3D; document.getElementById(&#x27;export-pdf&#x27;);
 
       exportButton.addEventListener(&#x27;click&#x27;, function() {
 
         exportButton.disabled &#x3D; true;
         document.body.style.cursor &#x3D; &#x27;progress&#x27;;
 
-        const format &#x3D; document.getElementById(&#x27;format&#x27;).value;
-        const resolution &#x3D; document.getElementById(&#x27;resolution&#x27;).value;
-        const dim &#x3D; dims[format];
-        const width &#x3D; Math.round(dim[0] * resolution / 25.4);
-        const height &#x3D; Math.round(dim[1] * resolution / 25.4);
-        const size &#x3D; /** @type {module:ol/size~Size} */ (map.getSize());
-        const extent &#x3D; map.getView().calculateExtent(size);
+        var format &#x3D; document.getElementById(&#x27;format&#x27;).value;
+        var resolution &#x3D; document.getElementById(&#x27;resolution&#x27;).value;
+        var dim &#x3D; dims[format];
+        var width &#x3D; Math.round(dim[0] * resolution / 25.4);
+        var height &#x3D; Math.round(dim[1] * resolution / 25.4);
+        var size &#x3D; /** @type {module:ol/size~Size} */ (map.getSize());
+        var extent &#x3D; map.getView().calculateExtent(size);
 
-        const source &#x3D; raster.getSource();
-
-        const tileLoadStart &#x3D; function() {
-          ++loading;
-        };
-
-        let timer;
-        let keys &#x3D; [];
-
-        function tileLoadEndFactory(canvas) {
-          return () &#x3D;&gt; {
-            ++loaded;
-            if (timer) {
-              clearTimeout(timer);
-              timer &#x3D; null;
-            }
-            if (loading &#x3D;&#x3D;&#x3D; loaded) {
-              timer &#x3D; window.setTimeout(() &#x3D;&gt; {
-                loading &#x3D; 0;
-                loaded &#x3D; 0;
-                const data &#x3D; canvas.toDataURL(&#x27;image/jpeg&#x27;);
-                const pdf &#x3D; new jsPDF(&#x27;landscape&#x27;, undefined, format);
-                pdf.addImage(data, &#x27;JPEG&#x27;, 0, 0, dim[0], dim[1]);
-                pdf.save(&#x27;map.pdf&#x27;);
-                keys.forEach(unByKey);
-                keys &#x3D; [];
-                map.setSize(size);
-                map.getView().fit(extent, {size});
-                map.renderSync();
-                exportButton.disabled &#x3D; false;
-                document.body.style.cursor &#x3D; &#x27;auto&#x27;;
-              }, 500);
-            }
-          };
-        }
-
-        map.once(&#x27;postcompose&#x27;, function(event) {
-          const canvas &#x3D; event.context.canvas;
-          const tileLoadEnd &#x3D; tileLoadEndFactory(canvas);
-          keys &#x3D; [
-            source.on(&#x27;tileloadstart&#x27;, tileLoadStart),
-            source.on(&#x27;tileloadend&#x27;, tileLoadEnd),
-            source.on(&#x27;tileloaderror&#x27;, tileLoadEnd)
-          ];
-          tileLoadEnd();
+        map.once(&#x27;rendercomplete&#x27;, function(event) {
+          var canvas &#x3D; event.context.canvas;
+          var data &#x3D; canvas.toDataURL(&#x27;image/jpeg&#x27;);
+          var pdf &#x3D; new jsPDF(&#x27;landscape&#x27;, undefined, format);
+          pdf.addImage(data, &#x27;JPEG&#x27;, 0, 0, dim[0], dim[1]);
+          pdf.save(&#x27;map.pdf&#x27;);
+          // Reset original map size
+          map.setSize(size);
+          map.getView().fit(extent, {size: size});
+          exportButton.disabled &#x3D; false;
+          document.body.style.cursor &#x3D; &#x27;auto&#x27;;
         });
 
-        const printSize &#x3D; [width, height];
+        // Set print size
+        var printSize &#x3D; [width, height];
         map.setSize(printSize);
         map.getView().fit(extent, {size: printSize});
-        loaded &#x3D; -1;
-        map.renderSync();
 
       }, false);
     &lt;/script&gt;
@@ -422,7 +351,7 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

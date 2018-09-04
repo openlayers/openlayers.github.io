@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -73,15 +80,15 @@ import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {Icon, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-const raster &#x3D; new TileLayer({
+var raster &#x3D; new TileLayer({
   source: new OSM()
 });
 
-const source &#x3D; new VectorSource();
+var source &#x3D; new VectorSource();
 
-const styleFunction &#x3D; function(feature) {
-  const geometry &#x3D; feature.getGeometry();
-  const styles &#x3D; [
+var styleFunction &#x3D; function(feature) {
+  var geometry &#x3D; feature.getGeometry();
+  var styles &#x3D; [
     // linestring
     new Style({
       stroke: new Stroke({
@@ -92,9 +99,9 @@ const styleFunction &#x3D; function(feature) {
   ];
 
   geometry.forEachSegment(function(start, end) {
-    const dx &#x3D; end[0] - start[0];
-    const dy &#x3D; end[1] - start[1];
-    const rotation &#x3D; Math.atan2(dy, dx);
+    var dx &#x3D; end[0] - start[0];
+    var dy &#x3D; end[1] - start[1];
+    var rotation &#x3D; Math.atan2(dy, dx);
     // arrows
     styles.push(new Style({
       geometry: new Point(end),
@@ -109,12 +116,12 @@ const styleFunction &#x3D; function(feature) {
 
   return styles;
 };
-const vector &#x3D; new VectorLayer({
+var vector &#x3D; new VectorLayer({
   source: source,
   style: styleFunction
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new View({
@@ -137,7 +144,7 @@ map.addInteraction(new Draw({
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;LineString Arrows&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -153,15 +160,15 @@ map.addInteraction(new Draw({
       import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
       import {Icon, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
-      const raster &#x3D; new TileLayer({
+      var raster &#x3D; new TileLayer({
         source: new OSM()
       });
 
-      const source &#x3D; new VectorSource();
+      var source &#x3D; new VectorSource();
 
-      const styleFunction &#x3D; function(feature) {
-        const geometry &#x3D; feature.getGeometry();
-        const styles &#x3D; [
+      var styleFunction &#x3D; function(feature) {
+        var geometry &#x3D; feature.getGeometry();
+        var styles &#x3D; [
           // linestring
           new Style({
             stroke: new Stroke({
@@ -172,9 +179,9 @@ map.addInteraction(new Draw({
         ];
 
         geometry.forEachSegment(function(start, end) {
-          const dx &#x3D; end[0] - start[0];
-          const dy &#x3D; end[1] - start[1];
-          const rotation &#x3D; Math.atan2(dy, dx);
+          var dx &#x3D; end[0] - start[0];
+          var dy &#x3D; end[1] - start[1];
+          var rotation &#x3D; Math.atan2(dy, dx);
           // arrows
           styles.push(new Style({
             geometry: new Point(end),
@@ -189,12 +196,12 @@ map.addInteraction(new Draw({
 
         return styles;
       };
-      const vector &#x3D; new VectorLayer({
+      var vector &#x3D; new VectorLayer({
         source: source,
         style: styleFunction
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [raster, vector],
         target: &#x27;map&#x27;,
         view: new View({
@@ -228,7 +235,7 @@ map.addInteraction(new Draw({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

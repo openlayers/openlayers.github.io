@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -73,10 +80,10 @@ import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import {Fill, RegularShape, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
 
-const stroke &#x3D; new Stroke({color: &#x27;black&#x27;, width: 2});
-const fill &#x3D; new Fill({color: &#x27;red&#x27;});
+var stroke &#x3D; new Stroke({color: &#x27;black&#x27;, width: 2});
+var fill &#x3D; new Fill({color: &#x27;red&#x27;});
 
-const styles &#x3D; {
+var styles &#x3D; {
   &#x27;square&#x27;: new Style({
     image: new RegularShape({
       fill: fill,
@@ -129,25 +136,25 @@ const styles &#x3D; {
 };
 
 
-const styleKeys &#x3D; [&#x27;x&#x27;, &#x27;cross&#x27;, &#x27;star&#x27;, &#x27;triangle&#x27;, &#x27;square&#x27;];
-const count &#x3D; 250;
-const features &#x3D; new Array(count);
-const e &#x3D; 4500000;
-for (let i &#x3D; 0; i &lt; count; ++i) {
-  const coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+var styleKeys &#x3D; [&#x27;x&#x27;, &#x27;cross&#x27;, &#x27;star&#x27;, &#x27;triangle&#x27;, &#x27;square&#x27;];
+var count &#x3D; 250;
+var features &#x3D; new Array(count);
+var e &#x3D; 4500000;
+for (var i &#x3D; 0; i &lt; count; ++i) {
+  var coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
   features[i] &#x3D; new Feature(new Point(coordinates));
   features[i].setStyle(styles[styleKeys[Math.floor(Math.random() * 5)]]);
 }
 
-const source &#x3D; new VectorSource({
+var source &#x3D; new VectorSource({
   features: features
 });
 
-const vectorLayer &#x3D; new VectorLayer({
+var vectorLayer &#x3D; new VectorLayer({
   source: source
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     vectorLayer
   ],
@@ -167,7 +174,7 @@ const map &#x3D; new Map({
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Regular Shapes&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -184,10 +191,10 @@ const map &#x3D; new Map({
       import {Fill, RegularShape, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
 
-      const stroke &#x3D; new Stroke({color: &#x27;black&#x27;, width: 2});
-      const fill &#x3D; new Fill({color: &#x27;red&#x27;});
+      var stroke &#x3D; new Stroke({color: &#x27;black&#x27;, width: 2});
+      var fill &#x3D; new Fill({color: &#x27;red&#x27;});
 
-      const styles &#x3D; {
+      var styles &#x3D; {
         &#x27;square&#x27;: new Style({
           image: new RegularShape({
             fill: fill,
@@ -240,25 +247,25 @@ const map &#x3D; new Map({
       };
 
 
-      const styleKeys &#x3D; [&#x27;x&#x27;, &#x27;cross&#x27;, &#x27;star&#x27;, &#x27;triangle&#x27;, &#x27;square&#x27;];
-      const count &#x3D; 250;
-      const features &#x3D; new Array(count);
-      const e &#x3D; 4500000;
-      for (let i &#x3D; 0; i &lt; count; ++i) {
-        const coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+      var styleKeys &#x3D; [&#x27;x&#x27;, &#x27;cross&#x27;, &#x27;star&#x27;, &#x27;triangle&#x27;, &#x27;square&#x27;];
+      var count &#x3D; 250;
+      var features &#x3D; new Array(count);
+      var e &#x3D; 4500000;
+      for (var i &#x3D; 0; i &lt; count; ++i) {
+        var coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
         features[i] &#x3D; new Feature(new Point(coordinates));
         features[i].setStyle(styles[styleKeys[Math.floor(Math.random() * 5)]]);
       }
 
-      const source &#x3D; new VectorSource({
+      var source &#x3D; new VectorSource({
         features: features
       });
 
-      const vectorLayer &#x3D; new VectorLayer({
+      var vectorLayer &#x3D; new VectorLayer({
         source: source
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           vectorLayer
         ],
@@ -289,7 +296,7 @@ const map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

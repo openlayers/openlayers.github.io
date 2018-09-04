@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -95,39 +102,39 @@ import BingMaps from &#x27;ol/source/BingMaps.js&#x27;;
 import RasterSource from &#x27;ol/source/Raster.js&#x27;;
 
 function growRegion(inputs, data) {
-  const image &#x3D; inputs[0];
-  let seed &#x3D; data.pixel;
-  const delta &#x3D; parseInt(data.delta);
+  var image &#x3D; inputs[0];
+  var seed &#x3D; data.pixel;
+  var delta &#x3D; parseInt(data.delta);
   if (!seed) {
     return image;
   }
 
   seed &#x3D; seed.map(Math.round);
-  const width &#x3D; image.width;
-  const height &#x3D; image.height;
-  const inputData &#x3D; image.data;
-  const outputData &#x3D; new Uint8ClampedArray(inputData);
-  const seedIdx &#x3D; (seed[1] * width + seed[0]) * 4;
-  const seedR &#x3D; inputData[seedIdx];
-  const seedG &#x3D; inputData[seedIdx + 1];
-  const seedB &#x3D; inputData[seedIdx + 2];
-  let edge &#x3D; [seed];
+  var width &#x3D; image.width;
+  var height &#x3D; image.height;
+  var inputData &#x3D; image.data;
+  var outputData &#x3D; new Uint8ClampedArray(inputData);
+  var seedIdx &#x3D; (seed[1] * width + seed[0]) * 4;
+  var seedR &#x3D; inputData[seedIdx];
+  var seedG &#x3D; inputData[seedIdx + 1];
+  var seedB &#x3D; inputData[seedIdx + 2];
+  var edge &#x3D; [seed];
   while (edge.length) {
-    const newedge &#x3D; [];
-    for (let i &#x3D; 0, ii &#x3D; edge.length; i &lt; ii; i++) {
+    var newedge &#x3D; [];
+    for (var i &#x3D; 0, ii &#x3D; edge.length; i &lt; ii; i++) {
       // As noted in the Raster source constructor, this function is provided
       // using the &#x60;lib&#x60; option. Other functions will NOT be visible unless
       // provided using the &#x60;lib&#x60; option.
-      const next &#x3D; next4Edges(edge[i]);
-      for (let j &#x3D; 0, jj &#x3D; next.length; j &lt; jj; j++) {
-        const s &#x3D; next[j][0];
-        const t &#x3D; next[j][1];
+      var next &#x3D; next4Edges(edge[i]);
+      for (var j &#x3D; 0, jj &#x3D; next.length; j &lt; jj; j++) {
+        var s &#x3D; next[j][0];
+        var t &#x3D; next[j][1];
         if (s &gt;&#x3D; 0 &amp;&amp; s &lt; width &amp;&amp; t &gt;&#x3D; 0 &amp;&amp; t &lt; height) {
-          const ci &#x3D; (t * width + s) * 4;
-          const cr &#x3D; inputData[ci];
-          const cg &#x3D; inputData[ci + 1];
-          const cb &#x3D; inputData[ci + 2];
-          const ca &#x3D; inputData[ci + 3];
+          var ci &#x3D; (t * width + s) * 4;
+          var cr &#x3D; inputData[ci];
+          var cg &#x3D; inputData[ci + 1];
+          var cb &#x3D; inputData[ci + 2];
+          var ca &#x3D; inputData[ci + 3];
           // if alpha is zero, carry on
           if (ca &#x3D;&#x3D;&#x3D; 0) {
             continue;
@@ -151,8 +158,8 @@ function growRegion(inputs, data) {
 }
 
 function next4Edges(edge) {
-  const x &#x3D; edge[0];
-  const y &#x3D; edge[1];
+  var x &#x3D; edge[0];
+  var y &#x3D; edge[1];
   return [
     [x + 1, y],
     [x - 1, y],
@@ -161,13 +168,13 @@ function next4Edges(edge) {
   ];
 }
 
-const key &#x3D; &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;;
+var key &#x3D; &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;;
 
-const imagery &#x3D; new TileLayer({
+var imagery &#x3D; new TileLayer({
   source: new BingMaps({key: key, imagerySet: &#x27;Aerial&#x27;})
 });
 
-const raster &#x3D; new RasterSource({
+var raster &#x3D; new RasterSource({
   sources: [imagery.getSource()],
   operationType: &#x27;image&#x27;,
   operation: growRegion,
@@ -178,12 +185,12 @@ const raster &#x3D; new RasterSource({
   }
 });
 
-const rasterImage &#x3D; new ImageLayer({
+var rasterImage &#x3D; new ImageLayer({
   opacity: 0.7,
   source: raster
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [imagery, rasterImage],
   target: &#x27;map&#x27;,
   view: new View({
@@ -192,18 +199,18 @@ const map &#x3D; new Map({
   })
 });
 
-let coordinate;
+var coordinate;
 
 map.on(&#x27;click&#x27;, function(event) {
   coordinate &#x3D; event.coordinate;
   raster.changed();
 });
 
-const thresholdControl &#x3D; document.getElementById(&#x27;threshold&#x27;);
+var thresholdControl &#x3D; document.getElementById(&#x27;threshold&#x27;);
 
 raster.on(&#x27;beforeoperations&#x27;, function(event) {
   // the event.data object will be passed to operations
-  const data &#x3D; event.data;
+  var data &#x3D; event.data;
   data.delta &#x3D; thresholdControl.value;
   if (coordinate) {
     data.pixel &#x3D; map.getPixelFromCoordinate(coordinate);
@@ -239,7 +246,7 @@ thresholdControl.addEventListener(&#x27;input&#x27;, function() {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Region Growing&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -267,39 +274,39 @@ thresholdControl.addEventListener(&#x27;input&#x27;, function() {
       import RasterSource from &#x27;ol/source/Raster.js&#x27;;
 
       function growRegion(inputs, data) {
-        const image &#x3D; inputs[0];
-        let seed &#x3D; data.pixel;
-        const delta &#x3D; parseInt(data.delta);
+        var image &#x3D; inputs[0];
+        var seed &#x3D; data.pixel;
+        var delta &#x3D; parseInt(data.delta);
         if (!seed) {
           return image;
         }
 
         seed &#x3D; seed.map(Math.round);
-        const width &#x3D; image.width;
-        const height &#x3D; image.height;
-        const inputData &#x3D; image.data;
-        const outputData &#x3D; new Uint8ClampedArray(inputData);
-        const seedIdx &#x3D; (seed[1] * width + seed[0]) * 4;
-        const seedR &#x3D; inputData[seedIdx];
-        const seedG &#x3D; inputData[seedIdx + 1];
-        const seedB &#x3D; inputData[seedIdx + 2];
-        let edge &#x3D; [seed];
+        var width &#x3D; image.width;
+        var height &#x3D; image.height;
+        var inputData &#x3D; image.data;
+        var outputData &#x3D; new Uint8ClampedArray(inputData);
+        var seedIdx &#x3D; (seed[1] * width + seed[0]) * 4;
+        var seedR &#x3D; inputData[seedIdx];
+        var seedG &#x3D; inputData[seedIdx + 1];
+        var seedB &#x3D; inputData[seedIdx + 2];
+        var edge &#x3D; [seed];
         while (edge.length) {
-          const newedge &#x3D; [];
-          for (let i &#x3D; 0, ii &#x3D; edge.length; i &lt; ii; i++) {
+          var newedge &#x3D; [];
+          for (var i &#x3D; 0, ii &#x3D; edge.length; i &lt; ii; i++) {
             // As noted in the Raster source constructor, this function is provided
             // using the &#x60;lib&#x60; option. Other functions will NOT be visible unless
             // provided using the &#x60;lib&#x60; option.
-            const next &#x3D; next4Edges(edge[i]);
-            for (let j &#x3D; 0, jj &#x3D; next.length; j &lt; jj; j++) {
-              const s &#x3D; next[j][0];
-              const t &#x3D; next[j][1];
+            var next &#x3D; next4Edges(edge[i]);
+            for (var j &#x3D; 0, jj &#x3D; next.length; j &lt; jj; j++) {
+              var s &#x3D; next[j][0];
+              var t &#x3D; next[j][1];
               if (s &gt;&#x3D; 0 &amp;&amp; s &lt; width &amp;&amp; t &gt;&#x3D; 0 &amp;&amp; t &lt; height) {
-                const ci &#x3D; (t * width + s) * 4;
-                const cr &#x3D; inputData[ci];
-                const cg &#x3D; inputData[ci + 1];
-                const cb &#x3D; inputData[ci + 2];
-                const ca &#x3D; inputData[ci + 3];
+                var ci &#x3D; (t * width + s) * 4;
+                var cr &#x3D; inputData[ci];
+                var cg &#x3D; inputData[ci + 1];
+                var cb &#x3D; inputData[ci + 2];
+                var ca &#x3D; inputData[ci + 3];
                 // if alpha is zero, carry on
                 if (ca &#x3D;&#x3D;&#x3D; 0) {
                   continue;
@@ -323,8 +330,8 @@ thresholdControl.addEventListener(&#x27;input&#x27;, function() {
       }
 
       function next4Edges(edge) {
-        const x &#x3D; edge[0];
-        const y &#x3D; edge[1];
+        var x &#x3D; edge[0];
+        var y &#x3D; edge[1];
         return [
           [x + 1, y],
           [x - 1, y],
@@ -333,13 +340,13 @@ thresholdControl.addEventListener(&#x27;input&#x27;, function() {
         ];
       }
 
-      const key &#x3D; &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;;
+      var key &#x3D; &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;;
 
-      const imagery &#x3D; new TileLayer({
+      var imagery &#x3D; new TileLayer({
         source: new BingMaps({key: key, imagerySet: &#x27;Aerial&#x27;})
       });
 
-      const raster &#x3D; new RasterSource({
+      var raster &#x3D; new RasterSource({
         sources: [imagery.getSource()],
         operationType: &#x27;image&#x27;,
         operation: growRegion,
@@ -350,12 +357,12 @@ thresholdControl.addEventListener(&#x27;input&#x27;, function() {
         }
       });
 
-      const rasterImage &#x3D; new ImageLayer({
+      var rasterImage &#x3D; new ImageLayer({
         opacity: 0.7,
         source: raster
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [imagery, rasterImage],
         target: &#x27;map&#x27;,
         view: new View({
@@ -364,18 +371,18 @@ thresholdControl.addEventListener(&#x27;input&#x27;, function() {
         })
       });
 
-      let coordinate;
+      var coordinate;
 
       map.on(&#x27;click&#x27;, function(event) {
         coordinate &#x3D; event.coordinate;
         raster.changed();
       });
 
-      const thresholdControl &#x3D; document.getElementById(&#x27;threshold&#x27;);
+      var thresholdControl &#x3D; document.getElementById(&#x27;threshold&#x27;);
 
       raster.on(&#x27;beforeoperations&#x27;, function(event) {
         // the event.data object will be passed to operations
-        const data &#x3D; event.data;
+        var data &#x3D; event.data;
         data.delta &#x3D; thresholdControl.value;
         if (coordinate) {
           data.pixel &#x3D; map.getPixelFromCoordinate(coordinate);
@@ -412,7 +419,7 @@ thresholdControl.addEventListener(&#x27;input&#x27;, function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

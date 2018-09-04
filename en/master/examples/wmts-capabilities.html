@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -67,12 +74,12 @@
           <textarea class="hidden" name="description">Example of parsing a WMTS GetCapabilities response.</textarea>
           <textarea class="hidden" name="js">import WMTSCapabilities from &#x27;ol/format/WMTSCapabilities.js&#x27;;
 
-const parser &#x3D; new WMTSCapabilities();
+var parser &#x3D; new WMTSCapabilities();
 
 fetch(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
   return response.text();
 }).then(function(text) {
-  const result &#x3D; parser.read(text);
+  var result &#x3D; parser.read(text);
   document.getElementById(&#x27;log&#x27;).innerText &#x3D; JSON.stringify(result, null, 2);
 });
 </textarea>
@@ -89,7 +96,7 @@ fetch(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;WMTS Capabilities Parsing&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -105,12 +112,12 @@ fetch(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
     &lt;script&gt;
       import WMTSCapabilities from &#x27;ol/format/WMTSCapabilities.js&#x27;;
 
-      const parser &#x3D; new WMTSCapabilities();
+      var parser &#x3D; new WMTSCapabilities();
 
       fetch(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
         return response.text();
       }).then(function(text) {
-        const result &#x3D; parser.read(text);
+        var result &#x3D; parser.read(text);
         document.getElementById(&#x27;log&#x27;).innerText &#x3D; JSON.stringify(result, null, 2);
       });
     &lt;/script&gt;
@@ -134,7 +141,7 @@ fetch(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

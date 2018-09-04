@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -83,15 +90,15 @@ import TileJSON from &#x27;ol/source/TileJSON.js&#x27;;
 /**
  * Elements that make up the popup.
  */
-const container &#x3D; document.getElementById(&#x27;popup&#x27;);
-const content &#x3D; document.getElementById(&#x27;popup-content&#x27;);
-const closer &#x3D; document.getElementById(&#x27;popup-closer&#x27;);
+var container &#x3D; document.getElementById(&#x27;popup&#x27;);
+var content &#x3D; document.getElementById(&#x27;popup-content&#x27;);
+var closer &#x3D; document.getElementById(&#x27;popup-closer&#x27;);
 
 
 /**
  * Create an overlay to anchor the popup to the map.
  */
-const overlay &#x3D; new Overlay({
+var overlay &#x3D; new Overlay({
   element: container,
   autoPan: true,
   autoPanAnimation: {
@@ -114,7 +121,7 @@ closer.onclick &#x3D; function() {
 /**
  * Create the map.
  */
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new TileJSON({
@@ -136,8 +143,8 @@ const map &#x3D; new Map({
  * Add a click handler to the map to render the popup.
  */
 map.on(&#x27;singleclick&#x27;, function(evt) {
-  const coordinate &#x3D; evt.coordinate;
-  const hdms &#x3D; toStringHDMS(toLonLat(coordinate));
+  var coordinate &#x3D; evt.coordinate;
+  var hdms &#x3D; toStringHDMS(toLonLat(coordinate));
 
   content.innerHTML &#x3D; &#x27;&lt;p&gt;You clicked here:&lt;/p&gt;&lt;code&gt;&#x27; + hdms +
       &#x27;&lt;/code&gt;&#x27;;
@@ -199,7 +206,7 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Popup&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -267,15 +274,15 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
       /**
        * Elements that make up the popup.
        */
-      const container &#x3D; document.getElementById(&#x27;popup&#x27;);
-      const content &#x3D; document.getElementById(&#x27;popup-content&#x27;);
-      const closer &#x3D; document.getElementById(&#x27;popup-closer&#x27;);
+      var container &#x3D; document.getElementById(&#x27;popup&#x27;);
+      var content &#x3D; document.getElementById(&#x27;popup-content&#x27;);
+      var closer &#x3D; document.getElementById(&#x27;popup-closer&#x27;);
 
 
       /**
        * Create an overlay to anchor the popup to the map.
        */
-      const overlay &#x3D; new Overlay({
+      var overlay &#x3D; new Overlay({
         element: container,
         autoPan: true,
         autoPanAnimation: {
@@ -298,7 +305,7 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
       /**
        * Create the map.
        */
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           new TileLayer({
             source: new TileJSON({
@@ -320,8 +327,8 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
        * Add a click handler to the map to render the popup.
        */
       map.on(&#x27;singleclick&#x27;, function(evt) {
-        const coordinate &#x3D; evt.coordinate;
-        const hdms &#x3D; toStringHDMS(toLonLat(coordinate));
+        var coordinate &#x3D; evt.coordinate;
+        var hdms &#x3D; toStringHDMS(toLonLat(coordinate));
 
         content.innerHTML &#x3D; &#x27;&lt;p&gt;You clicked here:&lt;/p&gt;&lt;code&gt;&#x27; + hdms +
             &#x27;&lt;/code&gt;&#x27;;
@@ -348,7 +355,7 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

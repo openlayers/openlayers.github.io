@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -81,18 +88,18 @@ import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
 
-const london &#x3D; fromLonLat([-0.12755, 51.507222]);
-const moscow &#x3D; fromLonLat([37.6178, 55.7517]);
-const istanbul &#x3D; fromLonLat([28.9744, 41.0128]);
-const rome &#x3D; fromLonLat([12.5, 41.9]);
-const bern &#x3D; fromLonLat([7.4458, 46.95]);
+var london &#x3D; fromLonLat([-0.12755, 51.507222]);
+var moscow &#x3D; fromLonLat([37.6178, 55.7517]);
+var istanbul &#x3D; fromLonLat([28.9744, 41.0128]);
+var rome &#x3D; fromLonLat([12.5, 41.9]);
+var bern &#x3D; fromLonLat([7.4458, 46.95]);
 
-const view &#x3D; new View({
+var view &#x3D; new View({
   center: istanbul,
   zoom: 6
 });
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   layers: [
     new TileLayer({
@@ -108,9 +115,9 @@ const map &#x3D; new Map({
 
 // A bounce easing method (from https://github.com/DmitryBaranovskiy/raphael).
 function bounce(t) {
-  const s &#x3D; 7.5625;
-  const p &#x3D; 2.75;
-  let l;
+  var s &#x3D; 7.5625;
+  var p &#x3D; 2.75;
+  var l;
   if (t &lt; (1 / p)) {
     l &#x3D; s * t * t;
   } else {
@@ -153,7 +160,7 @@ onClick(&#x27;rotate-right&#x27;, function() {
 
 onClick(&#x27;rotate-around-rome&#x27;, function() {
   // Rotation animation takes the shortest arc, so animate in two parts
-  const rotation &#x3D; view.getRotation();
+  var rotation &#x3D; view.getRotation();
   view.animate({
     rotation: rotation + Math.PI,
     anchor: rome,
@@ -190,7 +197,7 @@ onClick(&#x27;bounce-to-istanbul&#x27;, function() {
 
 onClick(&#x27;spin-to-rome&#x27;, function() {
   // Rotation animation takes the shortest arc, so animate in two parts
-  const center &#x3D; view.getCenter();
+  var center &#x3D; view.getCenter();
   view.animate({
     center: [
       center[0] + (rome[0] - center[0]) / 2,
@@ -206,10 +213,10 @@ onClick(&#x27;spin-to-rome&#x27;, function() {
 });
 
 function flyTo(location, done) {
-  const duration &#x3D; 2000;
-  const zoom &#x3D; view.getZoom();
-  let parts &#x3D; 2;
-  let called &#x3D; false;
+  var duration &#x3D; 2000;
+  var zoom &#x3D; view.getZoom();
+  var parts &#x3D; 2;
+  var called &#x3D; false;
   function callback(complete) {
     --parts;
     if (called) {
@@ -238,13 +245,13 @@ onClick(&#x27;fly-to-bern&#x27;, function() {
 });
 
 function tour() {
-  const locations &#x3D; [london, bern, rome, moscow, istanbul];
-  let index &#x3D; -1;
+  var locations &#x3D; [london, bern, rome, moscow, istanbul];
+  var index &#x3D; -1;
   function next(more) {
     if (more) {
       ++index;
       if (index &lt; locations.length) {
-        const delay &#x3D; index &#x3D;&#x3D;&#x3D; 0 ? 0 : 750;
+        var delay &#x3D; index &#x3D;&#x3D;&#x3D; 0 ? 0 : 750;
         setTimeout(function() {
           flyTo(locations[index], next);
         }, delay);
@@ -278,7 +285,7 @@ onClick(&#x27;tour&#x27;, tour);
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;View Animation&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -302,18 +309,18 @@ onClick(&#x27;tour&#x27;, tour);
       import {fromLonLat} from &#x27;ol/proj.js&#x27;;
       import OSM from &#x27;ol/source/OSM.js&#x27;;
 
-      const london &#x3D; fromLonLat([-0.12755, 51.507222]);
-      const moscow &#x3D; fromLonLat([37.6178, 55.7517]);
-      const istanbul &#x3D; fromLonLat([28.9744, 41.0128]);
-      const rome &#x3D; fromLonLat([12.5, 41.9]);
-      const bern &#x3D; fromLonLat([7.4458, 46.95]);
+      var london &#x3D; fromLonLat([-0.12755, 51.507222]);
+      var moscow &#x3D; fromLonLat([37.6178, 55.7517]);
+      var istanbul &#x3D; fromLonLat([28.9744, 41.0128]);
+      var rome &#x3D; fromLonLat([12.5, 41.9]);
+      var bern &#x3D; fromLonLat([7.4458, 46.95]);
 
-      const view &#x3D; new View({
+      var view &#x3D; new View({
         center: istanbul,
         zoom: 6
       });
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         target: &#x27;map&#x27;,
         layers: [
           new TileLayer({
@@ -329,9 +336,9 @@ onClick(&#x27;tour&#x27;, tour);
 
       // A bounce easing method (from https://github.com/DmitryBaranovskiy/raphael).
       function bounce(t) {
-        const s &#x3D; 7.5625;
-        const p &#x3D; 2.75;
-        let l;
+        var s &#x3D; 7.5625;
+        var p &#x3D; 2.75;
+        var l;
         if (t &lt; (1 / p)) {
           l &#x3D; s * t * t;
         } else {
@@ -374,7 +381,7 @@ onClick(&#x27;tour&#x27;, tour);
 
       onClick(&#x27;rotate-around-rome&#x27;, function() {
         // Rotation animation takes the shortest arc, so animate in two parts
-        const rotation &#x3D; view.getRotation();
+        var rotation &#x3D; view.getRotation();
         view.animate({
           rotation: rotation + Math.PI,
           anchor: rome,
@@ -411,7 +418,7 @@ onClick(&#x27;tour&#x27;, tour);
 
       onClick(&#x27;spin-to-rome&#x27;, function() {
         // Rotation animation takes the shortest arc, so animate in two parts
-        const center &#x3D; view.getCenter();
+        var center &#x3D; view.getCenter();
         view.animate({
           center: [
             center[0] + (rome[0] - center[0]) / 2,
@@ -427,10 +434,10 @@ onClick(&#x27;tour&#x27;, tour);
       });
 
       function flyTo(location, done) {
-        const duration &#x3D; 2000;
-        const zoom &#x3D; view.getZoom();
-        let parts &#x3D; 2;
-        let called &#x3D; false;
+        var duration &#x3D; 2000;
+        var zoom &#x3D; view.getZoom();
+        var parts &#x3D; 2;
+        var called &#x3D; false;
         function callback(complete) {
           --parts;
           if (called) {
@@ -459,13 +466,13 @@ onClick(&#x27;tour&#x27;, tour);
       });
 
       function tour() {
-        const locations &#x3D; [london, bern, rome, moscow, istanbul];
-        let index &#x3D; -1;
+        var locations &#x3D; [london, bern, rome, moscow, istanbul];
+        var index &#x3D; -1;
         function next(more) {
           if (more) {
             ++index;
             if (index &lt; locations.length) {
-              const delay &#x3D; index &#x3D;&#x3D;&#x3D; 0 ? 0 : 750;
+              var delay &#x3D; index &#x3D;&#x3D;&#x3D; 0 ? 0 : 750;
               setTimeout(function() {
                 flyTo(locations[index], next);
               }, delay);
@@ -501,7 +508,7 @@ onClick(&#x27;tour&#x27;, tour);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

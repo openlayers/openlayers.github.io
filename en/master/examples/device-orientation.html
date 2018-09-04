@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -77,11 +84,11 @@ import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import {toRadians} from &#x27;ol/math.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
 
-const view &#x3D; new View({
+var view &#x3D; new View({
   center: [0, 0],
   zoom: 2
 });
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM()
@@ -101,15 +108,15 @@ function el(id) {
 }
 
 
-const gn &#x3D; new GyroNorm();
+var gn &#x3D; new GyroNorm();
 
 gn.init().then(function() {
   gn.start(function(event) {
-    const center &#x3D; view.getCenter();
-    const resolution &#x3D; view.getResolution();
-    const alpha &#x3D; toRadians(event.do.beta);
-    const beta &#x3D; toRadians(event.do.beta);
-    const gamma &#x3D; toRadians(event.do.gamma);
+    var center &#x3D; view.getCenter();
+    var resolution &#x3D; view.getResolution();
+    var alpha &#x3D; toRadians(event.do.beta);
+    var beta &#x3D; toRadians(event.do.beta);
+    var gamma &#x3D; toRadians(event.do.gamma);
 
     el(&#x27;alpha&#x27;).innerText &#x3D; alpha + &#x27; [rad]&#x27;;
     el(&#x27;beta&#x27;).innerText &#x3D; beta + &#x27; [rad]&#x27;;
@@ -136,7 +143,7 @@ gn.init().then(function() {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Device Orientation&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://cdn.rawgit.com/dorukeker/gyronorm.js/v2.0.6/dist/gyronorm.complete.min.js&quot;&gt;&lt;/script&gt;
@@ -156,11 +163,11 @@ gn.init().then(function() {
       import {toRadians} from &#x27;ol/math.js&#x27;;
       import OSM from &#x27;ol/source/OSM.js&#x27;;
 
-      const view &#x3D; new View({
+      var view &#x3D; new View({
         center: [0, 0],
         zoom: 2
       });
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [
           new TileLayer({
             source: new OSM()
@@ -180,15 +187,15 @@ gn.init().then(function() {
       }
 
 
-      const gn &#x3D; new GyroNorm();
+      var gn &#x3D; new GyroNorm();
 
       gn.init().then(function() {
         gn.start(function(event) {
-          const center &#x3D; view.getCenter();
-          const resolution &#x3D; view.getResolution();
-          const alpha &#x3D; toRadians(event.do.beta);
-          const beta &#x3D; toRadians(event.do.beta);
-          const gamma &#x3D; toRadians(event.do.gamma);
+          var center &#x3D; view.getCenter();
+          var resolution &#x3D; view.getResolution();
+          var alpha &#x3D; toRadians(event.do.beta);
+          var beta &#x3D; toRadians(event.do.beta);
+          var gamma &#x3D; toRadians(event.do.gamma);
 
           el(&#x27;alpha&#x27;).innerText &#x3D; alpha + &#x27; [rad]&#x27;;
           el(&#x27;beta&#x27;).innerText &#x3D; beta + &#x27; [rad]&#x27;;
@@ -221,7 +228,7 @@ gn.init().then(function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -84,13 +91,13 @@ import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
 
-const raster &#x3D; new TileLayer({
+var raster &#x3D; new TileLayer({
   source: new OSM()
 });
 
-const source &#x3D; new VectorSource();
+var source &#x3D; new VectorSource();
 
-const vector &#x3D; new VectorLayer({
+var vector &#x3D; new VectorLayer({
   source: source,
   style: new Style({
     fill: new Fill({
@@ -114,64 +121,64 @@ const vector &#x3D; new VectorLayer({
  * Currently drawn feature.
  * @type {module:ol/Feature~Feature}
  */
-let sketch;
+var sketch;
 
 
 /**
  * The help tooltip element.
  * @type {Element}
  */
-let helpTooltipElement;
+var helpTooltipElement;
 
 
 /**
  * Overlay to show the help messages.
  * @type {module:ol/Overlay}
  */
-let helpTooltip;
+var helpTooltip;
 
 
 /**
  * The measure tooltip element.
  * @type {Element}
  */
-let measureTooltipElement;
+var measureTooltipElement;
 
 
 /**
  * Overlay to show the measurement.
  * @type {module:ol/Overlay}
  */
-let measureTooltip;
+var measureTooltip;
 
 
 /**
  * Message to show when the user is drawing a polygon.
  * @type {string}
  */
-const continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
+var continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
 
 
 /**
  * Message to show when the user is drawing a line.
  * @type {string}
  */
-const continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
+var continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
 
 
 /**
  * Handle pointer move.
  * @param {module:ol/MapBrowserEvent~MapBrowserEvent} evt The event.
  */
-const pointerMoveHandler &#x3D; function(evt) {
+var pointerMoveHandler &#x3D; function(evt) {
   if (evt.dragging) {
     return;
   }
   /** @type {string} */
-  let helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
+  var helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
 
   if (sketch) {
-    const geom &#x3D; (sketch.getGeometry());
+    var geom &#x3D; (sketch.getGeometry());
     if (geom instanceof Polygon) {
       helpMsg &#x3D; continuePolygonMsg;
     } else if (geom instanceof LineString) {
@@ -186,7 +193,7 @@ const pointerMoveHandler &#x3D; function(evt) {
 };
 
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new View({
@@ -201,9 +208,9 @@ map.getViewport().addEventListener(&#x27;mouseout&#x27;, function() {
   helpTooltipElement.classList.add(&#x27;hidden&#x27;);
 });
 
-const typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
-let draw; // global so we can remove it later
+var draw; // global so we can remove it later
 
 
 /**
@@ -211,9 +218,9 @@ let draw; // global so we can remove it later
  * @param {module:ol/geom/LineString~LineString} line The line.
  * @return {string} The formatted length.
  */
-const formatLength &#x3D; function(line) {
-  const length &#x3D; getLength(line);
-  let output;
+var formatLength &#x3D; function(line) {
+  var length &#x3D; getLength(line);
+  var output;
   if (length &gt; 100) {
     output &#x3D; (Math.round(length / 1000 * 100) / 100) +
         &#x27; &#x27; + &#x27;km&#x27;;
@@ -230,9 +237,9 @@ const formatLength &#x3D; function(line) {
  * @param {module:ol/geom/Polygon~Polygon} polygon The polygon.
  * @return {string} Formatted area.
  */
-const formatArea &#x3D; function(polygon) {
-  const area &#x3D; getArea(polygon);
-  let output;
+var formatArea &#x3D; function(polygon) {
+  var area &#x3D; getArea(polygon);
+  var output;
   if (area &gt; 10000) {
     output &#x3D; (Math.round(area / 1000000 * 100) / 100) +
         &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
@@ -244,7 +251,7 @@ const formatArea &#x3D; function(polygon) {
 };
 
 function addInteraction() {
-  const type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
+  var type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
   draw &#x3D; new Draw({
     source: source,
     type: type,
@@ -273,18 +280,18 @@ function addInteraction() {
   createMeasureTooltip();
   createHelpTooltip();
 
-  let listener;
+  var listener;
   draw.on(&#x27;drawstart&#x27;,
     function(evt) {
       // set sketch
       sketch &#x3D; evt.feature;
 
       /** @type {module:ol/coordinate~Coordinate|undefined} */
-      let tooltipCoord &#x3D; evt.coordinate;
+      var tooltipCoord &#x3D; evt.coordinate;
 
       listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function(evt) {
-        const geom &#x3D; evt.target;
-        let output;
+        var geom &#x3D; evt.target;
+        var output;
         if (geom instanceof Polygon) {
           output &#x3D; formatArea(geom);
           tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();
@@ -404,7 +411,7 @@ addInteraction();
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Measure&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -464,13 +471,13 @@ addInteraction();
       import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 
 
-      const raster &#x3D; new TileLayer({
+      var raster &#x3D; new TileLayer({
         source: new OSM()
       });
 
-      const source &#x3D; new VectorSource();
+      var source &#x3D; new VectorSource();
 
-      const vector &#x3D; new VectorLayer({
+      var vector &#x3D; new VectorLayer({
         source: source,
         style: new Style({
           fill: new Fill({
@@ -494,64 +501,64 @@ addInteraction();
        * Currently drawn feature.
        * @type {module:ol/Feature~Feature}
        */
-      let sketch;
+      var sketch;
 
 
       /**
        * The help tooltip element.
        * @type {Element}
        */
-      let helpTooltipElement;
+      var helpTooltipElement;
 
 
       /**
        * Overlay to show the help messages.
        * @type {module:ol/Overlay}
        */
-      let helpTooltip;
+      var helpTooltip;
 
 
       /**
        * The measure tooltip element.
        * @type {Element}
        */
-      let measureTooltipElement;
+      var measureTooltipElement;
 
 
       /**
        * Overlay to show the measurement.
        * @type {module:ol/Overlay}
        */
-      let measureTooltip;
+      var measureTooltip;
 
 
       /**
        * Message to show when the user is drawing a polygon.
        * @type {string}
        */
-      const continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
+      var continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
 
 
       /**
        * Message to show when the user is drawing a line.
        * @type {string}
        */
-      const continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
+      var continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
 
 
       /**
        * Handle pointer move.
        * @param {module:ol/MapBrowserEvent~MapBrowserEvent} evt The event.
        */
-      const pointerMoveHandler &#x3D; function(evt) {
+      var pointerMoveHandler &#x3D; function(evt) {
         if (evt.dragging) {
           return;
         }
         /** @type {string} */
-        let helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
+        var helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
 
         if (sketch) {
-          const geom &#x3D; (sketch.getGeometry());
+          var geom &#x3D; (sketch.getGeometry());
           if (geom instanceof Polygon) {
             helpMsg &#x3D; continuePolygonMsg;
           } else if (geom instanceof LineString) {
@@ -566,7 +573,7 @@ addInteraction();
       };
 
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         layers: [raster, vector],
         target: &#x27;map&#x27;,
         view: new View({
@@ -581,9 +588,9 @@ addInteraction();
         helpTooltipElement.classList.add(&#x27;hidden&#x27;);
       });
 
-      const typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+      var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
-      let draw; // global so we can remove it later
+      var draw; // global so we can remove it later
 
 
       /**
@@ -591,9 +598,9 @@ addInteraction();
        * @param {module:ol/geom/LineString~LineString} line The line.
        * @return {string} The formatted length.
        */
-      const formatLength &#x3D; function(line) {
-        const length &#x3D; getLength(line);
-        let output;
+      var formatLength &#x3D; function(line) {
+        var length &#x3D; getLength(line);
+        var output;
         if (length &gt; 100) {
           output &#x3D; (Math.round(length / 1000 * 100) / 100) +
               &#x27; &#x27; + &#x27;km&#x27;;
@@ -610,9 +617,9 @@ addInteraction();
        * @param {module:ol/geom/Polygon~Polygon} polygon The polygon.
        * @return {string} Formatted area.
        */
-      const formatArea &#x3D; function(polygon) {
-        const area &#x3D; getArea(polygon);
-        let output;
+      var formatArea &#x3D; function(polygon) {
+        var area &#x3D; getArea(polygon);
+        var output;
         if (area &gt; 10000) {
           output &#x3D; (Math.round(area / 1000000 * 100) / 100) +
               &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
@@ -624,7 +631,7 @@ addInteraction();
       };
 
       function addInteraction() {
-        const type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
+        var type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
         draw &#x3D; new Draw({
           source: source,
           type: type,
@@ -653,18 +660,18 @@ addInteraction();
         createMeasureTooltip();
         createHelpTooltip();
 
-        let listener;
+        var listener;
         draw.on(&#x27;drawstart&#x27;,
           function(evt) {
             // set sketch
             sketch &#x3D; evt.feature;
 
             /** @type {module:ol/coordinate~Coordinate|undefined} */
-            let tooltipCoord &#x3D; evt.coordinate;
+            var tooltipCoord &#x3D; evt.coordinate;
 
             listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function(evt) {
-              const geom &#x3D; evt.target;
-              let output;
+              var geom &#x3D; evt.target;
+              var output;
               if (geom instanceof Polygon) {
                 output &#x3D; formatArea(geom);
                 tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();
@@ -757,7 +764,7 @@ addInteraction();
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

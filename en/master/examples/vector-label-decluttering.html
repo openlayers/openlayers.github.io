@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1');
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
@@ -38,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.0.0-beta.14</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -73,7 +80,7 @@ import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import {Fill, Stroke, Style, Text} from &#x27;ol/style.js&#x27;;
 
-const map &#x3D; new Map({
+var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -81,16 +88,16 @@ const map &#x3D; new Map({
   })
 });
 
-const labelStyle &#x3D; new Style({
+var labelStyle &#x3D; new Style({
   geometry: function(feature) {
-    let geometry &#x3D; feature.getGeometry();
+    var geometry &#x3D; feature.getGeometry();
     if (geometry.getType() &#x3D;&#x3D; &#x27;MultiPolygon&#x27;) {
       // Only render label for the widest polygon of a multipolygon
-      const polygons &#x3D; geometry.getPolygons();
-      let widest &#x3D; 0;
-      for (let i &#x3D; 0, ii &#x3D; polygons.length; i &lt; ii; ++i) {
-        const polygon &#x3D; polygons[i];
-        const width &#x3D; getWidth(polygon.getExtent());
+      var polygons &#x3D; geometry.getPolygons();
+      var widest &#x3D; 0;
+      for (var i &#x3D; 0, ii &#x3D; polygons.length; i &lt; ii; ++i) {
+        var polygon &#x3D; polygons[i];
+        var width &#x3D; getWidth(polygon.getExtent());
         if (width &gt; widest) {
           widest &#x3D; width;
           geometry &#x3D; polygon;
@@ -111,7 +118,7 @@ const labelStyle &#x3D; new Style({
     })
   })
 });
-const countryStyle &#x3D; new Style({
+var countryStyle &#x3D; new Style({
   fill: new Fill({
     color: &#x27;rgba(255, 255, 255, 0.6)&#x27;
   }),
@@ -120,9 +127,9 @@ const countryStyle &#x3D; new Style({
     width: 1
   })
 });
-const style &#x3D; [countryStyle, labelStyle];
+var style &#x3D; [countryStyle, labelStyle];
 
-const vectorLayer &#x3D; new VectorLayer({
+var vectorLayer &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/countries.geojson&#x27;,
     format: new GeoJSON()
@@ -145,7 +152,7 @@ map.addLayer(vectorLayer);
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Vector Label Decluttering&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.0.0-beta.14/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://cdn.polyfill.io/v2/polyfill.min.js?features&#x3D;Set&quot;&quot;&gt;&lt;/script&gt;
@@ -161,7 +168,7 @@ map.addLayer(vectorLayer);
       import VectorSource from &#x27;ol/source/Vector.js&#x27;;
       import {Fill, Stroke, Style, Text} from &#x27;ol/style.js&#x27;;
 
-      const map &#x3D; new Map({
+      var map &#x3D; new Map({
         target: &#x27;map&#x27;,
         view: new View({
           center: [0, 0],
@@ -169,16 +176,16 @@ map.addLayer(vectorLayer);
         })
       });
 
-      const labelStyle &#x3D; new Style({
+      var labelStyle &#x3D; new Style({
         geometry: function(feature) {
-          let geometry &#x3D; feature.getGeometry();
+          var geometry &#x3D; feature.getGeometry();
           if (geometry.getType() &#x3D;&#x3D; &#x27;MultiPolygon&#x27;) {
             // Only render label for the widest polygon of a multipolygon
-            const polygons &#x3D; geometry.getPolygons();
-            let widest &#x3D; 0;
-            for (let i &#x3D; 0, ii &#x3D; polygons.length; i &lt; ii; ++i) {
-              const polygon &#x3D; polygons[i];
-              const width &#x3D; getWidth(polygon.getExtent());
+            var polygons &#x3D; geometry.getPolygons();
+            var widest &#x3D; 0;
+            for (var i &#x3D; 0, ii &#x3D; polygons.length; i &lt; ii; ++i) {
+              var polygon &#x3D; polygons[i];
+              var width &#x3D; getWidth(polygon.getExtent());
               if (width &gt; widest) {
                 widest &#x3D; width;
                 geometry &#x3D; polygon;
@@ -199,7 +206,7 @@ map.addLayer(vectorLayer);
           })
         })
       });
-      const countryStyle &#x3D; new Style({
+      var countryStyle &#x3D; new Style({
         fill: new Fill({
           color: &#x27;rgba(255, 255, 255, 0.6)&#x27;
         }),
@@ -208,9 +215,9 @@ map.addLayer(vectorLayer);
           width: 1
         })
       });
-      const style &#x3D; [countryStyle, labelStyle];
+      var style &#x3D; [countryStyle, labelStyle];
 
-      const vectorLayer &#x3D; new VectorLayer({
+      var vectorLayer &#x3D; new VectorLayer({
         source: new VectorSource({
           url: &#x27;data/geojson/countries.geojson&#x27;,
           format: new GeoJSON()
@@ -244,7 +251,7 @@ map.addLayer(vectorLayer);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.0.0-beta.14' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');
