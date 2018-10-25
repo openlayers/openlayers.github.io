@@ -68,14 +68,14 @@ module.exports = function(grunt) {
       },
       ol: {
         src: [
-          repo + '/build/ol.js*',
-          repo + '/build/ol.js.map'
+          repo + '/build/legacy/ol.js*',
+          repo + '/build/legacy/ol.js.map'
         ],
         dest: dist + '/en/' + branch + '/build/'
       },
       css: {
         src: [
-          repo + '/build/ol.css*'
+          repo + '/build/legacy/ol.css*'
         ],
         dest: dist + '/en/' + branch + '/css/'
       }
