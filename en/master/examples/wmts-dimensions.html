@@ -45,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.3.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -77,14 +77,14 @@
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">WMTS Tile Transitions</textarea>
           <textarea class="hidden" name="description">Example of smooth tile transitions when changing the dimension of a WMTS layer.</textarea>
-          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
-import {getWidth, getTopLeft} from &#x27;ol/extent.js&#x27;;
-import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
-import {get as getProjection} from &#x27;ol/proj.js&#x27;;
-import OSM from &#x27;ol/source/OSM.js&#x27;;
-import WMTS from &#x27;ol/source/WMTS.js&#x27;;
-import WMTSTileGrid from &#x27;ol/tilegrid/WMTS.js&#x27;;
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {getWidth, getTopLeft} from &#x27;ol/extent&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import {get as getProjection} from &#x27;ol/proj&#x27;;
+import OSM from &#x27;ol/source/OSM&#x27;;
+import WMTS from &#x27;ol/source/WMTS&#x27;;
+import WMTSTileGrid from &#x27;ol/tilegrid/WMTS&#x27;;
 
 
 // create the WMTS tile grid in the google projection
@@ -165,7 +165,7 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;WMTS Tile Transitions&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -178,14 +178,14 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
     &lt;/label&gt;
     &lt;span id&#x3D;&quot;theinfo&quot;&gt;&lt;/span&gt;
     &lt;script&gt;
-      import Map from &#x27;ol/Map.js&#x27;;
-      import View from &#x27;ol/View.js&#x27;;
-      import {getWidth, getTopLeft} from &#x27;ol/extent.js&#x27;;
-      import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
-      import {get as getProjection} from &#x27;ol/proj.js&#x27;;
-      import OSM from &#x27;ol/source/OSM.js&#x27;;
-      import WMTS from &#x27;ol/source/WMTS.js&#x27;;
-      import WMTSTileGrid from &#x27;ol/tilegrid/WMTS.js&#x27;;
+      import Map from &#x27;ol/Map&#x27;;
+      import View from &#x27;ol/View&#x27;;
+      import {getWidth, getTopLeft} from &#x27;ol/extent&#x27;;
+      import TileLayer from &#x27;ol/layer/Tile&#x27;;
+      import {get as getProjection} from &#x27;ol/proj&#x27;;
+      import OSM from &#x27;ol/source/OSM&#x27;;
+      import WMTS from &#x27;ol/source/WMTS&#x27;;
+      import WMTSTileGrid from &#x27;ol/tilegrid/WMTS&#x27;;
 
 
       // create the WMTS tile grid in the google projection
@@ -272,7 +272,7 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.3.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

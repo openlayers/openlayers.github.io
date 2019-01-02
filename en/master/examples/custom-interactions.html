@@ -45,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.3.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -72,69 +72,63 @@
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">Custom Interactions</textarea>
           <textarea class="hidden" name="description">Example of a custom interaction.</textarea>
-          <textarea class="hidden" name="js">import {inherits} from &#x27;ol/util.js&#x27;;
-import Feature from &#x27;ol/Feature.js&#x27;;
-import Map from &#x27;ol/Map.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
-import {LineString, Point, Polygon} from &#x27;ol/geom.js&#x27;;
-import {defaults as defaultInteractions, Pointer as PointerInteraction} from &#x27;ol/interaction.js&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import {TileJSON, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
-import {Fill, Icon, Stroke, Style} from &#x27;ol/style.js&#x27;;
+          <textarea class="hidden" name="js">import Feature from &#x27;ol/Feature&#x27;;
+import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {LineString, Point, Polygon} from &#x27;ol/geom&#x27;;
+import {defaults as defaultInteractions, Pointer as PointerInteraction} from &#x27;ol/interaction&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {TileJSON, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {Fill, Icon, Stroke, Style} from &#x27;ol/style&#x27;;
+
+
+var Drag &#x3D; /*@__PURE__*/(function (PointerInteraction) {
+  function Drag() {
+    PointerInteraction.call(this, {
+      handleDownEvent: handleDownEvent,
+      handleDragEvent: handleDragEvent,
+      handleMoveEvent: handleMoveEvent,
+      handleUpEvent: handleUpEvent
+    });
+
+    /**
+     * @type {import(&quot;../src/ol/coordinate.js&quot;).Coordinate}
+     * @private
+     */
+    this.coordinate_ &#x3D; null;
+
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this.cursor_ &#x3D; &#x27;pointer&#x27;;
+
+    /**
+     * @type {Feature}
+     * @private
+     */
+    this.feature_ &#x3D; null;
+
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    this.previousCursor_ &#x3D; undefined;
+  }
+
+  if ( PointerInteraction ) Drag.__proto__ &#x3D; PointerInteraction;
+  Drag.prototype &#x3D; Object.create( PointerInteraction &amp;&amp; PointerInteraction.prototype );
+  Drag.prototype.constructor &#x3D; Drag;
+
+  return Drag;
+}(PointerInteraction));
 
 
 /**
- * Define a namespace for the application.
- */
-var app &#x3D; {};
-
-
-/**
- * @constructor
- * @extends {module:ol/interaction/Pointer}
- */
-app.Drag &#x3D; function() {
-
-  PointerInteraction.call(this, {
-    handleDownEvent: app.Drag.prototype.handleDownEvent,
-    handleDragEvent: app.Drag.prototype.handleDragEvent,
-    handleMoveEvent: app.Drag.prototype.handleMoveEvent,
-    handleUpEvent: app.Drag.prototype.handleUpEvent
-  });
-
-  /**
-   * @type {module:ol/pixel~Pixel}
-   * @private
-   */
-  this.coordinate_ &#x3D; null;
-
-  /**
-   * @type {string|undefined}
-   * @private
-   */
-  this.cursor_ &#x3D; &#x27;pointer&#x27;;
-
-  /**
-   * @type {module:ol/Feature~Feature}
-   * @private
-   */
-  this.feature_ &#x3D; null;
-
-  /**
-   * @type {string|undefined}
-   * @private
-   */
-  this.previousCursor_ &#x3D; undefined;
-
-};
-inherits(app.Drag, PointerInteraction);
-
-
-/**
- * @param {module:ol/MapBrowserEvent~MapBrowserEvent} evt Map browser event.
+ * @param {import(&quot;../src/ol/MapBrowserEvent.js&quot;).default} evt Map browser event.
  * @return {boolean} &#x60;true&#x60; to start the drag sequence.
  */
-app.Drag.prototype.handleDownEvent &#x3D; function(evt) {
+function handleDownEvent(evt) {
   var map &#x3D; evt.map;
 
   var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
@@ -148,13 +142,13 @@ app.Drag.prototype.handleDownEvent &#x3D; function(evt) {
   }
 
   return !!feature;
-};
+}
 
 
 /**
- * @param {module:ol/MapBrowserEvent~MapBrowserEvent} evt Map browser event.
+ * @param {import(&quot;../src/ol/MapBrowserEvent.js&quot;).default} evt Map browser event.
  */
-app.Drag.prototype.handleDragEvent &#x3D; function(evt) {
+function handleDragEvent(evt) {
   var deltaX &#x3D; evt.coordinate[0] - this.coordinate_[0];
   var deltaY &#x3D; evt.coordinate[1] - this.coordinate_[1];
 
@@ -163,13 +157,13 @@ app.Drag.prototype.handleDragEvent &#x3D; function(evt) {
 
   this.coordinate_[0] &#x3D; evt.coordinate[0];
   this.coordinate_[1] &#x3D; evt.coordinate[1];
-};
+}
 
 
 /**
- * @param {module:ol/MapBrowserEvent~MapBrowserEvent} evt Event.
+ * @param {import(&quot;../src/ol/MapBrowserEvent.js&quot;).default} evt Event.
  */
-app.Drag.prototype.handleMoveEvent &#x3D; function(evt) {
+function handleMoveEvent(evt) {
   if (this.cursor_) {
     var map &#x3D; evt.map;
     var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
@@ -187,17 +181,17 @@ app.Drag.prototype.handleMoveEvent &#x3D; function(evt) {
       this.previousCursor_ &#x3D; undefined;
     }
   }
-};
+}
 
 
 /**
  * @return {boolean} &#x60;false&#x60; to stop the drag sequence.
  */
-app.Drag.prototype.handleUpEvent &#x3D; function() {
+function handleUpEvent() {
   this.coordinate_ &#x3D; null;
   this.feature_ &#x3D; null;
   return false;
-};
+}
 
 
 var pointFeature &#x3D; new Feature(new Point([0, 0]));
@@ -211,7 +205,7 @@ var polygonFeature &#x3D; new Feature(
 
 
 var map &#x3D; new Map({
-  interactions: defaultInteractions().extend([new app.Drag()]),
+  interactions: defaultInteractions().extend([new Drag()]),
   layers: [
     new TileLayer({
       source: new TileJSON({
@@ -223,13 +217,13 @@ var map &#x3D; new Map({
         features: [pointFeature, lineFeature, polygonFeature]
       }),
       style: new Style({
-        image: new Icon(/** @type {module:ol/style/Icon~Options} */ ({
+        image: new Icon({
           anchor: [0.5, 46],
           anchorXUnits: &#x27;fraction&#x27;,
           anchorYUnits: &#x27;pixels&#x27;,
           opacity: 0.95,
           src: &#x27;data/icon.png&#x27;
-        })),
+        }),
         stroke: new Stroke({
           width: 3,
           color: [255, 0, 0, 1]
@@ -256,7 +250,7 @@ var map &#x3D; new Map({
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Custom Interactions&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -264,69 +258,63 @@ var map &#x3D; new Map({
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
-      import {inherits} from &#x27;ol/util.js&#x27;;
-      import Feature from &#x27;ol/Feature.js&#x27;;
-      import Map from &#x27;ol/Map.js&#x27;;
-      import View from &#x27;ol/View.js&#x27;;
-      import {LineString, Point, Polygon} from &#x27;ol/geom.js&#x27;;
-      import {defaults as defaultInteractions, Pointer as PointerInteraction} from &#x27;ol/interaction.js&#x27;;
-      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-      import {TileJSON, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
-      import {Fill, Icon, Stroke, Style} from &#x27;ol/style.js&#x27;;
+      import Feature from &#x27;ol/Feature&#x27;;
+      import Map from &#x27;ol/Map&#x27;;
+      import View from &#x27;ol/View&#x27;;
+      import {LineString, Point, Polygon} from &#x27;ol/geom&#x27;;
+      import {defaults as defaultInteractions, Pointer as PointerInteraction} from &#x27;ol/interaction&#x27;;
+      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+      import {TileJSON, Vector as VectorSource} from &#x27;ol/source&#x27;;
+      import {Fill, Icon, Stroke, Style} from &#x27;ol/style&#x27;;
+
+
+      var Drag &#x3D; /*@__PURE__*/(function (PointerInteraction) {
+        function Drag() {
+          PointerInteraction.call(this, {
+            handleDownEvent: handleDownEvent,
+            handleDragEvent: handleDragEvent,
+            handleMoveEvent: handleMoveEvent,
+            handleUpEvent: handleUpEvent
+          });
+
+          /**
+           * @type {import(&quot;../src/ol/coordinate.js&quot;).Coordinate}
+           * @private
+           */
+          this.coordinate_ &#x3D; null;
+
+          /**
+           * @type {string|undefined}
+           * @private
+           */
+          this.cursor_ &#x3D; &#x27;pointer&#x27;;
+
+          /**
+           * @type {Feature}
+           * @private
+           */
+          this.feature_ &#x3D; null;
+
+          /**
+           * @type {string|undefined}
+           * @private
+           */
+          this.previousCursor_ &#x3D; undefined;
+        }
+
+        if ( PointerInteraction ) Drag.__proto__ &#x3D; PointerInteraction;
+        Drag.prototype &#x3D; Object.create( PointerInteraction &amp;&amp; PointerInteraction.prototype );
+        Drag.prototype.constructor &#x3D; Drag;
+
+        return Drag;
+      }(PointerInteraction));
 
 
       /**
-       * Define a namespace for the application.
-       */
-      var app &#x3D; {};
-
-
-      /**
-       * @constructor
-       * @extends {module:ol/interaction/Pointer}
-       */
-      app.Drag &#x3D; function() {
-
-        PointerInteraction.call(this, {
-          handleDownEvent: app.Drag.prototype.handleDownEvent,
-          handleDragEvent: app.Drag.prototype.handleDragEvent,
-          handleMoveEvent: app.Drag.prototype.handleMoveEvent,
-          handleUpEvent: app.Drag.prototype.handleUpEvent
-        });
-
-        /**
-         * @type {module:ol/pixel~Pixel}
-         * @private
-         */
-        this.coordinate_ &#x3D; null;
-
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        this.cursor_ &#x3D; &#x27;pointer&#x27;;
-
-        /**
-         * @type {module:ol/Feature~Feature}
-         * @private
-         */
-        this.feature_ &#x3D; null;
-
-        /**
-         * @type {string|undefined}
-         * @private
-         */
-        this.previousCursor_ &#x3D; undefined;
-
-      };
-      inherits(app.Drag, PointerInteraction);
-
-
-      /**
-       * @param {module:ol/MapBrowserEvent~MapBrowserEvent} evt Map browser event.
+       * @param {import(&quot;../src/ol/MapBrowserEvent.js&quot;).default} evt Map browser event.
        * @return {boolean} &#x60;true&#x60; to start the drag sequence.
        */
-      app.Drag.prototype.handleDownEvent &#x3D; function(evt) {
+      function handleDownEvent(evt) {
         var map &#x3D; evt.map;
 
         var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
@@ -340,13 +328,13 @@ var map &#x3D; new Map({
         }
 
         return !!feature;
-      };
+      }
 
 
       /**
-       * @param {module:ol/MapBrowserEvent~MapBrowserEvent} evt Map browser event.
+       * @param {import(&quot;../src/ol/MapBrowserEvent.js&quot;).default} evt Map browser event.
        */
-      app.Drag.prototype.handleDragEvent &#x3D; function(evt) {
+      function handleDragEvent(evt) {
         var deltaX &#x3D; evt.coordinate[0] - this.coordinate_[0];
         var deltaY &#x3D; evt.coordinate[1] - this.coordinate_[1];
 
@@ -355,13 +343,13 @@ var map &#x3D; new Map({
 
         this.coordinate_[0] &#x3D; evt.coordinate[0];
         this.coordinate_[1] &#x3D; evt.coordinate[1];
-      };
+      }
 
 
       /**
-       * @param {module:ol/MapBrowserEvent~MapBrowserEvent} evt Event.
+       * @param {import(&quot;../src/ol/MapBrowserEvent.js&quot;).default} evt Event.
        */
-      app.Drag.prototype.handleMoveEvent &#x3D; function(evt) {
+      function handleMoveEvent(evt) {
         if (this.cursor_) {
           var map &#x3D; evt.map;
           var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
@@ -379,17 +367,17 @@ var map &#x3D; new Map({
             this.previousCursor_ &#x3D; undefined;
           }
         }
-      };
+      }
 
 
       /**
        * @return {boolean} &#x60;false&#x60; to stop the drag sequence.
        */
-      app.Drag.prototype.handleUpEvent &#x3D; function() {
+      function handleUpEvent() {
         this.coordinate_ &#x3D; null;
         this.feature_ &#x3D; null;
         return false;
-      };
+      }
 
 
       var pointFeature &#x3D; new Feature(new Point([0, 0]));
@@ -403,7 +391,7 @@ var map &#x3D; new Map({
 
 
       var map &#x3D; new Map({
-        interactions: defaultInteractions().extend([new app.Drag()]),
+        interactions: defaultInteractions().extend([new Drag()]),
         layers: [
           new TileLayer({
             source: new TileJSON({
@@ -415,13 +403,13 @@ var map &#x3D; new Map({
               features: [pointFeature, lineFeature, polygonFeature]
             }),
             style: new Style({
-              image: new Icon(/** @type {module:ol/style/Icon~Options} */ ({
+              image: new Icon({
                 anchor: [0.5, 46],
                 anchorXUnits: &#x27;fraction&#x27;,
                 anchorYUnits: &#x27;pixels&#x27;,
                 opacity: 0.95,
                 src: &#x27;data/icon.png&#x27;
-              })),
+              }),
               stroke: new Stroke({
                 width: 3,
                 color: [255, 0, 0, 1]
@@ -459,7 +447,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.3.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

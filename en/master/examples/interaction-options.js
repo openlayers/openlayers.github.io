@@ -1,2 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[62],{286:function(n,e,o){"use strict";o.r(e);var a=o(1),s=o(0),t=o(47),w=o(3),c=o(4);new a.a({interactions:Object(t.a)({constrainResolution:!0,onFocusOnly:!0}),layers:[new w.a({source:new c.b})],target:"map",view:new s.a({center:[0,0],zoom:2})})}},[[286,0]]]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[61],{290:function(n,e,o){"use strict";o.r(e);var a=o(2),s=o(3),t=o(51),w=o(6),c=o(11);new a.a({interactions:Object(t.a)({constrainResolution:!0,onFocusOnly:!0}),layers:[new w.a({source:new c.b})],target:"map",view:new s.a({center:[0,0],zoom:2})})}},[[290,0]]]);
 //# sourceMappingURL=interaction-options.js.map

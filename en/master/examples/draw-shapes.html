@@ -45,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.3.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -55,6 +55,7 @@
 <form class="form-inline">
   <label>Shape type &nbsp;</label>
   <select id="type">
+    <option value="Circle">Circle</option>
     <option value="Square">Square</option>
     <option value="Box">Box</option>
     <option value="Star">Star</option>
@@ -81,12 +82,12 @@
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">Draw Shapes</textarea>
           <textarea class="hidden" name="description">Using the ol/interaction/Draw to create regular shapes</textarea>
-          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
-import Polygon from &#x27;ol/geom/Polygon.js&#x27;;
-import Draw, {createRegularPolygon, createBox} from &#x27;ol/interaction/Draw.js&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import Polygon from &#x27;ol/geom/Polygon&#x27;;
+import Draw, {createRegularPolygon, createBox} from &#x27;ol/interaction/Draw&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 
 var raster &#x3D; new TileLayer({
   source: new OSM()
@@ -172,6 +173,7 @@ addInteraction();
 &lt;form class&#x3D;&quot;form-inline&quot;&gt;
   &lt;label&gt;Shape type &amp;nbsp;&lt;/label&gt;
   &lt;select id&#x3D;&quot;type&quot;&gt;
+    &lt;option value&#x3D;&quot;Circle&quot;&gt;Circle&lt;/option&gt;
     &lt;option value&#x3D;&quot;Square&quot;&gt;Square&lt;/option&gt;
     &lt;option value&#x3D;&quot;Box&quot;&gt;Box&lt;/option&gt;
     &lt;option value&#x3D;&quot;Star&quot;&gt;Star&lt;/option&gt;
@@ -185,7 +187,7 @@ addInteraction();
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Draw Shapes&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -195,6 +197,7 @@ addInteraction();
     &lt;form class&#x3D;&quot;form-inline&quot;&gt;
       &lt;label&gt;Shape type &amp;nbsp;&lt;/label&gt;
       &lt;select id&#x3D;&quot;type&quot;&gt;
+        &lt;option value&#x3D;&quot;Circle&quot;&gt;Circle&lt;/option&gt;
         &lt;option value&#x3D;&quot;Square&quot;&gt;Square&lt;/option&gt;
         &lt;option value&#x3D;&quot;Box&quot;&gt;Box&lt;/option&gt;
         &lt;option value&#x3D;&quot;Star&quot;&gt;Star&lt;/option&gt;
@@ -202,12 +205,12 @@ addInteraction();
       &lt;/select&gt;
     &lt;/form&gt;
     &lt;script&gt;
-      import Map from &#x27;ol/Map.js&#x27;;
-      import View from &#x27;ol/View.js&#x27;;
-      import Polygon from &#x27;ol/geom/Polygon.js&#x27;;
-      import Draw, {createRegularPolygon, createBox} from &#x27;ol/interaction/Draw.js&#x27;;
-      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-      import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+      import Map from &#x27;ol/Map&#x27;;
+      import View from &#x27;ol/View&#x27;;
+      import Polygon from &#x27;ol/geom/Polygon&#x27;;
+      import Draw, {createRegularPolygon, createBox} from &#x27;ol/interaction/Draw&#x27;;
+      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+      import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 
       var raster &#x3D; new TileLayer({
         source: new OSM()
@@ -308,7 +311,7 @@ addInteraction();
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.3.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/d3@4.12.0/build/d3.js"></script>
 <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"></script>
-    
+    <link rel="stylesheet" href="d3.css">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>d3 Integration</title>
@@ -46,7 +46,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.3.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -60,7 +60,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of using OpenLayers and d3 together.</p>
-          <div id="docs"><p>The example loads TopoJSON geometries and uses d3 (<code>d3.geo.path</code>) to render these geometries to a canvas element that is then used as the image of an OpenLayers image layer.</p>
+          <div id="docs"><p>The example loads TopoJSON geometries and uses d3 (<code>d3.geo.path</code>) to render these geometries to a SVG element.</p>
 </div>
         </div>
       </div>
@@ -73,13 +73,78 @@
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">d3 Integration</textarea>
           <textarea class="hidden" name="description">Example of using OpenLayers and d3 together.</textarea>
-          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
-import {getWidth, getCenter} from &#x27;ol/extent.js&#x27;;
-import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
-import {fromLonLat, toLonLat} from &#x27;ol/proj.js&#x27;;
-import {ImageCanvas as ImageCanvasSource, Stamen} from &#x27;ol/source.js&#x27;;
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {getWidth, getCenter} from &#x27;ol/extent&#x27;;
+import {Layer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
+import SourceState from &#x27;ol/source/State&#x27;;
+import {fromLonLat, toLonLat} from &#x27;ol/proj&#x27;;
+import Stamen from &#x27;ol/source/Stamen&#x27;;
 
+var CanvasLayer &#x3D; /*@__PURE__*/(function (Layer) {
+  function CanvasLayer(options) {
+    Layer.call(this, options);
+
+    this.features &#x3D; options.features;
+
+    this.svg &#x3D; d3.select(document.createElement(&#x27;div&#x27;)).append(&#x27;svg&#x27;)
+      .style(&#x27;position&#x27;, &#x27;absolute&#x27;);
+
+    this.svg.append(&#x27;path&#x27;)
+      .datum(this.features)
+      .attr(&#x27;class&#x27;, &#x27;boundary&#x27;);
+  }
+
+  if ( Layer ) CanvasLayer.__proto__ &#x3D; Layer;
+  CanvasLayer.prototype &#x3D; Object.create( Layer &amp;&amp; Layer.prototype );
+  CanvasLayer.prototype.constructor &#x3D; CanvasLayer;
+
+  CanvasLayer.prototype.getSourceState &#x3D; function getSourceState () {
+    return SourceState.READY;
+  };
+
+  CanvasLayer.prototype.render &#x3D; function render (frameState) {
+    var width &#x3D; frameState.size[0];
+    var height &#x3D; frameState.size[1];
+    var projection &#x3D; frameState.viewState.projection;
+    var d3Projection &#x3D; d3.geoMercator().scale(1).translate([0, 0]);
+    var d3Path &#x3D; d3.geoPath().projection(d3Projection);
+
+    var pixelBounds &#x3D; d3Path.bounds(this.features);
+    var pixelBoundsWidth &#x3D; pixelBounds[1][0] - pixelBounds[0][0];
+    var pixelBoundsHeight &#x3D; pixelBounds[1][1] - pixelBounds[0][1];
+
+    var geoBounds &#x3D; d3.geoBounds(this.features);
+    var geoBoundsLeftBottom &#x3D; fromLonLat(geoBounds[0], projection);
+    var geoBoundsRightTop &#x3D; fromLonLat(geoBounds[1], projection);
+    var geoBoundsWidth &#x3D; geoBoundsRightTop[0] - geoBoundsLeftBottom[0];
+    if (geoBoundsWidth &lt; 0) {
+      geoBoundsWidth +&#x3D; getWidth(projection.getExtent());
+    }
+    var geoBoundsHeight &#x3D; geoBoundsRightTop[1] - geoBoundsLeftBottom[1];
+
+    var widthResolution &#x3D; geoBoundsWidth / pixelBoundsWidth;
+    var heightResolution &#x3D; geoBoundsHeight / pixelBoundsHeight;
+    var r &#x3D; Math.max(widthResolution, heightResolution);
+    var scale &#x3D; r / frameState.viewState.resolution;
+
+    var center &#x3D; toLonLat(getCenter(frameState.extent), projection);
+    d3Projection.scale(scale).center(center).translate([width / 2, height / 2]);
+
+    d3Path &#x3D; d3Path.projection(d3Projection);
+    d3Path(this.features);
+
+    this.svg.attr(&#x27;width&#x27;, width);
+    this.svg.attr(&#x27;height&#x27;, height);
+
+    this.svg.select(&#x27;path&#x27;)
+      .attr(&#x27;d&#x27;, d3Path);
+
+    return this.svg.node();
+  };
+
+  return CanvasLayer;
+}(Layer));
 
 var map &#x3D; new Map({
   layers: [
@@ -101,67 +166,19 @@ var map &#x3D; new Map({
  * Load the topojson data and create an ol/layer/Image for that data.
  */
 d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
-  var features &#x3D; topojson.feature(us, us.objects.counties);
 
-  /**
-   * This function uses d3 to render the topojson features to a canvas.
-   * @param {module:ol/extent~Extent} extent Extent.
-   * @param {number} resolution Resolution.
-   * @param {number} pixelRatio Pixel ratio.
-   * @param {module:ol/size~Size} size Size.
-   * @param {module:ol/proj/Projection~Projection} projection Projection.
-   * @return {HTMLCanvasElement} A canvas element.
-   */
-  var canvasFunction &#x3D; function(extent, resolution, pixelRatio, size, projection) {
-    var canvasWidth &#x3D; size[0];
-    var canvasHeight &#x3D; size[1];
-
-    var canvas &#x3D; d3.select(document.createElement(&#x27;canvas&#x27;));
-    canvas.attr(&#x27;width&#x27;, canvasWidth).attr(&#x27;height&#x27;, canvasHeight);
-
-    var context &#x3D; canvas.node().getContext(&#x27;2d&#x27;);
-
-    var d3Projection &#x3D; d3.geoMercator().scale(1).translate([0, 0]);
-    var d3Path &#x3D; d3.geoPath().projection(d3Projection);
-
-    var pixelBounds &#x3D; d3Path.bounds(features);
-    var pixelBoundsWidth &#x3D; pixelBounds[1][0] - pixelBounds[0][0];
-    var pixelBoundsHeight &#x3D; pixelBounds[1][1] - pixelBounds[0][1];
-
-    var geoBounds &#x3D; d3.geoBounds(features);
-    var geoBoundsLeftBottom &#x3D; fromLonLat(geoBounds[0], projection);
-    var geoBoundsRightTop &#x3D; fromLonLat(geoBounds[1], projection);
-    var geoBoundsWidth &#x3D; geoBoundsRightTop[0] - geoBoundsLeftBottom[0];
-    if (geoBoundsWidth &lt; 0) {
-      geoBoundsWidth +&#x3D; getWidth(projection.getExtent());
-    }
-    var geoBoundsHeight &#x3D; geoBoundsRightTop[1] - geoBoundsLeftBottom[1];
-
-    var widthResolution &#x3D; geoBoundsWidth / pixelBoundsWidth;
-    var heightResolution &#x3D; geoBoundsHeight / pixelBoundsHeight;
-    var r &#x3D; Math.max(widthResolution, heightResolution);
-    var scale &#x3D; r / (resolution / pixelRatio);
-
-    var center &#x3D; toLonLat(getCenter(extent), projection);
-    d3Projection.scale(scale).center(center)
-      .translate([canvasWidth / 2, canvasHeight / 2]);
-    d3Path &#x3D; d3Path.projection(d3Projection).context(context);
-    d3Path(features);
-    context.stroke();
-
-    return canvas.node();
-  };
-
-  var layer &#x3D; new ImageLayer({
-    source: new ImageCanvasSource({
-      canvasFunction: canvasFunction,
-      projection: &#x27;EPSG:3857&#x27;
-    })
+  var layer &#x3D; new CanvasLayer({
+    features: topojson.feature(us, us.objects.counties)
   });
+
   map.addLayer(layer);
 });
 </textarea>
-          <textarea class="hidden" name="css"></textarea>
+          <textarea class="hidden" name="css">path.boundary {
+  fill: none;
+  stroke: #777;
+}
+</textarea>
           <textarea class="hidden" name="html">&lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
 </textarea>
           <input type="hidden" name="data">
@@ -170,22 +187,93 @@ d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;d3 Integration&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://unpkg.com/d3@4.12.0/build/d3.js&quot;&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://unpkg.com/topojson@3.0.2/dist/topojson.js&quot;&gt;&lt;/script&gt;
+    &lt;style&gt;
+      path.boundary {
+        fill: none;
+        stroke: #777;
+      }
+    &lt;/style&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
-      import Map from &#x27;ol/Map.js&#x27;;
-      import View from &#x27;ol/View.js&#x27;;
-      import {getWidth, getCenter} from &#x27;ol/extent.js&#x27;;
-      import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
-      import {fromLonLat, toLonLat} from &#x27;ol/proj.js&#x27;;
-      import {ImageCanvas as ImageCanvasSource, Stamen} from &#x27;ol/source.js&#x27;;
+      import Map from &#x27;ol/Map&#x27;;
+      import View from &#x27;ol/View&#x27;;
+      import {getWidth, getCenter} from &#x27;ol/extent&#x27;;
+      import {Layer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
+      import SourceState from &#x27;ol/source/State&#x27;;
+      import {fromLonLat, toLonLat} from &#x27;ol/proj&#x27;;
+      import Stamen from &#x27;ol/source/Stamen&#x27;;
 
+      var CanvasLayer &#x3D; /*@__PURE__*/(function (Layer) {
+        function CanvasLayer(options) {
+          Layer.call(this, options);
+
+          this.features &#x3D; options.features;
+
+          this.svg &#x3D; d3.select(document.createElement(&#x27;div&#x27;)).append(&#x27;svg&#x27;)
+            .style(&#x27;position&#x27;, &#x27;absolute&#x27;);
+
+          this.svg.append(&#x27;path&#x27;)
+            .datum(this.features)
+            .attr(&#x27;class&#x27;, &#x27;boundary&#x27;);
+        }
+
+        if ( Layer ) CanvasLayer.__proto__ &#x3D; Layer;
+        CanvasLayer.prototype &#x3D; Object.create( Layer &amp;&amp; Layer.prototype );
+        CanvasLayer.prototype.constructor &#x3D; CanvasLayer;
+
+        CanvasLayer.prototype.getSourceState &#x3D; function getSourceState () {
+          return SourceState.READY;
+        };
+
+        CanvasLayer.prototype.render &#x3D; function render (frameState) {
+          var width &#x3D; frameState.size[0];
+          var height &#x3D; frameState.size[1];
+          var projection &#x3D; frameState.viewState.projection;
+          var d3Projection &#x3D; d3.geoMercator().scale(1).translate([0, 0]);
+          var d3Path &#x3D; d3.geoPath().projection(d3Projection);
+
+          var pixelBounds &#x3D; d3Path.bounds(this.features);
+          var pixelBoundsWidth &#x3D; pixelBounds[1][0] - pixelBounds[0][0];
+          var pixelBoundsHeight &#x3D; pixelBounds[1][1] - pixelBounds[0][1];
+
+          var geoBounds &#x3D; d3.geoBounds(this.features);
+          var geoBoundsLeftBottom &#x3D; fromLonLat(geoBounds[0], projection);
+          var geoBoundsRightTop &#x3D; fromLonLat(geoBounds[1], projection);
+          var geoBoundsWidth &#x3D; geoBoundsRightTop[0] - geoBoundsLeftBottom[0];
+          if (geoBoundsWidth &lt; 0) {
+            geoBoundsWidth +&#x3D; getWidth(projection.getExtent());
+          }
+          var geoBoundsHeight &#x3D; geoBoundsRightTop[1] - geoBoundsLeftBottom[1];
+
+          var widthResolution &#x3D; geoBoundsWidth / pixelBoundsWidth;
+          var heightResolution &#x3D; geoBoundsHeight / pixelBoundsHeight;
+          var r &#x3D; Math.max(widthResolution, heightResolution);
+          var scale &#x3D; r / frameState.viewState.resolution;
+
+          var center &#x3D; toLonLat(getCenter(frameState.extent), projection);
+          d3Projection.scale(scale).center(center).translate([width / 2, height / 2]);
+
+          d3Path &#x3D; d3Path.projection(d3Projection);
+          d3Path(this.features);
+
+          this.svg.attr(&#x27;width&#x27;, width);
+          this.svg.attr(&#x27;height&#x27;, height);
+
+          this.svg.select(&#x27;path&#x27;)
+            .attr(&#x27;d&#x27;, d3Path);
+
+          return this.svg.node();
+        };
+
+        return CanvasLayer;
+      }(Layer));
 
       var map &#x3D; new Map({
         layers: [
@@ -207,63 +295,11 @@ d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
        * Load the topojson data and create an ol/layer/Image for that data.
        */
       d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
-        var features &#x3D; topojson.feature(us, us.objects.counties);
 
-        /**
-         * This function uses d3 to render the topojson features to a canvas.
-         * @param {module:ol/extent~Extent} extent Extent.
-         * @param {number} resolution Resolution.
-         * @param {number} pixelRatio Pixel ratio.
-         * @param {module:ol/size~Size} size Size.
-         * @param {module:ol/proj/Projection~Projection} projection Projection.
-         * @return {HTMLCanvasElement} A canvas element.
-         */
-        var canvasFunction &#x3D; function(extent, resolution, pixelRatio, size, projection) {
-          var canvasWidth &#x3D; size[0];
-          var canvasHeight &#x3D; size[1];
-
-          var canvas &#x3D; d3.select(document.createElement(&#x27;canvas&#x27;));
-          canvas.attr(&#x27;width&#x27;, canvasWidth).attr(&#x27;height&#x27;, canvasHeight);
-
-          var context &#x3D; canvas.node().getContext(&#x27;2d&#x27;);
-
-          var d3Projection &#x3D; d3.geoMercator().scale(1).translate([0, 0]);
-          var d3Path &#x3D; d3.geoPath().projection(d3Projection);
-
-          var pixelBounds &#x3D; d3Path.bounds(features);
-          var pixelBoundsWidth &#x3D; pixelBounds[1][0] - pixelBounds[0][0];
-          var pixelBoundsHeight &#x3D; pixelBounds[1][1] - pixelBounds[0][1];
-
-          var geoBounds &#x3D; d3.geoBounds(features);
-          var geoBoundsLeftBottom &#x3D; fromLonLat(geoBounds[0], projection);
-          var geoBoundsRightTop &#x3D; fromLonLat(geoBounds[1], projection);
-          var geoBoundsWidth &#x3D; geoBoundsRightTop[0] - geoBoundsLeftBottom[0];
-          if (geoBoundsWidth &lt; 0) {
-            geoBoundsWidth +&#x3D; getWidth(projection.getExtent());
-          }
-          var geoBoundsHeight &#x3D; geoBoundsRightTop[1] - geoBoundsLeftBottom[1];
-
-          var widthResolution &#x3D; geoBoundsWidth / pixelBoundsWidth;
-          var heightResolution &#x3D; geoBoundsHeight / pixelBoundsHeight;
-          var r &#x3D; Math.max(widthResolution, heightResolution);
-          var scale &#x3D; r / (resolution / pixelRatio);
-
-          var center &#x3D; toLonLat(getCenter(extent), projection);
-          d3Projection.scale(scale).center(center)
-            .translate([canvasWidth / 2, canvasHeight / 2]);
-          d3Path &#x3D; d3Path.projection(d3Projection).context(context);
-          d3Path(features);
-          context.stroke();
-
-          return canvas.node();
-        };
-
-        var layer &#x3D; new ImageLayer({
-          source: new ImageCanvasSource({
-            canvasFunction: canvasFunction,
-            projection: &#x27;EPSG:3857&#x27;
-          })
+        var layer &#x3D; new CanvasLayer({
+          features: topojson.feature(us, us.objects.counties)
         });
+
         map.addLayer(layer);
       });
     &lt;/script&gt;
@@ -287,7 +323,7 @@ d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.3.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

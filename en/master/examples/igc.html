@@ -45,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.3.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -74,16 +74,16 @@
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">IGC Data</textarea>
           <textarea class="hidden" name="description">Example of tracks recorded from multiple paraglider flights on the same day, read from an IGC file.</textarea>
-          <textarea class="hidden" name="js">import Feature from &#x27;ol/Feature.js&#x27;;
-import Map from &#x27;ol/Map.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
-import {defaults as defaultControls} from &#x27;ol/control.js&#x27;;
-import IGC from &#x27;ol/format/IGC.js&#x27;;
-import {LineString, Point} from &#x27;ol/geom.js&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import OSM, {ATTRIBUTION} from &#x27;ol/source/OSM.js&#x27;;
-import VectorSource from &#x27;ol/source/Vector.js&#x27;;
-import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
+          <textarea class="hidden" name="js">import Feature from &#x27;ol/Feature&#x27;;
+import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import IGC from &#x27;ol/format/IGC&#x27;;
+import {LineString, Point} from &#x27;ol/geom&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import OSM, {ATTRIBUTION} from &#x27;ol/source/OSM&#x27;;
+import VectorSource from &#x27;ol/source/Vector&#x27;;
+import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
+import {getVectorContext} from &#x27;ol/render&#x27;;
 
 
 var colors &#x3D; {
@@ -150,6 +150,10 @@ vectorSource.on(&#x27;addfeature&#x27;, function(event) {
   time.duration &#x3D; time.stop - time.start;
 });
 
+var vectorLayer &#x3D; new VectorLayer({
+  source: vectorSource,
+  style: styleFunction
+});
 
 var map &#x3D; new Map({
   layers: [
@@ -163,17 +167,9 @@ var map &#x3D; new Map({
             &#x27;?apikey&#x3D;Your API key from http://www.thunderforest.com/docs/apikeys/ here&#x27;
       })
     }),
-    new VectorLayer({
-      source: vectorSource,
-      style: styleFunction
-    })
+    vectorLayer
   ],
   target: &#x27;map&#x27;,
-  controls: defaultControls({
-    attributionOptions: {
-      collapsible: false
-    }
-  }),
   view: new View({
     center: [703365.7089403362, 5714629.865071137],
     zoom: 9
@@ -235,8 +231,8 @@ var style &#x3D; new Style({
     stroke: stroke
   })
 });
-map.on(&#x27;postcompose&#x27;, function(evt) {
-  var vectorContext &#x3D; evt.vectorContext;
+vectorLayer.on(&#x27;postrender&#x27;, function(evt) {
+  var vectorContext &#x3D; getVectorContext(evt);
   vectorContext.setStyle(style);
   if (point !&#x3D;&#x3D; null) {
     vectorContext.drawGeometry(point);
@@ -263,7 +259,7 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
   var value &#x3D; parseInt(this.value, 10) / 100;
   var m &#x3D; time.start + (time.duration * value);
   vectorSource.forEachFeature(function(feature) {
-    var geometry &#x3D; /** @type {module:ol/geom/LineString~LineString} */ (feature.getGeometry());
+    var geometry &#x3D; /** @type {import(&quot;../src/ol/geom/LineString.js&quot;).default} */ (feature.getGeometry());
     var coordinate &#x3D; geometry.getCoordinateAtM(m, true);
     var highlight &#x3D; feature.get(&#x27;highlight&#x27;);
     if (highlight &#x3D;&#x3D;&#x3D; undefined) {
@@ -288,7 +284,7 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;IGC Data&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -298,16 +294,16 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
     &lt;input id&#x3D;&quot;time&quot; type&#x3D;&quot;range&quot; value&#x3D;&quot;0&quot; steps&#x3D;&quot;1&quot; /&gt;
     &lt;div id&#x3D;&quot;info&quot;&gt;&amp;nbsp;&lt;/div&gt;
     &lt;script&gt;
-      import Feature from &#x27;ol/Feature.js&#x27;;
-      import Map from &#x27;ol/Map.js&#x27;;
-      import View from &#x27;ol/View.js&#x27;;
-      import {defaults as defaultControls} from &#x27;ol/control.js&#x27;;
-      import IGC from &#x27;ol/format/IGC.js&#x27;;
-      import {LineString, Point} from &#x27;ol/geom.js&#x27;;
-      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-      import OSM, {ATTRIBUTION} from &#x27;ol/source/OSM.js&#x27;;
-      import VectorSource from &#x27;ol/source/Vector.js&#x27;;
-      import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
+      import Feature from &#x27;ol/Feature&#x27;;
+      import Map from &#x27;ol/Map&#x27;;
+      import View from &#x27;ol/View&#x27;;
+      import IGC from &#x27;ol/format/IGC&#x27;;
+      import {LineString, Point} from &#x27;ol/geom&#x27;;
+      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+      import OSM, {ATTRIBUTION} from &#x27;ol/source/OSM&#x27;;
+      import VectorSource from &#x27;ol/source/Vector&#x27;;
+      import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
+      import {getVectorContext} from &#x27;ol/render&#x27;;
 
 
       var colors &#x3D; {
@@ -374,6 +370,10 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
         time.duration &#x3D; time.stop - time.start;
       });
 
+      var vectorLayer &#x3D; new VectorLayer({
+        source: vectorSource,
+        style: styleFunction
+      });
 
       var map &#x3D; new Map({
         layers: [
@@ -387,17 +387,9 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
                   &#x27;?apikey&#x3D;Your API key from http://www.thunderforest.com/docs/apikeys/ here&#x27;
             })
           }),
-          new VectorLayer({
-            source: vectorSource,
-            style: styleFunction
-          })
+          vectorLayer
         ],
         target: &#x27;map&#x27;,
-        controls: defaultControls({
-          attributionOptions: {
-            collapsible: false
-          }
-        }),
         view: new View({
           center: [703365.7089403362, 5714629.865071137],
           zoom: 9
@@ -459,8 +451,8 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
           stroke: stroke
         })
       });
-      map.on(&#x27;postcompose&#x27;, function(evt) {
-        var vectorContext &#x3D; evt.vectorContext;
+      vectorLayer.on(&#x27;postrender&#x27;, function(evt) {
+        var vectorContext &#x3D; getVectorContext(evt);
         vectorContext.setStyle(style);
         if (point !&#x3D;&#x3D; null) {
           vectorContext.drawGeometry(point);
@@ -487,7 +479,7 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
         var value &#x3D; parseInt(this.value, 10) / 100;
         var m &#x3D; time.start + (time.duration * value);
         vectorSource.forEachFeature(function(feature) {
-          var geometry &#x3D; /** @type {module:ol/geom/LineString~LineString} */ (feature.getGeometry());
+          var geometry &#x3D; /** @type {import(&quot;../src/ol/geom/LineString.js&quot;).default} */ (feature.getGeometry());
           var coordinate &#x3D; geometry.getCoordinateAtM(m, true);
           var highlight &#x3D; feature.get(&#x27;highlight&#x27;);
           if (highlight &#x3D;&#x3D;&#x3D; undefined) {
@@ -521,7 +513,7 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.3.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

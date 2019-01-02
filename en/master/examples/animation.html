@@ -45,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.3.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -81,12 +81,12 @@
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">View Animation</textarea>
           <textarea class="hidden" name="description">Demonstrates animated pan, zoom, and rotation.</textarea>
-          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
-import {easeIn, easeOut} from &#x27;ol/easing.js&#x27;;
-import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
-import {fromLonLat} from &#x27;ol/proj.js&#x27;;
-import OSM from &#x27;ol/source/OSM.js&#x27;;
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {easeIn, easeOut} from &#x27;ol/easing&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import {fromLonLat} from &#x27;ol/proj&#x27;;
+import OSM from &#x27;ol/source/OSM&#x27;;
 
 var london &#x3D; fromLonLat([-0.12755, 51.507222]);
 var moscow &#x3D; fromLonLat([37.6178, 55.7517]);
@@ -285,7 +285,7 @@ onClick(&#x27;tour&#x27;, tour);
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;View Animation&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -302,12 +302,12 @@ onClick(&#x27;tour&#x27;, tour);
     &lt;button id&#x3D;&quot;rotate-around-rome&quot;&gt;Rotate around Rome&lt;/button&gt;
     &lt;button id&#x3D;&quot;tour&quot;&gt;Take a tour&lt;/button&gt;
     &lt;script&gt;
-      import Map from &#x27;ol/Map.js&#x27;;
-      import View from &#x27;ol/View.js&#x27;;
-      import {easeIn, easeOut} from &#x27;ol/easing.js&#x27;;
-      import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
-      import {fromLonLat} from &#x27;ol/proj.js&#x27;;
-      import OSM from &#x27;ol/source/OSM.js&#x27;;
+      import Map from &#x27;ol/Map&#x27;;
+      import View from &#x27;ol/View&#x27;;
+      import {easeIn, easeOut} from &#x27;ol/easing&#x27;;
+      import TileLayer from &#x27;ol/layer/Tile&#x27;;
+      import {fromLonLat} from &#x27;ol/proj&#x27;;
+      import OSM from &#x27;ol/source/OSM&#x27;;
 
       var london &#x3D; fromLonLat([-0.12755, 51.507222]);
       var moscow &#x3D; fromLonLat([37.6178, 55.7517]);
@@ -508,7 +508,7 @@ onClick(&#x27;tour&#x27;, tour);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.3.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

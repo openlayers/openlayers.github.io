@@ -45,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.3.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -79,12 +79,12 @@
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">UTFGrid</textarea>
           <textarea class="hidden" name="description">This example shows how to read data from a UTFGrid source.</textarea>
-          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
-import Overlay from &#x27;ol/Overlay.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
-import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
-import TileJSON from &#x27;ol/source/TileJSON.js&#x27;;
-import UTFGrid from &#x27;ol/source/UTFGrid.js&#x27;;
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map&#x27;;
+import Overlay from &#x27;ol/Overlay&#x27;;
+import View from &#x27;ol/View&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import TileJSON from &#x27;ol/source/TileJSON&#x27;;
+import UTFGrid from &#x27;ol/source/UTFGrid&#x27;;
 
 var key &#x3D; &#x27;Your Mapbox access token from http://mapbox.com/ here&#x27;;
 
@@ -174,7 +174,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;UTFGrid&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -197,12 +197,12 @@ map.on(&#x27;click&#x27;, function(evt) {
       &lt;/div&gt;
     &lt;/div&gt;
     &lt;script&gt;
-      import Map from &#x27;ol/Map.js&#x27;;
-      import Overlay from &#x27;ol/Overlay.js&#x27;;
-      import View from &#x27;ol/View.js&#x27;;
-      import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
-      import TileJSON from &#x27;ol/source/TileJSON.js&#x27;;
-      import UTFGrid from &#x27;ol/source/UTFGrid.js&#x27;;
+      import Map from &#x27;ol/Map&#x27;;
+      import Overlay from &#x27;ol/Overlay&#x27;;
+      import View from &#x27;ol/View&#x27;;
+      import TileLayer from &#x27;ol/layer/Tile&#x27;;
+      import TileJSON from &#x27;ol/source/TileJSON&#x27;;
+      import UTFGrid from &#x27;ol/source/UTFGrid&#x27;;
 
       var key &#x3D; &#x27;Your Mapbox access token from http://mapbox.com/ here&#x27;;
 
@@ -290,7 +290,7 @@ map.on(&#x27;click&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.3.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

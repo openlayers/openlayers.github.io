@@ -2,12 +2,62 @@
 <html>
   <head>
     <title>OpenLayers - Frequently Asked Questions (FAQ)</title>
+    <script>
+    var gaProperty = 'UA-2577926-1';
+    // Disable tracking if the opt-out cookie exists.
+    var disableStr = 'ga-disable-' + gaProperty;
+    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+      window[disableStr] = true;
+    }
+    function gaOptout() {
+      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = true;
+    }
+    function gaOptoutRevoke() {
+      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = false;
+    }
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'UA-2577926-1');
+      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+    window.addEventListener("load", function() {
+      window.cookieconsent.initialise({
+        'palette': {
+          'popup': {
+            'background': '#eaf7f7',
+            'text': '#5c7291'
+          },
+          'button': {
+            'background': '#56cbdb',
+            'text': '#ffffff'
+          }
+        },
+        'theme': 'edgeless',
+        'type': 'opt-out',
+        'onInitialise': function (status) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onStatusChange': function(status, chosenBefore) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onRevokeChoice': function() {
+          gaOptoutRevoke()
+        }
+      })
+    });
     </script>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link href='https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
@@ -82,31 +132,40 @@ OpenStreetMap or Bing tiles.</p>
 OpenLayers to something more appropriate for your region or your specific data.</p>
 <p>The projection of your map can be set through the <code>view</code>-property. Here are some
 examples:</p>
-<pre><code class="language-javascript"><span class="comment">// OpenLayers comes with support for the World Geodetic System 1984, EPSG:4326:</span>
-<span class="keyword">var</span> map = <span class="keyword">new</span> ol.Map({
-  view: <span class="keyword">new</span> ol.View({
+<pre><code class="language-javascript">import Map from <span class="string">'ol/Map'</span>;
+import View from <span class="string">'ol/View'</span>;
+
+<span class="comment">// OpenLayers comes with support for the World Geodetic System 1984, EPSG:4326:</span>
+<span class="keyword">const</span> map = <span class="keyword">new</span> Map({
+  view: <span class="keyword">new</span> View({
     projection: <span class="string">'EPSG:4326'</span>
     <span class="comment">// other view properties like map center etc.</span>
   })
   <span class="comment">// other properties for your map like layers etc.</span>
 });</code></pre>
-<pre><code class="language-javascript"><span class="comment">// To use other projections, you have to register the projection in OpenLayers.</span>
+<pre><code class="language-javascript">import Map from <span class="string">'ol/Map'</span>;
+import View from <span class="string">'ol/View'</span>;
+import proj4 from <span class="string">'proj4'</span>;
+import {register} from <span class="string">'ol/proj/proj4'</span>;
+import {get as getProjection} from <span class="string">'ol/proj'</span>;
+
+<span class="comment">// To use other projections, you have to register the projection in OpenLayers.</span>
 <span class="comment">// This can easily be done with [https://proj4js.org](proj4)</span>
 <span class="comment">//</span>
 <span class="comment">// By default OpenLayers does not know about the EPSG:21781 (Swiss) projection.</span>
 <span class="comment">// So we create a projection instance for EPSG:21781 and pass it to</span>
-<span class="comment">// ol.proj.addProjection to make it available to the library for lookup by its</span>
+<span class="comment">// register to make it available to the library for lookup by its</span>
 <span class="comment">// code.</span>
 proj4.defs(<span class="string">'EPSG:21781'</span>,
   <span class="string">'+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 '</span> +
   <span class="string">'+x_0=600000 +y_0=200000 +ellps=bessel '</span> +
   <span class="string">'+towgs84=660.077,13.551,369.344,2.484,1.783,2.939,5.66 +units=m +no_defs'</span>);
-ol.proj.proj4.register(proj4);
-<span class="keyword">var</span> swissProjection = ol.proj.get(<span class="string">'EPSG:21781'</span>);
+register(proj4);
+<span class="keyword">const</span> swissProjection = getProjection(<span class="string">'EPSG:21781'</span>);
 
 <span class="comment">// we can now use the projection:</span>
-<span class="keyword">var</span> map = <span class="keyword">new</span> ol.Map({
-  view: <span class="keyword">new</span> ol.View({
+<span class="keyword">const</span> map = <span class="keyword">new</span> Map({
+  view: <span class="keyword">new</span> View({
     projection: swissProjection
     <span class="comment">// other view properties like map center etc.</span>
   })
@@ -121,15 +180,20 @@ the wrong (a non-matching) projection.</p>
 <p>As the default projection in OpenLayers is Web Mercator (see above), the
 coordinates for the center have to be provided in that projection. Chances are
 that your map looks like this:</p>
-<pre><code class="language-javascript"><span class="keyword">var</span> washingtonLonLat = [-<span class="number">77.036667</span>, <span class="number">38.895</span>];
-<span class="keyword">var</span> map = <span class="keyword">new</span> ol.Map({
+<pre><code class="language-javascript">import Map from <span class="string">'ol/Map'</span>;
+import View from <span class="string">'ol/View'</span>;
+import TileLayer from <span class="string">'ol/layer/Tile'</span>;
+import OSM from <span class="string">'ol/source/OSM'</span>;
+
+<span class="keyword">const</span> washingtonLonLat = [-<span class="number">77.036667</span>, <span class="number">38.895</span>];
+<span class="keyword">const</span> map = <span class="keyword">new</span> Map({
   layers: [
-    <span class="keyword">new</span> ol.layer.Tile({
-      source: <span class="keyword">new</span> ol.source.OSM()
+    <span class="keyword">new</span> TileLayer({
+      source: <span class="keyword">new</span> OSM()
     })
   ],
   target: <span class="string">'map'</span>,
-  view: <span class="keyword">new</span> ol.View({
+  view: <span class="keyword">new</span> View({
     center: washingtonLonLat,
     zoom: <span class="number">12</span>
   })
@@ -140,26 +204,33 @@ center shall be some meters (~77m and ~39m respectively) away from <code>[0, 0]<
 the Web Mercator projection the coordinate is right in the gulf of guinea.</p>
 <p>The solution is easy: Provide the coordinates projected into Web Mercator.
 OpenLayers has some helpful utility methods to assist you:</p>
-<pre><code class="language-javascript"><span class="keyword">var</span> washingtonLonLat = [-<span class="number">77.036667</span>, <span class="number">38.895</span>];
-<span class="keyword">var</span> washingtonWebMercator = ol.proj.fromLonLat(washingtonLonLat);
+<pre><code class="language-javascript">import Map from <span class="string">'ol/Map'</span>;
+import View from <span class="string">'ol/View'</span>;
+import TileLayer from <span class="string">'ol/layer/Tile'</span>;
+import OSM from <span class="string">'ol/source/OSM'</span>;
+import {fromLonLat} from <span class="string">'ol/proj'</span>;
 
-<span class="keyword">var</span> map = <span class="keyword">new</span> ol.Map({
+<span class="keyword">const</span> washingtonLonLat = [-<span class="number">77.036667</span>, <span class="number">38.895</span>];
+<span class="keyword">const</span> washingtonWebMercator = fromLonLat(washingtonLonLat);
+
+<span class="keyword">const</span> map = <span class="keyword">new</span> Map({
   layers: [
-    <span class="keyword">new</span> ol.layer.Tile({
-      source: <span class="keyword">new</span> ol.source.OSM()
+    <span class="keyword">new</span> TileLayer({
+      source: <span class="keyword">new</span> OSM()
     })
   ],
   target: <span class="string">'map'</span>,
-  view: <span class="keyword">new</span> ol.View({
+  view: <span class="keyword">new</span> View({
     center: washingtonWebMercator,
     zoom: <span class="number">8</span>
   })
 });</code></pre>
-<p>The method <code>ol.proj.fromLonLat()</code> is available from version 3.5 onwards.</p>
+<p>The method <code>fromLonLat()</code> is available from version 3.5 onwards.</p>
 <p>If you told OpenLayers about a custom projection (see above), you can use the
 following method to transform a coordinate from WGS84 to your projection:</p>
-<pre><code class="language-javascript"><span class="comment">// assuming that OpenLayers knows about EPSG:21781, see above</span>
-<span class="keyword">var</span> swissCoord = ol.proj.transform([<span class="number">8.23</span>, <span class="number">46.86</span>], <span class="string">'EPSG:4326'</span>, <span class="string">'EPSG:21781'</span>);</code></pre>
+<pre><code class="language-javascript">import {transform} from <span class="string">'ol/proj'</span>;
+<span class="comment">// assuming that OpenLayers knows about EPSG:21781, see above</span>
+<span class="keyword">const</span> swissCoord = transform([<span class="number">8.23</span>, <span class="number">46.86</span>], <span class="string">'EPSG:4326'</span>, <span class="string">'EPSG:21781'</span>);</code></pre>
 <h2 id="why-is-the-order-of-a-coordinate-lon-lat-and-not-lat-lon-">Why is the order of a coordinate [lon,lat], and not [lat,lon]?</h2>
 <p>Because of two different and incompatible conventions. Latitude and longitude
 are normally given in that order. Maps are 2D representations/projections
@@ -186,18 +257,24 @@ which effectively tells you the coordinates are:</p>
 47.394167, 13.689167</code></pre>
 <p>So the next step would be to put the decimal coordinates into an array and use
 it as center:</p>
-<pre><code class="language-javascript"><span class="keyword">var</span> schladming = [<span class="number">47.394167</span>, <span class="number">13.689167</span>]; <span class="comment">// caution partner, read on...</span>
-<span class="comment">// since we are using OSM, we have to transform the coordinates...</span>
-<span class="keyword">var</span> schladmingWebMercator = ol.proj.fromLonLat(schladming);
+<pre><code class="language-javascript">import Map from <span class="string">'ol/Map'</span>;
+import View from <span class="string">'ol/View'</span>;
+import TileLayer from <span class="string">'ol/layer/Tile'</span>;
+import OSM from <span class="string">'ol/source/OSM'</span>;
+import {fromLonLat} from <span class="string">'ol/proj'</span>;
 
-<span class="keyword">var</span> map = <span class="keyword">new</span> ol.Map({
+<span class="keyword">const</span> schladming = [<span class="number">47.394167</span>, <span class="number">13.689167</span>]; <span class="comment">// caution partner, read on...</span>
+<span class="comment">// since we are using OSM, we have to transform the coordinates...</span>
+<span class="keyword">const</span> schladmingWebMercator = fromLonLat(schladming);
+
+<span class="keyword">const</span> map = <span class="keyword">new</span> Map({
   layers: [
-    <span class="keyword">new</span> ol.layer.Tile({
-      source: <span class="keyword">new</span> ol.source.OSM()
+    <span class="keyword">new</span> TileLayer({
+      source: <span class="keyword">new</span> OSM()
     })
   ],
   target: <span class="string">'map'</span>,
-  view: <span class="keyword">new</span> ol.View({
+  view: <span class="keyword">new</span> View({
     center: schladmingWebMercator,
     zoom: <span class="number">9</span>
   })
@@ -210,18 +287,24 @@ Don&#39;t worry if you get it wrong at first, many OpenLayers developers have to
 think twice about whether to put the longitude or the latitude first when they
 e.g. try to change the map center.</p>
 <p>Ok, then let&#39;s flip the coordinates:</p>
-<pre><code class="language-javascript"><span class="keyword">var</span> schladming = [<span class="number">13.689167</span>, <span class="number">47.394167</span>]; <span class="comment">// longitude first, then latitude</span>
-<span class="comment">// since we are using OSM, we have to transform the coordinates...</span>
-<span class="keyword">var</span> schladmingWebMercator = ol.proj.fromLonLat(schladming);
+<pre><code class="language-javascript">import Map from <span class="string">'ol/Map'</span>;
+import View from <span class="string">'ol/View'</span>;
+import TileLayer from <span class="string">'ol/layer/Tile'</span>;
+import OSM from <span class="string">'ol/source/OSM'</span>;
+import {fromLonLat} from <span class="string">'ol/proj'</span>;
 
-<span class="keyword">var</span> map = <span class="keyword">new</span> ol.Map({
+<span class="keyword">const</span> schladming = [<span class="number">13.689167</span>, <span class="number">47.394167</span>]; <span class="comment">// longitude first, then latitude</span>
+<span class="comment">// since we are using OSM, we have to transform the coordinates...</span>
+<span class="keyword">const</span> schladmingWebMercator = fromLonLat(schladming);
+
+<span class="keyword">const</span> map = <span class="keyword">new</span> Map({
   layers: [
-    <span class="keyword">new</span> ol.layer.Tile({
-      source: <span class="keyword">new</span> ol.source.OSM()
+    <span class="keyword">new</span> TileLayer({
+      source: <span class="keyword">new</span> OSM()
     })
   ],
   target: <span class="string">'map'</span>,
-  view: <span class="keyword">new</span> ol.View({
+  view: <span class="keyword">new</span> View({
     center: schladmingWebMercator,
     zoom: <span class="number">9</span>
   })
@@ -231,26 +314,32 @@ e.g. try to change the map center.</p>
 first, and then the latitude. This behaviour is the same as we had in OpenLayers
 2, and it actually makes sense because of the natural axis order in WGS84.</p>
 <p>If you cannot remember the correct order, just have a look at the method name
-we used: <code>ol.proj.fromLonLat</code>; even there we hint that we expect longitude
+we used: <code>fromLonLat</code>; even there we hint that we expect longitude
 first, and then latitude.</p>
 <h2 id="why-aren-t-there-any-features-in-my-source-">Why aren&#39;t there any features in my source?</h2>
 <p>Suppose you want to load a KML file and display the contained features on the
 map. Code like the following could be used:</p>
-<pre><code class="language-javascript"><span class="keyword">var</span> vector = <span class="keyword">new</span> ol.layer.Vector({
-  source: <span class="keyword">new</span> ol.source.KML({
+<pre><code class="language-javascript">import VectorLayer from <span class="string">'ol/layer/Vector'</span>;
+import KMLSource from <span class="string">'ol/source/KML'</span>;
+
+<span class="keyword">const</span> vector = <span class="keyword">new</span> VectorLayer({
+  source: <span class="keyword">new</span> KMLSource({
     projection: <span class="string">'EPSG:3857'</span>,
     url: <span class="string">'data/kml/2012-02-10.kml'</span>
   })
 });</code></pre>
 <p>You may ask yourself how many features are in that KML, and try something like
 the following:</p>
-<pre><code class="language-javascript"><span class="keyword">var</span> vector = <span class="keyword">new</span> ol.layer.Vector({
-  source: <span class="keyword">new</span> ol.source.KML({
+<pre><code class="language-javascript">import VectorLayer from <span class="string">'ol/layer/Vector'</span>;
+import KMLSource from <span class="string">'ol/source/KML'</span>;
+
+<span class="keyword">const</span> vector = <span class="keyword">new</span> VectorLayer({
+  source: <span class="keyword">new</span> KMLSource({
     projection: <span class="string">'EPSG:3857'</span>,
     url: <span class="string">'data/kml/2012-02-10.kml'</span>
   })
 });
-<span class="keyword">var</span> numFeatures = vector.getSource().getFeatures().length;
+<span class="keyword">const</span> numFeatures = vector.getSource().getFeatures().length;
 console.log(<span class="string">"Count right after construction: "</span> + numFeatures);</code></pre>
 <p>This will log a count of <code>0</code> features to be in the source. This is because the
 loading of the KML-file will happen in an asynchronous manner. To get the count
@@ -258,9 +347,9 @@ as soon as possible (right after the file has been fetched and the source has
 been populated with features), you should use an event listener function on the
 <code>source</code>:</p>
 <pre><code class="language-javascript">vector.getSource().on(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span><span class="params">(evt)</span>{</span>
-  <span class="keyword">var</span> source = evt.target;
+  <span class="keyword">const</span> source = evt.target;
   <span class="keyword">if</span> (source.getState() === <span class="string">'ready'</span>) {
-    <span class="keyword">var</span> numFeatures = source.getFeatures().length;
+    <span class="keyword">const</span> numFeatures = source.getFeatures().length;
     console.log(<span class="string">"Count after change: "</span> + numFeatures);
   }
 });</code></pre>
@@ -274,13 +363,14 @@ when a remote source has loaded).</p>
 <p>...or its companion method</p>
 <pre><code class="language-javascript">map.renderSync();</code></pre>
 <h2 id="why-are-my-features-not-found-">Why are my features not found?</h2>
-<p>You are using <code>ol.Map#forEachFeatureAtPixel</code> or <code>ol.Map#hasFeatureAtPixel</code>, but
+<p>You are using <code>Map#forEachFeatureAtPixel</code> or <code>Map#hasFeatureAtPixel</code>, but
 it sometimes does not work for large icons or labels? The <em>hit detection</em> only
 checks features that are within a certain distance of the given position. For large
 icons, the actual geometry of a feature might be too far away and is not considered.</p>
-<p>In this case, set the <code>renderBuffer</code> property of <code>ol.layer.Vector</code> (the default
-value is 100px):</p>
-<pre><code class="language-javascript"><span class="keyword">var</span> vectorLayer = <span class="keyword">new</span> ol.layer.Vector({
+<p>In this case, set the <code>renderBuffer</code> property of <code>VectorLayer</code> (the default value is 100px):</p>
+<pre><code class="language-javascript">import VectorLayer from <span class="string">'ol/layer/Vector'</span>;
+
+<span class="keyword">const</span> vectorLayer = <span class="keyword">new</span> VectorLayer({
   ...
   renderBuffer: <span class="number">200</span>
 });</code></pre>

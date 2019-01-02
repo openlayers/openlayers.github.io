@@ -1,2 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[128],{351:function(e,a,o){"use strict";o.r(a);var s=o(1),n=o(0),r=o(3),p=o(60);new s.a({layers:[new r.a({source:new p.a({url:"https://api.tiles.mapbox.com/v3/mapbox.geography-class.json?secure",crossOrigin:"anonymous"})})],target:"map",view:new n.a({center:[0,0],zoom:2})})}},[[351,0]]]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[126],{355:function(e,a,o){"use strict";o.r(a);var s=o(2),n=o(3),r=o(6),p=o(53);new s.a({layers:[new r.a({source:new p.a({url:"https://api.tiles.mapbox.com/v3/mapbox.geography-class.json?secure",crossOrigin:"anonymous"})})],target:"map",view:new n.a({center:[0,0],zoom:2})})}},[[355,0]]]);
 //# sourceMappingURL=tilejson.js.map

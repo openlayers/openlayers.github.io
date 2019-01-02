@@ -45,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.3.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -59,7 +59,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Demonstrates how to animate features.</p>
-          <div id="docs"><p>This example shows how to use <b>postcompose</b> and <b>vectorContext</b> to animate features. Here we choose to do a flash animation each time a feature is added to the layer.</p>
+          <div id="docs"><p>This example shows how to use <b>postrender</b> and <b>vectorContext</b> to animate features. Here we choose to do a flash animation each time a feature is added to the layer.</p>
 </div>
         </div>
       </div>
@@ -72,32 +72,26 @@
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">Custom Animation</textarea>
           <textarea class="hidden" name="description">Demonstrates how to animate features.</textarea>
-          <textarea class="hidden" name="js">import Feature from &#x27;ol/Feature.js&#x27;;
-import Map from &#x27;ol/Map.js&#x27;;
-import {unByKey} from &#x27;ol/Observable.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
-import {defaults as defaultControls} from &#x27;ol/control.js&#x27;;
-import {easeOut} from &#x27;ol/easing.js&#x27;;
-import Point from &#x27;ol/geom/Point.js&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import {fromLonLat} from &#x27;ol/proj.js&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
-import {Circle as CircleStyle, Stroke, Style} from &#x27;ol/style.js&#x27;;
+          <textarea class="hidden" name="js">import Feature from &#x27;ol/Feature&#x27;;
+import Map from &#x27;ol/Map&#x27;;
+import {unByKey} from &#x27;ol/Observable&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {easeOut} from &#x27;ol/easing&#x27;;
+import Point from &#x27;ol/geom/Point&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {fromLonLat} from &#x27;ol/proj&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {Circle as CircleStyle, Stroke, Style} from &#x27;ol/style&#x27;;
+import {getVectorContext} from &#x27;ol/render&#x27;;
 
+var tileLayer &#x3D; new TileLayer({
+  source: new OSM({
+    wrapX: false
+  })
+});
 
 var map &#x3D; new Map({
-  layers: [
-    new TileLayer({
-      source: new OSM({
-        wrapX: false
-      })
-    })
-  ],
-  controls: defaultControls({
-    attributionOptions: {
-      collapsible: false
-    }
-  }),
+  layers: [tileLayer],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -124,10 +118,10 @@ function addRandomFeature() {
 var duration &#x3D; 3000;
 function flash(feature) {
   var start &#x3D; new Date().getTime();
-  var listenerKey &#x3D; map.on(&#x27;postcompose&#x27;, animate);
+  var listenerKey &#x3D; tileLayer.on(&#x27;postrender&#x27;, animate);
 
   function animate(event) {
-    var vectorContext &#x3D; event.vectorContext;
+    var vectorContext &#x3D; getVectorContext(event);
     var frameState &#x3D; event.frameState;
     var flashGeom &#x3D; feature.getGeometry().clone();
     var elapsed &#x3D; frameState.time - start;
@@ -152,7 +146,7 @@ function flash(feature) {
       unByKey(listenerKey);
       return;
     }
-    // tell OpenLayers to continue postcompose animation
+    // tell OpenLayers to continue postrender animation
     map.render();
   }
 }
@@ -172,7 +166,7 @@ window.setInterval(addRandomFeature, 1000);
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Custom Animation&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -180,32 +174,26 @@ window.setInterval(addRandomFeature, 1000);
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
-      import Feature from &#x27;ol/Feature.js&#x27;;
-      import Map from &#x27;ol/Map.js&#x27;;
-      import {unByKey} from &#x27;ol/Observable.js&#x27;;
-      import View from &#x27;ol/View.js&#x27;;
-      import {defaults as defaultControls} from &#x27;ol/control.js&#x27;;
-      import {easeOut} from &#x27;ol/easing.js&#x27;;
-      import Point from &#x27;ol/geom/Point.js&#x27;;
-      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-      import {fromLonLat} from &#x27;ol/proj.js&#x27;;
-      import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
-      import {Circle as CircleStyle, Stroke, Style} from &#x27;ol/style.js&#x27;;
+      import Feature from &#x27;ol/Feature&#x27;;
+      import Map from &#x27;ol/Map&#x27;;
+      import {unByKey} from &#x27;ol/Observable&#x27;;
+      import View from &#x27;ol/View&#x27;;
+      import {easeOut} from &#x27;ol/easing&#x27;;
+      import Point from &#x27;ol/geom/Point&#x27;;
+      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+      import {fromLonLat} from &#x27;ol/proj&#x27;;
+      import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+      import {Circle as CircleStyle, Stroke, Style} from &#x27;ol/style&#x27;;
+      import {getVectorContext} from &#x27;ol/render&#x27;;
 
+      var tileLayer &#x3D; new TileLayer({
+        source: new OSM({
+          wrapX: false
+        })
+      });
 
       var map &#x3D; new Map({
-        layers: [
-          new TileLayer({
-            source: new OSM({
-              wrapX: false
-            })
-          })
-        ],
-        controls: defaultControls({
-          attributionOptions: {
-            collapsible: false
-          }
-        }),
+        layers: [tileLayer],
         target: &#x27;map&#x27;,
         view: new View({
           center: [0, 0],
@@ -232,10 +220,10 @@ window.setInterval(addRandomFeature, 1000);
       var duration &#x3D; 3000;
       function flash(feature) {
         var start &#x3D; new Date().getTime();
-        var listenerKey &#x3D; map.on(&#x27;postcompose&#x27;, animate);
+        var listenerKey &#x3D; tileLayer.on(&#x27;postrender&#x27;, animate);
 
         function animate(event) {
-          var vectorContext &#x3D; event.vectorContext;
+          var vectorContext &#x3D; getVectorContext(event);
           var frameState &#x3D; event.frameState;
           var flashGeom &#x3D; feature.getGeometry().clone();
           var elapsed &#x3D; frameState.time - start;
@@ -260,7 +248,7 @@ window.setInterval(addRandomFeature, 1000);
             unByKey(listenerKey);
             return;
           }
-          // tell OpenLayers to continue postcompose animation
+          // tell OpenLayers to continue postrender animation
           map.render();
         }
       }
@@ -291,7 +279,7 @@ window.setInterval(addRandomFeature, 1000);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.3.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

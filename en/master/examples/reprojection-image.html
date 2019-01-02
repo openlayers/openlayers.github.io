@@ -45,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.3.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -72,14 +72,14 @@
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">Image Reprojection</textarea>
           <textarea class="hidden" name="description">Demonstrates client-side reprojection of single image source.</textarea>
-          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
-import {getCenter} from &#x27;ol/extent.js&#x27;;
-import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
-import {transform} from &#x27;ol/proj.js&#x27;;
-import Static from &#x27;ol/source/ImageStatic.js&#x27;;
-import OSM from &#x27;ol/source/OSM.js&#x27;;
-import {register} from &#x27;ol/proj/proj4.js&#x27;;
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {getCenter} from &#x27;ol/extent&#x27;;
+import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
+import {transform} from &#x27;ol/proj&#x27;;
+import Static from &#x27;ol/source/ImageStatic&#x27;;
+import OSM from &#x27;ol/source/OSM&#x27;;
+import {register} from &#x27;ol/proj/proj4&#x27;;
 import proj4 from &#x27;proj4&#x27;;
 
 proj4.defs(&#x27;EPSG:27700&#x27;, &#x27;+proj&#x3D;tmerc +lat_0&#x3D;49 +lon_0&#x3D;-2 +k&#x3D;0.9996012717 &#x27; +
@@ -121,7 +121,7 @@ var map &#x3D; new Map({
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Image Reprojection&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
 
@@ -129,14 +129,14 @@ var map &#x3D; new Map({
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
-      import Map from &#x27;ol/Map.js&#x27;;
-      import View from &#x27;ol/View.js&#x27;;
-      import {getCenter} from &#x27;ol/extent.js&#x27;;
-      import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
-      import {transform} from &#x27;ol/proj.js&#x27;;
-      import Static from &#x27;ol/source/ImageStatic.js&#x27;;
-      import OSM from &#x27;ol/source/OSM.js&#x27;;
-      import {register} from &#x27;ol/proj/proj4.js&#x27;;
+      import Map from &#x27;ol/Map&#x27;;
+      import View from &#x27;ol/View&#x27;;
+      import {getCenter} from &#x27;ol/extent&#x27;;
+      import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
+      import {transform} from &#x27;ol/proj&#x27;;
+      import Static from &#x27;ol/source/ImageStatic&#x27;;
+      import OSM from &#x27;ol/source/OSM&#x27;;
+      import {register} from &#x27;ol/proj/proj4&#x27;;
       import proj4 from &#x27;proj4&#x27;;
 
       proj4.defs(&#x27;EPSG:27700&#x27;, &#x27;+proj&#x3D;tmerc +lat_0&#x3D;49 +lon_0&#x3D;-2 +k&#x3D;0.9996012717 &#x27; +
@@ -189,7 +189,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.3.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/1.6.0/jsts.min.js"></script>
+    <script src="https://unpkg.com/jsts@2.0.2/dist/jsts.min.js"></script>
     
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
@@ -45,7 +45,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>5.2.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>5.3.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -72,15 +72,15 @@
         <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
           <textarea class="hidden" name="title">JSTS Integration</textarea>
           <textarea class="hidden" name="description">Example on how to use JSTS with OpenLayers.</textarea>
-          <textarea class="hidden" name="js">import Map from &#x27;ol/Map.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
-import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import {fromLonLat} from &#x27;ol/proj.js&#x27;;
-import OSM from &#x27;ol/source/OSM.js&#x27;;
-import VectorSource from &#x27;ol/source/Vector.js&#x27;;
-import LinearRing from &#x27;ol/geom/LinearRing.js&#x27;;
-import {Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon} from &#x27;ol/geom.js&#x27;;
+          <textarea class="hidden" name="js">import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {fromLonLat} from &#x27;ol/proj&#x27;;
+import OSM from &#x27;ol/source/OSM&#x27;;
+import VectorSource from &#x27;ol/source/Vector&#x27;;
+import LinearRing from &#x27;ol/geom/LinearRing&#x27;;
+import {Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon} from &#x27;ol/geom&#x27;;
 
 var source &#x3D; new VectorSource();
 fetch(&#x27;data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
@@ -132,23 +132,23 @@ var map &#x3D; new Map({
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;JSTS Integration&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.2.0/css/ol.css" type="text/css"&gt;
+    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css"&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://cdn.rawgit.com/bjornharrtell/jsts/gh-pages/1.6.0/jsts.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://unpkg.com/jsts@2.0.2/dist/jsts.min.js&quot;&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script&gt;
-      import Map from &#x27;ol/Map.js&#x27;;
-      import View from &#x27;ol/View.js&#x27;;
-      import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
-      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-      import {fromLonLat} from &#x27;ol/proj.js&#x27;;
-      import OSM from &#x27;ol/source/OSM.js&#x27;;
-      import VectorSource from &#x27;ol/source/Vector.js&#x27;;
-      import LinearRing from &#x27;ol/geom/LinearRing.js&#x27;;
-      import {Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon} from &#x27;ol/geom.js&#x27;;
+      import Map from &#x27;ol/Map&#x27;;
+      import View from &#x27;ol/View&#x27;;
+      import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
+      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+      import {fromLonLat} from &#x27;ol/proj&#x27;;
+      import OSM from &#x27;ol/source/OSM&#x27;;
+      import VectorSource from &#x27;ol/source/Vector&#x27;;
+      import LinearRing from &#x27;ol/geom/LinearRing&#x27;;
+      import {Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon} from &#x27;ol/geom&#x27;;
 
       var source &#x3D; new VectorSource();
       fetch(&#x27;data/geojson/roads-seoul.geojson&#x27;).then(function(response) {
@@ -211,7 +211,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.2.0' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '5.3.0' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');
