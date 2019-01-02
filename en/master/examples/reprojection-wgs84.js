@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[106],{334:function(e,n,w){"use strict";w.r(n);var o=w(2),a=w(3),r=w(6),c=w(11);new o.a({layers:[new r.a({source:new c.b})],target:"map",view:new a.a({projection:"EPSG:4326",center:[0,0],zoom:2})})}},[[334,0]]]);
-//# sourceMappingURL=reprojection-wgs84.js.map

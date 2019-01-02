@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[125],{354:function(e,n,t){"use strict";t.r(n);var a=t(2),i=t(3),o=t(6),s=t(48),r="https://{a-c}.tiles.mapbox.com/v3/mapbox.world-bright/{z}/{x}/{y}.png",c=new o.a({source:new s.a({url:r})}),w=new o.a({source:new s.a({url:r,transition:0}),visible:!1});new a.a({layers:[c,w],target:"map",view:new i.a({center:[0,0],zoom:2,maxZoom:11})});document.getElementById("transition").addEventListener("change",function(e){var n=e.target.checked;c.setVisible(n),w.setVisible(!n)})}},[[354,0]]]);
-//# sourceMappingURL=tile-transitions.js.map
