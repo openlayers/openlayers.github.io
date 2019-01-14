@@ -99,8 +99,9 @@
 <p>Modern JavaScript works best when using and authoring modules. The recommended way of using OpenLayers is installing the <a href="https://npmjs.com/package/ol"><code>ol</code></a> package. This tutorial walks you through setting up a simple dev environment, which requires <a href="https://nodejs.org">node</a> for everything to work.</p>
 <p>In this tutorial, we will be using <a href="https://parceljs.org">Parcel</a> to bundle our application. There are several other options, some of which are linked from the <a href="https://npmjs.com/package/ol">README</a>.</p>
 <h2 id="initial-steps">Initial steps</h2>
-<p>Create a new empty directory for your project and navigate to it by running <code>mkdir new-project &amp;&amp; cd new-project</code>. Initialize your project using <code>npm init</code> and answer the questions asked.</p>
-<p>Add OpenLayers as dependency to your application with</p>
+<p>Create a new empty directory for your project and navigate to it by running <code>mkdir new-project &amp;&amp; cd new-project</code>. Initialize your project with</p>
+<pre><code>npm init</code></pre>
+<p>This will create a <code>package.json</code> file in your working directory. Add OpenLayers as dependency to your application with</p>
 <pre><code>npm install ol</code></pre>
 <p>At this point you can ask NPM to add required development dependencies by running</p>
 <pre><code>npm install --save-dev parcel-bundler</code></pre>
@@ -142,12 +143,20 @@ import OSM from <span class="string">'ol/source/OSM'</span>;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 <h2 id="creating-a-bundle">Creating a bundle</h2>
-<p>With simple scripts you can introduce the commands <code>npm run build</code> and <code>npm start</code> to manually build your bundle and watch for changes, respectively. Add the following to the script section in <code>package.json</code>:</p>
-<pre><code class="language-json">"scripts": {
-  "test": "echo \"Error: no test specified\" &amp;&amp; exit 1",
-  "start": "parcel index.html",
-  "build": "parcel build --public-url . index.html"
-}</code></pre>
+<p>With two additional lines in <code>package.json</code> you can introduce the commands <code>npm run build</code> and <code>npm start</code> to manually build your bundle and watch for changes, respectively. The final <code>package.json</code> with the two additional commands <code>&quot;start&quot;</code> and <code>&quot;build&quot;</code> should look like this:</p>
+<pre><code class="language-json">{
+  "<span class="attribute">name</span>": <span class="value"><span class="string">"test"</span></span>,
+  "<span class="attribute">version</span>": <span class="value"><span class="string">"1.0.0"</span></span>,
+  "<span class="attribute">description</span>": <span class="value"><span class="string">""</span></span>,
+  "<span class="attribute">main</span>": <span class="value"><span class="string">"index.js"</span></span>,
+  "<span class="attribute">scripts</span>": <span class="value">{
+    "<span class="attribute">test</span>": <span class="value"><span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span></span>,
+    "<span class="attribute">start</span>": <span class="value"><span class="string">"parcel index.html"</span></span>,
+    "<span class="attribute">build</span>": <span class="value"><span class="string">"parcel build --public-url . index.html"</span>
+  </span>}</span>,
+  "<span class="attribute">author</span>": <span class="value"><span class="string">""</span></span>,
+  "<span class="attribute">license</span>": <span class="value"><span class="string">"ISC"</span>
+</span>}</code></pre>
 <p>That&#39;s it. Now to run your application, enter</p>
 <pre><code>npm start</code></pre>
 <p>in your console. To test your application, open <a href="http://localhost:1234/">http://localhost:1234/</a> in your browser. Whenever you change something, the page will reload automatically to show the result of your changes.</p>
