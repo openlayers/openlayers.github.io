@@ -27,6 +27,7 @@
     </script>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script src="https://unpkg.com/lz-string@1.4.4/libs/lz-string.min.js"></script>
     <script>
     window.addEventListener("load", function() {
       window.cookieconsent.initialise({
@@ -99,11 +100,15 @@
       </div>
 
       <div class="row-fluid">
+        <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
         <div class="span12">
           <h4 id="title">Earthquake Clusters</h4>
           <div id="map" class="map"></div>
 
         </div>
+        <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+          <input id="codesandbox-params" type="hidden" name="parameters">
+        </form>
       </div>
 
       <div class="row-fluid">
@@ -115,14 +120,48 @@
       </div>
 
       <div class="row-fluid">
-        <div id="source-controls">
-          <a id="copy-button" data-clipboard-target="#example-source"><i class="fa fa-clipboard"></i> Copy</a>
-          <!-- <a id="codepen-button"><i class="fa fa-codepen"></i> Edit</a> -->
+        <div class="source-controls">
+          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
-        <form method="POST" id="codepen-form" target="_blank" action="https://codepen.io/pen/define/">
-          <textarea class="hidden" name="title">Earthquake Clusters</textarea>
-          <textarea class="hidden" name="description">Demonstrates the use of style geometries to render source features of a cluster.</textarea>
-          <textarea class="hidden" name="js">import Map from &#x27;ol/Map&#x27;;
+        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Earthquake Clusters&lt;/title&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;style&gt;
+      #map {
+        position: relative;
+      }
+      #info {
+        position: absolute;
+        height: 1px;
+        width: 1px;
+        z-index: 100;
+      }
+      .tooltip.in {
+        opacity: 1;
+      }
+      .tooltip.top .tooltip-arrow {
+        border-top-color: white;
+      }
+      .tooltip-inner {
+        border: 2px solid white;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;script src="index.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {createEmpty, getWidth, getHeight, extend} from &#x27;ol/extent&#x27;;
 import KML from &#x27;ol/format/KML&#x27;;
@@ -271,214 +310,25 @@ var map &#x3D; new Map({
     zoom: 2
   })
 });
-</textarea>
-          <textarea class="hidden" name="css">#map {
-  position: relative;
-}
-#info {
-  position: absolute;
-  height: 1px;
-  width: 1px;
-  z-index: 100;
-}
-.tooltip.in {
-  opacity: 1;
-}
-.tooltip.top .tooltip-arrow {
-  border-top-color: white;
-}
-.tooltip-inner {
-  border: 2px solid white;
-}
-</textarea>
-          <textarea class="hidden" name="html">&lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-</textarea>
-          <input type="hidden" name="data">
-        </form>
-        <pre><code id="example-source" class="language-markup">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;title&gt;Earthquake Clusters&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css"&gt;
-    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-
-    &lt;style&gt;
-      #map {
-        position: relative;
-      }
-      #info {
-        position: absolute;
-        height: 1px;
-        width: 1px;
-        z-index: 100;
-      }
-      .tooltip.in {
-        opacity: 1;
-      }
-      .tooltip.top .tooltip-arrow {
-        border-top-color: white;
-      }
-      .tooltip-inner {
-        border: 2px solid white;
-      }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;script&gt;
-      import Map from &#x27;ol/Map&#x27;;
-      import View from &#x27;ol/View&#x27;;
-      import {createEmpty, getWidth, getHeight, extend} from &#x27;ol/extent&#x27;;
-      import KML from &#x27;ol/format/KML&#x27;;
-      import {defaults as defaultInteractions, Select} from &#x27;ol/interaction&#x27;;
-      import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-      import {Cluster, Stamen, Vector as VectorSource} from &#x27;ol/source&#x27;;
-      import {Circle as CircleStyle, Fill, RegularShape, Stroke, Style, Text} from &#x27;ol/style&#x27;;
-
-
-      var earthquakeFill &#x3D; new Fill({
-        color: &#x27;rgba(255, 153, 0, 0.8)&#x27;
-      });
-      var earthquakeStroke &#x3D; new Stroke({
-        color: &#x27;rgba(255, 204, 0, 0.2)&#x27;,
-        width: 1
-      });
-      var textFill &#x3D; new Fill({
-        color: &#x27;#fff&#x27;
-      });
-      var textStroke &#x3D; new Stroke({
-        color: &#x27;rgba(0, 0, 0, 0.6)&#x27;,
-        width: 3
-      });
-      var invisibleFill &#x3D; new Fill({
-        color: &#x27;rgba(255, 255, 255, 0.01)&#x27;
-      });
-
-      function createEarthquakeStyle(feature) {
-        // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
-        // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it
-        // from the Placemark&#x27;s name instead.
-        var name &#x3D; feature.get(&#x27;name&#x27;);
-        var magnitude &#x3D; parseFloat(name.substr(2));
-        var radius &#x3D; 5 + 20 * (magnitude - 5);
-
-        return new Style({
-          geometry: feature.getGeometry(),
-          image: new RegularShape({
-            radius1: radius,
-            radius2: 3,
-            points: 5,
-            angle: Math.PI,
-            fill: earthquakeFill,
-            stroke: earthquakeStroke
-          })
-        });
-      }
-
-      var maxFeatureCount;
-      var vector &#x3D; null;
-      var calculateClusterInfo &#x3D; function(resolution) {
-        maxFeatureCount &#x3D; 0;
-        var features &#x3D; vector.getSource().getFeatures();
-        var feature, radius;
-        for (var i &#x3D; features.length - 1; i &gt;&#x3D; 0; --i) {
-          feature &#x3D; features[i];
-          var originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
-          var extent &#x3D; createEmpty();
-          var j &#x3D; (void 0), jj &#x3D; (void 0);
-          for (j &#x3D; 0, jj &#x3D; originalFeatures.length; j &lt; jj; ++j) {
-            extend(extent, originalFeatures[j].getGeometry().getExtent());
-          }
-          maxFeatureCount &#x3D; Math.max(maxFeatureCount, jj);
-          radius &#x3D; 0.25 * (getWidth(extent) + getHeight(extent)) /
-              resolution;
-          feature.set(&#x27;radius&#x27;, radius);
-        }
-      };
-
-      var currentResolution;
-      function styleFunction(feature, resolution) {
-        if (resolution !&#x3D; currentResolution) {
-          calculateClusterInfo(resolution);
-          currentResolution &#x3D; resolution;
-        }
-        var style;
-        var size &#x3D; feature.get(&#x27;features&#x27;).length;
-        if (size &gt; 1) {
-          style &#x3D; new Style({
-            image: new CircleStyle({
-              radius: feature.get(&#x27;radius&#x27;),
-              fill: new Fill({
-                color: [255, 153, 0, Math.min(0.8, 0.4 + (size / maxFeatureCount))]
-              })
-            }),
-            text: new Text({
-              text: size.toString(),
-              fill: textFill,
-              stroke: textStroke
-            })
-          });
-        } else {
-          var originalFeature &#x3D; feature.get(&#x27;features&#x27;)[0];
-          style &#x3D; createEarthquakeStyle(originalFeature);
-        }
-        return style;
-      }
-
-      function selectStyleFunction(feature) {
-        var styles &#x3D; [new Style({
-          image: new CircleStyle({
-            radius: feature.get(&#x27;radius&#x27;),
-            fill: invisibleFill
-          })
-        })];
-        var originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
-        var originalFeature;
-        for (var i &#x3D; originalFeatures.length - 1; i &gt;&#x3D; 0; --i) {
-          originalFeature &#x3D; originalFeatures[i];
-          styles.push(createEarthquakeStyle(originalFeature));
-        }
-        return styles;
-      }
-
-      vector &#x3D; new VectorLayer({
-        source: new Cluster({
-          distance: 40,
-          source: new VectorSource({
-            url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
-            format: new KML({
-              extractStyles: false
-            })
-          })
-        }),
-        style: styleFunction
-      });
-
-      var raster &#x3D; new TileLayer({
-        source: new Stamen({
-          layer: &#x27;toner&#x27;
-        })
-      });
-
-      var map &#x3D; new Map({
-        layers: [raster, vector],
-        interactions: defaultInteractions().extend([new Select({
-          condition: function(evt) {
-            return evt.type &#x3D;&#x3D; &#x27;pointermove&#x27; ||
-                evt.type &#x3D;&#x3D; &#x27;singleclick&#x27;;
-          },
-          style: selectStyleFunction
-        })]),
-        target: &#x27;map&#x27;,
-        view: new View({
-          center: [0, 0],
-          zoom: 2
-        })
-      });
-    &lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code></pre>
+</code></pre>
+      </div>
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
+  &quot;name&quot;: &quot;earthquake-clusters&quot;,
+  &quot;dependencies&quot;: {
+    &quot;ol&quot;: &quot;5.3.0&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;parcel&quot;: &quot;1.11.0&quot;
+  },
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;parcel index.html&quot;,
+    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+  }
+}</code></pre>
       </div>
     </div>
 
