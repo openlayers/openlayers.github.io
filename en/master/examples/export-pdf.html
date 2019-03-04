@@ -258,7 +258,10 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
       pdf.save(&#x27;map.pdf&#x27;);
       // Reset original map size
       map.setSize(size);
-      map.getView().fit(extent, {size: size});
+      map.getView().fit(extent, {
+        size: size,
+        constrainResolution: false
+      });
       exportButton.disabled &#x3D; false;
       document.body.style.cursor &#x3D; &#x27;auto&#x27;;
     });

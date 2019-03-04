@@ -106,11 +106,10 @@
            <div id="map" class="map"></div>
  <select id="layer-select">
    <option value="Aerial">Aerial</option>
-   <option value="AerialWithLabels" selected>Aerial with labels</option>
-   <option value="Road">Road (static)</option>
-   <option value="RoadOnDemand">Road (dynamic)</option>
-   <option value="collinsBart">Collins Bart</option>
-   <option value="ordnanceSurvey">Ordnance Survey</option>
+   <option value="AerialWithLabelsOnDemand" selected>Aerial with labels</option>
+   <option value="RoadOnDemand">Road</option>
+   <option value="CanvasDark">Road dark</option>
+   <option value="OrdnanceSurvey">Ordnance Survey</option>
  </select>
 
         </div>
@@ -142,11 +141,10 @@
      &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
      &lt;select id&#x3D;&quot;layer-select&quot;&gt;
        &lt;option value&#x3D;&quot;Aerial&quot;&gt;Aerial&lt;/option&gt;
-       &lt;option value&#x3D;&quot;AerialWithLabels&quot; selected&gt;Aerial with labels&lt;/option&gt;
-       &lt;option value&#x3D;&quot;Road&quot;&gt;Road (static)&lt;/option&gt;
-       &lt;option value&#x3D;&quot;RoadOnDemand&quot;&gt;Road (dynamic)&lt;/option&gt;
-       &lt;option value&#x3D;&quot;collinsBart&quot;&gt;Collins Bart&lt;/option&gt;
-       &lt;option value&#x3D;&quot;ordnanceSurvey&quot;&gt;Ordnance Survey&lt;/option&gt;
+       &lt;option value&#x3D;&quot;AerialWithLabelsOnDemand&quot; selected&gt;Aerial with labels&lt;/option&gt;
+       &lt;option value&#x3D;&quot;RoadOnDemand&quot;&gt;Road&lt;/option&gt;
+       &lt;option value&#x3D;&quot;CanvasDark&quot;&gt;Road dark&lt;/option&gt;
+       &lt;option value&#x3D;&quot;OrdnanceSurvey&quot;&gt;Ordnance Survey&lt;/option&gt;
      &lt;/select&gt;
     &lt;script src="index.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
@@ -164,12 +162,11 @@ import BingMaps from &#x27;ol/source/BingMaps&#x27;;
 
 
 var styles &#x3D; [
-  &#x27;Road&#x27;,
   &#x27;RoadOnDemand&#x27;,
   &#x27;Aerial&#x27;,
-  &#x27;AerialWithLabels&#x27;,
-  &#x27;collinsBart&#x27;,
-  &#x27;ordnanceSurvey&#x27;
+  &#x27;AerialWithLabelsOnDemand&#x27;,
+  &#x27;CanvasDark&#x27;,
+  &#x27;OrdnanceSurvey&#x27;
 ];
 var layers &#x3D; [];
 var i, ii;

@@ -110,6 +110,7 @@ free to ping us or to send a pull request enhancing this document.</p>
 <li><a href="#why-aren-t-there-any-features-in-my-source-">Why aren&#39;t there any features in my source?</a></li>
 <li><a href="#how-do-i-force-a-re-render-of-the-map-">How do I force a re-render of the map?</a></li>
 <li><a href="#why-are-my-features-not-found-">Why are my features not found?</a></li>
+<li><a href="#user-content-why-is-zooming-or-clicking-off-inaccurate">Why is zooming or clicking off, inaccurate?</a></li>
 </ul>
 <h2 id="what-projection-is-openlayers-using-">What projection is OpenLayers using?</h2>
 <p>Every map that you&#39;ll create with OpenLayers will have a view, and every view
@@ -375,6 +376,26 @@ icons, the actual geometry of a feature might be too far away and is not conside
   renderBuffer: <span class="number">200</span>
 });</code></pre>
 <p>The recommended value is the size of the largest symbol, line width or label.</p>
+<h2 id="why-is-zooming-or-clicking-in-the-map-off-inaccurate-">Why is zooming or clicking in the map off/inaccurate?</h2>
+<p>OpenLayers does not update the map when the container element is resized. This can be caused by progressive updates
+to CSS styles or manually resizing the map. When that happens, any interaction will become inaccurate: the map would zoom in and out, and end up not being centered on the pointer. This makes it hard to do certain interactions, e.g. selecting the desired feature.</p>
+<p>There is currently no built-in way to react to element&#39;s size changes, as <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver">Resize Observer API</a> is only implemented in Chrome.</p>
+<p>There is however an easy to use <a href="https://github.com/que-etc/resize-observer-polyfill">polyfill</a>:</p>
+<pre><code class="language-javascript">import Map from <span class="string">'ol/Map'</span>;
+import ResizeObserver from <span class="string">'resize-observer-polyfill'</span>;
+
+<span class="keyword">const</span> mapElement = document.querySelector(<span class="string">'#map'</span>)
+<span class="keyword">const</span> map = <span class="keyword">new</span> Map({
+  target: mapElement
+})
+
+<span class="keyword">const</span> sizeObserver = <span class="keyword">new</span> ResizeObserver(() =&gt; {
+  map.updateSize()
+})
+sizeObserver.observe(mapElement)
+
+<span class="comment">// called when the map is destroyed</span>
+<span class="comment">// sizeObserver.disconnect()</span></code></pre>
 
 </div>
 

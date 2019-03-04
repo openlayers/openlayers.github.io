@@ -178,8 +178,11 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
     evt.coordinate, viewResolution, &#x27;EPSG:3857&#x27;,
     {&#x27;INFO_FORMAT&#x27;: &#x27;text/html&#x27;});
   if (url) {
-    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D;
-        &#x27;&lt;iframe seamless src&#x3D;&quot;&#x27; + url + &#x27;&quot;&gt;&lt;/iframe&gt;&#x27;;
+    fetch(url)
+      .then(function (response) { return response.text(); })
+      .then(function (html) {
+        document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; html;
+      });
   }
 });
 
