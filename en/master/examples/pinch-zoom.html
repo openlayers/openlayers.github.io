@@ -114,7 +114,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Restrict pinch zooming to integer zoom levels.</p>
-          <div id="docs"><p>By default, the <code>ol/interaction/PinchZoom</code> can leave the map at fractional zoom levels. If instead you want to constrain pinch zooming to integer zoom levels, set <code>constrainResolution: true</code> when constructing the interaction.</p>
+          <div id="docs"><p>By default, the <code>ol/interaction/PinchZoom</code> can leave the map at fractional zoom levels. If instead you want to constrain pinch zooming to integer zoom levels, set <code>constrainResolution: true</code> when constructing the view.</p>
 </div>
         </div>
       </div>
@@ -129,6 +129,12 @@
     &lt;title&gt;Pinch Zoom&lt;/title&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;style&gt;
+      .map {
+        width: 100%;
+        height:400px;
+      }
+    &lt;/style&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
@@ -149,10 +155,8 @@ import OSM from &#x27;ol/source/OSM&#x27;;
 
 
 var map &#x3D; new Map({
-  interactions: defaultInteractions({pinchZoom: false}).extend([
-    new PinchZoom({
-      constrainResolution: true // force zooming to a integer zoom
-    })
+  interactions: defaultInteractions().extend([
+    new PinchZoom()
   ]),
   layers: [
     new TileLayer({
@@ -162,7 +166,8 @@ var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
+    zoom: 2,
+    constrainResolution: true
   })
 });
 </code></pre>

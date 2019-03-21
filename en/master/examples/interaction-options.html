@@ -114,18 +114,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Shows interaction options for custom scroll and zoom behavior.</p>
-          <div id="docs"><p>This example uses a custom <code>ol/interaction/defaults</code> configuration:</p>
-<ul>
-<li>By default, wheel/trackpad zoom and drag panning is always active, which
-can be unexpected on pages with a lot of scrollable content and an embedded
-map. To perform wheel/trackpad zoom and drag-pan actions only when the map
-has the focus, set <code>onFocusOnly: true</code> as option. This requires a map div
-with a <code>tabindex</code> attribute set.</li>
-<li>By default, pinch-zoom and wheel/trackpad zoom interactions can leave the
-map at fractional zoom levels. If instead you want to constrain
-wheel/trackpad zooming to integer zoom levels, set
-<code>constrainResolution: true</code>.</li>
-</ul>
+          <div id="docs"><p>This example uses a custom <code>ol/interaction/defaults</code> configuration: by default, wheel/trackpad zoom and drag panning is always active, which can be unexpected on pages with a lot of scrollable content and an embedded map. To perform wheel/trackpad zoom and drag-pan actions only when the map has the focus, set <code>onFocusOnly: true</code> as option. This requires a map div with a <code>tabindex</code> attribute set.</p>
 </div>
         </div>
       </div>
@@ -140,6 +129,12 @@ wheel/trackpad zooming to integer zoom levels, set
     &lt;title&gt;Interaction Options&lt;/title&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;style&gt;
+      .map {
+        width: 100%;
+        height:400px;
+      }
+    &lt;/style&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div tabindex&#x3D;&quot;1&quot; id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
@@ -161,7 +156,7 @@ import OSM from &#x27;ol/source/OSM&#x27;;
 
 var map &#x3D; new Map({
   interactions: defaultInteractions({
-    constrainResolution: true, onFocusOnly: true
+    onFocusOnly: true
   }),
   layers: [
     new TileLayer({

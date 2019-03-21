@@ -196,6 +196,9 @@
     <label>Size: </label>
     <input type="text" value="12px" id="points-size" />
     <br />
+    <label>Line height: </label>
+    <input type="text" value="1" id="points-height" />
+    <br />
     <label>Offset X:</label>
     <input type="text" value="0" id="points-offset-x" />
     <br />
@@ -304,6 +307,9 @@
     <br />
     <label>Size: </label>
     <input type="text" value="12px" id="lines-size" />
+    <br />
+    <label>Line height: </label>
+    <input type="text" value="1.2" id="lines-height" />
     <br />
     <label>Offset X:</label>
     <input type="text" value="0" id="lines-offset-x" />
@@ -414,6 +420,9 @@
     <label>Size: </label>
     <input type="text" value="10px" id="polygons-size" />
     <br />
+    <label>Line height: </label>
+    <input type="text" value="1" id="polygons-height" />
+    <br />
     <label>Offset X:</label>
     <input type="text" value="0" id="polygons-offset-x" />
     <br />
@@ -457,6 +466,10 @@
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;style&gt;
+      .map {
+        width: 100%;
+        height:400px;
+      }
       h2 {
         font-size: 1.5em;
         line-height: 15px;
@@ -598,6 +611,9 @@
         &lt;label&gt;Size: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;12px&quot; id&#x3D;&quot;points-size&quot; /&gt;
         &lt;br /&gt;
+        &lt;label&gt;Line height: &lt;/label&gt;
+        &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;1&quot; id&#x3D;&quot;points-height&quot; /&gt;
+        &lt;br /&gt;
         &lt;label&gt;Offset X:&lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;0&quot; id&#x3D;&quot;points-offset-x&quot; /&gt;
         &lt;br /&gt;
@@ -706,6 +722,9 @@
         &lt;br /&gt;
         &lt;label&gt;Size: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;12px&quot; id&#x3D;&quot;lines-size&quot; /&gt;
+        &lt;br /&gt;
+        &lt;label&gt;Line height: &lt;/label&gt;
+        &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;1.2&quot; id&#x3D;&quot;lines-height&quot; /&gt;
         &lt;br /&gt;
         &lt;label&gt;Offset X:&lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;0&quot; id&#x3D;&quot;lines-offset-x&quot; /&gt;
@@ -816,6 +835,9 @@
         &lt;label&gt;Size: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;10px&quot; id&#x3D;&quot;polygons-size&quot; /&gt;
         &lt;br /&gt;
+        &lt;label&gt;Line height: &lt;/label&gt;
+        &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;1&quot; id&#x3D;&quot;polygons-height&quot; /&gt;
+        &lt;br /&gt;
         &lt;label&gt;Offset X:&lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;0&quot; id&#x3D;&quot;polygons-offset-x&quot; /&gt;
         &lt;br /&gt;
@@ -860,6 +882,7 @@ var myDom &#x3D; {
     font: document.getElementById(&#x27;points-font&#x27;),
     weight: document.getElementById(&#x27;points-weight&#x27;),
     size: document.getElementById(&#x27;points-size&#x27;),
+    height: document.getElementById(&#x27;points-height&#x27;),
     offsetX: document.getElementById(&#x27;points-offset-x&#x27;),
     offsetY: document.getElementById(&#x27;points-offset-y&#x27;),
     color: document.getElementById(&#x27;points-color&#x27;),
@@ -878,6 +901,7 @@ var myDom &#x3D; {
     maxangle: document.getElementById(&#x27;lines-maxangle&#x27;),
     overflow: document.getElementById(&#x27;lines-overflow&#x27;),
     size: document.getElementById(&#x27;lines-size&#x27;),
+    height: document.getElementById(&#x27;lines-height&#x27;),
     offsetX: document.getElementById(&#x27;lines-offset-x&#x27;),
     offsetY: document.getElementById(&#x27;lines-offset-y&#x27;),
     color: document.getElementById(&#x27;lines-color&#x27;),
@@ -896,6 +920,7 @@ var myDom &#x3D; {
     maxangle: document.getElementById(&#x27;polygons-maxangle&#x27;),
     overflow: document.getElementById(&#x27;polygons-overflow&#x27;),
     size: document.getElementById(&#x27;polygons-size&#x27;),
+    height: document.getElementById(&#x27;polygons-height&#x27;),
     offsetX: document.getElementById(&#x27;polygons-offset-x&#x27;),
     offsetY: document.getElementById(&#x27;polygons-offset-y&#x27;),
     color: document.getElementById(&#x27;polygons-color&#x27;),
@@ -928,6 +953,7 @@ var createTextStyle &#x3D; function(feature, resolution, dom) {
   var align &#x3D; dom.align.value;
   var baseline &#x3D; dom.baseline.value;
   var size &#x3D; dom.size.value;
+  var height &#x3D; dom.height.value;
   var offsetX &#x3D; parseInt(dom.offsetX.value, 10);
   var offsetY &#x3D; parseInt(dom.offsetY.value, 10);
   var weight &#x3D; dom.weight.value;
@@ -942,7 +968,7 @@ var createTextStyle &#x3D; function(feature, resolution, dom) {
     document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(openSans);
     openSansAdded &#x3D; true;
   }
-  var font &#x3D; weight + &#x27; &#x27; + size + &#x27; &#x27; + dom.font.value;
+  var font &#x3D; weight + &#x27; &#x27; + size + &#x27;/&#x27; + height + &#x27; &#x27; + dom.font.value;
   var fillColor &#x3D; dom.color.value;
   var outlineColor &#x3D; dom.outline.value;
   var outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
