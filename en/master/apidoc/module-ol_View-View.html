@@ -21776,6 +21776,10 @@
                     <a href="module-ol_webgl_Helper-WebGLHelper.html#finalizeDraw">finalizeDraw</a>
                 </li>
             
+                <li data-name="module:ol/webgl/Helper~WebGLHelper#flushBufferData" class="">
+                    <a href="module-ol_webgl_Helper-WebGLHelper.html#flushBufferData">flushBufferData</a>
+                </li>
+            
                 <li data-name="module:ol/webgl/Helper~WebGLHelper#getAttributeLocation" class="">
                     <a href="module-ol_webgl_Helper-WebGLHelper.html#getAttributeLocation">getAttributeLocation</a>
                 </li>
@@ -22043,7 +22047,7 @@ put back the view to a stable state;</p></div>
         </h4>
         
         <div class="tag-source">
-            View.js, line 258
+            View.js, line 259
         </div>
         
         
@@ -22442,6 +22446,37 @@ provided, it is given precedence over <code>maxZoom</code>.</p></td>
 resolution constraint. It is used together with <code>maxZoom</code> (or
 <code>minResolution</code>) and <code>zoomFactor</code>.  Note that if <code>maxResolution</code> is also
 provided, it is given precedence over <code>minZoom</code>.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>multiWorld</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+            
+            
+            <td  class="description last">
+                
+                <p>No more than one world is visible.</p></td>
         </tr>
 	
 	
@@ -22953,7 +22988,7 @@ corresponding resolution.</p></td>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1143
+            View.js, line 1145
         </div>
         
         
@@ -23077,7 +23112,7 @@ corresponding resolution.</p></td>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1156
+            View.js, line 1158
         </div>
         
         
@@ -23227,7 +23262,7 @@ constraint will apply.</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1188
+            View.js, line 1190
         </div>
         
         
@@ -23377,7 +23412,7 @@ constraint will apply.</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1176
+            View.js, line 1178
         </div>
         
         
@@ -23527,7 +23562,7 @@ constraint will apply.</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 457
+            View.js, line 452
         </div>
         
         
@@ -23673,7 +23708,7 @@ calling <code>view.setCenter()</code>, <code>view.setResolution()</code>, or <co
         </h4>
         
         <div class="tag-source">
-            View.js, line 1324
+            View.js, line 1337
         </div>
         
         
@@ -23684,7 +23719,9 @@ calling <code>view.setCenter()</code>, <code>view.setResolution()</code>, or <co
 
     
     <div class="description">
-        <p>Notify the View that an interaction has started.</p>
+        <p>Notify the View that an interaction has started.
+The view state will be resolved to a stable one if needed
+(depending on its constraints).</p>
     </div>
     
 
@@ -23750,7 +23787,7 @@ calling <code>view.setCenter()</code>, <code>view.setResolution()</code>, or <co
         </h4>
         
         <div class="tag-source">
-            View.js, line 754
+            View.js, line 756
         </div>
         
         
@@ -23887,7 +23924,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            View.js, line 557
+            View.js, line 563
         </div>
         
         
@@ -23964,7 +24001,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            View.js, line 1112
+            View.js, line 1114
         </div>
         
         
@@ -24361,7 +24398,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1336
+            View.js, line 1351
         </div>
         
         
@@ -24536,7 +24573,7 @@ to a stable one if needed (depending on its constraints).</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1019
+            View.js, line 1021
         </div>
         
         
@@ -25091,7 +25128,7 @@ Value.
         </h4>
         
         <div class="tag-source">
-            View.js, line 540
+            View.js, line 546
         </div>
         
         
@@ -25177,7 +25214,7 @@ The view is being animated.
         </h4>
         
         <div class="tag-source">
-            View.js, line 717
+            View.js, line 719
         </div>
         
         
@@ -25263,7 +25300,7 @@ The center of the view.
         </h4>
         
         <div class="tag-source">
-            View.js, line 549
+            View.js, line 555
         </div>
         
         
@@ -25437,7 +25474,7 @@ List of property names.
         </h4>
         
         <div class="tag-source">
-            View.js, line 771
+            View.js, line 773
         </div>
         
         
@@ -25523,7 +25560,7 @@ The maximum resolution of the view.
         </h4>
         
         <div class="tag-source">
-            View.js, line 789
+            View.js, line 791
         </div>
         
         
@@ -25609,7 +25646,7 @@ The maximum zoom level.
         </h4>
         
         <div class="tag-source">
-            View.js, line 780
+            View.js, line 782
         </div>
         
         
@@ -25695,7 +25732,7 @@ The minimum resolution of the view.
         </h4>
         
         <div class="tag-source">
-            View.js, line 807
+            View.js, line 809
         </div>
         
         
@@ -25781,7 +25818,7 @@ The minimum zoom level.
         </h4>
         
         <div class="tag-source">
-            View.js, line 834
+            View.js, line 836
         </div>
         
         
@@ -25955,7 +25992,7 @@ Object.
         </h4>
         
         <div class="tag-source">
-            View.js, line 844
+            View.js, line 846
         </div>
         
         
@@ -26041,7 +26078,7 @@ The resolution of the view.
         </h4>
         
         <div class="tag-source">
-            View.js, line 866
+            View.js, line 868
         </div>
         
         
@@ -26200,7 +26237,7 @@ The resolution at which the provided extent will render at
         </h4>
         
         <div class="tag-source">
-            View.js, line 996
+            View.js, line 998
         </div>
         
         
@@ -26333,7 +26370,7 @@ The view resolution for the provided zoom level.
         </h4>
         
         <div class="tag-source">
-            View.js, line 854
+            View.js, line 856
         </div>
         
         
@@ -26509,7 +26546,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            View.js, line 901
+            View.js, line 903
         </div>
         
         
@@ -26595,7 +26632,7 @@ The rotation of the view in radians.
         </h4>
         
         <div class="tag-source">
-            View.js, line 956
+            View.js, line 958
         </div>
         
         
@@ -26683,7 +26720,7 @@ Zoom.
         </h4>
         
         <div class="tag-source">
-            View.js, line 971
+            View.js, line 973
         </div>
         
         
@@ -27322,7 +27359,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            View.js, line 1204
+            View.js, line 1206
         </div>
         
         
@@ -27449,7 +27486,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            View.js, line 825
+            View.js, line 827
         </div>
         
         
@@ -27573,7 +27610,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            View.js, line 798
+            View.js, line 800
         </div>
         
         
@@ -27697,7 +27734,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            View.js, line 816
+            View.js, line 818
         </div>
         
         
@@ -27973,7 +28010,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1226
+            View.js, line 1228
         </div>
         
         
@@ -28100,7 +28137,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1237
+            View.js, line 1239
         </div>
         
         
@@ -28224,7 +28261,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1247
+            View.js, line 1249
         </div>
         
         

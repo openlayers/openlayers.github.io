@@ -21776,6 +21776,10 @@
                     <a href="module-ol_webgl_Helper-WebGLHelper.html#finalizeDraw">finalizeDraw</a>
                 </li>
             
+                <li data-name="module:ol/webgl/Helper~WebGLHelper#flushBufferData" class="">
+                    <a href="module-ol_webgl_Helper-WebGLHelper.html#flushBufferData">flushBufferData</a>
+                </li>
+            
                 <li data-name="module:ol/webgl/Helper~WebGLHelper#getAttributeLocation" class="">
                     <a href="module-ol_webgl_Helper-WebGLHelper.html#getAttributeLocation">getAttributeLocation</a>
                 </li>
@@ -22012,12 +22016,20 @@ This is typically used in blur steps to reduce the performance overhead by using
 </ul>
 <h3 id="binding-webgl-buffers-and-flushing-data-into-them">Binding WebGL buffers and flushing data into them:</h3>
 <p>  Data that must be passed to the GPU has to be transferred using <code>WebGLArrayBuffer</code> objects.
-  A buffer has to be created only once, but must be bound everytime the data it holds is changed. Using <code>WebGLHelper.bindBuffer</code>
-  will bind the buffer and flush the new data to the GPU.</p>
-<p>  For now, the <code>WebGLHelper</code> class expects <code>module:ol/webgl/Buffer~WebGLArrayBuffer</code> objects.</p>
+  A buffer has to be created only once, but must be bound everytime the buffer content should be used for rendering.
+  This is done using <code>WebGLHelper.bindBuffer</code>.
+  When the buffer's array content has changed, the new data has to be flushed to the GPU memory; this is done using
+  <code>WebGLHelper.flushBufferData</code>. Note: this operation is expensive and should be done as infrequently as possible.</p>
+<p>  When binding a <code>WebGLArrayBuffer</code>, a <code>target</code> parameter must be given: it should be either <code>module:ol/webgl~ARRAY_BUFFER</code>
+  (if the buffer contains vertices data) or <code>module:ol/webgl~ELEMENT_ARRAY_BUFFER</code> (if the buffer contains indices data).</p>
+<p>  Examples below:</p>
 <pre class="prettyprint source lang-js"><code>  // at initialization phase
   this.verticesBuffer = new WebGLArrayBuffer([], DYNAMIC_DRAW);
   this.indicesBuffer = new WebGLArrayBuffer([], DYNAMIC_DRAW);
+
+  // when array values have changed
+  this.context.flushBufferData(ARRAY_BUFFER, this.verticesBuffer);
+  this.context.flushBufferData(ELEMENT_ARRAY_BUFFER, this.indicesBuffer);
 
   // at rendering phase
   this.context.bindBuffer(ARRAY_BUFFER, this.verticesBuffer);
@@ -22063,7 +22075,7 @@ This is typically used in blur steps to reduce the performance overhead by using
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 205
+            webgl/Helper.js, line 214
         </div>
         
         
@@ -22266,14 +22278,14 @@ names in the provided or default shaders.</p></td>
         <div class="anchor" id="bindBuffer">
         </div>
         <h4 class="name">
-            bindBuffer<span class="signature">(target, buf)</span>
+            bindBuffer<span class="signature">(target, buffer)</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 350
+            webgl/Helper.js, line 358
         </div>
         
         
@@ -22286,8 +22298,7 @@ names in the provided or default shaders.</p></td>
     <div class="description">
         <p>Just bind the buffer if it's in the cache. Otherwise create
 the WebGL buffer, bind it, populate it, and add an entry to
-the cache.
-TODO: improve this, the logic is unclear: we want A/ to bind a buffer and B/ to flush data in it</p>
+the cache.</p>
     </div>
     
 
@@ -22337,14 +22348,14 @@ TODO: improve this, the logic is unclear: we want A/ to bind a buffer and B/ to 
             
             <td  class="description last">
                 
-                <p>Target.</p></td>
+                <p>Target, either ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER.</p></td>
         </tr>
 	
 	
 	
         <tr class="">
             
-                <td class="name"><code>buf</code></td>
+                <td class="name"><code>buffer</code></td>
             
             
             
@@ -22425,7 +22436,7 @@ TODO: improve this, the logic is unclear: we want A/ to bind a buffer and B/ to 
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 447
+            webgl/Helper.js, line 467
         </div>
         
         
@@ -22574,7 +22585,7 @@ TODO: improve this, the logic is unclear: we want A/ to bind a buffer and B/ to 
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 699
+            webgl/Helper.js, line 719
         </div>
         
         
@@ -22798,7 +22809,7 @@ TODO: improve this, the logic is unclear: we want A/ to bind a buffer and B/ to 
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 463
+            webgl/Helper.js, line 483
         </div>
         
         
@@ -23351,6 +23362,156 @@ TODO: improve this, the logic is unclear: we want A/ to bind a buffer and B/ to 
 <dt class="">
     <div class="nameContainer">
         
+        <div class="anchor" id="flushBufferData">
+        </div>
+        <h4 class="name">
+            flushBufferData<span class="signature">(target, buffer)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            webgl/Helper.js, line 379
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+    
+    <div class="description">
+        <p>Update the data contained in the buffer array; this is required for the
+new data to be rendered</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>target</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Target, either ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>buffer</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">module:ol/webgl/Buffer~WebGLArrayBuffer</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Buffer.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt class="">
+    <div class="nameContainer">
+        
         <div class="anchor" id="getAttributeLocation">
         </div>
         <h4 class="name">
@@ -23361,7 +23522,7 @@ TODO: improve this, the logic is unclear: we want A/ to bind a buffer and B/ to 
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 663
+            webgl/Helper.js, line 683
         </div>
         
         
@@ -23494,7 +23655,7 @@ attribLocation
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 474
+            webgl/Helper.js, line 494
         </div>
         
         
@@ -23576,7 +23737,7 @@ Canvas.
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 483
+            webgl/Helper.js, line 503
         </div>
         
         
@@ -23662,7 +23823,7 @@ The rendering context.
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 611
+            webgl/Helper.js, line 631
         </div>
         
         
@@ -23821,7 +23982,7 @@ Program
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 640
+            webgl/Helper.js, line 660
         </div>
         
         
@@ -23907,7 +24068,7 @@ Errors description, or null if last compilation was successful
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 650
+            webgl/Helper.js, line 670
         </div>
         
         
@@ -24040,7 +24201,7 @@ uniformLocation
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 412
+            webgl/Helper.js, line 432
         </div>
         
         
@@ -24605,7 +24766,7 @@ subsequent draw calls.</p>
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 676
+            webgl/Helper.js, line 696
         </div>
         
         
@@ -24754,7 +24915,7 @@ subsequent draw calls.</p>
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 686
+            webgl/Helper.js, line 706
         </div>
         
         
@@ -24903,7 +25064,7 @@ subsequent draw calls.</p>
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 572
+            webgl/Helper.js, line 592
         </div>
         
         

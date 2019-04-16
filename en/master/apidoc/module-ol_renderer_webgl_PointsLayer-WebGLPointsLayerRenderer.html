@@ -21776,6 +21776,10 @@
                     <a href="module-ol_webgl_Helper-WebGLHelper.html#finalizeDraw">finalizeDraw</a>
                 </li>
             
+                <li data-name="module:ol/webgl/Helper~WebGLHelper#flushBufferData" class="">
+                    <a href="module-ol_webgl_Helper-WebGLHelper.html#flushBufferData">flushBufferData</a>
+                </li>
+            
                 <li data-name="module:ol/webgl/Helper~WebGLHelper#getAttributeLocation" class="">
                     <a href="module-ol_webgl_Helper-WebGLHelper.html#getAttributeLocation">getAttributeLocation</a>
                 </li>
@@ -21983,8 +21987,7 @@ every time the vector source changes.</p>
 <li><code>float a_color</code></li>
 </ul>
 <p>The following uniform is used for the main texture: <code>u_texture</code>.</p>
-<p>Please note that the main shader output should have premultiplied alpha, otherwise the colors will be blended
-additively.</p>
+<p>Please note that the main shader output should have premultiplied alpha, otherwise visual anomalies may occur.</p>
 <p>Points are rendered as quads with the following structure:</p>
 <p>  (u0, v1)      (u1, v1)
  [3]----------[2]
@@ -22069,7 +22072,7 @@ void main(void) {
         </h4>
         
         <div class="tag-source">
-            renderer/webgl/PointsLayer.js, line 188
+            renderer/webgl/PointsLayer.js, line 187
         </div>
         
         
@@ -22877,7 +22880,7 @@ Revision.
         </h4>
         
         <div class="tag-source">
-            renderer/webgl/PointsLayer.js, line 346
+            renderer/webgl/PointsLayer.js, line 350
         </div>
         
         

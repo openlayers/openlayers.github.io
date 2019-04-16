@@ -21776,6 +21776,10 @@
                     <a href="module-ol_webgl_Helper-WebGLHelper.html#finalizeDraw">finalizeDraw</a>
                 </li>
             
+                <li data-name="module:ol/webgl/Helper~WebGLHelper#flushBufferData" class="">
+                    <a href="module-ol_webgl_Helper-WebGLHelper.html#flushBufferData">flushBufferData</a>
+                </li>
+            
                 <li data-name="module:ol/webgl/Helper~WebGLHelper#getAttributeLocation" class="">
                     <a href="module-ol_webgl_Helper-WebGLHelper.html#getAttributeLocation">getAttributeLocation</a>
                 </li>
@@ -21975,6 +21979,8 @@ This is used internally by <a href="module-ol_webgl_Helper-WebGLHelper.html"><co
 <p>Please note that the final output on the DOM canvas is expected to have premultiplied alpha, which means that
 a pixel which is 100% red with an opacity of 50% must have a color of (r=0.5, g=0, b=0, a=0.5).
 Failing to provide pixel colors with premultiplied alpha will result in render anomalies.</p>
+<p>The default post-processing pass does <em>not</em> multiply color values with alpha value, it expects color values to be
+premultiplied.</p>
 <p>Default shaders are shown hereafter:</p>
 <ul>
 <li><p>Vertex shader:</p>
@@ -22001,7 +22007,6 @@ varying vec2 v_screenCoord;
 
 void main() {
   gl_FragColor = texture2D(u_image, v_texCoord);
-  gl_FragColor.rgb *= gl_FragColor.a;
 }</code></pre></li>
 </ul></div>
     
@@ -22026,7 +22031,7 @@ void main() {
         </h4>
         
         <div class="tag-source">
-            webgl/PostProcessingPass.js, line 100
+            webgl/PostProcessingPass.js, line 101
         </div>
         
         
@@ -22305,7 +22310,7 @@ the main canvas that will then be sampled up (useful for saving resource on blur
         </h4>
         
         <div class="tag-source">
-            webgl/PostProcessingPass.js, line 217
+            webgl/PostProcessingPass.js, line 218
         </div>
         
         
@@ -22882,7 +22887,7 @@ the main canvas that will then be sampled up (useful for saving resource on blur
         </h4>
         
         <div class="tag-source">
-            webgl/PostProcessingPass.js, line 249
+            webgl/PostProcessingPass.js, line 250
         </div>
         
         
@@ -22964,7 +22969,7 @@ Frame buffer
         </h4>
         
         <div class="tag-source">
-            webgl/PostProcessingPass.js, line 165
+            webgl/PostProcessingPass.js, line 166
         </div>
         
         
@@ -23050,7 +23055,7 @@ The rendering context.
         </h4>
         
         <div class="tag-source">
-            webgl/PostProcessingPass.js, line 176
+            webgl/PostProcessingPass.js, line 177
         </div>
         
         
