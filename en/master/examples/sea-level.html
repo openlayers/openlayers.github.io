@@ -208,8 +208,7 @@ function flood(pixels, data) {
 var key &#x3D; &#x27;Your Mapbox access token from http://mapbox.com/ here&#x27;;
 var elevation &#x3D; new XYZ({
   url: &#x27;https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.pngraw?access_token&#x3D;&#x27; + key,
-  crossOrigin: &#x27;anonymous&#x27;,
-  transition: 0
+  crossOrigin: &#x27;anonymous&#x27;
 });
 
 var raster &#x3D; new RasterSource({

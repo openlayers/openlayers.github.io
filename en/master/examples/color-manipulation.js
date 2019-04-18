@@ -112,8 +112,7 @@ function xyz2rgb(x) {
 
 var raster = new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"]({
   sources: [new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]({
-    layer: 'watercolor',
-    transition: 0
+    layer: 'watercolor'
   })],
   operation: function(pixels, data) {
     var hcl = rgb2hcl(pixels[0]);

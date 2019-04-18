@@ -288,8 +288,7 @@ function xyz2rgb(x) {
 
 var raster &#x3D; new RasterSource({
   sources: [new Stamen({
-    layer: &#x27;watercolor&#x27;,
-    transition: 0
+    layer: &#x27;watercolor&#x27;
   })],
   operation: function(pixels, data) {
     var hcl &#x3D; rgb2hcl(pixels[0]);

@@ -165,7 +165,6 @@ import {fromLonLat} from &#x27;ol/proj&#x27;;
 import WebGLPointsLayerRenderer from &#x27;ol/renderer/webgl/PointsLayer&#x27;;
 import {lerp} from &#x27;ol/math&#x27;;
 
-var features &#x3D; [];
 var vectorSource &#x3D; new Vector({
   features: [],
   attributions: &#x27;National UFO Reporting Center&#x27;
@@ -235,17 +234,14 @@ function loadData() {
   client.open(&#x27;GET&#x27;, &#x27;data/csv/ufo_sighting_data.csv&#x27;);
   client.onload &#x3D; function() {
     var csv &#x3D; client.responseText;
-    var curIndex;
-    var prevIndex &#x3D; 0;
-    var line;
-    while ((curIndex &#x3D; csv.indexOf(&#x27;\n&#x27;, prevIndex)) &gt; 0) {
-      line &#x3D; csv.substr(prevIndex, curIndex - prevIndex).split(&#x27;,&#x27;);
-      prevIndex &#x3D; curIndex + 1;
+    var features &#x3D; [];
 
-      // skip header
-      if (prevIndex &#x3D;&#x3D;&#x3D; 0) {
-        continue;
-      }
+    var prevIndex &#x3D; csv.indexOf(&#x27;\n&#x27;) + 1; // scan past the header line
+
+    var curIndex;
+    while ((curIndex &#x3D; csv.indexOf(&#x27;\n&#x27;, prevIndex)) !&#x3D; -1) {
+      var line &#x3D; csv.substr(prevIndex, curIndex - prevIndex).split(&#x27;,&#x27;);
+      prevIndex &#x3D; curIndex + 1;
 
       var coords &#x3D; fromLonLat([parseFloat(line[5]), parseFloat(line[4])]);
 
