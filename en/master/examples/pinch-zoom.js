@@ -1,2 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[97],{327:function(e,n,a){"use strict";a.r(n);var o=a(2),t=a(3),w=a(49),s=a(174),c=a(6),i=a(11);new o.a({interactions:Object(w.a)().extend([new s.a]),layers:[new c.a({source:new i.b})],target:"map",view:new t.a({center:[0,0],zoom:2,constrainResolution:!0})})}},[[327,0]]]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[98],{338:function(e,n,a){"use strict";a.r(n);var o=a(2),t=a(3),w=a(49),s=a(176),c=a(6),i=a(11);new o.a({interactions:Object(w.a)().extend([new s.a]),layers:[new c.a({source:new i.b})],target:"map",view:new t.a({center:[0,0],zoom:2,constrainResolution:!0})})}},[[338,0]]]);
 //# sourceMappingURL=pinch-zoom.js.map

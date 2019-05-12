@@ -1,2 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[94],{325:function(e,n,a){"use strict";a.r(n);var w=a(2),o=a(3),r=a(233),s=a(94),c=a(6),t=new(a(11).b),p=new r.a({layers:[new c.a({source:t})]});new w.a({controls:Object(s.a)().extend([p]),layers:[new c.a({source:t})],target:"map",view:new o.a({center:[5e5,6e6],zoom:7})})}},[[325,0]]]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[95],{336:function(e,n,a){"use strict";a.r(n);var w=a(2),o=a(3),r=a(238),s=a(94),c=a(6),t=new(a(11).b),p=new r.a({layers:[new c.a({source:t})]});new w.a({controls:Object(s.a)().extend([p]),layers:[new c.a({source:t})],target:"map",view:new o.a({center:[5e5,6e6],zoom:7})})}},[[336,0]]]);
 //# sourceMappingURL=overviewmap.js.map
