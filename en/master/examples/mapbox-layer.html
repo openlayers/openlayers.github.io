@@ -68,6 +68,7 @@
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/mapbox-gl@0.54.0/dist/mapbox-gl.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/mapbox-gl@0.54.0/dist/mapbox-gl.css">
     
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
@@ -96,7 +97,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.0.0-beta.7</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.0.0-beta.8</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -130,6 +131,7 @@
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://unpkg.com/mapbox-gl@0.54.0/dist/mapbox-gl.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https://unpkg.com/mapbox-gl@0.54.0/dist/mapbox-gl.css&quot;&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -151,184 +153,11 @@
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
 import Layer from &#x27;ol/layer/Layer&#x27;;
-import {assign} from &#x27;ol/obj&#x27;;
 import {toLonLat} from &#x27;ol/proj&#x27;;
-import SourceState from &#x27;ol/source/State&#x27;;
 import {Stroke, Style} from &#x27;ol/style&#x27;;
 import VectorLayer from &#x27;ol/layer/Vector&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-
-var Mapbox &#x3D; /*@__PURE__*/(function (Layer) {
-  function Mapbox(options) {
-    var baseOptions &#x3D; assign({}, options);
-    Layer.call(this, baseOptions);
-
-    this.baseOptions &#x3D; baseOptions;
-
-    /**
-     * @private
-     * @type boolean
-     */
-    this.loaded &#x3D; false;
-
-    this.initMap();
-  }
-
-  if ( Layer ) Mapbox.__proto__ &#x3D; Layer;
-  Mapbox.prototype &#x3D; Object.create( Layer &amp;&amp; Layer.prototype );
-  Mapbox.prototype.constructor &#x3D; Mapbox;
-
-  Mapbox.prototype.initMap &#x3D; function initMap () {
-    var map &#x3D; this.map_;
-    var view &#x3D; map.getView();
-    var center &#x3D; toLonLat(view.getCenter(), view.getProjection());
-
-    this.centerLastRender &#x3D; view.getCenter();
-    this.zoomLastRender &#x3D; view.getZoom();
-    this.centerLastRender &#x3D; view.getCenter();
-    this.zoomLastRender &#x3D; view.getZoom();
-
-    var options &#x3D; assign(this.baseOptions, {
-      attributionControl: false,
-      boxZoom: false,
-      center: center,
-      container: map.getTargetElement(),
-      doubleClickZoom: false,
-      dragPan: false,
-      dragRotate: false,
-      interactive: false,
-      keyboard: false,
-      pitchWithRotate: false,
-      scrollZoom: false,
-      touchZoomRotate: false,
-      zoom: view.getZoom() - 1
-    });
-
-    this.mbmap &#x3D; new mapboxgl.Map(options);
-    this.mbmap.on(&#x27;load&#x27;, function() {
-      this.mbmap.getCanvas().remove();
-      this.loaded &#x3D; true;
-      this.map_.render();
-      this.mbmap.getContainer().querySelector(&#x27;.mapboxgl-control-container&#x27;).remove();
-    }.bind(this));
-
-    this.mbmap.on(&#x27;render&#x27;, function() {
-      // Reset offset
-      if (this.centerNextRender) {
-        this.centerLastRender &#x3D; this.centerNextRender;
-      }
-      if (this.zoomNextRender) {
-        this.zoomLastRender &#x3D; this.zoomNextRender;
-      }
-      this.updateRenderedPosition(0, 0, 1);
-    }.bind(this));
-
-  };
-
-  /**
-   *
-   * @inheritDoc
-   */
-  Mapbox.prototype.render &#x3D; function render (frameState) {
-    var map &#x3D; this.map_;
-    var view &#x3D; map.getView();
-
-    this.centerNextRender &#x3D; view.getCenter();
-    var lastRender &#x3D; map.getPixelFromCoordinate(this.centerLastRender);
-    var nextRender &#x3D; map.getPixelFromCoordinate(this.centerNextRender);
-    this.zoomNextRender &#x3D; view.getZoom();
-    var scale &#x3D; Math.pow(2, this.zoomNextRender - this.zoomLastRender);
-    this.updateRenderedPosition(lastRender[0] - nextRender[0], lastRender[1] - nextRender[1], scale);
-
-    var rotation &#x3D; frameState.viewState.rotation;
-    if (rotation) {
-      this.mbmap.rotateTo(-rotation * 180 / Math.PI, {
-        animate: false
-      });
-    }
-
-    // Re-render mbmap
-    var center &#x3D; toLonLat(this.centerNextRender, view.getProjection());
-    var zoom &#x3D; view.getZoom() - 1;
-    this.mbmap.jumpTo({
-      center: center,
-      zoom: zoom
-    });
-    return this.mbmap.getCanvas();
-  };
-
-  Mapbox.prototype.updateRenderedPosition &#x3D; function updateRenderedPosition (left, top, scale) {
-    var style &#x3D; this.mbmap.getCanvas().style;
-    style.left &#x3D; Math.round(left) + &#x27;px&#x27;;
-    style.top &#x3D; Math.round(top) + &#x27;px&#x27;;
-    style.transform &#x3D; &#x27;scale(&#x27; + scale + &#x27;)&#x27;;
-  };
-
-  Mapbox.prototype.setVisible &#x3D; function setVisible (visible) {
-    Layer.prototype.setVisible.call(this, visible);
-
-    var canvas &#x3D; this.mbmap.getCanvas();
-    canvas.style.display &#x3D; visible ? &#x27;block&#x27; : &#x27;none&#x27;;
-  };
-
-  Mapbox.prototype.setOpacity &#x3D; function setOpacity (opacity) {
-    Layer.prototype.setOpacity.call(this, opacity);
-    var canvas &#x3D; this.mbmap.getCanvas();
-    canvas.style.opacity &#x3D; opacity;
-  };
-
-  Mapbox.prototype.setZIndex &#x3D; function setZIndex (zindex) {
-    Layer.prototype.setZIndex.call(this, zindex);
-    var canvas &#x3D; this.mbmap.getCanvas();
-    canvas.style.zIndex &#x3D; zindex;
-  };
-
-  /**
-   * @inheritDoc
-   */
-  Mapbox.prototype.getSourceState &#x3D; function getSourceState () {
-    return this.loaded ? SourceState.READY : SourceState.UNDEFINED;
-  };
-
-  Mapbox.prototype.setMap &#x3D; function setMap (map) {
-    this.map_ &#x3D; map;
-  };
-
-  return Mapbox;
-}(Layer));
-
-mapboxgl.Map.prototype._setupContainer &#x3D; function _setupContainer() {
-  var container &#x3D; this._container;
-  container.classList.add(&#x27;mapboxgl-map&#x27;);
-
-  var canvasContainer &#x3D; this._canvasContainer &#x3D; container.firstChild;
-
-  this._canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-  canvasContainer.insertBefore(this._canvas, canvasContainer.firstChild);
-  this._canvas.style.position &#x3D; &#x27;absolute&#x27;;
-  this._canvas.addEventListener(&#x27;webglcontextlost&#x27;, this._contextLost, false);
-  this._canvas.addEventListener(&#x27;webglcontextrestored&#x27;, this._contextRestored, false);
-  this._canvas.setAttribute(&#x27;tabindex&#x27;, &#x27;0&#x27;);
-  this._canvas.setAttribute(&#x27;aria-label&#x27;, &#x27;Map&#x27;);
-  this._canvas.className &#x3D; &#x27;mapboxgl-canvas&#x27;;
-
-  var dimensions &#x3D; this._containerDimensions();
-  this._resizeCanvas(dimensions[0], dimensions[1]);
-
-  this._controlContainer &#x3D; canvasContainer;
-  var controlContainer &#x3D; this._controlContainer &#x3D; document.createElement(&#x27;div&#x27;);
-  controlContainer.className &#x3D; &#x27;mapboxgl-control-container&#x27;;
-  container.appendChild(controlContainer);
-
-  var positions &#x3D; this._controlPositions &#x3D; {};
-  [&#x27;top-left&#x27;, &#x27;top-right&#x27;, &#x27;bottom-left&#x27;, &#x27;bottom-right&#x27;].forEach(function(positionName) {
-    var elem &#x3D; document.createElement(&#x27;div&#x27;);
-    elem.className &#x3D; &#x27;mapboxgl-ctrl-&#x27; + positionName;
-    controlContainer.appendChild(elem);
-    positions[positionName] &#x3D; elem;
-  });
-};
 
 var style &#x3D; new Style({
   stroke: new Stroke({
@@ -357,11 +186,70 @@ var map &#x3D; new Map({
   })
 });
 
-var key &#x3D; &#x27;Your Mapbox access token from http://mapbox.com/ here&#x27;;
-var mbLayer &#x3D; new Mapbox({
-  map: map,
-  container: map.getTarget(),
-  style: &#x27;https://maps.tilehosting.com/styles/bright/style.json?key&#x3D;&#x27; + key
+
+// init Mapbox object
+
+var view &#x3D; map.getView();
+var center &#x3D; toLonLat(view.getCenter(), view.getProjection());
+var key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
+
+var mbMap &#x3D; new mapboxgl.Map({
+  style: &#x27;https://maps.tilehosting.com/styles/bright/style.json?key&#x3D;&#x27; + key,
+  attributionControl: false,
+  boxZoom: false,
+  center: center,
+  container: map.getTargetElement(),
+  doubleClickZoom: false,
+  dragPan: false,
+  dragRotate: false,
+  interactive: false,
+  keyboard: false,
+  pitchWithRotate: false,
+  scrollZoom: false,
+  touchZoomRotate: false,
+  zoom: view.getZoom() - 1
+});
+
+
+// init OL layers
+
+var mbLayer &#x3D; new Layer({
+  render: function(frameState) {
+    var canvas &#x3D; mbMap.getCanvas();
+    var view &#x3D; map.getView();
+
+    var visible &#x3D; mbLayer.getVisible();
+    canvas.style.display &#x3D; visible ? &#x27;block&#x27; : &#x27;none&#x27;;
+
+    var opacity &#x3D; mbLayer.getOpacity();
+    canvas.style.opacity &#x3D; opacity;
+
+    // adjust view parameters in mapbox
+    var rotation &#x3D; frameState.viewState.rotation;
+    if (rotation) {
+      mbMap.rotateTo(-rotation * 180 / Math.PI, {
+        animate: false
+      });
+    }
+    var center &#x3D; toLonLat(view.getCenter(), view.getProjection());
+    var zoom &#x3D; view.getZoom() - 1;
+    mbMap.jumpTo({
+      center: center,
+      zoom: zoom,
+      animate: false
+    });
+
+    // cancel the scheduled update &amp; trigger synchronous redraw
+    // see https://github.com/mapbox/mapbox-gl-js/issues/7893#issue-408992184
+    // NOTE: THIS MIGHT BREAK WHEN UPDATING MAPBOX
+    if (mbMap._frame) {
+      mbMap._frame.cancel();
+      mbMap._frame &#x3D; null;
+    }
+    mbMap._render();
+
+    return canvas;
+  }
 });
 
 map.addLayer(mbLayer);
@@ -375,7 +263,7 @@ map.addLayer(vectorLayer);
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;mapbox-layer&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.0.0-beta.7&quot;
+    &quot;ol&quot;: &quot;6.0.0-beta.8&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -403,7 +291,7 @@ map.addLayer(vectorLayer);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.0-beta.7' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.0-beta.8' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

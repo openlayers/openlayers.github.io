@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.0.0-beta.7</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.0.0-beta.8</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div class="row-fluid">
@@ -129,7 +129,7 @@
     &lt;title&gt;Mapbox Vector Tiles&lt;/title&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://openlayers.org/en/v6.0.0-beta.7/examples/resources/mapbox-streets-v6-style.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://openlayers.org/en/v6.0.0-beta.8/examples/resources/mapbox-streets-v6-style.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -159,7 +159,7 @@ import VectorTileSource from &#x27;ol/source/VectorTile&#x27;;
 import {Fill, Icon, Stroke, Style, Text} from &#x27;ol/style&#x27;;
 
 
-var key &#x3D; &#x27;Your Mapbox access token from http://mapbox.com/ here&#x27;;
+var key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
 var map &#x3D; new Map({
   layers: [
@@ -191,7 +191,7 @@ var map &#x3D; new Map({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;mapbox-vector-tiles&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.0.0-beta.7&quot;
+    &quot;ol&quot;: &quot;6.0.0-beta.8&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -219,7 +219,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.0-beta.7' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.0-beta.8' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');
