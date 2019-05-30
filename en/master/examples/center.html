@@ -234,6 +234,7 @@ import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 
+/** @type {VectorSource&lt;import(&quot;../src/ol/geom/SimpleGeometry.js&quot;).default&gt;} */
 var source &#x3D; new VectorSource({
   url: &#x27;data/geojson/switzerland.geojson&#x27;,
   format: new GeoJSON()
@@ -280,21 +281,21 @@ var zoomtoswitzerland &#x3D;
     document.getElementById(&#x27;zoomtoswitzerland&#x27;);
 zoomtoswitzerland.addEventListener(&#x27;click&#x27;, function() {
   var feature &#x3D; source.getFeatures()[0];
-  var polygon &#x3D; /** @type {import(&quot;../src/ol/geom/SimpleGeometry.js&quot;).default} */ (feature.getGeometry());
+  var polygon &#x3D; feature.getGeometry();
   view.fit(polygon, {padding: [170, 50, 30, 150]});
 }, false);
 
 var zoomtolausanne &#x3D; document.getElementById(&#x27;zoomtolausanne&#x27;);
 zoomtolausanne.addEventListener(&#x27;click&#x27;, function() {
   var feature &#x3D; source.getFeatures()[1];
-  var point &#x3D; /** @type {import(&quot;../src/ol/geom/SimpleGeometry.js&quot;).default} */ (feature.getGeometry());
+  var point &#x3D; feature.getGeometry();
   view.fit(point, {padding: [170, 50, 30, 150], minResolution: 50});
 }, false);
 
 var centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
 centerlausanne.addEventListener(&#x27;click&#x27;, function() {
   var feature &#x3D; source.getFeatures()[1];
-  var point &#x3D; /** @type {import(&quot;../src/ol/geom/Point.js&quot;).default} */ (feature.getGeometry());
+  var point &#x3D; feature.getGeometry();
   var size &#x3D; map.getSize();
   view.centerOn(point.getCoordinates(), size, [570, 500]);
 }, false);

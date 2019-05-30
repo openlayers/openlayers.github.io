@@ -68,7 +68,7 @@
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     
-    
+    <link rel="stylesheet" href="export-map.css">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>Map Export</title>
@@ -104,6 +104,9 @@
         <div class="span12">
           <h4 id="title">Map Export</h4>
           <div id="map" class="map"></div>
+<div style="display: none;">
+  <div class="overlay" id="null">Null Island</div>
+</div>
 <a id="export-png" class="btn btn-default"><i class="fa fa-download"></i> Download PNG</a>
 <a id="image-download" download="map.png"></a>
 
@@ -136,10 +139,19 @@
         width: 100%;
         height:400px;
       }
+      .overlay {
+        background-color: yellow;
+        border-radius: 6px;
+        padding: 4px;
+        white-space: nowrap;
+      }
     &lt;/style&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div style&#x3D;&quot;display: none;&quot;&gt;
+      &lt;div class&#x3D;&quot;overlay&quot; id&#x3D;&quot;null&quot;&gt;Null Island&lt;/div&gt;
+    &lt;/div&gt;
     &lt;a id&#x3D;&quot;export-png&quot; class&#x3D;&quot;btn btn-default&quot;&gt;&lt;i class&#x3D;&quot;fa fa-download&quot;&gt;&lt;/i&gt; Download PNG&lt;/a&gt;
     &lt;a id&#x3D;&quot;image-download&quot; download&#x3D;&quot;map.png&quot;&gt;&lt;/a&gt;
     &lt;script src="index.js"&gt;&lt;/script&gt;
@@ -153,6 +165,7 @@
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
+import Overlay from &#x27;ol/Overlay&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
@@ -178,11 +191,17 @@ var map &#x3D; new Map({
   })
 });
 
+map.addOverlay(new Overlay({
+  position: [0, 0],
+  element: document.getElementById(&#x27;null&#x27;)
+}));
+
+
 // export options for html-to-image.
 // See: https://github.com/bubkoo/html-to-image#options
 var exportOptions &#x3D; {
   filter: function(element) {
-    return element.className.indexOf(&#x27;ol-control&#x27;) &#x3D;&#x3D;&#x3D; -1;
+    return element.className ? element.className.indexOf(&#x27;ol-control&#x27;) &#x3D;&#x3D;&#x3D; -1 : true;
   }
 };
 

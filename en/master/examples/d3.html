@@ -67,7 +67,7 @@
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://unpkg.com/d3@4.12.0/build/d3.js"></script>
+    <script src="https://unpkg.com/d3@5.9.2/dist/d3.js"></script>
 <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"></script>
     <link rel="stylesheet" href="d3.css">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
@@ -130,7 +130,7 @@
     &lt;title&gt;d3 Integration&lt;/title&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://unpkg.com/d3@4.12.0/build/d3.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://unpkg.com/d3@5.9.2/dist/d3.js&quot;&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://unpkg.com/topojson@3.0.2/dist/topojson.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
@@ -246,7 +246,7 @@ var map &#x3D; new Map({
 /**
  * Load the topojson data and create an ol/layer/Image for that data.
  */
-d3.json(&#x27;data/topojson/us.json&#x27;, function(error, us) {
+d3.json(&#x27;data/topojson/us.json&#x27;).then(function(us) {
 
   var layer &#x3D; new CanvasLayer({
     features: topojson.feature(us, us.objects.counties)

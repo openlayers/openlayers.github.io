@@ -226,10 +226,10 @@ var routeFeature &#x3D; new Feature({
   type: &#x27;route&#x27;,
   geometry: route
 });
-var geoMarker &#x3D; new Feature({
+var geoMarker &#x3D; /** @type Feature&lt;import(&quot;../src/ol/geom/Point&quot;).default&gt; */(new Feature({
   type: &#x27;geoMarker&#x27;,
   geometry: new Point(routeCoords[0])
-});
+}));
 var startMarker &#x3D; new Feature({
   type: &#x27;icon&#x27;,
   geometry: new Point(routeCoords[0])
@@ -350,7 +350,7 @@ function stopAnimation(ended) {
 
   // if animation cancelled set the marker at the beginning
   var coord &#x3D; ended ? routeCoords[routeLength - 1] : routeCoords[0];
-  var geometry &#x3D; /** @type {import(&quot;../src/ol/geom/Point&quot;).default} */ (geoMarker.getGeometry());
+  var geometry &#x3D; geoMarker.getGeometry();
   geometry.setCoordinates(coord);
   //remove listener
   vectorLayer.un(&#x27;postrender&#x27;, moveFeature);

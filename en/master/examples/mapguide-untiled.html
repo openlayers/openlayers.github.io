@@ -152,9 +152,9 @@ import View from &#x27;ol/View&#x27;;
 import ImageLayer from &#x27;ol/layer/Image&#x27;;
 import ImageMapGuide from &#x27;ol/source/ImageMapGuide&#x27;;
 
-var mdf &#x3D; &#x27;Library://Public/Samples/Sheboygan/Maps/Sheboygan.MapDefinition&#x27;;
+var mdf &#x3D; &#x27;Library://Samples/Sheboygan/Maps/Sheboygan.MapDefinition&#x27;;
 var agentUrl &#x3D;
-    &#x27;http://www.buoyshark.com/mapguide/mapagent/mapagent.fcgi?&#x27;;
+    &#x27;http://138.197.230.93:8008/mapguide/mapagent/mapagent.fcgi?&#x27;;
 var bounds &#x3D; [
   -87.865114442365922,
   43.665065564837931,
@@ -173,8 +173,9 @@ var map &#x3D; new Map({
         params: {
           MAPDEFINITION: mdf,
           FORMAT: &#x27;PNG&#x27;,
-          USERNAME: &#x27;OpenLayers&#x27;,
-          PASSWORD: &#x27;OpenLayers&#x27;
+          VERSION: &#x27;3.0.0&#x27;,
+          USERNAME: &#x27;OLGuest&#x27;,
+          PASSWORD: &#x27;olguest&#x27;
         },
         ratio: 2
       })
