@@ -59,7 +59,7 @@
     });
     </script>
     <meta charset="utf-8">
-    <title>OpenLayers v6.0.0-beta.9 API - Class: WebGLHelper</title>
+    <title>OpenLayers v6.0.0-beta.11 API - Class: WebGLHelper</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17344,6 +17344,10 @@
                     <a href="module-ol_source_ImageWMS-ImageWMS.html#getGetFeatureInfoUrl">getGetFeatureInfoUrl</a>
                 </li>
             
+                <li data-name="module:ol/source/ImageWMS~ImageWMS#getGetLegendGraphicUrl" class="">
+                    <a href="module-ol_source_ImageWMS-ImageWMS.html#getGetLegendGraphicUrl">getGetLegendGraphicUrl</a>
+                </li>
+            
                 <li data-name="module:ol/source/ImageWMS~ImageWMS#getImageLoadFunction" class="">
                     <a href="module-ol_source_ImageWMS-ImageWMS.html#getImageLoadFunction">getImageLoadFunction</a>
                 </li>
@@ -18954,6 +18958,10 @@
             
                 <li data-name="module:ol/source/TileWMS~TileWMS#getGetFeatureInfoUrl" class="">
                     <a href="module-ol_source_TileWMS-TileWMS.html#getGetFeatureInfoUrl">getGetFeatureInfoUrl</a>
+                </li>
+            
+                <li data-name="module:ol/source/TileWMS~TileWMS#getGetLegendGraphicUrl" class="">
+                    <a href="module-ol_source_TileWMS-TileWMS.html#getGetLegendGraphicUrl">getGetLegendGraphicUrl</a>
                 </li>
             
                 <li data-name="module:ol/source/TileWMS~TileWMS#getKeys" class="">
@@ -21881,8 +21889,6 @@
             
                 <li data-name="module:ol/webgl.STREAM_DRAW"><a href="module-ol_webgl.html#.STREAM_DRAW">STREAM_DRAW</a></li>
             
-                <li data-name="module:ol/webgl~HAS"><a href="module-ol_webgl.html#~HAS">HAS</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -21974,6 +21980,10 @@
             
                 <li data-name="module:ol/webgl/Helper~WebGLHelper#bindBuffer" class="">
                     <a href="module-ol_webgl_Helper-WebGLHelper.html#bindBuffer">bindBuffer</a>
+                </li>
+            
+                <li data-name="module:ol/webgl/Helper~WebGLHelper#createTexture" class="">
+                    <a href="module-ol_webgl_Helper-WebGLHelper.html#createTexture">createTexture</a>
                 </li>
             
                 <li data-name="module:ol/webgl/Helper~WebGLHelper#drawElements" class="">
@@ -22157,13 +22167,59 @@
             </ul>
         </li>
     
-        <li class="item" data-name="module:ol/webgl/Shader">
+        <li class="item" data-name="module:ol/webgl/RenderTarget">
             <span class="title">
-                <a href="module-ol_webgl_Shader.html">ol/webgl/Shader</a>
+                <a href="module-ol_webgl_RenderTarget.html">ol/webgl/RenderTarget</a>
                 
             </span>
             <ul class="members itemMembers">
             
+            <span class="subtitle">Classes</span>
+            
+        <li class="item" data-name="module:ol/webgl/RenderTarget~WebGLRenderTarget">
+            <span class="title">
+                <a href="module-ol_webgl_RenderTarget-WebGLRenderTarget.html">WebGLRenderTarget</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="module:ol/webgl/RenderTarget~WebGLRenderTarget#clearCachedData" class="">
+                    <a href="module-ol_webgl_RenderTarget-WebGLRenderTarget.html#clearCachedData">clearCachedData</a>
+                </li>
+            
+                <li data-name="module:ol/webgl/RenderTarget~WebGLRenderTarget#getSize" class="">
+                    <a href="module-ol_webgl_RenderTarget-WebGLRenderTarget.html#getSize">getSize</a>
+                </li>
+            
+                <li data-name="module:ol/webgl/RenderTarget~WebGLRenderTarget#readAll" class="">
+                    <a href="module-ol_webgl_RenderTarget-WebGLRenderTarget.html#readAll">readAll</a>
+                </li>
+            
+                <li data-name="module:ol/webgl/RenderTarget~WebGLRenderTarget#readPixel" class="">
+                    <a href="module-ol_webgl_RenderTarget-WebGLRenderTarget.html#readPixel">readPixel</a>
+                </li>
+            
+                <li data-name="module:ol/webgl/RenderTarget~WebGLRenderTarget#setSize" class="">
+                    <a href="module-ol_webgl_RenderTarget-WebGLRenderTarget.html#setSize">setSize</a>
+                </li>
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
             </ul>
             <ul class="members itemMembers">
             
@@ -22232,7 +22288,7 @@
         <h1 class="page-title" data-filename="module-ol_webgl_Helper-WebGLHelper.html">Class: WebGLHelper</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">6.0.0-beta.9</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">6.0.0-beta.11</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -22353,7 +22409,7 @@ This is typically used in blur steps to reduce the performance overhead by using
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 218
+            webgl/Helper.js, line 217
         </div>
         
         
@@ -22566,7 +22622,7 @@ names in the provided or default shaders.</p></td>
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 346
+            webgl/Helper.js, line 345
         </div>
         
         
@@ -22685,6 +22741,201 @@ the cache.</p>
 <dt class="">
     <div class="nameContainer">
         
+        <div class="anchor" id="createTexture">
+        </div>
+        <h4 class="name">
+            createTexture<span class="signature">(size, <span class="optional">opt_data</span>, <span class="optional">opt_texture</span>)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{WebGLTexture}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            webgl/Helper.js, line 780
+        </div>
+        
+        
+    </div>
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Will create or reuse a given webgl texture and apply the given size. If no image data
+specified, the texture will be empty, otherwise image data will be used and the <code>size</code>
+parameter will be ignored.
+Note: wrap parameters are set to clamp to edge, min filter is set to linear.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>size</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Expected size of the texture</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>data</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">ImageData</span>
+|
+
+<span class="param-type">HTMLImageElement</span>
+|
+
+<span class="param-type">HTMLCanvasElement</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Image data/object to bind to the texture</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>texture</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">WebGLTexture</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            <td  class="description last">
+                
+                <p>Existing texture to reuse</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The generated texture
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    <div class="nameContainer">
+        
         <div class="anchor" id="drawElements">
         </div>
         <h4 class="name">
@@ -22695,7 +22946,7 @@ the cache.</p>
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 446
+            webgl/Helper.js, line 470
         </div>
         
         
@@ -22847,7 +23098,7 @@ the cache.</p>
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 714
+            webgl/Helper.js, line 738
         </div>
         
         
@@ -23074,7 +23325,7 @@ the cache.</p>
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 461
+            webgl/Helper.js, line 485
         </div>
         
         
@@ -23690,7 +23941,7 @@ the cache.</p>
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 366
+            webgl/Helper.js, line 365
         </div>
         
         
@@ -23818,7 +24069,7 @@ new data to be rendered</p>
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 654
+            webgl/Helper.js, line 678
         </div>
         
         
@@ -23954,7 +24205,7 @@ attribLocation
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 472
+            webgl/Helper.js, line 496
         </div>
         
         
@@ -24039,7 +24290,7 @@ Canvas.
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 481
+            webgl/Helper.js, line 505
         </div>
         
         
@@ -24128,7 +24379,7 @@ The rendering context.
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 602
+            webgl/Helper.js, line 626
         </div>
         
         
@@ -24290,7 +24541,7 @@ Program
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 631
+            webgl/Helper.js, line 655
         </div>
         
         
@@ -24379,7 +24630,7 @@ Errors description, or null if last compilation was successful
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 641
+            webgl/Helper.js, line 665
         </div>
         
         
@@ -24515,7 +24766,7 @@ uniformLocation
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 669
+            webgl/Helper.js, line 693
         </div>
         
         
@@ -25155,7 +25406,7 @@ The updated transform object.
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 411
+            webgl/Helper.js, line 410
         </div>
         
         
@@ -25773,7 +26024,7 @@ subsequent draw calls.</p>
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 691
+            webgl/Helper.js, line 715
         </div>
         
         
@@ -25925,7 +26176,7 @@ subsequent draw calls.</p>
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 701
+            webgl/Helper.js, line 725
         </div>
         
         
@@ -26077,7 +26328,7 @@ subsequent draw calls.</p>
         </h4>
         
         <div class="tag-source">
-            webgl/Helper.js, line 563
+            webgl/Helper.js, line 587
         </div>
         
         

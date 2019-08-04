@@ -59,7 +59,7 @@
     });
     </script>
     <meta charset="utf-8">
-    <title>OpenLayers v6.0.0-beta.9 API - Class: View</title>
+    <title>OpenLayers v6.0.0-beta.11 API - Class: View</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17344,6 +17344,10 @@
                     <a href="module-ol_source_ImageWMS-ImageWMS.html#getGetFeatureInfoUrl">getGetFeatureInfoUrl</a>
                 </li>
             
+                <li data-name="module:ol/source/ImageWMS~ImageWMS#getGetLegendGraphicUrl" class="">
+                    <a href="module-ol_source_ImageWMS-ImageWMS.html#getGetLegendGraphicUrl">getGetLegendGraphicUrl</a>
+                </li>
+            
                 <li data-name="module:ol/source/ImageWMS~ImageWMS#getImageLoadFunction" class="">
                     <a href="module-ol_source_ImageWMS-ImageWMS.html#getImageLoadFunction">getImageLoadFunction</a>
                 </li>
@@ -18954,6 +18958,10 @@
             
                 <li data-name="module:ol/source/TileWMS~TileWMS#getGetFeatureInfoUrl" class="">
                     <a href="module-ol_source_TileWMS-TileWMS.html#getGetFeatureInfoUrl">getGetFeatureInfoUrl</a>
+                </li>
+            
+                <li data-name="module:ol/source/TileWMS~TileWMS#getGetLegendGraphicUrl" class="">
+                    <a href="module-ol_source_TileWMS-TileWMS.html#getGetLegendGraphicUrl">getGetLegendGraphicUrl</a>
                 </li>
             
                 <li data-name="module:ol/source/TileWMS~TileWMS#getKeys" class="">
@@ -21881,8 +21889,6 @@
             
                 <li data-name="module:ol/webgl.STREAM_DRAW"><a href="module-ol_webgl.html#.STREAM_DRAW">STREAM_DRAW</a></li>
             
-                <li data-name="module:ol/webgl~HAS"><a href="module-ol_webgl.html#~HAS">HAS</a></li>
-            
             </ul>
             <ul class="typedefs itemMembers">
             
@@ -21974,6 +21980,10 @@
             
                 <li data-name="module:ol/webgl/Helper~WebGLHelper#bindBuffer" class="">
                     <a href="module-ol_webgl_Helper-WebGLHelper.html#bindBuffer">bindBuffer</a>
+                </li>
+            
+                <li data-name="module:ol/webgl/Helper~WebGLHelper#createTexture" class="">
+                    <a href="module-ol_webgl_Helper-WebGLHelper.html#createTexture">createTexture</a>
                 </li>
             
                 <li data-name="module:ol/webgl/Helper~WebGLHelper#drawElements" class="">
@@ -22157,13 +22167,59 @@
             </ul>
         </li>
     
-        <li class="item" data-name="module:ol/webgl/Shader">
+        <li class="item" data-name="module:ol/webgl/RenderTarget">
             <span class="title">
-                <a href="module-ol_webgl_Shader.html">ol/webgl/Shader</a>
+                <a href="module-ol_webgl_RenderTarget.html">ol/webgl/RenderTarget</a>
                 
             </span>
             <ul class="members itemMembers">
             
+            <span class="subtitle">Classes</span>
+            
+        <li class="item" data-name="module:ol/webgl/RenderTarget~WebGLRenderTarget">
+            <span class="title">
+                <a href="module-ol_webgl_RenderTarget-WebGLRenderTarget.html">WebGLRenderTarget</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="module:ol/webgl/RenderTarget~WebGLRenderTarget#clearCachedData" class="">
+                    <a href="module-ol_webgl_RenderTarget-WebGLRenderTarget.html#clearCachedData">clearCachedData</a>
+                </li>
+            
+                <li data-name="module:ol/webgl/RenderTarget~WebGLRenderTarget#getSize" class="">
+                    <a href="module-ol_webgl_RenderTarget-WebGLRenderTarget.html#getSize">getSize</a>
+                </li>
+            
+                <li data-name="module:ol/webgl/RenderTarget~WebGLRenderTarget#readAll" class="">
+                    <a href="module-ol_webgl_RenderTarget-WebGLRenderTarget.html#readAll">readAll</a>
+                </li>
+            
+                <li data-name="module:ol/webgl/RenderTarget~WebGLRenderTarget#readPixel" class="">
+                    <a href="module-ol_webgl_RenderTarget-WebGLRenderTarget.html#readPixel">readPixel</a>
+                </li>
+            
+                <li data-name="module:ol/webgl/RenderTarget~WebGLRenderTarget#setSize" class="">
+                    <a href="module-ol_webgl_RenderTarget-WebGLRenderTarget.html#setSize">setSize</a>
+                </li>
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
             </ul>
             <ul class="members itemMembers">
             
@@ -22232,7 +22288,7 @@
         <h1 class="page-title" data-filename="module-ol_View-View.html">Class: View</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">6.0.0-beta.9</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">6.0.0-beta.11</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -23070,6 +23126,39 @@ corresponding resolution.</p></td>
         </li>
     
         <li class="">
+            <code>change:center</code>
+            
+                (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              
+            
+            
+
+            
+        </li>
+    
+        <li class="">
+            <code>change:resolution</code>
+            
+                (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              
+            
+            
+
+            
+        </li>
+    
+        <li class="">
+            <code>change:rotation</code>
+            
+                (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              
+            
+            
+
+            
+        </li>
+    
+        <li class="">
             <code><a href="module-ol_events_Event-Event.html#event:error">error</a></code>
             
                 (<a href="module-ol_events_Event-Event.html">module:ol/events/Event~Event</a>)
@@ -23130,6 +23219,81 @@ corresponding resolution.</p></td>
     
 
     
+        <h3 class="subsection-title">Observable Properties</h3>
+        <dl>
+
+<table class="props">
+    <thead>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Settable</th>
+    <th><a href="module-ol_Object-ObjectEvent.html">ol/Object.ObjectEvent</a> type</th>
+    <th class="last">Description</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  
+
+    <tr class="">
+      <td class="name"><code>center</code></td>
+      <td class="type">
+      
+      
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+      
+      </td>
+      <td class="setter">yes</td>
+      <td class="event"><code>change:center</code></td>
+      <td class="description last"><p>The center of the view.</p></td>
+    </tr>
+    
+
+    <tr class="">
+      <td class="name"><code>resolution</code></td>
+      <td class="type">
+      
+      
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+      
+      </td>
+      <td class="setter">yes</td>
+      <td class="event"><code>change:resolution</code></td>
+      <td class="description last"><p>The resolution of the view.</p></td>
+    </tr>
+    
+
+    <tr class="">
+      <td class="name"><code>rotation</code></td>
+      <td class="type">
+      
+      
+<span class="param-type">number</span>
+
+
+      
+      </td>
+      <td class="setter">yes</td>
+      <td class="event"><code>change:rotation</code></td>
+      <td class="description last"><p>The rotation of the view in radians.</p></td>
+    </tr>
+    
+  </tbody>
+</table>
+</dl>
+
+    
 
     
 
@@ -23152,7 +23316,7 @@ corresponding resolution.</p></td>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1141
+            View.js, line 1140
         </div>
         
         
@@ -23279,7 +23443,7 @@ corresponding resolution.</p></td>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1154
+            View.js, line 1152
         </div>
         
         
@@ -23432,7 +23596,7 @@ constraint will apply.</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1186
+            View.js, line 1183
         </div>
         
         
@@ -23585,7 +23749,7 @@ constraint will apply.</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1174
+            View.js, line 1172
         </div>
         
         
@@ -23887,7 +24051,7 @@ calling <code>view.setCenter()</code>, <code>view.setResolution()</code>, or <co
         </h4>
         
         <div class="tag-source">
-            View.js, line 1333
+            View.js, line 1330
         </div>
         
         
@@ -24189,7 +24353,7 @@ Extent.
         </h4>
         
         <div class="tag-source">
-            View.js, line 1110
+            View.js, line 1109
         </div>
         
         
@@ -24595,7 +24759,7 @@ Object with a <code>type</code> property.</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1347
+            View.js, line 1344
         </div>
         
         
@@ -24773,7 +24937,7 @@ to a stable one if needed (depending on its constraints).</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1017
+            View.js, line 1016
         </div>
         
         
@@ -26479,7 +26643,7 @@ The resolution at which the provided extent will render at
         </h4>
         
         <div class="tag-source">
-            View.js, line 994
+            View.js, line 993
         </div>
         
         
@@ -26886,7 +27050,7 @@ The rotation of the view in radians.
         </h4>
         
         <div class="tag-source">
-            View.js, line 954
+            View.js, line 953
         </div>
         
         
@@ -26977,7 +27141,7 @@ Zoom.
         </h4>
         
         <div class="tag-source">
-            View.js, line 969
+            View.js, line 968
         </div>
         
         
@@ -27628,7 +27792,7 @@ Unique key for the listener. If
         </h4>
         
         <div class="tag-source">
-            View.js, line 1202
+            View.js, line 1199
         </div>
         
         
@@ -28294,7 +28458,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1224
+            View.js, line 1221
         </div>
         
         
@@ -28424,7 +28588,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1235
+            View.js, line 1232
         </div>
         
         
@@ -28551,7 +28715,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         </h4>
         
         <div class="tag-source">
-            View.js, line 1245
+            View.js, line 1242
         </div>
         
         
