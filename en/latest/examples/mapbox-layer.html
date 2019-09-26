@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <script>
+    var gaProperty = 'UA-2577926-1';
+    // Disable tracking if the opt-out cookie exists.
+    var disableStr = 'ga-disable-' + gaProperty;
+    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+      window[disableStr] = true;
+    }
+    function gaOptout() {
+      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = true;
+    }
+    function gaOptoutRevoke() {
+      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = false;
+    }
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script src="https://unpkg.com/lz-string@1.4.4/libs/lz-string.min.js"></script>
+    <script>
+    window.addEventListener("load", function() {
+      window.cookieconsent.initialise({
+        'palette': {
+          'popup': {
+            'background': '#eaf7f7',
+            'text': '#5c7291'
+          },
+          'button': {
+            'background': '#56cbdb',
+            'text': '#ffffff'
+          }
+        },
+        'theme': 'edgeless',
+        'type': 'opt-out',
+        'onInitialise': function (status) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onStatusChange': function(status, chosenBefore) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onRevokeChoice': function() {
+          gaOptoutRevoke()
+        }
+      })
+    });
+    </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./resources/layout.css" type="text/css">
+    <script src="https://unpkg.com/mapbox-gl@0.54.0/dist/mapbox-gl.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/mapbox-gl@0.54.0/dist/mapbox-gl.css">
+    
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+    <title>Mapbox-gl Layer</title>
+  </head>
+  <body>
+
+    <header class="navbar" role="navigation">
+      <div class="container">
+        <div class="display-table pull-left" id="navbar-logo-container">
+          <a class="navbar-brand" href="./"><img src="./resources/logo-70x70.png">&nbsp;OpenLayers</a>
+        </div>
+        <!-- menu items that get hidden below 768px width -->
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
+          <ul class="nav navbar-nav pull-right">
+            <li><a href="../doc">Docs</a></li>
+            <li><a class="active" href="index.html">Examples</a></li>
+            <li><a href="../apidoc">API</a></li>
+            <li><a href="https://github.com/openlayers/openlayers">Code</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container-fluid">
+
+      <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses OpenLayers v<span>6.0.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+      </div>
+
+      <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="experimental-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses features that are not part of the stable API and subject to change between releases.  Consult the <a href="https://openlayers.org/en/latest/apidoc/">API documentation</a>
+        to see what is supported in the latest release.
+      </div>
+
+      <div class="row-fluid">
+        <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
+        <div class="span12">
+          <h4 id="title">Mapbox-gl Layer</h4>
+          <div id="map" class="map"></div>
+
+        </div>
+        <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+          <input id="codesandbox-params" type="hidden" name="parameters">
+        </form>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span12">
+          <p id="shortdesc">Example of a Mapbox-gl-js layer integration.</p>
+          <div id="docs"><p>Show how to add a mapbox-gl-js layer in an openlayers map. <strong>Note</strong>: Make sure to get your own API key at <a href="https://www.maptiler.com/cloud/">https://www.maptiler.com/cloud/</a> when using this example. No map will be visible when the API key has expired.</p>
+</div>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;Mapbox-gl Layer&lt;/title&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://unpkg.com/mapbox-gl@0.54.0/dist/mapbox-gl.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https://unpkg.com/mapbox-gl@0.54.0/dist/mapbox-gl.css&quot;&gt;
+    &lt;style&gt;
+      .map {
+        width: 100%;
+        height:400px;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;script src="index.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import Layer from &#x27;ol/layer/Layer&#x27;;
+import {toLonLat, fromLonLat} from &#x27;ol/proj&#x27;;
+import {Stroke, Style} from &#x27;ol/style&#x27;;
+import VectorLayer from &#x27;ol/layer/Vector&#x27;;
+import VectorSource from &#x27;ol/source/Vector&#x27;;
+import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
+
+var center &#x3D; [-98.8, 37.9];
+var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
+
+var mbMap &#x3D; new mapboxgl.Map({
+  style: &#x27;https://api.maptiler.com/maps/bright/style.json?key&#x3D;&#x27; + key,
+  attributionControl: false,
+  boxZoom: false,
+  center: center,
+  container: &#x27;map&#x27;,
+  doubleClickZoom: false,
+  dragPan: false,
+  dragRotate: false,
+  interactive: false,
+  keyboard: false,
+  pitchWithRotate: false,
+  scrollZoom: false,
+  touchZoomRotate: false
+});
+
+var mbLayer &#x3D; new Layer({
+  render: function(frameState) {
+    var canvas &#x3D; mbMap.getCanvas();
+    var viewState &#x3D; frameState.viewState;
+
+    var visible &#x3D; mbLayer.getVisible();
+    canvas.style.display &#x3D; visible ? &#x27;block&#x27; : &#x27;none&#x27;;
+
+    var opacity &#x3D; mbLayer.getOpacity();
+    canvas.style.opacity &#x3D; opacity;
+
+    // adjust view parameters in mapbox
+    var rotation &#x3D; viewState.rotation;
+    if (rotation) {
+      mbMap.rotateTo(-rotation * 180 / Math.PI, {
+        animate: false
+      });
+    }
+    mbMap.jumpTo({
+      center: toLonLat(viewState.center),
+      zoom: viewState.zoom - 1,
+      animate: false
+    });
+
+    // cancel the scheduled update &amp; trigger synchronous redraw
+    // see https://github.com/mapbox/mapbox-gl-js/issues/7893#issue-408992184
+    // NOTE: THIS MIGHT BREAK WHEN UPDATING MAPBOX
+    if (mbMap._frame) {
+      mbMap._frame.cancel();
+      mbMap._frame &#x3D; null;
+    }
+    mbMap._render();
+
+    return canvas;
+  }
+});
+
+var style &#x3D; new Style({
+  stroke: new Stroke({
+    color: &#x27;#319FD3&#x27;,
+    width: 2
+  })
+});
+
+var vectorLayer &#x3D; new VectorLayer({
+  source: new VectorSource({
+    url: &#x27;data/geojson/countries.geojson&#x27;,
+    format: new GeoJSON()
+  }),
+  style: style
+});
+
+var map &#x3D; new Map({
+  target: &#x27;map&#x27;,
+  view: new View({
+    center: fromLonLat(center),
+    zoom: 4
+  }),
+  layers: [mbLayer, vectorLayer]
+});
+</code></pre>
+      </div>
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
+  &quot;name&quot;: &quot;mapbox-layer&quot;,
+  &quot;dependencies&quot;: {
+    &quot;ol&quot;: &quot;6.0.0&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;parcel&quot;: &quot;1.11.0&quot;
+  },
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;parcel index.html&quot;,
+    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+  }
+}</code></pre>
+      </div>
+    </div>
+
+    <script src="./resources/common.js"></script>
+    <script src="./resources/prism/prism.min.js"></script>
+    <script>window.experimental = true;</script><script src="common.js"></script><script src="mapbox-layer.js"></script>
+  </body>
+  <script>
+  var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
+  fetch(packageUrl).then(function(response) {
+    return response.json();
+  }).then(function(json) {
+    var latestVersion = json.version;
+    document.getElementById('latest-version').innerHTML = latestVersion;
+    var url = window.location.href;
+    var branchSearch = url.match(/\/([^\/]*)\/examples\//);
+    var cookieText = 'dismissed=-' + latestVersion + '-';
+    var dismissed = document.cookie.indexOf(cookieText) != -1;
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.0' != latestVersion) {
+      var link = url.replace(branchSearch[0], '/latest/examples/');
+      fetch(link, {method: 'head'}).then(function(response) {
+        var a = document.getElementById('latest-link');
+        a.href = response.status == 200 ? link : '../../latest/examples/';
+      });
+      var latestCheck = document.getElementById('latest-check');
+      latestCheck.style.display = '';
+      document.getElementById('latest-dismiss').onclick = function() {
+        latestCheck.style.display = 'none';
+        document.cookie = cookieText;
+      }
+    }
+
+    var experimentalNotice = document.getElementById('experimental-notice');
+    if (window.experimental) {
+      experimentalNotice.style.display = 'block';
+      document.getElementById('experimental-dismiss').onclick = function() {
+        experimentalNotice.style.display = 'none';
+      }
+    }
+
+  });
+  </script>
+</html>

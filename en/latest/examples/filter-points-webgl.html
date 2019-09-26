@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <script>
+    var gaProperty = 'UA-2577926-1';
+    // Disable tracking if the opt-out cookie exists.
+    var disableStr = 'ga-disable-' + gaProperty;
+    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+      window[disableStr] = true;
+    }
+    function gaOptout() {
+      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = true;
+    }
+    function gaOptoutRevoke() {
+      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = false;
+    }
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script src="https://unpkg.com/lz-string@1.4.4/libs/lz-string.min.js"></script>
+    <script>
+    window.addEventListener("load", function() {
+      window.cookieconsent.initialise({
+        'palette': {
+          'popup': {
+            'background': '#eaf7f7',
+            'text': '#5c7291'
+          },
+          'button': {
+            'background': '#56cbdb',
+            'text': '#ffffff'
+          }
+        },
+        'theme': 'edgeless',
+        'type': 'opt-out',
+        'onInitialise': function (status) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onStatusChange': function(status, chosenBefore) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onRevokeChoice': function() {
+          gaOptoutRevoke()
+        }
+      })
+    });
+    </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./resources/layout.css" type="text/css">
+    
+    
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+    <title>Filtering features with WebGL</title>
+  </head>
+  <body>
+
+    <header class="navbar" role="navigation">
+      <div class="container">
+        <div class="display-table pull-left" id="navbar-logo-container">
+          <a class="navbar-brand" href="./"><img src="./resources/logo-70x70.png">&nbsp;OpenLayers</a>
+        </div>
+        <!-- menu items that get hidden below 768px width -->
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
+          <ul class="nav navbar-nav pull-right">
+            <li><a href="../doc">Docs</a></li>
+            <li><a class="active" href="index.html">Examples</a></li>
+            <li><a href="../apidoc">API</a></li>
+            <li><a href="https://github.com/openlayers/openlayers">Code</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container-fluid">
+
+      <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses OpenLayers v<span>6.0.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+      </div>
+
+      <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="experimental-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses features that are not part of the stable API and subject to change between releases.  Consult the <a href="https://openlayers.org/en/latest/apidoc/">API documentation</a>
+        to see what is supported in the latest release.
+      </div>
+
+      <div class="row-fluid">
+        <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
+        <div class="span12">
+          <h4 id="title">Filtering features with WebGL</h4>
+          <div id="map" class="map"></div>
+<form>
+  <div id="status">Show impacts between <span class="min-year"></span> and <span class="max-year"></span></div>
+
+  <label>Minimum year:</label>
+  <input id="min-year" type="range" min="1850" max="2015" step="1" value="1850"/>
+  <label>Maximum year:</label>
+  <input id="max-year" type="range" min="1850" max="2015" step="1" value="2015"/>
+</form>
+
+        </div>
+        <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+          <input id="codesandbox-params" type="hidden" name="parameters">
+        </form>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span12">
+          <p id="shortdesc">Using WebGL to filter large quantities of features</p>
+          <div id="docs"><p>This example shows how to use <code>ol/renderer/webgl/PointsLayer</code> to dynamically filter a large amount
+  of point geometries. The above map is based on a dataset from the NASA containing 45k recorded meteorite
+  landing sites. Each meteorite is marked by a circle on the map (the bigger the circle, the heavier
+  the object). A pulse effect has been added, which is slightly offset by the year of the impact.</p>
+<p>Adjusting the sliders causes the objects outside of the date range to be filtered out of the map. This is done using
+  a custom fragment shader on the layer renderer, and by using the <code>v_opacity</code> attribute of the rendered objects
+  to store the year of impact.</p>
+</div>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;Filtering features with WebGL&lt;/title&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;style&gt;
+      .map {
+        width: 100%;
+        height:400px;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;form&gt;
+      &lt;div id&#x3D;&quot;status&quot;&gt;Show impacts between &lt;span class&#x3D;&quot;min-year&quot;&gt;&lt;/span&gt; and &lt;span class&#x3D;&quot;max-year&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+
+      &lt;label&gt;Minimum year:&lt;/label&gt;
+      &lt;input id&#x3D;&quot;min-year&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;1850&quot; max&#x3D;&quot;2015&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;1850&quot;/&gt;
+      &lt;label&gt;Maximum year:&lt;/label&gt;
+      &lt;input id&#x3D;&quot;max-year&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;1850&quot; max&#x3D;&quot;2015&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;2015&quot;/&gt;
+    &lt;/form&gt;
+    &lt;script src="index.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import Feature from &#x27;ol/Feature&#x27;;
+import Point from &#x27;ol/geom/Point&#x27;;
+import VectorLayer from &#x27;ol/layer/Vector&#x27;;
+import {Vector} from &#x27;ol/source&#x27;;
+import {fromLonLat} from &#x27;ol/proj&#x27;;
+import WebGLPointsLayerRenderer from &#x27;ol/renderer/webgl/PointsLayer&#x27;;
+import {clamp} from &#x27;ol/math&#x27;;
+import Stamen from &#x27;ol/source/Stamen&#x27;;
+import {formatColor} from &#x27;ol/webgl/ShaderBuilder&#x27;;
+
+var vectorSource &#x3D; new Vector({
+  attributions: &#x27;NASA&#x27;
+});
+
+var oldColor &#x3D; [180, 140, 140];
+var newColor &#x3D; [255, 80, 80];
+
+var startTime &#x3D; Date.now() * 0.001;
+
+// hanle input values &amp; events
+var minYearInput &#x3D; document.getElementById(&#x27;min-year&#x27;);
+var maxYearInput &#x3D; document.getElementById(&#x27;max-year&#x27;);
+function updateStatusText() {
+  var div &#x3D; document.getElementById(&#x27;status&#x27;);
+  div.querySelector(&#x27;span.min-year&#x27;).textContent &#x3D; minYearInput.value;
+  div.querySelector(&#x27;span.max-year&#x27;).textContent &#x3D; maxYearInput.value;
+}
+minYearInput.addEventListener(&#x27;input&#x27;, updateStatusText);
+minYearInput.addEventListener(&#x27;change&#x27;, updateStatusText);
+maxYearInput.addEventListener(&#x27;input&#x27;, updateStatusText);
+maxYearInput.addEventListener(&#x27;change&#x27;, updateStatusText);
+updateStatusText();
+
+var WebglPointsLayer &#x3D; /*@__PURE__*/(function (VectorLayer) {
+  function WebglPointsLayer () {
+    VectorLayer.apply(this, arguments);
+  }
+
+  if ( VectorLayer ) WebglPointsLayer.__proto__ &#x3D; VectorLayer;
+  WebglPointsLayer.prototype &#x3D; Object.create( VectorLayer &amp;&amp; VectorLayer.prototype );
+  WebglPointsLayer.prototype.constructor &#x3D; WebglPointsLayer;
+
+  WebglPointsLayer.prototype.createRenderer &#x3D; function createRenderer () {
+    return new WebGLPointsLayerRenderer(this, {
+      attributes: [
+        {
+          name: &#x27;size&#x27;,
+          callback: function(feature) {
+            return 18 * clamp(feature.get(&#x27;mass&#x27;) / 200000, 0, 1) + 8;
+          }
+        },
+        {
+          name: &#x27;year&#x27;,
+          callback: function(feature) {
+            return feature.get(&#x27;year&#x27;);
+          }
+        }
+      ],
+      vertexShader: [
+        &#x27;precision mediump float;&#x27;,
+
+        &#x27;uniform mat4 u_projectionMatrix;&#x27;,
+        &#x27;uniform mat4 u_offsetScaleMatrix;&#x27;,
+        &#x27;uniform mat4 u_offsetRotateMatrix;&#x27;,
+        &#x27;attribute vec2 a_position;&#x27;,
+        &#x27;attribute float a_index;&#x27;,
+        &#x27;attribute float a_size;&#x27;,
+        &#x27;attribute float a_year;&#x27;,
+        &#x27;varying vec2 v_texCoord;&#x27;,
+        &#x27;varying float v_year;&#x27;,
+
+        &#x27;void main(void) {&#x27;,
+        &#x27;  mat4 offsetMatrix &#x3D; u_offsetScaleMatrix;&#x27;,
+        &#x27;  float offsetX &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 3.0 ? -a_size / 2.0 : a_size / 2.0;&#x27;,
+        &#x27;  float offsetY &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 1.0 ? -a_size / 2.0 : a_size / 2.0;&#x27;,
+        &#x27;  vec4 offsets &#x3D; offsetMatrix * vec4(offsetX, offsetY, 0.0, 0.0);&#x27;,
+        &#x27;  gl_Position &#x3D; u_projectionMatrix * vec4(a_position, 0.0, 1.0) + offsets;&#x27;,
+        &#x27;  float u &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 3.0 ? 0.0 : 1.0;&#x27;,
+        &#x27;  float v &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 1.0 ? 0.0 : 1.0;&#x27;,
+        &#x27;  v_texCoord &#x3D; vec2(u, v);&#x27;,
+        &#x27;  v_year &#x3D; a_year;&#x27;,
+        &#x27;}&#x27;
+      ].join(&#x27; &#x27;),
+      fragmentShader: [
+        &#x27;precision mediump float;&#x27;,
+
+        &#x27;uniform float u_time;&#x27;,
+        &#x27;uniform float u_minYear;&#x27;,
+        &#x27;uniform float u_maxYear;&#x27;,
+        &#x27;varying vec2 v_texCoord;&#x27;,
+        &#x27;varying float v_year;&#x27;,
+
+        &#x27;void main(void) {&#x27;,
+
+        // filter out pixels if the year is outside of the given range
+        &#x27;  if (v_year &lt; u_minYear || v_year &gt; u_maxYear) {&#x27;,
+        &#x27;    discard;&#x27;,
+        &#x27;  }&#x27;,
+
+        &#x27;  vec2 texCoord &#x3D; v_texCoord * 2.0 - vec2(1.0, 1.0);&#x27;,
+        &#x27;  float sqRadius &#x3D; texCoord.x * texCoord.x + texCoord.y * texCoord.y;&#x27;,
+        &#x27;  float value &#x3D; 2.0 * (1.0 - sqRadius);&#x27;,
+        &#x27;  float alpha &#x3D; smoothstep(0.0, 1.0, value);&#x27;,
+
+        // color is interpolated based on year
+        &#x27;  float ratio &#x3D; clamp((v_year - 1800.0) / (2013.0 - 1800.0), 0.0, 1.1);&#x27;,
+        &#x27;  vec3 color &#x3D; mix(vec3(&#x27; + formatColor(oldColor) + &#x27;),&#x27;,
+        &#x27;    vec3(&#x27; + formatColor(newColor) + &#x27;), ratio);&#x27;,
+
+        &#x27;  float period &#x3D; 8.0;&#x27;,
+        &#x27;  color.g *&#x3D; 2.0 * (1.0 - sqrt(mod(u_time + v_year * 0.025, period) / period));&#x27;,
+
+        &#x27;  gl_FragColor &#x3D; vec4(color, 1.0);&#x27;,
+        &#x27;  gl_FragColor.a *&#x3D; alpha;&#x27;,
+        &#x27;  gl_FragColor.rgb *&#x3D; gl_FragColor.a;&#x27;,
+        &#x27;}&#x27;
+      ].join(&#x27; &#x27;),
+      uniforms: {
+        u_time: function() {
+          return Date.now() * 0.001 - startTime;
+        },
+        u_minYear: function() {
+          return parseInt(minYearInput.value);
+        },
+        u_maxYear: function() {
+          return parseInt(maxYearInput.value);
+        }
+      }
+    });
+  };
+
+  return WebglPointsLayer;
+}(VectorLayer));
+
+
+function loadData() {
+  var client &#x3D; new XMLHttpRequest();
+  client.open(&#x27;GET&#x27;, &#x27;data/csv/meteorite_landings.csv&#x27;);
+  client.onload &#x3D; function() {
+    var csv &#x3D; client.responseText;
+    var features &#x3D; [];
+
+    var prevIndex &#x3D; csv.indexOf(&#x27;\n&#x27;) + 1; // scan past the header line
+
+    var curIndex;
+    while ((curIndex &#x3D; csv.indexOf(&#x27;\n&#x27;, prevIndex)) !&#x3D; -1) {
+      var line &#x3D; csv.substr(prevIndex, curIndex - prevIndex).split(&#x27;,&#x27;);
+      prevIndex &#x3D; curIndex + 1;
+
+      var coords &#x3D; fromLonLat([parseFloat(line[4]), parseFloat(line[3])]);
+      if (isNaN(coords[0]) || isNaN(coords[1])) {
+        // guard against bad data
+        continue;
+      }
+
+      features.push(new Feature({
+        mass: parseFloat(line[1]) || 0,
+        year: parseInt(line[2]) || 0,
+        geometry: new Point(coords)
+      }));
+    }
+
+    vectorSource.addFeatures(features);
+  };
+  client.send();
+}
+
+loadData();
+
+var map &#x3D; new Map({
+  layers: [
+    new TileLayer({
+      source: new Stamen({
+        layer: &#x27;toner&#x27;
+      })
+    }),
+    new WebglPointsLayer({
+      source: vectorSource
+    })
+  ],
+  target: document.getElementById(&#x27;map&#x27;),
+  view: new View({
+    center: [0, 0],
+    zoom: 2
+  })
+});
+
+// animate the map
+function animate() {
+  map.render();
+  window.requestAnimationFrame(animate);
+}
+animate();
+</code></pre>
+      </div>
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
+  &quot;name&quot;: &quot;filter-points-webgl&quot;,
+  &quot;dependencies&quot;: {
+    &quot;ol&quot;: &quot;6.0.0&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;parcel&quot;: &quot;1.11.0&quot;
+  },
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;parcel index.html&quot;,
+    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+  }
+}</code></pre>
+      </div>
+    </div>
+
+    <script src="./resources/common.js"></script>
+    <script src="./resources/prism/prism.min.js"></script>
+    <script>window.experimental = true;</script><script src="common.js"></script><script src="filter-points-webgl.js"></script>
+  </body>
+  <script>
+  var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
+  fetch(packageUrl).then(function(response) {
+    return response.json();
+  }).then(function(json) {
+    var latestVersion = json.version;
+    document.getElementById('latest-version').innerHTML = latestVersion;
+    var url = window.location.href;
+    var branchSearch = url.match(/\/([^\/]*)\/examples\//);
+    var cookieText = 'dismissed=-' + latestVersion + '-';
+    var dismissed = document.cookie.indexOf(cookieText) != -1;
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.0' != latestVersion) {
+      var link = url.replace(branchSearch[0], '/latest/examples/');
+      fetch(link, {method: 'head'}).then(function(response) {
+        var a = document.getElementById('latest-link');
+        a.href = response.status == 200 ? link : '../../latest/examples/';
+      });
+      var latestCheck = document.getElementById('latest-check');
+      latestCheck.style.display = '';
+      document.getElementById('latest-dismiss').onclick = function() {
+        latestCheck.style.display = 'none';
+        document.cookie = cookieText;
+      }
+    }
+
+    var experimentalNotice = document.getElementById('experimental-notice');
+    if (window.experimental) {
+      experimentalNotice.style.display = 'block';
+      document.getElementById('experimental-dismiss').onclick = function() {
+        experimentalNotice.style.display = 'none';
+      }
+    }
+
+  });
+  </script>
+</html>
