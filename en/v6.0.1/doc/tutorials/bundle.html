@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OpenLayers - Basic project setup using NPM and Parcel</title>
+    <script>
+    var gaProperty = 'UA-2577926-1';
+    // Disable tracking if the opt-out cookie exists.
+    var disableStr = 'ga-disable-' + gaProperty;
+    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+      window[disableStr] = true;
+    }
+    function gaOptout() {
+      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = true;
+    }
+    function gaOptoutRevoke() {
+      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = false;
+    }
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+    window.addEventListener("load", function() {
+      window.cookieconsent.initialise({
+        'palette': {
+          'popup': {
+            'background': '#eaf7f7',
+            'text': '#5c7291'
+          },
+          'button': {
+            'background': '#56cbdb',
+            'text': '#ffffff'
+          }
+        },
+        'theme': 'edgeless',
+        'type': 'opt-out',
+        'onInitialise': function (status) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onStatusChange': function(status, chosenBefore) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onRevokeChoice': function() {
+          gaOptoutRevoke()
+        }
+      })
+    });
+    </script>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link href='https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='../../../../assets/theme/site.css' rel='stylesheet' type='text/css'>
+    <link rel="icon" type="image/x-icon" href="../../../../assets/theme/img/favicon.ico" />
+    
+  </head>
+  <body>
+    <header class='navbar navbar-fixed-top' role='navigation'>
+      <div class='container'>
+
+        <!-- button that shows up below 768px width -->
+        <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-responsive-collapse'>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+        </button>
+
+        <a href='/' class='navbar-brand'><img src='../../../../assets/theme/img/logo70.png'>&nbsp;OpenLayers</a>
+
+        <!-- menu items that get hidden below 768px width -->
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
+          <ul class='nav navbar-nav pull-right'>
+            <li><a href='/en/latest/doc/'class="active">Docs</a></li>
+            <li><a href='/en/latest/examples/'>Examples</a></li>
+            <li><a href='/en/latest/apidoc/'>API</a></li>
+            <li><a href='https://github.com/openlayers/openlayers'>Code</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    
+
+<div class='container'>
+<h1 id="introduction">Introduction</h1>
+<p>Modern JavaScript works best when using and authoring modules. The recommended way of using OpenLayers is installing the <a href="https://npmjs.com/package/ol"><code>ol</code></a> package. This tutorial walks you through setting up a simple dev environment, which requires <a href="https://nodejs.org">node</a> for everything to work.</p>
+<p>In this tutorial, we will be using <a href="https://parceljs.org">Parcel</a> to bundle our application. There are several other options, some of which are linked from the <a href="https://npmjs.com/package/ol">README</a>.</p>
+<h2 id="initial-steps">Initial steps</h2>
+<p>Create a new empty directory for your project and navigate to it by running <code>mkdir new-project &amp;&amp; cd new-project</code>. Initialize your project with</p>
+<pre><code>npm init</code></pre>
+<p>This will create a <code>package.json</code> file in your working directory. Add OpenLayers as dependency to your application with</p>
+<pre><code>npm install ol</code></pre>
+<p>At this point you can ask NPM to add required development dependencies by running</p>
+<pre><code>npm install --save-dev parcel-bundler</code></pre>
+<h2 id="application-code-and-index-html">Application code and index.html</h2>
+<p>Place your application code in <code>index.js</code>. Here is a simple starting point:</p>
+<pre><code class="language-js">import <span class="string">'ol/ol.css'</span>;
+import {Map, View} from <span class="string">'ol'</span>;
+import TileLayer from <span class="string">'ol/layer/Tile'</span>;
+import OSM from <span class="string">'ol/source/OSM'</span>;
+
+<span class="keyword">const</span> map = <span class="keyword">new</span> Map({
+  target: <span class="string">'map'</span>,
+  layers: [
+    <span class="keyword">new</span> TileLayer({
+      source: <span class="keyword">new</span> OSM()
+    })
+  ],
+  view: <span class="keyword">new</span> View({
+    center: [<span class="number">0</span>, <span class="number">0</span>],
+    zoom: <span class="number">0</span>
+  })
+});</code></pre>
+<p>You will also need an <code>index.html</code> file that will use your bundle. Here is a simple example:</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;title&gt;Using Parcel with OpenLayers&lt;/title&gt;
+    &lt;style&gt;
+      #map {
+        width: 400px;
+        height: 250px;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id=&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;script src=&quot;./index.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<h2 id="creating-a-bundle">Creating a bundle</h2>
+<p>With two additional lines in <code>package.json</code> you can introduce the commands <code>npm run build</code> and <code>npm start</code> to manually build your bundle and watch for changes, respectively. The final <code>package.json</code> with the two additional commands <code>&quot;start&quot;</code> and <code>&quot;build&quot;</code> should look like this:</p>
+<pre><code class="language-json">{
+  "<span class="attribute">name</span>": <span class="value"><span class="string">"test"</span></span>,
+  "<span class="attribute">version</span>": <span class="value"><span class="string">"1.0.0"</span></span>,
+  "<span class="attribute">description</span>": <span class="value"><span class="string">""</span></span>,
+  "<span class="attribute">main</span>": <span class="value"><span class="string">"index.js"</span></span>,
+  "<span class="attribute">scripts</span>": <span class="value">{
+    "<span class="attribute">test</span>": <span class="value"><span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span></span>,
+    "<span class="attribute">start</span>": <span class="value"><span class="string">"parcel index.html"</span></span>,
+    "<span class="attribute">build</span>": <span class="value"><span class="string">"parcel build --public-url . index.html"</span>
+  </span>}</span>,
+  "<span class="attribute">author</span>": <span class="value"><span class="string">""</span></span>,
+  "<span class="attribute">license</span>": <span class="value"><span class="string">"ISC"</span>
+</span>}</code></pre>
+<p>That&#39;s it. Now to run your application, enter</p>
+<pre><code>npm start</code></pre>
+<p>in your console. To test your application, open <a href="http://localhost:1234/">http://localhost:1234/</a> in your browser. Whenever you change something, the page will reload automatically to show the result of your changes.</p>
+<p>Note that a single JavaScript file with all your application code and all dependencies used in your application has been created. From the OpenLayers package, it only contains the required components.</p>
+<p>To create a production bundle of your application, simply type</p>
+<pre><code>npm run build</code></pre>
+<p>and copy the <code>dist/</code> folder to your production server.</p>
+
+</div>
+
+    <footer>
+      Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>. Thanks to our <a href='/sponsors.html'>sponsors</a>.
+    </footer>
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
+  </body>
+</html>
