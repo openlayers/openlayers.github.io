@@ -1,2 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[171],{407:function(n,e,a){"use strict";a.r(e);var w=a(3),o=a(2),r=a(177),t=a(6),p=a(10);function c(n){var e=new p.b,a=new t.a({source:e}),c=new w.a({layers:[a],target:n,view:new o.a({center:[0,0],zoom:2})}),s=new r.a;return c.addControl(s),c}c("map1"),c("map2"),c("map3")}},[[407,0]]]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[179],{419:function(n,e,a){"use strict";a.r(e);var w=a(3),o=a(2),r=a(179),t=a(5),p=a(9);function c(n){var e=new p.b,a=new t.a({source:e}),c=new w.a({layers:[a],target:n,view:new o.a({center:[0,0],zoom:2})}),s=new r.a;return c.addControl(s),c}c("map1"),c("map2"),c("map3")}},[[419,0]]]);
 //# sourceMappingURL=zoomslider.js.map

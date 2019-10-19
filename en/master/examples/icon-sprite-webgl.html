@@ -96,7 +96,13 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.0.0-beta.11</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.0.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+      </div>
+
+      <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="experimental-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses features that are not part of the stable API and subject to change between releases.  Consult the <a href="https://openlayers.org/en/latest/apidoc/">API documentation</a>
+        to see what is supported in the latest release.
       </div>
 
       <div class="row-fluid">
@@ -165,7 +171,7 @@ import VectorLayer from &#x27;ol/layer/Vector&#x27;;
 import {Vector} from &#x27;ol/source&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 import WebGLPointsLayerRenderer from &#x27;ol/renderer/webgl/PointsLayer&#x27;;
-import {lerp} from &#x27;ol/math&#x27;;
+import {formatColor, formatNumber} from &#x27;ol/webgl/ShaderBuilder&#x27;;
 
 var key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
@@ -174,24 +180,25 @@ var vectorSource &#x3D; new Vector({
   attributions: &#x27;National UFO Reporting Center&#x27;
 });
 
-var texture &#x3D; document.createElement(&#x27;img&#x27;);
+var texture &#x3D; new Image();
 texture.src &#x3D; &#x27;data/ufo_shapes.png&#x27;;
 
 // This describes the content of the associated sprite sheet
-// coords are u0, v0, u1, v1 for a given shape
+// coords are u0, v0 for a given shape (all icons have a size of 0.25 x 0.5)
 var shapeTextureCoords &#x3D; {
-  &#x27;light&#x27;: [0, 0.5, 0.25, 0],
-  &#x27;sphere&#x27;: [0.25, 0.5, 0.5, 0],
-  &#x27;circle&#x27;: [0.25, 0.5, 0.5, 0],
-  &#x27;disc&#x27;: [0.5, 0.5, 0.75, 0],
-  &#x27;oval&#x27;: [0.5, 0.5, 0.75, 0],
-  &#x27;triangle&#x27;: [0.75, 0.5, 1, 0],
-  &#x27;fireball&#x27;: [0, 1, 0.25, 0.5],
-  &#x27;default&#x27;: [0.75, 1, 1, 0.5]
+  &#x27;light&#x27;: [0, 0],
+  &#x27;sphere&#x27;: [0.25, 0],
+  &#x27;circle&#x27;: [0.25, 0],
+  &#x27;disc&#x27;: [0.5, 0],
+  &#x27;oval&#x27;: [0.5, 0],
+  &#x27;triangle&#x27;: [0.75, 0],
+  &#x27;fireball&#x27;: [0, 0.5],
+  &#x27;default&#x27;: [0.75, 0.5]
 };
 
 var oldColor &#x3D; [255, 160, 110];
 var newColor &#x3D; [180, 255, 200];
+var size &#x3D; 16;
 
 var WebglPointsLayer &#x3D; /*@__PURE__*/(function (VectorLayer) {
   function WebglPointsLayer () {
@@ -204,29 +211,134 @@ var WebglPointsLayer &#x3D; /*@__PURE__*/(function (VectorLayer) {
 
   WebglPointsLayer.prototype.createRenderer &#x3D; function createRenderer () {
     return new WebGLPointsLayerRenderer(this, {
-      texture: texture,
-      colorCallback: function(feature, color) {
-        // color is interpolated based on year (min is 1910, max is 2013)
-        // please note: most values are between 2000-2013
-        var ratio &#x3D; (feature.get(&#x27;year&#x27;) - 1950) / (2013 - 1950);
-
-        color[0] &#x3D; lerp(oldColor[0], newColor[0], ratio * ratio) / 255;
-        color[1] &#x3D; lerp(oldColor[1], newColor[1], ratio * ratio) / 255;
-        color[2] &#x3D; lerp(oldColor[2], newColor[2], ratio * ratio) / 255;
-        color[3] &#x3D; 1;
-
-        return color;
-      },
-      texCoordCallback: function(feature, component) {
-        var coords &#x3D; shapeTextureCoords[feature.get(&#x27;shape&#x27;)];
-        if (!coords) {
-          coords &#x3D; shapeTextureCoords[&#x27;default&#x27;];
+      attributes: [
+        {
+          name: &#x27;year&#x27;,
+          callback: function(feature) {
+            return feature.get(&#x27;year&#x27;);
+          }
+        },
+        {
+          name: &#x27;texCoordU&#x27;,
+          callback: function(feature) {
+            var coords &#x3D; shapeTextureCoords[feature.get(&#x27;shape&#x27;)];
+            if (!coords) {
+              coords &#x3D; shapeTextureCoords[&#x27;default&#x27;];
+            }
+            return coords[0];
+          }
+        },
+        {
+          name: &#x27;texCoordV&#x27;,
+          callback: function(feature) {
+            var coords &#x3D; shapeTextureCoords[feature.get(&#x27;shape&#x27;)];
+            if (!coords) {
+              coords &#x3D; shapeTextureCoords[&#x27;default&#x27;];
+            }
+            return coords[1];
+          }
         }
-        return coords[component];
+      ],
+      uniforms: {
+        u_texture: texture
       },
-      sizeCallback: function() {
-        return 16;
-      }
+      vertexShader: [
+        &#x27;precision mediump float;&#x27;,
+
+        &#x27;uniform mat4 u_projectionMatrix;&#x27;,
+        &#x27;uniform mat4 u_offsetScaleMatrix;&#x27;,
+        &#x27;uniform mat4 u_offsetRotateMatrix;&#x27;,
+        &#x27;attribute vec2 a_position;&#x27;,
+        &#x27;attribute float a_index;&#x27;,
+        &#x27;attribute float a_year;&#x27;,
+        &#x27;attribute float a_texCoordU;&#x27;,
+        &#x27;attribute float a_texCoordV;&#x27;,
+        &#x27;varying vec2 v_texCoord;&#x27;,
+        &#x27;varying float v_year;&#x27;,
+
+        &#x27;void main(void) {&#x27;,
+        &#x27;  mat4 offsetMatrix &#x3D; u_offsetScaleMatrix;&#x27;,
+        &#x27;  float offsetX &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 3.0 ? &#x27;,
+        &#x27;    &#x27; + formatNumber(-size / 2) + &#x27; : &#x27; + formatNumber(size / 2) + &#x27;;&#x27;,
+        &#x27;  float offsetY &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 1.0 ? &#x27;,
+        &#x27;    &#x27; + formatNumber(-size / 2) + &#x27; : &#x27; + formatNumber(size / 2) + &#x27;;&#x27;,
+        &#x27;  vec4 offsets &#x3D; offsetMatrix * vec4(offsetX, offsetY, 0.0, 0.0);&#x27;,
+        &#x27;  gl_Position &#x3D; u_projectionMatrix * vec4(a_position, 0.0, 1.0) + offsets;&#x27;,
+        &#x27;  float u &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 3.0 ? a_texCoordU : a_texCoordU + 0.25;&#x27;,
+        &#x27;  float v &#x3D; a_index &#x3D;&#x3D; 2.0 || a_index &#x3D;&#x3D; 3.0 ? a_texCoordV : a_texCoordV + 0.5;&#x27;,
+        &#x27;  v_texCoord &#x3D; vec2(u, v);&#x27;,
+        &#x27;  v_year &#x3D; a_year;&#x27;,
+        &#x27;}&#x27;
+      ].join(&#x27; &#x27;),
+      fragmentShader: [
+        &#x27;precision mediump float;&#x27;,
+
+        &#x27;uniform float u_time;&#x27;,
+        &#x27;uniform float u_minYear;&#x27;,
+        &#x27;uniform float u_maxYear;&#x27;,
+        &#x27;uniform sampler2D u_texture;&#x27;,
+        &#x27;varying vec2 v_texCoord;&#x27;,
+        &#x27;varying float v_year;&#x27;,
+
+        &#x27;void main(void) {&#x27;,
+        &#x27;  vec4 textureColor &#x3D; texture2D(u_texture, v_texCoord);&#x27;,
+        &#x27;  if (textureColor.a &lt; 0.1) {&#x27;,
+        &#x27;    discard;&#x27;,
+        &#x27;  }&#x27;,
+
+        // color is interpolated based on year
+        &#x27;  float ratio &#x3D; clamp((v_year - 1950.0) / (2013.0 - 1950.0), 0.0, 1.1);&#x27;,
+        &#x27;  vec3 color &#x3D; mix(vec3(&#x27; + formatColor(oldColor) + &#x27;),&#x27;,
+        &#x27;    vec3(&#x27; + formatColor(newColor) + &#x27;), ratio);&#x27;,
+
+        &#x27;  gl_FragColor &#x3D; vec4(color, 1.0) * textureColor;&#x27;,
+        &#x27;  gl_FragColor.rgb *&#x3D; gl_FragColor.a;&#x27;,
+        &#x27;}&#x27;
+      ].join(&#x27; &#x27;),
+      hitVertexShader: [
+        &#x27;precision mediump float;&#x27;,
+
+        &#x27;uniform mat4 u_projectionMatrix;&#x27;,
+        &#x27;uniform mat4 u_offsetScaleMatrix;&#x27;,
+        &#x27;uniform mat4 u_offsetRotateMatrix;&#x27;,
+        &#x27;attribute vec2 a_position;&#x27;,
+        &#x27;attribute float a_index;&#x27;,
+        &#x27;attribute vec4 a_hitColor;&#x27;,
+        &#x27;attribute float a_texCoordU;&#x27;,
+        &#x27;attribute float a_texCoordV;&#x27;,
+        &#x27;varying vec2 v_texCoord;&#x27;,
+        &#x27;varying vec4 v_hitColor;&#x27;,
+
+        &#x27;void main(void) {&#x27;,
+        &#x27;  mat4 offsetMatrix &#x3D; u_offsetScaleMatrix;&#x27;,
+        &#x27;  float offsetX &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 3.0 ? &#x27;,
+        &#x27;    &#x27; + formatNumber(-size / 2) + &#x27; : &#x27; + formatNumber(size / 2) + &#x27;;&#x27;,
+        &#x27;  float offsetY &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 1.0 ? &#x27;,
+        &#x27;    &#x27; + formatNumber(-size / 2) + &#x27; : &#x27; + formatNumber(size / 2) + &#x27;;&#x27;,
+        &#x27;  vec4 offsets &#x3D; offsetMatrix * vec4(offsetX, offsetY, 0.0, 0.0);&#x27;,
+        &#x27;  gl_Position &#x3D; u_projectionMatrix * vec4(a_position, 0.0, 1.0) + offsets;&#x27;,
+        &#x27;  float u &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 3.0 ? a_texCoordU : a_texCoordU + 0.25;&#x27;,
+        &#x27;  float v &#x3D; a_index &#x3D;&#x3D; 2.0 || a_index &#x3D;&#x3D; 3.0 ? a_texCoordV : a_texCoordV + 0.5;&#x27;,
+        &#x27;  v_texCoord &#x3D; vec2(u, v);&#x27;,
+        &#x27;  v_hitColor &#x3D; a_hitColor;&#x27;,
+        &#x27;}&#x27;
+      ].join(&#x27; &#x27;),
+      hitFragmentShader: [
+        &#x27;precision mediump float;&#x27;,
+
+        &#x27;uniform sampler2D u_texture;&#x27;,
+        &#x27;varying vec2 v_texCoord;&#x27;,
+        &#x27;varying vec4 v_hitColor;&#x27;,
+
+        &#x27;void main(void) {&#x27;,
+        &#x27;  vec4 textureColor &#x3D; texture2D(u_texture, v_texCoord);&#x27;,
+        &#x27;  if (textureColor.a &lt; 0.1) {&#x27;,
+        &#x27;    discard;&#x27;,
+        &#x27;  }&#x27;,
+
+        &#x27;  gl_FragColor &#x3D; v_hitColor;&#x27;,
+        &#x27;}&#x27;
+      ].join(&#x27; &#x27;)
     });
   };
 
@@ -274,7 +386,7 @@ var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new TileJSON({
-        url: &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-dark.json?access_token&#x3D;&#x27; + key,
+        url: &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-dark.json?secure&amp;access_token&#x3D;&#x27; + key,
         crossOrigin: &#x27;anonymous&#x27;
       })
     }),
@@ -303,6 +415,10 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
     info.innerText &#x3D; &#x27;On &#x27; + datetime + &#x27;, lasted &#x27; + duration + &#x27; seconds and had a &quot;&#x27; + shape + &#x27;&quot; shape.&#x27;;
   });
 });
+
+texture.addEventListener(&#x27;load&#x27;, function() {
+  map.render();
+});
 </code></pre>
       </div>
       <div class="row-fluid">
@@ -312,7 +428,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;icon-sprite-webgl&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.0.0-beta.11&quot;
+    &quot;ol&quot;: &quot;6.0.1&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -327,7 +443,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
 
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
-    <script src="common.js"></script><script src="icon-sprite-webgl.js"></script>
+    <script>window.experimental = true;</script><script src="common.js"></script><script src="icon-sprite-webgl.js"></script>
   </body>
   <script>
   var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
@@ -340,7 +456,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.0-beta.11' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.1' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');
@@ -353,6 +469,15 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         document.cookie = cookieText;
       }
     }
+
+    var experimentalNotice = document.getElementById('experimental-notice');
+    if (window.experimental) {
+      experimentalNotice.style.display = 'block';
+      document.getElementById('experimental-dismiss').onclick = function() {
+        experimentalNotice.style.display = 'none';
+      }
+    }
+
   });
   </script>
 </html>

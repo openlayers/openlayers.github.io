@@ -96,7 +96,13 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.0.0-beta.11</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.0.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+      </div>
+
+      <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="experimental-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses features that are not part of the stable API and subject to change between releases.  Consult the <a href="https://openlayers.org/en/latest/apidoc/">API documentation</a>
+        to see what is supported in the latest release.
       </div>
 
       <div class="row-fluid">
@@ -262,18 +268,18 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
   var width &#x3D; Math.round(dim[0] * resolution / 25.4);
   var height &#x3D; Math.round(dim[1] * resolution / 25.4);
   var size &#x3D; map.getSize();
-  var extent &#x3D; map.getView().calculateExtent(size);
+  var viewResolution &#x3D; map.getView().getResolution();
 
   map.once(&#x27;rendercomplete&#x27;, function() {
-    toJpeg(map.getTargetElement(), exportOptions).then(function(dataUrl) {
+    exportOptions.width &#x3D; width;
+    exportOptions.height &#x3D; height;
+    toJpeg(map.getViewport(), exportOptions).then(function(dataUrl) {
       var pdf &#x3D; new jsPDF(&#x27;landscape&#x27;, undefined, format);
       pdf.addImage(dataUrl, &#x27;JPEG&#x27;, 0, 0, dim[0], dim[1]);
       pdf.save(&#x27;map.pdf&#x27;);
       // Reset original map size
       map.setSize(size);
-      map.getView().fit(extent, {
-        size: size
-      });
+      map.getView().setResolution(viewResolution);
       exportButton.disabled &#x3D; false;
       document.body.style.cursor &#x3D; &#x27;auto&#x27;;
     });
@@ -282,7 +288,8 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
   // Set print size
   var printSize &#x3D; [width, height];
   map.setSize(printSize);
-  map.getView().fit(extent, {size: printSize});
+  var scaling &#x3D; Math.min(width / size[0], height / size[1]);
+  map.getView().setResolution(viewResolution / scaling);
 
 }, false);
 </code></pre>
@@ -294,7 +301,7 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;export-pdf&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.0.0-beta.11&quot;,
+    &quot;ol&quot;: &quot;6.0.1&quot;,
     &quot;html-to-image&quot;: &quot;^0.1.0&quot;
   },
   &quot;devDependencies&quot;: {
@@ -323,7 +330,7 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.0-beta.11' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.1' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');
@@ -336,6 +343,15 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
         document.cookie = cookieText;
       }
     }
+
+    var experimentalNotice = document.getElementById('experimental-notice');
+    if (window.experimental) {
+      experimentalNotice.style.display = 'block';
+      document.getElementById('experimental-dismiss').onclick = function() {
+        experimentalNotice.style.display = 'none';
+      }
+    }
+
   });
   </script>
 </html>

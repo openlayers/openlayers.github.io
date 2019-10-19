@@ -59,7 +59,7 @@
     });
     </script>
     <meta charset="utf-8">
-    <title>OpenLayers v6.0.0-beta.11 API - Class: Collection</title>
+    <title>OpenLayers v6.0.1 API - Class: Collection</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -3202,6 +3202,10 @@
                     <a href="module-ol_control_OverviewMap-OverviewMap.html#getRevision">getRevision</a>
                 </li>
             
+                <li data-name="module:ol/control/OverviewMap~OverviewMap#getRotateWithView" class="">
+                    <a href="module-ol_control_OverviewMap-OverviewMap.html#getRotateWithView">getRotateWithView</a>
+                </li>
+            
                 <li data-name="module:ol/control/OverviewMap~OverviewMap#on" class="">
                     <a href="module-ol_control_OverviewMap-OverviewMap.html#on">on</a>
                 </li>
@@ -3228,6 +3232,10 @@
             
                 <li data-name="module:ol/control/OverviewMap~OverviewMap#setProperties" class="">
                     <a href="module-ol_control_OverviewMap-OverviewMap.html#setProperties">setProperties</a>
+                </li>
+            
+                <li data-name="module:ol/control/OverviewMap~OverviewMap#setRotateWithView" class="">
+                    <a href="module-ol_control_OverviewMap-OverviewMap.html#setRotateWithView">setRotateWithView</a>
                 </li>
             
                 <li data-name="module:ol/control/OverviewMap~OverviewMap#setTarget" class="">
@@ -4022,9 +4030,9 @@
             
             <span class="subtitle">Classes</span>
             
-        <li class="item" data-name="module:ol/events/Event~Event">
+        <li class="item" data-name="module:ol/events/Event~BaseEvent">
             <span class="title">
-                <a href="module-ol_events_Event-Event.html">Event</a>
+                <a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>
                 
             </span>
             <ul class="members itemMembers">
@@ -4034,9 +4042,9 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="module:ol/events/Event~Event#target"><a href="module-ol_events_Event-Event.html#target">target</a></li>
+                <li data-name="module:ol/events/Event~BaseEvent#target"><a href="module-ol_events_Event-BaseEvent.html#target">target</a></li>
             
-                <li data-name="module:ol/events/Event~Event#type"><a href="module-ol_events_Event-Event.html#type">type</a></li>
+                <li data-name="module:ol/events/Event~BaseEvent#type"><a href="module-ol_events_Event-BaseEvent.html#type">type</a></li>
             
             </ul>
             <ul class="typedefs itemMembers">
@@ -4046,12 +4054,12 @@
             
             <span class="subtitle">Methods</span>
             
-                <li data-name="module:ol/events/Event~Event#preventDefault" class="">
-                    <a href="module-ol_events_Event-Event.html#preventDefault">preventDefault</a>
+                <li data-name="module:ol/events/Event~BaseEvent#preventDefault" class="">
+                    <a href="module-ol_events_Event-BaseEvent.html#preventDefault">preventDefault</a>
                 </li>
             
-                <li data-name="module:ol/events/Event~Event#stopPropagation" class="">
-                    <a href="module-ol_events_Event-Event.html#stopPropagation">stopPropagation</a>
+                <li data-name="module:ol/events/Event~BaseEvent#stopPropagation" class="">
+                    <a href="module-ol_events_Event-BaseEvent.html#stopPropagation">stopPropagation</a>
                 </li>
             
             </ul>
@@ -4338,6 +4346,10 @@
             <ul class="methods itemMembers">
             
             <span class="subtitle">Methods</span>
+            
+                <li data-name="module:ol/featureloader.setWithCredentials" class="">
+                    <a href="module-ol_featureloader.html#.setWithCredentials">setWithCredentials</a>
+                </li>
             
                 <li data-name="module:ol/featureloader.xhr" class="">
                     <a href="module-ol_featureloader.html#.xhr">xhr</a>
@@ -5084,20 +5096,8 @@
                     <a href="module-ol_format_IIIFInfo.html#~IiifProfile">IiifProfile</a>
                 </li>
             
-                <li data-name="module:ol/format/IIIFInfo~ImageInformationResponse1_0" class="">
-                    <a href="module-ol_format_IIIFInfo.html#~ImageInformationResponse1_0">ImageInformationResponse1_0</a>
-                </li>
-            
-                <li data-name="module:ol/format/IIIFInfo~ImageInformationResponse1_1" class="">
-                    <a href="module-ol_format_IIIFInfo.html#~ImageInformationResponse1_1">ImageInformationResponse1_1</a>
-                </li>
-            
-                <li data-name="module:ol/format/IIIFInfo~ImageInformationResponse2" class="">
-                    <a href="module-ol_format_IIIFInfo.html#~ImageInformationResponse2">ImageInformationResponse2</a>
-                </li>
-            
-                <li data-name="module:ol/format/IIIFInfo~ImageInformationResponse3" class="">
-                    <a href="module-ol_format_IIIFInfo.html#~ImageInformationResponse3">ImageInformationResponse3</a>
+                <li data-name="module:ol/format/IIIFInfo~ImageInformationResponse" class="">
+                    <a href="module-ol_format_IIIFInfo.html#~ImageInformationResponse">ImageInformationResponse</a>
                 </li>
             
                 <li data-name="module:ol/format/IIIFInfo~PreferredOptions" class="">
@@ -10162,6 +10162,10 @@
                     <a href="module-ol_interaction_Extent-Extent.html#getExtent">getExtent</a>
                 </li>
             
+                <li data-name="module:ol/interaction/Extent~Extent#getExtentInternal" class="">
+                    <a href="module-ol_interaction_Extent-Extent.html#getExtentInternal">getExtentInternal</a>
+                </li>
+            
                 <li data-name="module:ol/interaction/Extent~Extent#getKeys" class="">
                     <a href="module-ol_interaction_Extent-Extent.html#getKeys">getKeys</a>
                 </li>
@@ -11342,10 +11346,6 @@
                     <a href="module-ol_interaction_Select-Select.html#getMap">getMap</a>
                 </li>
             
-                <li data-name="module:ol/interaction/Select~Select#getOverlay" class="">
-                    <a href="module-ol_interaction_Select-Select.html#getOverlay">getOverlay</a>
-                </li>
-            
                 <li data-name="module:ol/interaction/Select~Select#getProperties" class="">
                     <a href="module-ol_interaction_Select-Select.html#getProperties">getProperties</a>
                 </li>
@@ -11628,6 +11628,10 @@
             
                 <li data-name="module:ol/interaction/Translate.TranslateEvent#features"><a href="module-ol_interaction_Translate.TranslateEvent.html#features">features</a></li>
             
+                <li data-name="module:ol/interaction/Translate.TranslateEvent#mapBrowserEvent"><a href="module-ol_interaction_Translate.TranslateEvent.html#mapBrowserEvent">mapBrowserEvent</a></li>
+            
+                <li data-name="module:ol/interaction/Translate.TranslateEvent#startCoordinate"><a href="module-ol_interaction_Translate.TranslateEvent.html#startCoordinate">startCoordinate</a></li>
+            
                 <li data-name="module:ol/interaction/Translate.TranslateEvent#target"><a href="module-ol_interaction_Translate.TranslateEvent.html#target">target</a></li>
             
                 <li data-name="module:ol/interaction/Translate.TranslateEvent#type"><a href="module-ol_interaction_Translate.TranslateEvent.html#type">type</a></li>
@@ -11826,8 +11830,16 @@
                     <a href="module-ol_layer_Base-BaseLayer.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Base~BaseLayer#getMaxZoom" class="">
+                    <a href="module-ol_layer_Base-BaseLayer.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Base~BaseLayer#getMinResolution" class="">
                     <a href="module-ol_layer_Base-BaseLayer.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Base~BaseLayer#getMinZoom" class="">
+                    <a href="module-ol_layer_Base-BaseLayer.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Base~BaseLayer#getOpacity" class="">
@@ -11870,8 +11882,16 @@
                     <a href="module-ol_layer_Base-BaseLayer.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Base~BaseLayer#setMaxZoom" class="">
+                    <a href="module-ol_layer_Base-BaseLayer.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Base~BaseLayer#setMinResolution" class="">
                     <a href="module-ol_layer_Base-BaseLayer.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Base~BaseLayer#setMinZoom" class="">
+                    <a href="module-ol_layer_Base-BaseLayer.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Base~BaseLayer#setOpacity" class="">
@@ -11976,8 +11996,16 @@
                     <a href="module-ol_layer_BaseImage-BaseImageLayer.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/BaseImage~BaseImageLayer#getMaxZoom" class="">
+                    <a href="module-ol_layer_BaseImage-BaseImageLayer.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/BaseImage~BaseImageLayer#getMinResolution" class="">
                     <a href="module-ol_layer_BaseImage-BaseImageLayer.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/BaseImage~BaseImageLayer#getMinZoom" class="">
+                    <a href="module-ol_layer_BaseImage-BaseImageLayer.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/BaseImage~BaseImageLayer#getOpacity" class="">
@@ -12028,8 +12056,16 @@
                     <a href="module-ol_layer_BaseImage-BaseImageLayer.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/BaseImage~BaseImageLayer#setMaxZoom" class="">
+                    <a href="module-ol_layer_BaseImage-BaseImageLayer.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/BaseImage~BaseImageLayer#setMinResolution" class="">
                     <a href="module-ol_layer_BaseImage-BaseImageLayer.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/BaseImage~BaseImageLayer#setMinZoom" class="">
+                    <a href="module-ol_layer_BaseImage-BaseImageLayer.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/BaseImage~BaseImageLayer#setOpacity" class="">
@@ -12138,8 +12174,16 @@
                     <a href="module-ol_layer_BaseTile-BaseTileLayer.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/BaseTile~BaseTileLayer#getMaxZoom" class="">
+                    <a href="module-ol_layer_BaseTile-BaseTileLayer.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/BaseTile~BaseTileLayer#getMinResolution" class="">
                     <a href="module-ol_layer_BaseTile-BaseTileLayer.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/BaseTile~BaseTileLayer#getMinZoom" class="">
+                    <a href="module-ol_layer_BaseTile-BaseTileLayer.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/BaseTile~BaseTileLayer#getOpacity" class="">
@@ -12198,8 +12242,16 @@
                     <a href="module-ol_layer_BaseTile-BaseTileLayer.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/BaseTile~BaseTileLayer#setMaxZoom" class="">
+                    <a href="module-ol_layer_BaseTile-BaseTileLayer.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/BaseTile~BaseTileLayer#setMinResolution" class="">
                     <a href="module-ol_layer_BaseTile-BaseTileLayer.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/BaseTile~BaseTileLayer#setMinZoom" class="">
+                    <a href="module-ol_layer_BaseTile-BaseTileLayer.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/BaseTile~BaseTileLayer#setOpacity" class="">
@@ -12308,6 +12360,10 @@
                     <a href="module-ol_layer_BaseVector-BaseVectorLayer.html#getExtent">getExtent</a>
                 </li>
             
+                <li data-name="module:ol/layer/BaseVector~BaseVectorLayer#getFeatures" class="">
+                    <a href="module-ol_layer_BaseVector-BaseVectorLayer.html#getFeatures">getFeatures</a>
+                </li>
+            
                 <li data-name="module:ol/layer/BaseVector~BaseVectorLayer#getKeys" class="">
                     <a href="module-ol_layer_BaseVector-BaseVectorLayer.html#getKeys">getKeys</a>
                 </li>
@@ -12316,8 +12372,16 @@
                     <a href="module-ol_layer_BaseVector-BaseVectorLayer.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/BaseVector~BaseVectorLayer#getMaxZoom" class="">
+                    <a href="module-ol_layer_BaseVector-BaseVectorLayer.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/BaseVector~BaseVectorLayer#getMinResolution" class="">
                     <a href="module-ol_layer_BaseVector-BaseVectorLayer.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/BaseVector~BaseVectorLayer#getMinZoom" class="">
+                    <a href="module-ol_layer_BaseVector-BaseVectorLayer.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/BaseVector~BaseVectorLayer#getOpacity" class="">
@@ -12376,8 +12440,16 @@
                     <a href="module-ol_layer_BaseVector-BaseVectorLayer.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/BaseVector~BaseVectorLayer#setMaxZoom" class="">
+                    <a href="module-ol_layer_BaseVector-BaseVectorLayer.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/BaseVector~BaseVectorLayer#setMinResolution" class="">
                     <a href="module-ol_layer_BaseVector-BaseVectorLayer.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/BaseVector~BaseVectorLayer#setMinZoom" class="">
+                    <a href="module-ol_layer_BaseVector-BaseVectorLayer.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/BaseVector~BaseVectorLayer#setOpacity" class="">
@@ -12482,6 +12554,10 @@
                     <a href="module-ol_layer_Graticule-Graticule.html#getExtent">getExtent</a>
                 </li>
             
+                <li data-name="module:ol/layer/Graticule~Graticule#getFeatures" class="">
+                    <a href="module-ol_layer_Graticule-Graticule.html#getFeatures">getFeatures</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Graticule~Graticule#getKeys" class="">
                     <a href="module-ol_layer_Graticule-Graticule.html#getKeys">getKeys</a>
                 </li>
@@ -12490,12 +12566,20 @@
                     <a href="module-ol_layer_Graticule-Graticule.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Graticule~Graticule#getMaxZoom" class="">
+                    <a href="module-ol_layer_Graticule-Graticule.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Graticule~Graticule#getMeridians" class="">
                     <a href="module-ol_layer_Graticule-Graticule.html#getMeridians">getMeridians</a>
                 </li>
             
                 <li data-name="module:ol/layer/Graticule~Graticule#getMinResolution" class="">
                     <a href="module-ol_layer_Graticule-Graticule.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Graticule~Graticule#getMinZoom" class="">
+                    <a href="module-ol_layer_Graticule-Graticule.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Graticule~Graticule#getOpacity" class="">
@@ -12558,8 +12642,16 @@
                     <a href="module-ol_layer_Graticule-Graticule.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Graticule~Graticule#setMaxZoom" class="">
+                    <a href="module-ol_layer_Graticule-Graticule.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Graticule~Graticule#setMinResolution" class="">
                     <a href="module-ol_layer_Graticule-Graticule.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Graticule~Graticule#setMinZoom" class="">
+                    <a href="module-ol_layer_Graticule-Graticule.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Graticule~Graticule#setOpacity" class="">
@@ -12680,8 +12772,16 @@
                     <a href="module-ol_layer_Group-LayerGroup.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Group~LayerGroup#getMaxZoom" class="">
+                    <a href="module-ol_layer_Group-LayerGroup.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Group~LayerGroup#getMinResolution" class="">
                     <a href="module-ol_layer_Group-LayerGroup.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Group~LayerGroup#getMinZoom" class="">
+                    <a href="module-ol_layer_Group-LayerGroup.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Group~LayerGroup#getOpacity" class="">
@@ -12728,8 +12828,16 @@
                     <a href="module-ol_layer_Group-LayerGroup.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Group~LayerGroup#setMaxZoom" class="">
+                    <a href="module-ol_layer_Group-LayerGroup.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Group~LayerGroup#setMinResolution" class="">
                     <a href="module-ol_layer_Group-LayerGroup.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Group~LayerGroup#setMinZoom" class="">
+                    <a href="module-ol_layer_Group-LayerGroup.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Group~LayerGroup#setOpacity" class="">
@@ -12830,6 +12938,10 @@
                     <a href="module-ol_layer_Heatmap-Heatmap.html#getExtent">getExtent</a>
                 </li>
             
+                <li data-name="module:ol/layer/Heatmap~Heatmap#getFeatures" class="">
+                    <a href="module-ol_layer_Heatmap-Heatmap.html#getFeatures">getFeatures</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Heatmap~Heatmap#getGradient" class="">
                     <a href="module-ol_layer_Heatmap-Heatmap.html#getGradient">getGradient</a>
                 </li>
@@ -12842,8 +12954,16 @@
                     <a href="module-ol_layer_Heatmap-Heatmap.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Heatmap~Heatmap#getMaxZoom" class="">
+                    <a href="module-ol_layer_Heatmap-Heatmap.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Heatmap~Heatmap#getMinResolution" class="">
                     <a href="module-ol_layer_Heatmap-Heatmap.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Heatmap~Heatmap#getMinZoom" class="">
+                    <a href="module-ol_layer_Heatmap-Heatmap.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Heatmap~Heatmap#getOpacity" class="">
@@ -12914,8 +13034,16 @@
                     <a href="module-ol_layer_Heatmap-Heatmap.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Heatmap~Heatmap#setMaxZoom" class="">
+                    <a href="module-ol_layer_Heatmap-Heatmap.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Heatmap~Heatmap#setMinResolution" class="">
                     <a href="module-ol_layer_Heatmap-Heatmap.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Heatmap~Heatmap#setMinZoom" class="">
+                    <a href="module-ol_layer_Heatmap-Heatmap.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Heatmap~Heatmap#setOpacity" class="">
@@ -13032,8 +13160,16 @@
                     <a href="module-ol_layer_Image-ImageLayer.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Image~ImageLayer#getMaxZoom" class="">
+                    <a href="module-ol_layer_Image-ImageLayer.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Image~ImageLayer#getMinResolution" class="">
                     <a href="module-ol_layer_Image-ImageLayer.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Image~ImageLayer#getMinZoom" class="">
+                    <a href="module-ol_layer_Image-ImageLayer.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Image~ImageLayer#getOpacity" class="">
@@ -13084,8 +13220,16 @@
                     <a href="module-ol_layer_Image-ImageLayer.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Image~ImageLayer#setMaxZoom" class="">
+                    <a href="module-ol_layer_Image-ImageLayer.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Image~ImageLayer#setMinResolution" class="">
                     <a href="module-ol_layer_Image-ImageLayer.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Image~ImageLayer#setMinZoom" class="">
+                    <a href="module-ol_layer_Image-ImageLayer.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Image~ImageLayer#setOpacity" class="">
@@ -13127,12 +13271,6 @@
             
             </ul>
             <ul class="typedefs itemMembers">
-            
-            <span class="subtitle">Typedefs</span>
-            
-                <li data-name="module:ol/layer/Image~Options" class="">
-                    <a href="module-ol_layer_Image.html#~Options">Options</a>
-                </li>
             
             </ul>
             <ul class="methods itemMembers">
@@ -13194,8 +13332,16 @@
                     <a href="module-ol_layer_Layer-Layer.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Layer~Layer#getMaxZoom" class="">
+                    <a href="module-ol_layer_Layer-Layer.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Layer~Layer#getMinResolution" class="">
                     <a href="module-ol_layer_Layer-Layer.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Layer~Layer#getMinZoom" class="">
+                    <a href="module-ol_layer_Layer-Layer.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Layer~Layer#getOpacity" class="">
@@ -13246,8 +13392,16 @@
                     <a href="module-ol_layer_Layer-Layer.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Layer~Layer#setMaxZoom" class="">
+                    <a href="module-ol_layer_Layer-Layer.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Layer~Layer#setMinResolution" class="">
                     <a href="module-ol_layer_Layer-Layer.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Layer~Layer#setMinZoom" class="">
+                    <a href="module-ol_layer_Layer-Layer.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Layer~Layer#setOpacity" class="">
@@ -13364,8 +13518,16 @@
                     <a href="module-ol_layer_Tile-TileLayer.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Tile~TileLayer#getMaxZoom" class="">
+                    <a href="module-ol_layer_Tile-TileLayer.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Tile~TileLayer#getMinResolution" class="">
                     <a href="module-ol_layer_Tile-TileLayer.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Tile~TileLayer#getMinZoom" class="">
+                    <a href="module-ol_layer_Tile-TileLayer.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Tile~TileLayer#getOpacity" class="">
@@ -13424,8 +13586,16 @@
                     <a href="module-ol_layer_Tile-TileLayer.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Tile~TileLayer#setMaxZoom" class="">
+                    <a href="module-ol_layer_Tile-TileLayer.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Tile~TileLayer#setMinResolution" class="">
                     <a href="module-ol_layer_Tile-TileLayer.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Tile~TileLayer#setMinZoom" class="">
+                    <a href="module-ol_layer_Tile-TileLayer.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Tile~TileLayer#setOpacity" class="">
@@ -13528,6 +13698,10 @@
                     <a href="module-ol_layer_Vector-VectorLayer.html#getExtent">getExtent</a>
                 </li>
             
+                <li data-name="module:ol/layer/Vector~VectorLayer#getFeatures" class="">
+                    <a href="module-ol_layer_Vector-VectorLayer.html#getFeatures">getFeatures</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Vector~VectorLayer#getKeys" class="">
                     <a href="module-ol_layer_Vector-VectorLayer.html#getKeys">getKeys</a>
                 </li>
@@ -13536,8 +13710,16 @@
                     <a href="module-ol_layer_Vector-VectorLayer.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Vector~VectorLayer#getMaxZoom" class="">
+                    <a href="module-ol_layer_Vector-VectorLayer.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Vector~VectorLayer#getMinResolution" class="">
                     <a href="module-ol_layer_Vector-VectorLayer.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Vector~VectorLayer#getMinZoom" class="">
+                    <a href="module-ol_layer_Vector-VectorLayer.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Vector~VectorLayer#getOpacity" class="">
@@ -13596,8 +13778,16 @@
                     <a href="module-ol_layer_Vector-VectorLayer.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/Vector~VectorLayer#setMaxZoom" class="">
+                    <a href="module-ol_layer_Vector-VectorLayer.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/Vector~VectorLayer#setMinResolution" class="">
                     <a href="module-ol_layer_Vector-VectorLayer.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/Vector~VectorLayer#setMinZoom" class="">
+                    <a href="module-ol_layer_Vector-VectorLayer.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/Vector~VectorLayer#setOpacity" class="">
@@ -13696,6 +13886,10 @@
                     <a href="module-ol_layer_VectorImage-VectorImageLayer.html#getExtent">getExtent</a>
                 </li>
             
+                <li data-name="module:ol/layer/VectorImage~VectorImageLayer#getFeatures" class="">
+                    <a href="module-ol_layer_VectorImage-VectorImageLayer.html#getFeatures">getFeatures</a>
+                </li>
+            
                 <li data-name="module:ol/layer/VectorImage~VectorImageLayer#getKeys" class="">
                     <a href="module-ol_layer_VectorImage-VectorImageLayer.html#getKeys">getKeys</a>
                 </li>
@@ -13704,8 +13898,16 @@
                     <a href="module-ol_layer_VectorImage-VectorImageLayer.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/VectorImage~VectorImageLayer#getMaxZoom" class="">
+                    <a href="module-ol_layer_VectorImage-VectorImageLayer.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/VectorImage~VectorImageLayer#getMinResolution" class="">
                     <a href="module-ol_layer_VectorImage-VectorImageLayer.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/VectorImage~VectorImageLayer#getMinZoom" class="">
+                    <a href="module-ol_layer_VectorImage-VectorImageLayer.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/VectorImage~VectorImageLayer#getOpacity" class="">
@@ -13764,8 +13966,16 @@
                     <a href="module-ol_layer_VectorImage-VectorImageLayer.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/VectorImage~VectorImageLayer#setMaxZoom" class="">
+                    <a href="module-ol_layer_VectorImage-VectorImageLayer.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/VectorImage~VectorImageLayer#setMinResolution" class="">
                     <a href="module-ol_layer_VectorImage-VectorImageLayer.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/VectorImage~VectorImageLayer#setMinZoom" class="">
+                    <a href="module-ol_layer_VectorImage-VectorImageLayer.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/VectorImage~VectorImageLayer#setOpacity" class="">
@@ -13870,6 +14080,10 @@
                     <a href="module-ol_layer_VectorTile-VectorTileLayer.html#getExtent">getExtent</a>
                 </li>
             
+                <li data-name="module:ol/layer/VectorTile~VectorTileLayer#getFeatures" class="">
+                    <a href="module-ol_layer_VectorTile-VectorTileLayer.html#getFeatures">getFeatures</a>
+                </li>
+            
                 <li data-name="module:ol/layer/VectorTile~VectorTileLayer#getKeys" class="">
                     <a href="module-ol_layer_VectorTile-VectorTileLayer.html#getKeys">getKeys</a>
                 </li>
@@ -13878,8 +14092,16 @@
                     <a href="module-ol_layer_VectorTile-VectorTileLayer.html#getMaxResolution">getMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/VectorTile~VectorTileLayer#getMaxZoom" class="">
+                    <a href="module-ol_layer_VectorTile-VectorTileLayer.html#getMaxZoom">getMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/VectorTile~VectorTileLayer#getMinResolution" class="">
                     <a href="module-ol_layer_VectorTile-VectorTileLayer.html#getMinResolution">getMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/VectorTile~VectorTileLayer#getMinZoom" class="">
+                    <a href="module-ol_layer_VectorTile-VectorTileLayer.html#getMinZoom">getMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/VectorTile~VectorTileLayer#getOpacity" class="">
@@ -13946,8 +14168,16 @@
                     <a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMaxResolution">setMaxResolution</a>
                 </li>
             
+                <li data-name="module:ol/layer/VectorTile~VectorTileLayer#setMaxZoom" class="">
+                    <a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMaxZoom">setMaxZoom</a>
+                </li>
+            
                 <li data-name="module:ol/layer/VectorTile~VectorTileLayer#setMinResolution" class="">
                     <a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMinResolution">setMinResolution</a>
+                </li>
+            
+                <li data-name="module:ol/layer/VectorTile~VectorTileLayer#setMinZoom" class="">
+                    <a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMinZoom">setMinZoom</a>
                 </li>
             
                 <li data-name="module:ol/layer/VectorTile~VectorTileLayer#setOpacity" class="">
@@ -14043,6 +14273,34 @@
             </ul>
         </li>
     
+        <li class="item" data-name="module:ol/layer/WebGLPoints">
+            <span class="title">
+                <a href="module-ol_layer_WebGLPoints.html">ol/layer/WebGLPoints</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            <span class="subtitle">Typedefs</span>
+            
+                <li data-name="module:ol/layer/WebGLPoints~Options" class="">
+                    <a href="module-ol_layer_WebGLPoints.html#~Options">Options</a>
+                </li>
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="module:ol/loadingstrategy">
             <span class="title">
                 <a href="module-ol_loadingstrategy.html">ol/loadingstrategy</a>
@@ -14097,160 +14355,6 @@
                 <li data-name="module:ol/pixel~Pixel" class="">
                     <a href="module-ol_pixel.html#~Pixel">Pixel</a>
                 </li>
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="module:ol/pointer/EventSource">
-            <span class="title">
-                <a href="module-ol_pointer_EventSource.html">ol/pointer/EventSource</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="module:ol/pointer/MouseSource">
-            <span class="title">
-                <a href="module-ol_pointer_MouseSource.html">ol/pointer/MouseSource</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="module:ol/pointer/MsSource">
-            <span class="title">
-                <a href="module-ol_pointer_MsSource.html">ol/pointer/MsSource</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="module:ol/pointer/NativeSource">
-            <span class="title">
-                <a href="module-ol_pointer_NativeSource.html">ol/pointer/NativeSource</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="module:ol/pointer/PointerEvent">
-            <span class="title">
-                <a href="module-ol_pointer_PointerEvent.html">ol/pointer/PointerEvent</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="module:ol/pointer/PointerEventHandler">
-            <span class="title">
-                <a href="module-ol_pointer_PointerEventHandler.html">ol/pointer/PointerEventHandler</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="fires itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="module:ol/pointer/TouchSource">
-            <span class="title">
-                <a href="module-ol_pointer_TouchSource.html">ol/pointer/TouchSource</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
             
             </ul>
             <ul class="methods itemMembers">
@@ -14816,6 +14920,10 @@
             
                 <li data-name="module:ol/render/canvas~DeclutterGroup" class="">
                     <a href="module-ol_render_canvas.html#~DeclutterGroup">DeclutterGroup</a>
+                </li>
+            
+                <li data-name="module:ol/render/canvas~DeclutterGroups" class="">
+                    <a href="module-ol_render_canvas.html#~DeclutterGroups">DeclutterGroups</a>
                 </li>
             
                 <li data-name="module:ol/render/canvas~FillState" class="">
@@ -15759,6 +15867,10 @@
             <ul class="typedefs itemMembers">
             
             <span class="subtitle">Typedefs</span>
+            
+                <li data-name="module:ol/renderer/webgl/PointsLayer~CustomAttribute" class="">
+                    <a href="module-ol_renderer_webgl_PointsLayer.html#~CustomAttribute">CustomAttribute</a>
+                </li>
             
                 <li data-name="module:ol/renderer/webgl/PointsLayer~Options" class="">
                     <a href="module-ol_renderer_webgl_PointsLayer.html#~Options">Options</a>
@@ -17340,12 +17452,8 @@
                     <a href="module-ol_source_ImageWMS-ImageWMS.html#get">get</a>
                 </li>
             
-                <li data-name="module:ol/source/ImageWMS~ImageWMS#getGetFeatureInfoUrl" class="">
-                    <a href="module-ol_source_ImageWMS-ImageWMS.html#getGetFeatureInfoUrl">getGetFeatureInfoUrl</a>
-                </li>
-            
-                <li data-name="module:ol/source/ImageWMS~ImageWMS#getGetLegendGraphicUrl" class="">
-                    <a href="module-ol_source_ImageWMS-ImageWMS.html#getGetLegendGraphicUrl">getGetLegendGraphicUrl</a>
+                <li data-name="module:ol/source/ImageWMS~ImageWMS#getFeatureInfoUrl" class="">
+                    <a href="module-ol_source_ImageWMS-ImageWMS.html#getFeatureInfoUrl">getFeatureInfoUrl</a>
                 </li>
             
                 <li data-name="module:ol/source/ImageWMS~ImageWMS#getImageLoadFunction" class="">
@@ -17354,6 +17462,10 @@
             
                 <li data-name="module:ol/source/ImageWMS~ImageWMS#getKeys" class="">
                     <a href="module-ol_source_ImageWMS-ImageWMS.html#getKeys">getKeys</a>
+                </li>
+            
+                <li data-name="module:ol/source/ImageWMS~ImageWMS#getLegendUrl" class="">
+                    <a href="module-ol_source_ImageWMS-ImageWMS.html#getLegendUrl">getLegendUrl</a>
                 </li>
             
                 <li data-name="module:ol/source/ImageWMS~ImageWMS#getParams" class="">
@@ -18956,16 +19068,16 @@
                     <a href="module-ol_source_TileWMS-TileWMS.html#get">get</a>
                 </li>
             
-                <li data-name="module:ol/source/TileWMS~TileWMS#getGetFeatureInfoUrl" class="">
-                    <a href="module-ol_source_TileWMS-TileWMS.html#getGetFeatureInfoUrl">getGetFeatureInfoUrl</a>
-                </li>
-            
-                <li data-name="module:ol/source/TileWMS~TileWMS#getGetLegendGraphicUrl" class="">
-                    <a href="module-ol_source_TileWMS-TileWMS.html#getGetLegendGraphicUrl">getGetLegendGraphicUrl</a>
+                <li data-name="module:ol/source/TileWMS~TileWMS#getFeatureInfoUrl" class="">
+                    <a href="module-ol_source_TileWMS-TileWMS.html#getFeatureInfoUrl">getFeatureInfoUrl</a>
                 </li>
             
                 <li data-name="module:ol/source/TileWMS~TileWMS#getKeys" class="">
                     <a href="module-ol_source_TileWMS-TileWMS.html#getKeys">getKeys</a>
+                </li>
+            
+                <li data-name="module:ol/source/TileWMS~TileWMS#getLegendUrl" class="">
+                    <a href="module-ol_source_TileWMS-TileWMS.html#getLegendUrl">getLegendUrl</a>
                 </li>
             
                 <li data-name="module:ol/source/TileWMS~TileWMS#getParams" class="">
@@ -19753,6 +19865,40 @@
                 <li data-name="module:ol/source/VectorTile~Options" class="">
                     <a href="module-ol_source_VectorTile.html#~Options">Options</a>
                 </li>
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="fires itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="module:ol/source/WMSServerType">
+            <span class="title">
+                <a href="module-ol_source_WMSServerType.html">ol/source/WMSServerType</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="module:ol/source/WMSServerType"><a href="module-ol_source_WMSServerType.html">WMSServerType</a></li>
+            
+                <li data-name="module:ol/source/WMSServerType.CARMENTA_SERVER"><a href="module-ol_source_WMSServerType.html#.CARMENTA_SERVER">CARMENTA_SERVER</a></li>
+            
+                <li data-name="module:ol/source/WMSServerType.GEOSERVER"><a href="module-ol_source_WMSServerType.html#.GEOSERVER">GEOSERVER</a></li>
+            
+                <li data-name="module:ol/source/WMSServerType.MAPSERVER"><a href="module-ol_source_WMSServerType.html#.MAPSERVER">MAPSERVER</a></li>
+            
+                <li data-name="module:ol/source/WMSServerType.QGIS"><a href="module-ol_source_WMSServerType.html#.QGIS">QGIS</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
             
             </ul>
             <ul class="methods itemMembers">
@@ -21990,8 +22136,8 @@
                     <a href="module-ol_webgl_Helper-WebGLHelper.html#drawElements">drawElements</a>
                 </li>
             
-                <li data-name="module:ol/webgl/Helper~WebGLHelper#enableAttributeArray" class="">
-                    <a href="module-ol_webgl_Helper-WebGLHelper.html#enableAttributeArray">enableAttributeArray</a>
+                <li data-name="module:ol/webgl/Helper~WebGLHelper#enableAttributes" class="">
+                    <a href="module-ol_webgl_Helper-WebGLHelper.html#enableAttributes">enableAttributes</a>
                 </li>
             
                 <li data-name="module:ol/webgl/Helper~WebGLHelper#finalizeDraw" class="">
@@ -22057,7 +22203,7 @@
             
             <span class="subtitle">Members</span>
             
-                <li data-name="module:ol/webgl/Helper.DefaultAttrib"><a href="module-ol_webgl_Helper.html#.DefaultAttrib">DefaultAttrib</a></li>
+                <li data-name="module:ol/webgl/Helper.AttributeType"><a href="module-ol_webgl_Helper.html#.AttributeType">AttributeType</a></li>
             
                 <li data-name="module:ol/webgl/Helper.DefaultUniform"><a href="module-ol_webgl_Helper.html#.DefaultUniform">DefaultUniform</a></li>
             
@@ -22067,6 +22213,10 @@
             <ul class="typedefs itemMembers">
             
             <span class="subtitle">Typedefs</span>
+            
+                <li data-name="module:ol/webgl/Helper~AttributeDescription" class="">
+                    <a href="module-ol_webgl_Helper.html#~AttributeDescription">AttributeDescription</a>
+                </li>
             
                 <li data-name="module:ol/webgl/Helper~BufferCacheEntry" class="">
                     <a href="module-ol_webgl_Helper.html#~BufferCacheEntry">BufferCacheEntry</a>
@@ -22090,6 +22240,12 @@
             
             </ul>
             <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="module:ol/webgl/Helper.computeAttributesStride" class="">
+                    <a href="module-ol_webgl_Helper.html#.computeAttributesStride">computeAttributesStride</a>
+                </li>
             
             </ul>
             <ul class="fires itemMembers">
@@ -22288,7 +22444,7 @@
         <h1 class="page-title" data-filename="module-ol_Collection-Collection.html">Class: Collection</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">6.0.0-beta.11</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">6.0.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -22516,9 +22672,9 @@ the collection twice.</p></td>
         </li>
     
         <li class="">
-            <code><a href="module-ol_events_Event-Event.html#event:change">change</a></code>
+            <code><a href="module-ol_events_Event-BaseEvent.html#event:change">change</a></code>
             
-                (<a href="module-ol_events_Event-Event.html">module:ol/events/Event~Event</a>)
+                (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
               
             
             
@@ -22540,9 +22696,9 @@ the collection twice.</p></td>
         </li>
     
         <li class="">
-            <code><a href="module-ol_events_Event-Event.html#event:error">error</a></code>
+            <code><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a></code>
             
-                (<a href="module-ol_events_Event-Event.html">module:ol/events/Event~Event</a>)
+                (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
               
             
             
@@ -22836,7 +22992,7 @@ the collection twice.</p></td>
         </h4>
         
         <div class="tag-source">
-            events/Target.js, line 82
+            events/Target.js, line 95
         </div>
         
         
@@ -22893,7 +23049,7 @@ Object with a <code>type</code> property.</p>
 <span class="param-type">Object</span>
 |
 
-<span class="param-type"><a href="module-ol_events_Event-Event.html">module:ol/events/Event~Event</a></span>
+<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a></span>
 |
 
 <span class="param-type">string</span>
