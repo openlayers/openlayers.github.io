@@ -213,35 +213,32 @@ var featureOverlay &#x3D; new VectorLayer({
 var highlight;
 var displayFeatureInfo &#x3D; function(pixel) {
 
-  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function(feature) {
-    return feature;
-  });
+  map.getLayers().item(0).getFeatures(pixel).then(function(features) {
+    var feature &#x3D; features.length &gt; 0 ? features[0] : undefined;
 
-  var info &#x3D; document.getElementById(&#x27;info&#x27;);
-  if (feature) {
-    info.innerHTML &#x3D; feature.getId() + &#x27;: &#x27; + feature.get(&#x27;name&#x27;);
-  } else {
-    info.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
-  }
-
-  if (feature !&#x3D;&#x3D; highlight) {
-    if (highlight) {
-      featureOverlay.getSource().removeFeature(highlight);
-    }
+    var info &#x3D; document.getElementById(&#x27;info&#x27;);
     if (feature) {
-      featureOverlay.getSource().addFeature(feature);
+      info.innerHTML &#x3D; feature.getId() + &#x27;: &#x27; + feature.get(&#x27;name&#x27;);
+    } else {
+      info.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
     }
-    highlight &#x3D; feature;
-  }
 
+    if (feature !&#x3D;&#x3D; highlight) {
+      if (highlight) {
+        featureOverlay.getSource().removeFeature(highlight);
+      }
+      if (feature) {
+        featureOverlay.getSource().addFeature(feature);
+      }
+      highlight &#x3D; feature;
+    }
+  });
 };
 
 map.on(&#x27;pointermove&#x27;, function(evt) {
-  if (evt.dragging) {
-    return;
+  if (!evt.dragging) {
+    displayFeatureInfo(evt.pixel);
   }
-  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
-  displayFeatureInfo(pixel);
 });
 
 map.on(&#x27;click&#x27;, function(evt) {

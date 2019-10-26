@@ -128,13 +128,13 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Using WebGL to filter large quantities of features</p>
-          <div id="docs"><p>This example shows how to use <code>ol/renderer/webgl/PointsLayer</code> to dynamically filter a large amount
+          <div id="docs"><p>This example shows how to use <code>ol/layer/WebGLPoints</code> with a literal style to dynamically filter a large amount
   of point geometries. The above map is based on a dataset from the NASA containing 45k recorded meteorite
   landing sites. Each meteorite is marked by a circle on the map (the bigger the circle, the heavier
   the object). A pulse effect has been added, which is slightly offset by the year of the impact.</p>
-<p>Adjusting the sliders causes the objects outside of the date range to be filtered out of the map. This is done using
-  a custom fragment shader on the layer renderer, and by using the <code>v_opacity</code> attribute of the rendered objects
-  to store the year of impact.</p>
+<p>Adjusting the sliders causes the objects outside of the date range to be filtered out of the map. This is done
+  by mutating the variables in the <code>style</code> object provided to the WebGL layer. Also note that the last snippet
+  of code is necessary to make sure the map refreshes itself every frame.</p>
 </div>
         </div>
       </div>
@@ -180,172 +180,115 @@ import View from &#x27;ol/View&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import Feature from &#x27;ol/Feature&#x27;;
 import Point from &#x27;ol/geom/Point&#x27;;
-import VectorLayer from &#x27;ol/layer/Vector&#x27;;
 import {Vector} from &#x27;ol/source&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
-import WebGLPointsLayerRenderer from &#x27;ol/renderer/webgl/PointsLayer&#x27;;
-import {clamp} from &#x27;ol/math&#x27;;
 import Stamen from &#x27;ol/source/Stamen&#x27;;
-import {formatColor} from &#x27;ol/webgl/ShaderBuilder&#x27;;
+import WebGLPointsLayer from &#x27;ol/layer/WebGLPoints&#x27;;
 
 var vectorSource &#x3D; new Vector({
   attributions: &#x27;NASA&#x27;
 });
 
-var oldColor &#x3D; [180, 140, 140];
-var newColor &#x3D; [255, 80, 80];
+var oldColor &#x3D; &#x27;rgba(242,56,22,0.61)&#x27;;
+var newColor &#x3D; &#x27;#ffe52c&#x27;;
+var period &#x3D; 12; // animation period in seconds
+var animRatio &#x3D;
+  [&#x27;^&#x27;,
+    [&#x27;/&#x27;,
+      [&#x27;mod&#x27;,
+        [&#x27;+&#x27;,
+          [&#x27;time&#x27;],
+          [
+            &#x27;interpolate&#x27;,
+            [&#x27;linear&#x27;],
+            [&#x27;get&#x27;, &#x27;year&#x27;],
+            1850, 0,
+            2015, period
+          ]
+        ],
+        period
+      ],
+      period
+    ],
+    0.5
+  ];
 
-var startTime &#x3D; Date.now() * 0.001;
+var style &#x3D; {
+  variables: {
+    minYear: 1850,
+    maxYear: 2015
+  },
+  filter: [&#x27;between&#x27;, [&#x27;get&#x27;, &#x27;year&#x27;], [&#x27;var&#x27;, &#x27;minYear&#x27;], [&#x27;var&#x27;, &#x27;maxYear&#x27;]],
+  symbol: {
+    symbolType: &#x27;circle&#x27;,
+    size: [&#x27;*&#x27;,
+      [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;get&#x27;, &#x27;mass&#x27;], 0, 8, 200000, 26],
+      [&#x27;-&#x27;, 1.75, [&#x27;*&#x27;, animRatio, 0.75]]
+    ],
+    color: [&#x27;interpolate&#x27;,
+      [&#x27;linear&#x27;],
+      animRatio,
+      0, newColor,
+      1, oldColor
+    ],
+    opacity: [&#x27;-&#x27;, 1.0, [&#x27;*&#x27;, animRatio, 0.75]]
+  }
+};
 
-// hanle input values &amp; events
+// handle input values &amp; events
 var minYearInput &#x3D; document.getElementById(&#x27;min-year&#x27;);
 var maxYearInput &#x3D; document.getElementById(&#x27;max-year&#x27;);
+
+function updateMinYear() {
+  style.variables.minYear &#x3D; parseInt(minYearInput.value);
+  updateStatusText();
+}
+function updateMaxYear() {
+  style.variables.maxYear &#x3D; parseInt(maxYearInput.value);
+  updateStatusText();
+}
 function updateStatusText() {
   var div &#x3D; document.getElementById(&#x27;status&#x27;);
   div.querySelector(&#x27;span.min-year&#x27;).textContent &#x3D; minYearInput.value;
   div.querySelector(&#x27;span.max-year&#x27;).textContent &#x3D; maxYearInput.value;
 }
-minYearInput.addEventListener(&#x27;input&#x27;, updateStatusText);
-minYearInput.addEventListener(&#x27;change&#x27;, updateStatusText);
-maxYearInput.addEventListener(&#x27;input&#x27;, updateStatusText);
-maxYearInput.addEventListener(&#x27;change&#x27;, updateStatusText);
+
+minYearInput.addEventListener(&#x27;input&#x27;, updateMinYear);
+minYearInput.addEventListener(&#x27;change&#x27;, updateMinYear);
+maxYearInput.addEventListener(&#x27;input&#x27;, updateMaxYear);
+maxYearInput.addEventListener(&#x27;change&#x27;, updateMaxYear);
 updateStatusText();
 
-var WebglPointsLayer &#x3D; /*@__PURE__*/(function (VectorLayer) {
-  function WebglPointsLayer () {
-    VectorLayer.apply(this, arguments);
-  }
+// load data
+var client &#x3D; new XMLHttpRequest();
+client.open(&#x27;GET&#x27;, &#x27;data/csv/meteorite_landings.csv&#x27;);
+client.onload &#x3D; function() {
+  var csv &#x3D; client.responseText;
+  var features &#x3D; [];
 
-  if ( VectorLayer ) WebglPointsLayer.__proto__ &#x3D; VectorLayer;
-  WebglPointsLayer.prototype &#x3D; Object.create( VectorLayer &amp;&amp; VectorLayer.prototype );
-  WebglPointsLayer.prototype.constructor &#x3D; WebglPointsLayer;
+  var prevIndex &#x3D; csv.indexOf(&#x27;\n&#x27;) + 1; // scan past the header line
 
-  WebglPointsLayer.prototype.createRenderer &#x3D; function createRenderer () {
-    return new WebGLPointsLayerRenderer(this, {
-      attributes: [
-        {
-          name: &#x27;size&#x27;,
-          callback: function(feature) {
-            return 18 * clamp(feature.get(&#x27;mass&#x27;) / 200000, 0, 1) + 8;
-          }
-        },
-        {
-          name: &#x27;year&#x27;,
-          callback: function(feature) {
-            return feature.get(&#x27;year&#x27;);
-          }
-        }
-      ],
-      vertexShader: [
-        &#x27;precision mediump float;&#x27;,
+  var curIndex;
+  while ((curIndex &#x3D; csv.indexOf(&#x27;\n&#x27;, prevIndex)) !&#x3D; -1) {
+    var line &#x3D; csv.substr(prevIndex, curIndex - prevIndex).split(&#x27;,&#x27;);
+    prevIndex &#x3D; curIndex + 1;
 
-        &#x27;uniform mat4 u_projectionMatrix;&#x27;,
-        &#x27;uniform mat4 u_offsetScaleMatrix;&#x27;,
-        &#x27;uniform mat4 u_offsetRotateMatrix;&#x27;,
-        &#x27;attribute vec2 a_position;&#x27;,
-        &#x27;attribute float a_index;&#x27;,
-        &#x27;attribute float a_size;&#x27;,
-        &#x27;attribute float a_year;&#x27;,
-        &#x27;varying vec2 v_texCoord;&#x27;,
-        &#x27;varying float v_year;&#x27;,
-
-        &#x27;void main(void) {&#x27;,
-        &#x27;  mat4 offsetMatrix &#x3D; u_offsetScaleMatrix;&#x27;,
-        &#x27;  float offsetX &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 3.0 ? -a_size / 2.0 : a_size / 2.0;&#x27;,
-        &#x27;  float offsetY &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 1.0 ? -a_size / 2.0 : a_size / 2.0;&#x27;,
-        &#x27;  vec4 offsets &#x3D; offsetMatrix * vec4(offsetX, offsetY, 0.0, 0.0);&#x27;,
-        &#x27;  gl_Position &#x3D; u_projectionMatrix * vec4(a_position, 0.0, 1.0) + offsets;&#x27;,
-        &#x27;  float u &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 3.0 ? 0.0 : 1.0;&#x27;,
-        &#x27;  float v &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 1.0 ? 0.0 : 1.0;&#x27;,
-        &#x27;  v_texCoord &#x3D; vec2(u, v);&#x27;,
-        &#x27;  v_year &#x3D; a_year;&#x27;,
-        &#x27;}&#x27;
-      ].join(&#x27; &#x27;),
-      fragmentShader: [
-        &#x27;precision mediump float;&#x27;,
-
-        &#x27;uniform float u_time;&#x27;,
-        &#x27;uniform float u_minYear;&#x27;,
-        &#x27;uniform float u_maxYear;&#x27;,
-        &#x27;varying vec2 v_texCoord;&#x27;,
-        &#x27;varying float v_year;&#x27;,
-
-        &#x27;void main(void) {&#x27;,
-
-        // filter out pixels if the year is outside of the given range
-        &#x27;  if (v_year &lt; u_minYear || v_year &gt; u_maxYear) {&#x27;,
-        &#x27;    discard;&#x27;,
-        &#x27;  }&#x27;,
-
-        &#x27;  vec2 texCoord &#x3D; v_texCoord * 2.0 - vec2(1.0, 1.0);&#x27;,
-        &#x27;  float sqRadius &#x3D; texCoord.x * texCoord.x + texCoord.y * texCoord.y;&#x27;,
-        &#x27;  float value &#x3D; 2.0 * (1.0 - sqRadius);&#x27;,
-        &#x27;  float alpha &#x3D; smoothstep(0.0, 1.0, value);&#x27;,
-
-        // color is interpolated based on year
-        &#x27;  float ratio &#x3D; clamp((v_year - 1800.0) / (2013.0 - 1800.0), 0.0, 1.1);&#x27;,
-        &#x27;  vec3 color &#x3D; mix(vec3(&#x27; + formatColor(oldColor) + &#x27;),&#x27;,
-        &#x27;    vec3(&#x27; + formatColor(newColor) + &#x27;), ratio);&#x27;,
-
-        &#x27;  float period &#x3D; 8.0;&#x27;,
-        &#x27;  color.g *&#x3D; 2.0 * (1.0 - sqrt(mod(u_time + v_year * 0.025, period) / period));&#x27;,
-
-        &#x27;  gl_FragColor &#x3D; vec4(color, 1.0);&#x27;,
-        &#x27;  gl_FragColor.a *&#x3D; alpha;&#x27;,
-        &#x27;  gl_FragColor.rgb *&#x3D; gl_FragColor.a;&#x27;,
-        &#x27;}&#x27;
-      ].join(&#x27; &#x27;),
-      uniforms: {
-        u_time: function() {
-          return Date.now() * 0.001 - startTime;
-        },
-        u_minYear: function() {
-          return parseInt(minYearInput.value);
-        },
-        u_maxYear: function() {
-          return parseInt(maxYearInput.value);
-        }
-      }
-    });
-  };
-
-  return WebglPointsLayer;
-}(VectorLayer));
-
-
-function loadData() {
-  var client &#x3D; new XMLHttpRequest();
-  client.open(&#x27;GET&#x27;, &#x27;data/csv/meteorite_landings.csv&#x27;);
-  client.onload &#x3D; function() {
-    var csv &#x3D; client.responseText;
-    var features &#x3D; [];
-
-    var prevIndex &#x3D; csv.indexOf(&#x27;\n&#x27;) + 1; // scan past the header line
-
-    var curIndex;
-    while ((curIndex &#x3D; csv.indexOf(&#x27;\n&#x27;, prevIndex)) !&#x3D; -1) {
-      var line &#x3D; csv.substr(prevIndex, curIndex - prevIndex).split(&#x27;,&#x27;);
-      prevIndex &#x3D; curIndex + 1;
-
-      var coords &#x3D; fromLonLat([parseFloat(line[4]), parseFloat(line[3])]);
-      if (isNaN(coords[0]) || isNaN(coords[1])) {
-        // guard against bad data
-        continue;
-      }
-
-      features.push(new Feature({
-        mass: parseFloat(line[1]) || 0,
-        year: parseInt(line[2]) || 0,
-        geometry: new Point(coords)
-      }));
+    var coords &#x3D; fromLonLat([parseFloat(line[4]), parseFloat(line[3])]);
+    if (isNaN(coords[0]) || isNaN(coords[1])) {
+      // guard against bad data
+      continue;
     }
 
-    vectorSource.addFeatures(features);
-  };
-  client.send();
-}
+    features.push(new Feature({
+      mass: parseFloat(line[1]) || 0,
+      year: parseInt(line[2]) || 0,
+      geometry: new Point(coords)
+    }));
+  }
 
-loadData();
+  vectorSource.addFeatures(features);
+};
+client.send();
 
 var map &#x3D; new Map({
   layers: [
@@ -354,8 +297,10 @@ var map &#x3D; new Map({
         layer: &#x27;toner&#x27;
       })
     }),
-    new WebglPointsLayer({
-      source: vectorSource
+    new WebGLPointsLayer({
+      style: style,
+      source: vectorSource,
+      disableHitDetection: true
     })
   ],
   target: document.getElementById(&#x27;map&#x27;),

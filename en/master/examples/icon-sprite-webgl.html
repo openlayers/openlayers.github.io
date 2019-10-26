@@ -121,12 +121,12 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Rendering many icons with WebGL</p>
-          <div id="docs"><p>This example shows how to use <code>ol/renderer/webgl/PointsLayer</code> to render
+          <div id="docs"><p>This example shows how to use <code>ol/layer/WebGLPoints</code> to render
   a very large amount of sprites. The above map is based on a dataset from the National UFO Reporting Center: each
   icon marks a UFO sighting according to its reported shape (disk, light, fireball...). The older the sighting, the redder
   the icon.</p>
-<p>A very simple sprite atlas is used in the form of a PNG file containing all icons on a grid. Then, the <code>texCoordCallback</code>
-  option of the <code>ol/renderer/webgl/PointsLayer</code> constructor is used to specify which sprite to use according to the sighting shape.</p>
+<p>A very simple sprite atlas is used in the form of a PNG file containing all icons on a grid. Then, the <code>style</code> object
+  given to the <code>ol/layer/WebGLPoints</code> constructor is used to specify which sprite to use according to the sighting shape.</p>
 <p>The dataset contains around 80k points and can be found here: <a href="https://www.kaggle.com/NUFORC/ufo-sightings">https://www.kaggle.com/NUFORC/ufo-sightings</a></p>
 </div>
         </div>
@@ -167,11 +167,9 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import TileJSON from &#x27;ol/source/TileJSON&#x27;;
 import Feature from &#x27;ol/Feature&#x27;;
 import Point from &#x27;ol/geom/Point&#x27;;
-import VectorLayer from &#x27;ol/layer/Vector&#x27;;
 import {Vector} from &#x27;ol/source&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
-import WebGLPointsLayerRenderer from &#x27;ol/renderer/webgl/PointsLayer&#x27;;
-import {formatColor, formatNumber} from &#x27;ol/webgl/ShaderBuilder&#x27;;
+import WebGLPointsLayer from &#x27;ol/layer/WebGLPoints&#x27;;
 
 var key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
@@ -180,171 +178,41 @@ var vectorSource &#x3D; new Vector({
   attributions: &#x27;National UFO Reporting Center&#x27;
 });
 
-var texture &#x3D; new Image();
-texture.src &#x3D; &#x27;data/ufo_shapes.png&#x27;;
-
-// This describes the content of the associated sprite sheet
-// coords are u0, v0 for a given shape (all icons have a size of 0.25 x 0.5)
-var shapeTextureCoords &#x3D; {
-  &#x27;light&#x27;: [0, 0],
-  &#x27;sphere&#x27;: [0.25, 0],
-  &#x27;circle&#x27;: [0.25, 0],
-  &#x27;disc&#x27;: [0.5, 0],
-  &#x27;oval&#x27;: [0.5, 0],
-  &#x27;triangle&#x27;: [0.75, 0],
-  &#x27;fireball&#x27;: [0, 0.5],
-  &#x27;default&#x27;: [0.75, 0.5]
-};
-
 var oldColor &#x3D; [255, 160, 110];
 var newColor &#x3D; [180, 255, 200];
 var size &#x3D; 16;
 
-var WebglPointsLayer &#x3D; /*@__PURE__*/(function (VectorLayer) {
-  function WebglPointsLayer () {
-    VectorLayer.apply(this, arguments);
+var style &#x3D; {
+  symbol: {
+    symbolType: &#x27;image&#x27;,
+    src: &#x27;data/ufo_shapes.png&#x27;,
+    size: size,
+    color: [
+      &#x27;interpolate&#x27;,
+      [&#x27;linear&#x27;],
+      [&#x27;get&#x27;, &#x27;year&#x27;],
+      1950, oldColor,
+      2013, newColor
+    ],
+    rotateWithView: false,
+    offset: [
+      0,
+      9
+    ],
+    textureCoord: [
+      &#x27;match&#x27;,
+      [&#x27;get&#x27;, &#x27;shape&#x27;],
+      &#x27;light&#x27;, [0, 0, 0.25, 0.5],
+      &#x27;sphere&#x27;, [0.25, 0, 0.5, 0.5],
+      &#x27;circle&#x27;, [0.25, 0, 0.5, 0.5],
+      &#x27;disc&#x27;, [0.5, 0, 0.75, 0.5],
+      &#x27;oval&#x27;, [0.5, 0, 0.75, 0.5],
+      &#x27;triangle&#x27;, [0.75, 0, 1, 0.5],
+      &#x27;fireball&#x27;, [0, 0.5, 0.25, 1],
+      [0.75, 0.5, 1, 1]
+    ]
   }
-
-  if ( VectorLayer ) WebglPointsLayer.__proto__ &#x3D; VectorLayer;
-  WebglPointsLayer.prototype &#x3D; Object.create( VectorLayer &amp;&amp; VectorLayer.prototype );
-  WebglPointsLayer.prototype.constructor &#x3D; WebglPointsLayer;
-
-  WebglPointsLayer.prototype.createRenderer &#x3D; function createRenderer () {
-    return new WebGLPointsLayerRenderer(this, {
-      attributes: [
-        {
-          name: &#x27;year&#x27;,
-          callback: function(feature) {
-            return feature.get(&#x27;year&#x27;);
-          }
-        },
-        {
-          name: &#x27;texCoordU&#x27;,
-          callback: function(feature) {
-            var coords &#x3D; shapeTextureCoords[feature.get(&#x27;shape&#x27;)];
-            if (!coords) {
-              coords &#x3D; shapeTextureCoords[&#x27;default&#x27;];
-            }
-            return coords[0];
-          }
-        },
-        {
-          name: &#x27;texCoordV&#x27;,
-          callback: function(feature) {
-            var coords &#x3D; shapeTextureCoords[feature.get(&#x27;shape&#x27;)];
-            if (!coords) {
-              coords &#x3D; shapeTextureCoords[&#x27;default&#x27;];
-            }
-            return coords[1];
-          }
-        }
-      ],
-      uniforms: {
-        u_texture: texture
-      },
-      vertexShader: [
-        &#x27;precision mediump float;&#x27;,
-
-        &#x27;uniform mat4 u_projectionMatrix;&#x27;,
-        &#x27;uniform mat4 u_offsetScaleMatrix;&#x27;,
-        &#x27;uniform mat4 u_offsetRotateMatrix;&#x27;,
-        &#x27;attribute vec2 a_position;&#x27;,
-        &#x27;attribute float a_index;&#x27;,
-        &#x27;attribute float a_year;&#x27;,
-        &#x27;attribute float a_texCoordU;&#x27;,
-        &#x27;attribute float a_texCoordV;&#x27;,
-        &#x27;varying vec2 v_texCoord;&#x27;,
-        &#x27;varying float v_year;&#x27;,
-
-        &#x27;void main(void) {&#x27;,
-        &#x27;  mat4 offsetMatrix &#x3D; u_offsetScaleMatrix;&#x27;,
-        &#x27;  float offsetX &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 3.0 ? &#x27;,
-        &#x27;    &#x27; + formatNumber(-size / 2) + &#x27; : &#x27; + formatNumber(size / 2) + &#x27;;&#x27;,
-        &#x27;  float offsetY &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 1.0 ? &#x27;,
-        &#x27;    &#x27; + formatNumber(-size / 2) + &#x27; : &#x27; + formatNumber(size / 2) + &#x27;;&#x27;,
-        &#x27;  vec4 offsets &#x3D; offsetMatrix * vec4(offsetX, offsetY, 0.0, 0.0);&#x27;,
-        &#x27;  gl_Position &#x3D; u_projectionMatrix * vec4(a_position, 0.0, 1.0) + offsets;&#x27;,
-        &#x27;  float u &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 3.0 ? a_texCoordU : a_texCoordU + 0.25;&#x27;,
-        &#x27;  float v &#x3D; a_index &#x3D;&#x3D; 2.0 || a_index &#x3D;&#x3D; 3.0 ? a_texCoordV : a_texCoordV + 0.5;&#x27;,
-        &#x27;  v_texCoord &#x3D; vec2(u, v);&#x27;,
-        &#x27;  v_year &#x3D; a_year;&#x27;,
-        &#x27;}&#x27;
-      ].join(&#x27; &#x27;),
-      fragmentShader: [
-        &#x27;precision mediump float;&#x27;,
-
-        &#x27;uniform float u_time;&#x27;,
-        &#x27;uniform float u_minYear;&#x27;,
-        &#x27;uniform float u_maxYear;&#x27;,
-        &#x27;uniform sampler2D u_texture;&#x27;,
-        &#x27;varying vec2 v_texCoord;&#x27;,
-        &#x27;varying float v_year;&#x27;,
-
-        &#x27;void main(void) {&#x27;,
-        &#x27;  vec4 textureColor &#x3D; texture2D(u_texture, v_texCoord);&#x27;,
-        &#x27;  if (textureColor.a &lt; 0.1) {&#x27;,
-        &#x27;    discard;&#x27;,
-        &#x27;  }&#x27;,
-
-        // color is interpolated based on year
-        &#x27;  float ratio &#x3D; clamp((v_year - 1950.0) / (2013.0 - 1950.0), 0.0, 1.1);&#x27;,
-        &#x27;  vec3 color &#x3D; mix(vec3(&#x27; + formatColor(oldColor) + &#x27;),&#x27;,
-        &#x27;    vec3(&#x27; + formatColor(newColor) + &#x27;), ratio);&#x27;,
-
-        &#x27;  gl_FragColor &#x3D; vec4(color, 1.0) * textureColor;&#x27;,
-        &#x27;  gl_FragColor.rgb *&#x3D; gl_FragColor.a;&#x27;,
-        &#x27;}&#x27;
-      ].join(&#x27; &#x27;),
-      hitVertexShader: [
-        &#x27;precision mediump float;&#x27;,
-
-        &#x27;uniform mat4 u_projectionMatrix;&#x27;,
-        &#x27;uniform mat4 u_offsetScaleMatrix;&#x27;,
-        &#x27;uniform mat4 u_offsetRotateMatrix;&#x27;,
-        &#x27;attribute vec2 a_position;&#x27;,
-        &#x27;attribute float a_index;&#x27;,
-        &#x27;attribute vec4 a_hitColor;&#x27;,
-        &#x27;attribute float a_texCoordU;&#x27;,
-        &#x27;attribute float a_texCoordV;&#x27;,
-        &#x27;varying vec2 v_texCoord;&#x27;,
-        &#x27;varying vec4 v_hitColor;&#x27;,
-
-        &#x27;void main(void) {&#x27;,
-        &#x27;  mat4 offsetMatrix &#x3D; u_offsetScaleMatrix;&#x27;,
-        &#x27;  float offsetX &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 3.0 ? &#x27;,
-        &#x27;    &#x27; + formatNumber(-size / 2) + &#x27; : &#x27; + formatNumber(size / 2) + &#x27;;&#x27;,
-        &#x27;  float offsetY &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 1.0 ? &#x27;,
-        &#x27;    &#x27; + formatNumber(-size / 2) + &#x27; : &#x27; + formatNumber(size / 2) + &#x27;;&#x27;,
-        &#x27;  vec4 offsets &#x3D; offsetMatrix * vec4(offsetX, offsetY, 0.0, 0.0);&#x27;,
-        &#x27;  gl_Position &#x3D; u_projectionMatrix * vec4(a_position, 0.0, 1.0) + offsets;&#x27;,
-        &#x27;  float u &#x3D; a_index &#x3D;&#x3D; 0.0 || a_index &#x3D;&#x3D; 3.0 ? a_texCoordU : a_texCoordU + 0.25;&#x27;,
-        &#x27;  float v &#x3D; a_index &#x3D;&#x3D; 2.0 || a_index &#x3D;&#x3D; 3.0 ? a_texCoordV : a_texCoordV + 0.5;&#x27;,
-        &#x27;  v_texCoord &#x3D; vec2(u, v);&#x27;,
-        &#x27;  v_hitColor &#x3D; a_hitColor;&#x27;,
-        &#x27;}&#x27;
-      ].join(&#x27; &#x27;),
-      hitFragmentShader: [
-        &#x27;precision mediump float;&#x27;,
-
-        &#x27;uniform sampler2D u_texture;&#x27;,
-        &#x27;varying vec2 v_texCoord;&#x27;,
-        &#x27;varying vec4 v_hitColor;&#x27;,
-
-        &#x27;void main(void) {&#x27;,
-        &#x27;  vec4 textureColor &#x3D; texture2D(u_texture, v_texCoord);&#x27;,
-        &#x27;  if (textureColor.a &lt; 0.1) {&#x27;,
-        &#x27;    discard;&#x27;,
-        &#x27;  }&#x27;,
-
-        &#x27;  gl_FragColor &#x3D; v_hitColor;&#x27;,
-        &#x27;}&#x27;
-      ].join(&#x27; &#x27;)
-    });
-  };
-
-  return WebglPointsLayer;
-}(VectorLayer));
-
+};
 
 function loadData() {
   var client &#x3D; new XMLHttpRequest();
@@ -390,8 +258,9 @@ var map &#x3D; new Map({
         crossOrigin: &#x27;anonymous&#x27;
       })
     }),
-    new WebglPointsLayer({
-      source: vectorSource
+    new WebGLPointsLayer({
+      source: vectorSource,
+      style: style
     })
   ],
   target: document.getElementById(&#x27;map&#x27;),
@@ -414,10 +283,6 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
     var shape &#x3D; feature.get(&#x27;shape&#x27;);
     info.innerText &#x3D; &#x27;On &#x27; + datetime + &#x27;, lasted &#x27; + duration + &#x27; seconds and had a &quot;&#x27; + shape + &#x27;&quot; shape.&#x27;;
   });
-});
-
-texture.addEventListener(&#x27;load&#x27;, function() {
-  map.render();
 });
 </code></pre>
       </div>
