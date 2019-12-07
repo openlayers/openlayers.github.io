@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.0.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.1.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -115,6 +115,7 @@
   <select id="type" class="form-control">
     <option value="singleselect" selected>Single Select</option>
     <option value="multiselect">Multi Select</option>
+    <option value="singleselect-hover">Single Select on hover</option>
   </select>
 </form>
 
@@ -129,7 +130,11 @@
           <p id="shortdesc">Select features from vector tiles.</p>
           <div id="docs"><p>
   Click a rendered vector-tile feature to highlight it on the map. Click on an empty spot (ocean) to reset the selection.
-  By changing the action type to "Multi Select" you can select multiple features at a time.
+  By changing the action type to "Multi Select" you can select multiple features at a time. With "Single Select on hover",
+  features will be higlighted when the pointer is above them.
+</p><p>
+  The selection layer is configured with `renderMode: 'vector'` for better performance on frequent redraws,
+  i.e. when 'Single select on hover' is selected.
 </p>
 </div>
         </div>
@@ -159,6 +164,7 @@
       &lt;select id&#x3D;&quot;type&quot; class&#x3D;&quot;form-control&quot;&gt;
         &lt;option value&#x3D;&quot;singleselect&quot; selected&gt;Single Select&lt;/option&gt;
         &lt;option value&#x3D;&quot;multiselect&quot;&gt;Multi Select&lt;/option&gt;
+        &lt;option value&#x3D;&quot;singleselect-hover&quot;&gt;Single Select on hover&lt;/option&gt;
       &lt;/select&gt;
     &lt;/form&gt;
     &lt;script src="index.js"&gt;&lt;/script&gt;
@@ -179,28 +185,37 @@ import {Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 
 // lookup for selection objects
 var selection &#x3D; {};
-// feature property to act as identifier
-var idProp &#x3D; &#x27;iso_a3&#x27;;
+
+var country &#x3D; new Style({
+  stroke: new Stroke({
+    color: &#x27;gray&#x27;,
+    width: 1
+  }),
+  fill: new Fill({
+    color: &#x27;rgba(20,20,20,0.9)&#x27;
+  })
+});
+var selectedCountry &#x3D; new Style({
+  stroke: new Stroke({
+    color: &#x27;rgba(200,20,20,0.8)&#x27;,
+    width: 2
+  }),
+  fill: new Fill({
+    color: &#x27;rgba(200,20,20,0.4)&#x27;
+  })
+});
 
 var vtLayer &#x3D; new VectorTileLayer({
   declutter: true,
   source: new VectorTileSource({
-    format: new MVT(),
+    maxZoom: 15,
+    format: new MVT({
+      idProperty: &#x27;iso_a3&#x27;
+    }),
     url: &#x27;https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/&#x27; +
       &#x27;ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf&#x27;
   }),
-  style: function(feature) {
-    var selected &#x3D; !!selection[feature.get(idProp)];
-    return new Style({
-      stroke: new Stroke({
-        color: selected ? &#x27;rgba(200,20,20,0.8)&#x27; : &#x27;gray&#x27;,
-        width: selected ? 2 : 1
-      }),
-      fill: new Fill({
-        color: selected ? &#x27;rgba(200,20,20,0.2)&#x27; : &#x27;rgba(20,20,20,0.9)&#x27;
-      })
-    });
-  }
+  style: country
 });
 
 var map &#x3D; new Map({
@@ -210,36 +225,50 @@ var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
+    zoom: 2,
+    multiWorld: true
   })
+});
+
+// Selection
+var selectionLayer &#x3D; new VectorTileLayer({
+  map: map,
+  renderMode: &#x27;vector&#x27;,
+  source: vtLayer.getSource(),
+  style: function(feature) {
+    if (feature.getId() in selection) {
+      return selectedCountry;
+    }
+  }
 });
 
 var selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
 
-map.on(&#x27;click&#x27;, function(event) {
+map.on([&#x27;click&#x27;, &#x27;pointermove&#x27;], function(event) {
+  if (selectElement.value &#x3D;&#x3D;&#x3D; &#x27;singleselect-hover&#x27; &amp;&amp; event.type !&#x3D;&#x3D; &#x27;pointermove&#x27; ||
+      selectElement.value !&#x3D;&#x3D; &#x27;singleselect-hover&#x27; &amp;&amp; event.type &#x3D;&#x3D;&#x3D; &#x27;pointermove&#x27;) {
+    return;
+  }
   vtLayer.getFeatures(event.pixel).then(function(features) {
     if (!features.length) {
       selection &#x3D; {};
-      // force redraw of layer style
-      vtLayer.setStyle(vtLayer.getStyle());
+      selectionLayer.changed();
       return;
     }
     var feature &#x3D; features[0];
     if (!feature) {
       return;
     }
-    var fid &#x3D; feature.get(idProp);
+    var fid &#x3D; feature.getId();
 
-    if (selectElement.value &#x3D;&#x3D;&#x3D; &#x27;singleselect&#x27;) {
+    if (selectElement.value.startsWith(&#x27;singleselect&#x27;)) {
       selection &#x3D; {};
     }
     // add selected feature to lookup
     selection[fid] &#x3D; feature;
 
-    // force redraw of layer style
-    vtLayer.setStyle(vtLayer.getStyle());
+    selectionLayer.changed();
   });
-
 });
 </code></pre>
       </div>
@@ -250,7 +279,7 @@ map.on(&#x27;click&#x27;, function(event) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;vector-tile-selection&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.0.1&quot;
+    &quot;ol&quot;: &quot;6.1.1&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -278,7 +307,7 @@ map.on(&#x27;click&#x27;, function(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.1' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.1.1' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

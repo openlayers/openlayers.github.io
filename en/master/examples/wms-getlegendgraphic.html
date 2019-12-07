@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.0.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.1.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -111,7 +111,7 @@
           <h4 id="title">WMS GetLegendGraphic</h4>
           <div id="map" class="map"></div>
 Legend:
-<div><img id="legend" src=""/></div>
+<div><img id="legend"/></div>
 
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
@@ -148,7 +148,7 @@ Legend:
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     Legend:
-    &lt;div&gt;&lt;img id&#x3D;&quot;legend&quot; src&#x3D;&quot;&quot;/&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;img id&#x3D;&quot;legend&quot;/&gt;&lt;/div&gt;
     &lt;script src="index.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -214,7 +214,7 @@ map.getView().on(&#x27;change:resolution&#x27;, function(event) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;wms-getlegendgraphic&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.0.1&quot;
+    &quot;ol&quot;: &quot;6.1.1&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -242,7 +242,7 @@ map.getView().on(&#x27;change:resolution&#x27;, function(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.1' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.1.1' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

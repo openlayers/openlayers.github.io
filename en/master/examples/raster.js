@@ -1,6 +1,6 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[107],{
 
-/***/ 353:
+/***/ 354:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9,7 +9,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 /* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(68);
-/* harmony import */ var _src_ol_source_BingMaps_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(41);
+/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(30);
 /* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(158);
 
 
@@ -59,9 +59,16 @@ function summarize(value, counts) {
 /**
  * Use aerial imagery as the input data for the raster source.
  */
-var bing = new _src_ol_source_BingMaps_js__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]({
-  key: 'As1HiMj1PvLPlqc_gtM7AqZfBL8ZL3VrjaS3zIb22Uvb9WKhuJObROC-qUpa81U5',
-  imagerySet: 'Aerial'
+
+var key = 'get_your_own_D6rA4zTHduk6KOKTXzGB';
+var attributions = '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
+  '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
+
+var aerial = new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]({
+  attributions: attributions,
+  url: 'https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=' + key,
+  maxZoom: 20,
+  crossOrigin: ''
 });
 
 
@@ -70,7 +77,7 @@ var bing = new _src_ol_source_BingMaps_js__WEBPACK_IMPORTED_MODULE_4__[/* defaul
  * be colored green.
  */
 var raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"]({
-  sources: [bing],
+  sources: [aerial],
   /**
    * Run calculations on pixel data.
    * @param {Array} pixels List of pixels (one per source).
@@ -123,7 +130,7 @@ raster.on('afteroperations', function(event) {
 var map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]({
   layers: [
     new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]({
-      source: bing
+      source: aerial
     }),
     new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"]({
       source: raster
@@ -218,5 +225,5 @@ function message(value, area) {
 
 /***/ })
 
-},[[353,0]]]);
+},[[354,0]]]);
 //# sourceMappingURL=raster.js.map

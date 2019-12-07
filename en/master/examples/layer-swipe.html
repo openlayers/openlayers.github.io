@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.0.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.1.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -158,21 +158,27 @@
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
-import BingMaps from &#x27;ol/source/BingMaps&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
+import XYZ from &#x27;ol/source/XYZ&#x27;;
 
 var osm &#x3D; new TileLayer({
   source: new OSM()
 });
-var bing &#x3D; new TileLayer({
-  source: new BingMaps({
-    key: &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;,
-    imagerySet: &#x27;Aerial&#x27;
+
+var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
+var attributions &#x3D; &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
+  &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
+
+var aerial &#x3D; new TileLayer({
+  source: new XYZ({
+    attributions: attributions,
+    url: &#x27;https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
+    maxZoom: 20
   })
 });
 
 var map &#x3D; new Map({
-  layers: [osm, bing],
+  layers: [osm, aerial],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -182,7 +188,7 @@ var map &#x3D; new Map({
 
 var swipe &#x3D; document.getElementById(&#x27;swipe&#x27;);
 
-bing.on(&#x27;prerender&#x27;, function(event) {
+aerial.on(&#x27;prerender&#x27;, function(event) {
   var ctx &#x3D; event.context;
   var width &#x3D; ctx.canvas.width * (swipe.value / 100);
 
@@ -192,7 +198,7 @@ bing.on(&#x27;prerender&#x27;, function(event) {
   ctx.clip();
 });
 
-bing.on(&#x27;postrender&#x27;, function(event) {
+aerial.on(&#x27;postrender&#x27;, function(event) {
   var ctx &#x3D; event.context;
   ctx.restore();
 });
@@ -209,7 +215,7 @@ swipe.addEventListener(&#x27;input&#x27;, function() {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;layer-swipe&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.0.1&quot;
+    &quot;ol&quot;: &quot;6.1.1&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -237,7 +243,7 @@ swipe.addEventListener(&#x27;input&#x27;, function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.1' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.1.1' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -68,10 +68,10 @@
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     
-    
+    <link rel="stylesheet" href="svg-layer.css">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
-    <title>Interaction Options</title>
+    <title>SVG Layer</title>
   </head>
   <body>
 
@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.0.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.1.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -108,8 +108,8 @@
       <div class="row-fluid">
         <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
         <div class="span12">
-          <h4 id="title">Interaction Options</h4>
-          <div tabindex="1" id="map" class="map"></div>
+          <h4 id="title">SVG Layer</h4>
+          <div id="map" class="map"></div>
 
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
@@ -119,8 +119,8 @@
 
       <div class="row-fluid">
         <div class="span12">
-          <p id="shortdesc">Shows interaction options for custom scroll and zoom behavior.</p>
-          <div id="docs"><p>This example uses a custom <code>ol/interaction/defaults</code> configuration: by default, wheel/trackpad zoom and drag panning is always active, which can be unexpected on pages with a lot of scrollable content and an embedded map. To perform wheel/trackpad zoom and drag-pan actions only when the map has the focus, set <code>onFocusOnly: true</code> as option. This requires a map div with a <code>tabindex</code> attribute set.</p>
+          <p id="shortdesc">Example of a map with an interactive svg layer.</p>
+          <div id="docs"><p>With a plain <code>ol/Layer</code> and a <code>render</code> function, we can use an interactive svg as layer. Hover over countries to see the interactivity that is defined purely with a css <code>:hover</code> pseudo-class.</p>
 </div>
         </div>
       </div>
@@ -132,7 +132,7 @@
         <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
-    &lt;title&gt;Interaction Options&lt;/title&gt;
+    &lt;title&gt;SVG Layer&lt;/title&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;style&gt;
@@ -140,10 +140,17 @@
         width: 100%;
         height:400px;
       }
+      #map {
+        background: black;
+      }
+
+      .svg-layer path:hover {
+        opacity: 0.4;
+      }
     &lt;/style&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;div tabindex&#x3D;&quot;1&quot; id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;script src="index.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -155,26 +162,52 @@
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
-import {defaults as defaultInteractions} from &#x27;ol/interaction&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
-import OSM from &#x27;ol/source/OSM&#x27;;
-
+import Layer from &#x27;ol/layer/Layer&#x27;;
+import {composeCssTransform} from &#x27;ol/transform&#x27;;
 
 var map &#x3D; new Map({
-  interactions: defaultInteractions({
-    onFocusOnly: true
-  }),
-  layers: [
-    new TileLayer({
-      source: new OSM()
-    })
-  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
+    extent: [-180, -90, 180, 90],
+    projection: &#x27;EPSG:4326&#x27;,
     zoom: 2
   })
 });
+
+var svgContainer &#x3D; document.createElement(&#x27;div&#x27;);
+var xhr &#x3D; new XMLHttpRequest();
+xhr.open(&#x27;GET&#x27;, &#x27;data/world.svg&#x27;);
+xhr.addEventListener(&#x27;load&#x27;, function() {
+  var svg &#x3D; xhr.responseXML.documentElement;
+  svgContainer.ownerDocument.importNode(svg);
+  svgContainer.appendChild(svg);
+});
+xhr.send();
+
+var width &#x3D; 2560;
+var height &#x3D; 1280;
+var svgResolution &#x3D; 360 / width;
+svgContainer.style.width &#x3D; width + &#x27;px&#x27;;
+svgContainer.style.height &#x3D; height + &#x27;px&#x27;;
+svgContainer.style.transformOrigin &#x3D; &#x27;top left&#x27;;
+svgContainer.className &#x3D; &#x27;svg-layer&#x27;;
+
+map.addLayer(new Layer({
+  render: function(frameState) {
+    var scale &#x3D; svgResolution / frameState.viewState.resolution;
+    var center &#x3D; frameState.viewState.center;
+    var size &#x3D; frameState.size;
+    var cssTransform &#x3D; composeCssTransform(
+      size[0] / 2, size[1] / 2,
+      scale, scale,
+      frameState.viewState.rotation,
+      -center[0] / svgResolution - width / 2, center[1] / svgResolution - height / 2);
+    svgContainer.style.transform &#x3D; cssTransform;
+    svgContainer.style.opacity &#x3D; this.getOpacity();
+    return svgContainer;
+  }
+}));
 </code></pre>
       </div>
       <div class="row-fluid">
@@ -182,9 +215,9 @@ var map &#x3D; new Map({
           <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
-  &quot;name&quot;: &quot;interaction-options&quot;,
+  &quot;name&quot;: &quot;svg-layer&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.0.1&quot;
+    &quot;ol&quot;: &quot;6.1.1&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -199,7 +232,7 @@ var map &#x3D; new Map({
 
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
-    <script src="common.js"></script><script src="interaction-options.js"></script>
+    <script src="common.js"></script><script src="svg-layer.js"></script>
   </body>
   <script>
   var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
@@ -212,7 +245,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.0.1' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.1.1' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

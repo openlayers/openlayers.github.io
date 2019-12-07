@@ -1,6 +1,6 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[108],{
 
-/***/ 354:
+/***/ 355:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10,7 +10,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 /* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(68);
 /* harmony import */ var _src_ol_proj_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
-/* harmony import */ var _src_ol_source_BingMaps_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(41);
+/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(30);
 /* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(158);
 
 
@@ -86,10 +86,17 @@ function next4Edges(edge) {
   ];
 }
 
-var key = 'As1HiMj1PvLPlqc_gtM7AqZfBL8ZL3VrjaS3zIb22Uvb9WKhuJObROC-qUpa81U5';
+var key = 'get_your_own_D6rA4zTHduk6KOKTXzGB';
+var attributions = '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
+  '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
 
 var imagery = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]({
-  source: new _src_ol_source_BingMaps_js__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"]({key: key, imagerySet: 'Aerial'})
+  source: new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"]({
+    attributions: attributions,
+    url: 'https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=' + key,
+    maxZoom: 20,
+    crossOrigin: ''
+  })
 });
 
 var raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"]({
@@ -148,5 +155,5 @@ thresholdControl.addEventListener('input', function() {
 
 /***/ })
 
-},[[354,0]]]);
+},[[355,0]]]);
 //# sourceMappingURL=region-growing.js.map
