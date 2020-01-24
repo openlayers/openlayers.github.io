@@ -108,7 +108,20 @@
       <div class="row-fluid">
         <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
         <div class="span12">
-          <h4 id="title">Regular Shapes</h4>
+          <h4 id="title">
+            Regular Shapes
+          </h4>
+          <p class="tags">
+              <a href="./index.html?q=vector" class="label label-primary">vector</a>
+              <a href="./index.html?q=symbol" class="label label-primary">symbol</a>
+              <a href="./index.html?q=regularshape" class="label label-primary">regularshape</a>
+              <a href="./index.html?q=style" class="label label-primary">style</a>
+              <a href="./index.html?q=square" class="label label-primary">square</a>
+              <a href="./index.html?q=cross" class="label label-primary">cross</a>
+              <a href="./index.html?q=star" class="label label-primary">star</a>
+              <a href="./index.html?q=triangle" class="label label-primary">triangle</a>
+              <a href="./index.html?q=x" class="label label-primary">x</a>
+          </p>
           <div id="map" class="map"></div>
 
         </div>
@@ -120,7 +133,8 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of some Regular Shape styles.</p>
-          <div id="docs"><p>This example shows how several regular shapes or symbols (representing <code>x</code>, <code>cross</code>, <code>star</code>, <code>triangle</code> and <code>square</code>) can be created.</p>
+          <div id="docs"><p>This example shows how several regular shapes or symbols (representing <code>x</code>, <code>cross</code>, <code>star</code>, <code>triangle</code>, <code>square</code> and <code>stacked</code>) can be created.
+Style <code>stacked</code> represents possility to stack multiple shapes with offset</p>
 </div>
         </div>
       </div>
@@ -214,18 +228,39 @@ var styles &#x3D; {
       radius2: 0,
       angle: Math.PI / 4
     })
-  })
+  }),
+  &#x27;stacked&#x27;: [
+    new Style({
+      image: new RegularShape({
+        fill: fill,
+        stroke: stroke,
+        points: 4,
+        radius: 5,
+        angle: Math.PI / 4,
+        displacement: [0, 10]
+      })
+    }),
+    new Style({
+      image: new RegularShape({
+        fill: fill,
+        stroke: stroke,
+        points: 4,
+        radius: 10,
+        angle: Math.PI / 4
+      })
+    })
+  ]
 };
 
 
-var styleKeys &#x3D; [&#x27;x&#x27;, &#x27;cross&#x27;, &#x27;star&#x27;, &#x27;triangle&#x27;, &#x27;square&#x27;];
+var styleKeys &#x3D; [&#x27;x&#x27;, &#x27;cross&#x27;, &#x27;star&#x27;, &#x27;triangle&#x27;, &#x27;square&#x27;, &#x27;stacked&#x27;];
 var count &#x3D; 250;
 var features &#x3D; new Array(count);
 var e &#x3D; 4500000;
 for (var i &#x3D; 0; i &lt; count; ++i) {
   var coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
   features[i] &#x3D; new Feature(new Point(coordinates));
-  features[i].setStyle(styles[styleKeys[Math.floor(Math.random() * 5)]]);
+  features[i].setStyle(styles[styleKeys[Math.floor(Math.random() * 6)]]);
 }
 
 var source &#x3D; new VectorSource({

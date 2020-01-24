@@ -108,7 +108,13 @@
       <div class="row-fluid">
         <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
         <div class="span12">
-          <h4 id="title">Popup</h4>
+          <h4 id="title">
+            Popup
+          </h4>
+          <p class="tags">
+              <a href="./index.html?q=overlay" class="label label-primary">overlay</a>
+              <a href="./index.html?q=popup" class="label label-primary">popup</a>
+          </p>
           <div id="map" class="map"></div>
 <div id="popup" class="ol-popup">
   <a href="#" id="popup-closer" class="ol-popup-closer"></a>
@@ -149,8 +155,7 @@
       .ol-popup {
         position: absolute;
         background-color: white;
-        -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-        filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
         padding: 15px;
         border-radius: 10px;
         border: 1px solid #cccccc;

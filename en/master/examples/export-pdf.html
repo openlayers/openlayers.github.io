@@ -108,7 +108,14 @@
       <div class="row-fluid">
         <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
         <div class="span12">
-          <h4 id="title">Export PDF example</h4>
+          <h4 id="title">
+            Export PDF example
+          </h4>
+          <p class="tags">
+              <a href="./index.html?q=export" class="label label-primary">export</a>
+              <a href="./index.html?q=pdf" class="label label-primary">pdf</a>
+              <a href="./index.html?q=openstreetmap" class="label label-primary">openstreetmap</a>
+          </p>
           <div class="row-fluid">
   <div class="span12">
     <div id="map" class="map"></div>
@@ -207,8 +214,6 @@ import WKT from &#x27;ol/format/WKT&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 
-import {toJpeg} from &#x27;html-to-image&#x27;;
-
 var raster &#x3D; new TileLayer({
   source: new OSM()
 });
@@ -247,14 +252,6 @@ var dims &#x3D; {
 };
 
 
-// export options for html-to-image.
-// See: https://github.com/bubkoo/html-to-image#options
-var exportOptions &#x3D; {
-  filter: function(element) {
-    return element.className.indexOf(&#x27;ol-control&#x27;) &#x3D;&#x3D;&#x3D; -1;
-  }
-};
-
 var exportButton &#x3D; document.getElementById(&#x27;export-pdf&#x27;);
 
 exportButton.addEventListener(&#x27;click&#x27;, function() {
@@ -271,18 +268,28 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
   var viewResolution &#x3D; map.getView().getResolution();
 
   map.once(&#x27;rendercomplete&#x27;, function() {
-    exportOptions.width &#x3D; width;
-    exportOptions.height &#x3D; height;
-    toJpeg(map.getViewport(), exportOptions).then(function(dataUrl) {
-      var pdf &#x3D; new jsPDF(&#x27;landscape&#x27;, undefined, format);
-      pdf.addImage(dataUrl, &#x27;JPEG&#x27;, 0, 0, dim[0], dim[1]);
-      pdf.save(&#x27;map.pdf&#x27;);
-      // Reset original map size
-      map.setSize(size);
-      map.getView().setResolution(viewResolution);
-      exportButton.disabled &#x3D; false;
-      document.body.style.cursor &#x3D; &#x27;auto&#x27;;
+    var mapCanvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+    mapCanvas.width &#x3D; width;
+    mapCanvas.height &#x3D; height;
+    var mapContext &#x3D; mapCanvas.getContext(&#x27;2d&#x27;);
+    document.querySelectorAll(&#x27;.ol-layer canvas&#x27;).forEach(function(canvas) {
+      if (canvas.width &gt; 0) {
+        var transform &#x3D; canvas.style.transform;
+        // Get the transform parameters from the style&#x27;s transform matrix
+        var matrix &#x3D; transform.match(/^matrix\(([^\(]*)\)$/)[1].split(&#x27;,&#x27;).map(Number);
+        // Apply the transform to the export map context
+        CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
+        mapContext.drawImage(canvas, 0, 0);
+      }
     });
+    var pdf &#x3D; new jsPDF(&#x27;landscape&#x27;, undefined, format);
+    pdf.addImage(mapCanvas.toDataURL(&#x27;image/jpeg&#x27;), &#x27;JPEG&#x27;, 0, 0, dim[0], dim[1]);
+    pdf.save(&#x27;map.pdf&#x27;);
+    // Reset original map size
+    map.setSize(size);
+    map.getView().setResolution(viewResolution);
+    exportButton.disabled &#x3D; false;
+    document.body.style.cursor &#x3D; &#x27;auto&#x27;;
   });
 
   // Set print size
@@ -301,8 +308,7 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;export-pdf&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.1.1&quot;,
-    &quot;html-to-image&quot;: &quot;^0.1.0&quot;
+    &quot;ol&quot;: &quot;6.1.1&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;

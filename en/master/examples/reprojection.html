@@ -108,7 +108,18 @@
       <div class="row-fluid">
         <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
         <div class="span12">
-          <h4 id="title">Raster Reprojection</h4>
+          <h4 id="title">
+            Raster Reprojection
+          </h4>
+          <p class="tags">
+              <a href="./index.html?q=reprojection" class="label label-primary">reprojection</a>
+              <a href="./index.html?q=projection" class="label label-primary">projection</a>
+              <a href="./index.html?q=proj4js" class="label label-primary">proj4js</a>
+              <a href="./index.html?q=osm" class="label label-primary">osm</a>
+              <a href="./index.html?q=wms" class="label label-primary">wms</a>
+              <a href="./index.html?q=wmts" class="label label-primary">wmts</a>
+              <a href="./index.html?q=hidpi" class="label label-primary">hidpi</a>
+          </p>
           <div id="map" class="map"></div>
 <form class="form-inline">
   <div class="col-md-3">
@@ -282,15 +293,6 @@ proj54009.setExtent([-18e6, -9e6, 18e6, 9e6]);
 
 var layers &#x3D; {};
 
-layers[&#x27;bng&#x27;] &#x3D; new TileLayer({
-  source: new XYZ({
-    projection: &#x27;EPSG:27700&#x27;,
-    url: &#x27;https://tileserver.maptiler.com/miniscale/{z}/{x}/{y}.png&#x27;,
-    crossOrigin: &#x27;&#x27;,
-    maxZoom: 6
-  })
-});
-
 layers[&#x27;osm&#x27;] &#x3D; new TileLayer({
   source: new OSM()
 });
@@ -322,9 +324,11 @@ layers[&#x27;wms21781&#x27;] &#x3D; new TileLayer({
 });
 
 var parser &#x3D; new WMTSCapabilities();
-var url &#x3D; &#x27;https://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
+
+layers[&#x27;wmts3413&#x27;] &#x3D; new TileLayer();
+var urlA &#x3D; &#x27;https://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
     &#x27;wmts.cgi?SERVICE&#x3D;WMTS&amp;request&#x3D;GetCapabilities&#x27;;
-fetch(url).then(function(response) {
+fetch(urlA).then(function(response) {
   return response.text();
 }).then(function(text) {
   var result &#x3D; parser.read(text);
@@ -335,9 +339,23 @@ fetch(url).then(function(response) {
   options.crossOrigin &#x3D; &#x27;&#x27;;
   options.projection &#x3D; &#x27;EPSG:3413&#x27;;
   options.wrapX &#x3D; false;
-  layers[&#x27;wmts3413&#x27;] &#x3D; new TileLayer({
-    source: new WMTS(options)
+  layers[&#x27;wmts3413&#x27;].setSource(new WMTS(options));
+});
+
+layers[&#x27;bng&#x27;] &#x3D; new TileLayer();
+var urlB &#x3D; &#x27;https://tiles.arcgis.com/tiles/qHLhLQrcvEnxjtPr/arcgis/rest/services/OS_Open_Raster/MapServer/WMTS&#x27;;
+fetch(urlB).then(function(response) {
+  return response.text();
+}).then(function(text) {
+  var result &#x3D; parser.read(text);
+  var options &#x3D; optionsFromCapabilities(result, {
+    layer: &#x27;OS_Open_Raster&#x27;
   });
+  options.attributions &#x3D; &#x27;Contains OS data © Crown Copyright and database right 2019&#x27;;
+  options.crossOrigin &#x3D; &#x27;&#x27;;
+  options.projection &#x3D; &#x27;EPSG:27700&#x27;;
+  options.wrapX &#x3D; false;
+  layers[&#x27;bng&#x27;].setSource(new WMTS(options));
 });
 
 layers[&#x27;grandcanyon&#x27;] &#x3D; new TileLayer({

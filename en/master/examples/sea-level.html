@@ -108,7 +108,14 @@
       <div class="row-fluid">
         <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
         <div class="span12">
-          <h4 id="title">Sea Level</h4>
+          <h4 id="title">
+            Sea Level
+          </h4>
+          <p class="tags">
+              <a href="./index.html?q=raster" class="label label-primary">raster</a>
+              <a href="./index.html?q=pixeloperation" class="label label-primary">pixeloperation</a>
+              <a href="./index.html?q=flood" class="label label-primary">flood</a>
+          </p>
           <div id="map" class="map"></div>
 <label>
   Sea level
@@ -135,6 +142,10 @@ Go to
   This example uses a <code>ol/source/Raster</code> with
   <a href="https://www.mapbox.com/blog/terrain-rgb/">Mapbox Terrain-RGB tiles</a>
   to "flood" areas below the elevation shown on the sea level slider.
+</p> <p>
+  <code>ol/source/Raster</code> can take either a tile source or layer.
+  In this case a layer is used to allow disabling at the <code>prerender</code> event
+  of image smoothing which would change the precise elevation values set in the pixels.
 </p>
 </div>
         </div>
@@ -212,9 +223,15 @@ function flood(pixels, data) {
 }
 
 var key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
-var elevation &#x3D; new XYZ({
-  url: &#x27;https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.pngraw?access_token&#x3D;&#x27; + key,
-  crossOrigin: &#x27;anonymous&#x27;
+var elevation &#x3D; new TileLayer({
+  source: new XYZ({
+    url: &#x27;https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.pngraw?access_token&#x3D;&#x27; + key,
+    crossOrigin: &#x27;anonymous&#x27;
+  })
+});
+elevation.on(&#x27;prerender&#x27;, function(evt) {
+  evt.context.imageSmoothingEnabled &#x3D; false;
+  evt.context.msImageSmoothingEnabled &#x3D; false;
 });
 
 var raster &#x3D; new RasterSource({
