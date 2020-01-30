@@ -118,6 +118,7 @@
               <a href="./index.html?q=igc" class="label label-primary">igc</a>
               <a href="./index.html?q=kml" class="label label-primary">kml</a>
               <a href="./index.html?q=topojson" class="label label-primary">topojson</a>
+              <a href="./index.html?q=maptiler" class="label label-primary">maptiler</a>
               <a href="./index.html?q=vector" class="label label-primary">vector</a>
               <a href="./index.html?q=image" class="label label-primary">image</a>
           </p>
@@ -172,7 +173,7 @@ import View from &#x27;ol/View&#x27;;
 import {GPX, GeoJSON, IGC, KML, TopoJSON} from &#x27;ol/format&#x27;;
 import {defaults as defaultInteractions, DragAndDrop} from &#x27;ol/interaction&#x27;;
 import {VectorImage as VectorImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
-import {BingMaps, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {XYZ, Vector as VectorSource} from &#x27;ol/source&#x27;;
 
 var dragAndDropInteraction &#x3D; new DragAndDrop({
   formatConstructors: [
@@ -184,13 +185,18 @@ var dragAndDropInteraction &#x3D; new DragAndDrop({
   ]
 });
 
+var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
+var attributions &#x3D; &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
+  &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
+
 var map &#x3D; new Map({
   interactions: defaultInteractions().extend([dragAndDropInteraction]),
   layers: [
     new TileLayer({
-      source: new BingMaps({
-        imagerySet: &#x27;Aerial&#x27;,
-        key: &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;
+      source: new XYZ({
+        attributions: attributions,
+        url: &#x27;https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
+        maxZoom: 20
       })
     })
   ],
