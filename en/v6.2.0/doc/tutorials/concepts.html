@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OpenLayers - Basic Concepts</title>
+    <script>
+    var gaProperty = 'UA-2577926-1';
+    // Disable tracking if the opt-out cookie exists.
+    var disableStr = 'ga-disable-' + gaProperty;
+    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+      window[disableStr] = true;
+    }
+    function gaOptout() {
+      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = true;
+    }
+    function gaOptoutRevoke() {
+      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = false;
+    }
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+    window.addEventListener("load", function() {
+      window.cookieconsent.initialise({
+        'palette': {
+          'popup': {
+            'background': '#eaf7f7',
+            'text': '#5c7291'
+          },
+          'button': {
+            'background': '#56cbdb',
+            'text': '#ffffff'
+          }
+        },
+        'theme': 'edgeless',
+        'type': 'opt-out',
+        'onInitialise': function (status) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onStatusChange': function(status, chosenBefore) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onRevokeChoice': function() {
+          gaOptoutRevoke()
+        }
+      })
+    });
+    </script>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link href='https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='../../../../assets/theme/site.css' rel='stylesheet' type='text/css'>
+    <link rel="icon" type="image/x-icon" href="../../../../assets/theme/img/favicon.ico" />
+    
+  </head>
+  <body>
+    <header class='navbar navbar-fixed-top' role='navigation'>
+      <div class='container'>
+
+        <!-- button that shows up below 768px width -->
+        <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-responsive-collapse'>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+        </button>
+
+        <a href='/' class='navbar-brand'><img src='../../../../assets/theme/img/logo70.png'>&nbsp;OpenLayers</a>
+
+        <!-- menu items that get hidden below 768px width -->
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
+          <ul class='nav navbar-nav pull-right'>
+            <li><a href='/en/latest/doc/'class="active">Docs</a></li>
+            <li><a href='/en/latest/examples/'>Examples</a></li>
+            <li><a href='/en/latest/apidoc/'>API</a></li>
+            <li><a href='https://github.com/openlayers/openlayers'>Code</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    
+
+<div class='container'>
+<h1 id="basic-concepts">Basic Concepts</h1>
+<h2 id="map">Map</h2>
+<p>The core component of OpenLayers is the map (<code>ol/Map</code>). It is rendered to a <code>target</code> container (e.g. a <code>div</code> element on the web page that contains the map). All map properties can either be configured at construction time, or by using setter methods, e.g. <code>setTarget()</code>.</p>
+<p>The markup below could be used to create a <code>&lt;div&gt;</code> that contains your map.</p>
+<pre><code class="language-xml"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"map"</span> <span class="attribute">style</span>=<span class="value">"width: 100%, height: 400px"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></code></pre>
+<p>The script below constructs a map that is rendered in the <code>&lt;div&gt;</code> above, using the <code>map</code> id of the element as a selector.</p>
+<pre><code class="language-js">import Map from <span class="string">'ol/Map'</span>;
+
+<span class="keyword">var</span> map = <span class="keyword">new</span> Map({target: <span class="string">'map'</span>});</code></pre>
+<h2 id="view">View</h2>
+<p>The map is not responsible for things like center, zoom level and projection of the map. Instead, these are properties of a <code>ol/View</code> instance.</p>
+<pre><code class="language-js">import View from <span class="string">'ol/View'</span>;
+
+map.setView(<span class="keyword">new</span> View({
+  center: [<span class="number">0</span>, <span class="number">0</span>],
+  zoom: <span class="number">2</span>
+}));</code></pre>
+<p>A <code>View</code> also has a <code>projection</code>. The projection determines the coordinate system of the <code>center</code> and the units for map resolution calculations. If not specified (like in the above snippet), the default projection is Spherical Mercator (EPSG:3857), with meters as map units.</p>
+<p>The <code>zoom</code> option is a convenient way to specify the map resolution. The available zoom levels are determined by <code>maxZoom</code> (default: 28), <code>zoomFactor</code> (default: 2) and <code>maxResolution</code> (default is calculated in such a way that the projection&#39;s validity extent fits in a 256x256 pixel tile). Starting at zoom level 0 with a resolution of <code>maxResolution</code> units per pixel, subsequent zoom levels are calculated by dividing the previous zoom level&#39;s resolution by <code>zoomFactor</code>, until zoom level <code>maxZoom</code> is reached.</p>
+<h2 id="source">Source</h2>
+<p>To get remote data for a layer, OpenLayers uses <code>ol/source/Source</code> subclasses. These are available for free and commercial map tile services like OpenStreetMap or Bing, for OGC sources like WMS or WMTS, and for vector data in formats like GeoJSON or KML.</p>
+<pre><code class="language-js">import OSM from <span class="string">'ol/source/OSM'</span>;
+
+<span class="keyword">var</span> osmSource = OSM();</code></pre>
+<h2 id="layer">Layer</h2>
+<p>A layer is a visual representation of data from a <code>source</code>. OpenLayers has four basic types of layers:</p>
+<ul>
+<li><code>ol/layer/Tile</code> - Renders sources that provide tiled images in grids that are organized by zoom levels for specific resolutions.</li>
+<li><code>ol/layer/Image</code> - Renders sources that provide map images at arbitrary extents and resolutions.</li>
+<li><code>ol/layer/Vector</code> - Renders vector data client-side.</li>
+<li><code>ol/layer/VectorTile</code> - Renders data that is provided as vector tiles.</li>
+</ul>
+<pre><code class="language-js">import TileLayer from <span class="string">'ol/layer/Tile'</span>;
+
+<span class="keyword">var</span> osmLayer = <span class="keyword">new</span> TileLayer({source: osmSource});
+map.addLayer(osmLayer);</code></pre>
+<h2 id="putting-it-all-together">Putting it all together</h2>
+<p>The above snippets can be combined into a single script that renders a map with a single tile layer:</p>
+<pre><code class="language-js">import Map from <span class="string">'ol/Map'</span>;
+import View from <span class="string">'ol/View'</span>;
+import OSM from <span class="string">'ol/source/OSM'</span>;
+import TileLayer from <span class="string">'ol/layer/Tile'</span>;
+
+<span class="keyword">new</span> Map({
+  layers: [
+    <span class="keyword">new</span> TileLayer({source: <span class="keyword">new</span> OSM()})
+  ],
+  view: <span class="keyword">new</span> View({
+    center: [<span class="number">0</span>, <span class="number">0</span>],
+    zoom: <span class="number">2</span>
+  }),
+  target: <span class="string">'map'</span>
+});</code></pre>
+
+</div>
+
+    <footer>
+      Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>. Thanks to our <a href='/sponsors.html'>sponsors</a>.
+    </footer>
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
+  </body>
+</html>
