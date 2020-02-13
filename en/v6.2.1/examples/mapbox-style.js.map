@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./mapbox-style.js"],"names":[],"mappings":"2FAAA,oBAEA,YAAM,MAAO,yF","file":"mapbox-style.js","sourcesContent":["import apply from 'ol-mapbox-style';\n\napply('map', 'https://api.maptiler.com/maps/topo/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB');\n"],"sourceRoot":""}
