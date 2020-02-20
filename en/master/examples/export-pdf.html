@@ -67,9 +67,9 @@
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
-    <link rel="stylesheet" href="export-pdf.css">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <link rel="stylesheet" href="export-pdf.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>Export PDF example</title>
   </head>
@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.1.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -163,8 +163,8 @@
   &lt;head&gt;
     &lt;title&gt;Export PDF example&lt;/title&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -228,7 +228,8 @@ feature.getGeometry().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
 var vector &#x3D; new VectorLayer({
   source: new VectorSource({
     features: [feature]
-  })
+  }),
+  opacity: 0.5
 });
 
 
@@ -272,8 +273,10 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
     mapCanvas.width &#x3D; width;
     mapCanvas.height &#x3D; height;
     var mapContext &#x3D; mapCanvas.getContext(&#x27;2d&#x27;);
-    document.querySelectorAll(&#x27;.ol-layer canvas&#x27;).forEach(function(canvas) {
+    Array.prototype.forEach.call(document.querySelectorAll(&#x27;.ol-layer canvas&#x27;), function(canvas) {
       if (canvas.width &gt; 0) {
+        var opacity &#x3D; canvas.parentNode.style.opacity;
+        mapContext.globalAlpha &#x3D; opacity &#x3D;&#x3D;&#x3D; &#x27;&#x27; ? 1 : Number(opacity);
         var transform &#x3D; canvas.style.transform;
         // Get the transform parameters from the style&#x27;s transform matrix
         var matrix &#x3D; transform.match(/^matrix\(([^\(]*)\)$/)[1].split(&#x27;,&#x27;).map(Number);
@@ -308,7 +311,7 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;export-pdf&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.1.1&quot;
+    &quot;ol&quot;: &quot;6.2.2&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -336,7 +339,7 @@ exportButton.addEventListener(&#x27;click&#x27;, function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.1.1' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');
