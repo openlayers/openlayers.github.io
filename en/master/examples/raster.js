@@ -9,7 +9,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 /* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(68);
-/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(29);
+/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(28);
 /* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(158);
 
 

@@ -116,17 +116,22 @@
               <a href="./index.html?q=projection" class="label label-primary">projection</a>
               <a href="./index.html?q=proj4js" class="label label-primary">proj4js</a>
               <a href="./index.html?q=epsg.io" class="label label-primary">epsg.io</a>
+              <a href="./index.html?q=graticule" class="label label-primary">graticule</a>
           </p>
           <div id="map" class="map"></div>
 <form class="form-inline">
   <label for="epsg-query">Search projection:</label>
-  <input type="text" id="epsg-query" placeholder="4326, 27700, US National Atlas, Swiss, France, ..." class="form-control" size="50" />
+  <input type="text" id="epsg-query" placeholder="4326, 27700, 3031, US National Atlas, Swiss, France, ..." class="form-control" size="50" />
   <button id="epsg-search" class="btn">Search</button>
   <span id="epsg-result"></span>
   <div>
     <label for="render-edges">
       Render reprojection edges
       <input type="checkbox" id="render-edges">
+    </label>
+    <label for="show-graticule">
+      &nbsp;&nbsp;&nbsp;Show graticule
+      <input type="checkbox" id="show-graticule" />
     </label>
   </div>
 </form>
@@ -166,13 +171,17 @@
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;form class&#x3D;&quot;form-inline&quot;&gt;
       &lt;label for&#x3D;&quot;epsg-query&quot;&gt;Search projection:&lt;/label&gt;
-      &lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;epsg-query&quot; placeholder&#x3D;&quot;4326, 27700, US National Atlas, Swiss, France, ...&quot; class&#x3D;&quot;form-control&quot; size&#x3D;&quot;50&quot; /&gt;
+      &lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;epsg-query&quot; placeholder&#x3D;&quot;4326, 27700, 3031, US National Atlas, Swiss, France, ...&quot; class&#x3D;&quot;form-control&quot; size&#x3D;&quot;50&quot; /&gt;
       &lt;button id&#x3D;&quot;epsg-search&quot; class&#x3D;&quot;btn&quot;&gt;Search&lt;/button&gt;
       &lt;span id&#x3D;&quot;epsg-result&quot;&gt;&lt;/span&gt;
       &lt;div&gt;
         &lt;label for&#x3D;&quot;render-edges&quot;&gt;
           Render reprojection edges
           &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;render-edges&quot;&gt;
+        &lt;/label&gt;
+        &lt;label for&#x3D;&quot;show-graticule&quot;&gt;
+          &amp;nbsp;&amp;nbsp;&amp;nbsp;Show graticule
+          &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;show-graticule&quot; /&gt;
         &lt;/label&gt;
       &lt;/div&gt;
     &lt;/form&gt;
@@ -188,19 +197,34 @@
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {applyTransform} from &#x27;ol/extent&#x27;;
+import Graticule from &#x27;ol/layer/Graticule&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import {get as getProjection, getTransform} from &#x27;ol/proj&#x27;;
 import {register} from &#x27;ol/proj/proj4&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
 import TileImage from &#x27;ol/source/TileImage&#x27;;
+import Stroke from &#x27;ol/style/Stroke&#x27;;
 import proj4 from &#x27;proj4&#x27;;
 
+
+var graticule &#x3D; new Graticule({
+  // the style to use for the lines, optional.
+  strokeStyle: new Stroke({
+    color: &#x27;rgba(255,120,0,0.9)&#x27;,
+    width: 2,
+    lineDash: [0.5, 4]
+  }),
+  showLabels: true,
+  visible: false,
+  wrapX: false
+});
 
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM()
-    })
+    }),
+    graticule
   ],
   target: &#x27;map&#x27;,
   view: new View({
@@ -215,6 +239,7 @@ var queryInput &#x3D; document.getElementById(&#x27;epsg-query&#x27;);
 var searchButton &#x3D; document.getElementById(&#x27;epsg-search&#x27;);
 var resultSpan &#x3D; document.getElementById(&#x27;epsg-result&#x27;);
 var renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
+var showGraticuleCheckbox &#x3D; document.getElementById(&#x27;show-graticule&#x27;);
 
 function setProjection(code, name, proj4def, bbox) {
   if (code &#x3D;&#x3D;&#x3D; null || name &#x3D;&#x3D;&#x3D; null || proj4def &#x3D;&#x3D;&#x3D; null || bbox &#x3D;&#x3D;&#x3D; null) {
@@ -235,9 +260,15 @@ function setProjection(code, name, proj4def, bbox) {
   var newProj &#x3D; getProjection(newProjCode);
   var fromLonLat &#x3D; getTransform(&#x27;EPSG:4326&#x27;, newProj);
 
-  // very approximate calculation of projection extent
-  var extent &#x3D; applyTransform(
-    [bbox[1], bbox[2], bbox[3], bbox[0]], fromLonLat);
+  var worldExtent &#x3D; [bbox[1], bbox[2], bbox[3], bbox[0]];
+  newProj.setWorldExtent(worldExtent);
+
+  // approximate calculation of projection extent,
+  // checking if the world extent crosses the dateline
+  if (bbox[1] &gt; bbox[3]) {
+    worldExtent &#x3D; [bbox[1], bbox[2], bbox[3] + 360, bbox[0]];
+  }
+  var extent &#x3D; applyTransform(worldExtent, fromLonLat, undefined, 8);
   newProj.setExtent(extent);
   var newView &#x3D; new View({
     projection: newProj
@@ -285,7 +316,7 @@ searchButton.onclick &#x3D; function(event) {
 
 
 /**
- * Handle change event.
+ * Handle checkbox change event.
  */
 renderEdgesCheckbox.onchange &#x3D; function() {
   map.getLayers().forEach(function(layer) {
@@ -296,6 +327,13 @@ renderEdgesCheckbox.onchange &#x3D; function() {
       }
     }
   });
+};
+
+/**
+ * Handle checkbox change event.
+ */
+showGraticuleCheckbox.onchange &#x3D; function() {
+  graticule.setVisible(showGraticuleCheckbox.checked);
 };
 </code></pre>
       </div>
