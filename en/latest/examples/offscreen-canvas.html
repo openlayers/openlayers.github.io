@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <script>
+    var gaProperty = 'UA-2577926-1';
+    // Disable tracking if the opt-out cookie exists.
+    var disableStr = 'ga-disable-' + gaProperty;
+    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+      window[disableStr] = true;
+    }
+    function gaOptout() {
+      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = true;
+    }
+    function gaOptoutRevoke() {
+      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = false;
+    }
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script src="https://unpkg.com/lz-string@1.4.4/libs/lz-string.min.js"></script>
+    <script>
+    window.addEventListener("load", function() {
+      window.cookieconsent.initialise({
+        'palette': {
+          'popup': {
+            'background': '#eaf7f7',
+            'text': '#5c7291'
+          },
+          'button': {
+            'background': '#56cbdb',
+            'text': '#ffffff'
+          }
+        },
+        'theme': 'edgeless',
+        'type': 'opt-out',
+        'onInitialise': function (status) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onStatusChange': function(status, chosenBefore) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onRevokeChoice': function() {
+          gaOptoutRevoke()
+        }
+      })
+    });
+    </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./resources/layout.css" type="text/css">
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    
+    <link rel="stylesheet" href="offscreen-canvas.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+    <title>Vector tiles rendered in an offscreen canvas</title>
+  </head>
+  <body>
+
+    <header class="navbar" role="navigation">
+      <div class="container">
+        <div class="display-table pull-left" id="navbar-logo-container">
+          <a class="navbar-brand" href="./"><img src="./resources/logo-70x70.png">&nbsp;OpenLayers</a>
+        </div>
+        <!-- menu items that get hidden below 768px width -->
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
+          <ul class="nav navbar-nav pull-right">
+            <li><a href="../doc">Docs</a></li>
+            <li><a class="active" href="index.html">Examples</a></li>
+            <li><a href="../apidoc">API</a></li>
+            <li><a href="https://github.com/openlayers/openlayers">Code</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container-fluid">
+
+      <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses OpenLayers v<span>6.3.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+      </div>
+
+      <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="experimental-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses features that are not part of the stable API and subject to change between releases.  Consult the <a href="https://openlayers.org/en/latest/apidoc/">API documentation</a>
+        to see what is supported in the latest release.
+      </div>
+
+      <div class="row-fluid">
+        <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
+        <div class="span12">
+          <h4 id="title">
+            Vector tiles rendered in an offscreen canvas
+          </h4>
+          <p class="tags">
+              <a href="./index.html?q=worker" class="label label-primary">worker</a>
+              <a href="./index.html?q=offscreencanvas" class="label label-primary">offscreencanvas</a>
+              <a href="./index.html?q=vector-tiles" class="label label-primary">vector-tiles</a>
+          </p>
+          <div id="map" class="map"></div>
+
+        </div>
+        <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+          <input id="codesandbox-params" type="hidden" name="parameters">
+        </form>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span12">
+          <p id="shortdesc">Example of a map that delegates rendering to a worker.</p>
+          <div id="docs"><p>The map in this example is rendered in a web worker, using <code>OffscreenCanvas</code>. <strong>Note:</strong> This is currently only supported in Chrome and Edge.</p>
+</div>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;Vector tiles rendered in an offscreen canvas&lt;/title&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;style&gt;
+      .map {
+        width: 100%;
+        height:400px;
+      }
+      .map {
+        background: rgba(232, 230, 223, 1);
+      }
+      .ol-rotate {
+        left: .5em;
+        bottom: .5em;
+        top: unset;
+        right: unset;
+      }    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;script src="index.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import Layer from &#x27;ol/layer/Layer&#x27;;
+import {compose, create} from &#x27;ol/transform&#x27;;
+import {createTransformString} from &#x27;ol/render/canvas&#x27;;
+import {createXYZ} from &#x27;ol/tilegrid&#x27;;
+import {FullScreen} from &#x27;ol/control&#x27;;
+import stringify from &#x27;json-stringify-safe&#x27;;
+import Source from &#x27;ol/source/Source&#x27;;
+
+var worker &#x3D; new Worker(&#x27;./worker.js&#x27;);
+
+var container, transformContainer, canvas, rendering, workerFrameState, mainThreadFrameState;
+
+// Transform the container to account for the differnece between the (newer)
+// main thread frameState and the (older) worker frameState
+function updateContainerTransform() {
+  if (workerFrameState) {
+    var viewState &#x3D; mainThreadFrameState.viewState;
+    var renderedViewState &#x3D; workerFrameState.viewState;
+    var center &#x3D; viewState.center;
+    var resolution &#x3D; viewState.resolution;
+    var rotation &#x3D; viewState.rotation;
+    var renderedCenter &#x3D; renderedViewState.center;
+    var renderedResolution &#x3D; renderedViewState.resolution;
+    var renderedRotation &#x3D; renderedViewState.rotation;
+    var transform &#x3D; create();
+    // Skip the extra transform for rotated views, because it will not work
+    // correctly in that case
+    if (!rotation) {
+      compose(transform,
+        (renderedCenter[0] - center[0]) / resolution,
+        (center[1] - renderedCenter[1]) / resolution,
+        renderedResolution / resolution, renderedResolution / resolution,
+        rotation - renderedRotation,
+        0, 0);
+    }
+    transformContainer.style.transform &#x3D; createTransformString(transform);
+  }
+}
+
+var map &#x3D; new Map({
+  layers: [
+    new Layer({
+      render: function(frameState) {
+        if (!container) {
+          container &#x3D; document.createElement(&#x27;div&#x27;);
+          container.style.position &#x3D; &#x27;absolute&#x27;;
+          container.style.width &#x3D; &#x27;100%&#x27;;
+          container.style.height &#x3D; &#x27;100%&#x27;;
+          transformContainer &#x3D; document.createElement(&#x27;div&#x27;);
+          transformContainer.style.position &#x3D; &#x27;absolute&#x27;;
+          transformContainer.style.width &#x3D; &#x27;100%&#x27;;
+          transformContainer.style.height &#x3D; &#x27;100%&#x27;;
+          container.appendChild(transformContainer);
+          canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+          canvas.style.position &#x3D; &#x27;absolute&#x27;;
+          canvas.style.left &#x3D; &#x27;0&#x27;;
+          canvas.style.transformOrigin &#x3D; &#x27;top left&#x27;;
+          transformContainer.appendChild(canvas);
+        }
+        mainThreadFrameState &#x3D; frameState;
+        updateContainerTransform();
+        if (!rendering) {
+          rendering &#x3D; true;
+          worker.postMessage({
+            action: &#x27;render&#x27;,
+            frameState: JSON.parse(stringify(frameState))
+          });
+        } else {
+          frameState.animate &#x3D; true;
+        }
+        return container;
+      },
+      source: new Source({
+        attributions: [
+          &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;© MapTiler&lt;/a&gt;&#x27;,
+          &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;© OpenStreetMap contributors&lt;/a&gt;&#x27;
+        ]
+      })
+    })
+  ],
+  target: &#x27;map&#x27;,
+  view: new View({
+    resolutions: createXYZ({tileSize: 512}).getResolutions89,
+    center: [0, 0],
+    zoom: 2
+  })
+});
+map.addControl(new FullScreen());
+
+// Worker messaging and actions
+worker.addEventListener(&#x27;message&#x27;, function (message) {
+  if (message.data.action &#x3D;&#x3D;&#x3D; &#x27;loadImage&#x27;) {
+    // Image loader for ol-mapbox-style
+    var image &#x3D; new Image();
+    image.crossOrigin &#x3D; &#x27;anonymous&#x27;;
+    image.addEventListener(&#x27;load&#x27;, function() {
+      createImageBitmap(image, 0, 0, image.width, image.height).then(function (imageBitmap) {
+        worker.postMessage({
+          action: &#x27;imageLoaded&#x27;,
+          image: imageBitmap,
+          src: message.data.src
+        }, [imageBitmap]);
+      });
+    });
+    image.src &#x3D; event.data.src;
+  } else if (message.data.action &#x3D;&#x3D;&#x3D; &#x27;requestRender&#x27;) {
+    // Worker requested a new render frame
+    map.render();
+  } else if (canvas &amp;&amp; message.data.action &#x3D;&#x3D;&#x3D; &#x27;rendered&#x27;) {
+    // Worker provies a new render frame
+    requestAnimationFrame(function() {
+      var imageData &#x3D; message.data.imageData;
+      canvas.width &#x3D; imageData.width;
+      canvas.height &#x3D; imageData.height;
+      canvas.getContext(&#x27;2d&#x27;).drawImage(imageData, 0, 0);
+      canvas.style.transform &#x3D; message.data.transform;
+      workerFrameState &#x3D; message.data.frameState;
+      updateContainerTransform();
+    });
+    rendering &#x3D; false;
+  }
+});
+</code></pre>
+      </div>
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-worker-button" data-clipboard-target="#example-worker-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>worker.js</legend><code id="example-worker-source" class="language-js">import VectorTileLayer from &#x27;ol/layer/VectorTile&#x27;;
+import VectorTileSource from &#x27;ol/source/VectorTile&#x27;;
+import MVT from &#x27;ol/format/MVT&#x27;;
+import {Projection} from &#x27;ol/proj&#x27;;
+import TileQueue from &#x27;ol/TileQueue&#x27;;
+import {getTilePriority as tilePriorityFunction} from &#x27;ol/TileQueue&#x27;;
+import {renderDeclutterItems} from &#x27;ol/render&#x27;;
+import styleFunction from &#x27;ol-mapbox-style/dist/stylefunction&#x27;;
+import {inView} from &#x27;ol/layer/Layer&#x27;;
+import stringify from &#x27;json-stringify-safe&#x27;;
+
+/** @type {any} */
+const worker &#x3D; self;
+
+let frameState, pixelRatio, rendererTransform;
+const canvas &#x3D; new OffscreenCanvas(1, 1);
+// OffscreenCanvas does not have a style, so we mock it
+canvas.style &#x3D; {};
+const context &#x3D; canvas.getContext(&#x27;2d&#x27;);
+
+const sources &#x3D; {
+  landcover: new VectorTileSource({
+    maxZoom: 9,
+    format: new MVT(),
+    url: &#x27;https://api.maptiler.com/tiles/landcover/{z}/{x}/{y}.pbf?key&#x3D;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;
+  }),
+  contours: new VectorTileSource({
+    minZoom: 9,
+    maxZoom: 14,
+    format: new MVT(),
+    url: &#x27;https://api.maptiler.com/tiles/contours/{z}/{x}/{y}.pbf?key&#x3D;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;
+  }),
+  openmaptiles: new VectorTileSource({
+    format: new MVT(),
+    maxZoom: 14,
+    url: &#x27;https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key&#x3D;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;
+  })
+};
+const layers &#x3D; [];
+
+// Font replacement so we do not need to load web fonts in the worker
+function getFont(font) {
+  return font[0]
+    .replace(&#x27;Noto Sans&#x27;, &#x27;serif&#x27;)
+    .replace(&#x27;Roboto&#x27;, &#x27;sans-serif&#x27;);
+}
+
+function loadStyles() {
+  const styleUrl &#x3D; &#x27;https://api.maptiler.com/maps/topo/style.json?key&#x3D;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;;
+
+  fetch(styleUrl).then(data &#x3D;&gt; data.json()).then(styleJson &#x3D;&gt; {
+    const buckets &#x3D; [];
+    let currentSource;
+    styleJson.layers.forEach(layer &#x3D;&gt; {
+      if (!layer.source) {
+        return;
+      }
+      if (currentSource !&#x3D;&#x3D; layer.source) {
+        currentSource &#x3D; layer.source;
+        buckets.push({
+          source: layer.source,
+          layers: []
+        });
+      }
+      buckets[buckets.length - 1].layers.push(layer.id);
+    });
+
+    const spriteUrl &#x3D; styleJson.sprite + (pixelRatio &gt; 1 ? &#x27;@2x&#x27; : &#x27;&#x27;) + &#x27;.json&#x27;;
+    const spriteImageUrl &#x3D; styleJson.sprite + (pixelRatio &gt; 1 ? &#x27;@2x&#x27; : &#x27;&#x27;) + &#x27;.png&#x27;;
+    fetch(spriteUrl).then(data &#x3D;&gt; data.json()).then(spriteJson &#x3D;&gt; {
+      buckets.forEach(bucket &#x3D;&gt; {
+        const source &#x3D; sources[bucket.source];
+        if (!source) {
+          return;
+        }
+        const layer &#x3D; new VectorTileLayer({
+          declutter: true,
+          source,
+          minZoom: source.getTileGrid().getMinZoom()
+        });
+        layer.getRenderer().useContainer &#x3D; function(target, transform) {
+          this.containerReused &#x3D; this.getLayer() !&#x3D;&#x3D; layers[0];
+          this.canvas &#x3D; canvas;
+          this.context &#x3D; context;
+          this.container &#x3D; {
+            firstElementChild: canvas
+          };
+          rendererTransform &#x3D; transform;
+        };
+        styleFunction(layer, styleJson, bucket.layers, undefined, spriteJson, spriteImageUrl, getFont);
+        layers.push(layer);
+      });
+      worker.postMessage({action: &#x27;requestRender&#x27;});
+    });
+  });
+}
+
+// Minimal map-like functionality for rendering
+
+const tileQueue &#x3D; new TileQueue(
+  (tile, tileSourceKey, tileCenter, tileResolution) &#x3D;&gt; tilePriorityFunction(frameState, tile, tileSourceKey, tileCenter, tileResolution),
+  () &#x3D;&gt; worker.postMessage({action: &#x27;requestRender&#x27;}));
+
+const maxTotalLoading &#x3D; 8;
+const maxNewLoads &#x3D; 2;
+
+worker.addEventListener(&#x27;message&#x27;, event &#x3D;&gt; {
+  if (event.data.action !&#x3D;&#x3D; &#x27;render&#x27;) {
+    return;
+  }
+  frameState &#x3D; event.data.frameState;
+  if (!pixelRatio) {
+    pixelRatio &#x3D; frameState.pixelRatio;
+    loadStyles();
+  }
+  frameState.tileQueue &#x3D; tileQueue;
+  frameState.viewState.projection.__proto__ &#x3D; Projection.prototype;
+  layers.forEach(layer &#x3D;&gt; {
+    if (inView(layer.getLayerState(), frameState.viewState)) {
+      const renderer &#x3D; layer.getRenderer();
+      renderer.renderFrame(frameState, canvas);
+    }
+  });
+  renderDeclutterItems(frameState, null);
+  if (tileQueue.getTilesLoading() &lt; maxTotalLoading) {
+    tileQueue.reprioritize();
+    tileQueue.loadMoreTiles(maxTotalLoading, maxNewLoads);
+  }
+  const imageData &#x3D; canvas.transferToImageBitmap();
+  worker.postMessage({
+    action: &#x27;rendered&#x27;,
+    imageData: imageData,
+    transform: rendererTransform,
+    frameState: JSON.parse(stringify(frameState))
+  }, [imageData]);
+});
+</code></pre>
+      </div>
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
+  &quot;name&quot;: &quot;offscreen-canvas&quot;,
+  &quot;dependencies&quot;: {
+    &quot;ol&quot;: &quot;6.3.0&quot;,
+    &quot;ol-mapbox-style&quot;: &quot;^6.1.1&quot;,
+    &quot;json-stringify-safe&quot;: &quot;^5.0.1&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;parcel&quot;: &quot;1.11.0&quot;
+  },
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;parcel index.html&quot;,
+    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+  }
+}</code></pre>
+      </div>
+    </div>
+    <script src="./resources/common.js"></script>
+    <script src="./resources/prism/prism.min.js"></script>
+    <script>window.experimental = true;</script><script src="common.js"></script><script src="offscreen-canvas.js"></script>
+  </body>
+  <script>
+  var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
+  fetch(packageUrl).then(function(response) {
+    return response.json();
+  }).then(function(json) {
+    var latestVersion = json.version;
+    document.getElementById('latest-version').innerHTML = latestVersion;
+    var url = window.location.href;
+    var branchSearch = url.match(/\/([^\/]*)\/examples\//);
+    var cookieText = 'dismissed=-' + latestVersion + '-';
+    var dismissed = document.cookie.indexOf(cookieText) != -1;
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.0' != latestVersion) {
+      var link = url.replace(branchSearch[0], '/latest/examples/');
+      fetch(link, {method: 'head'}).then(function(response) {
+        var a = document.getElementById('latest-link');
+        a.href = response.status == 200 ? link : '../../latest/examples/';
+      });
+      var latestCheck = document.getElementById('latest-check');
+      latestCheck.style.display = '';
+      document.getElementById('latest-dismiss').onclick = function() {
+        latestCheck.style.display = 'none';
+        document.cookie = cookieText;
+      }
+    }
+
+    var experimentalNotice = document.getElementById('experimental-notice');
+    if (window.experimental) {
+      experimentalNotice.style.display = 'block';
+      document.getElementById('experimental-dismiss').onclick = function() {
+        experimentalNotice.style.display = 'none';
+      }
+    }
+
+  });
+  </script>
+</html>
