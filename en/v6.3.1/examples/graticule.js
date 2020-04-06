@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[54],{291:function(e,w,a){"use strict";a.r(w);var n=a(170),o=a(3),r=a(2),s=a(5),t=a(4),c=a(9),p=a(16);new o.a({layers:[new s.a({source:new c.b({wrapX:!1})}),new n.a({strokeStyle:new p.a({color:"rgba(255,120,0,0.9)",width:2,lineDash:[.5,4]}),showLabels:!0,wrapX:!1})],target:"map",view:new r.a({center:Object(t.f)([4.8,47.75]),zoom:5})})}},[[291,0]]]);
+//# sourceMappingURL=graticule.js.map

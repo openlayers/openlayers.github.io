@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[93],{330:function(e,n,o){"use strict";o.r(n);var t=o(167),a=o(3),i=o(2),s=o(5),c=o(154),r=new i.a({center:[0,0],zoom:2}),w=(new a.a({layers:[new s.a({source:new c.a({key:"ApTJzdkyN1DdFKkRAE6QIDtzihNaf6IWJsT-nQ_2eMoO4PN__0Tzhl2-WgJtXFSp ",imagerySet:"RoadOnDemand"})})],target:"map",view:r}),new t.a({projection:r.getProjection(),tracking:!0}));w.once("change:position",(function(){r.setCenter(w.getPosition()),r.setResolution(2.388657133911758)}))}},[[330,0]]]);
+//# sourceMappingURL=mobile-full-screen.js.map

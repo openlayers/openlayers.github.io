@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[132],{369:function(e,a,n){"use strict";n.r(a);var r=n(3),w=n(2),o=n(5),c=n(4),s=n(65);new r.a({layers:[new o.a({source:new s.a({layer:"watercolor"})}),new o.a({source:new s.a({layer:"terrain-labels"})})],target:"map",view:new w.a({center:Object(c.f)([-122.416667,37.783333]),zoom:12})})}},[[369,0]]]);
+//# sourceMappingURL=stamen.js.map

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OpenLayers - Introduction</title>
+    <script>
+    var gaProperty = 'UA-2577926-1';
+    // Disable tracking if the opt-out cookie exists.
+    var disableStr = 'ga-disable-' + gaProperty;
+    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+      window[disableStr] = true;
+    }
+    function gaOptout() {
+      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = true;
+    }
+    function gaOptoutRevoke() {
+      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = false;
+    }
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+    window.addEventListener("load", function() {
+      window.cookieconsent.initialise({
+        'palette': {
+          'popup': {
+            'background': '#eaf7f7',
+            'text': '#5c7291'
+          },
+          'button': {
+            'background': '#56cbdb',
+            'text': '#ffffff'
+          }
+        },
+        'theme': 'edgeless',
+        'type': 'opt-out',
+        'onInitialise': function (status) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onStatusChange': function(status, chosenBefore) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onRevokeChoice': function() {
+          gaOptoutRevoke()
+        }
+      })
+    });
+    </script>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link href='https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='../../../../assets/theme/site.css' rel='stylesheet' type='text/css'>
+    <link rel="icon" type="image/x-icon" href="../../../../assets/theme/img/favicon.ico" />
+    
+  </head>
+  <body>
+    <header class='navbar navbar-fixed-top' role='navigation'>
+      <div class='container'>
+
+        <!-- button that shows up below 768px width -->
+        <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-responsive-collapse'>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+        </button>
+
+        <a href='/' class='navbar-brand'><img src='../../../../assets/theme/img/logo70.png'>&nbsp;OpenLayers</a>
+
+        <!-- menu items that get hidden below 768px width -->
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
+          <ul class='nav navbar-nav pull-right'>
+            <li><a href='/en/latest/doc/'class="active">Docs</a></li>
+            <li><a href='/en/latest/examples/'>Examples</a></li>
+            <li><a href='/en/latest/apidoc/'>API</a></li>
+            <li><a href='https://github.com/openlayers/openlayers'>Code</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    
+
+<div class='container'>
+<h1 id="introduction">Introduction</h1>
+<h2 id="objectives">Objectives</h2>
+<p>OpenLayers is a modular, high-performance, feature-packed library for displaying and interacting with maps and geospatial data.</p>
+<p>The library comes with built-in support for a wide range of commercial and free image and vector tile sources, and the most popular open and proprietary vector data formats. With OpenLayers&#39;s map projection support, data can be in any projection.</p>
+<h2 id="public-api">Public API</h2>
+<p>OpenLayers is available as <a href="https://npmjs.com/package/ol"><code>ol</code> npm package</a>, which provides all modules of the officially supported <a href="../../apidoc">API</a>.</p>
+<h2 id="renderers-and-browser-support">Renderers and Browser Support</h2>
+<p>By default, OpenLayers uses a performance optimized Canvas renderer.</p>
+<p>OpenLayers runs on all modern browsers that support <a href="https://html.spec.whatwg.org/multipage/">HTML5</a> and <a href="http://www.ecma-international.org/ecma-262/5.1/">ECMAScript 5</a>. This includes Chrome, Firefox, Safari and Edge. For older browsers and platforms like Internet Explorer (down to version 9) and Android 4.x, <a href="http://polyfill.io">polyfills</a>, the application bundle needs to be transpiled (e.g. using <a href="https://babeljs.io">Babel</a>) and bundled with polyfills for <code>requestAnimationFrame</code>, <code>Element.prototype.classList</code> and <code>URL</code>.</p>
+<p>The library is intended for use on both desktop/laptop and mobile devices, and supports pointer and touch interactions.</p>
+<h2 id="module-and-naming-conventions">Module and Naming Conventions</h2>
+<p>OpenLayers modules with CamelCase names provide classes as default exports, and may contain additional constants or functions as named exports:</p>
+<pre><code class="language-js">import Map from <span class="string">'ol/Map'</span>;
+import View from <span class="string">'ol/View'</span>;</code></pre>
+<p>Class hierarchies grouped by their parent are provided in a subfolder of the package, e.g. <code>layer/</code>.</p>
+<p>For convenience, these are also available as named exports, e.g.</p>
+<pre><code class="language-js">import {Map, View} from <span class="string">'ol'</span>;
+import {Tile, Vector} from <span class="string">'ol/layer'</span>;</code></pre>
+<p>In addition to these re-exported classes, modules with lowercase names also provide constants or functions as named exports:</p>
+<pre><code class="language-js">import {getUid} from <span class="string">'ol'</span>;
+import {fromLonLat} from <span class="string">'ol/proj'</span>;</code></pre>
+
+</div>
+
+    <footer>
+      Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>. Thanks to our <a href='/sponsors.html'>sponsors</a>.
+    </footer>
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
+  </body>
+</html>

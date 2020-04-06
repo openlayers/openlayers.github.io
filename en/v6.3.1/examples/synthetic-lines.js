@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[136],{373:function(e,w,a){"use strict";a.r(w);var n,r,o,t,s,c=a(24),p=a(3),i=a(2),u=a(34),y=a(21),d=a(11),f=a(10),k=a(16),l=new Array(1e4),m=[0,0],v=1,b=-1;for(s=0;s<1e4;++s)s%2==0?b*=-1:v*=-1,o=(r=2500*(s+1))*v,t=r*b,n=[m[0]+o,m[1]+t],l[s]=new c.a({geometry:new u.a([m,n])}),m=n;var g=new y.a({source:new d.a({features:l,wrapX:!1}),style:new f.c({stroke:new k.a({color:"#666666",width:1})})}),h=new i.a({center:[0,0],zoom:0});new p.a({layers:[g],target:"map",view:h})}},[[373,0]]]);
+//# sourceMappingURL=synthetic-lines.js.map
