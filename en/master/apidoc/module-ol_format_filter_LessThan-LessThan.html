@@ -59,7 +59,7 @@
     });
     </script>
     <meta charset="utf-8">
-    <title>OpenLayers v6.2.2 API - Class: LessThan</title>
+    <title>OpenLayers v6.3.2-dev API - Class: LessThan</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -336,27 +336,10 @@
                 <span class="subtitle">Fires</span>
                 <ul>
                     <li data-name="change"><a href="module-ol_events_Event-BaseEvent.html#event:change">change</a>
-                    <li data-name="enterfullscreen"><a href="module-ol_control_FullScreen.html#~FullScreenEventType#event:enterfullscreen">enterfullscreen</a>
+                    <li data-name="enterfullscreen">enterfullscreen
                     <li data-name="error"><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a>
-                    <li data-name="leavefullscreen"><a href="module-ol_control_FullScreen.html#~FullScreenEventType#event:leavefullscreen">leavefullscreen</a>
+                    <li data-name="leavefullscreen">leavefullscreen
                     <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
-                </ul>
-            </div>
-        <li class="item item-module" data-longname="module:ol/control/FullScreen" data-name="ol/control/fullscreen">
-            <span class="title toggle">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span><a href="module-ol_control_FullScreen.html">ol/control/FullScreen</a></span>
-            </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="fullscreeneventtype"><a href="module-ol_control_FullScreen.html#~FullScreenEventType">FullScreenEventType</a>
-                </ul>
-            </div>
-            <div class="member-list" data-type="typedefs">
-                <span class="subtitle">Typedefs</span>
-                <ul>
-                    <li data-name="options"><a href="module-ol_control_FullScreen.html#~Options">Options</a>
                 </ul>
             </div>
         <li class="item item-class" data-longname="module:ol/control/MousePosition~MousePosition" data-name="ol/control/mouseposition">
@@ -494,6 +477,7 @@
                     <li data-name="once"><a href="module-ol_control_ScaleLine-ScaleLine.html#once">once</a>
                     <li data-name="render"><a href="module-ol_control_ScaleLine-ScaleLine.html#render">render</a>
                     <li data-name="set"><a href="module-ol_control_ScaleLine-ScaleLine.html#set">set</a>
+                    <li data-name="setdpi"><a href="module-ol_control_ScaleLine-ScaleLine.html#setDpi">setDpi</a>
                     <li data-name="setmap"><a href="module-ol_control_ScaleLine-ScaleLine.html#setMap">setMap</a>
                     <li data-name="setproperties"><a href="module-ol_control_ScaleLine-ScaleLine.html#setProperties">setProperties</a>
                     <li data-name="settarget"><a href="module-ol_control_ScaleLine-ScaleLine.html#setTarget">setTarget</a>
@@ -594,23 +578,6 @@
                     <li data-name="change"><a href="module-ol_events_Event-BaseEvent.html#event:change">change</a>
                     <li data-name="error"><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a>
                     <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
-                </ul>
-            </div>
-        <li class="item item-module" data-longname="module:ol/control/ZoomSlider" data-name="ol/control/zoomslider">
-            <span class="title toggle">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span><a href="module-ol_control_ZoomSlider.html">ol/control/ZoomSlider</a></span>
-            </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="direction"><a href="module-ol_control_ZoomSlider.html#~Direction">Direction</a>
-                </ul>
-            </div>
-            <div class="member-list" data-type="typedefs">
-                <span class="subtitle">Typedefs</span>
-                <ul>
-                    <li data-name="options"><a href="module-ol_control_ZoomSlider.html#~Options">Options</a>
                 </ul>
             </div>
         <li class="item item-class" data-longname="module:ol/control/ZoomToExtent~ZoomToExtent" data-name="ol/control/zoomtoextent">
@@ -1113,6 +1080,8 @@
                     <li data-name="readfeatures"><a href="module-ol_format_GML32-GML32.html#readFeatures">readFeatures</a>
                     <li data-name="readprojection"><a href="module-ol_format_GML32-GML32.html#readProjection">readProjection</a>
                     <li data-name="writefeatures"><a href="module-ol_format_GML32-GML32.html#writeFeatures">writeFeatures</a>
+                    <li data-name="writefeaturesnode"><a href="module-ol_format_GML32-GML32.html#writeFeaturesNode">writeFeaturesNode</a>
+                    <li data-name="writegeometrynode"><a href="module-ol_format_GML32-GML32.html#writeGeometryNode">writeGeometryNode</a>
                 </ul>
             </div>
         <li class="item item-class" data-longname="module:ol/format/GPX~GPX" data-name="ol/format/gpx">
@@ -1159,23 +1128,6 @@
                     <li data-name="writegeometry"><a href="module-ol_format_IGC-IGC.html#writeGeometry">writeGeometry</a>
                 </ul>
             </div>
-        <li class="item item-module" data-longname="module:ol/format/IGC" data-name="ol/format/igc">
-            <span class="title toggle">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span><a href="module-ol_format_IGC.html">ol/format/IGC</a></span>
-            </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="igcz"><a href="module-ol_format_IGC.html#~IGCZ">IGCZ</a>
-                </ul>
-            </div>
-            <div class="member-list" data-type="typedefs">
-                <span class="subtitle">Typedefs</span>
-                <ul>
-                    <li data-name="options"><a href="module-ol_format_IGC.html#~Options">Options</a>
-                </ul>
-            </div>
         <li class="item item-class" data-longname="module:ol/format/IIIFInfo~IIIFInfo" data-name="ol/format/iiifinfo">
             <span class="title toggle">
                 <span class="glyphicon glyphicon-chevron-right"></span>
@@ -1197,7 +1149,7 @@
             <div class="member-list" data-type="members">
                 <span class="subtitle">Members</span>
                 <ul>
-                    <li data-name="versions"><a href="module-ol_format_IIIFInfo.html#~Versions">Versions</a>
+                    <li data-name="versions"><a href="module-ol_format_IIIFInfo.html#.Versions">Versions</a>
                 </ul>
             </div>
             <div class="member-list" data-type="typedefs">
@@ -1430,13 +1382,6 @@
                 <span class="glyphicon glyphicon-plus"></span>
                 <span><a href="module-ol_format_WKT.html">ol/format/WKT</a></span>
             </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="geometryconstructor"><a href="module-ol_format_WKT.html#~GeometryConstructor">GeometryConstructor</a>
-                    <li data-name="tokentype"><a href="module-ol_format_WKT.html#~TokenType">TokenType</a>
-                </ul>
-            </div>
             <div class="member-list" data-type="typedefs">
                 <span class="subtitle">Typedefs</span>
                 <ul>
@@ -1556,23 +1501,6 @@
                     <li data-name="change:trackingoptions">change:trackingOptions
                     <li data-name="error"><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a>
                     <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
-                </ul>
-            </div>
-        <li class="item item-module" data-longname="module:ol/Geolocation" data-name="ol/geolocation">
-            <span class="title toggle">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span><a href="module-ol_Geolocation.html">ol/Geolocation</a></span>
-            </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="property"><a href="module-ol_Geolocation.html#~Property">Property</a>
-                </ul>
-            </div>
-            <div class="member-list" data-type="typedefs">
-                <span class="subtitle">Typedefs</span>
-                <ul>
-                    <li data-name="options"><a href="module-ol_Geolocation.html#~Options">Options</a>
                 </ul>
             </div>
         <li class="item item-class" data-longname="module:ol/geom/Circle~Circle" data-name="ol/geom/circle">
@@ -1754,6 +1682,7 @@
                     <li data-name="getrevision"><a href="module-ol_geom_LinearRing-LinearRing.html#getRevision">getRevision</a>
                     <li data-name="gettype"><a href="module-ol_geom_LinearRing-LinearRing.html#getType">getType</a>
                     <li data-name="intersectscoordinate"><a href="module-ol_geom_LinearRing-LinearRing.html#intersectsCoordinate">intersectsCoordinate</a>
+                    <li data-name="intersectsextent"><a href="module-ol_geom_LinearRing-LinearRing.html#intersectsExtent">intersectsExtent</a>
                     <li data-name="on"><a href="module-ol_geom_LinearRing-LinearRing.html#on">on</a>
                     <li data-name="once"><a href="module-ol_geom_LinearRing-LinearRing.html#once">once</a>
                     <li data-name="rotate"><a href="module-ol_geom_LinearRing-LinearRing.html#rotate">rotate</a>
@@ -2208,7 +2137,6 @@
                     <li data-name="getmap"><a href="module-ol_interaction_DoubleClickZoom-DoubleClickZoom.html#getMap">getMap</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_DoubleClickZoom-DoubleClickZoom.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_DoubleClickZoom-DoubleClickZoom.html#getRevision">getRevision</a>
-                    <li data-name="handleevent"><a href="module-ol_interaction_DoubleClickZoom-DoubleClickZoom.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_DoubleClickZoom-DoubleClickZoom.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_DoubleClickZoom-DoubleClickZoom.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_DoubleClickZoom-DoubleClickZoom.html#set">set</a>
@@ -2263,23 +2191,6 @@
                     <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
                 </ul>
             </div>
-        <li class="item item-module" data-longname="module:ol/interaction/DragAndDrop" data-name="ol/interaction/draganddrop">
-            <span class="title toggle">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span><a href="module-ol_interaction_DragAndDrop.html">ol/interaction/DragAndDrop</a></span>
-            </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="draganddropeventtype"><a href="module-ol_interaction_DragAndDrop.html#~DragAndDropEventType">DragAndDropEventType</a>
-                </ul>
-            </div>
-            <div class="member-list" data-type="typedefs">
-                <span class="subtitle">Typedefs</span>
-                <ul>
-                    <li data-name="options"><a href="module-ol_interaction_DragAndDrop.html#~Options">Options</a>
-                </ul>
-            </div>
         <li class="item item-class" data-longname="module:ol/interaction/DragAndDrop~DragAndDropEvent" data-name="ol/interaction/draganddrop~draganddropevent">
             <span class="title toggle">
                 <span class="glyphicon glyphicon-chevron-right"></span>
@@ -2320,6 +2231,7 @@
                     <li data-name="getpointercount"><a href="module-ol_interaction_DragBox-DragBox.html#getPointerCount">getPointerCount</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_DragBox-DragBox.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_DragBox-DragBox.html#getRevision">getRevision</a>
+                    <li data-name="handleevent"><a href="module-ol_interaction_DragBox-DragBox.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_DragBox-DragBox.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_DragBox-DragBox.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_DragBox-DragBox.html#set">set</a>
@@ -2339,24 +2251,6 @@
                     <li data-name="change:active">change:active
                     <li data-name="error"><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a>
                     <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
-                </ul>
-            </div>
-        <li class="item item-module" data-longname="module:ol/interaction/DragBox" data-name="ol/interaction/dragbox">
-            <span class="title toggle">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span><a href="module-ol_interaction_DragBox.html">ol/interaction/DragBox</a></span>
-            </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="dragboxeventtype"><a href="module-ol_interaction_DragBox.html#~DragBoxEventType">DragBoxEventType</a>
-                </ul>
-            </div>
-            <div class="member-list" data-type="typedefs">
-                <span class="subtitle">Typedefs</span>
-                <ul>
-                    <li data-name="endcondition"><a href="module-ol_interaction_DragBox.html#~EndCondition">EndCondition</a>
-                    <li data-name="options"><a href="module-ol_interaction_DragBox.html#~Options">Options</a>
                 </ul>
             </div>
         <li class="item item-class" data-longname="module:ol/interaction/DragBox~DragBoxEvent" data-name="ol/interaction/dragbox~dragboxevent">
@@ -2397,6 +2291,7 @@
                     <li data-name="getpointercount"><a href="module-ol_interaction_DragPan-DragPan.html#getPointerCount">getPointerCount</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_DragPan-DragPan.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_DragPan-DragPan.html#getRevision">getRevision</a>
+                    <li data-name="handleevent"><a href="module-ol_interaction_DragPan-DragPan.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_DragPan-DragPan.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_DragPan-DragPan.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_DragPan-DragPan.html#set">set</a>
@@ -2432,6 +2327,7 @@
                     <li data-name="getpointercount"><a href="module-ol_interaction_DragRotate-DragRotate.html#getPointerCount">getPointerCount</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_DragRotate-DragRotate.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_DragRotate-DragRotate.html#getRevision">getRevision</a>
+                    <li data-name="handleevent"><a href="module-ol_interaction_DragRotate-DragRotate.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_DragRotate-DragRotate.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_DragRotate-DragRotate.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_DragRotate-DragRotate.html#set">set</a>
@@ -2467,6 +2363,7 @@
                     <li data-name="getpointercount"><a href="module-ol_interaction_DragRotateAndZoom-DragRotateAndZoom.html#getPointerCount">getPointerCount</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_DragRotateAndZoom-DragRotateAndZoom.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_DragRotateAndZoom-DragRotateAndZoom.html#getRevision">getRevision</a>
+                    <li data-name="handleevent"><a href="module-ol_interaction_DragRotateAndZoom-DragRotateAndZoom.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_DragRotateAndZoom-DragRotateAndZoom.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_DragRotateAndZoom-DragRotateAndZoom.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_DragRotateAndZoom-DragRotateAndZoom.html#set">set</a>
@@ -2503,6 +2400,7 @@
                     <li data-name="getpointercount"><a href="module-ol_interaction_DragZoom-DragZoom.html#getPointerCount">getPointerCount</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_DragZoom-DragZoom.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_DragZoom-DragZoom.html#getRevision">getRevision</a>
+                    <li data-name="handleevent"><a href="module-ol_interaction_DragZoom-DragZoom.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_DragZoom-DragZoom.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_DragZoom-DragZoom.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_DragZoom-DragZoom.html#set">set</a>
@@ -2546,6 +2444,7 @@
                     <li data-name="getpointercount"><a href="module-ol_interaction_Draw-Draw.html#getPointerCount">getPointerCount</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_Draw-Draw.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_Draw-Draw.html#getRevision">getRevision</a>
+                    <li data-name="handleevent"><a href="module-ol_interaction_Draw-Draw.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_Draw-Draw.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_Draw-Draw.html#once">once</a>
                     <li data-name="removelastpoint"><a href="module-ol_interaction_Draw-Draw.html#removeLastPoint">removeLastPoint</a>
@@ -2573,13 +2472,6 @@
                 <span class="glyphicon glyphicon-plus"></span>
                 <span><a href="module-ol_interaction_Draw.html">ol/interaction/Draw</a></span>
             </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="draweventtype"><a href="module-ol_interaction_Draw.html#~DrawEventType">DrawEventType</a>
-                    <li data-name="mode"><a href="module-ol_interaction_Draw.html#~Mode">Mode</a>
-                </ul>
-            </div>
             <div class="member-list" data-type="typedefs">
                 <span class="subtitle">Typedefs</span>
                 <ul>
@@ -2657,23 +2549,6 @@
                     <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
                 </ul>
             </div>
-        <li class="item item-module" data-longname="module:ol/interaction/Extent" data-name="ol/interaction/extent">
-            <span class="title toggle">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span><a href="module-ol_interaction_Extent.html">ol/interaction/Extent</a></span>
-            </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="extenteventtype"><a href="module-ol_interaction_Extent.html#~ExtentEventType">ExtentEventType</a>
-                </ul>
-            </div>
-            <div class="member-list" data-type="typedefs">
-                <span class="subtitle">Typedefs</span>
-                <ul>
-                    <li data-name="options"><a href="module-ol_interaction_Extent.html#~Options">Options</a>
-                </ul>
-            </div>
         <li class="item item-class" data-longname="module:ol/interaction/Extent~ExtentEvent" data-name="ol/interaction/extent~extentevent">
             <span class="title toggle">
                 <span class="glyphicon glyphicon-chevron-right"></span>
@@ -2745,7 +2620,6 @@
                     <li data-name="getmap"><a href="module-ol_interaction_KeyboardPan-KeyboardPan.html#getMap">getMap</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_KeyboardPan-KeyboardPan.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_KeyboardPan-KeyboardPan.html#getRevision">getRevision</a>
-                    <li data-name="handleevent"><a href="module-ol_interaction_KeyboardPan-KeyboardPan.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_KeyboardPan-KeyboardPan.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_KeyboardPan-KeyboardPan.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_KeyboardPan-KeyboardPan.html#set">set</a>
@@ -2780,7 +2654,6 @@
                     <li data-name="getmap"><a href="module-ol_interaction_KeyboardZoom-KeyboardZoom.html#getMap">getMap</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_KeyboardZoom-KeyboardZoom.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_KeyboardZoom-KeyboardZoom.html#getRevision">getRevision</a>
-                    <li data-name="handleevent"><a href="module-ol_interaction_KeyboardZoom-KeyboardZoom.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_KeyboardZoom-KeyboardZoom.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_KeyboardZoom-KeyboardZoom.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_KeyboardZoom-KeyboardZoom.html#set">set</a>
@@ -2838,24 +2711,6 @@
                     <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
                 </ul>
             </div>
-        <li class="item item-module" data-longname="module:ol/interaction/Modify" data-name="ol/interaction/modify">
-            <span class="title toggle">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span><a href="module-ol_interaction_Modify.html">ol/interaction/Modify</a></span>
-            </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="modifyeventtype"><a href="module-ol_interaction_Modify.html#~ModifyEventType">ModifyEventType</a>
-                </ul>
-            </div>
-            <div class="member-list" data-type="typedefs">
-                <span class="subtitle">Typedefs</span>
-                <ul>
-                    <li data-name="options"><a href="module-ol_interaction_Modify.html#~Options">Options</a>
-                    <li data-name="segmentdata"><a href="module-ol_interaction_Modify.html#~SegmentData">SegmentData</a>
-                </ul>
-            </div>
         <li class="item item-class" data-longname="module:ol/interaction/Modify.ModifyEvent" data-name="ol/interaction/modify.modifyevent">
             <span class="title toggle">
                 <span class="glyphicon glyphicon-chevron-right"></span>
@@ -2893,7 +2748,6 @@
                     <li data-name="getmap"><a href="module-ol_interaction_MouseWheelZoom-MouseWheelZoom.html#getMap">getMap</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_MouseWheelZoom-MouseWheelZoom.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_MouseWheelZoom-MouseWheelZoom.html#getRevision">getRevision</a>
-                    <li data-name="handleevent"><a href="module-ol_interaction_MouseWheelZoom-MouseWheelZoom.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_MouseWheelZoom-MouseWheelZoom.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_MouseWheelZoom-MouseWheelZoom.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_MouseWheelZoom-MouseWheelZoom.html#set">set</a>
@@ -2947,6 +2801,7 @@
                     <li data-name="getpointercount"><a href="module-ol_interaction_PinchRotate-PinchRotate.html#getPointerCount">getPointerCount</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_PinchRotate-PinchRotate.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_PinchRotate-PinchRotate.html#getRevision">getRevision</a>
+                    <li data-name="handleevent"><a href="module-ol_interaction_PinchRotate-PinchRotate.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_PinchRotate-PinchRotate.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_PinchRotate-PinchRotate.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_PinchRotate-PinchRotate.html#set">set</a>
@@ -2982,6 +2837,7 @@
                     <li data-name="getpointercount"><a href="module-ol_interaction_PinchZoom-PinchZoom.html#getPointerCount">getPointerCount</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_PinchZoom-PinchZoom.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_PinchZoom-PinchZoom.html#getRevision">getRevision</a>
+                    <li data-name="handleevent"><a href="module-ol_interaction_PinchZoom-PinchZoom.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_PinchZoom-PinchZoom.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_PinchZoom-PinchZoom.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_PinchZoom-PinchZoom.html#set">set</a>
@@ -3055,7 +2911,6 @@
                     <li data-name="getmap"><a href="module-ol_interaction_Select-Select.html#getMap">getMap</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_Select-Select.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_Select-Select.html#getRevision">getRevision</a>
-                    <li data-name="handleevent"><a href="module-ol_interaction_Select-Select.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_Select-Select.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_Select-Select.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_Select-Select.html#set">set</a>
@@ -3075,24 +2930,6 @@
                     <li data-name="error"><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a>
                     <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
                     <li data-name="select"><a href="module-ol_interaction_Select-SelectEvent.html#event:select">select</a>
-                </ul>
-            </div>
-        <li class="item item-module" data-longname="module:ol/interaction/Select" data-name="ol/interaction/select">
-            <span class="title toggle">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span><a href="module-ol_interaction_Select.html">ol/interaction/Select</a></span>
-            </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="selecteventtype"><a href="module-ol_interaction_Select.html#~SelectEventType">SelectEventType</a>
-                </ul>
-            </div>
-            <div class="member-list" data-type="typedefs">
-                <span class="subtitle">Typedefs</span>
-                <ul>
-                    <li data-name="filterfunction"><a href="module-ol_interaction_Select.html#~FilterFunction">FilterFunction</a>
-                    <li data-name="options"><a href="module-ol_interaction_Select.html#~Options">Options</a>
                 </ul>
             </div>
         <li class="item item-class" data-longname="module:ol/interaction/Select~SelectEvent" data-name="ol/interaction/select~selectevent">
@@ -3185,6 +3022,7 @@
                     <li data-name="getpointercount"><a href="module-ol_interaction_Translate-Translate.html#getPointerCount">getPointerCount</a>
                     <li data-name="getproperties"><a href="module-ol_interaction_Translate-Translate.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_interaction_Translate-Translate.html#getRevision">getRevision</a>
+                    <li data-name="handleevent"><a href="module-ol_interaction_Translate-Translate.html#handleEvent">handleEvent</a>
                     <li data-name="on"><a href="module-ol_interaction_Translate-Translate.html#on">on</a>
                     <li data-name="once"><a href="module-ol_interaction_Translate-Translate.html#once">once</a>
                     <li data-name="set"><a href="module-ol_interaction_Translate-Translate.html#set">set</a>
@@ -3205,24 +3043,6 @@
                     <li data-name="translateend"><a href="module-ol_interaction_Translate.TranslateEvent.html#event:translateend">translateend</a>
                     <li data-name="translatestart"><a href="module-ol_interaction_Translate.TranslateEvent.html#event:translatestart">translatestart</a>
                     <li data-name="translating"><a href="module-ol_interaction_Translate.TranslateEvent.html#event:translating">translating</a>
-                </ul>
-            </div>
-        <li class="item item-module" data-longname="module:ol/interaction/Translate" data-name="ol/interaction/translate">
-            <span class="title toggle">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span><a href="module-ol_interaction_Translate.html">ol/interaction/Translate</a></span>
-            </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="translateeventtype"><a href="module-ol_interaction_Translate.html#~TranslateEventType">TranslateEventType</a>
-                </ul>
-            </div>
-            <div class="member-list" data-type="typedefs">
-                <span class="subtitle">Typedefs</span>
-                <ul>
-                    <li data-name="filterfunction"><a href="module-ol_interaction_Translate.html#~FilterFunction">FilterFunction</a>
-                    <li data-name="options"><a href="module-ol_interaction_Translate.html#~Options">Options</a>
                 </ul>
             </div>
         <li class="item item-class" data-longname="module:ol/interaction/Translate.TranslateEvent" data-name="ol/interaction/translate.translateevent">
@@ -4364,6 +4184,7 @@
                     <li data-name="getrevision"><a href="module-ol_Overlay-Overlay.html#getRevision">getRevision</a>
                     <li data-name="on"><a href="module-ol_Overlay-Overlay.html#on">on</a>
                     <li data-name="once"><a href="module-ol_Overlay-Overlay.html#once">once</a>
+                    <li data-name="panintoview"><a href="module-ol_Overlay-Overlay.html#panIntoView">panIntoView</a>
                     <li data-name="set"><a href="module-ol_Overlay-Overlay.html#set">set</a>
                     <li data-name="setelement"><a href="module-ol_Overlay-Overlay.html#setElement">setElement</a>
                     <li data-name="setmap"><a href="module-ol_Overlay-Overlay.html#setMap">setMap</a>
@@ -4393,16 +4214,11 @@
                 <span class="glyphicon glyphicon-plus"></span>
                 <span><a href="module-ol_Overlay.html">ol/Overlay</a></span>
             </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="property"><a href="module-ol_Overlay.html#~Property">Property</a>
-                </ul>
-            </div>
             <div class="member-list" data-type="typedefs">
                 <span class="subtitle">Typedefs</span>
                 <ul>
                     <li data-name="options"><a href="module-ol_Overlay.html#~Options">Options</a>
+                    <li data-name="panintoviewoptions"><a href="module-ol_Overlay.html#~PanIntoViewOptions">PanIntoViewOptions</a>
                     <li data-name="panoptions"><a href="module-ol_Overlay.html#~PanOptions">PanOptions</a>
                 </ul>
             </div>
@@ -4592,7 +4408,6 @@
                 <span class="subtitle">Members</span>
                 <ul>
                     <li data-name="meters_per_unit"><a href="module-ol_proj_Units.html#.METERS_PER_UNIT">METERS_PER_UNIT</a>
-                    <li data-name="units"><a href="module-ol_proj_Units.html#~Units">Units</a>
                 </ul>
             </div>
         <li class="item item-module" data-longname="module:ol/render" data-name="ol/render">
@@ -5079,7 +4894,6 @@
                     <li data-name="hasfeature"><a href="module-ol_source_Cluster-Cluster.html#hasFeature">hasFeature</a>
                     <li data-name="on"><a href="module-ol_source_Cluster-Cluster.html#on">on</a>
                     <li data-name="once"><a href="module-ol_source_Cluster-Cluster.html#once">once</a>
-                    <li data-name="refresh"><a href="module-ol_source_Cluster-Cluster.html#refresh">refresh</a>
                     <li data-name="removefeature"><a href="module-ol_source_Cluster-Cluster.html#removeFeature">removeFeature</a>
                     <li data-name="removeloadedextent"><a href="module-ol_source_Cluster-Cluster.html#removeLoadedExtent">removeLoadedExtent</a>
                     <li data-name="set"><a href="module-ol_source_Cluster-Cluster.html#set">set</a>
@@ -5198,7 +5012,7 @@
             <div class="member-list" data-type="members">
                 <span class="subtitle">Members</span>
                 <ul>
-                    <li data-name="imagesourceeventtype"><a href="module-ol_source_Image.html#~ImageSourceEventType">ImageSourceEventType</a>
+                    <li data-name="imagesourceeventtype"><a href="module-ol_source_Image.html#.ImageSourceEventType">ImageSourceEventType</a>
                 </ul>
             </div>
             <div class="member-list" data-type="typedefs">
@@ -5547,25 +5361,6 @@
                     <li data-name="imageloaderror"><a href="module-ol_source_Image.ImageSourceEvent.html#event:imageloaderror">imageloaderror</a>
                     <li data-name="imageloadstart"><a href="module-ol_source_Image.ImageSourceEvent.html#event:imageloadstart">imageloadstart</a>
                     <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
-                </ul>
-            </div>
-        <li class="item item-module" data-longname="module:ol/source/Raster" data-name="ol/source/raster">
-            <span class="title toggle">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span><a href="module-ol_source_Raster.html">ol/source/Raster</a></span>
-            </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="rastereventtype"><a href="module-ol_source_Raster.html#~RasterEventType">RasterEventType</a>
-                    <li data-name="rasteroperationtype"><a href="module-ol_source_Raster.html#~RasterOperationType">RasterOperationType</a>
-                </ul>
-            </div>
-            <div class="member-list" data-type="typedefs">
-                <span class="subtitle">Typedefs</span>
-                <ul>
-                    <li data-name="operation"><a href="module-ol_source_Raster.html#~Operation">Operation</a>
-                    <li data-name="options"><a href="module-ol_source_Raster.html#~Options">Options</a>
                 </ul>
             </div>
         <li class="item item-class" data-longname="module:ol/source/Raster.RasterSourceEvent" data-name="ol/source/raster.rastersourceevent">
@@ -6286,7 +6081,6 @@
                     <li data-name="settileloadfunction"><a href="module-ol_source_WMTS-WMTS.html#setTileLoadFunction">setTileLoadFunction</a>
                     <li data-name="settileurlfunction"><a href="module-ol_source_WMTS-WMTS.html#setTileUrlFunction">setTileUrlFunction</a>
                     <li data-name="seturl"><a href="module-ol_source_WMTS-WMTS.html#setUrl">setUrl</a>
-                    <li data-name="seturls"><a href="module-ol_source_WMTS-WMTS.html#setUrls">setUrls</a>
                     <li data-name="un"><a href="module-ol_source_WMTS-WMTS.html#un">un</a>
                     <li data-name="unset"><a href="module-ol_source_WMTS-WMTS.html#unset">unset</a>
                     <li data-name="updatedimensions"><a href="module-ol_source_WMTS-WMTS.html#updateDimensions">updateDimensions</a>
@@ -6427,23 +6221,6 @@
                     <li data-name="tileloadstart"><a href="module-ol_source_Tile.TileSourceEvent.html#event:tileloadstart">tileloadstart</a>
                 </ul>
             </div>
-        <li class="item item-module" data-longname="module:ol/source/Zoomify" data-name="ol/source/zoomify">
-            <span class="title toggle">
-                <span class="glyphicon glyphicon-plus"></span>
-                <span><a href="module-ol_source_Zoomify.html">ol/source/Zoomify</a></span>
-            </span>
-            <div class="member-list" data-type="members">
-                <span class="subtitle">Members</span>
-                <ul>
-                    <li data-name="tiersizecalculation"><a href="module-ol_source_Zoomify.html#~TierSizeCalculation">TierSizeCalculation</a>
-                </ul>
-            </div>
-            <div class="member-list" data-type="typedefs">
-                <span class="subtitle">Typedefs</span>
-                <ul>
-                    <li data-name="options"><a href="module-ol_source_Zoomify.html#~Options">Options</a>
-                </ul>
-            </div>
         <li class="item item-module" data-longname="module:ol/sphere" data-name="ol/sphere">
             <span class="title toggle">
                 <span class="glyphicon glyphicon-plus"></span>
@@ -6490,16 +6267,20 @@
                 <span class="subtitle">Methods</span>
                 <ul>
                     <li data-name="clone"><a href="module-ol_style_Circle-CircleStyle.html#clone">clone</a>
+                    <li data-name="getanchor"><a href="module-ol_style_Circle-CircleStyle.html#getAnchor">getAnchor</a>
                     <li data-name="getangle"><a href="module-ol_style_Circle-CircleStyle.html#getAngle">getAngle</a>
                     <li data-name="getdisplacement"><a href="module-ol_style_Circle-CircleStyle.html#getDisplacement">getDisplacement</a>
                     <li data-name="getfill"><a href="module-ol_style_Circle-CircleStyle.html#getFill">getFill</a>
+                    <li data-name="getimage"><a href="module-ol_style_Circle-CircleStyle.html#getImage">getImage</a>
                     <li data-name="getopacity"><a href="module-ol_style_Circle-CircleStyle.html#getOpacity">getOpacity</a>
+                    <li data-name="getorigin"><a href="module-ol_style_Circle-CircleStyle.html#getOrigin">getOrigin</a>
                     <li data-name="getpoints"><a href="module-ol_style_Circle-CircleStyle.html#getPoints">getPoints</a>
                     <li data-name="getradius"><a href="module-ol_style_Circle-CircleStyle.html#getRadius">getRadius</a>
                     <li data-name="getradius2"><a href="module-ol_style_Circle-CircleStyle.html#getRadius2">getRadius2</a>
                     <li data-name="getrotatewithview"><a href="module-ol_style_Circle-CircleStyle.html#getRotateWithView">getRotateWithView</a>
                     <li data-name="getrotation"><a href="module-ol_style_Circle-CircleStyle.html#getRotation">getRotation</a>
                     <li data-name="getscale"><a href="module-ol_style_Circle-CircleStyle.html#getScale">getScale</a>
+                    <li data-name="getsize"><a href="module-ol_style_Circle-CircleStyle.html#getSize">getSize</a>
                     <li data-name="getstroke"><a href="module-ol_style_Circle-CircleStyle.html#getStroke">getStroke</a>
                     <li data-name="setopacity"><a href="module-ol_style_Circle-CircleStyle.html#setOpacity">setOpacity</a>
                     <li data-name="setradius"><a href="module-ol_style_Circle-CircleStyle.html#setRadius">setRadius</a>
@@ -6549,6 +6330,19 @@
                     <li data-name="setscale"><a href="module-ol_style_Icon-Icon.html#setScale">setScale</a>
                 </ul>
             </div>
+        <li class="item item-module" data-longname="module:ol/style/IconAnchorUnits" data-name="ol/style/iconanchorunits">
+            <span class="title toggle">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span><a href="module-ol_style_IconAnchorUnits.html">ol/style/IconAnchorUnits</a></span>
+            </span>
+            <div class="member-list" data-type="members">
+                <span class="subtitle">Members</span>
+                <ul>
+                    <li data-name="iconanchorunits"><a href="module-ol_style_IconAnchorUnits.html">IconAnchorUnits</a>
+                    <li data-name="fraction"><a href="module-ol_style_IconAnchorUnits.html#.FRACTION">FRACTION</a>
+                    <li data-name="pixels"><a href="module-ol_style_IconAnchorUnits.html#.PIXELS">PIXELS</a>
+                </ul>
+            </div>
         <li class="item item-class" data-longname="module:ol/style/IconImageCache~IconImageCache" data-name="ol/style/iconimagecache">
             <span class="title toggle">
                 <span class="glyphicon glyphicon-chevron-right"></span>
@@ -6569,6 +6363,21 @@
                 <span class="subtitle">Members</span>
                 <ul>
                     <li data-name="shared"><a href="module-ol_style_IconImageCache.html#.shared">shared</a>
+                </ul>
+            </div>
+        <li class="item item-module" data-longname="module:ol/style/IconOrigin" data-name="ol/style/iconorigin">
+            <span class="title toggle">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span><a href="module-ol_style_IconOrigin.html">ol/style/IconOrigin</a></span>
+            </span>
+            <div class="member-list" data-type="members">
+                <span class="subtitle">Members</span>
+                <ul>
+                    <li data-name="iconorigin"><a href="module-ol_style_IconOrigin.html">IconOrigin</a>
+                    <li data-name="bottom_left"><a href="module-ol_style_IconOrigin.html#.BOTTOM_LEFT">BOTTOM_LEFT</a>
+                    <li data-name="bottom_right"><a href="module-ol_style_IconOrigin.html#.BOTTOM_RIGHT">BOTTOM_RIGHT</a>
+                    <li data-name="top_left"><a href="module-ol_style_IconOrigin.html#.TOP_LEFT">TOP_LEFT</a>
+                    <li data-name="top_right"><a href="module-ol_style_IconOrigin.html#.TOP_RIGHT">TOP_RIGHT</a>
                 </ul>
             </div>
         <li class="item item-class" data-longname="module:ol/style/Image~ImageStyle" data-name="ol/style/image">
@@ -6923,7 +6732,6 @@
                     <li data-name="getfeatures"><a href="module-ol_VectorTile-VectorTile.html#getFeatures">getFeatures</a>
                     <li data-name="getformat"><a href="module-ol_VectorTile-VectorTile.html#getFormat">getFormat</a>
                     <li data-name="gettilecoord"><a href="module-ol_VectorTile-VectorTile.html#getTileCoord">getTileCoord</a>
-                    <li data-name="load"><a href="module-ol_VectorTile-VectorTile.html#load">load</a>
                     <li data-name="setfeatures"><a href="module-ol_VectorTile-VectorTile.html#setFeatures">setFeatures</a>
                     <li data-name="setloader"><a href="module-ol_VectorTile-VectorTile.html#setLoader">setLoader</a>
                     <li data-name="setstate"><a href="module-ol_VectorTile-VectorTile.html#setState">setState</a>
@@ -7156,7 +6964,7 @@
         <h1 class="page-title" data-filename="module-ol_format_filter_LessThan-LessThan.html">Class: LessThan</h1>
         <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
           <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          This documentation is for OpenLayers v<span id="package-version">6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          This documentation is for OpenLayers v<span id="package-version">6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
         </div>
         
 
@@ -7202,7 +7010,7 @@
         </h4>
         
         <div class="tag-source">
-            format/filter/LessThan.js, line 17
+            format/filter/LessThan.js, line 16
         </div>
         
         

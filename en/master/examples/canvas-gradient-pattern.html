@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -166,14 +166,14 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-import {DEVICE_PIXEL_RATIO} from &#x27;ol/has&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import VectorLayer from &#x27;ol/layer/Vector&#x27;;
-import {fromLonLat} from &#x27;ol/proj&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {DEVICE_PIXEL_RATIO} from &#x27;ol/has&#x27;;
 import {Fill, Stroke, Style} from &#x27;ol/style&#x27;;
+import {fromLonLat} from &#x27;ol/proj&#x27;;
 
 var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
 var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
@@ -183,7 +183,7 @@ var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
 var pixelRatio &#x3D; DEVICE_PIXEL_RATIO;
 
 // Generate a rainbow gradient
-var gradient &#x3D; (function() {
+var gradient &#x3D; (function () {
   var grad &#x3D; context.createLinearGradient(0, 0, 512 * pixelRatio, 0);
   grad.addColorStop(0, &#x27;red&#x27;);
   grad.addColorStop(1 / 6, &#x27;orange&#x27;);
@@ -196,7 +196,7 @@ var gradient &#x3D; (function() {
 })();
 
 // Generate a canvasPattern with two circles on white background
-var pattern &#x3D; (function() {
+var pattern &#x3D; (function () {
   canvas.width &#x3D; 8 * pixelRatio;
   canvas.height &#x3D; 8 * pixelRatio;
   // white background
@@ -213,7 +213,7 @@ var pattern &#x3D; (function() {
   context.arc(4 * pixelRatio, 4 * pixelRatio, 1.5 * pixelRatio, 0, 2 * Math.PI);
   context.fill();
   return context.createPattern(canvas, &#x27;repeat&#x27;);
-}());
+})();
 
 // Generate style for gradient or pattern fill
 var fill &#x3D; new Fill();
@@ -221,8 +221,8 @@ var style &#x3D; new Style({
   fill: fill,
   stroke: new Stroke({
     color: &#x27;#333&#x27;,
-    width: 2
-  })
+    width: 2,
+  }),
 });
 
 /**
@@ -232,7 +232,7 @@ var style &#x3D; new Style({
  * @param {import(&quot;../src/ol/Feature.js&quot;).default} feature The feature to style.
  * @return {Style} The style to use for the feature.
  */
-var getStackedStyle &#x3D; function(feature) {
+var getStackedStyle &#x3D; function (feature) {
   var id &#x3D; feature.getId();
   fill.setColor(id &gt; &#x27;J&#x27; ? gradient : pattern);
   return style;
@@ -242,21 +242,19 @@ var getStackedStyle &#x3D; function(feature) {
 var vectorLayer &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/countries.geojson&#x27;,
-    format: new GeoJSON()
+    format: new GeoJSON(),
   }),
-  style: getStackedStyle
+  style: getStackedStyle,
 });
 
 // … finally create a map with that layer.
 var map &#x3D; new Map({
-  layers: [
-    vectorLayer
-  ],
+  layers: [vectorLayer],
   target: &#x27;map&#x27;,
   view: new View({
     center: fromLonLat([16, 48]),
-    zoom: 3
-  })
+    zoom: 3,
+  }),
 });
 </code></pre>
       </div>
@@ -267,7 +265,7 @@ var map &#x3D; new Map({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;canvas-gradient-pattern&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -279,7 +277,6 @@ var map &#x3D; new Map({
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="canvas-gradient-pattern.js"></script>
@@ -295,7 +292,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

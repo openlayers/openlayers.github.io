@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -174,12 +174,12 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import KML from &#x27;ol/format/KML&#x27;;
-import {Heatmap as HeatmapLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import Stamen from &#x27;ol/source/Stamen&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {Heatmap as HeatmapLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
 
 var blur &#x3D; document.getElementById(&#x27;blur&#x27;);
 var radius &#x3D; document.getElementById(&#x27;radius&#x27;);
@@ -188,25 +188,25 @@ var vector &#x3D; new HeatmapLayer({
   source: new VectorSource({
     url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
     format: new KML({
-      extractStyles: false
-    })
+      extractStyles: false,
+    }),
   }),
   blur: parseInt(blur.value, 10),
   radius: parseInt(radius.value, 10),
-  weight: function(feature) {
+  weight: function (feature) {
     // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
     // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
     // the Placemark&#x27;s name instead.
     var name &#x3D; feature.get(&#x27;name&#x27;);
     var magnitude &#x3D; parseFloat(name.substr(2));
     return magnitude - 5;
-  }
+  },
 });
 
 var raster &#x3D; new TileLayer({
   source: new Stamen({
-    layer: &#x27;toner&#x27;
-  })
+    layer: &#x27;toner&#x27;,
+  }),
 });
 
 new Map({
@@ -214,17 +214,17 @@ new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
-var blurHandler &#x3D; function() {
+var blurHandler &#x3D; function () {
   vector.setBlur(parseInt(blur.value, 10));
 };
 blur.addEventListener(&#x27;input&#x27;, blurHandler);
 blur.addEventListener(&#x27;change&#x27;, blurHandler);
 
-var radiusHandler &#x3D; function() {
+var radiusHandler &#x3D; function () {
   vector.setRadius(parseInt(radius.value, 10));
 };
 radius.addEventListener(&#x27;input&#x27;, radiusHandler);
@@ -238,7 +238,7 @@ radius.addEventListener(&#x27;change&#x27;, radiusHandler);
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;heatmap-earthquakes&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -250,7 +250,6 @@ radius.addEventListener(&#x27;change&#x27;, radiusHandler);
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="heatmap-earthquakes.js"></script>
@@ -266,7 +265,7 @@ radius.addEventListener(&#x27;change&#x27;, radiusHandler);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

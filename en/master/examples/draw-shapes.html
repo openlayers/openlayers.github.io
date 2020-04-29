@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -181,21 +181,24 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import Draw, {
+  createBox,
+  createRegularPolygon,
+} from &#x27;ol/interaction/Draw&#x27;;
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import Polygon from &#x27;ol/geom/Polygon&#x27;;
-import Draw, {createRegularPolygon, createBox} from &#x27;ol/interaction/Draw&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
 var raster &#x3D; new TileLayer({
-  source: new OSM()
+  source: new OSM(),
 });
 
 var source &#x3D; new VectorSource({wrapX: false});
 
 var vector &#x3D; new VectorLayer({
-  source: source
+  source: source,
 });
 
 var map &#x3D; new Map({
@@ -203,8 +206,8 @@ var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [-11000000, 4600000],
-    zoom: 4
-  })
+    zoom: 4,
+  }),
 });
 
 var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
@@ -222,7 +225,7 @@ function addInteraction() {
       geometryFunction &#x3D; createBox();
     } else if (value &#x3D;&#x3D;&#x3D; &#x27;Star&#x27;) {
       value &#x3D; &#x27;Circle&#x27;;
-      geometryFunction &#x3D; function(coordinates, geometry) {
+      geometryFunction &#x3D; function (coordinates, geometry) {
         var center &#x3D; coordinates[0];
         var last &#x3D; coordinates[1];
         var dx &#x3D; center[0] - last[0];
@@ -232,7 +235,7 @@ function addInteraction() {
         var newCoordinates &#x3D; [];
         var numPoints &#x3D; 12;
         for (var i &#x3D; 0; i &lt; numPoints; ++i) {
-          var angle &#x3D; rotation + i * 2 * Math.PI / numPoints;
+          var angle &#x3D; rotation + (i * 2 * Math.PI) / numPoints;
           var fraction &#x3D; i % 2 &#x3D;&#x3D;&#x3D; 0 ? 1 : 0.5;
           var offsetX &#x3D; radius * fraction * Math.cos(angle);
           var offsetY &#x3D; radius * fraction * Math.sin(angle);
@@ -250,17 +253,16 @@ function addInteraction() {
     draw &#x3D; new Draw({
       source: source,
       type: value,
-      geometryFunction: geometryFunction
+      geometryFunction: geometryFunction,
     });
     map.addInteraction(draw);
   }
 }
 
-
 /**
  * Handle change event.
  */
-typeSelect.onchange &#x3D; function() {
+typeSelect.onchange &#x3D; function () {
   map.removeInteraction(draw);
   addInteraction();
 };
@@ -275,7 +277,7 @@ addInteraction();
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;draw-shapes&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -287,7 +289,6 @@ addInteraction();
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="draw-shapes.js"></script>
@@ -303,7 +304,7 @@ addInteraction();
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

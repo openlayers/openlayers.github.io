@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -164,81 +164,83 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Feature from &#x27;ol/Feature&#x27;;
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import LineString from &#x27;ol/geom/LineString&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import Stamen from &#x27;ol/source/Stamen&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {Stroke, Style} from &#x27;ol/style&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {getVectorContext} from &#x27;ol/render&#x27;;
 
 var tileLayer &#x3D; new TileLayer({
   source: new Stamen({
-    layer: &#x27;toner&#x27;
-  })
+    layer: &#x27;toner&#x27;,
+  }),
 });
 
 var map &#x3D; new Map({
-  layers: [
-    tileLayer
-  ],
+  layers: [tileLayer],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 var style &#x3D; new Style({
   stroke: new Stroke({
     color: &#x27;#EAE911&#x27;,
-    width: 2
-  })
+    width: 2,
+  }),
 });
 
 var flightsSource &#x3D; new VectorSource({
   wrapX: false,
-  attributions: &#x27;Flight data by &#x27; +
-        &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;,
-  loader: function() {
+  attributions:
+    &#x27;Flight data by &#x27; +
+    &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;,
+  loader: function () {
     var url &#x3D; &#x27;data/openflights/flights.json&#x27;;
-    fetch(url).then(function(response) {
-      return response.json();
-    }).then(function(json) {
-      var flightsData &#x3D; json.flights;
-      for (var i &#x3D; 0; i &lt; flightsData.length; i++) {
-        var flight &#x3D; flightsData[i];
-        var from &#x3D; flight[0];
-        var to &#x3D; flight[1];
+    fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (json) {
+        var flightsData &#x3D; json.flights;
+        for (var i &#x3D; 0; i &lt; flightsData.length; i++) {
+          var flight &#x3D; flightsData[i];
+          var from &#x3D; flight[0];
+          var to &#x3D; flight[1];
 
-        // create an arc circle between the two locations
-        var arcGenerator &#x3D; new arc.GreatCircle(
-          {x: from[1], y: from[0]},
-          {x: to[1], y: to[0]});
+          // create an arc circle between the two locations
+          var arcGenerator &#x3D; new arc.GreatCircle(
+            {x: from[1], y: from[0]},
+            {x: to[1], y: to[0]}
+          );
 
-        var arcLine &#x3D; arcGenerator.Arc(100, {offset: 10});
-        if (arcLine.geometries.length &#x3D;&#x3D;&#x3D; 1) {
-          var line &#x3D; new LineString(arcLine.geometries[0].coords);
-          line.transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
+          var arcLine &#x3D; arcGenerator.Arc(100, {offset: 10});
+          if (arcLine.geometries.length &#x3D;&#x3D;&#x3D; 1) {
+            var line &#x3D; new LineString(arcLine.geometries[0].coords);
+            line.transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
 
-          var feature &#x3D; new Feature({
-            geometry: line,
-            finished: false
-          });
-          // add the feature with a delay so that the animation
-          // for all features does not start at the same time
-          addLater(feature, i * 50);
+            var feature &#x3D; new Feature({
+              geometry: line,
+              finished: false,
+            });
+            // add the feature with a delay so that the animation
+            // for all features does not start at the same time
+            addLater(feature, i * 50);
+          }
         }
-      }
-      tileLayer.on(&#x27;postrender&#x27;, animateFlights);
-    });
-  }
+        tileLayer.on(&#x27;postrender&#x27;, animateFlights);
+      });
+  },
 });
 
 var flightsLayer &#x3D; new VectorLayer({
   source: flightsSource,
-  style: function(feature) {
+  style: function (feature) {
     // if the animation is still active for a feature, do not
     // render the feature with the layer style
     if (feature.get(&#x27;finished&#x27;)) {
@@ -246,7 +248,7 @@ var flightsLayer &#x3D; new VectorLayer({
     } else {
       return null;
     }
-  }
+  },
 });
 
 map.addLayer(flightsLayer);
@@ -282,7 +284,7 @@ function animateFlights(event) {
 }
 
 function addLater(feature, timeout) {
-  window.setTimeout(function() {
+  window.setTimeout(function () {
     feature.set(&#x27;start&#x27;, new Date().getTime());
     flightsSource.addFeature(feature);
   }, timeout);
@@ -296,7 +298,7 @@ function addLater(feature, timeout) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;flight-animation&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -308,7 +310,6 @@ function addLater(feature, timeout) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="flight-animation.js"></script>
@@ -324,7 +325,7 @@ function addLater(feature, timeout) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

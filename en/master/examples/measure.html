@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -208,20 +208,19 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import {unByKey} from &#x27;ol/Observable&#x27;;
-import Overlay from &#x27;ol/Overlay&#x27;;
-import {getArea, getLength} from &#x27;ol/sphere&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {LineString, Polygon} from &#x27;ol/geom&#x27;;
 import Draw from &#x27;ol/interaction/Draw&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import Map from &#x27;ol/Map&#x27;;
+import Overlay from &#x27;ol/Overlay&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
-
+import {LineString, Polygon} from &#x27;ol/geom&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {getArea, getLength} from &#x27;ol/sphere&#x27;;
+import {unByKey} from &#x27;ol/Observable&#x27;;
 
 var raster &#x3D; new TileLayer({
-  source: new OSM()
+  source: new OSM(),
 });
 
 var source &#x3D; new VectorSource();
@@ -230,21 +229,20 @@ var vector &#x3D; new VectorLayer({
   source: source,
   style: new Style({
     fill: new Fill({
-      color: &#x27;rgba(255, 255, 255, 0.2)&#x27;
+      color: &#x27;rgba(255, 255, 255, 0.2)&#x27;,
     }),
     stroke: new Stroke({
       color: &#x27;#ffcc33&#x27;,
-      width: 2
+      width: 2,
     }),
     image: new CircleStyle({
       radius: 7,
       fill: new Fill({
-        color: &#x27;#ffcc33&#x27;
-      })
-    })
-  })
+        color: &#x27;#ffcc33&#x27;,
+      }),
+    }),
+  }),
 });
-
 
 /**
  * Currently drawn feature.
@@ -252,13 +250,11 @@ var vector &#x3D; new VectorLayer({
  */
 var sketch;
 
-
 /**
  * The help tooltip element.
  * @type {HTMLElement}
  */
 var helpTooltipElement;
-
 
 /**
  * Overlay to show the help messages.
@@ -266,13 +262,11 @@ var helpTooltipElement;
  */
 var helpTooltip;
 
-
 /**
  * The measure tooltip element.
  * @type {HTMLElement}
  */
 var measureTooltipElement;
-
 
 /**
  * Overlay to show the measurement.
@@ -280,13 +274,11 @@ var measureTooltipElement;
  */
 var measureTooltip;
 
-
 /**
  * Message to show when the user is drawing a polygon.
  * @type {string}
  */
 var continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
-
 
 /**
  * Message to show when the user is drawing a line.
@@ -294,12 +286,11 @@ var continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
  */
 var continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
 
-
 /**
  * Handle pointer move.
  * @param {import(&quot;../src/ol/MapBrowserEvent&quot;).default} evt The event.
  */
-var pointerMoveHandler &#x3D; function(evt) {
+var pointerMoveHandler &#x3D; function (evt) {
   if (evt.dragging) {
     return;
   }
@@ -321,19 +312,18 @@ var pointerMoveHandler &#x3D; function(evt) {
   helpTooltipElement.classList.remove(&#x27;hidden&#x27;);
 };
 
-
 var map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new View({
     center: [-11000000, 4600000],
-    zoom: 15
-  })
+    zoom: 15,
+  }),
 });
 
 map.on(&#x27;pointermove&#x27;, pointerMoveHandler);
 
-map.getViewport().addEventListener(&#x27;mouseout&#x27;, function() {
+map.getViewport().addEventListener(&#x27;mouseout&#x27;, function () {
   helpTooltipElement.classList.add(&#x27;hidden&#x27;);
 });
 
@@ -341,68 +331,62 @@ var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
 var draw; // global so we can remove it later
 
-
 /**
  * Format length output.
  * @param {LineString} line The line.
  * @return {string} The formatted length.
  */
-var formatLength &#x3D; function(line) {
+var formatLength &#x3D; function (line) {
   var length &#x3D; getLength(line);
   var output;
   if (length &gt; 100) {
-    output &#x3D; (Math.round(length / 1000 * 100) / 100) +
-        &#x27; &#x27; + &#x27;km&#x27;;
+    output &#x3D; Math.round((length / 1000) * 100) / 100 + &#x27; &#x27; + &#x27;km&#x27;;
   } else {
-    output &#x3D; (Math.round(length * 100) / 100) +
-        &#x27; &#x27; + &#x27;m&#x27;;
+    output &#x3D; Math.round(length * 100) / 100 + &#x27; &#x27; + &#x27;m&#x27;;
   }
   return output;
 };
-
 
 /**
  * Format area output.
  * @param {Polygon} polygon The polygon.
  * @return {string} Formatted area.
  */
-var formatArea &#x3D; function(polygon) {
+var formatArea &#x3D; function (polygon) {
   var area &#x3D; getArea(polygon);
   var output;
   if (area &gt; 10000) {
-    output &#x3D; (Math.round(area / 1000000 * 100) / 100) +
-        &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
+    output &#x3D; Math.round((area / 1000000) * 100) / 100 + &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
   } else {
-    output &#x3D; (Math.round(area * 100) / 100) +
-        &#x27; &#x27; + &#x27;m&lt;sup&gt;2&lt;/sup&gt;&#x27;;
+    output &#x3D; Math.round(area * 100) / 100 + &#x27; &#x27; + &#x27;m&lt;sup&gt;2&lt;/sup&gt;&#x27;;
   }
   return output;
 };
 
 function addInteraction() {
-  var type &#x3D; (typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;);
+  var type &#x3D; typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;;
   draw &#x3D; new Draw({
     source: source,
     type: type,
     style: new Style({
       fill: new Fill({
-        color: &#x27;rgba(255, 255, 255, 0.2)&#x27;
+        color: &#x27;rgba(255, 255, 255, 0.2)&#x27;,
       }),
       stroke: new Stroke({
         color: &#x27;rgba(0, 0, 0, 0.5)&#x27;,
         lineDash: [10, 10],
-        width: 2
+        width: 2,
       }),
       image: new CircleStyle({
         radius: 5,
         stroke: new Stroke({
-          color: &#x27;rgba(0, 0, 0, 0.7)&#x27;
+          color: &#x27;rgba(0, 0, 0, 0.7)&#x27;,
         }),
         fill: new Fill({
-          color: &#x27;rgba(255, 255, 255, 0.2)&#x27;
-        })
-      })
-    })
+          color: &#x27;rgba(255, 255, 255, 0.2)&#x27;,
+        }),
+      }),
+    }),
   });
   map.addInteraction(draw);
 
@@ -410,42 +394,39 @@ function addInteraction() {
   createHelpTooltip();
 
   var listener;
-  draw.on(&#x27;drawstart&#x27;,
-    function(evt) {
-      // set sketch
-      sketch &#x3D; evt.feature;
+  draw.on(&#x27;drawstart&#x27;, function (evt) {
+    // set sketch
+    sketch &#x3D; evt.feature;
 
-      /** @type {import(&quot;../src/ol/coordinate.js&quot;).Coordinate|undefined} */
-      var tooltipCoord &#x3D; evt.coordinate;
+    /** @type {import(&quot;../src/ol/coordinate.js&quot;).Coordinate|undefined} */
+    var tooltipCoord &#x3D; evt.coordinate;
 
-      listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function(evt) {
-        var geom &#x3D; evt.target;
-        var output;
-        if (geom instanceof Polygon) {
-          output &#x3D; formatArea(geom);
-          tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();
-        } else if (geom instanceof LineString) {
-          output &#x3D; formatLength(geom);
-          tooltipCoord &#x3D; geom.getLastCoordinate();
-        }
-        measureTooltipElement.innerHTML &#x3D; output;
-        measureTooltip.setPosition(tooltipCoord);
-      });
+    listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function (evt) {
+      var geom &#x3D; evt.target;
+      var output;
+      if (geom instanceof Polygon) {
+        output &#x3D; formatArea(geom);
+        tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();
+      } else if (geom instanceof LineString) {
+        output &#x3D; formatLength(geom);
+        tooltipCoord &#x3D; geom.getLastCoordinate();
+      }
+      measureTooltipElement.innerHTML &#x3D; output;
+      measureTooltip.setPosition(tooltipCoord);
     });
+  });
 
-  draw.on(&#x27;drawend&#x27;,
-    function() {
-      measureTooltipElement.className &#x3D; &#x27;ol-tooltip ol-tooltip-static&#x27;;
-      measureTooltip.setOffset([0, -7]);
-      // unset sketch
-      sketch &#x3D; null;
-      // unset tooltip so that a new one can be created
-      measureTooltipElement &#x3D; null;
-      createMeasureTooltip();
-      unByKey(listener);
-    });
+  draw.on(&#x27;drawend&#x27;, function () {
+    measureTooltipElement.className &#x3D; &#x27;ol-tooltip ol-tooltip-static&#x27;;
+    measureTooltip.setOffset([0, -7]);
+    // unset sketch
+    sketch &#x3D; null;
+    // unset tooltip so that a new one can be created
+    measureTooltipElement &#x3D; null;
+    createMeasureTooltip();
+    unByKey(listener);
+  });
 }
-
 
 /**
  * Creates a new help tooltip
@@ -459,11 +440,10 @@ function createHelpTooltip() {
   helpTooltip &#x3D; new Overlay({
     element: helpTooltipElement,
     offset: [15, 0],
-    positioning: &#x27;center-left&#x27;
+    positioning: &#x27;center-left&#x27;,
   });
   map.addOverlay(helpTooltip);
 }
-
 
 /**
  * Creates a new measure tooltip
@@ -477,16 +457,15 @@ function createMeasureTooltip() {
   measureTooltip &#x3D; new Overlay({
     element: measureTooltipElement,
     offset: [0, -15],
-    positioning: &#x27;bottom-center&#x27;
+    positioning: &#x27;bottom-center&#x27;,
   });
   map.addOverlay(measureTooltip);
 }
 
-
 /**
  * Let user change the geometry type.
  */
-typeSelect.onchange &#x3D; function() {
+typeSelect.onchange &#x3D; function () {
   map.removeInteraction(draw);
   addInteraction();
 };
@@ -501,7 +480,7 @@ addInteraction();
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;measure&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -513,7 +492,6 @@ addInteraction();
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="measure.js"></script>
@@ -529,7 +507,7 @@ addInteraction();
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

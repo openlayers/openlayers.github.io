@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -182,11 +182,11 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import MVT from &#x27;ol/format/MVT&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import VectorTileLayer from &#x27;ol/layer/VectorTile&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 
 // lookup for selection objects
@@ -195,20 +195,20 @@ var selection &#x3D; {};
 var country &#x3D; new Style({
   stroke: new Stroke({
     color: &#x27;gray&#x27;,
-    width: 1
+    width: 1,
   }),
   fill: new Fill({
-    color: &#x27;rgba(20,20,20,0.9)&#x27;
-  })
+    color: &#x27;rgba(20,20,20,0.9)&#x27;,
+  }),
 });
 var selectedCountry &#x3D; new Style({
   stroke: new Stroke({
     color: &#x27;rgba(200,20,20,0.8)&#x27;,
-    width: 2
+    width: 2,
   }),
   fill: new Fill({
-    color: &#x27;rgba(200,20,20,0.4)&#x27;
-  })
+    color: &#x27;rgba(200,20,20,0.4)&#x27;,
+  }),
 });
 
 var vtLayer &#x3D; new VectorTileLayer({
@@ -216,24 +216,23 @@ var vtLayer &#x3D; new VectorTileLayer({
   source: new VectorTileSource({
     maxZoom: 15,
     format: new MVT({
-      idProperty: &#x27;iso_a3&#x27;
+      idProperty: &#x27;iso_a3&#x27;,
     }),
-    url: &#x27;https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/&#x27; +
-      &#x27;ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf&#x27;
+    url:
+      &#x27;https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/&#x27; +
+      &#x27;ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf&#x27;,
   }),
-  style: country
+  style: country,
 });
 
 var map &#x3D; new Map({
-  layers: [
-    vtLayer
-  ],
+  layers: [vtLayer],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
     zoom: 2,
-    multiWorld: true
-  })
+    multiWorld: true,
+  }),
 });
 
 // Selection
@@ -241,21 +240,25 @@ var selectionLayer &#x3D; new VectorTileLayer({
   map: map,
   renderMode: &#x27;vector&#x27;,
   source: vtLayer.getSource(),
-  style: function(feature) {
+  style: function (feature) {
     if (feature.getId() in selection) {
       return selectedCountry;
     }
-  }
+  },
 });
 
 var selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
 
-map.on([&#x27;click&#x27;, &#x27;pointermove&#x27;], function(event) {
-  if (selectElement.value &#x3D;&#x3D;&#x3D; &#x27;singleselect-hover&#x27; &amp;&amp; event.type !&#x3D;&#x3D; &#x27;pointermove&#x27; ||
-      selectElement.value !&#x3D;&#x3D; &#x27;singleselect-hover&#x27; &amp;&amp; event.type &#x3D;&#x3D;&#x3D; &#x27;pointermove&#x27;) {
+map.on([&#x27;click&#x27;, &#x27;pointermove&#x27;], function (event) {
+  if (
+    (selectElement.value &#x3D;&#x3D;&#x3D; &#x27;singleselect-hover&#x27; &amp;&amp;
+      event.type !&#x3D;&#x3D; &#x27;pointermove&#x27;) ||
+    (selectElement.value !&#x3D;&#x3D; &#x27;singleselect-hover&#x27; &amp;&amp;
+      event.type &#x3D;&#x3D;&#x3D; &#x27;pointermove&#x27;)
+  ) {
     return;
   }
-  vtLayer.getFeatures(event.pixel).then(function(features) {
+  vtLayer.getFeatures(event.pixel).then(function (features) {
     if (!features.length) {
       selection &#x3D; {};
       selectionLayer.changed();
@@ -285,7 +288,7 @@ map.on([&#x27;click&#x27;, &#x27;pointermove&#x27;], function(event) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;vector-tile-selection&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -297,7 +300,6 @@ map.on([&#x27;click&#x27;, &#x27;pointermove&#x27;], function(event) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="vector-tile-selection.js"></script>
@@ -313,7 +315,7 @@ map.on([&#x27;click&#x27;, &#x27;pointermove&#x27;], function(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

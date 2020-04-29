@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -162,32 +162,41 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import KML from &#x27;ol/format/KML&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
-import {createEmpty, getWidth, getHeight, extend} from &#x27;ol/extent&#x27;;
-import KML from &#x27;ol/format/KML&#x27;;
-import {defaults as defaultInteractions, Select} from &#x27;ol/interaction&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {
+  Circle as CircleStyle,
+  Fill,
+  RegularShape,
+  Stroke,
+  Style,
+  Text,
+} from &#x27;ol/style&#x27;;
 import {Cluster, Stamen, Vector as VectorSource} from &#x27;ol/source&#x27;;
-import {Circle as CircleStyle, Fill, RegularShape, Stroke, Style, Text} from &#x27;ol/style&#x27;;
-
+import {
+  Select,
+  defaults as defaultInteractions,
+} from &#x27;ol/interaction&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {createEmpty, extend, getHeight, getWidth} from &#x27;ol/extent&#x27;;
 
 var earthquakeFill &#x3D; new Fill({
-  color: &#x27;rgba(255, 153, 0, 0.8)&#x27;
+  color: &#x27;rgba(255, 153, 0, 0.8)&#x27;,
 });
 var earthquakeStroke &#x3D; new Stroke({
   color: &#x27;rgba(255, 204, 0, 0.2)&#x27;,
-  width: 1
+  width: 1,
 });
 var textFill &#x3D; new Fill({
-  color: &#x27;#fff&#x27;
+  color: &#x27;#fff&#x27;,
 });
 var textStroke &#x3D; new Stroke({
   color: &#x27;rgba(0, 0, 0, 0.6)&#x27;,
-  width: 3
+  width: 3,
 });
 var invisibleFill &#x3D; new Fill({
-  color: &#x27;rgba(255, 255, 255, 0.01)&#x27;
+  color: &#x27;rgba(255, 255, 255, 0.01)&#x27;,
 });
 
 function createEarthquakeStyle(feature) {
@@ -206,14 +215,14 @@ function createEarthquakeStyle(feature) {
       points: 5,
       angle: Math.PI,
       fill: earthquakeFill,
-      stroke: earthquakeStroke
-    })
+      stroke: earthquakeStroke,
+    }),
   });
 }
 
 var maxFeatureCount;
 var vector &#x3D; null;
-var calculateClusterInfo &#x3D; function(resolution) {
+var calculateClusterInfo &#x3D; function (resolution) {
   maxFeatureCount &#x3D; 0;
   var features &#x3D; vector.getSource().getFeatures();
   var feature, radius;
@@ -226,8 +235,7 @@ var calculateClusterInfo &#x3D; function(resolution) {
       extend(extent, originalFeatures[j].getGeometry().getExtent());
     }
     maxFeatureCount &#x3D; Math.max(maxFeatureCount, jj);
-    radius &#x3D; 0.25 * (getWidth(extent) + getHeight(extent)) /
-        resolution;
+    radius &#x3D; (0.25 * (getWidth(extent) + getHeight(extent))) / resolution;
     feature.set(&#x27;radius&#x27;, radius);
   }
 };
@@ -245,14 +253,14 @@ function styleFunction(feature, resolution) {
       image: new CircleStyle({
         radius: feature.get(&#x27;radius&#x27;),
         fill: new Fill({
-          color: [255, 153, 0, Math.min(0.8, 0.4 + (size / maxFeatureCount))]
-        })
+          color: [255, 153, 0, Math.min(0.8, 0.4 + size / maxFeatureCount)],
+        }),
       }),
       text: new Text({
         text: size.toString(),
         fill: textFill,
-        stroke: textStroke
-      })
+        stroke: textStroke,
+      }),
     });
   } else {
     var originalFeature &#x3D; feature.get(&#x27;features&#x27;)[0];
@@ -262,12 +270,13 @@ function styleFunction(feature, resolution) {
 }
 
 function selectStyleFunction(feature) {
-  var styles &#x3D; [new Style({
-    image: new CircleStyle({
-      radius: feature.get(&#x27;radius&#x27;),
-      fill: invisibleFill
-    })
-  })];
+  var styles &#x3D; [
+    new Style({
+      image: new CircleStyle({
+        radius: feature.get(&#x27;radius&#x27;),
+        fill: invisibleFill,
+      }),
+    }) ];
   var originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
   var originalFeature;
   for (var i &#x3D; originalFeatures.length - 1; i &gt;&#x3D; 0; --i) {
@@ -283,33 +292,33 @@ vector &#x3D; new VectorLayer({
     source: new VectorSource({
       url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
       format: new KML({
-        extractStyles: false
-      })
-    })
+        extractStyles: false,
+      }),
+    }),
   }),
-  style: styleFunction
+  style: styleFunction,
 });
 
 var raster &#x3D; new TileLayer({
   source: new Stamen({
-    layer: &#x27;toner&#x27;
-  })
+    layer: &#x27;toner&#x27;,
+  }),
 });
 
 var map &#x3D; new Map({
   layers: [raster, vector],
-  interactions: defaultInteractions().extend([new Select({
-    condition: function(evt) {
-      return evt.type &#x3D;&#x3D; &#x27;pointermove&#x27; ||
-          evt.type &#x3D;&#x3D; &#x27;singleclick&#x27;;
-    },
-    style: selectStyleFunction
-  })]),
+  interactions: defaultInteractions().extend([
+    new Select({
+      condition: function (evt) {
+        return evt.type &#x3D;&#x3D; &#x27;pointermove&#x27; || evt.type &#x3D;&#x3D; &#x27;singleclick&#x27;;
+      },
+      style: selectStyleFunction,
+    }) ]),
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 </code></pre>
       </div>
@@ -320,7 +329,7 @@ var map &#x3D; new Map({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;earthquake-clusters&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -332,7 +341,6 @@ var map &#x3D; new Map({
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="earthquake-clusters.js"></script>
@@ -348,7 +356,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

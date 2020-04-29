@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -162,16 +162,19 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
-import VectorTileSource from &#x27;ol/source/VectorTile&#x27;;
-import {Tile as TileLayer, VectorTile as VectorTileLayer} from &#x27;ol/layer&#x27;;
 import Projection from &#x27;ol/proj/Projection&#x27;;
+import VectorTileSource from &#x27;ol/source/VectorTile&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {
+  Tile as TileLayer,
+  VectorTile as VectorTileLayer,
+} from &#x27;ol/layer&#x27;;
 
 // Converts geojson-vt data to GeoJSON
-var replacer &#x3D; function(key, value) {
+var replacer &#x3D; function (key, value) {
   if (value.geometry) {
     var type;
     var rawType &#x3D; value.type;
@@ -201,9 +204,9 @@ var replacer &#x3D; function(key, value) {
       &#x27;type&#x27;: &#x27;Feature&#x27;,
       &#x27;geometry&#x27;: {
         &#x27;type&#x27;: type,
-        &#x27;coordinates&#x27;: geometry
+        &#x27;coordinates&#x27;: geometry,
       },
-      &#x27;properties&#x27;: value.tags
+      &#x27;properties&#x27;: value.tags,
     };
   } else {
     return value;
@@ -213,47 +216,64 @@ var replacer &#x3D; function(key, value) {
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM()
-    })
-  ],
+      source: new OSM(),
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 var url &#x3D; &#x27;data/geojson/countries.geojson&#x27;;
-fetch(url).then(function(response) {
-  return response.json();
-}).then(function(json) {
-  var tileIndex &#x3D; geojsonvt(json, {
-    extent: 4096,
-    debug: 1
-  });
-  var vectorSource &#x3D; new VectorTileSource({
-    format: new GeoJSON({
+fetch(url)
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (json) {
+    var tileIndex &#x3D; geojsonvt(json, {
+      extent: 4096,
+      debug: 1,
+    });
+    var format &#x3D; new GeoJSON({
       // Data returned from geojson-vt is in tile pixel units
       dataProjection: new Projection({
         code: &#x27;TILE_PIXELS&#x27;,
         units: &#x27;tile-pixels&#x27;,
-        extent: [0, 0, 4096, 4096]
-      })
-    }),
-    tileUrlFunction: function(tileCoord) {
-      var data &#x3D; tileIndex.getTile(tileCoord[0], tileCoord[1], tileCoord[2]);
-      var geojson &#x3D; JSON.stringify({
-        type: &#x27;FeatureCollection&#x27;,
-        features: data ? data.features : []
-      }, replacer);
-      return &#x27;data:application/json;charset&#x3D;UTF-8,&#x27; + geojson;
-    }
+        extent: [0, 0, 4096, 4096],
+      }),
+    });
+    var vectorSource &#x3D; new VectorTileSource({
+      tileUrlFunction: function (tileCoord) {
+        // Use the tile coordinate as a pseudo URL for caching purposes
+        return JSON.stringify(tileCoord);
+      },
+      tileLoadFunction: function (tile, url) {
+        var tileCoord &#x3D; JSON.parse(url);
+        var data &#x3D; tileIndex.getTile(
+          tileCoord[0],
+          tileCoord[1],
+          tileCoord[2]
+        );
+        var geojson &#x3D; JSON.stringify(
+          {
+            type: &#x27;FeatureCollection&#x27;,
+            features: data ? data.features : [],
+          },
+          replacer
+        );
+        var features &#x3D; format.readFeatures(geojson, {
+          extent: vectorSource.getTileGrid().getTileCoordExtent(tileCoord),
+          featureProjection: map.getView().getProjection(),
+        });
+        tile.setFeatures(features);
+      },
+    });
+    var vectorLayer &#x3D; new VectorTileLayer({
+      source: vectorSource,
+    });
+    map.addLayer(vectorLayer);
   });
-  var vectorLayer &#x3D; new VectorTileLayer({
-    source: vectorSource
-  });
-  map.addLayer(vectorLayer);
-});
 </code></pre>
       </div>
       <div class="row-fluid">
@@ -263,7 +283,7 @@ fetch(url).then(function(response) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;geojson-vt&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -275,7 +295,6 @@ fetch(url).then(function(response) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="geojson-vt.js"></script>
@@ -291,7 +310,7 @@ fetch(url).then(function(response) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

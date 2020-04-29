@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -165,20 +165,20 @@ Legend:
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import ImageWMS from &#x27;ol/source/ImageWMS&#x27;;
 import Map from &#x27;ol/Map&#x27;;
+import OSM from &#x27;ol/source/OSM&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
-import ImageWMS from &#x27;ol/source/ImageWMS&#x27;;
-import OSM from &#x27;ol/source/OSM&#x27;;
 
 var wmsSource &#x3D; new ImageWMS({
   url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
   params: {&#x27;LAYERS&#x27;: &#x27;topp:states&#x27;},
   ratio: 1,
-  serverType: &#x27;geoserver&#x27;
+  serverType: &#x27;geoserver&#x27;,
 });
 
-var updateLegend &#x3D; function(resolution) {
+var updateLegend &#x3D; function (resolution) {
   var graphicUrl &#x3D; wmsSource.getLegendUrl(resolution);
   var img &#x3D; document.getElementById(&#x27;legend&#x27;);
   img.src &#x3D; graphicUrl;
@@ -186,21 +186,20 @@ var updateLegend &#x3D; function(resolution) {
 
 var layers &#x3D; [
   new TileLayer({
-    source: new OSM()
+    source: new OSM(),
   }),
   new ImageLayer({
     extent: [-13884991, 2870341, -7455066, 6338219],
-    source: wmsSource
-  })
-];
+    source: wmsSource,
+  }) ];
 
 var map &#x3D; new Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({
     center: [-10997148, 4569099],
-    zoom: 4
-  })
+    zoom: 4,
+  }),
 });
 
 // Initial legend
@@ -208,7 +207,7 @@ var resolution &#x3D; map.getView().getResolution();
 updateLegend(resolution);
 
 // Update the legend when the resolution changes
-map.getView().on(&#x27;change:resolution&#x27;, function(event) {
+map.getView().on(&#x27;change:resolution&#x27;, function (event) {
   var resolution &#x3D; event.target.getResolution();
   updateLegend(resolution);
 });
@@ -221,7 +220,7 @@ map.getView().on(&#x27;change:resolution&#x27;, function(event) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;wms-getlegendgraphic&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -233,7 +232,6 @@ map.getView().on(&#x27;change:resolution&#x27;, function(event) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="wms-getlegendgraphic.js"></script>
@@ -249,7 +247,7 @@ map.getView().on(&#x27;change:resolution&#x27;, function(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

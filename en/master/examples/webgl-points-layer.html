@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -261,17 +261,17 @@ Literal values can be of the following types:</li>
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
-import WebGLPointsLayer from &#x27;ol/layer/WebGLPoints&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-import Vector from &#x27;ol/source/Vector&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import Vector from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
+import WebGLPointsLayer from &#x27;ol/layer/WebGLPoints&#x27;;
 
 var vectorSource &#x3D; new Vector({
   url: &#x27;data/geojson/world-cities.geojson&#x27;,
-  format: new GeoJSON()
+  format: new GeoJSON(),
 });
 
 var predefinedStyles &#x3D; {
@@ -282,8 +282,8 @@ var predefinedStyles &#x3D; {
       size: [18, 28],
       color: &#x27;lightyellow&#x27;,
       rotateWithView: false,
-      offset: [0, 9]
-    }
+      offset: [0, 9],
+    },
   },
   &#x27;triangles&#x27;: {
     symbol: {
@@ -293,11 +293,12 @@ var predefinedStyles &#x3D; {
         &#x27;interpolate&#x27;,
         [&#x27;linear&#x27;],
         [&#x27;get&#x27;, &#x27;population&#x27;],
-        20000, &#x27;#5aca5b&#x27;,
-        300000, &#x27;#ff6a19&#x27;
-      ],
-      rotateWithView: true
-    }
+        20000,
+        &#x27;#5aca5b&#x27;,
+        300000,
+        &#x27;#ff6a19&#x27; ],
+      rotateWithView: true,
+    },
   },
   &#x27;triangles-latitude&#x27;: {
     symbol: {
@@ -306,21 +307,25 @@ var predefinedStyles &#x3D; {
         &#x27;interpolate&#x27;,
         [&#x27;linear&#x27;],
         [&#x27;get&#x27;, &#x27;population&#x27;],
-        40000, 12,
-        2000000, 24
-      ],
+        40000,
+        12,
+        2000000,
+        24 ],
       color: [
         &#x27;interpolate&#x27;,
         [&#x27;linear&#x27;],
         [&#x27;get&#x27;, &#x27;latitude&#x27;],
-        -60, &#x27;#ff14c3&#x27;,
-        -20, &#x27;#ff621d&#x27;,
-        20, &#x27;#ffed02&#x27;,
-        60, &#x27;#00ff67&#x27;
-      ],
+        -60,
+        &#x27;#ff14c3&#x27;,
+        -20,
+        &#x27;#ff621d&#x27;,
+        20,
+        &#x27;#ffed02&#x27;,
+        60,
+        &#x27;#00ff67&#x27; ],
       offset: [0, 0],
-      opacity: 0.95
-    }
+      opacity: 0.95,
+    },
   },
   &#x27;circles&#x27;: {
     symbol: {
@@ -329,9 +334,10 @@ var predefinedStyles &#x3D; {
         &#x27;interpolate&#x27;,
         [&#x27;linear&#x27;],
         [&#x27;get&#x27;, &#x27;population&#x27;],
-        40000, 8,
-        2000000, 28
-      ],
+        40000,
+        8,
+        2000000,
+        28 ],
       color: &#x27;#006688&#x27;,
       rotateWithView: false,
       offset: [0, 0],
@@ -339,68 +345,69 @@ var predefinedStyles &#x3D; {
         &#x27;interpolate&#x27;,
         [&#x27;linear&#x27;],
         [&#x27;get&#x27;, &#x27;population&#x27;],
-        40000, 0.6,
-        2000000, 0.92
-      ]
-    }
+        40000,
+        0.6,
+        2000000,
+        0.92 ],
+    },
   },
   &#x27;circles-zoom&#x27;: {
     symbol: {
       symbolType: &#x27;circle&#x27;,
-      size: [
-        &#x27;interpolate&#x27;,
-        [&#x27;exponential&#x27;, 2.5],
-        [&#x27;zoom&#x27;],
-        2, 1,
-        14, 32
-      ],
+      size: [&#x27;interpolate&#x27;, [&#x27;exponential&#x27;, 2.5], [&#x27;zoom&#x27;], 2, 1, 14, 32],
       color: &#x27;#240572&#x27;,
       offset: [0, 0],
-      opacity: 0.95
-    }
+      opacity: 0.95,
+    },
   },
   &#x27;rotating-bars&#x27;: {
     symbol: {
       symbolType: &#x27;square&#x27;,
-      rotation: [&#x27;*&#x27;, [
-        &#x27;time&#x27;
-      ], 0.1],
-      size: [&#x27;array&#x27;, 4, [
-        &#x27;interpolate&#x27;,
-        [&#x27;linear&#x27;],
-        [&#x27;get&#x27;, &#x27;population&#x27;],
-        20000, 4,
-        300000, 28]
-      ],
+      rotation: [&#x27;*&#x27;, [&#x27;time&#x27;], 0.1],
+      size: [
+        &#x27;array&#x27;,
+        4,
+        [
+          &#x27;interpolate&#x27;,
+          [&#x27;linear&#x27;],
+          [&#x27;get&#x27;, &#x27;population&#x27;],
+          20000,
+          4,
+          300000,
+          28 ] ],
       color: [
         &#x27;interpolate&#x27;,
         [&#x27;linear&#x27;],
         [&#x27;get&#x27;, &#x27;population&#x27;],
-        20000, &#x27;#ffdc00&#x27;,
-        300000, &#x27;#ff5b19&#x27;
-      ],
-      offset: [&#x27;array&#x27;, 0, [
-        &#x27;interpolate&#x27;,
-        [&#x27;linear&#x27;],
-        [&#x27;get&#x27;, &#x27;population&#x27;],
-        20000, 2,
-        300000, 14]
-      ]
-    }
-  }
+        20000,
+        &#x27;#ffdc00&#x27;,
+        300000,
+        &#x27;#ff5b19&#x27; ],
+      offset: [
+        &#x27;array&#x27;,
+        0,
+        [
+          &#x27;interpolate&#x27;,
+          [&#x27;linear&#x27;],
+          [&#x27;get&#x27;, &#x27;population&#x27;],
+          20000,
+          2,
+          300000,
+          14 ] ],
+    },
+  },
 };
 
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM()
-    })
-  ],
+      source: new OSM(),
+    }) ],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 var literalStyle;
@@ -410,7 +417,7 @@ function refreshLayer(newStyle) {
   pointsLayer &#x3D; new WebGLPointsLayer({
     source: vectorSource,
     style: newStyle,
-    disableHitDetection: true
+    disableHitDetection: true,
   });
   map.addLayer(pointsLayer);
 
@@ -431,7 +438,7 @@ function setStyleStatus(errorMsg) {
 }
 
 var editor &#x3D; document.getElementById(&#x27;style-editor&#x27;);
-editor.addEventListener(&#x27;input&#x27;, function() {
+editor.addEventListener(&#x27;input&#x27;, function () {
   var textStyle &#x3D; editor.value;
   try {
     var newLiteralStyle &#x3D; JSON.parse(textStyle);
@@ -475,7 +482,7 @@ animate();
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;webgl-points-layer&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -487,7 +494,6 @@ animate();
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script>window.experimental = true;</script><script src="common.js"></script><script src="webgl-points-layer.js"></script>
@@ -503,7 +509,7 @@ animate();
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

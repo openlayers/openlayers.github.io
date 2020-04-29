@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -173,41 +173,42 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import BingMaps from &#x27;ol/source/BingMaps&#x27;;
-
+import Map from &#x27;ol/Map&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
 
 var styles &#x3D; [
   &#x27;RoadOnDemand&#x27;,
   &#x27;Aerial&#x27;,
   &#x27;AerialWithLabelsOnDemand&#x27;,
   &#x27;CanvasDark&#x27;,
-  &#x27;OrdnanceSurvey&#x27;
-];
+  &#x27;OrdnanceSurvey&#x27; ];
 var layers &#x3D; [];
 var i, ii;
 for (i &#x3D; 0, ii &#x3D; styles.length; i &lt; ii; ++i) {
-  layers.push(new TileLayer({
-    visible: false,
-    preload: Infinity,
-    source: new BingMaps({
-      key: &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;,
-      imagerySet: styles[i]
-      // use maxZoom 19 to see stretched tiles instead of the BingMaps
-      // &quot;no photos at this zoom level&quot; tiles
-      // maxZoom: 19
+  layers.push(
+    new TileLayer({
+      visible: false,
+      preload: Infinity,
+      source: new BingMaps({
+        key:
+          &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here &#x27;,
+        imagerySet: styles[i],
+        // use maxZoom 19 to see stretched tiles instead of the BingMaps
+        // &quot;no photos at this zoom level&quot; tiles
+        // maxZoom: 19
+      }),
     })
-  }));
+  );
 }
 var map &#x3D; new Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({
     center: [-6655.5402445057125, 6709968.258934638],
-    zoom: 13
-  })
+    zoom: 13,
+  }),
 });
 
 var select &#x3D; document.getElementById(&#x27;layer-select&#x27;);
@@ -228,7 +229,7 @@ onChange();
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;bing-maps&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -240,7 +241,6 @@ onChange();
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="bing-maps.js"></script>
@@ -256,7 +256,7 @@ onChange();
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

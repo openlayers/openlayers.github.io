@@ -1,2 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[22],{260:function(e,n,a){"use strict";a.r(n);var w=a(3),t=a(2),o=a(50),c=a(186),r=a(5),s=a(9);new w.a({interactions:Object(o.a)().extend([new c.a]),layers:[new r.a({source:new s.b})],target:"map",view:new t.a({center:[0,0],zoom:2})})}},[[260,0]]]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[23],{262:function(e,n,a){"use strict";a.r(n);var w=a(3),t=a(9),o=a(5),c=a(2),r=a(51),s=a(186);new w.a({interactions:Object(r.a)().extend([new s.a]),layers:[new o.a({source:new t.b})],target:"map",view:new c.a({center:[0,0],zoom:2})})}},[[262,0]]]);
 //# sourceMappingURL=drag-rotate-and-zoom.js.map

@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -171,14 +171,13 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {getWidth, getTopLeft} from &#x27;ol/extent&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
-import {get as getProjection} from &#x27;ol/proj&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
 import WMTS from &#x27;ol/source/WMTS&#x27;;
 import WMTSTileGrid from &#x27;ol/tilegrid/WMTS&#x27;;
-
+import {get as getProjection} from &#x27;ol/proj&#x27;;
+import {getTopLeft, getWidth} from &#x27;ol/extent&#x27;;
 
 // create the WMTS tile grid in the google projection
 var projection &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
@@ -193,7 +192,7 @@ for (var i &#x3D; 0; i &lt;&#x3D; 14; i++) {
 var tileGrid &#x3D; new WMTSTileGrid({
   origin: getTopLeft(projection.getExtent()),
   resolutions: resolutions,
-  matrixIds: matrixIds
+  matrixIds: matrixIds,
 });
 
 var scalgoToken &#x3D; &#x27;CC5BF28A7D96B320C7DFBFD1236B5BEB&#x27;;
@@ -206,13 +205,12 @@ var wmtsSource &#x3D; new WMTS({
   attributions: [
     &#x27;&lt;a href&#x3D;&quot;http://scalgo.com&quot;&gt;SCALGO&lt;/a&gt;&#x27;,
     &#x27;&lt;a href&#x3D;&quot;https://cgiarcsi.community/data/&#x27; +
-        &#x27;srtm-90m-digital-elevation-database-v4-1&quot;&gt;CGIAR-CSI SRTM&lt;/a&gt;&#x27;
-  ],
+      &#x27;srtm-90m-digital-elevation-database-v4-1&quot;&gt;CGIAR-CSI SRTM&lt;/a&gt;&#x27; ],
   tileGrid: tileGrid,
   style: &#x27;default&#x27;,
   dimensions: {
-    &#x27;threshold&#x27;: 100
-  }
+    &#x27;threshold&#x27;: 100,
+  },
 });
 
 var map &#x3D; new Map({
@@ -220,27 +218,26 @@ var map &#x3D; new Map({
   view: new View({
     projection: projection,
     center: [-9871995, 3566245],
-    zoom: 6
+    zoom: 6,
   }),
   layers: [
     new TileLayer({
-      source: new OSM()
+      source: new OSM(),
     }),
     new TileLayer({
       opacity: 0.5,
-      source: wmtsSource
-    })
-  ]
+      source: wmtsSource,
+    }) ],
 });
 
-var updateSourceDimension &#x3D; function(source, sliderVal) {
+var updateSourceDimension &#x3D; function (source, sliderVal) {
   source.updateDimensions({&#x27;threshold&#x27;: sliderVal});
   document.getElementById(&#x27;theinfo&#x27;).innerHTML &#x3D; sliderVal + &#x27; meters&#x27;;
 };
 
 updateSourceDimension(wmtsSource, 10);
 
-document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, function() {
+document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, function () {
   updateSourceDimension(wmtsSource, this.value);
 });
 </code></pre>
@@ -252,7 +249,7 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;wmts-dimensions&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -264,7 +261,6 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="wmts-dimensions.js"></script>
@@ -280,7 +276,7 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

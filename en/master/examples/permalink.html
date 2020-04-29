@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -161,9 +161,9 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
 
 // default zoom, center and rotation
 var zoom &#x3D; 2;
@@ -176,10 +176,7 @@ if (window.location.hash !&#x3D;&#x3D; &#x27;&#x27;) {
   var parts &#x3D; hash.split(&#x27;/&#x27;);
   if (parts.length &#x3D;&#x3D;&#x3D; 4) {
     zoom &#x3D; parseInt(parts[0], 10);
-    center &#x3D; [
-      parseFloat(parts[1]),
-      parseFloat(parts[2])
-    ];
+    center &#x3D; [parseFloat(parts[1]), parseFloat(parts[2])];
     rotation &#x3D; parseFloat(parts[3]);
   }
 }
@@ -187,20 +184,19 @@ if (window.location.hash !&#x3D;&#x3D; &#x27;&#x27;) {
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM()
-    })
-  ],
+      source: new OSM(),
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
     center: center,
     zoom: zoom,
-    rotation: rotation
-  })
+    rotation: rotation,
+  }),
 });
 
 var shouldUpdate &#x3D; true;
 var view &#x3D; map.getView();
-var updatePermalink &#x3D; function() {
+var updatePermalink &#x3D; function () {
   if (!shouldUpdate) {
     // do not update the URL when the view was changed in the &#x27;popstate&#x27; handler
     shouldUpdate &#x3D; true;
@@ -208,15 +204,19 @@ var updatePermalink &#x3D; function() {
   }
 
   var center &#x3D; view.getCenter();
-  var hash &#x3D; &#x27;#map&#x3D;&#x27; +
-      view.getZoom() + &#x27;/&#x27; +
-      Math.round(center[0] * 100) / 100 + &#x27;/&#x27; +
-      Math.round(center[1] * 100) / 100 + &#x27;/&#x27; +
-      view.getRotation();
+  var hash &#x3D;
+    &#x27;#map&#x3D;&#x27; +
+    view.getZoom() +
+    &#x27;/&#x27; +
+    Math.round(center[0] * 100) / 100 +
+    &#x27;/&#x27; +
+    Math.round(center[1] * 100) / 100 +
+    &#x27;/&#x27; +
+    view.getRotation();
   var state &#x3D; {
     zoom: view.getZoom(),
     center: view.getCenter(),
-    rotation: view.getRotation()
+    rotation: view.getRotation(),
   };
   window.history.pushState(state, &#x27;map&#x27;, hash);
 };
@@ -225,7 +225,7 @@ map.on(&#x27;moveend&#x27;, updatePermalink);
 
 // restore the view state when navigating through the history, see
 // https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onpopstate
-window.addEventListener(&#x27;popstate&#x27;, function(event) {
+window.addEventListener(&#x27;popstate&#x27;, function (event) {
   if (event.state &#x3D;&#x3D;&#x3D; null) {
     return;
   }
@@ -243,7 +243,7 @@ window.addEventListener(&#x27;popstate&#x27;, function(event) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;permalink&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -255,7 +255,6 @@ window.addEventListener(&#x27;popstate&#x27;, function(event) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="permalink.js"></script>
@@ -271,7 +270,7 @@ window.addEventListener(&#x27;popstate&#x27;, function(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

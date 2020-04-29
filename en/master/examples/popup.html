@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -212,13 +212,14 @@
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
 import Overlay from &#x27;ol/Overlay&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {toStringHDMS} from &#x27;ol/coordinate&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
-import {toLonLat} from &#x27;ol/proj&#x27;;
 import TileJSON from &#x27;ol/source/TileJSON&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {toLonLat} from &#x27;ol/proj&#x27;;
+import {toStringHDMS} from &#x27;ol/coordinate&#x27;;
 
-var key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
+var key &#x3D;
+  &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
 /**
  * Elements that make up the popup.
@@ -227,7 +228,6 @@ var container &#x3D; document.getElementById(&#x27;popup&#x27;);
 var content &#x3D; document.getElementById(&#x27;popup-content&#x27;);
 var closer &#x3D; document.getElementById(&#x27;popup-closer&#x27;);
 
-
 /**
  * Create an overlay to anchor the popup to the map.
  */
@@ -235,21 +235,19 @@ var overlay &#x3D; new Overlay({
   element: container,
   autoPan: true,
   autoPanAnimation: {
-    duration: 250
-  }
+    duration: 250,
+  },
 });
-
 
 /**
  * Add a click handler to hide the popup.
  * @return {boolean} Don&#x27;t follow the href.
  */
-closer.onclick &#x3D; function() {
+closer.onclick &#x3D; function () {
   overlay.setPosition(undefined);
   closer.blur();
   return false;
 };
-
 
 /**
  * Create the map.
@@ -258,29 +256,28 @@ var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new TileJSON({
-        url: &#x27;https://api.tiles.mapbox.com/v4/mapbox.natural-earth-hypso-bathy.json?access_token&#x3D;&#x27; + key,
-        crossOrigin: &#x27;anonymous&#x27;
-      })
-    })
-  ],
+        url:
+          &#x27;https://api.tiles.mapbox.com/v4/mapbox.natural-earth-hypso-bathy.json?access_token&#x3D;&#x27; +
+          key,
+        crossOrigin: &#x27;anonymous&#x27;,
+      }),
+    }) ],
   overlays: [overlay],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
-
 
 /**
  * Add a click handler to the map to render the popup.
  */
-map.on(&#x27;singleclick&#x27;, function(evt) {
+map.on(&#x27;singleclick&#x27;, function (evt) {
   var coordinate &#x3D; evt.coordinate;
   var hdms &#x3D; toStringHDMS(toLonLat(coordinate));
 
-  content.innerHTML &#x3D; &#x27;&lt;p&gt;You clicked here:&lt;/p&gt;&lt;code&gt;&#x27; + hdms +
-      &#x27;&lt;/code&gt;&#x27;;
+  content.innerHTML &#x3D; &#x27;&lt;p&gt;You clicked here:&lt;/p&gt;&lt;code&gt;&#x27; + hdms + &#x27;&lt;/code&gt;&#x27;;
   overlay.setPosition(coordinate);
 });
 </code></pre>
@@ -292,7 +289,7 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;popup&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -304,7 +301,6 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="popup.js"></script>
@@ -320,7 +316,7 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

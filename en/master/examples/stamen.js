@@ -1,2 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[130],{366:function(e,a,n){"use strict";n.r(a);var r=n(3),w=n(2),o=n(5),c=n(4),s=n(64);new r.a({layers:[new o.a({source:new s.a({layer:"watercolor"})}),new o.a({source:new s.a({layer:"terrain-labels"})})],target:"map",view:new w.a({center:Object(c.f)([-122.416667,37.783333]),zoom:12})})}},[[366,0]]]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[134],{371:function(e,a,n){"use strict";n.r(a);var r=n(3),w=n(64),o=n(5),c=n(2),s=n(4);new r.a({layers:[new o.a({source:new w.a({layer:"watercolor"})}),new o.a({source:new w.a({layer:"terrain-labels"})})],target:"map",view:new c.a({center:Object(s.f)([-122.416667,37.783333]),zoom:12})})}},[[371,0]]]);
 //# sourceMappingURL=stamen.js.map

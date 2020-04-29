@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -174,13 +174,19 @@
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Feature from &#x27;ol/Feature&#x27;;
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import Polyline from &#x27;ol/format/Polyline&#x27;;
 import Point from &#x27;ol/geom/Point&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-import XYZ from &#x27;ol/source/XYZ&#x27;;
+import Polyline from &#x27;ol/format/Polyline&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
-import {Circle as CircleStyle, Fill, Icon, Stroke, Style} from &#x27;ol/style&#x27;;
+import View from &#x27;ol/View&#x27;;
+import XYZ from &#x27;ol/source/XYZ&#x27;;
+import {
+  Circle as CircleStyle,
+  Fill,
+  Icon,
+  Stroke,
+  Style,
+} from &#x27;ol/style&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {getVectorContext} from &#x27;ol/render&#x27;;
 
 // This long string is placed here due to jsFiddle limitations.
@@ -224,14 +230,15 @@ var polyline &#x3D; [
   &#x27;ab@&#x60;CuOlC}YnAcV&#x60;@_^m@aeB}@yk@YuTuBg^uCkZiGk\\yGeY}Lu_@oOsZiTe[uWi[sl@&#x27;,
   &#x27;mo@soAauAsrBgzBqgAglAyd@ig@asAcyAklA}qAwHkGi{@s~@goAmsAyDeEirB_{B}IsJ&#x27;,
   &#x27;uEeFymAssAkdAmhAyTcVkFeEoKiH}l@kp@wg@sj@ku@ey@uh@kj@}EsFmG}Jk^_r@_f@m&#x27;,
-  &#x27;~@ym@yjA??a@cFd@kBrCgDbAUnAcBhAyAdk@et@??kF}D??OL&#x27;
-].join(&#x27;&#x27;);
+  &#x27;~@ym@yjA??a@cFd@kBrCgDbAUnAcBhAyAdk@et@??kF}D??OL&#x27; ].join(&#x27;&#x27;);
 
-var route &#x3D; /** @type {import(&quot;../src/ol/geom/LineString.js&quot;).default} */ (new Polyline({
-  factor: 1e6
-}).readGeometry(polyline, {
+var route &#x3D; /** @type {import(&quot;../src/ol/geom/LineString.js&quot;).default} */ (new Polyline(
+  {
+    factor: 1e6,
+  }
+).readGeometry(polyline, {
   dataProjection: &#x27;EPSG:4326&#x27;,
-  featureProjection: &#x27;EPSG:3857&#x27;
+  featureProjection: &#x27;EPSG:3857&#x27;,
 }));
 
 var routeCoords &#x3D; route.getCoordinates();
@@ -239,42 +246,46 @@ var routeLength &#x3D; routeCoords.length;
 
 var routeFeature &#x3D; new Feature({
   type: &#x27;route&#x27;,
-  geometry: route
+  geometry: route,
 });
-var geoMarker &#x3D; /** @type Feature&lt;import(&quot;../src/ol/geom/Point&quot;).default&gt; */(new Feature({
-  type: &#x27;geoMarker&#x27;,
-  geometry: new Point(routeCoords[0])
-}));
+var geoMarker &#x3D; /** @type Feature&lt;import(&quot;../src/ol/geom/Point&quot;).default&gt; */ (new Feature(
+  {
+    type: &#x27;geoMarker&#x27;,
+    geometry: new Point(routeCoords[0]),
+  }
+));
 var startMarker &#x3D; new Feature({
   type: &#x27;icon&#x27;,
-  geometry: new Point(routeCoords[0])
+  geometry: new Point(routeCoords[0]),
 });
 var endMarker &#x3D; new Feature({
   type: &#x27;icon&#x27;,
-  geometry: new Point(routeCoords[routeLength - 1])
+  geometry: new Point(routeCoords[routeLength - 1]),
 });
 
 var styles &#x3D; {
   &#x27;route&#x27;: new Style({
     stroke: new Stroke({
-      width: 6, color: [237, 212, 0, 0.8]
-    })
+      width: 6,
+      color: [237, 212, 0, 0.8],
+    }),
   }),
   &#x27;icon&#x27;: new Style({
     image: new Icon({
       anchor: [0.5, 1],
-      src: &#x27;data/icon.png&#x27;
-    })
+      src: &#x27;data/icon.png&#x27;,
+    }),
   }),
   &#x27;geoMarker&#x27;: new Style({
     image: new CircleStyle({
       radius: 7,
       fill: new Fill({color: &#x27;black&#x27;}),
       stroke: new Stroke({
-        color: &#x27;white&#x27;, width: 2
-      })
-    })
-  })
+        color: &#x27;white&#x27;,
+        width: 2,
+      }),
+    }),
+  }),
 };
 
 var animating &#x3D; false;
@@ -284,19 +295,20 @@ var startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
 
 var vectorLayer &#x3D; new VectorLayer({
   source: new VectorSource({
-    features: [routeFeature, geoMarker, startMarker, endMarker]
+    features: [routeFeature, geoMarker, startMarker, endMarker],
   }),
-  style: function(feature) {
+  style: function (feature) {
     // hide geoMarker if animation is active
     if (animating &amp;&amp; feature.get(&#x27;type&#x27;) &#x3D;&#x3D;&#x3D; &#x27;geoMarker&#x27;) {
       return null;
     }
     return styles[feature.get(&#x27;type&#x27;)];
-  }
+  },
 });
 
 var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
-var attributions &#x3D; &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
+var attributions &#x3D;
+  &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
 var center &#x3D; [-5639523.95, -3501274.52];
@@ -306,21 +318,20 @@ var map &#x3D; new Map({
     center: center,
     zoom: 10,
     minZoom: 2,
-    maxZoom: 19
+    maxZoom: 19,
   }),
   layers: [
     new TileLayer({
       source: new XYZ({
         attributions: attributions,
         url: &#x27;https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
-        tileSize: 512
-      })
+        tileSize: 512,
+      }),
     }),
-    vectorLayer
-  ]
+    vectorLayer ],
 });
 
-var moveFeature &#x3D; function(event) {
+var moveFeature &#x3D; function (event) {
   var vectorContext &#x3D; getVectorContext(event);
   var frameState &#x3D; event.frameState;
 
@@ -328,7 +339,7 @@ var moveFeature &#x3D; function(event) {
     var elapsedTime &#x3D; frameState.time - now;
     // here the trick to increase speed is to jump some indexes
     // on lineString coordinates
-    var index &#x3D; Math.round(speed * elapsedTime / 1000);
+    var index &#x3D; Math.round((speed * elapsedTime) / 1000);
 
     if (index &gt;&#x3D; routeLength) {
       stopAnimation(true);
@@ -360,7 +371,6 @@ function startAnimation() {
   }
 }
 
-
 /**
  * @param {boolean} ended end of animation.
  */
@@ -386,7 +396,7 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;feature-move-animation&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -398,7 +408,6 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="feature-move-animation.js"></script>
@@ -414,7 +423,7 @@ startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

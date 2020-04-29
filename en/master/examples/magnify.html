@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -161,14 +161,15 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
-import {fromLonLat} from &#x27;ol/proj&#x27;;
+import View from &#x27;ol/View&#x27;;
 import XYZ from &#x27;ol/source/XYZ&#x27;;
+import {fromLonLat} from &#x27;ol/proj&#x27;;
 import {getRenderPixel} from &#x27;ol/render&#x27;;
 
 var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
-var attributions &#x3D; &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
+var attributions &#x3D;
+  &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
 var imagery &#x3D; new TileLayer({
@@ -176,8 +177,8 @@ var imagery &#x3D; new TileLayer({
     attributions: attributions,
     url: &#x27;https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
     maxZoom: 20,
-    crossOrigin: &#x27;&#x27;
-  })
+    crossOrigin: &#x27;&#x27;,
+  }),
 });
 
 var container &#x3D; document.getElementById(&#x27;map&#x27;);
@@ -187,12 +188,12 @@ var map &#x3D; new Map({
   target: container,
   view: new View({
     center: fromLonLat([-109, 46.5]),
-    zoom: 6
-  })
+    zoom: 6,
+  }),
 });
 
 var radius &#x3D; 75;
-document.addEventListener(&#x27;keydown&#x27;, function(evt) {
+document.addEventListener(&#x27;keydown&#x27;, function (evt) {
   if (evt.which &#x3D;&#x3D;&#x3D; 38) {
     radius &#x3D; Math.min(radius + 5, 150);
     map.render();
@@ -207,22 +208,26 @@ document.addEventListener(&#x27;keydown&#x27;, function(evt) {
 // get the pixel position with every move
 var mousePosition &#x3D; null;
 
-container.addEventListener(&#x27;mousemove&#x27;, function(event) {
+container.addEventListener(&#x27;mousemove&#x27;, function (event) {
   mousePosition &#x3D; map.getEventPixel(event);
   map.render();
 });
 
-container.addEventListener(&#x27;mouseout&#x27;, function() {
+container.addEventListener(&#x27;mouseout&#x27;, function () {
   mousePosition &#x3D; null;
   map.render();
 });
 
 // after rendering the layer, show an oversampled version around the pointer
-imagery.on(&#x27;postrender&#x27;, function(event) {
+imagery.on(&#x27;postrender&#x27;, function (event) {
   if (mousePosition) {
     var pixel &#x3D; getRenderPixel(event, mousePosition);
-    var offset &#x3D; getRenderPixel(event, [mousePosition[0] + radius, mousePosition[1]]);
-    var half &#x3D; Math.sqrt(Math.pow(offset[0] - pixel[0], 2) + Math.pow(offset[1] - pixel[1], 2));
+    var offset &#x3D; getRenderPixel(event, [
+      mousePosition[0] + radius,
+      mousePosition[1] ]);
+    var half &#x3D; Math.sqrt(
+      Math.pow(offset[0] - pixel[0], 2) + Math.pow(offset[1] - pixel[1], 2)
+    );
     var context &#x3D; event.context;
     var centerX &#x3D; pixel[0];
     var centerY &#x3D; pixel[1];
@@ -253,7 +258,7 @@ imagery.on(&#x27;postrender&#x27;, function(event) {
     }
     context.beginPath();
     context.arc(centerX, centerY, half, 0, 2 * Math.PI);
-    context.lineWidth &#x3D; 3 * half / radius;
+    context.lineWidth &#x3D; (3 * half) / radius;
     context.strokeStyle &#x3D; &#x27;rgba(255,255,255,0.5)&#x27;;
     context.putImageData(dest, originX, originY);
     context.stroke();
@@ -269,7 +274,7 @@ imagery.on(&#x27;postrender&#x27;, function(event) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;magnify&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -281,7 +286,6 @@ imagery.on(&#x27;postrender&#x27;, function(event) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="magnify.js"></script>
@@ -297,7 +301,7 @@ imagery.on(&#x27;postrender&#x27;, function(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

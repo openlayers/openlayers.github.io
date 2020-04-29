@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -143,7 +143,7 @@
     &lt;title&gt;Mapbox Vector Tiles&lt;/title&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://openlayers.org/en/v6.2.2/examples/resources/mapbox-streets-v6-style.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://openlayers.org/en/v6.3.2-dev/examples/resources/mapbox-streets-v6-style.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -165,36 +165,38 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import MVT from &#x27;ol/format/MVT&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import VectorTileLayer from &#x27;ol/layer/VectorTile&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {Fill, Icon, Stroke, Style, Text} from &#x27;ol/style&#x27;;
 
-
-var key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
+var key &#x3D;
+  &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
 var map &#x3D; new Map({
   layers: [
     new VectorTileLayer({
       declutter: true,
       source: new VectorTileSource({
-        attributions: &#x27;© &lt;a href&#x3D;&quot;https://www.mapbox.com/map-feedback/&quot;&gt;Mapbox&lt;/a&gt; &#x27; +
+        attributions:
+          &#x27;© &lt;a href&#x3D;&quot;https://www.mapbox.com/map-feedback/&quot;&gt;Mapbox&lt;/a&gt; &#x27; +
           &#x27;© &lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot;&gt;&#x27; +
           &#x27;OpenStreetMap contributors&lt;/a&gt;&#x27;,
         format: new MVT(),
-        url: &#x27;https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/&#x27; +
-            &#x27;{z}/{x}/{y}.vector.pbf?access_token&#x3D;&#x27; + key
+        url:
+          &#x27;https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/&#x27; +
+          &#x27;{z}/{x}/{y}.vector.pbf?access_token&#x3D;&#x27; +
+          key,
       }),
-      style: createMapboxStreetsV6Style(Style, Fill, Stroke, Icon, Text)
-    })
-  ],
+      style: createMapboxStreetsV6Style(Style, Fill, Stroke, Icon, Text),
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 </code></pre>
       </div>
@@ -205,7 +207,7 @@ var map &#x3D; new Map({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;mapbox-vector-tiles&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -217,7 +219,6 @@ var map &#x3D; new Map({
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="mapbox-vector-tiles.js"></script>
@@ -233,7 +234,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

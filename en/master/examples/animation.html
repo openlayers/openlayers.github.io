@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -177,11 +177,11 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
+import OSM from &#x27;ol/source/OSM&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {easeIn, easeOut} from &#x27;ol/easing&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
-import OSM from &#x27;ol/source/OSM&#x27;;
 
 var london &#x3D; fromLonLat([-0.12755, 51.507222]);
 var moscow &#x3D; fromLonLat([37.6178, 55.7517]);
@@ -191,7 +191,7 @@ var bern &#x3D; fromLonLat([7.4458, 46.95]);
 
 var view &#x3D; new View({
   center: istanbul,
-  zoom: 6
+  zoom: 6,
 });
 
 var map &#x3D; new Map({
@@ -199,10 +199,9 @@ var map &#x3D; new Map({
   layers: [
     new TileLayer({
       preload: 4,
-      source: new OSM()
-    })
-  ],
-  view: view
+      source: new OSM(),
+    }) ],
+  view: view,
 });
 
 // A bounce easing method (from https://github.com/DmitryBaranovskiy/raphael).
@@ -210,18 +209,18 @@ function bounce(t) {
   var s &#x3D; 7.5625;
   var p &#x3D; 2.75;
   var l;
-  if (t &lt; (1 / p)) {
+  if (t &lt; 1 / p) {
     l &#x3D; s * t * t;
   } else {
-    if (t &lt; (2 / p)) {
-      t -&#x3D; (1.5 / p);
+    if (t &lt; 2 / p) {
+      t -&#x3D; 1.5 / p;
       l &#x3D; s * t * t + 0.75;
     } else {
-      if (t &lt; (2.5 / p)) {
-        t -&#x3D; (2.25 / p);
+      if (t &lt; 2.5 / p) {
+        t -&#x3D; 2.25 / p;
         l &#x3D; s * t * t + 0.9375;
       } else {
-        t -&#x3D; (2.625 / p);
+        t -&#x3D; 2.625 / p;
         l &#x3D; s * t * t + 0.984375;
       }
     }
@@ -231,77 +230,84 @@ function bounce(t) {
 
 // An elastic easing method (from https://github.com/DmitryBaranovskiy/raphael).
 function elastic(t) {
-  return Math.pow(2, -10 * t) * Math.sin((t - 0.075) * (2 * Math.PI) / 0.3) + 1;
+  return (
+    Math.pow(2, -10 * t) * Math.sin(((t - 0.075) * (2 * Math.PI)) / 0.3) + 1
+  );
 }
 
 function onClick(id, callback) {
   document.getElementById(id).addEventListener(&#x27;click&#x27;, callback);
 }
 
-onClick(&#x27;rotate-left&#x27;, function() {
+onClick(&#x27;rotate-left&#x27;, function () {
   view.animate({
-    rotation: view.getRotation() + Math.PI / 2
+    rotation: view.getRotation() + Math.PI / 2,
   });
 });
 
-onClick(&#x27;rotate-right&#x27;, function() {
+onClick(&#x27;rotate-right&#x27;, function () {
   view.animate({
-    rotation: view.getRotation() - Math.PI / 2
+    rotation: view.getRotation() - Math.PI / 2,
   });
 });
 
-onClick(&#x27;rotate-around-rome&#x27;, function() {
+onClick(&#x27;rotate-around-rome&#x27;, function () {
   // Rotation animation takes the shortest arc, so animate in two parts
   var rotation &#x3D; view.getRotation();
-  view.animate({
-    rotation: rotation + Math.PI,
-    anchor: rome,
-    easing: easeIn
-  }, {
-    rotation: rotation + 2 * Math.PI,
-    anchor: rome,
-    easing: easeOut
-  });
+  view.animate(
+    {
+      rotation: rotation + Math.PI,
+      anchor: rome,
+      easing: easeIn,
+    },
+    {
+      rotation: rotation + 2 * Math.PI,
+      anchor: rome,
+      easing: easeOut,
+    }
+  );
 });
 
-onClick(&#x27;pan-to-london&#x27;, function() {
+onClick(&#x27;pan-to-london&#x27;, function () {
   view.animate({
     center: london,
-    duration: 2000
+    duration: 2000,
   });
 });
 
-onClick(&#x27;elastic-to-moscow&#x27;, function() {
+onClick(&#x27;elastic-to-moscow&#x27;, function () {
   view.animate({
     center: moscow,
     duration: 2000,
-    easing: elastic
+    easing: elastic,
   });
 });
 
-onClick(&#x27;bounce-to-istanbul&#x27;, function() {
+onClick(&#x27;bounce-to-istanbul&#x27;, function () {
   view.animate({
     center: istanbul,
     duration: 2000,
-    easing: bounce
+    easing: bounce,
   });
 });
 
-onClick(&#x27;spin-to-rome&#x27;, function() {
+onClick(&#x27;spin-to-rome&#x27;, function () {
   // Rotation animation takes the shortest arc, so animate in two parts
   var center &#x3D; view.getCenter();
-  view.animate({
-    center: [
-      center[0] + (rome[0] - center[0]) / 2,
-      center[1] + (rome[1] - center[1]) / 2
-    ],
-    rotation: Math.PI,
-    easing: easeIn
-  }, {
-    center: rome,
-    rotation: 2 * Math.PI,
-    easing: easeOut
-  });
+  view.animate(
+    {
+      center: [
+        center[0] + (rome[0] - center[0]) / 2,
+        center[1] + (rome[1] - center[1]) / 2 ],
+      rotation: Math.PI,
+      easing: easeIn,
+    },
+    {
+      center: rome,
+      rotation: 2 * Math.PI,
+      easing: easeOut,
+    }
+  );
 });
 
 function flyTo(location, done) {
@@ -319,21 +325,28 @@ function flyTo(location, done) {
       done(complete);
     }
   }
-  view.animate({
-    center: location,
-    duration: duration
-  }, callback);
-  view.animate({
-    zoom: zoom - 1,
-    duration: duration / 2
-  }, {
-    zoom: zoom,
-    duration: duration / 2
-  }, callback);
+  view.animate(
+    {
+      center: location,
+      duration: duration,
+    },
+    callback
+  );
+  view.animate(
+    {
+      zoom: zoom - 1,
+      duration: duration / 2,
+    },
+    {
+      zoom: zoom,
+      duration: duration / 2,
+    },
+    callback
+  );
 }
 
-onClick(&#x27;fly-to-bern&#x27;, function() {
-  flyTo(bern, function() {});
+onClick(&#x27;fly-to-bern&#x27;, function () {
+  flyTo(bern, function () {});
 });
 
 function tour() {
@@ -344,7 +357,7 @@ function tour() {
       ++index;
       if (index &lt; locations.length) {
         var delay &#x3D; index &#x3D;&#x3D;&#x3D; 0 ? 0 : 750;
-        setTimeout(function() {
+        setTimeout(function () {
           flyTo(locations[index], next);
         }, delay);
       } else {
@@ -367,7 +380,7 @@ onClick(&#x27;tour&#x27;, tour);
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;animation&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -379,7 +392,6 @@ onClick(&#x27;tour&#x27;, tour);
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="animation.js"></script>
@@ -395,7 +407,7 @@ onClick(&#x27;tour&#x27;, tour);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

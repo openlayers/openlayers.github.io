@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -201,15 +201,16 @@ Go to
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
-import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
-import {fromLonLat} from &#x27;ol/proj&#x27;;
-import {Raster as RasterSource, TileJSON} from &#x27;ol/source&#x27;;
 import XYZ from &#x27;ol/source/XYZ&#x27;;
+import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
+import {Raster as RasterSource, TileJSON} from &#x27;ol/source&#x27;;
+import {fromLonLat} from &#x27;ol/proj&#x27;;
 
 function flood(pixels, data) {
   var pixel &#x3D; pixels[0];
   if (pixel[3]) {
-    var height &#x3D; -10000 + ((pixel[0] * 256 * 256 + pixel[1] * 256 + pixel[2]) * 0.1);
+    var height &#x3D;
+      -10000 + (pixel[0] * 256 * 256 + pixel[1] * 256 + pixel[2]) * 0.1;
     if (height &lt;&#x3D; data.level) {
       pixel[0] &#x3D; 145;
       pixel[1] &#x3D; 175;
@@ -222,21 +223,24 @@ function flood(pixels, data) {
   return pixel;
 }
 
-var key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
+var key &#x3D;
+  &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 var elevation &#x3D; new TileLayer({
   source: new XYZ({
-    url: &#x27;https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.pngraw?access_token&#x3D;&#x27; + key,
-    crossOrigin: &#x27;anonymous&#x27;
-  })
+    url:
+      &#x27;https://api.mapbox.com/v4/mapbox.terrain-rgb/{z}/{x}/{y}.pngraw?access_token&#x3D;&#x27; +
+      key,
+    crossOrigin: &#x27;anonymous&#x27;,
+  }),
 });
-elevation.on(&#x27;prerender&#x27;, function(evt) {
+elevation.on(&#x27;prerender&#x27;, function (evt) {
   evt.context.imageSmoothingEnabled &#x3D; false;
   evt.context.msImageSmoothingEnabled &#x3D; false;
 });
 
 var raster &#x3D; new RasterSource({
   sources: [elevation],
-  operation: flood
+  operation: flood,
 });
 
 var map &#x3D; new Map({
@@ -244,30 +248,31 @@ var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new TileJSON({
-        url: &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-light.json?secure&amp;access_token&#x3D;&#x27; + key,
-        crossOrigin: &#x27;anonymous&#x27;
-      })
+        url:
+          &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-light.json?secure&amp;access_token&#x3D;&#x27; +
+          key,
+        crossOrigin: &#x27;anonymous&#x27;,
+      }),
     }),
     new ImageLayer({
       opacity: 0.6,
-      source: raster
-    })
-  ],
+      source: raster,
+    }) ],
   view: new View({
     center: fromLonLat([-122.3267, 37.8377]),
-    zoom: 11
-  })
+    zoom: 11,
+  }),
 });
 
 var control &#x3D; document.getElementById(&#x27;level&#x27;);
 var output &#x3D; document.getElementById(&#x27;output&#x27;);
-control.addEventListener(&#x27;input&#x27;, function() {
+control.addEventListener(&#x27;input&#x27;, function () {
   output.innerText &#x3D; control.value;
   raster.changed();
 });
 output.innerText &#x3D; control.value;
 
-raster.on(&#x27;beforeoperations&#x27;, function(event) {
+raster.on(&#x27;beforeoperations&#x27;, function (event) {
   event.data.level &#x3D; control.value;
 });
 
@@ -291,7 +296,7 @@ function relocate(event) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;sea-level&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -303,7 +308,6 @@ function relocate(event) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="sea-level.js"></script>
@@ -319,7 +323,7 @@ function relocate(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

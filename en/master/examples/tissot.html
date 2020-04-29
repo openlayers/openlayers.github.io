@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -167,18 +167,18 @@
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Feature from &#x27;ol/Feature&#x27;;
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {circular as circularPolygon} from &#x27;ol/geom/Polygon&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import TileWMS from &#x27;ol/source/TileWMS&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {circular as circularPolygon} from &#x27;ol/geom/Polygon&#x27;;
 
 var vectorLayer4326 &#x3D; new VectorLayer({
-  source: new VectorSource()
+  source: new VectorSource(),
 });
 
 var vectorLayer3857 &#x3D; new VectorLayer({
-  source: new VectorSource()
+  source: new VectorSource(),
 });
 
 var map4326 &#x3D; new Map({
@@ -188,18 +188,17 @@ var map4326 &#x3D; new Map({
         url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
         params: {
           &#x27;LAYERS&#x27;: &#x27;ne:NE1_HR_LC_SR_W_DR&#x27;,
-          &#x27;TILED&#x27;: true
-        }
-      })
+          &#x27;TILED&#x27;: true,
+        },
+      }),
     }),
-    vectorLayer4326
-  ],
+    vectorLayer4326 ],
   target: &#x27;map4326&#x27;,
   view: new View({
     projection: &#x27;EPSG:4326&#x27;,
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 var map3857 &#x3D; new Map({
@@ -209,17 +208,16 @@ var map3857 &#x3D; new Map({
         url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
         params: {
           &#x27;LAYERS&#x27;: &#x27;ne:NE1_HR_LC_SR_W_DR&#x27;,
-          &#x27;TILED&#x27;: true
-        }
-      })
+          &#x27;TILED&#x27;: true,
+        },
+      }),
     }),
-    vectorLayer3857
-  ],
+    vectorLayer3857 ],
   target: &#x27;map3857&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 var radius &#x3D; 800000;
@@ -241,7 +239,7 @@ for (x &#x3D; -180; x &lt; 180; x +&#x3D; 30) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;tissot&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -253,7 +251,6 @@ for (x &#x3D; -180; x &lt; 180; x +&#x3D; 30) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="tissot.js"></script>
@@ -269,7 +266,7 @@ for (x &#x3D; -180; x &lt; 180; x +&#x3D; 30) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

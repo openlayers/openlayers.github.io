@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -178,37 +178,39 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
-import TileJSON from &#x27;ol/source/TileJSON&#x27;;
 import Feature from &#x27;ol/Feature&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import Point from &#x27;ol/geom/Point&#x27;;
+import TileJSON from &#x27;ol/source/TileJSON&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
+import WebGLPointsLayer from &#x27;ol/layer/WebGLPoints&#x27;;
 import {Vector} from &#x27;ol/source&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
-import WebGLPointsLayer from &#x27;ol/layer/WebGLPoints&#x27;;
 
-var key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
+var key &#x3D;
+  &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new TileJSON({
-        url: &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-dark.json?secure&amp;access_token&#x3D;&#x27; + key,
-        crossOrigin: &#x27;anonymous&#x27;
-      })
-    })
-  ],
+        url:
+          &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-dark.json?secure&amp;access_token&#x3D;&#x27; +
+          key,
+        crossOrigin: &#x27;anonymous&#x27;,
+      }),
+    }) ],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
     center: [0, 4000000],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 var vectorSource &#x3D; new Vector({
   features: [],
-  attributions: &#x27;National UFO Reporting Center&#x27;
+  attributions: &#x27;National UFO Reporting Center&#x27;,
 });
 
 var oldColor &#x3D; [255, 160, 110];
@@ -217,14 +219,13 @@ var size &#x3D; 16;
 
 var style &#x3D; {
   variables: {
-    filterShape: &#x27;all&#x27;
+    filterShape: &#x27;all&#x27;,
   },
   filter: [
     &#x27;case&#x27;,
     [&#x27;!&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;filterShape&#x27;], &#x27;all&#x27;],
     [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;shape&#x27;], [&#x27;var&#x27;, &#x27;filterShape&#x27;]],
-    true
-  ],
+    true ],
   symbol: {
     symbolType: &#x27;image&#x27;,
     src: &#x27;data/ufo_shapes.png&#x27;,
@@ -233,44 +234,49 @@ var style &#x3D; {
       &#x27;interpolate&#x27;,
       [&#x27;linear&#x27;],
       [&#x27;get&#x27;, &#x27;year&#x27;],
-      1950, oldColor,
-      2013, newColor
-    ],
+      1950,
+      oldColor,
+      2013,
+      newColor ],
     rotateWithView: false,
-    offset: [
-      0,
-      0
-    ],
+    offset: [0, 0],
     textureCoord: [
       &#x27;match&#x27;,
       [&#x27;get&#x27;, &#x27;shape&#x27;],
-      &#x27;light&#x27;, [0, 0, 0.25, 0.5],
-      &#x27;sphere&#x27;, [0.25, 0, 0.5, 0.5],
-      &#x27;circle&#x27;, [0.25, 0, 0.5, 0.5],
-      &#x27;disc&#x27;, [0.5, 0, 0.75, 0.5],
-      &#x27;oval&#x27;, [0.5, 0, 0.75, 0.5],
-      &#x27;triangle&#x27;, [0.75, 0, 1, 0.5],
-      &#x27;fireball&#x27;, [0, 0.5, 0.25, 1],
-      [0.75, 0.5, 1, 1]
-    ]
-  }
+      &#x27;light&#x27;,
+      [0, 0, 0.25, 0.5],
+      &#x27;sphere&#x27;,
+      [0.25, 0, 0.5, 0.5],
+      &#x27;circle&#x27;,
+      [0.25, 0, 0.5, 0.5],
+      &#x27;disc&#x27;,
+      [0.5, 0, 0.75, 0.5],
+      &#x27;oval&#x27;,
+      [0.5, 0, 0.75, 0.5],
+      &#x27;triangle&#x27;,
+      [0.75, 0, 1, 0.5],
+      &#x27;fireball&#x27;,
+      [0, 0.5, 0.25, 1],
+      [0.75, 0.5, 1, 1] ],
+  },
 };
 
 // key is shape name, value is sightings count
 var shapeTypes &#x3D; {
-  all: 0
+  all: 0,
 };
 var shapeSelect &#x3D; document.getElementById(&#x27;shape-filter&#x27;);
-shapeSelect.addEventListener(&#x27;input&#x27;, function() {
-  style.variables.filterShape &#x3D; shapeSelect.options[shapeSelect.selectedIndex].value;
+shapeSelect.addEventListener(&#x27;input&#x27;, function () {
+  style.variables.filterShape &#x3D;
+    shapeSelect.options[shapeSelect.selectedIndex].value;
   map.render();
 });
 function fillShapeSelect() {
   Object.keys(shapeTypes)
-    .sort(function(a, b) {
+    .sort(function (a, b) {
       return shapeTypes[b] - shapeTypes[a];
     })
-    .forEach(function(shape) {
+    .forEach(function (shape) {
       var option &#x3D; document.createElement(&#x27;option&#x27;);
       option.text &#x3D; shape + &quot; (&quot; + (shapeTypes[shape]) + &quot; sightings)&quot;;
       option.value &#x3D; shape;
@@ -280,7 +286,7 @@ function fillShapeSelect() {
 
 var client &#x3D; new XMLHttpRequest();
 client.open(&#x27;GET&#x27;, &#x27;data/csv/ufo_sighting_data.csv&#x27;);
-client.onload &#x3D; function() {
+client.onload &#x3D; function () {
   var csv &#x3D; client.responseText;
   var features &#x3D; [];
 
@@ -302,13 +308,15 @@ client.onload &#x3D; function() {
     shapeTypes[shape] &#x3D; (shapeTypes[shape] ? shapeTypes[shape] : 0) + 1;
     shapeTypes[&#x27;all&#x27;]++;
 
-    features.push(new Feature({
-      datetime: line[0],
-      year: parseInt(/[0-9]{4}/.exec(line[0])[0]), // extract the year as int
-      shape: shape,
-      duration: line[3],
-      geometry: new Point(coords)
-    }));
+    features.push(
+      new Feature({
+        datetime: line[0],
+        year: parseInt(/[0-9]{4}/.exec(line[0])[0]), // extract the year as int
+        shape: shape,
+        duration: line[3],
+        geometry: new Point(coords),
+      })
+    );
   }
   vectorSource.addFeatures(features);
   fillShapeSelect();
@@ -318,22 +326,29 @@ client.send();
 map.addLayer(
   new WebGLPointsLayer({
     source: vectorSource,
-    style: style
+    style: style,
   })
 );
 
 var info &#x3D; document.getElementById(&#x27;info&#x27;);
-map.on(&#x27;pointermove&#x27;, function(evt) {
+map.on(&#x27;pointermove&#x27;, function (evt) {
   if (map.getView().getInteracting() || map.getView().getAnimating()) {
     return;
   }
   var pixel &#x3D; evt.pixel;
   info.innerText &#x3D; &#x27;&#x27;;
-  map.forEachFeatureAtPixel(pixel, function(feature) {
+  map.forEachFeatureAtPixel(pixel, function (feature) {
     var datetime &#x3D; feature.get(&#x27;datetime&#x27;);
     var duration &#x3D; feature.get(&#x27;duration&#x27;);
     var shape &#x3D; feature.get(&#x27;shape&#x27;);
-    info.innerText &#x3D; &#x27;On &#x27; + datetime + &#x27;, lasted &#x27; + duration + &#x27; seconds and had a &quot;&#x27; + shape + &#x27;&quot; shape.&#x27;;
+    info.innerText &#x3D;
+      &#x27;On &#x27; +
+      datetime +
+      &#x27;, lasted &#x27; +
+      duration +
+      &#x27; seconds and had a &quot;&#x27; +
+      shape +
+      &#x27;&quot; shape.&#x27;;
   });
 });
 </code></pre>
@@ -345,7 +360,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;icon-sprite-webgl&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -357,7 +372,6 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script>window.experimental = true;</script><script src="common.js"></script><script src="icon-sprite-webgl.js"></script>
@@ -373,7 +387,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

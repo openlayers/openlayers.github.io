@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -161,35 +161,35 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-import OSM from &#x27;ol/source/OSM&#x27;;
-import VectorSource from &#x27;ol/source/Vector&#x27;;
-import Style from &#x27;ol/style/Style&#x27;;
 import Fill from &#x27;ol/style/Fill&#x27;;
+import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
+import Map from &#x27;ol/Map&#x27;;
+import OSM from &#x27;ol/source/OSM&#x27;;
 import Stroke from &#x27;ol/style/Stroke&#x27;;
+import Style from &#x27;ol/style/Style&#x27;;
+import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
 var raster &#x3D; new TileLayer({
-  source: new OSM()
+  source: new OSM(),
 });
 
 var highlightStyle &#x3D; new Style({
   fill: new Fill({
-    color: &#x27;rgba(255,255,255,0.7)&#x27;
+    color: &#x27;rgba(255,255,255,0.7)&#x27;,
   }),
   stroke: new Stroke({
     color: &#x27;#3399CC&#x27;,
-    width: 3
-  })
+    width: 3,
+  }),
 });
 
 var vector &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/countries.geojson&#x27;,
-    format: new GeoJSON()
-  })
+    format: new GeoJSON(),
+  }),
 });
 
 var map &#x3D; new Map({
@@ -198,16 +198,16 @@ var map &#x3D; new Map({
   view: new View({
     center: [0, 0],
     zoom: 2,
-    multiWorld: true
-  })
+    multiWorld: true,
+  }),
 });
 
 var selected &#x3D; [];
 
 var status &#x3D; document.getElementById(&#x27;status&#x27;);
 
-map.on(&#x27;singleclick&#x27;, function(e) {
-  map.forEachFeatureAtPixel(e.pixel, function(f) {
+map.on(&#x27;singleclick&#x27;, function (e) {
+  map.forEachFeatureAtPixel(e.pixel, function (f) {
     var selIndex &#x3D; selected.indexOf(f);
     if (selIndex &lt; 0) {
       selected.push(f);
@@ -229,7 +229,7 @@ map.on(&#x27;singleclick&#x27;, function(e) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;select-multiple-features&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -241,7 +241,6 @@ map.on(&#x27;singleclick&#x27;, function(e) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="select-multiple-features.js"></script>
@@ -257,7 +256,7 @@ map.on(&#x27;singleclick&#x27;, function(e) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

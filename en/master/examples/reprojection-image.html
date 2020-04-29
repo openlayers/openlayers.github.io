@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -163,19 +163,22 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {getCenter} from &#x27;ol/extent&#x27;;
-import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
-import {transform} from &#x27;ol/proj&#x27;;
-import Static from &#x27;ol/source/ImageStatic&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
-import {register} from &#x27;ol/proj/proj4&#x27;;
+import Static from &#x27;ol/source/ImageStatic&#x27;;
+import View from &#x27;ol/View&#x27;;
 import proj4 from &#x27;proj4&#x27;;
+import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
+import {getCenter} from &#x27;ol/extent&#x27;;
+import {register} from &#x27;ol/proj/proj4&#x27;;
+import {transform} from &#x27;ol/proj&#x27;;
 
-proj4.defs(&#x27;EPSG:27700&#x27;, &#x27;+proj&#x3D;tmerc +lat_0&#x3D;49 +lon_0&#x3D;-2 +k&#x3D;0.9996012717 &#x27; +
+proj4.defs(
+  &#x27;EPSG:27700&#x27;,
+  &#x27;+proj&#x3D;tmerc +lat_0&#x3D;49 +lon_0&#x3D;-2 +k&#x3D;0.9996012717 &#x27; +
     &#x27;+x_0&#x3D;400000 +y_0&#x3D;-100000 +ellps&#x3D;airy &#x27; +
     &#x27;+towgs84&#x3D;446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 &#x27; +
-    &#x27;+units&#x3D;m +no_defs&#x27;);
+    &#x27;+units&#x3D;m +no_defs&#x27;
+);
 register(proj4);
 
 var imageExtent &#x3D; [0, 0, 700000, 1300000];
@@ -183,23 +186,23 @@ var imageExtent &#x3D; [0, 0, 700000, 1300000];
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM()
+      source: new OSM(),
     }),
     new ImageLayer({
       source: new Static({
-        url: &#x27;https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/&#x27; +
-               &#x27;British_National_Grid.svg/2000px-British_National_Grid.svg.png&#x27;,
+        url:
+          &#x27;https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/&#x27; +
+          &#x27;British_National_Grid.svg/2000px-British_National_Grid.svg.png&#x27;,
         crossOrigin: &#x27;&#x27;,
         projection: &#x27;EPSG:27700&#x27;,
-        imageExtent: imageExtent
-      })
-    })
-  ],
+        imageExtent: imageExtent,
+      }),
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
     center: transform(getCenter(imageExtent), &#x27;EPSG:27700&#x27;, &#x27;EPSG:3857&#x27;),
-    zoom: 4
-  })
+    zoom: 4,
+  }),
 });
 </code></pre>
       </div>
@@ -210,8 +213,8 @@ var map &#x3D; new Map({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;reprojection-image&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;,
-    &quot;proj4&quot;: &quot;2.6.0&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;,
+    &quot;proj4&quot;: &quot;2.6.1&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -223,7 +226,6 @@ var map &#x3D; new Map({
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="reprojection-image.js"></script>
@@ -239,7 +241,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

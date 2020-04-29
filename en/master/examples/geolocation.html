@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -186,45 +186,44 @@
 import Feature from &#x27;ol/Feature&#x27;;
 import Geolocation from &#x27;ol/Geolocation&#x27;;
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import Point from &#x27;ol/geom/Point&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
 var view &#x3D; new View({
   center: [0, 0],
-  zoom: 2
+  zoom: 2,
 });
 
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM()
-    })
-  ],
+      source: new OSM(),
+    }) ],
   target: &#x27;map&#x27;,
-  view: view
+  view: view,
 });
 
 var geolocation &#x3D; new Geolocation({
   // enableHighAccuracy must be set to true to have the heading value.
   trackingOptions: {
-    enableHighAccuracy: true
+    enableHighAccuracy: true,
   },
-  projection: view.getProjection()
+  projection: view.getProjection(),
 });
 
 function el(id) {
   return document.getElementById(id);
 }
 
-el(&#x27;track&#x27;).addEventListener(&#x27;change&#x27;, function() {
+el(&#x27;track&#x27;).addEventListener(&#x27;change&#x27;, function () {
   geolocation.setTracking(this.checked);
 });
 
 // update the HTML page when the position changes.
-geolocation.on(&#x27;change&#x27;, function() {
+geolocation.on(&#x27;change&#x27;, function () {
   el(&#x27;accuracy&#x27;).innerText &#x3D; geolocation.getAccuracy() + &#x27; [m]&#x27;;
   el(&#x27;altitude&#x27;).innerText &#x3D; geolocation.getAltitude() + &#x27; [m]&#x27;;
   el(&#x27;altitudeAccuracy&#x27;).innerText &#x3D; geolocation.getAltitudeAccuracy() + &#x27; [m]&#x27;;
@@ -233,42 +232,43 @@ geolocation.on(&#x27;change&#x27;, function() {
 });
 
 // handle geolocation error.
-geolocation.on(&#x27;error&#x27;, function(error) {
+geolocation.on(&#x27;error&#x27;, function (error) {
   var info &#x3D; document.getElementById(&#x27;info&#x27;);
   info.innerHTML &#x3D; error.message;
   info.style.display &#x3D; &#x27;&#x27;;
 });
 
 var accuracyFeature &#x3D; new Feature();
-geolocation.on(&#x27;change:accuracyGeometry&#x27;, function() {
+geolocation.on(&#x27;change:accuracyGeometry&#x27;, function () {
   accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
 });
 
 var positionFeature &#x3D; new Feature();
-positionFeature.setStyle(new Style({
-  image: new CircleStyle({
-    radius: 6,
-    fill: new Fill({
-      color: &#x27;#3399CC&#x27;
+positionFeature.setStyle(
+  new Style({
+    image: new CircleStyle({
+      radius: 6,
+      fill: new Fill({
+        color: &#x27;#3399CC&#x27;,
+      }),
+      stroke: new Stroke({
+        color: &#x27;#fff&#x27;,
+        width: 2,
+      }),
     }),
-    stroke: new Stroke({
-      color: &#x27;#fff&#x27;,
-      width: 2
-    })
   })
-}));
+);
 
-geolocation.on(&#x27;change:position&#x27;, function() {
+geolocation.on(&#x27;change:position&#x27;, function () {
   var coordinates &#x3D; geolocation.getPosition();
-  positionFeature.setGeometry(coordinates ?
-    new Point(coordinates) : null);
+  positionFeature.setGeometry(coordinates ? new Point(coordinates) : null);
 });
 
 new VectorLayer({
   map: map,
   source: new VectorSource({
-    features: [accuracyFeature, positionFeature]
-  })
+    features: [accuracyFeature, positionFeature],
+  }),
 });
 </code></pre>
       </div>
@@ -279,7 +279,7 @@ new VectorLayer({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;geolocation&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -291,7 +291,6 @@ new VectorLayer({
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="geolocation.js"></script>
@@ -307,7 +306,7 @@ new VectorLayer({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

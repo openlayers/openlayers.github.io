@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -160,88 +160,87 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import Circle from &#x27;ol/geom/Circle&#x27;;
 import Feature from &#x27;ol/Feature&#x27;;
+import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
-import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-import Circle from &#x27;ol/geom/Circle&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
-
+import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
 var image &#x3D; new CircleStyle({
   radius: 5,
   fill: null,
-  stroke: new Stroke({color: &#x27;red&#x27;, width: 1})
+  stroke: new Stroke({color: &#x27;red&#x27;, width: 1}),
 });
 
 var styles &#x3D; {
   &#x27;Point&#x27;: new Style({
-    image: image
+    image: image,
   }),
   &#x27;LineString&#x27;: new Style({
     stroke: new Stroke({
       color: &#x27;green&#x27;,
-      width: 1
-    })
+      width: 1,
+    }),
   }),
   &#x27;MultiLineString&#x27;: new Style({
     stroke: new Stroke({
       color: &#x27;green&#x27;,
-      width: 1
-    })
+      width: 1,
+    }),
   }),
   &#x27;MultiPoint&#x27;: new Style({
-    image: image
+    image: image,
   }),
   &#x27;MultiPolygon&#x27;: new Style({
     stroke: new Stroke({
       color: &#x27;yellow&#x27;,
-      width: 1
+      width: 1,
     }),
     fill: new Fill({
-      color: &#x27;rgba(255, 255, 0, 0.1)&#x27;
-    })
+      color: &#x27;rgba(255, 255, 0, 0.1)&#x27;,
+    }),
   }),
   &#x27;Polygon&#x27;: new Style({
     stroke: new Stroke({
       color: &#x27;blue&#x27;,
       lineDash: [4],
-      width: 3
+      width: 3,
     }),
     fill: new Fill({
-      color: &#x27;rgba(0, 0, 255, 0.1)&#x27;
-    })
+      color: &#x27;rgba(0, 0, 255, 0.1)&#x27;,
+    }),
   }),
   &#x27;GeometryCollection&#x27;: new Style({
     stroke: new Stroke({
       color: &#x27;magenta&#x27;,
-      width: 2
+      width: 2,
     }),
     fill: new Fill({
-      color: &#x27;magenta&#x27;
+      color: &#x27;magenta&#x27;,
     }),
     image: new CircleStyle({
       radius: 10,
       fill: null,
       stroke: new Stroke({
-        color: &#x27;magenta&#x27;
-      })
-    })
+        color: &#x27;magenta&#x27;,
+      }),
+    }),
   }),
   &#x27;Circle&#x27;: new Style({
     stroke: new Stroke({
       color: &#x27;red&#x27;,
-      width: 2
+      width: 2,
     }),
     fill: new Fill({
-      color: &#x27;rgba(255,0,0,0.2)&#x27;
-    })
-  })
+      color: &#x27;rgba(255,0,0,0.2)&#x27;,
+    }),
+  }),
 };
 
-var styleFunction &#x3D; function(feature) {
+var styleFunction &#x3D; function (feature) {
   return styles[feature.getGeometry().getType()];
 };
 
@@ -250,95 +249,139 @@ var geojsonObject &#x3D; {
   &#x27;crs&#x27;: {
     &#x27;type&#x27;: &#x27;name&#x27;,
     &#x27;properties&#x27;: {
-      &#x27;name&#x27;: &#x27;EPSG:3857&#x27;
-    }
+      &#x27;name&#x27;: &#x27;EPSG:3857&#x27;,
+    },
   },
-  &#x27;features&#x27;: [{
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;Point&#x27;,
-      &#x27;coordinates&#x27;: [0, 0]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;LineString&#x27;,
-      &#x27;coordinates&#x27;: [[4e6, -2e6], [8e6, 2e6]]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;LineString&#x27;,
-      &#x27;coordinates&#x27;: [[4e6, 2e6], [8e6, -2e6]]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;Polygon&#x27;,
-      &#x27;coordinates&#x27;: [[[-5e6, -1e6], [-4e6, 1e6], [-3e6, -1e6]]]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;MultiLineString&#x27;,
-      &#x27;coordinates&#x27;: [
-        [[-1e6, -7.5e5], [-1e6, 7.5e5]],
-        [[1e6, -7.5e5], [1e6, 7.5e5]],
-        [[-7.5e5, -1e6], [7.5e5, -1e6]],
-        [[-7.5e5, 1e6], [7.5e5, 1e6]]
-      ]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;MultiPolygon&#x27;,
-      &#x27;coordinates&#x27;: [
-        [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6], [-3e6, 6e6]]],
-        [[[-2e6, 6e6], [-2e6, 8e6], [0, 8e6], [0, 6e6]]],
-        [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6], [3e6, 6e6]]]
-      ]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;GeometryCollection&#x27;,
-      &#x27;geometries&#x27;: [{
-        &#x27;type&#x27;: &#x27;LineString&#x27;,
-        &#x27;coordinates&#x27;: [[-5e6, -5e6], [0, -5e6]]
-      }, {
+  &#x27;features&#x27;: [
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
         &#x27;type&#x27;: &#x27;Point&#x27;,
-        &#x27;coordinates&#x27;: [4e6, -5e6]
-      }, {
+        &#x27;coordinates&#x27;: [0, 0],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;LineString&#x27;,
+        &#x27;coordinates&#x27;: [
+          [4e6, -2e6],
+          [8e6, 2e6] ],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;LineString&#x27;,
+        &#x27;coordinates&#x27;: [
+          [4e6, 2e6],
+          [8e6, -2e6] ],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
         &#x27;type&#x27;: &#x27;Polygon&#x27;,
-        &#x27;coordinates&#x27;: [[[1e6, -6e6], [2e6, -4e6], [3e6, -6e6]]]
-      }]
-    }
-  }]
+        &#x27;coordinates&#x27;: [
+          [
+            [-5e6, -1e6],
+            [-4e6, 1e6],
+            [-3e6, -1e6] ] ],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;MultiLineString&#x27;,
+        &#x27;coordinates&#x27;: [
+          [
+            [-1e6, -7.5e5],
+            [-1e6, 7.5e5] ],
+          [
+            [1e6, -7.5e5],
+            [1e6, 7.5e5] ],
+          [
+            [-7.5e5, -1e6],
+            [7.5e5, -1e6] ],
+          [
+            [-7.5e5, 1e6],
+            [7.5e5, 1e6] ] ],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;MultiPolygon&#x27;,
+        &#x27;coordinates&#x27;: [
+          [
+            [
+              [-5e6, 6e6],
+              [-5e6, 8e6],
+              [-3e6, 8e6],
+              [-3e6, 6e6] ] ],
+          [
+            [
+              [-2e6, 6e6],
+              [-2e6, 8e6],
+              [0, 8e6],
+              [0, 6e6] ] ],
+          [
+            [
+              [1e6, 6e6],
+              [1e6, 8e6],
+              [3e6, 8e6],
+              [3e6, 6e6] ] ] ],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;GeometryCollection&#x27;,
+        &#x27;geometries&#x27;: [
+          {
+            &#x27;type&#x27;: &#x27;LineString&#x27;,
+            &#x27;coordinates&#x27;: [
+              [-5e6, -5e6],
+              [0, -5e6] ],
+          },
+          {
+            &#x27;type&#x27;: &#x27;Point&#x27;,
+            &#x27;coordinates&#x27;: [4e6, -5e6],
+          },
+          {
+            &#x27;type&#x27;: &#x27;Polygon&#x27;,
+            &#x27;coordinates&#x27;: [
+              [
+                [1e6, -6e6],
+                [2e6, -4e6],
+                [3e6, -6e6] ] ],
+          } ],
+      },
+    } ],
 };
 
 var vectorSource &#x3D; new VectorSource({
-  features: (new GeoJSON()).readFeatures(geojsonObject)
+  features: new GeoJSON().readFeatures(geojsonObject),
 });
 
 vectorSource.addFeature(new Feature(new Circle([5e6, 7e6], 1e6)));
 
 var vectorLayer &#x3D; new VectorLayer({
   source: vectorSource,
-  style: styleFunction
+  style: styleFunction,
 });
 
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM()
+      source: new OSM(),
     }),
-    vectorLayer
-  ],
+    vectorLayer ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 </code></pre>
       </div>
@@ -349,7 +392,7 @@ var map &#x3D; new Map({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;geojson&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -361,7 +404,6 @@ var map &#x3D; new Map({
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="geojson.js"></script>
@@ -377,7 +419,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

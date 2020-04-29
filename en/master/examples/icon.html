@@ -98,7 +98,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -170,19 +170,18 @@
 import Feature from &#x27;ol/Feature&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import Overlay from &#x27;ol/Overlay&#x27;;
-import View from &#x27;ol/View&#x27;;
 import Point from &#x27;ol/geom/Point&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import TileJSON from &#x27;ol/source/TileJSON&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {Icon, Style} from &#x27;ol/style&#x27;;
-
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
 var iconFeature &#x3D; new Feature({
   geometry: new Point([0, 0]),
   name: &#x27;Null Island&#x27;,
   population: 4000,
-  rainfall: 500
+  rainfall: 500,
 });
 
 var iconStyle &#x3D; new Style({
@@ -190,25 +189,25 @@ var iconStyle &#x3D; new Style({
     anchor: [0.5, 46],
     anchorXUnits: &#x27;fraction&#x27;,
     anchorYUnits: &#x27;pixels&#x27;,
-    src: &#x27;data/icon.png&#x27;
-  })
+    src: &#x27;data/icon.png&#x27;,
+  }),
 });
 
 iconFeature.setStyle(iconStyle);
 
 var vectorSource &#x3D; new VectorSource({
-  features: [iconFeature]
+  features: [iconFeature],
 });
 
 var vectorLayer &#x3D; new VectorLayer({
-  source: vectorSource
+  source: vectorSource,
 });
 
 var rasterLayer &#x3D; new TileLayer({
   source: new TileJSON({
     url: &#x27;https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json&#x27;,
-    crossOrigin: &#x27;&#x27;
-  })
+    crossOrigin: &#x27;&#x27;,
+  }),
 });
 
 var map &#x3D; new Map({
@@ -216,8 +215,8 @@ var map &#x3D; new Map({
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
     center: [0, 0],
-    zoom: 3
-  })
+    zoom: 3,
+  }),
 });
 
 var element &#x3D; document.getElementById(&#x27;popup&#x27;);
@@ -226,23 +225,22 @@ var popup &#x3D; new Overlay({
   element: element,
   positioning: &#x27;bottom-center&#x27;,
   stopEvent: false,
-  offset: [0, -50]
+  offset: [0, -50],
 });
 map.addOverlay(popup);
 
 // display popup on click
-map.on(&#x27;click&#x27;, function(evt) {
-  var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel,
-    function(feature) {
-      return feature;
-    });
+map.on(&#x27;click&#x27;, function (evt) {
+  var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+    return feature;
+  });
   if (feature) {
     var coordinates &#x3D; feature.getGeometry().getCoordinates();
     popup.setPosition(coordinates);
     $(element).popover({
       placement: &#x27;top&#x27;,
       html: true,
-      content: feature.get(&#x27;name&#x27;)
+      content: feature.get(&#x27;name&#x27;),
     });
     $(element).popover(&#x27;show&#x27;);
   } else {
@@ -251,7 +249,7 @@ map.on(&#x27;click&#x27;, function(evt) {
 });
 
 // change mouse cursor when over marker
-map.on(&#x27;pointermove&#x27;, function(e) {
+map.on(&#x27;pointermove&#x27;, function (e) {
   if (e.dragging) {
     $(element).popover(&#x27;destroy&#x27;);
     return;
@@ -269,7 +267,7 @@ map.on(&#x27;pointermove&#x27;, function(e) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;icon&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -281,7 +279,6 @@ map.on(&#x27;pointermove&#x27;, function(e) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="icon.js"></script>
@@ -297,7 +294,7 @@ map.on(&#x27;pointermove&#x27;, function(e) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -180,12 +180,12 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {defaults as defaultControls} from &#x27;ol/control&#x27;;
 import MousePosition from &#x27;ol/control/MousePosition&#x27;;
-import {createStringXY} from &#x27;ol/coordinate&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {createStringXY} from &#x27;ol/coordinate&#x27;;
+import {defaults as defaultControls} from &#x27;ol/control&#x27;;
 
 var mousePositionControl &#x3D; new MousePosition({
   coordinateFormat: createStringXY(4),
@@ -194,30 +194,29 @@ var mousePositionControl &#x3D; new MousePosition({
   // be placed within the map.
   className: &#x27;custom-mouse-position&#x27;,
   target: document.getElementById(&#x27;mouse-position&#x27;),
-  undefinedHTML: &#x27;&amp;nbsp;&#x27;
+  undefinedHTML: &#x27;&amp;nbsp;&#x27;,
 });
 
 var map &#x3D; new Map({
   controls: defaultControls().extend([mousePositionControl]),
   layers: [
     new TileLayer({
-      source: new OSM()
-    })
-  ],
+      source: new OSM(),
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 var projectionSelect &#x3D; document.getElementById(&#x27;projection&#x27;);
-projectionSelect.addEventListener(&#x27;change&#x27;, function(event) {
+projectionSelect.addEventListener(&#x27;change&#x27;, function (event) {
   mousePositionControl.setProjection(event.target.value);
 });
 
 var precisionInput &#x3D; document.getElementById(&#x27;precision&#x27;);
-precisionInput.addEventListener(&#x27;change&#x27;, function(event) {
+precisionInput.addEventListener(&#x27;change&#x27;, function (event) {
   var format &#x3D; createStringXY(event.target.valueAsNumber);
   mousePositionControl.setCoordinateFormat(format);
 });
@@ -230,7 +229,7 @@ precisionInput.addEventListener(&#x27;change&#x27;, function(event) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;mouse-position&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -242,7 +241,6 @@ precisionInput.addEventListener(&#x27;change&#x27;, function(event) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="mouse-position.js"></script>
@@ -258,7 +256,7 @@ precisionInput.addEventListener(&#x27;change&#x27;, function(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

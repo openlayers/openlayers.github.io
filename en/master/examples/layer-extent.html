@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -168,10 +168,10 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
-import {transformExtent} from &#x27;ol/proj&#x27;;
 import TileJSON from &#x27;ol/source/TileJSON&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {transformExtent} from &#x27;ol/proj&#x27;;
 
 function transform(extent) {
   return transformExtent(extent, &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
@@ -181,24 +181,29 @@ var extents &#x3D; {
   India: transform([68.17665, 7.96553, 97.40256, 35.49401]),
   Argentina: transform([-73.41544, -55.25, -53.62835, -21.83231]),
   Nigeria: transform([2.6917, 4.24059, 14.57718, 13.86592]),
-  Sweden: transform([11.02737, 55.36174, 23.90338, 69.10625])
+  Sweden: transform([11.02737, 55.36174, 23.90338, 69.10625]),
 };
 
-var key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
+var key &#x3D;
+  &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
 var base &#x3D; new TileLayer({
   source: new TileJSON({
-    url: &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-light.json?secure&amp;access_token&#x3D;&#x27; + key,
-    crossOrigin: &#x27;anonymous&#x27;
-  })
+    url:
+      &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-light.json?secure&amp;access_token&#x3D;&#x27; +
+      key,
+    crossOrigin: &#x27;anonymous&#x27;,
+  }),
 });
 
 var overlay &#x3D; new TileLayer({
   extent: extents.India,
   source: new TileJSON({
-    url: &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-black.json?secure&amp;access_token&#x3D;&#x27; + key,
-    crossOrigin: &#x27;anonymous&#x27;
-  })
+    url:
+      &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-black.json?secure&amp;access_token&#x3D;&#x27; +
+      key,
+    crossOrigin: &#x27;anonymous&#x27;,
+  }),
 });
 
 var map &#x3D; new Map({
@@ -206,12 +211,12 @@ var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 1
-  })
+    zoom: 1,
+  }),
 });
 
 for (var key$1 in extents) {
-  document.getElementById(key$1).onclick &#x3D; function(event) {
+  document.getElementById(key$1).onclick &#x3D; function (event) {
     overlay.setExtent(extents[event.target.id]);
   };
 }
@@ -224,7 +229,7 @@ for (var key$1 in extents) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;layer-extent&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -236,7 +241,6 @@ for (var key$1 in extents) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="layer-extent.js"></script>
@@ -252,7 +256,7 @@ for (var key$1 in extents) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -97,7 +97,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -166,12 +166,12 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {getWidth, getCenter} from &#x27;ol/extent&#x27;;
-import {Layer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
 import SourceState from &#x27;ol/source/State&#x27;;
-import {fromLonLat, toLonLat} from &#x27;ol/proj&#x27;;
 import Stamen from &#x27;ol/source/Stamen&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {Layer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
+import {fromLonLat, toLonLat} from &#x27;ol/proj&#x27;;
+import {getCenter, getWidth} from &#x27;ol/extent&#x27;;
 
 var CanvasLayer &#x3D; /*@__PURE__*/(function (Layer) {
   function CanvasLayer(options) {
@@ -179,12 +179,12 @@ var CanvasLayer &#x3D; /*@__PURE__*/(function (Layer) {
 
     this.features &#x3D; options.features;
 
-    this.svg &#x3D; d3.select(document.createElement(&#x27;div&#x27;)).append(&#x27;svg&#x27;)
+    this.svg &#x3D; d3
+      .select(document.createElement(&#x27;div&#x27;))
+      .append(&#x27;svg&#x27;)
       .style(&#x27;position&#x27;, &#x27;absolute&#x27;);
 
-    this.svg.append(&#x27;path&#x27;)
-      .datum(this.features)
-      .attr(&#x27;class&#x27;, &#x27;boundary&#x27;);
+    this.svg.append(&#x27;path&#x27;).datum(this.features).attr(&#x27;class&#x27;, &#x27;boundary&#x27;);
   }
 
   if ( Layer ) CanvasLayer.__proto__ &#x3D; Layer;
@@ -221,7 +221,10 @@ var CanvasLayer &#x3D; /*@__PURE__*/(function (Layer) {
     var scale &#x3D; r / frameState.viewState.resolution;
 
     var center &#x3D; toLonLat(getCenter(frameState.extent), projection);
-    d3Projection.scale(scale).center(center).translate([width / 2, height / 2]);
+    d3Projection
+      .scale(scale)
+      .center(center)
+      .translate([width / 2, height / 2]);
 
     d3Path &#x3D; d3Path.projection(d3Projection);
     d3Path(this.features);
@@ -229,8 +232,7 @@ var CanvasLayer &#x3D; /*@__PURE__*/(function (Layer) {
     this.svg.attr(&#x27;width&#x27;, width);
     this.svg.attr(&#x27;height&#x27;, height);
 
-    this.svg.select(&#x27;path&#x27;)
-      .attr(&#x27;d&#x27;, d3Path);
+    this.svg.select(&#x27;path&#x27;).attr(&#x27;d&#x27;, d3Path);
 
     return this.svg.node();
   };
@@ -242,25 +244,22 @@ var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new Stamen({
-        layer: &#x27;watercolor&#x27;
-      })
-    })
-  ],
+        layer: &#x27;watercolor&#x27;,
+      }),
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
     center: fromLonLat([-97, 38]),
-    zoom: 4
-  })
+    zoom: 4,
+  }),
 });
-
 
 /**
  * Load the topojson data and create an ol/layer/Image for that data.
  */
-d3.json(&#x27;data/topojson/us.json&#x27;).then(function(us) {
-
+d3.json(&#x27;data/topojson/us.json&#x27;).then(function (us) {
   var layer &#x3D; new CanvasLayer({
-    features: topojson.feature(us, us.objects.counties)
+    features: topojson.feature(us, us.objects.counties),
   });
 
   map.addLayer(layer);
@@ -274,7 +273,7 @@ d3.json(&#x27;data/topojson/us.json&#x27;).then(function(us) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;d3&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -286,7 +285,6 @@ d3.json(&#x27;data/topojson/us.json&#x27;).then(function(us) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="d3.js"></script>
@@ -302,7 +300,7 @@ d3.json(&#x27;data/topojson/us.json&#x27;).then(function(us) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

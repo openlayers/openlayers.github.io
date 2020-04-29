@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -166,35 +166,34 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Feature from &#x27;ol/Feature&#x27;;
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import IGC from &#x27;ol/format/IGC&#x27;;
-import {LineString, Point} from &#x27;ol/geom&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import OSM, {ATTRIBUTION} from &#x27;ol/source/OSM&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
+import {LineString, Point} from &#x27;ol/geom&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {getVectorContext} from &#x27;ol/render&#x27;;
-
 
 var colors &#x3D; {
   &#x27;Clement Latour&#x27;: &#x27;rgba(0, 0, 255, 0.7)&#x27;,
   &#x27;Damien de Baesnt&#x27;: &#x27;rgba(0, 215, 255, 0.7)&#x27;,
   &#x27;Sylvain Dhonneur&#x27;: &#x27;rgba(0, 165, 255, 0.7)&#x27;,
   &#x27;Tom Payne&#x27;: &#x27;rgba(0, 255, 255, 0.7)&#x27;,
-  &#x27;Ulrich Prinz&#x27;: &#x27;rgba(0, 215, 255, 0.7)&#x27;
+  &#x27;Ulrich Prinz&#x27;: &#x27;rgba(0, 215, 255, 0.7)&#x27;,
 };
 
 var styleCache &#x3D; {};
-var styleFunction &#x3D; function(feature) {
+var styleFunction &#x3D; function (feature) {
   var color &#x3D; colors[feature.get(&#x27;PLT&#x27;)];
   var style &#x3D; styleCache[color];
   if (!style) {
     style &#x3D; new Style({
       stroke: new Stroke({
         color: color,
-        width: 3
-      })
+        width: 3,
+      }),
     });
     styleCache[color] &#x3D; style;
   }
@@ -208,13 +207,12 @@ var igcUrls &#x3D; [
   &#x27;data/igc/Damien-de-Baenst.igc&#x27;,
   &#x27;data/igc/Sylvain-Dhonneur.igc&#x27;,
   &#x27;data/igc/Tom-Payne.igc&#x27;,
-  &#x27;data/igc/Ulrich-Prinz.igc&#x27;
-];
+  &#x27;data/igc/Ulrich-Prinz.igc&#x27; ];
 
 function get(url, callback) {
   var client &#x3D; new XMLHttpRequest();
   client.open(&#x27;GET&#x27;, url);
-  client.onload &#x3D; function() {
+  client.onload &#x3D; function () {
     callback(client.responseText);
   };
   client.send();
@@ -222,9 +220,10 @@ function get(url, callback) {
 
 var igcFormat &#x3D; new IGC();
 for (var i &#x3D; 0; i &lt; igcUrls.length; ++i) {
-  get(igcUrls[i], function(data) {
-    var features &#x3D; igcFormat.readFeatures(data,
-      {featureProjection: &#x27;EPSG:3857&#x27;});
+  get(igcUrls[i], function (data) {
+    var features &#x3D; igcFormat.readFeatures(data, {
+      featureProjection: &#x27;EPSG:3857&#x27;,
+    });
     vectorSource.addFeatures(features);
   });
 }
@@ -232,9 +231,9 @@ for (var i &#x3D; 0; i &lt; igcUrls.length; ++i) {
 var time &#x3D; {
   start: Infinity,
   stop: -Infinity,
-  duration: 0
+  duration: 0,
 };
-vectorSource.on(&#x27;addfeature&#x27;, function(event) {
+vectorSource.on(&#x27;addfeature&#x27;, function (event) {
   var geometry &#x3D; event.feature.getGeometry();
   time.start &#x3D; Math.min(time.start, geometry.getFirstCoordinate()[2]);
   time.stop &#x3D; Math.max(time.stop, geometry.getLastCoordinate()[2]);
@@ -243,7 +242,7 @@ vectorSource.on(&#x27;addfeature&#x27;, function(event) {
 
 var vectorLayer &#x3D; new VectorLayer({
   source: vectorSource,
-  style: styleFunction
+  style: styleFunction,
 });
 
 var map &#x3D; new Map({
@@ -252,25 +251,23 @@ var map &#x3D; new Map({
       source: new OSM({
         attributions: [
           &#x27;All maps © &lt;a href&#x3D;&quot;https://www.opencyclemap.org/&quot;&gt;OpenCycleMap&lt;/a&gt;&#x27;,
-          ATTRIBUTION
-        ],
-        url: &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27; +
-            &#x27;?apikey&#x3D;Your API key from http://www.thunderforest.com/docs/apikeys/ here&#x27;
-      })
+          ATTRIBUTION ],
+        url:
+          &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27; +
+          &#x27;?apikey&#x3D;Your API key from http://www.thunderforest.com/docs/apikeys/ here&#x27;,
+      }),
     }),
-    vectorLayer
-  ],
+    vectorLayer ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [703365.7089403362, 5714629.865071137],
-    zoom: 9
-  })
+    zoom: 9,
+  }),
 });
-
 
 var point &#x3D; null;
 var line &#x3D; null;
-var displaySnap &#x3D; function(coordinate) {
+var displaySnap &#x3D; function (coordinate) {
   var closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
   var info &#x3D; document.getElementById(&#x27;info&#x27;);
   if (closestFeature &#x3D;&#x3D;&#x3D; null) {
@@ -287,7 +284,7 @@ var displaySnap &#x3D; function(coordinate) {
     }
     var date &#x3D; new Date(closestPoint[2] * 1000);
     info.innerHTML &#x3D;
-        closestFeature.get(&#x27;PLT&#x27;) + &#x27; (&#x27; + date.toUTCString() + &#x27;)&#x27;;
+      closestFeature.get(&#x27;PLT&#x27;) + &#x27; (&#x27; + date.toUTCString() + &#x27;)&#x27;;
     var coordinates &#x3D; [coordinate, [closestPoint[0], closestPoint[1]]];
     if (line &#x3D;&#x3D;&#x3D; null) {
       line &#x3D; new LineString(coordinates);
@@ -298,7 +295,7 @@ var displaySnap &#x3D; function(coordinate) {
   map.render();
 };
 
-map.on(&#x27;pointermove&#x27;, function(evt) {
+map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
@@ -306,23 +303,23 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   displaySnap(coordinate);
 });
 
-map.on(&#x27;click&#x27;, function(evt) {
+map.on(&#x27;click&#x27;, function (evt) {
   displaySnap(evt.coordinate);
 });
 
 var stroke &#x3D; new Stroke({
   color: &#x27;rgba(255,0,0,0.9)&#x27;,
-  width: 1
+  width: 1,
 });
 var style &#x3D; new Style({
   stroke: stroke,
   image: new CircleStyle({
     radius: 5,
     fill: null,
-    stroke: stroke
-  })
+    stroke: stroke,
+  }),
 });
-vectorLayer.on(&#x27;postrender&#x27;, function(evt) {
+vectorLayer.on(&#x27;postrender&#x27;, function (evt) {
   var vectorContext &#x3D; getVectorContext(evt);
   vectorContext.setStyle(style);
   if (point !&#x3D;&#x3D; null) {
@@ -340,16 +337,16 @@ var featureOverlay &#x3D; new VectorLayer({
     image: new CircleStyle({
       radius: 5,
       fill: new Fill({
-        color: &#x27;rgba(255,0,0,0.9)&#x27;
-      })
-    })
-  })
+        color: &#x27;rgba(255,0,0,0.9)&#x27;,
+      }),
+    }),
+  }),
 });
 
-document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, function() {
+document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, function () {
   var value &#x3D; parseInt(this.value, 10) / 100;
-  var m &#x3D; time.start + (time.duration * value);
-  vectorSource.forEachFeature(function(feature) {
+  var m &#x3D; time.start + time.duration * value;
+  vectorSource.forEachFeature(function (feature) {
     var geometry &#x3D; /** @type {import(&quot;../src/ol/geom/LineString.js&quot;).default} */ (feature.getGeometry());
     var coordinate &#x3D; geometry.getCoordinateAtM(m, true);
     var highlight &#x3D; feature.get(&#x27;highlight&#x27;);
@@ -372,7 +369,7 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;igc&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -384,7 +381,6 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="igc.js"></script>
@@ -400,7 +396,7 @@ document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, fu
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

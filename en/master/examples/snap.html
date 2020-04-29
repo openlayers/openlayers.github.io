@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -210,32 +210,32 @@
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
-import {Draw, Modify, Select, Snap} from &#x27;ol/interaction&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
+import {Draw, Modify, Select, Snap} from &#x27;ol/interaction&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
 var raster &#x3D; new TileLayer({
-  source: new OSM()
+  source: new OSM(),
 });
 
 var vector &#x3D; new VectorLayer({
   source: new VectorSource(),
   style: new Style({
     fill: new Fill({
-      color: &#x27;rgba(255, 255, 255, 0.2)&#x27;
+      color: &#x27;rgba(255, 255, 255, 0.2)&#x27;,
     }),
     stroke: new Stroke({
       color: &#x27;#ffcc33&#x27;,
-      width: 2
+      width: 2,
     }),
     image: new CircleStyle({
       radius: 7,
       fill: new Fill({
-        color: &#x27;#ffcc33&#x27;
-      })
-    })
-  })
+        color: &#x27;#ffcc33&#x27;,
+      }),
+    }),
+  }),
 });
 
 var map &#x3D; new Map({
@@ -243,42 +243,42 @@ var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [-11000000, 4600000],
-    zoom: 4
-  })
+    zoom: 4,
+  }),
 });
 
 var ExampleModify &#x3D; {
-  init: function() {
+  init: function () {
     this.select &#x3D; new Select();
     map.addInteraction(this.select);
 
     this.modify &#x3D; new Modify({
-      features: this.select.getFeatures()
+      features: this.select.getFeatures(),
     });
     map.addInteraction(this.modify);
 
     this.setEvents();
   },
-  setEvents: function() {
+  setEvents: function () {
     var selectedFeatures &#x3D; this.select.getFeatures();
 
-    this.select.on(&#x27;change:active&#x27;, function() {
-      selectedFeatures.forEach(function(each) {
+    this.select.on(&#x27;change:active&#x27;, function () {
+      selectedFeatures.forEach(function (each) {
         selectedFeatures.remove(each);
       });
     });
   },
-  setActive: function(active) {
+  setActive: function (active) {
     this.select.setActive(active);
     this.modify.setActive(active);
-  }
+  },
 };
 ExampleModify.init();
 
 var optionsForm &#x3D; document.getElementById(&#x27;options-form&#x27;);
 
 var ExampleDraw &#x3D; {
-  init: function() {
+  init: function () {
     map.addInteraction(this.Point);
     this.Point.setActive(false);
     map.addInteraction(this.LineString);
@@ -290,24 +290,24 @@ var ExampleDraw &#x3D; {
   },
   Point: new Draw({
     source: vector.getSource(),
-    type: &#x27;Point&#x27;
+    type: &#x27;Point&#x27;,
   }),
   LineString: new Draw({
     source: vector.getSource(),
-    type: &#x27;LineString&#x27;
+    type: &#x27;LineString&#x27;,
   }),
   Polygon: new Draw({
     source: vector.getSource(),
-    type: &#x27;Polygon&#x27;
+    type: &#x27;Polygon&#x27;,
   }),
   Circle: new Draw({
     source: vector.getSource(),
-    type: &#x27;Circle&#x27;
+    type: &#x27;Circle&#x27;,
   }),
-  getActive: function() {
+  getActive: function () {
     return this.activeType ? this[this.activeType].getActive() : false;
   },
-  setActive: function(active) {
+  setActive: function (active) {
     var type &#x3D; optionsForm.elements[&#x27;draw-type&#x27;].value;
     if (active) {
       this.activeType &amp;&amp; this[this.activeType].setActive(false);
@@ -317,16 +317,15 @@ var ExampleDraw &#x3D; {
       this.activeType &amp;&amp; this[this.activeType].setActive(false);
       this.activeType &#x3D; null;
     }
-  }
+  },
 };
 ExampleDraw.init();
-
 
 /**
  * Let user change the geometry type.
  * @param {Event} e Change event.
  */
-optionsForm.onchange &#x3D; function(e) {
+optionsForm.onchange &#x3D; function (e) {
   var type &#x3D; e.target.getAttribute(&#x27;name&#x27;);
   var value &#x3D; e.target.value;
   if (type &#x3D;&#x3D; &#x27;draw-type&#x27;) {
@@ -349,7 +348,7 @@ ExampleModify.setActive(false);
 // in order for its map browser event handlers to be fired first. Its handlers
 // are responsible of doing the snapping.
 var snap &#x3D; new Snap({
-  source: vector.getSource()
+  source: vector.getSource(),
 });
 map.addInteraction(snap);
 </code></pre>
@@ -361,7 +360,7 @@ map.addInteraction(snap);
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;snap&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -373,7 +372,6 @@ map.addInteraction(snap);
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="snap.js"></script>
@@ -389,7 +387,7 @@ map.addInteraction(snap);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

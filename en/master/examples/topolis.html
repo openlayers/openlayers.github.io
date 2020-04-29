@@ -99,7 +99,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -171,74 +171,80 @@
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Feature from &#x27;ol/Feature&#x27;;
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {Point, LineString, Polygon} from &#x27;ol/geom&#x27;;
-import {Draw, Snap} from &#x27;ol/interaction&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
-import {Fill, Circle as CircleStyle, Stroke, Style, Text} from &#x27;ol/style&#x27;;
 import MousePosition from &#x27;ol/control/MousePosition&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {
+  Circle as CircleStyle,
+  Fill,
+  Stroke,
+  Style,
+  Text,
+} from &#x27;ol/style&#x27;;
+import {Draw, Snap} from &#x27;ol/interaction&#x27;;
+import {LineString, Point, Polygon} from &#x27;ol/geom&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
 var raster &#x3D; new TileLayer({
-  source: new OSM()
+  source: new OSM(),
 });
 
 var nodes &#x3D; new VectorSource({wrapX: false});
 var nodesLayer &#x3D; new VectorLayer({
   source: nodes,
-  style: function(f) {
+  style: function (f) {
     var style &#x3D; new Style({
       image: new CircleStyle({
         radius: 8,
         fill: new Fill({color: &#x27;rgba(255, 0, 0, 0.2)&#x27;}),
-        stroke: new Stroke({color: &#x27;red&#x27;, width: 1})
+        stroke: new Stroke({color: &#x27;red&#x27;, width: 1}),
       }),
       text: new Text({
         text: f.get(&#x27;node&#x27;).id.toString(),
         fill: new Fill({color: &#x27;red&#x27;}),
         stroke: new Stroke({
           color: &#x27;white&#x27;,
-          width: 3
-        })
-      })
+          width: 3,
+        }),
+      }),
     });
     return [style];
-  }
+  },
 });
 
 var edges &#x3D; new VectorSource({wrapX: false});
 var edgesLayer &#x3D; new VectorLayer({
   source: edges,
-  style: function(f) {
+  style: function (f) {
     var style &#x3D; new Style({
       stroke: new Stroke({
         color: &#x27;blue&#x27;,
-        width: 1
+        width: 1,
       }),
       text: new Text({
         text: f.get(&#x27;edge&#x27;).id.toString(),
         fill: new Fill({color: &#x27;blue&#x27;}),
         stroke: new Stroke({
           color: &#x27;white&#x27;,
-          width: 2
-        })
-      })
+          width: 2,
+        }),
+      }),
     });
     return [style];
-  }
+  },
 });
 
 var faces &#x3D; new VectorSource({wrapX: false});
 var facesLayer &#x3D; new VectorLayer({
   source: faces,
-  style: function(f) {
+  style: function (f) {
     var style &#x3D; new Style({
       stroke: new Stroke({
         color: &#x27;black&#x27;,
-        width: 1
+        width: 1,
       }),
       fill: new Fill({
-        color: &#x27;rgba(0, 255, 0, 0.2)&#x27;
+        color: &#x27;rgba(0, 255, 0, 0.2)&#x27;,
       }),
       text: new Text({
         font: &#x27;bold 12px sans-serif&#x27;,
@@ -246,12 +252,12 @@ var facesLayer &#x3D; new VectorLayer({
         fill: new Fill({color: &#x27;green&#x27;}),
         stroke: new Stroke({
           color: &#x27;white&#x27;,
-          width: 2
-        })
-      })
+          width: 2,
+        }),
+      }),
     });
     return [style];
-  }
+  },
 });
 
 var map &#x3D; new Map({
@@ -259,26 +265,26 @@ var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [-11000000, 4600000],
-    zoom: 16
-  })
+    zoom: 16,
+  }),
 });
 
 var topo &#x3D; topolis.createTopology();
 
 topo.on(&#x27;addnode&#x27;, nodeToFeature);
-topo.on(&#x27;removenode&#x27;, function(e) {
+topo.on(&#x27;removenode&#x27;, function (e) {
   removeElementFeature(nodes, e);
 });
 topo.on(&#x27;addedge&#x27;, edgeToFeature);
-topo.on(&#x27;modedge&#x27;, function(e) {
+topo.on(&#x27;modedge&#x27;, function (e) {
   var feature &#x3D; edges.getFeatureById(e.id);
   feature.setGeometry(new LineString(e.coordinates));
 });
-topo.on(&#x27;removeedge&#x27;, function(e) {
+topo.on(&#x27;removeedge&#x27;, function (e) {
   removeElementFeature(edges, e);
 });
 topo.on(&#x27;addface&#x27;, faceToFeature);
-topo.on(&#x27;removeface&#x27;, function(e) {
+topo.on(&#x27;removeface&#x27;, function (e) {
   removeElementFeature(faces, e);
 });
 
@@ -290,7 +296,7 @@ function removeElementFeature(source, element) {
 function nodeToFeature(node) {
   var feature &#x3D; new Feature({
     geometry: new Point(node.coordinate),
-    node: node
+    node: node,
   });
   feature.setId(node.id);
   nodes.addFeature(feature);
@@ -299,7 +305,7 @@ function nodeToFeature(node) {
 function edgeToFeature(edge) {
   var feature &#x3D; new Feature({
     geometry: new LineString(edge.coordinates),
-    edge: edge
+    edge: edge,
   });
   feature.setId(edge.id);
   edges.addFeature(feature);
@@ -309,7 +315,7 @@ function faceToFeature(face) {
   var coordinates &#x3D; topo.getFaceGeometry(face);
   var feature &#x3D; new Feature({
     geometry: new Polygon(coordinates),
-    face: face
+    face: face,
   });
   feature.setId(face.id);
   faces.addFeature(feature);
@@ -337,7 +343,13 @@ function onDrawend(e) {
     var edgesAtStart &#x3D; topo.getEdgeByPoint(startCoord, 5);
     var edgesAtEnd &#x3D; topo.getEdgeByPoint(endCoord, 5);
     var crossing &#x3D; topo.getEdgesByLine(edgeGeom);
-    if (crossing.length &#x3D;&#x3D;&#x3D; 1 &amp;&amp; !start &amp;&amp; !end &amp;&amp; edgesAtStart.length &#x3D;&#x3D;&#x3D; 0 &amp;&amp; edgesAtEnd.length &#x3D;&#x3D;&#x3D; 0) {
+    if (
+      crossing.length &#x3D;&#x3D;&#x3D; 1 &amp;&amp;
+      !start &amp;&amp;
+      !end &amp;&amp;
+      edgesAtStart.length &#x3D;&#x3D;&#x3D; 0 &amp;&amp;
+      edgesAtEnd.length &#x3D;&#x3D;&#x3D; 0
+    ) {
       topo.remEdgeNewFace(crossing[0]);
       start &#x3D; crossing[0].start;
       if (start.face) {
@@ -358,18 +370,18 @@ function onDrawend(e) {
       edgeGeom[edgeGeom.length - 1] &#x3D; end.coordinate;
     }
     topo.addEdgeNewFaces(start, end, edgeGeom);
-  } catch (e) {
-    toastr.warning(e.toString());
+  } catch (e$1) {
+    toastr.warning(e$1.toString());
   }
 }
 
 var draw &#x3D; new Draw({
-  type: &#x27;LineString&#x27;
+  type: &#x27;LineString&#x27;,
 });
 draw.on(&#x27;drawend&#x27;, onDrawend);
 map.addInteraction(draw);
 var snap &#x3D; new Snap({
-  source: edges
+  source: edges,
 });
 map.addInteraction(snap);
 map.addControl(new MousePosition());
@@ -382,7 +394,7 @@ map.addControl(new MousePosition());
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;topolis&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -394,7 +406,6 @@ map.addControl(new MousePosition());
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="topolis.js"></script>
@@ -410,7 +421,7 @@ map.addControl(new MousePosition());
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

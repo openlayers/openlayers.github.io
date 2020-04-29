@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -167,36 +167,33 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
-import {platformModifierKeyOnly} from &#x27;ol/events/condition&#x27;;
-import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
 import {DragBox, Select} from &#x27;ol/interaction&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
-
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {platformModifierKeyOnly} from &#x27;ol/events/condition&#x27;;
 
 var vectorSource &#x3D; new VectorSource({
   url: &#x27;data/geojson/countries.geojson&#x27;,
-  format: new GeoJSON()
+  format: new GeoJSON(),
 });
-
 
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM()
+      source: new OSM(),
     }),
     new VectorLayer({
-      source: vectorSource
-    })
-  ],
+      source: vectorSource,
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
     zoom: 2,
-    constrainRotation: 16
-  })
+    constrainRotation: 16,
+  }),
 });
 
 // a normal select interaction to handle click
@@ -207,12 +204,12 @@ var selectedFeatures &#x3D; select.getFeatures();
 
 // a DragBox interaction used to select features by drawing boxes
 var dragBox &#x3D; new DragBox({
-  condition: platformModifierKeyOnly
+  condition: platformModifierKeyOnly,
 });
 
 map.addInteraction(dragBox);
 
-dragBox.on(&#x27;boxend&#x27;, function() {
+dragBox.on(&#x27;boxend&#x27;, function () {
   // features that intersect the box geometry are added to the
   // collection of selected features
 
@@ -223,7 +220,7 @@ dragBox.on(&#x27;boxend&#x27;, function() {
   var oblique &#x3D; rotation % (Math.PI / 2) !&#x3D;&#x3D; 0;
   var candidateFeatures &#x3D; oblique ? [] : selectedFeatures;
   var extent &#x3D; dragBox.getGeometry().getExtent();
-  vectorSource.forEachFeatureIntersectingExtent(extent, function(feature) {
+  vectorSource.forEachFeatureIntersectingExtent(extent, function (feature) {
     candidateFeatures.push(feature);
   });
 
@@ -237,7 +234,7 @@ dragBox.on(&#x27;boxend&#x27;, function() {
     var geometry &#x3D; dragBox.getGeometry().clone();
     geometry.rotate(-rotation, anchor);
     var extent$1 &#x3D; geometry.getExtent();
-    candidateFeatures.forEach(function(feature) {
+    candidateFeatures.forEach(function (feature) {
       var geometry &#x3D; feature.getGeometry().clone();
       geometry.rotate(-rotation, anchor);
       if (geometry.intersectsExtent(extent$1)) {
@@ -245,18 +242,17 @@ dragBox.on(&#x27;boxend&#x27;, function() {
       }
     });
   }
-
 });
 
 // clear selection when drawing a new box and when clicking on the map
-dragBox.on(&#x27;boxstart&#x27;, function() {
+dragBox.on(&#x27;boxstart&#x27;, function () {
   selectedFeatures.clear();
 });
 
 var infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
 
-selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
-  var names &#x3D; selectedFeatures.getArray().map(function(feature) {
+selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function () {
+  var names &#x3D; selectedFeatures.getArray().map(function (feature) {
     return feature.get(&#x27;name&#x27;);
   });
   if (names.length &gt; 0) {
@@ -274,7 +270,7 @@ selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;box-selection&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -286,7 +282,6 @@ selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="box-selection.js"></script>
@@ -302,7 +297,7 @@ selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

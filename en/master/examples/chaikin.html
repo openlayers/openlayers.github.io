@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -173,11 +173,11 @@ Start by drawing on the map. Once you finish a drawing, the feature&#39;s geomet
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import Draw from &#x27;ol/interaction/Draw&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
-import Draw from &#x27;ol/interaction/Draw&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
 import smooth from &#x27;chaikin-smooth&#x27;;
 
@@ -196,17 +196,16 @@ var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
-      opacity: 0.5
+      opacity: 0.5,
     }),
     new VectorLayer({
-      source: vectorSource
-    })
-  ],
+      source: vectorSource,
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
-    center: [1078373.5950, 6871994.5910],
-    zoom: 5
-  })
+    center: [1078373.595, 6871994.591],
+    zoom: 5,
+  }),
 });
 
 var shallSmoothen &#x3D; document.getElementById(&#x27;shall-smoothen&#x27;);
@@ -214,10 +213,10 @@ var numIterations &#x3D; document.getElementById(&#x27;iterations&#x27;);
 
 var draw &#x3D; new Draw({
   source: vectorSource,
-  type: &#x27;LineString&#x27;
+  type: &#x27;LineString&#x27;,
 });
 map.addInteraction(draw);
-draw.on(&#x27;drawend&#x27;, function(event) {
+draw.on(&#x27;drawend&#x27;, function (event) {
   if (!shallSmoothen.checked) {
     return;
   }
@@ -236,7 +235,7 @@ draw.on(&#x27;drawend&#x27;, function(event) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;chaikin&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;,
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;,
     &quot;chaikin-smooth&quot;: &quot;^1.0.4&quot;
   },
   &quot;devDependencies&quot;: {
@@ -249,7 +248,6 @@ draw.on(&#x27;drawend&#x27;, function(event) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="chaikin.js"></script>
@@ -265,7 +263,7 @@ draw.on(&#x27;drawend&#x27;, function(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

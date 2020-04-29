@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -181,24 +181,24 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {click, pointerMove, altKeyOnly} from &#x27;ol/events/condition&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-import Select from &#x27;ol/interaction/Select&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
+import Select from &#x27;ol/interaction/Select&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {altKeyOnly, click, pointerMove} from &#x27;ol/events/condition&#x27;;
 
 var raster &#x3D; new TileLayer({
-  source: new OSM()
+  source: new OSM(),
 });
 
 var vector &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/countries.geojson&#x27;,
-    format: new GeoJSON()
-  })
+    format: new GeoJSON(),
+  }),
 });
 
 var map &#x3D; new Map({
@@ -206,8 +206,8 @@ var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 var select &#x3D; null; // ref to currently selected interaction
@@ -217,23 +217,23 @@ var selectSingleClick &#x3D; new Select();
 
 // select interaction working on &quot;click&quot;
 var selectClick &#x3D; new Select({
-  condition: click
+  condition: click,
 });
 
 // select interaction working on &quot;pointermove&quot;
 var selectPointerMove &#x3D; new Select({
-  condition: pointerMove
+  condition: pointerMove,
 });
 
 var selectAltClick &#x3D; new Select({
-  condition: function(mapBrowserEvent) {
+  condition: function (mapBrowserEvent) {
     return click(mapBrowserEvent) &amp;&amp; altKeyOnly(mapBrowserEvent);
-  }
+  },
 });
 
 var selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
 
-var changeInteraction &#x3D; function() {
+var changeInteraction &#x3D; function () {
   if (select !&#x3D;&#x3D; null) {
     map.removeInteraction(select);
   }
@@ -251,15 +251,18 @@ var changeInteraction &#x3D; function() {
   }
   if (select !&#x3D;&#x3D; null) {
     map.addInteraction(select);
-    select.on(&#x27;select&#x27;, function(e) {
-      document.getElementById(&#x27;status&#x27;).innerHTML &#x3D; &#x27;&amp;nbsp;&#x27; +
-          e.target.getFeatures().getLength() +
-          &#x27; selected features (last operation selected &#x27; + e.selected.length +
-          &#x27; and deselected &#x27; + e.deselected.length + &#x27; features)&#x27;;
+    select.on(&#x27;select&#x27;, function (e) {
+      document.getElementById(&#x27;status&#x27;).innerHTML &#x3D;
+        &#x27;&amp;nbsp;&#x27; +
+        e.target.getFeatures().getLength() +
+        &#x27; selected features (last operation selected &#x27; +
+        e.selected.length +
+        &#x27; and deselected &#x27; +
+        e.deselected.length +
+        &#x27; features)&#x27;;
     });
   }
 };
-
 
 /**
  * onchange callback on the select element.
@@ -275,7 +278,7 @@ changeInteraction();
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;select-features&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -287,7 +290,6 @@ changeInteraction();
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="select-features.js"></script>
@@ -303,7 +305,7 @@ changeInteraction();
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

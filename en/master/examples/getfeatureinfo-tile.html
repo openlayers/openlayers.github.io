@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -162,39 +162,41 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import TileWMS from &#x27;ol/source/TileWMS&#x27;;
-
+import View from &#x27;ol/View&#x27;;
 
 var wmsSource &#x3D; new TileWMS({
   url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
   params: {&#x27;LAYERS&#x27;: &#x27;ne:ne&#x27;, &#x27;TILED&#x27;: true},
   serverType: &#x27;geoserver&#x27;,
-  crossOrigin: &#x27;anonymous&#x27;
+  crossOrigin: &#x27;anonymous&#x27;,
 });
 
 var wmsLayer &#x3D; new TileLayer({
-  source: wmsSource
+  source: wmsSource,
 });
 
 var view &#x3D; new View({
   center: [0, 0],
-  zoom: 1
+  zoom: 1,
 });
 
 var map &#x3D; new Map({
   layers: [wmsLayer],
   target: &#x27;map&#x27;,
-  view: view
+  view: view,
 });
 
-map.on(&#x27;singleclick&#x27;, function(evt) {
+map.on(&#x27;singleclick&#x27;, function (evt) {
   document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; &#x27;&#x27;;
   var viewResolution &#x3D; /** @type {number} */ (view.getResolution());
   var url &#x3D; wmsSource.getFeatureInfoUrl(
-    evt.coordinate, viewResolution, &#x27;EPSG:3857&#x27;,
-    {&#x27;INFO_FORMAT&#x27;: &#x27;text/html&#x27;});
+    evt.coordinate,
+    viewResolution,
+    &#x27;EPSG:3857&#x27;,
+    {&#x27;INFO_FORMAT&#x27;: &#x27;text/html&#x27;}
+  );
   if (url) {
     fetch(url)
       .then(function (response) { return response.text(); })
@@ -204,12 +206,12 @@ map.on(&#x27;singleclick&#x27;, function(evt) {
   }
 });
 
-map.on(&#x27;pointermove&#x27;, function(evt) {
+map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
   var pixel &#x3D; map.getEventPixel(evt.originalEvent);
-  var hit &#x3D; map.forEachLayerAtPixel(pixel, function() {
+  var hit &#x3D; map.forEachLayerAtPixel(pixel, function () {
     return true;
   });
   map.getTargetElement().style.cursor &#x3D; hit ? &#x27;pointer&#x27; : &#x27;&#x27;;
@@ -223,7 +225,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;getfeatureinfo-tile&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -235,7 +237,6 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="getfeatureinfo-tile.js"></script>
@@ -251,7 +252,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

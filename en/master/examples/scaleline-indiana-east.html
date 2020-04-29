@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -164,15 +164,17 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {ScaleLine} from &#x27;ol/control&#x27;;
+import OSM from &#x27;ol/source/OSM&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
+import proj4 from &#x27;proj4&#x27;;
+import {ScaleLine} from &#x27;ol/control&#x27;;
 import {fromLonLat, transformExtent} from &#x27;ol/proj&#x27;;
 import {register} from &#x27;ol/proj/proj4&#x27;;
-import OSM from &#x27;ol/source/OSM&#x27;;
-import proj4 from &#x27;proj4&#x27;;
 
-proj4.defs(&#x27;Indiana-East&#x27;, &#x27;PROJCS[&quot;IN83-EF&quot;,GEOGCS[&quot;LL83&quot;,DATUM[&quot;NAD83&quot;,&#x27; +
+proj4.defs(
+  &#x27;Indiana-East&#x27;,
+  &#x27;PROJCS[&quot;IN83-EF&quot;,GEOGCS[&quot;LL83&quot;,DATUM[&quot;NAD83&quot;,&#x27; +
     &#x27;SPHEROID[&quot;GRS1980&quot;,6378137.000,298.25722210]],PRIMEM[&quot;Greenwich&quot;,0],&#x27; +
     &#x27;UNIT[&quot;Degree&quot;,0.017453292519943295]],PROJECTION[&quot;Transverse_Mercator&quot;],&#x27; +
     &#x27;PARAMETER[&quot;false_easting&quot;,328083.333],&#x27; +
@@ -180,24 +182,27 @@ proj4.defs(&#x27;Indiana-East&#x27;, &#x27;PROJCS[&quot;IN83-EF&quot;,GEOGCS[&qu
     &#x27;PARAMETER[&quot;scale_factor&quot;,0.999966666667],&#x27; +
     &#x27;PARAMETER[&quot;central_meridian&quot;,-85.66666666666670],&#x27; +
     &#x27;PARAMETER[&quot;latitude_of_origin&quot;,37.50000000000000],&#x27; +
-    &#x27;UNIT[&quot;Foot_US&quot;,0.30480060960122]]&#x27;);
+    &#x27;UNIT[&quot;Foot_US&quot;,0.30480060960122]]&#x27;
+);
 register(proj4);
 
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM()
-    })
-  ],
+      source: new OSM(),
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
     projection: &#x27;Indiana-East&#x27;,
     center: fromLonLat([-85.685, 39.891], &#x27;Indiana-East&#x27;),
     zoom: 7,
-    extent: transformExtent([-172.54, 23.81, -47.74, 86.46],
-      &#x27;EPSG:4326&#x27;, &#x27;Indiana-East&#x27;),
-    minZoom: 6
-  })
+    extent: transformExtent(
+      [-172.54, 23.81, -47.74, 86.46],
+      &#x27;EPSG:4326&#x27;,
+      &#x27;Indiana-East&#x27;
+    ),
+    minZoom: 6,
+  }),
 });
 
 map.addControl(new ScaleLine({units: &#x27;us&#x27;}));
@@ -210,8 +215,8 @@ map.addControl(new ScaleLine({units: &#x27;us&#x27;}));
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;scaleline-indiana-east&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;,
-    &quot;proj4&quot;: &quot;2.6.0&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;,
+    &quot;proj4&quot;: &quot;2.6.1&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -223,7 +228,6 @@ map.addControl(new ScaleLine({units: &#x27;us&#x27;}));
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="scaleline-indiana-east.js"></script>
@@ -239,7 +243,7 @@ map.addControl(new ScaleLine({units: &#x27;us&#x27;}));
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -159,23 +159,23 @@
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Feature from &#x27;ol/Feature&#x27;;
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {LineString, Point} from &#x27;ol/geom&#x27;;
 import VectorLayer from &#x27;ol/layer/Vector&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
+import {LineString, Point} from &#x27;ol/geom&#x27;;
 import {getVectorContext} from &#x27;ol/render&#x27;;
-
 
 var count &#x3D; 20000;
 var features &#x3D; new Array(count);
 var e &#x3D; 18000000;
 for (var i &#x3D; 0; i &lt; count; ++i) {
   features[i] &#x3D; new Feature({
-    &#x27;geometry&#x27;: new Point(
-      [2 * e * Math.random() - e, 2 * e * Math.random() - e]),
+    &#x27;geometry&#x27;: new Point([
+      2 * e * Math.random() - e,
+      2 * e * Math.random() - e ]),
     &#x27;i&#x27;: i,
-    &#x27;size&#x27;: i % 2 ? 10 : 20
+    &#x27;size&#x27;: i % 2 ? 10 : 20,
   });
 }
 
@@ -184,27 +184,27 @@ var styles &#x3D; {
     image: new CircleStyle({
       radius: 5,
       fill: new Fill({color: &#x27;#666666&#x27;}),
-      stroke: new Stroke({color: &#x27;#bada55&#x27;, width: 1})
-    })
+      stroke: new Stroke({color: &#x27;#bada55&#x27;, width: 1}),
+    }),
   }),
   &#x27;20&#x27;: new Style({
     image: new CircleStyle({
       radius: 10,
       fill: new Fill({color: &#x27;#666666&#x27;}),
-      stroke: new Stroke({color: &#x27;#bada55&#x27;, width: 1})
-    })
-  })
+      stroke: new Stroke({color: &#x27;#bada55&#x27;, width: 1}),
+    }),
+  }),
 };
 
 var vectorSource &#x3D; new VectorSource({
   features: features,
-  wrapX: false
+  wrapX: false,
 });
 var vector &#x3D; new VectorLayer({
   source: vectorSource,
-  style: function(feature) {
+  style: function (feature) {
     return styles[feature.get(&#x27;size&#x27;)];
-  }
+  },
 });
 
 var map &#x3D; new Map({
@@ -212,13 +212,13 @@ var map &#x3D; new Map({
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 var point &#x3D; null;
 var line &#x3D; null;
-var displaySnap &#x3D; function(coordinate) {
+var displaySnap &#x3D; function (coordinate) {
   var closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
   if (closestFeature &#x3D;&#x3D;&#x3D; null) {
     point &#x3D; null;
@@ -240,7 +240,7 @@ var displaySnap &#x3D; function(coordinate) {
   map.render();
 };
 
-map.on(&#x27;pointermove&#x27;, function(evt) {
+map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
@@ -248,23 +248,23 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   displaySnap(coordinate);
 });
 
-map.on(&#x27;click&#x27;, function(evt) {
+map.on(&#x27;click&#x27;, function (evt) {
   displaySnap(evt.coordinate);
 });
 
 var stroke &#x3D; new Stroke({
   color: &#x27;rgba(255,255,0,0.9)&#x27;,
-  width: 3
+  width: 3,
 });
 var style &#x3D; new Style({
   stroke: stroke,
   image: new CircleStyle({
     radius: 10,
-    stroke: stroke
-  })
+    stroke: stroke,
+  }),
 });
 
-vector.on(&#x27;postrender&#x27;, function(evt) {
+vector.on(&#x27;postrender&#x27;, function (evt) {
   var vectorContext &#x3D; getVectorContext(evt);
   vectorContext.setStyle(style);
   if (point !&#x3D;&#x3D; null) {
@@ -275,7 +275,7 @@ vector.on(&#x27;postrender&#x27;, function(evt) {
   }
 });
 
-map.on(&#x27;pointermove&#x27;, function(evt) {
+map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
@@ -296,7 +296,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;synthetic-points&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -308,7 +308,6 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="synthetic-points.js"></script>
@@ -324,7 +323,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

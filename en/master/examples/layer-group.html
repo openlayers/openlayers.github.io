@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -252,67 +252,74 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
+import OSM from &#x27;ol/source/OSM&#x27;;
+import TileJSON from &#x27;ol/source/TileJSON&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Group as LayerGroup, Tile as TileLayer} from &#x27;ol/layer&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
-import OSM from &#x27;ol/source/OSM&#x27;;
-import TileJSON from &#x27;ol/source/TileJSON&#x27;;
 
-var key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
+var key &#x3D;
+  &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM()
-    }), new LayerGroup({
+      source: new OSM(),
+    }),
+    new LayerGroup({
       layers: [
         new TileLayer({
           source: new TileJSON({
-            url: &#x27;https://api.tiles.mapbox.com/v4/mapbox.20110804-hoa-foodinsecurity-3month.json?secure&amp;access_token&#x3D;&#x27; + key,
-            crossOrigin: &#x27;anonymous&#x27;
-          })
+            url:
+              &#x27;https://api.tiles.mapbox.com/v4/mapbox.20110804-hoa-foodinsecurity-3month.json?secure&amp;access_token&#x3D;&#x27; +
+              key,
+            crossOrigin: &#x27;anonymous&#x27;,
+          }),
         }),
         new TileLayer({
           source: new TileJSON({
-            url: &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-borders-light.json?secure&amp;access_token&#x3D;&#x27; + key,
-            crossOrigin: &#x27;anonymous&#x27;
-          })
-        })
-      ]
-    })
-  ],
+            url:
+              &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-borders-light.json?secure&amp;access_token&#x3D;&#x27; +
+              key,
+            crossOrigin: &#x27;anonymous&#x27;,
+          }),
+        }) ],
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
-    center: fromLonLat([37.40570, 8.81566]),
-    zoom: 4
-  })
+    center: fromLonLat([37.4057, 8.81566]),
+    zoom: 4,
+  }),
 });
 
 function bindInputs(layerid, layer) {
   var visibilityInput &#x3D; $(layerid + &#x27; input.visible&#x27;);
-  visibilityInput.on(&#x27;change&#x27;, function() {
+  visibilityInput.on(&#x27;change&#x27;, function () {
     layer.setVisible(this.checked);
   });
   visibilityInput.prop(&#x27;checked&#x27;, layer.getVisible());
 
   var opacityInput &#x3D; $(layerid + &#x27; input.opacity&#x27;);
-  opacityInput.on(&#x27;input change&#x27;, function() {
+  opacityInput.on(&#x27;input change&#x27;, function () {
     layer.setOpacity(parseFloat(this.value));
   });
   opacityInput.val(String(layer.getOpacity()));
 }
-map.getLayers().forEach(function(layer, i) {
+map.getLayers().forEach(function (layer, i) {
   bindInputs(&#x27;#layer&#x27; + i, layer);
   if (layer instanceof LayerGroup) {
-    layer.getLayers().forEach(function(sublayer, j) {
+    layer.getLayers().forEach(function (sublayer, j) {
       bindInputs(&#x27;#layer&#x27; + i + j, sublayer);
     });
   }
 });
 
-$(&#x27;#layertree li &gt; span&#x27;).click(function() {
-  $(this).siblings(&#x27;fieldset&#x27;).toggle();
-}).siblings(&#x27;fieldset&#x27;).hide();
+$(&#x27;#layertree li &gt; span&#x27;)
+  .click(function () {
+    $(this).siblings(&#x27;fieldset&#x27;).toggle();
+  })
+  .siblings(&#x27;fieldset&#x27;)
+  .hide();
 </code></pre>
       </div>
       <div class="row-fluid">
@@ -322,7 +329,7 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;layer-group&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -334,7 +341,6 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="layer-group.js"></script>
@@ -350,7 +356,7 @@ $(&#x27;#layertree li &gt; span&#x27;).click(function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

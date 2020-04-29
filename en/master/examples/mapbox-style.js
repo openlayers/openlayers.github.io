@@ -1,2 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[85],{319:function(o,p,t){"use strict";t.r(p);var s=t(220);Object(s.a)("map","https://api.maptiler.com/maps/topo/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB")}},[[319,0]]]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[87],{322:function(o,n,t){"use strict";t.r(n);var p=t(149),a=t(219);Object(a.a)("map","https://api.maptiler.com/maps/topo/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB").then((function(o){o.addControl(new p.a)}))}},[[322,0]]]);
 //# sourceMappingURL=mapbox-style.js.map

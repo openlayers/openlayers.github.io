@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -169,12 +169,17 @@
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Feature from &#x27;ol/Feature&#x27;;
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import Point from &#x27;ol/geom/Point&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {
+  Circle as CircleStyle,
+  Fill,
+  Stroke,
+  Style,
+  Text,
+} from &#x27;ol/style&#x27;;
 import {Cluster, OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
-import {Circle as CircleStyle, Fill, Stroke, Style, Text} from &#x27;ol/style&#x27;;
-
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
 var distance &#x3D; document.getElementById(&#x27;distance&#x27;);
 
@@ -187,18 +192,18 @@ for (var i &#x3D; 0; i &lt; count; ++i) {
 }
 
 var source &#x3D; new VectorSource({
-  features: features
+  features: features,
 });
 
 var clusterSource &#x3D; new Cluster({
   distance: parseInt(distance.value, 10),
-  source: source
+  source: source,
 });
 
 var styleCache &#x3D; {};
 var clusters &#x3D; new VectorLayer({
   source: clusterSource,
-  style: function(feature) {
+  style: function (feature) {
     var size &#x3D; feature.get(&#x27;features&#x27;).length;
     var style &#x3D; styleCache[size];
     if (!style) {
@@ -206,27 +211,27 @@ var clusters &#x3D; new VectorLayer({
         image: new CircleStyle({
           radius: 10,
           stroke: new Stroke({
-            color: &#x27;#fff&#x27;
+            color: &#x27;#fff&#x27;,
           }),
           fill: new Fill({
-            color: &#x27;#3399CC&#x27;
-          })
+            color: &#x27;#3399CC&#x27;,
+          }),
         }),
         text: new Text({
           text: size.toString(),
           fill: new Fill({
-            color: &#x27;#fff&#x27;
-          })
-        })
+            color: &#x27;#fff&#x27;,
+          }),
+        }),
       });
       styleCache[size] &#x3D; style;
     }
     return style;
-  }
+  },
 });
 
 var raster &#x3D; new TileLayer({
-  source: new OSM()
+  source: new OSM(),
 });
 
 var map &#x3D; new Map({
@@ -234,11 +239,11 @@ var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
-distance.addEventListener(&#x27;input&#x27;, function() {
+distance.addEventListener(&#x27;input&#x27;, function () {
   clusterSource.setDistance(parseInt(distance.value, 10));
 });
 </code></pre>
@@ -250,7 +255,7 @@ distance.addEventListener(&#x27;input&#x27;, function() {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;cluster&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -262,7 +267,6 @@ distance.addEventListener(&#x27;input&#x27;, function() {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="cluster.js"></script>
@@ -278,7 +282,7 @@ distance.addEventListener(&#x27;input&#x27;, function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

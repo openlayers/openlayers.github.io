@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -181,10 +181,9 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import TileJSON from &#x27;ol/source/TileJSON&#x27;;
-
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
 
 /**
  * Renders a progress bar.
@@ -197,11 +196,10 @@ function Progress(el) {
   this.loaded &#x3D; 0;
 }
 
-
 /**
  * Increment the count of loading tiles.
  */
-Progress.prototype.addLoading &#x3D; function() {
+Progress.prototype.addLoading &#x3D; function () {
   if (this.loading &#x3D;&#x3D;&#x3D; 0) {
     this.show();
   }
@@ -209,48 +207,44 @@ Progress.prototype.addLoading &#x3D; function() {
   this.update();
 };
 
-
 /**
  * Increment the count of loaded tiles.
  */
-Progress.prototype.addLoaded &#x3D; function() {
+Progress.prototype.addLoaded &#x3D; function () {
   var this_ &#x3D; this;
-  setTimeout(function() {
+  setTimeout(function () {
     ++this_.loaded;
     this_.update();
   }, 100);
 };
 
-
 /**
  * Update the progress bar.
  */
-Progress.prototype.update &#x3D; function() {
-  var width &#x3D; (this.loaded / this.loading * 100).toFixed(1) + &#x27;%&#x27;;
+Progress.prototype.update &#x3D; function () {
+  var width &#x3D; ((this.loaded / this.loading) * 100).toFixed(1) + &#x27;%&#x27;;
   this.el.style.width &#x3D; width;
   if (this.loading &#x3D;&#x3D;&#x3D; this.loaded) {
     this.loading &#x3D; 0;
     this.loaded &#x3D; 0;
     var this_ &#x3D; this;
-    setTimeout(function() {
+    setTimeout(function () {
       this_.hide();
     }, 500);
   }
 };
 
-
 /**
  * Show the progress bar.
  */
-Progress.prototype.show &#x3D; function() {
+Progress.prototype.show &#x3D; function () {
   this.el.style.visibility &#x3D; &#x27;visible&#x27;;
 };
-
 
 /**
  * Hide the progress bar.
  */
-Progress.prototype.hide &#x3D; function() {
+Progress.prototype.hide &#x3D; function () {
   if (this.loading &#x3D;&#x3D;&#x3D; this.loaded) {
     this.el.style.visibility &#x3D; &#x27;hidden&#x27;;
     this.el.style.width &#x3D; 0;
@@ -259,32 +253,33 @@ Progress.prototype.hide &#x3D; function() {
 
 var progress &#x3D; new Progress(document.getElementById(&#x27;progress&#x27;));
 
-var key &#x3D; &#x27;pk.eyJ1IjoidHNjaGF1YiIsImEiOiJjaW5zYW5lNHkxMTNmdWttM3JyOHZtMmNtIn0.CDIBD8H-G2Gf-cPkIuWtRg&#x27;;
+var key &#x3D;
+  &#x27;pk.eyJ1IjoidHNjaGF1YiIsImEiOiJjaW5zYW5lNHkxMTNmdWttM3JyOHZtMmNtIn0.CDIBD8H-G2Gf-cPkIuWtRg&#x27;;
 var source &#x3D; new TileJSON({
-  url: &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-bright.json?secure&amp;access_token&#x3D;&#x27; + key,
-  crossOrigin: &#x27;anonymous&#x27;
+  url:
+    &#x27;https://api.tiles.mapbox.com/v4/mapbox.world-bright.json?secure&amp;access_token&#x3D;&#x27; +
+    key,
+  crossOrigin: &#x27;anonymous&#x27;,
 });
 
-source.on(&#x27;tileloadstart&#x27;, function() {
+source.on(&#x27;tileloadstart&#x27;, function () {
   progress.addLoading();
 });
 
-source.on(&#x27;tileloadend&#x27;, function() {
+source.on(&#x27;tileloadend&#x27;, function () {
   progress.addLoaded();
 });
-source.on(&#x27;tileloaderror&#x27;, function() {
+source.on(&#x27;tileloaderror&#x27;, function () {
   progress.addLoaded();
 });
 
 var map &#x3D; new Map({
-  layers: [
-    new TileLayer({source: source})
-  ],
+  layers: [new TileLayer({source: source})],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 </code></pre>
       </div>
@@ -295,7 +290,7 @@ var map &#x3D; new Map({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;tile-load-events&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -307,7 +302,6 @@ var map &#x3D; new Map({
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="tile-load-events.js"></script>
@@ -323,7 +317,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

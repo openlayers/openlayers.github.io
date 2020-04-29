@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -128,7 +128,7 @@
 
       <div class="row-fluid">
         <div class="span12">
-          <p id="shortdesc">Demonstrates the use of &#x60;toCanvas&#x60; to create custom icon symbols.</p>
+          <p id="shortdesc">Demonstrates the use of &#x60;toContext&#x60; to create custom icon symbols.</p>
           <div id="docs"><p>This example parses a KML file and renders the features as a vector layer.  The layer is given a <code>style</code> that renders earthquake locations with a custom lightning symbol and a size relative to their magnitude.</p>
 </div>
         </div>
@@ -162,25 +162,31 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import KML from &#x27;ol/format/KML&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import Polygon from &#x27;ol/geom/Polygon&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-import {toContext} from &#x27;ol/render&#x27;;
 import Stamen from &#x27;ol/source/Stamen&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {Fill, Icon, Stroke, Style} from &#x27;ol/style&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {toContext} from &#x27;ol/render&#x27;;
 
-
-var symbol &#x3D; [[0, 0], [4, 2], [6, 0], [10, 5], [6, 3], [4, 5], [0, 0]];
+var symbol &#x3D; [
+  [0, 0],
+  [4, 2],
+  [6, 0],
+  [10, 5],
+  [6, 3],
+  [4, 5],
+  [0, 0] ];
 var scale;
-var scaleFunction &#x3D; function(coordinate) {
+var scaleFunction &#x3D; function (coordinate) {
   return [coordinate[0] * scale, coordinate[1] * scale];
 };
 
 var styleCache &#x3D; {};
-var styleFunction &#x3D; function(feature) {
+var styleFunction &#x3D; function (feature) {
   // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
   // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
   // the Placemark&#x27;s name instead.
@@ -191,19 +197,23 @@ var styleFunction &#x3D; function(feature) {
   var style &#x3D; styleCache[size];
   if (!style) {
     var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-    var vectorContext &#x3D; toContext(canvas.getContext(&#x27;2d&#x27;),
-      {size: [size, size], pixelRatio: 1});
-    vectorContext.setStyle(new Style({
-      fill: new Fill({color: &#x27;rgba(255, 153, 0, 0.4)&#x27;}),
-      stroke: new Stroke({color: &#x27;rgba(255, 204, 0, 0.2)&#x27;, width: 2})
-    }));
+    var vectorContext &#x3D; toContext(canvas.getContext(&#x27;2d&#x27;), {
+      size: [size, size],
+      pixelRatio: 1,
+    });
+    vectorContext.setStyle(
+      new Style({
+        fill: new Fill({color: &#x27;rgba(255, 153, 0, 0.4)&#x27;}),
+        stroke: new Stroke({color: &#x27;rgba(255, 204, 0, 0.2)&#x27;, width: 2}),
+      })
+    );
     vectorContext.drawGeometry(new Polygon([symbol.map(scaleFunction)]));
     style &#x3D; new Style({
       image: new Icon({
         img: canvas,
         imgSize: [size, size],
-        rotation: 1.2
-      })
+        rotation: 1.2,
+      }),
     });
     styleCache[size] &#x3D; style;
   }
@@ -214,16 +224,16 @@ var vector &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
     format: new KML({
-      extractStyles: false
-    })
+      extractStyles: false,
+    }),
   }),
-  style: styleFunction
+  style: styleFunction,
 });
 
 var raster &#x3D; new TileLayer({
   source: new Stamen({
-    layer: &#x27;toner&#x27;
-  })
+    layer: &#x27;toner&#x27;,
+  }),
 });
 
 var map &#x3D; new Map({
@@ -231,8 +241,8 @@ var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 </code></pre>
       </div>
@@ -243,7 +253,7 @@ var map &#x3D; new Map({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;earthquake-custom-symbol&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -255,7 +265,6 @@ var map &#x3D; new Map({
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="earthquake-custom-symbol.js"></script>
@@ -271,7 +280,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

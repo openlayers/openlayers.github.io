@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -195,50 +195,49 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {CartoDB, OSM} from &#x27;ol/source&#x27;;
 
 var mapConfig &#x3D; {
-  &#x27;layers&#x27;: [{
-    &#x27;type&#x27;: &#x27;cartodb&#x27;,
-    &#x27;options&#x27;: {
-      &#x27;cartocss_version&#x27;: &#x27;2.1.1&#x27;,
-      &#x27;cartocss&#x27;: &#x27;#layer { polygon-fill: #F00; }&#x27;,
-      &#x27;sql&#x27;: &#x27;select * from european_countries_e where area &gt; 0&#x27;
-    }
-  }]
+  &#x27;layers&#x27;: [
+    {
+      &#x27;type&#x27;: &#x27;cartodb&#x27;,
+      &#x27;options&#x27;: {
+        &#x27;cartocss_version&#x27;: &#x27;2.1.1&#x27;,
+        &#x27;cartocss&#x27;: &#x27;#layer { polygon-fill: #F00; }&#x27;,
+        &#x27;sql&#x27;: &#x27;select * from european_countries_e where area &gt; 0&#x27;,
+      },
+    } ],
 };
 
 var cartoDBSource &#x3D; new CartoDB({
   account: &#x27;documentation&#x27;,
-  config: mapConfig
+  config: mapConfig,
 });
 
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM()
+      source: new OSM(),
     }),
     new TileLayer({
-      source: cartoDBSource
-    })
-  ],
+      source: cartoDBSource,
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 function setArea(n) {
   mapConfig.layers[0].options.sql &#x3D;
-      &#x27;select * from european_countries_e where area &gt; &#x27; + n;
+    &#x27;select * from european_countries_e where area &gt; &#x27; + n;
   cartoDBSource.setConfig(mapConfig);
 }
 
-
-document.getElementById(&#x27;country-area&#x27;).addEventListener(&#x27;change&#x27;, function() {
+document.getElementById(&#x27;country-area&#x27;).addEventListener(&#x27;change&#x27;, function () {
   setArea(this.value);
 });
 </code></pre>
@@ -250,7 +249,7 @@ document.getElementById(&#x27;country-area&#x27;).addEventListener(&#x27;change&
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;cartodb&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -262,7 +261,6 @@ document.getElementById(&#x27;country-area&#x27;).addEventListener(&#x27;change&
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="cartodb.js"></script>
@@ -278,7 +276,7 @@ document.getElementById(&#x27;country-area&#x27;).addEventListener(&#x27;change&
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

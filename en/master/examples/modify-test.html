@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -163,58 +163,61 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-import {defaults as defaultInteractions, Modify, Select} from &#x27;ol/interaction&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import VectorLayer from &#x27;ol/layer/Vector&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
+import {
+  Modify,
+  Select,
+  defaults as defaultInteractions,
+} from &#x27;ol/interaction&#x27;;
 
-
-var styleFunction &#x3D; (function() {
+var styleFunction &#x3D; (function () {
   var styles &#x3D; {};
   var image &#x3D; new CircleStyle({
     radius: 5,
     fill: null,
-    stroke: new Stroke({color: &#x27;orange&#x27;, width: 2})
+    stroke: new Stroke({color: &#x27;orange&#x27;, width: 2}),
   });
   styles[&#x27;Point&#x27;] &#x3D; new Style({image: image});
   styles[&#x27;Polygon&#x27;] &#x3D; new Style({
     stroke: new Stroke({
       color: &#x27;blue&#x27;,
-      width: 3
+      width: 3,
     }),
     fill: new Fill({
-      color: &#x27;rgba(0, 0, 255, 0.1)&#x27;
-    })
+      color: &#x27;rgba(0, 0, 255, 0.1)&#x27;,
+    }),
   });
   styles[&#x27;MultiLineString&#x27;] &#x3D; new Style({
     stroke: new Stroke({
       color: &#x27;green&#x27;,
-      width: 3
-    })
+      width: 3,
+    }),
   });
   styles[&#x27;MultiPolygon&#x27;] &#x3D; new Style({
     stroke: new Stroke({
       color: &#x27;yellow&#x27;,
-      width: 1
+      width: 1,
     }),
     fill: new Fill({
-      color: &#x27;rgba(255, 255, 0, 0.1)&#x27;
-    })
+      color: &#x27;rgba(255, 255, 0, 0.1)&#x27;,
+    }),
   });
   styles[&#x27;default&#x27;] &#x3D; new Style({
     stroke: new Stroke({
       color: &#x27;red&#x27;,
-      width: 3
+      width: 3,
     }),
     fill: new Fill({
-      color: &#x27;rgba(255, 0, 0, 0.1)&#x27;
+      color: &#x27;rgba(255, 0, 0, 0.1)&#x27;,
     }),
-    image: image
+    image: image,
   });
-  return function(feature) {
+  return function (feature) {
     return styles[feature.getGeometry().getType()] || styles[&#x27;default&#x27;];
   };
 })();
@@ -224,132 +227,189 @@ var geojsonObject &#x3D; {
   &#x27;crs&#x27;: {
     &#x27;type&#x27;: &#x27;name&#x27;,
     &#x27;properties&#x27;: {
-      &#x27;name&#x27;: &#x27;EPSG:3857&#x27;
-    }
+      &#x27;name&#x27;: &#x27;EPSG:3857&#x27;,
+    },
   },
-  &#x27;features&#x27;: [{
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;Point&#x27;,
-      &#x27;coordinates&#x27;: [0, 0]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;MultiPoint&#x27;,
-      &#x27;coordinates&#x27;: [[-2e6, 0], [0, -2e6]]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;LineString&#x27;,
-      &#x27;coordinates&#x27;: [[4e6, -2e6], [8e6, 2e6], [9e6, 2e6]]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;LineString&#x27;,
-      &#x27;coordinates&#x27;: [[4e6, -2e6], [8e6, 2e6], [8e6, 3e6]]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;Polygon&#x27;,
-      &#x27;coordinates&#x27;: [[[-5e6, -1e6], [-4e6, 1e6],
-        [-3e6, -1e6], [-5e6, -1e6]], [[-4.5e6, -0.5e6],
-        [-3.5e6, -0.5e6], [-4e6, 0.5e6], [-4.5e6, -0.5e6]]]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;MultiLineString&#x27;,
-      &#x27;coordinates&#x27;: [
-        [[-1e6, -7.5e5], [-1e6, 7.5e5]],
-        [[-1e6, -7.5e5], [-1e6, 7.5e5], [-5e5, 0], [-1e6, -7.5e5]],
-        [[1e6, -7.5e5], [15e5, 0], [15e5, 0], [1e6, 7.5e5]],
-        [[-7.5e5, -1e6], [7.5e5, -1e6]],
-        [[-7.5e5, 1e6], [7.5e5, 1e6]]
-      ]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;MultiPolygon&#x27;,
-      &#x27;coordinates&#x27;: [
-        [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6],
-          [-3e6, 6e6], [-5e6, 6e6]]],
-        [[[-3e6, 6e6], [-2e6, 8e6], [0, 8e6],
-          [0, 6e6], [-3e6, 6e6]]],
-        [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6],
-          [3e6, 6e6], [1e6, 6e6]]]
-      ]
-    }
-  }, {
-    &#x27;type&#x27;: &#x27;Feature&#x27;,
-    &#x27;geometry&#x27;: {
-      &#x27;type&#x27;: &#x27;GeometryCollection&#x27;,
-      &#x27;geometries&#x27;: [{
-        &#x27;type&#x27;: &#x27;LineString&#x27;,
-        &#x27;coordinates&#x27;: [[-5e6, -5e6], [0, -5e6]]
-      }, {
+  &#x27;features&#x27;: [
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
         &#x27;type&#x27;: &#x27;Point&#x27;,
-        &#x27;coordinates&#x27;: [4e6, -5e6]
-      }, {
+        &#x27;coordinates&#x27;: [0, 0],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;MultiPoint&#x27;,
+        &#x27;coordinates&#x27;: [
+          [-2e6, 0],
+          [0, -2e6] ],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;LineString&#x27;,
+        &#x27;coordinates&#x27;: [
+          [4e6, -2e6],
+          [8e6, 2e6],
+          [9e6, 2e6] ],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;LineString&#x27;,
+        &#x27;coordinates&#x27;: [
+          [4e6, -2e6],
+          [8e6, 2e6],
+          [8e6, 3e6] ],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
         &#x27;type&#x27;: &#x27;Polygon&#x27;,
         &#x27;coordinates&#x27;: [
-          [[1e6, -6e6], [2e6, -4e6], [3e6, -6e6], [1e6, -6e6]]
-        ]
-      }]
-    }
-  }]
+          [
+            [-5e6, -1e6],
+            [-4e6, 1e6],
+            [-3e6, -1e6],
+            [-5e6, -1e6] ],
+          [
+            [-4.5e6, -0.5e6],
+            [-3.5e6, -0.5e6],
+            [-4e6, 0.5e6],
+            [-4.5e6, -0.5e6] ] ],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;MultiLineString&#x27;,
+        &#x27;coordinates&#x27;: [
+          [
+            [-1e6, -7.5e5],
+            [-1e6, 7.5e5] ],
+          [
+            [-1e6, -7.5e5],
+            [-1e6, 7.5e5],
+            [-5e5, 0],
+            [-1e6, -7.5e5] ],
+          [
+            [1e6, -7.5e5],
+            [15e5, 0],
+            [15e5, 0],
+            [1e6, 7.5e5] ],
+          [
+            [-7.5e5, -1e6],
+            [7.5e5, -1e6] ],
+          [
+            [-7.5e5, 1e6],
+            [7.5e5, 1e6] ] ],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;MultiPolygon&#x27;,
+        &#x27;coordinates&#x27;: [
+          [
+            [
+              [-5e6, 6e6],
+              [-5e6, 8e6],
+              [-3e6, 8e6],
+              [-3e6, 6e6],
+              [-5e6, 6e6] ] ],
+          [
+            [
+              [-3e6, 6e6],
+              [-2e6, 8e6],
+              [0, 8e6],
+              [0, 6e6],
+              [-3e6, 6e6] ] ],
+          [
+            [
+              [1e6, 6e6],
+              [1e6, 8e6],
+              [3e6, 8e6],
+              [3e6, 6e6],
+              [1e6, 6e6] ] ] ],
+      },
+    },
+    {
+      &#x27;type&#x27;: &#x27;Feature&#x27;,
+      &#x27;geometry&#x27;: {
+        &#x27;type&#x27;: &#x27;GeometryCollection&#x27;,
+        &#x27;geometries&#x27;: [
+          {
+            &#x27;type&#x27;: &#x27;LineString&#x27;,
+            &#x27;coordinates&#x27;: [
+              [-5e6, -5e6],
+              [0, -5e6] ],
+          },
+          {
+            &#x27;type&#x27;: &#x27;Point&#x27;,
+            &#x27;coordinates&#x27;: [4e6, -5e6],
+          },
+          {
+            &#x27;type&#x27;: &#x27;Polygon&#x27;,
+            &#x27;coordinates&#x27;: [
+              [
+                [1e6, -6e6],
+                [2e6, -4e6],
+                [3e6, -6e6],
+                [1e6, -6e6] ] ],
+          } ],
+      },
+    } ],
 };
 
 var source &#x3D; new VectorSource({
-  features: (new GeoJSON()).readFeatures(geojsonObject)
+  features: new GeoJSON().readFeatures(geojsonObject),
 });
 
 var layer &#x3D; new VectorLayer({
   source: source,
-  style: styleFunction
+  style: styleFunction,
 });
 
-var overlayStyle &#x3D; (function() {
+var overlayStyle &#x3D; (function () {
   var styles &#x3D; {};
   styles[&#x27;Polygon&#x27;] &#x3D; [
     new Style({
       fill: new Fill({
-        color: [255, 255, 255, 0.5]
-      })
+        color: [255, 255, 255, 0.5],
+      }),
     }),
     new Style({
       stroke: new Stroke({
         color: [255, 255, 255, 1],
-        width: 5
-      })
+        width: 5,
+      }),
     }),
     new Style({
       stroke: new Stroke({
         color: [0, 153, 255, 1],
-        width: 3
-      })
-    })
-  ];
+        width: 3,
+      }),
+    }) ];
   styles[&#x27;MultiPolygon&#x27;] &#x3D; styles[&#x27;Polygon&#x27;];
 
   styles[&#x27;LineString&#x27;] &#x3D; [
     new Style({
       stroke: new Stroke({
         color: [255, 255, 255, 1],
-        width: 5
-      })
+        width: 5,
+      }),
     }),
     new Style({
       stroke: new Stroke({
         color: [0, 153, 255, 1],
-        width: 3
-      })
-    })
-  ];
+        width: 3,
+      }),
+    }) ];
   styles[&#x27;MultiLineString&#x27;] &#x3D; styles[&#x27;LineString&#x27;];
 
   styles[&#x27;Point&#x27;] &#x3D; [
@@ -357,38 +417,43 @@ var overlayStyle &#x3D; (function() {
       image: new CircleStyle({
         radius: 7,
         fill: new Fill({
-          color: [0, 153, 255, 1]
+          color: [0, 153, 255, 1],
         }),
         stroke: new Stroke({
           color: [255, 255, 255, 0.75],
-          width: 1.5
-        })
+          width: 1.5,
+        }),
       }),
-      zIndex: 100000
-    })
-  ];
+      zIndex: 100000,
+    }) ];
   styles[&#x27;MultiPoint&#x27;] &#x3D; styles[&#x27;Point&#x27;];
 
   styles[&#x27;GeometryCollection&#x27;] &#x3D; styles[&#x27;Polygon&#x27;].concat(styles[&#x27;Point&#x27;]);
 
-  return function(feature) {
+  return function (feature) {
     return styles[feature.getGeometry().getType()];
   };
 })();
 
 var select &#x3D; new Select({
-  style: overlayStyle
+  style: overlayStyle,
 });
 
 var modify &#x3D; new Modify({
   features: select.getFeatures(),
   style: overlayStyle,
-  insertVertexCondition: function() {
+  insertVertexCondition: function () {
     // prevent new vertices to be added to the polygons
-    return !select.getFeatures().getArray().every(function(feature) {
-      return feature.getGeometry().getType().match(/Polygon/);
-    });
-  }
+    return !select
+      .getFeatures()
+      .getArray()
+      .every(function (feature) {
+        return feature
+          .getGeometry()
+          .getType()
+          .match(/Polygon/);
+      });
+  },
 });
 
 var map &#x3D; new Map({
@@ -398,8 +463,8 @@ var map &#x3D; new Map({
   view: new View({
     center: [0, 1000000],
     zoom: 2,
-    multiWorld: true
-  })
+    multiWorld: true,
+  }),
 });
 </code></pre>
       </div>
@@ -410,7 +475,7 @@ var map &#x3D; new Map({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;modify-test&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -422,7 +487,6 @@ var map &#x3D; new Map({
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="modify-test.js"></script>
@@ -438,7 +502,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

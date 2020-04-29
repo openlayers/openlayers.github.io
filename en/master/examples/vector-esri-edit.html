@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -183,69 +183,94 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import EsriJSON from &#x27;ol/format/EsriJSON&#x27;;
-import {defaults as defaultInteractions, Draw, Modify, Select} from &#x27;ol/interaction&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-import {tile as tileStrategy} from &#x27;ol/loadingstrategy&#x27;;
-import {fromLonLat} from &#x27;ol/proj&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
 import XYZ from &#x27;ol/source/XYZ&#x27;;
+import {
+  Draw,
+  Modify,
+  Select,
+  defaults as defaultInteractions,
+} from &#x27;ol/interaction&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {createXYZ} from &#x27;ol/tilegrid&#x27;;
+import {fromLonLat} from &#x27;ol/proj&#x27;;
+import {tile as tileStrategy} from &#x27;ol/loadingstrategy&#x27;;
 
-
-var serviceUrl &#x3D; &#x27;https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/&#x27; +
-    &#x27;services/PDX_Pedestrian_Districts/FeatureServer/&#x27;;
+var serviceUrl &#x3D;
+  &#x27;https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/&#x27; +
+  &#x27;services/PDX_Pedestrian_Districts/FeatureServer/&#x27;;
 var layer &#x3D; &#x27;0&#x27;;
 
 var esrijsonFormat &#x3D; new EsriJSON();
 
 var vectorSource &#x3D; new VectorSource({
-  loader: function(extent, resolution, projection) {
-    var url &#x3D; serviceUrl + layer + &#x27;/query/?f&#x3D;json&amp;&#x27; +
-        &#x27;returnGeometry&#x3D;true&amp;spatialRel&#x3D;esriSpatialRelIntersects&amp;geometry&#x3D;&#x27; +
-        encodeURIComponent(&#x27;{&quot;xmin&quot;:&#x27; + extent[0] + &#x27;,&quot;ymin&quot;:&#x27; +
-            extent[1] + &#x27;,&quot;xmax&quot;:&#x27; + extent[2] + &#x27;,&quot;ymax&quot;:&#x27; + extent[3] +
-            &#x27;,&quot;spatialReference&quot;:{&quot;wkid&quot;:102100}}&#x27;) +
-        &#x27;&amp;geometryType&#x3D;esriGeometryEnvelope&amp;inSR&#x3D;102100&amp;outFields&#x3D;*&#x27; +
-        &#x27;&amp;outSR&#x3D;102100&#x27;;
-    $.ajax({url: url, dataType: &#x27;jsonp&#x27;, success: function(response) {
-      if (response.error) {
-        alert(response.error.message + &#x27;\n&#x27; +
-            response.error.details.join(&#x27;\n&#x27;));
-      } else {
-        // dataProjection will be read from document
-        var features &#x3D; esrijsonFormat.readFeatures(response, {
-          featureProjection: projection
-        });
-        if (features.length &gt; 0) {
-          vectorSource.addFeatures(features);
+  loader: function (extent, resolution, projection) {
+    var url &#x3D;
+      serviceUrl +
+      layer +
+      &#x27;/query/?f&#x3D;json&amp;&#x27; +
+      &#x27;returnGeometry&#x3D;true&amp;spatialRel&#x3D;esriSpatialRelIntersects&amp;geometry&#x3D;&#x27; +
+      encodeURIComponent(
+        &#x27;{&quot;xmin&quot;:&#x27; +
+          extent[0] +
+          &#x27;,&quot;ymin&quot;:&#x27; +
+          extent[1] +
+          &#x27;,&quot;xmax&quot;:&#x27; +
+          extent[2] +
+          &#x27;,&quot;ymax&quot;:&#x27; +
+          extent[3] +
+          &#x27;,&quot;spatialReference&quot;:{&quot;wkid&quot;:102100}}&#x27;
+      ) +
+      &#x27;&amp;geometryType&#x3D;esriGeometryEnvelope&amp;inSR&#x3D;102100&amp;outFields&#x3D;*&#x27; +
+      &#x27;&amp;outSR&#x3D;102100&#x27;;
+    $.ajax({
+      url: url,
+      dataType: &#x27;jsonp&#x27;,
+      success: function (response) {
+        if (response.error) {
+          alert(
+            response.error.message + &#x27;\n&#x27; + response.error.details.join(&#x27;\n&#x27;)
+          );
+        } else {
+          // dataProjection will be read from document
+          var features &#x3D; esrijsonFormat.readFeatures(response, {
+            featureProjection: projection,
+          });
+          if (features.length &gt; 0) {
+            vectorSource.addFeatures(features);
+          }
         }
-      }
-    }});
+      },
+    });
   },
-  strategy: tileStrategy(createXYZ({
-    tileSize: 512
-  }))
+  strategy: tileStrategy(
+    createXYZ({
+      tileSize: 512,
+    })
+  ),
 });
 
 var vector &#x3D; new VectorLayer({
-  source: vectorSource
+  source: vectorSource,
 });
 
 var raster &#x3D; new TileLayer({
   source: new XYZ({
-    attributions: &#x27;Tiles © &lt;a href&#x3D;&quot;https://services.arcgisonline.com/ArcGIS/&#x27; +
-        &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;,
-    url: &#x27;https://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
-        &#x27;World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#x27;
-  })
+    attributions:
+      &#x27;Tiles © &lt;a href&#x3D;&quot;https://services.arcgisonline.com/ArcGIS/&#x27; +
+      &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;,
+    url:
+      &#x27;https://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
+      &#x27;World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#x27;,
+  }),
 });
 
 var draw &#x3D; new Draw({
   source: vectorSource,
-  type: &#x27;Polygon&#x27;
+  type: &#x27;Polygon&#x27;,
 });
 
 var select &#x3D; new Select();
@@ -253,7 +278,7 @@ select.setActive(false);
 var selected &#x3D; select.getFeatures();
 
 var modify &#x3D; new Modify({
-  features: selected
+  features: selected,
 });
 modify.setActive(false);
 
@@ -263,17 +288,16 @@ var map &#x3D; new Map({
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
     center: fromLonLat([-122.619, 45.512]),
-    zoom: 12
-  })
+    zoom: 12,
+  }),
 });
 
 var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
-
 /**
  * Let user change the interaction type.
  */
-typeSelect.onchange &#x3D; function() {
+typeSelect.onchange &#x3D; function () {
   draw.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;DRAW&#x27;);
   select.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
   modify.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
@@ -281,22 +305,25 @@ typeSelect.onchange &#x3D; function() {
 
 var dirty &#x3D; {};
 
-selected.on(&#x27;add&#x27;, function(evt) {
+selected.on(&#x27;add&#x27;, function (evt) {
   var feature &#x3D; evt.element;
-  feature.on(&#x27;change&#x27;, function(evt) {
+  feature.on(&#x27;change&#x27;, function (evt) {
     dirty[evt.target.getId()] &#x3D; true;
   });
 });
 
-selected.on(&#x27;remove&#x27;, function(evt) {
+selected.on(&#x27;remove&#x27;, function (evt) {
   var feature &#x3D; evt.element;
   var fid &#x3D; feature.getId();
   if (dirty[fid] &#x3D;&#x3D;&#x3D; true) {
-    var payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
-      featureProjection: map.getView().getProjection()
-    }) + &#x27;]&#x27;;
+    var payload &#x3D;
+      &#x27;[&#x27; +
+      esrijsonFormat.writeFeature(feature, {
+        featureProjection: map.getView().getProjection(),
+      }) +
+      &#x27;]&#x27;;
     var url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
-    $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function(data) {
+    $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function (data) {
       var result &#x3D; JSON.parse(data);
       if (result.updateResults &amp;&amp; result.updateResults.length &gt; 0) {
         if (result.updateResults[0].success !&#x3D;&#x3D; true) {
@@ -310,13 +337,16 @@ selected.on(&#x27;remove&#x27;, function(evt) {
   }
 });
 
-draw.on(&#x27;drawend&#x27;, function(evt) {
+draw.on(&#x27;drawend&#x27;, function (evt) {
   var feature &#x3D; evt.feature;
-  var payload &#x3D; &#x27;[&#x27; + esrijsonFormat.writeFeature(feature, {
-    featureProjection: map.getView().getProjection()
-  }) + &#x27;]&#x27;;
+  var payload &#x3D;
+    &#x27;[&#x27; +
+    esrijsonFormat.writeFeature(feature, {
+      featureProjection: map.getView().getProjection(),
+    }) +
+    &#x27;]&#x27;;
   var url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
-  $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function(data) {
+  $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function (data) {
     var result &#x3D; JSON.parse(data);
     if (result.addResults &amp;&amp; result.addResults.length &gt; 0) {
       if (result.addResults[0].success &#x3D;&#x3D;&#x3D; true) {
@@ -338,7 +368,7 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;vector-esri-edit&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -350,7 +380,6 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="vector-esri-edit.js"></script>
@@ -366,7 +395,7 @@ draw.on(&#x27;drawend&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

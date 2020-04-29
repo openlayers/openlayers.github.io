@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -163,74 +163,79 @@
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Feature from &#x27;ol/Feature&#x27;;
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import Point from &#x27;ol/geom/Point&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-import {fromLonLat} from &#x27;ol/proj&#x27;;
 import TileJSON from &#x27;ol/source/TileJSON&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
+import View from &#x27;ol/View&#x27;;
 import {Icon, Style} from &#x27;ol/style&#x27;;
-
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {fromLonLat} from &#x27;ol/proj&#x27;;
 
 var rome &#x3D; new Feature({
-  geometry: new Point(fromLonLat([12.5, 41.9]))
+  geometry: new Point(fromLonLat([12.5, 41.9])),
 });
 
 var london &#x3D; new Feature({
-  geometry: new Point(fromLonLat([-0.12755, 51.507222]))
+  geometry: new Point(fromLonLat([-0.12755, 51.507222])),
 });
 
 var madrid &#x3D; new Feature({
-  geometry: new Point(fromLonLat([-3.683333, 40.4]))
+  geometry: new Point(fromLonLat([-3.683333, 40.4])),
 });
 
-rome.setStyle(new Style({
-  image: new Icon({
-    color: &#x27;#8959A8&#x27;,
-    crossOrigin: &#x27;anonymous&#x27;,
-    src: &#x27;data/square.svg&#x27;
+rome.setStyle(
+  new Style({
+    image: new Icon({
+      color: &#x27;#8959A8&#x27;,
+      crossOrigin: &#x27;anonymous&#x27;,
+      imgSize: [20, 20],
+      src: &#x27;data/square.svg&#x27;,
+    }),
   })
-}));
+);
 
-london.setStyle(new Style({
-  image: new Icon({
-    color: &#x27;#4271AE&#x27;,
-    crossOrigin: &#x27;anonymous&#x27;,
-    src: &#x27;data/dot.png&#x27;
+london.setStyle(
+  new Style({
+    image: new Icon({
+      color: &#x27;#4271AE&#x27;,
+      crossOrigin: &#x27;anonymous&#x27;,
+      src: &#x27;data/dot.png&#x27;,
+    }),
   })
-}));
+);
 
-madrid.setStyle(new Style({
-  image: new Icon({
-    color: [113, 140, 0],
-    crossOrigin: &#x27;anonymous&#x27;,
-    src: &#x27;data/dot.png&#x27;
+madrid.setStyle(
+  new Style({
+    image: new Icon({
+      color: [113, 140, 0],
+      crossOrigin: &#x27;anonymous&#x27;,
+      src: &#x27;data/dot.png&#x27;,
+    }),
   })
-}));
-
+);
 
 var vectorSource &#x3D; new VectorSource({
-  features: [rome, london, madrid]
+  features: [rome, london, madrid],
 });
 
 var vectorLayer &#x3D; new VectorLayer({
-  source: vectorSource
+  source: vectorSource,
 });
 
 var rasterLayer &#x3D; new TileLayer({
   source: new TileJSON({
     url: &#x27;https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json&#x27;,
-    crossOrigin: &#x27;&#x27;
-  })
+    crossOrigin: &#x27;&#x27;,
+  }),
 });
 
 var map &#x3D; new Map({
   layers: [rasterLayer, vectorLayer],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
-    center: fromLonLat([2.896372, 44.60240]),
-    zoom: 3
-  })
+    center: fromLonLat([2.896372, 44.6024]),
+    zoom: 3,
+  }),
 });
 </code></pre>
       </div>
@@ -241,7 +246,7 @@ var map &#x3D; new Map({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;icon-color&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -253,7 +258,6 @@ var map &#x3D; new Map({
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="icon-color.js"></script>
@@ -269,7 +273,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

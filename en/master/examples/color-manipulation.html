@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -200,25 +200,23 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import ImageLayer from &#x27;ol/layer/Image&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
-import ImageLayer from &#x27;ol/layer/Image&#x27;;
 import {Raster as RasterSource, Stamen} from &#x27;ol/source&#x27;;
-
 
 /**
  * Color manipulation functions below are adapted from
  * https://github.com/d3/d3-color.
  */
-var Xn &#x3D; 0.950470;
+var Xn &#x3D; 0.95047;
 var Yn &#x3D; 1;
-var Zn &#x3D; 1.088830;
+var Zn &#x3D; 1.08883;
 var t0 &#x3D; 4 / 29;
 var t1 &#x3D; 6 / 29;
 var t2 &#x3D; 3 * t1 * t1;
 var t3 &#x3D; t1 * t1 * t1;
 var twoPi &#x3D; 2 * Math.PI;
-
 
 /**
  * Convert an RGB pixel into an HCL pixel.
@@ -231,11 +229,14 @@ function rgb2hcl(pixel) {
   var blue &#x3D; rgb2xyz(pixel[2]);
 
   var x &#x3D; xyz2lab(
-    (0.4124564 * red + 0.3575761 * green + 0.1804375 * blue) / Xn);
+    (0.4124564 * red + 0.3575761 * green + 0.1804375 * blue) / Xn
+  );
   var y &#x3D; xyz2lab(
-    (0.2126729 * red + 0.7151522 * green + 0.0721750 * blue) / Yn);
+    (0.2126729 * red + 0.7151522 * green + 0.072175 * blue) / Yn
+  );
   var z &#x3D; xyz2lab(
-    (0.0193339 * red + 0.1191920 * green + 0.9503041 * blue) / Zn);
+    (0.0193339 * red + 0.119192 * green + 0.9503041 * blue) / Zn
+  );
 
   var l &#x3D; 116 * y - 16;
   var a &#x3D; 500 * (x - y);
@@ -253,7 +254,6 @@ function rgb2hcl(pixel) {
 
   return pixel;
 }
-
 
 /**
  * Convert an HCL pixel into an RGB pixel.
@@ -277,7 +277,7 @@ function hcl2rgb(pixel) {
   z &#x3D; Zn * lab2xyz(z);
 
   pixel[0] &#x3D; xyz2rgb(3.2404542 * x - 1.5371385 * y - 0.4985314 * z);
-  pixel[1] &#x3D; xyz2rgb(-0.9692660 * x + 1.8760108 * y + 0.0415560 * z);
+  pixel[1] &#x3D; xyz2rgb(-0.969266 * x + 1.8760108 * y + 0.041556 * z);
   pixel[2] &#x3D; xyz2rgb(0.0556434 * x - 0.2040259 * y + 1.0572252 * z);
 
   return pixel;
@@ -296,18 +296,20 @@ function rgb2xyz(x) {
 }
 
 function xyz2rgb(x) {
-  return 255 * (x &lt;&#x3D; 0.0031308 ?
-    12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+  return (
+    255 * (x &lt;&#x3D; 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055)
+  );
 }
 
 var raster &#x3D; new RasterSource({
-  sources: [new Stamen({
-    layer: &#x27;watercolor&#x27;
-  })],
-  operation: function(pixels, data) {
+  sources: [
+    new Stamen({
+      layer: &#x27;watercolor&#x27;,
+    }) ],
+  operation: function (pixels, data) {
     var hcl &#x3D; rgb2hcl(pixels[0]);
 
-    var h &#x3D; hcl[0] + Math.PI * data.hue / 180;
+    var h &#x3D; hcl[0] + (Math.PI * data.hue) / 180;
     if (h &lt; 0) {
       h +&#x3D; twoPi;
     } else if (h &gt; twoPi) {
@@ -315,8 +317,8 @@ var raster &#x3D; new RasterSource({
     }
     hcl[0] &#x3D; h;
 
-    hcl[1] *&#x3D; (data.chroma / 100);
-    hcl[2] *&#x3D; (data.lightness / 100);
+    hcl[1] *&#x3D; data.chroma / 100;
+    hcl[2] *&#x3D; data.lightness / 100;
 
     return hcl2rgb(hcl);
   },
@@ -334,13 +336,13 @@ var raster &#x3D; new RasterSource({
     t1: t1,
     t2: t2,
     t3: t3,
-    twoPi: twoPi
-  }
+    twoPi: twoPi,
+  },
 });
 
 var controls &#x3D; {};
 
-raster.on(&#x27;beforeoperations&#x27;, function(event) {
+raster.on(&#x27;beforeoperations&#x27;, function (event) {
   var data &#x3D; event.data;
   for (var id in controls) {
     data[id] &#x3D; Number(controls[id].value);
@@ -350,22 +352,21 @@ raster.on(&#x27;beforeoperations&#x27;, function(event) {
 var map &#x3D; new Map({
   layers: [
     new ImageLayer({
-      source: raster
-    })
-  ],
+      source: raster,
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 2500000],
     zoom: 2,
-    maxZoom: 18
-  })
+    maxZoom: 18,
+  }),
 });
 
 var controlIds &#x3D; [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
-controlIds.forEach(function(id) {
+controlIds.forEach(function (id) {
   var control &#x3D; document.getElementById(id);
   var output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
-  control.addEventListener(&#x27;input&#x27;, function() {
+  control.addEventListener(&#x27;input&#x27;, function () {
     output.innerText &#x3D; control.value;
     raster.changed();
   });
@@ -381,7 +382,7 @@ controlIds.forEach(function(id) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;color-manipulation&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -393,7 +394,6 @@ controlIds.forEach(function(id) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="color-manipulation.js"></script>
@@ -409,7 +409,7 @@ controlIds.forEach(function(id) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

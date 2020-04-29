@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -214,7 +214,6 @@ import View from &#x27;ol/View&#x27;;
 import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
 import {OSM, Raster, XYZ} from &#x27;ol/source&#x27;;
 
-
 /**
  * Generates a shaded relief image given elevation data.  Uses a 3x3
  * neighborhood for determining slope and aspect.
@@ -234,12 +233,25 @@ function shade(inputs, data) {
   var pixel &#x3D; [0, 0, 0, 0];
   var twoPi &#x3D; 2 * Math.PI;
   var halfPi &#x3D; Math.PI / 2;
-  var sunEl &#x3D; Math.PI * data.sunEl / 180;
-  var sunAz &#x3D; Math.PI * data.sunAz / 180;
+  var sunEl &#x3D; (Math.PI * data.sunEl) / 180;
+  var sunAz &#x3D; (Math.PI * data.sunAz) / 180;
   var cosSunEl &#x3D; Math.cos(sunEl);
   var sinSunEl &#x3D; Math.sin(sunEl);
-  var pixelX, pixelY, x0, x1, y0, y1, offset,
-      z0, z1, dzdx, dzdy, slope, aspect, cosIncidence, scaled;
+  var pixelX,
+    pixelY,
+    x0,
+    x1,
+    y0,
+    y1,
+    offset,
+    z0,
+    z1,
+    dzdx,
+    dzdy,
+    slope,
+    aspect,
+    cosIncidence,
+    scaled;
   for (pixelY &#x3D; 0; pixelY &lt;&#x3D; maxY; ++pixelY) {
     y0 &#x3D; pixelY &#x3D;&#x3D;&#x3D; 0 ? 0 : pixelY - 1;
     y1 &#x3D; pixelY &#x3D;&#x3D;&#x3D; maxY ? maxY : pixelY + 1;
@@ -294,8 +306,9 @@ function shade(inputs, data) {
         aspect &#x3D; halfPi - aspect;
       }
 
-      cosIncidence &#x3D; sinSunEl * Math.cos(slope) +
-          cosSunEl * Math.sin(slope) * Math.cos(sunAz - aspect);
+      cosIncidence &#x3D;
+        sinSunEl * Math.cos(slope) +
+        cosSunEl * Math.sin(slope) * Math.cos(sunAz - aspect);
 
       offset &#x3D; (pixelY * width + pixelX) * 4;
       scaled &#x3D; 255 * cosIncidence;
@@ -311,41 +324,40 @@ function shade(inputs, data) {
 
 var elevation &#x3D; new XYZ({
   url: &#x27;https://{a-d}.tiles.mapbox.com/v3/aj.sf-dem/{z}/{x}/{y}.png&#x27;,
-  crossOrigin: &#x27;anonymous&#x27;
+  crossOrigin: &#x27;anonymous&#x27;,
 });
 
 var raster &#x3D; new Raster({
   sources: [elevation],
   operationType: &#x27;image&#x27;,
-  operation: shade
+  operation: shade,
 });
 
 var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   layers: [
     new TileLayer({
-      source: new OSM()
+      source: new OSM(),
     }),
     new ImageLayer({
       opacity: 0.3,
-      source: raster
-    })
-  ],
+      source: raster,
+    }) ],
   view: new View({
     extent: [-13675026, 4439648, -13580856, 4580292],
     center: [-13615645, 4497969],
     minZoom: 10,
     maxZoom: 16,
-    zoom: 13
-  })
+    zoom: 13,
+  }),
 });
 
 var controlIds &#x3D; [&#x27;vert&#x27;, &#x27;sunEl&#x27;, &#x27;sunAz&#x27;];
 var controls &#x3D; {};
-controlIds.forEach(function(id) {
+controlIds.forEach(function (id) {
   var control &#x3D; document.getElementById(id);
   var output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
-  control.addEventListener(&#x27;input&#x27;, function() {
+  control.addEventListener(&#x27;input&#x27;, function () {
     output.innerText &#x3D; control.value;
     raster.changed();
   });
@@ -353,7 +365,7 @@ controlIds.forEach(function(id) {
   controls[id] &#x3D; control;
 });
 
-raster.on(&#x27;beforeoperations&#x27;, function(event) {
+raster.on(&#x27;beforeoperations&#x27;, function (event) {
   // the event.data object will be passed to operations
   var data &#x3D; event.data;
   data.resolution &#x3D; event.resolution;
@@ -370,7 +382,7 @@ raster.on(&#x27;beforeoperations&#x27;, function(event) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;shaded-relief&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -382,7 +394,6 @@ raster.on(&#x27;beforeoperations&#x27;, function(event) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="shaded-relief.js"></script>
@@ -398,7 +409,7 @@ raster.on(&#x27;beforeoperations&#x27;, function(event) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

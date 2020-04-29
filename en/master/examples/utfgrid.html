@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -181,36 +181,40 @@
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
 import Overlay from &#x27;ol/Overlay&#x27;;
-import View from &#x27;ol/View&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import TileJSON from &#x27;ol/source/TileJSON&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import UTFGrid from &#x27;ol/source/UTFGrid&#x27;;
+import View from &#x27;ol/View&#x27;;
 
-var key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
+var key &#x3D;
+  &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
 var mapLayer &#x3D; new TileLayer({
   source: new TileJSON({
-    url: &#x27;https://api.tiles.mapbox.com/v4/mapbox.geography-class.json?secure&amp;access_token&#x3D;&#x27; + key
-  })
+    url:
+      &#x27;https://api.tiles.mapbox.com/v4/mapbox.geography-class.json?secure&amp;access_token&#x3D;&#x27; +
+      key,
+  }),
 });
 
-
 var gridSource &#x3D; new UTFGrid({
-  url: &#x27;https://api.tiles.mapbox.com/v4/mapbox.geography-class.json?secure&amp;access_token&#x3D;&#x27; + key
+  url:
+    &#x27;https://api.tiles.mapbox.com/v4/mapbox.geography-class.json?secure&amp;access_token&#x3D;&#x27; +
+    key,
 });
 
 var gridLayer &#x3D; new TileLayer({source: gridSource});
 
 var view &#x3D; new View({
   center: [0, 0],
-  zoom: 1
+  zoom: 1,
 });
 
 var mapElement &#x3D; document.getElementById(&#x27;map&#x27;);
 var map &#x3D; new Map({
   layers: [mapLayer, gridLayer],
   target: mapElement,
-  view: view
+  view: view,
 });
 
 var infoElement &#x3D; document.getElementById(&#x27;country-info&#x27;);
@@ -220,14 +224,16 @@ var nameElement &#x3D; document.getElementById(&#x27;country-name&#x27;);
 var infoOverlay &#x3D; new Overlay({
   element: infoElement,
   offset: [15, 15],
-  stopEvent: false
+  stopEvent: false,
 });
 map.addOverlay(infoOverlay);
 
-var displayCountryInfo &#x3D; function(coordinate) {
+var displayCountryInfo &#x3D; function (coordinate) {
   var viewResolution &#x3D; /** @type {number} */ (view.getResolution());
-  gridSource.forDataAtCoordinateAndResolution(coordinate, viewResolution,
-    function(data) {
+  gridSource.forDataAtCoordinateAndResolution(
+    coordinate,
+    viewResolution,
+    function (data) {
       // If you want to use the template from the TileJSON,
       //  load the mustache.js library separately and call
       //  info.innerHTML &#x3D; Mustache.render(gridSource.getTemplate(), data);
@@ -237,10 +243,11 @@ var displayCountryInfo &#x3D; function(coordinate) {
         nameElement.innerHTML &#x3D; data[&#x27;admin&#x27;];
       }
       infoOverlay.setPosition(data ? coordinate : undefined);
-    });
+    }
+  );
 };
 
-map.on(&#x27;pointermove&#x27;, function(evt) {
+map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
@@ -248,7 +255,7 @@ map.on(&#x27;pointermove&#x27;, function(evt) {
   displayCountryInfo(coordinate);
 });
 
-map.on(&#x27;click&#x27;, function(evt) {
+map.on(&#x27;click&#x27;, function (evt) {
   displayCountryInfo(evt.coordinate);
 });
 </code></pre>
@@ -260,7 +267,7 @@ map.on(&#x27;click&#x27;, function(evt) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;utfgrid&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -272,7 +279,6 @@ map.on(&#x27;click&#x27;, function(evt) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="utfgrid.js"></script>
@@ -288,7 +294,7 @@ map.on(&#x27;click&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -159,14 +159,13 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {getWidth, getTopLeft} from &#x27;ol/extent&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
-import {get as getProjection} from &#x27;ol/proj&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
 import WMTS from &#x27;ol/source/WMTS&#x27;;
 import WMTSTileGrid from &#x27;ol/tilegrid/WMTS&#x27;;
-
+import {get as getProjection} from &#x27;ol/proj&#x27;;
+import {getTopLeft, getWidth} from &#x27;ol/extent&#x27;;
 
 var projection &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
 var projectionExtent &#x3D; projection.getExtent();
@@ -183,15 +182,17 @@ var map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
-      opacity: 0.7
+      opacity: 0.7,
     }),
     new TileLayer({
       opacity: 0.7,
       source: new WMTS({
-        attributions: &#x27;Tiles © &lt;a href&#x3D;&quot;https://services.arcgisonline.com/arcgis/rest/&#x27; +
-            &#x27;services/Demographics/USA_Population_Density/MapServer/&quot;&gt;ArcGIS&lt;/a&gt;&#x27;,
-        url: &#x27;https://services.arcgisonline.com/arcgis/rest/&#x27; +
-            &#x27;services/Demographics/USA_Population_Density/MapServer/WMTS/&#x27;,
+        attributions:
+          &#x27;Tiles © &lt;a href&#x3D;&quot;https://services.arcgisonline.com/arcgis/rest/&#x27; +
+          &#x27;services/Demographics/USA_Population_Density/MapServer/&quot;&gt;ArcGIS&lt;/a&gt;&#x27;,
+        url:
+          &#x27;https://services.arcgisonline.com/arcgis/rest/&#x27; +
+          &#x27;services/Demographics/USA_Population_Density/MapServer/WMTS/&#x27;,
         layer: &#x27;0&#x27;,
         matrixSet: &#x27;EPSG:3857&#x27;,
         format: &#x27;image/png&#x27;,
@@ -199,18 +200,17 @@ var map &#x3D; new Map({
         tileGrid: new WMTSTileGrid({
           origin: getTopLeft(projectionExtent),
           resolutions: resolutions,
-          matrixIds: matrixIds
+          matrixIds: matrixIds,
         }),
         style: &#x27;default&#x27;,
-        wrapX: true
-      })
-    })
-  ],
+        wrapX: true,
+      }),
+    }) ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [-11158582, 4813697],
-    zoom: 4
-  })
+    zoom: 4,
+  }),
 });
 </code></pre>
       </div>
@@ -221,7 +221,7 @@ var map &#x3D; new Map({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;wmts&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -233,7 +233,6 @@ var map &#x3D; new Map({
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="wmts.js"></script>
@@ -249,7 +248,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -98,7 +98,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -199,16 +199,15 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import Overlay from &#x27;ol/Overlay&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {toStringHDMS} from &#x27;ol/coordinate&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
-import {fromLonLat, toLonLat} from &#x27;ol/proj&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
-
+import Overlay from &#x27;ol/Overlay&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {fromLonLat, toLonLat} from &#x27;ol/proj&#x27;;
+import {toStringHDMS} from &#x27;ol/coordinate&#x27;;
 
 var layer &#x3D; new TileLayer({
-  source: new OSM()
+  source: new OSM(),
 });
 
 var map &#x3D; new Map({
@@ -216,8 +215,8 @@ var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 var pos &#x3D; fromLonLat([16.3725, 48.208889]);
@@ -227,24 +226,24 @@ var marker &#x3D; new Overlay({
   position: pos,
   positioning: &#x27;center-center&#x27;,
   element: document.getElementById(&#x27;marker&#x27;),
-  stopEvent: false
+  stopEvent: false,
 });
 map.addOverlay(marker);
 
 // Vienna label
 var vienna &#x3D; new Overlay({
   position: pos,
-  element: document.getElementById(&#x27;vienna&#x27;)
+  element: document.getElementById(&#x27;vienna&#x27;),
 });
 map.addOverlay(vienna);
 
 // Popup showing the position the user clicked
 var popup &#x3D; new Overlay({
-  element: document.getElementById(&#x27;popup&#x27;)
+  element: document.getElementById(&#x27;popup&#x27;),
 });
 map.addOverlay(popup);
 
-map.on(&#x27;click&#x27;, function(evt) {
+map.on(&#x27;click&#x27;, function (evt) {
   var element &#x3D; popup.getElement();
   var coordinate &#x3D; evt.coordinate;
   var hdms &#x3D; toStringHDMS(toLonLat(coordinate));
@@ -255,7 +254,7 @@ map.on(&#x27;click&#x27;, function(evt) {
     placement: &#x27;top&#x27;,
     animation: false,
     html: true,
-    content: &#x27;&lt;p&gt;The location you clicked was:&lt;/p&gt;&lt;code&gt;&#x27; + hdms + &#x27;&lt;/code&gt;&#x27;
+    content: &#x27;&lt;p&gt;The location you clicked was:&lt;/p&gt;&lt;code&gt;&#x27; + hdms + &#x27;&lt;/code&gt;&#x27;,
   });
   $(element).popover(&#x27;show&#x27;);
 });
@@ -268,7 +267,7 @@ map.on(&#x27;click&#x27;, function(evt) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;overlay&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -280,7 +279,6 @@ map.on(&#x27;click&#x27;, function(evt) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="overlay.js"></script>
@@ -296,7 +294,7 @@ map.on(&#x27;click&#x27;, function(evt) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

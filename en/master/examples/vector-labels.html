@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -878,12 +878,18 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
-import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {
+  Circle as CircleStyle,
+  Fill,
+  Stroke,
+  Style,
+  Text,
+} from &#x27;ol/style&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
-import {Circle as CircleStyle, Fill, Stroke, Style, Text} from &#x27;ol/style&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
 var openSansAdded &#x3D; false;
 
@@ -902,7 +908,7 @@ var myDom &#x3D; {
     color: document.getElementById(&#x27;points-color&#x27;),
     outline: document.getElementById(&#x27;points-outline&#x27;),
     outlineWidth: document.getElementById(&#x27;points-outline-width&#x27;),
-    maxreso: document.getElementById(&#x27;points-maxreso&#x27;)
+    maxreso: document.getElementById(&#x27;points-maxreso&#x27;),
   },
   lines: {
     text: document.getElementById(&#x27;lines-text&#x27;),
@@ -921,7 +927,7 @@ var myDom &#x3D; {
     color: document.getElementById(&#x27;lines-color&#x27;),
     outline: document.getElementById(&#x27;lines-outline&#x27;),
     outlineWidth: document.getElementById(&#x27;lines-outline-width&#x27;),
-    maxreso: document.getElementById(&#x27;lines-maxreso&#x27;)
+    maxreso: document.getElementById(&#x27;lines-maxreso&#x27;),
   },
   polygons: {
     text: document.getElementById(&#x27;polygons-text&#x27;),
@@ -940,11 +946,11 @@ var myDom &#x3D; {
     color: document.getElementById(&#x27;polygons-color&#x27;),
     outline: document.getElementById(&#x27;polygons-outline&#x27;),
     outlineWidth: document.getElementById(&#x27;polygons-outline-width&#x27;),
-    maxreso: document.getElementById(&#x27;polygons-maxreso&#x27;)
-  }
+    maxreso: document.getElementById(&#x27;polygons-maxreso&#x27;),
+  },
 };
 
-var getText &#x3D; function(feature, resolution, dom) {
+var getText &#x3D; function (feature, resolution, dom) {
   var type &#x3D; dom.text.value;
   var maxResolution &#x3D; dom.maxreso.value;
   var text &#x3D; feature.get(&#x27;name&#x27;);
@@ -955,15 +961,17 @@ var getText &#x3D; function(feature, resolution, dom) {
     text &#x3D; &#x27;&#x27;;
   } else if (type &#x3D;&#x3D; &#x27;shorten&#x27;) {
     text &#x3D; text.trunc(12);
-  } else if (type &#x3D;&#x3D; &#x27;wrap&#x27; &amp;&amp; (!dom.placement || dom.placement.value !&#x3D; &#x27;line&#x27;)) {
+  } else if (
+    type &#x3D;&#x3D; &#x27;wrap&#x27; &amp;&amp;
+    (!dom.placement || dom.placement.value !&#x3D; &#x27;line&#x27;)
+  ) {
     text &#x3D; stringDivider(text, 16, &#x27;\n&#x27;);
   }
 
   return text;
 };
 
-
-var createTextStyle &#x3D; function(feature, resolution, dom) {
+var createTextStyle &#x3D; function (feature, resolution, dom) {
   var align &#x3D; dom.align.value;
   var baseline &#x3D; dom.baseline.value;
   var size &#x3D; dom.size.value;
@@ -973,9 +981,9 @@ var createTextStyle &#x3D; function(feature, resolution, dom) {
   var weight &#x3D; dom.weight.value;
   var placement &#x3D; dom.placement ? dom.placement.value : undefined;
   var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
-  var overflow &#x3D; dom.overflow ? (dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27;) : undefined;
+  var overflow &#x3D; dom.overflow ? dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27; : undefined;
   var rotation &#x3D; parseFloat(dom.rotation.value);
-  if (dom.font.value &#x3D;&#x3D; &#x27;\&#x27;Open Sans\&#x27;&#x27; &amp;&amp; !openSansAdded) {
+  if (dom.font.value &#x3D;&#x3D; &quot;&#x27;Open Sans&#x27;&quot; &amp;&amp; !openSansAdded) {
     var openSans &#x3D; document.createElement(&#x27;link&#x27;);
     openSans.href &#x3D; &#x27;https://fonts.googleapis.com/css?family&#x3D;Open+Sans&#x27;;
     openSans.rel &#x3D; &#x27;stylesheet&#x27;;
@@ -999,53 +1007,50 @@ var createTextStyle &#x3D; function(feature, resolution, dom) {
     placement: placement,
     maxAngle: maxAngle,
     overflow: overflow,
-    rotation: rotation
+    rotation: rotation,
   });
 };
-
 
 // Polygons
 function polygonStyleFunction(feature, resolution) {
   return new Style({
     stroke: new Stroke({
       color: &#x27;blue&#x27;,
-      width: 1
+      width: 1,
     }),
     fill: new Fill({
-      color: &#x27;rgba(0, 0, 255, 0.1)&#x27;
+      color: &#x27;rgba(0, 0, 255, 0.1)&#x27;,
     }),
-    text: createTextStyle(feature, resolution, myDom.polygons)
+    text: createTextStyle(feature, resolution, myDom.polygons),
   });
 }
 
 var vectorPolygons &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/polygon-samples.geojson&#x27;,
-    format: new GeoJSON()
+    format: new GeoJSON(),
   }),
-  style: polygonStyleFunction
+  style: polygonStyleFunction,
 });
-
 
 // Lines
 function lineStyleFunction(feature, resolution) {
   return new Style({
     stroke: new Stroke({
       color: &#x27;green&#x27;,
-      width: 2
+      width: 2,
     }),
-    text: createTextStyle(feature, resolution, myDom.lines)
+    text: createTextStyle(feature, resolution, myDom.lines),
   });
 }
 
 var vectorLines &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/line-samples.geojson&#x27;,
-    format: new GeoJSON()
+    format: new GeoJSON(),
   }),
-  style: lineStyleFunction
+  style: lineStyleFunction,
 });
-
 
 // Points
 function pointStyleFunction(feature, resolution) {
@@ -1053,67 +1058,66 @@ function pointStyleFunction(feature, resolution) {
     image: new CircleStyle({
       radius: 10,
       fill: new Fill({color: &#x27;rgba(255, 0, 0, 0.1)&#x27;}),
-      stroke: new Stroke({color: &#x27;red&#x27;, width: 1})
+      stroke: new Stroke({color: &#x27;red&#x27;, width: 1}),
     }),
-    text: createTextStyle(feature, resolution, myDom.points)
+    text: createTextStyle(feature, resolution, myDom.points),
   });
 }
 
 var vectorPoints &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/point-samples.geojson&#x27;,
-    format: new GeoJSON()
+    format: new GeoJSON(),
   }),
-  style: pointStyleFunction
+  style: pointStyleFunction,
 });
 
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM()
+      source: new OSM(),
     }),
     vectorPolygons,
     vectorLines,
-    vectorPoints
-  ],
+    vectorPoints ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [-8161939, 6095025],
-    zoom: 8
-  })
+    zoom: 8,
+  }),
 });
 
-document.getElementById(&#x27;refresh-points&#x27;)
-  .addEventListener(&#x27;click&#x27;, function() {
+document
+  .getElementById(&#x27;refresh-points&#x27;)
+  .addEventListener(&#x27;click&#x27;, function () {
     vectorPoints.setStyle(pointStyleFunction);
   });
 
-document.getElementById(&#x27;refresh-lines&#x27;)
-  .addEventListener(&#x27;click&#x27;, function() {
-    vectorLines.setStyle(lineStyleFunction);
-  });
+document.getElementById(&#x27;refresh-lines&#x27;).addEventListener(&#x27;click&#x27;, function () {
+  vectorLines.setStyle(lineStyleFunction);
+});
 
-document.getElementById(&#x27;refresh-polygons&#x27;)
-  .addEventListener(&#x27;click&#x27;, function() {
+document
+  .getElementById(&#x27;refresh-polygons&#x27;)
+  .addEventListener(&#x27;click&#x27;, function () {
     vectorPolygons.setStyle(polygonStyleFunction);
   });
-
 
 /**
  * @param {number} n The max number of characters to keep.
  * @return {string} Truncated string.
  */
-String.prototype.trunc &#x3D; String.prototype.trunc ||
-    function(n) {
-      return this.length &gt; n ? this.substr(0, n - 1) + &#x27;...&#x27; : this.substr(0);
-    };
-
+String.prototype.trunc &#x3D;
+  String.prototype.trunc ||
+  function (n) {
+    return this.length &gt; n ? this.substr(0, n - 1) + &#x27;...&#x27; : this.substr(0);
+  };
 
 // http://stackoverflow.com/questions/14484787/wrap-text-in-javascript
 function stringDivider(str, width, spaceReplacer) {
   if (str.length &gt; width) {
     var p &#x3D; width;
-    while (p &gt; 0 &amp;&amp; (str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;)) {
+    while (p &gt; 0 &amp;&amp; str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;) {
       p--;
     }
     if (p &gt; 0) {
@@ -1138,7 +1142,7 @@ function stringDivider(str, width, spaceReplacer) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;vector-labels&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -1150,7 +1154,6 @@ function stringDivider(str, width, spaceReplacer) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="vector-labels.js"></script>
@@ -1166,7 +1169,7 @@ function stringDivider(str, width, spaceReplacer) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

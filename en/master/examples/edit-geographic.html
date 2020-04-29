@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -166,49 +166,48 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import {Map, View} from &#x27;ol/index&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-import {Modify, Select, Draw, Snap} from &#x27;ol/interaction&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {Draw, Modify, Select, Snap} from &#x27;ol/interaction&#x27;;
+import {Map, View} from &#x27;ol/index&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {useGeographic} from &#x27;ol/proj&#x27;;
 
 useGeographic();
 
 var source &#x3D; new VectorSource({
   url: &#x27;data/geojson/countries.geojson&#x27;,
-  format: new GeoJSON()
+  format: new GeoJSON(),
 });
 
 var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   layers: [
     new TileLayer({
-      source: new OSM()
+      source: new OSM(),
     }),
     new VectorLayer({
-      source: source
-    })
-  ],
+      source: source,
+    }) ],
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 var select &#x3D; new Select();
 
 var modify &#x3D; new Modify({
-  features: select.getFeatures()
+  features: select.getFeatures(),
 });
 
 var draw &#x3D; new Draw({
   type: &#x27;Polygon&#x27;,
-  source: source
+  source: source,
 });
 
 var snap &#x3D; new Snap({
-  source: source
+  source: source,
 });
 
 function removeInteractions() {
@@ -249,7 +248,7 @@ onChange();
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;edit-geographic&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -261,7 +260,6 @@ onChange();
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script>window.experimental = true;</script><script src="common.js"></script><script src="edit-geographic.js"></script>
@@ -277,7 +275,7 @@ onChange();
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

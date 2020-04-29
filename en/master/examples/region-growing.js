@@ -1,17 +1,17 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[109],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[113],{
 
-/***/ 345:
+/***/ 350:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(68);
-/* harmony import */ var _src_ol_proj_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4);
-/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(28);
-/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(158);
+/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(159);
+/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(68);
+/* harmony import */ var _src_ol_proj_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(4);
 
 
 
@@ -57,8 +57,11 @@ function growRegion(inputs, data) {
           if (ca === 0) {
             continue;
           }
-          if (Math.abs(seedR - cr) < delta && Math.abs(seedG - cg) < delta &&
-              Math.abs(seedB - cb) < delta) {
+          if (
+            Math.abs(seedR - cr) < delta &&
+            Math.abs(seedG - cg) < delta &&
+            Math.abs(seedB - cb) < delta
+          ) {
             outputData[ci] = 255;
             outputData[ci + 1] = 0;
             outputData[ci + 2] = 0;
@@ -82,58 +85,58 @@ function next4Edges(edge) {
     [x + 1, y],
     [x - 1, y],
     [x, y + 1],
-    [x, y - 1]
-  ];
+    [x, y - 1] ];
 }
 
 var key = 'get_your_own_D6rA4zTHduk6KOKTXzGB';
-var attributions = '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
+var attributions =
+  '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
   '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
 
-var imagery = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]({
-  source: new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"]({
+var imagery = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]({
+  source: new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"]({
     attributions: attributions,
     url: 'https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=' + key,
     maxZoom: 20,
-    crossOrigin: ''
-  })
+    crossOrigin: '',
+  }),
 });
 
-var raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"]({
+var raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"]({
   sources: [imagery.getSource()],
   operationType: 'image',
   operation: growRegion,
   // Functions in the `lib` object will be available to the operation run in
   // the web worker.
   lib: {
-    next4Edges: next4Edges
-  }
+    next4Edges: next4Edges,
+  },
 });
 
-var rasterImage = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"]({
+var rasterImage = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"]({
   opacity: 0.7,
-  source: raster
+  source: raster,
 });
 
 var map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]({
   layers: [imagery, rasterImage],
   target: 'map',
-  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"]({
-    center: Object(_src_ol_proj_js__WEBPACK_IMPORTED_MODULE_4__[/* fromLonLat */ "f"])([-119.07, 47.65]),
-    zoom: 11
-  })
+  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]({
+    center: Object(_src_ol_proj_js__WEBPACK_IMPORTED_MODULE_6__[/* fromLonLat */ "f"])([-119.07, 47.65]),
+    zoom: 11,
+  }),
 });
 
 var coordinate;
 
-map.on('click', function(event) {
+map.on('click', function (event) {
   coordinate = event.coordinate;
   raster.changed();
 });
 
 var thresholdControl = document.getElementById('threshold');
 
-raster.on('beforeoperations', function(event) {
+raster.on('beforeoperations', function (event) {
   // the event.data object will be passed to operations
   var data = event.data;
   data.delta = thresholdControl.value;
@@ -147,7 +150,7 @@ function updateControlValue() {
 }
 updateControlValue();
 
-thresholdControl.addEventListener('input', function() {
+thresholdControl.addEventListener('input', function () {
   updateControlValue();
   raster.changed();
 });
@@ -155,5 +158,5 @@ thresholdControl.addEventListener('input', function() {
 
 /***/ })
 
-},[[345,0]]]);
+},[[350,0]]]);
 //# sourceMappingURL=region-growing.js.map

@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -161,42 +161,43 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import WMTSCapabilities from &#x27;ol/format/WMTSCapabilities&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
 import WMTS, {optionsFromCapabilities} from &#x27;ol/source/WMTS&#x27;;
+import WMTSCapabilities from &#x27;ol/format/WMTSCapabilities&#x27;;
 
 var parser &#x3D; new WMTSCapabilities();
 var map;
 
-fetch(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
-  return response.text();
-}).then(function(text) {
-  var result &#x3D; parser.read(text);
-  var options &#x3D; optionsFromCapabilities(result, {
-    layer: &#x27;layer-7328&#x27;,
-    matrixSet: &#x27;EPSG:3857&#x27;
-  });
+fetch(&#x27;data/WMTSCapabilities.xml&#x27;)
+  .then(function (response) {
+    return response.text();
+  })
+  .then(function (text) {
+    var result &#x3D; parser.read(text);
+    var options &#x3D; optionsFromCapabilities(result, {
+      layer: &#x27;layer-7328&#x27;,
+      matrixSet: &#x27;EPSG:3857&#x27;,
+    });
 
-  map &#x3D; new Map({
-    layers: [
-      new TileLayer({
-        source: new OSM(),
-        opacity: 0.7
+    map &#x3D; new Map({
+      layers: [
+        new TileLayer({
+          source: new OSM(),
+          opacity: 0.7,
+        }),
+        new TileLayer({
+          opacity: 1,
+          source: new WMTS(options),
+        }) ],
+      target: &#x27;map&#x27;,
+      view: new View({
+        center: [19412406.33, -5050500.21],
+        zoom: 5,
       }),
-      new TileLayer({
-        opacity: 1,
-        source: new WMTS(options)
-      })
-    ],
-    target: &#x27;map&#x27;,
-    view: new View({
-      center: [19412406.33, -5050500.21],
-      zoom: 5
-    })
+    });
   });
-});
 </code></pre>
       </div>
       <div class="row-fluid">
@@ -206,7 +207,7 @@ fetch(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;wmts-layer-from-capabilities&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -218,7 +219,6 @@ fetch(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="wmts-layer-from-capabilities.js"></script>
@@ -234,7 +234,7 @@ fetch(&#x27;data/WMTSCapabilities.xml&#x27;).then(function(response) {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

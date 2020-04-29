@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -128,7 +128,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Demonstrates displaying IGN (France) WMTS layers.</p>
-          <div id="docs"><p>In this example an IGN WMTS layer is displayed. For more information on IGN&#39;s WMTS service see the <a href="http://api.ign.fr/accueil">IGN Géoportail API web page</a> and <a href="http://www.geoportail.gouv.fr/depot/api/cgu/DT_APIGeoportail.pdf">Descriptif technique des web services du Géoportail</a> (french).</p>
+          <div id="docs"><p>In this example an IGN WMTS layer is displayed. For more information on IGN&#39;s WMTS service see the <a href="https://geoservices.ign.fr">IGN Géoportail API web page</a> and <a href="https://geoservices.ign.fr/documentation/diffusion/documentation-offre.html">Documentation de l’offre de données et services de l’IGN</a> (french).</p>
 </div>
         </div>
       </div>
@@ -162,20 +162,19 @@
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {getWidth} from &#x27;ol/extent&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
-import {fromLonLat, get as getProjection} from &#x27;ol/proj&#x27;;
+import View from &#x27;ol/View&#x27;;
 import WMTS from &#x27;ol/source/WMTS&#x27;;
 import WMTSTileGrid from &#x27;ol/tilegrid/WMTS&#x27;;
-
+import {fromLonLat, get as getProjection} from &#x27;ol/proj&#x27;;
+import {getWidth} from &#x27;ol/extent&#x27;;
 
 var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     zoom: 5,
-    center: fromLonLat([5, 45])
-  })
+    center: fromLonLat([5, 45]),
+  }),
 });
 
 var resolutions &#x3D; [];
@@ -191,7 +190,7 @@ for (var i &#x3D; 0; i &lt; 18; i++) {
 var tileGrid &#x3D; new WMTSTileGrid({
   origin: [-20037508, 20037508],
   resolutions: resolutions,
-  matrixIds: matrixIds
+  matrixIds: matrixIds,
 });
 
 // For more information about the IGN API key see
@@ -205,13 +204,14 @@ var ign_source &#x3D; new WMTS({
   projection: &#x27;EPSG:3857&#x27;,
   tileGrid: tileGrid,
   style: &#x27;normal&#x27;,
-  attributions: &#x27;&lt;a href&#x3D;&quot;http://www.geoportail.fr/&quot; target&#x3D;&quot;_blank&quot;&gt;&#x27; +
-        &#x27;&lt;img src&#x3D;&quot;https://api.ign.fr/geoportail/api/js/latest/&#x27; +
-        &#x27;theme/geoportal/img/logo_gp.gif&quot;&gt;&lt;/a&gt;&#x27;
+  attributions:
+    &#x27;&lt;a href&#x3D;&quot;http://www.ign.fr&quot; target&#x3D;&quot;_blank&quot;&gt;&#x27; +
+    &#x27;&lt;img src&#x3D;&quot;https://wxs.ign.fr/static/logos/IGN/IGN.gif&quot; title&#x3D;&quot;Institut national de l\&#x27;&#x27; +
+    &#x27;information géographique et forestière&quot; alt&#x3D;&quot;IGN&quot;&gt;&lt;/a&gt;&#x27;,
 });
 
 var ign &#x3D; new TileLayer({
-  source: ign_source
+  source: ign_source,
 });
 
 map.addLayer(ign);
@@ -224,7 +224,7 @@ map.addLayer(ign);
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;wmts-ign&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -236,7 +236,6 @@ map.addLayer(ign);
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="wmts-ign.js"></script>
@@ -252,7 +251,7 @@ map.addLayer(ign);
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

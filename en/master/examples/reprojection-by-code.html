@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -194,46 +194,43 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {applyTransform} from &#x27;ol/extent&#x27;;
 import Graticule from &#x27;ol/layer/Graticule&#x27;;
+import Map from &#x27;ol/Map&#x27;;
+import OSM from &#x27;ol/source/OSM&#x27;;
+import Stroke from &#x27;ol/style/Stroke&#x27;;
+import TileImage from &#x27;ol/source/TileImage&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
+import proj4 from &#x27;proj4&#x27;;
+import {applyTransform} from &#x27;ol/extent&#x27;;
 import {get as getProjection, getTransform} from &#x27;ol/proj&#x27;;
 import {register} from &#x27;ol/proj/proj4&#x27;;
-import OSM from &#x27;ol/source/OSM&#x27;;
-import TileImage from &#x27;ol/source/TileImage&#x27;;
-import Stroke from &#x27;ol/style/Stroke&#x27;;
-import proj4 from &#x27;proj4&#x27;;
-
 
 var graticule &#x3D; new Graticule({
   // the style to use for the lines, optional.
   strokeStyle: new Stroke({
     color: &#x27;rgba(255,120,0,0.9)&#x27;,
     width: 2,
-    lineDash: [0.5, 4]
+    lineDash: [0.5, 4],
   }),
   showLabels: true,
   visible: false,
-  wrapX: false
+  wrapX: false,
 });
 
 var map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM()
+      source: new OSM(),
     }),
-    graticule
-  ],
+    graticule ],
   target: &#x27;map&#x27;,
   view: new View({
     projection: &#x27;EPSG:3857&#x27;,
     center: [0, 0],
-    zoom: 1
-  })
+    zoom: 1,
+  }),
 });
-
 
 var queryInput &#x3D; document.getElementById(&#x27;epsg-query&#x27;);
 var searchButton &#x3D; document.getElementById(&#x27;epsg-search&#x27;);
@@ -244,11 +241,13 @@ var showGraticuleCheckbox &#x3D; document.getElementById(&#x27;show-graticule&#x
 function setProjection(code, name, proj4def, bbox) {
   if (code &#x3D;&#x3D;&#x3D; null || name &#x3D;&#x3D;&#x3D; null || proj4def &#x3D;&#x3D;&#x3D; null || bbox &#x3D;&#x3D;&#x3D; null) {
     resultSpan.innerHTML &#x3D; &#x27;Nothing usable found, using EPSG:3857...&#x27;;
-    map.setView(new View({
-      projection: &#x27;EPSG:3857&#x27;,
-      center: [0, 0],
-      zoom: 1
-    }));
+    map.setView(
+      new View({
+        projection: &#x27;EPSG:3857&#x27;,
+        center: [0, 0],
+        zoom: 1,
+      })
+    );
     return;
   }
 
@@ -271,55 +270,60 @@ function setProjection(code, name, proj4def, bbox) {
   var extent &#x3D; applyTransform(worldExtent, fromLonLat, undefined, 8);
   newProj.setExtent(extent);
   var newView &#x3D; new View({
-    projection: newProj
+    projection: newProj,
   });
   map.setView(newView);
   newView.fit(extent);
 }
 
-
 function search(query) {
   resultSpan.innerHTML &#x3D; &#x27;Searching ...&#x27;;
-  fetch(&#x27;https://epsg.io/?format&#x3D;json&amp;q&#x3D;&#x27; + query).then(function(response) {
-    return response.json();
-  }).then(function(json) {
-    var results &#x3D; json[&#x27;results&#x27;];
-    if (results &amp;&amp; results.length &gt; 0) {
-      for (var i &#x3D; 0, ii &#x3D; results.length; i &lt; ii; i++) {
-        var result &#x3D; results[i];
-        if (result) {
-          var code &#x3D; result[&#x27;code&#x27;];
-          var name &#x3D; result[&#x27;name&#x27;];
-          var proj4def &#x3D; result[&#x27;proj4&#x27;];
-          var bbox &#x3D; result[&#x27;bbox&#x27;];
-          if (code &amp;&amp; code.length &gt; 0 &amp;&amp; proj4def &amp;&amp; proj4def.length &gt; 0 &amp;&amp;
-              bbox &amp;&amp; bbox.length &#x3D;&#x3D; 4) {
-            setProjection(code, name, proj4def, bbox);
-            return;
+  fetch(&#x27;https://epsg.io/?format&#x3D;json&amp;q&#x3D;&#x27; + query)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (json) {
+      var results &#x3D; json[&#x27;results&#x27;];
+      if (results &amp;&amp; results.length &gt; 0) {
+        for (var i &#x3D; 0, ii &#x3D; results.length; i &lt; ii; i++) {
+          var result &#x3D; results[i];
+          if (result) {
+            var code &#x3D; result[&#x27;code&#x27;];
+            var name &#x3D; result[&#x27;name&#x27;];
+            var proj4def &#x3D; result[&#x27;proj4&#x27;];
+            var bbox &#x3D; result[&#x27;bbox&#x27;];
+            if (
+              code &amp;&amp;
+              code.length &gt; 0 &amp;&amp;
+              proj4def &amp;&amp;
+              proj4def.length &gt; 0 &amp;&amp;
+              bbox &amp;&amp;
+              bbox.length &#x3D;&#x3D; 4
+            ) {
+              setProjection(code, name, proj4def, bbox);
+              return;
+            }
           }
         }
       }
-    }
-    setProjection(null, null, null, null);
-  });
+      setProjection(null, null, null, null);
+    });
 }
-
 
 /**
  * Handle click event.
  * @param {Event} event The event.
  */
-searchButton.onclick &#x3D; function(event) {
+searchButton.onclick &#x3D; function (event) {
   search(queryInput.value);
   event.preventDefault();
 };
 
-
 /**
  * Handle checkbox change event.
  */
-renderEdgesCheckbox.onchange &#x3D; function() {
-  map.getLayers().forEach(function(layer) {
+renderEdgesCheckbox.onchange &#x3D; function () {
+  map.getLayers().forEach(function (layer) {
     if (layer instanceof TileLayer) {
       var source &#x3D; layer.getSource();
       if (source instanceof TileImage) {
@@ -332,7 +336,7 @@ renderEdgesCheckbox.onchange &#x3D; function() {
 /**
  * Handle checkbox change event.
  */
-showGraticuleCheckbox.onchange &#x3D; function() {
+showGraticuleCheckbox.onchange &#x3D; function () {
   graticule.setVisible(showGraticuleCheckbox.checked);
 };
 </code></pre>
@@ -344,8 +348,8 @@ showGraticuleCheckbox.onchange &#x3D; function() {
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;reprojection-by-code&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;,
-    &quot;proj4&quot;: &quot;2.6.0&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;,
+    &quot;proj4&quot;: &quot;2.6.1&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -357,7 +361,6 @@ showGraticuleCheckbox.onchange &#x3D; function() {
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="reprojection-by-code.js"></script>
@@ -373,7 +376,7 @@ showGraticuleCheckbox.onchange &#x3D; function() {
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

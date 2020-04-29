@@ -1,16 +1,15 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[15],{
 
-/***/ 251:
+/***/ 252:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _src_ol_layer_Image_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(68);
-/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(158);
+/* harmony import */ var _src_ol_layer_Image_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(68);
+/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(159);
 /* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(64);
-
 
 
 
@@ -20,15 +19,14 @@ __webpack_require__.r(__webpack_exports__);
  * Color manipulation functions below are adapted from
  * https://github.com/d3/d3-color.
  */
-var Xn = 0.950470;
+var Xn = 0.95047;
 var Yn = 1;
-var Zn = 1.088830;
+var Zn = 1.08883;
 var t0 = 4 / 29;
 var t1 = 6 / 29;
 var t2 = 3 * t1 * t1;
 var t3 = t1 * t1 * t1;
 var twoPi = 2 * Math.PI;
-
 
 /**
  * Convert an RGB pixel into an HCL pixel.
@@ -41,11 +39,14 @@ function rgb2hcl(pixel) {
   var blue = rgb2xyz(pixel[2]);
 
   var x = xyz2lab(
-    (0.4124564 * red + 0.3575761 * green + 0.1804375 * blue) / Xn);
+    (0.4124564 * red + 0.3575761 * green + 0.1804375 * blue) / Xn
+  );
   var y = xyz2lab(
-    (0.2126729 * red + 0.7151522 * green + 0.0721750 * blue) / Yn);
+    (0.2126729 * red + 0.7151522 * green + 0.072175 * blue) / Yn
+  );
   var z = xyz2lab(
-    (0.0193339 * red + 0.1191920 * green + 0.9503041 * blue) / Zn);
+    (0.0193339 * red + 0.119192 * green + 0.9503041 * blue) / Zn
+  );
 
   var l = 116 * y - 16;
   var a = 500 * (x - y);
@@ -63,7 +64,6 @@ function rgb2hcl(pixel) {
 
   return pixel;
 }
-
 
 /**
  * Convert an HCL pixel into an RGB pixel.
@@ -87,7 +87,7 @@ function hcl2rgb(pixel) {
   z = Zn * lab2xyz(z);
 
   pixel[0] = xyz2rgb(3.2404542 * x - 1.5371385 * y - 0.4985314 * z);
-  pixel[1] = xyz2rgb(-0.9692660 * x + 1.8760108 * y + 0.0415560 * z);
+  pixel[1] = xyz2rgb(-0.969266 * x + 1.8760108 * y + 0.041556 * z);
   pixel[2] = xyz2rgb(0.0556434 * x - 0.2040259 * y + 1.0572252 * z);
 
   return pixel;
@@ -106,18 +106,20 @@ function rgb2xyz(x) {
 }
 
 function xyz2rgb(x) {
-  return 255 * (x <= 0.0031308 ?
-    12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+  return (
+    255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055)
+  );
 }
 
 var raster = new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"]({
-  sources: [new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]({
-    layer: 'watercolor'
-  })],
-  operation: function(pixels, data) {
+  sources: [
+    new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]({
+      layer: 'watercolor',
+    }) ],
+  operation: function (pixels, data) {
     var hcl = rgb2hcl(pixels[0]);
 
-    var h = hcl[0] + Math.PI * data.hue / 180;
+    var h = hcl[0] + (Math.PI * data.hue) / 180;
     if (h < 0) {
       h += twoPi;
     } else if (h > twoPi) {
@@ -125,8 +127,8 @@ var raster = new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a
     }
     hcl[0] = h;
 
-    hcl[1] *= (data.chroma / 100);
-    hcl[2] *= (data.lightness / 100);
+    hcl[1] *= data.chroma / 100;
+    hcl[2] *= data.lightness / 100;
 
     return hcl2rgb(hcl);
   },
@@ -144,38 +146,37 @@ var raster = new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a
     t1: t1,
     t2: t2,
     t3: t3,
-    twoPi: twoPi
-  }
+    twoPi: twoPi,
+  },
 });
 
 var controls = {};
 
-raster.on('beforeoperations', function(event) {
+raster.on('beforeoperations', function (event) {
   var data = event.data;
   for (var id in controls) {
     data[id] = Number(controls[id].value);
   }
 });
 
-var map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]({
+var map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"]({
   layers: [
-    new _src_ol_layer_Image_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]({
-      source: raster
-    })
-  ],
+    new _src_ol_layer_Image_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]({
+      source: raster,
+    }) ],
   target: 'map',
-  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"]({
+  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]({
     center: [0, 2500000],
     zoom: 2,
-    maxZoom: 18
-  })
+    maxZoom: 18,
+  }),
 });
 
 var controlIds = ['hue', 'chroma', 'lightness'];
-controlIds.forEach(function(id) {
+controlIds.forEach(function (id) {
   var control = document.getElementById(id);
   var output = document.getElementById(id + 'Out');
-  control.addEventListener('input', function() {
+  control.addEventListener('input', function () {
     output.innerText = control.value;
     raster.changed();
   });
@@ -186,5 +187,5 @@ controlIds.forEach(function(id) {
 
 /***/ })
 
-},[[251,0]]]);
+},[[252,0]]]);
 //# sourceMappingURL=color-manipulation.js.map

@@ -97,7 +97,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -165,14 +165,14 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
+import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
 import Layer from &#x27;ol/layer/Layer&#x27;;
-import {toLonLat, fromLonLat} from &#x27;ol/proj&#x27;;
-import {Stroke, Style} from &#x27;ol/style&#x27;;
+import Map from &#x27;ol/Map&#x27;;
 import VectorLayer from &#x27;ol/layer/Vector&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
-import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {Stroke, Style} from &#x27;ol/style&#x27;;
+import {fromLonLat, toLonLat} from &#x27;ol/proj&#x27;;
 
 var center &#x3D; [-98.8, 37.9];
 var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
@@ -190,11 +190,11 @@ var mbMap &#x3D; new mapboxgl.Map({
   keyboard: false,
   pitchWithRotate: false,
   scrollZoom: false,
-  touchZoomRotate: false
+  touchZoomRotate: false,
 });
 
 var mbLayer &#x3D; new Layer({
-  render: function(frameState) {
+  render: function (frameState) {
     var canvas &#x3D; mbMap.getCanvas();
     var viewState &#x3D; frameState.viewState;
 
@@ -207,14 +207,14 @@ var mbLayer &#x3D; new Layer({
     // adjust view parameters in mapbox
     var rotation &#x3D; viewState.rotation;
     if (rotation) {
-      mbMap.rotateTo(-rotation * 180 / Math.PI, {
-        animate: false
+      mbMap.rotateTo((-rotation * 180) / Math.PI, {
+        animate: false,
       });
     }
     mbMap.jumpTo({
       center: toLonLat(viewState.center),
       zoom: viewState.zoom - 1,
-      animate: false
+      animate: false,
     });
 
     // cancel the scheduled update &amp; trigger synchronous redraw
@@ -227,31 +227,31 @@ var mbLayer &#x3D; new Layer({
     mbMap._render();
 
     return canvas;
-  }
+  },
 });
 
 var style &#x3D; new Style({
   stroke: new Stroke({
     color: &#x27;#319FD3&#x27;,
-    width: 2
-  })
+    width: 2,
+  }),
 });
 
 var vectorLayer &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/countries.geojson&#x27;,
-    format: new GeoJSON()
+    format: new GeoJSON(),
   }),
-  style: style
+  style: style,
 });
 
 var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: fromLonLat(center),
-    zoom: 4
+    zoom: 4,
   }),
-  layers: [mbLayer, vectorLayer]
+  layers: [mbLayer, vectorLayer],
 });
 </code></pre>
       </div>
@@ -262,7 +262,7 @@ var map &#x3D; new Map({
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;mapbox-layer&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -274,7 +274,6 @@ var map &#x3D; new Map({
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script>window.experimental = true;</script><script src="common.js"></script><script src="mapbox-layer.js"></script>
@@ -290,7 +289,7 @@ var map &#x3D; new Map({
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

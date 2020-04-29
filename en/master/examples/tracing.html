@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -178,31 +178,34 @@
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
 import Draw from &#x27;ol/interaction/Draw&#x27;;
-import Snap from &#x27;ol/interaction/Snap&#x27;;
-import Style from &#x27;ol/style/Style&#x27;;
-import Stroke from &#x27;ol/style/Stroke&#x27;;
+import Feature from &#x27;ol/Feature&#x27;;
 import Fill from &#x27;ol/style/Fill&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import LineString from &#x27;ol/geom/LineString&#x27;;
-import Feature from &#x27;ol/Feature&#x27;;
+import Map from &#x27;ol/Map&#x27;;
+import Snap from &#x27;ol/interaction/Snap&#x27;;
+import Stroke from &#x27;ol/style/Stroke&#x27;;
+import Style from &#x27;ol/style/Style&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
 // math utilities
 
 // coordinates; will return the length of the [a, b] segment
 function length(a, b) {
-  return Math.sqrt((b[0] - a[0]) * (b[0] - a[0]) + (b[1] - a[1]) * (b[1] - a[1]));
+  return Math.sqrt(
+    (b[0] - a[0]) * (b[0] - a[0]) + (b[1] - a[1]) * (b[1] - a[1])
+  );
 }
 
 // coordinates; will return true if c is on the [a, b] segment
 function isOnSegment(c, a, b) {
   var lengthAc &#x3D; length(a, c);
   var lengthAb &#x3D; length(a, b);
-  var dot &#x3D; ((c[0] - a[0]) * (b[0] - a[0]) + (c[1] - a[1]) * (b[1] - a[1])) / lengthAb;
+  var dot &#x3D;
+    ((c[0] - a[0]) * (b[0] - a[0]) + (c[1] - a[1]) * (b[1] - a[1])) / lengthAb;
   return Math.abs(lengthAc - dot) &lt; 1e-6 &amp;&amp; lengthAc &lt; lengthAb;
 }
 
@@ -221,7 +224,10 @@ function getPartialRingCoords(feature, startPoint, endPoint) {
   }
   var ringCoords &#x3D; polygon.getLinearRing().getCoordinates();
 
-  var i, pointA, pointB, startSegmentIndex &#x3D; -1;
+  var i,
+    pointA,
+    pointB,
+    startSegmentIndex &#x3D; -1;
   for (i &#x3D; 0; i &lt; ringCoords.length; i++) {
     pointA &#x3D; ringCoords[i];
     pointB &#x3D; ringCoords[mod(i + 1, ringCoords.length)];
@@ -240,7 +246,10 @@ function getPartialRingCoords(feature, startPoint, endPoint) {
 
   // build clockwise coordinates
   for (i &#x3D; 0; i &lt; ringCoords.length; i++) {
-    pointA &#x3D; i &#x3D;&#x3D;&#x3D; 0 ? startPoint : ringCoords[mod(i + startSegmentIndex, ringCoords.length)];
+    pointA &#x3D;
+      i &#x3D;&#x3D;&#x3D; 0
+        ? startPoint
+        : ringCoords[mod(i + startSegmentIndex, ringCoords.length)];
     pointB &#x3D; ringCoords[mod(i + startSegmentIndex + 1, ringCoords.length)];
     cwCoordinates.push(pointA);
 
@@ -256,7 +265,10 @@ function getPartialRingCoords(feature, startPoint, endPoint) {
   // build counter-clockwise coordinates
   for (i &#x3D; 0; i &lt; ringCoords.length; i++) {
     pointA &#x3D; ringCoords[mod(startSegmentIndex - i, ringCoords.length)];
-    pointB &#x3D; i &#x3D;&#x3D;&#x3D; 0 ? startPoint : ringCoords[mod(startSegmentIndex - i + 1, ringCoords.length)];
+    pointB &#x3D;
+      i &#x3D;&#x3D;&#x3D; 0
+        ? startPoint
+        : ringCoords[mod(startSegmentIndex - i + 1, ringCoords.length)];
     ccwCoordinates.push(pointB);
 
     if (isOnSegment(endPoint, pointA, pointB)) {
@@ -272,19 +284,19 @@ function getPartialRingCoords(feature, startPoint, endPoint) {
   return ccwLength &lt; cwLength ? ccwCoordinates : cwCoordinates;
 }
 
-
 // layers definition
 
 var raster &#x3D; new TileLayer({
-  source: new OSM()
+  source: new OSM(),
 });
 
 // features in this layer will be snapped to
 var baseVector &#x3D; new VectorLayer({
   source: new VectorSource({
     format: new GeoJSON(),
-    url: &#x27;https://ahocevar.com/geoserver/wfs?service&#x3D;wfs&amp;request&#x3D;getfeature&amp;typename&#x3D;topp:states&amp;cql_filter&#x3D;STATE_NAME&#x3D;\&#x27;Idaho\&#x27;&amp;outputformat&#x3D;application/json&#x27;
-  })
+    url:
+      &quot;https://ahocevar.com/geoserver/wfs?service&#x3D;wfs&amp;request&#x3D;getfeature&amp;typename&#x3D;topp:states&amp;cql_filter&#x3D;STATE_NAME&#x3D;&#x27;Idaho&#x27;&amp;outputformat&#x3D;application/json&quot;,
+  }),
 });
 
 // this is were the drawn features go
@@ -293,28 +305,28 @@ var drawVector &#x3D; new VectorLayer({
   style: new Style({
     stroke: new Stroke({
       color: &#x27;rgba(100, 255, 0, 1)&#x27;,
-      width: 2
+      width: 2,
     }),
     fill: new Fill({
-      color: &#x27;rgba(100, 255, 0, 0.3)&#x27;
-    })
-  })
+      color: &#x27;rgba(100, 255, 0, 0.3)&#x27;,
+    }),
+  }),
 });
 
 // this line only appears when we&#x27;re tracing a feature outer ring
 var previewLine &#x3D; new Feature({
-  geometry: new LineString([])
+  geometry: new LineString([]),
 });
 var previewVector &#x3D; new VectorLayer({
   source: new VectorSource({
-    features: [previewLine]
+    features: [previewLine],
   }),
   style: new Style({
     stroke: new Stroke({
       color: &#x27;rgba(255, 0, 0, 1)&#x27;,
-      width: 2
-    })
-  })
+      width: 2,
+    }),
+  }),
 });
 
 var map &#x3D; new Map({
@@ -322,8 +334,8 @@ var map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [-12986427, 5678422],
-    zoom: 5
-  })
+    zoom: 5,
+  }),
 });
 
 var drawInteraction, tracingFeature, startPoint, endPoint;
@@ -333,7 +345,7 @@ var getFeatureOptions &#x3D; {
   hitTolerance: 10,
   layerFilter: function (layer) {
     return layer &#x3D;&#x3D;&#x3D; baseVector;
-  }
+  },
 };
 
 // the click event is used to start/end tracing around a feature
@@ -356,7 +368,11 @@ map.on(&#x27;click&#x27;, function (event) {
       // second click on the tracing feature: append the ring coordinates
       if (feature &#x3D;&#x3D;&#x3D; tracingFeature) {
         endPoint &#x3D; tracingFeature.getGeometry().getClosestPoint(coord);
-        var appendCoords &#x3D; getPartialRingCoords(tracingFeature, startPoint, endPoint);
+        var appendCoords &#x3D; getPartialRingCoords(
+          tracingFeature,
+          startPoint,
+          endPoint
+        );
         drawInteraction.removeLastPoint();
         drawInteraction.appendCoordinates(appendCoords);
         tracingFeature &#x3D; null;
@@ -393,14 +409,18 @@ map.on(&#x27;pointermove&#x27;, function (event) {
     var previewCoords &#x3D; [];
     if (coord) {
       endPoint &#x3D; tracingFeature.getGeometry().getClosestPoint(coord);
-      previewCoords &#x3D; getPartialRingCoords(tracingFeature, startPoint, endPoint);
+      previewCoords &#x3D; getPartialRingCoords(
+        tracingFeature,
+        startPoint,
+        endPoint
+      );
     }
     previewLine.getGeometry().setCoordinates(previewCoords);
   }
 });
 
 var snapInteraction &#x3D; new Snap({
-  source: baseVector.getSource()
+  source: baseVector.getSource(),
 });
 
 var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
@@ -410,7 +430,7 @@ function addInteraction() {
   if (value !&#x3D;&#x3D; &#x27;None&#x27;) {
     drawInteraction &#x3D; new Draw({
       source: drawVector.getSource(),
-      type: typeSelect.value
+      type: typeSelect.value,
     });
     drawInteraction.on(&#x27;drawstart&#x27;, function () {
       drawing &#x3D; true;
@@ -425,7 +445,7 @@ function addInteraction() {
   }
 }
 
-typeSelect.onchange &#x3D; function() {
+typeSelect.onchange &#x3D; function () {
   map.removeInteraction(drawInteraction);
   map.removeInteraction(snapInteraction);
   addInteraction();
@@ -440,7 +460,7 @@ addInteraction();
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;tracing&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -452,7 +472,6 @@ addInteraction();
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="tracing.js"></script>
@@ -468,7 +487,7 @@ addInteraction();
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');

@@ -96,7 +96,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.2.2</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
@@ -186,27 +186,31 @@
         <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import WMSGetFeatureInfo from &#x27;ol/format/WMSGetFeatureInfo&#x27;;
 
-fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function(response) {
-  return response.text();
-}).then(function(response) {
+fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;)
+  .then(function (response) {
+    return response.text();
+  })
+  .then(function (response) {
+    // this is the standard way to read the features
+    var allFeatures &#x3D; new WMSGetFeatureInfo().readFeatures(response);
+    document.getElementById(&#x27;all&#x27;).innerText &#x3D; allFeatures.length.toString();
 
-  // this is the standard way to read the features
-  var allFeatures &#x3D; new WMSGetFeatureInfo().readFeatures(response);
-  document.getElementById(&#x27;all&#x27;).innerText &#x3D; allFeatures.length.toString();
+    // when specifying the &#x27;layers&#x27; options, only the features of those
+    // layers are returned by the format
+    var hotelFeatures &#x3D; new WMSGetFeatureInfo({
+      layers: [&#x27;hotel&#x27;],
+    }).readFeatures(response);
+    document.getElementById(
+      &#x27;hotel&#x27;
+    ).innerText &#x3D; hotelFeatures.length.toString();
 
-  // when specifying the &#x27;layers&#x27; options, only the features of those
-  // layers are returned by the format
-  var hotelFeatures &#x3D; new WMSGetFeatureInfo({
-    layers: [&#x27;hotel&#x27;]
-  }).readFeatures(response);
-  document.getElementById(&#x27;hotel&#x27;).innerText &#x3D; hotelFeatures.length.toString();
-
-  var restaurantFeatures &#x3D; new WMSGetFeatureInfo({
-    layers: [&#x27;restaurant&#x27;]
-  }).readFeatures(response);
-  document.getElementById(&#x27;restaurant&#x27;).innerText &#x3D; restaurantFeatures.length.toString();
-
-});
+    var restaurantFeatures &#x3D; new WMSGetFeatureInfo({
+      layers: [&#x27;restaurant&#x27;],
+    }).readFeatures(response);
+    document.getElementById(
+      &#x27;restaurant&#x27;
+    ).innerText &#x3D; restaurantFeatures.length.toString();
+  });
 </code></pre>
       </div>
       <div class="row-fluid">
@@ -216,7 +220,7 @@ fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;getfeatureinfo-layers&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.2.2&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -228,7 +232,6 @@ fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function
 }</code></pre>
       </div>
     </div>
-
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="getfeatureinfo-layers.js"></script>
@@ -244,7 +247,7 @@ fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;).then(function
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);
     var cookieText = 'dismissed=-' + latestVersion + '-';
     var dismissed = document.cookie.indexOf(cookieText) != -1;
-    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.2' != latestVersion) {
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
       var link = url.replace(branchSearch[0], '/latest/examples/');
       fetch(link, {method: 'head'}).then(function(response) {
         var a = document.getElementById('latest-link');
