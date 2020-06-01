@@ -471,6 +471,269 @@
 
       <div class="row-fluid">
         <div class="source-controls">
+          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>main.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
+import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {
+  Circle as CircleStyle,
+  Fill,
+  Stroke,
+  Style,
+  Text,
+} from &#x27;ol/style&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+
+var openSansAdded &#x3D; false;
+
+var myDom &#x3D; {
+  points: {
+    text: document.getElementById(&#x27;points-text&#x27;),
+    align: document.getElementById(&#x27;points-align&#x27;),
+    baseline: document.getElementById(&#x27;points-baseline&#x27;),
+    rotation: document.getElementById(&#x27;points-rotation&#x27;),
+    font: document.getElementById(&#x27;points-font&#x27;),
+    weight: document.getElementById(&#x27;points-weight&#x27;),
+    size: document.getElementById(&#x27;points-size&#x27;),
+    height: document.getElementById(&#x27;points-height&#x27;),
+    offsetX: document.getElementById(&#x27;points-offset-x&#x27;),
+    offsetY: document.getElementById(&#x27;points-offset-y&#x27;),
+    color: document.getElementById(&#x27;points-color&#x27;),
+    outline: document.getElementById(&#x27;points-outline&#x27;),
+    outlineWidth: document.getElementById(&#x27;points-outline-width&#x27;),
+    maxreso: document.getElementById(&#x27;points-maxreso&#x27;),
+  },
+  lines: {
+    text: document.getElementById(&#x27;lines-text&#x27;),
+    align: document.getElementById(&#x27;lines-align&#x27;),
+    baseline: document.getElementById(&#x27;lines-baseline&#x27;),
+    rotation: document.getElementById(&#x27;lines-rotation&#x27;),
+    font: document.getElementById(&#x27;lines-font&#x27;),
+    weight: document.getElementById(&#x27;lines-weight&#x27;),
+    placement: document.getElementById(&#x27;lines-placement&#x27;),
+    maxangle: document.getElementById(&#x27;lines-maxangle&#x27;),
+    overflow: document.getElementById(&#x27;lines-overflow&#x27;),
+    size: document.getElementById(&#x27;lines-size&#x27;),
+    height: document.getElementById(&#x27;lines-height&#x27;),
+    offsetX: document.getElementById(&#x27;lines-offset-x&#x27;),
+    offsetY: document.getElementById(&#x27;lines-offset-y&#x27;),
+    color: document.getElementById(&#x27;lines-color&#x27;),
+    outline: document.getElementById(&#x27;lines-outline&#x27;),
+    outlineWidth: document.getElementById(&#x27;lines-outline-width&#x27;),
+    maxreso: document.getElementById(&#x27;lines-maxreso&#x27;),
+  },
+  polygons: {
+    text: document.getElementById(&#x27;polygons-text&#x27;),
+    align: document.getElementById(&#x27;polygons-align&#x27;),
+    baseline: document.getElementById(&#x27;polygons-baseline&#x27;),
+    rotation: document.getElementById(&#x27;polygons-rotation&#x27;),
+    font: document.getElementById(&#x27;polygons-font&#x27;),
+    weight: document.getElementById(&#x27;polygons-weight&#x27;),
+    placement: document.getElementById(&#x27;polygons-placement&#x27;),
+    maxangle: document.getElementById(&#x27;polygons-maxangle&#x27;),
+    overflow: document.getElementById(&#x27;polygons-overflow&#x27;),
+    size: document.getElementById(&#x27;polygons-size&#x27;),
+    height: document.getElementById(&#x27;polygons-height&#x27;),
+    offsetX: document.getElementById(&#x27;polygons-offset-x&#x27;),
+    offsetY: document.getElementById(&#x27;polygons-offset-y&#x27;),
+    color: document.getElementById(&#x27;polygons-color&#x27;),
+    outline: document.getElementById(&#x27;polygons-outline&#x27;),
+    outlineWidth: document.getElementById(&#x27;polygons-outline-width&#x27;),
+    maxreso: document.getElementById(&#x27;polygons-maxreso&#x27;),
+  },
+};
+
+var getText &#x3D; function (feature, resolution, dom) {
+  var type &#x3D; dom.text.value;
+  var maxResolution &#x3D; dom.maxreso.value;
+  var text &#x3D; feature.get(&#x27;name&#x27;);
+
+  if (resolution &gt; maxResolution) {
+    text &#x3D; &#x27;&#x27;;
+  } else if (type &#x3D;&#x3D; &#x27;hide&#x27;) {
+    text &#x3D; &#x27;&#x27;;
+  } else if (type &#x3D;&#x3D; &#x27;shorten&#x27;) {
+    text &#x3D; text.trunc(12);
+  } else if (
+    type &#x3D;&#x3D; &#x27;wrap&#x27; &amp;&amp;
+    (!dom.placement || dom.placement.value !&#x3D; &#x27;line&#x27;)
+  ) {
+    text &#x3D; stringDivider(text, 16, &#x27;\n&#x27;);
+  }
+
+  return text;
+};
+
+var createTextStyle &#x3D; function (feature, resolution, dom) {
+  var align &#x3D; dom.align.value;
+  var baseline &#x3D; dom.baseline.value;
+  var size &#x3D; dom.size.value;
+  var height &#x3D; dom.height.value;
+  var offsetX &#x3D; parseInt(dom.offsetX.value, 10);
+  var offsetY &#x3D; parseInt(dom.offsetY.value, 10);
+  var weight &#x3D; dom.weight.value;
+  var placement &#x3D; dom.placement ? dom.placement.value : undefined;
+  var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
+  var overflow &#x3D; dom.overflow ? dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27; : undefined;
+  var rotation &#x3D; parseFloat(dom.rotation.value);
+  if (dom.font.value &#x3D;&#x3D; &quot;&#x27;Open Sans&#x27;&quot; &amp;&amp; !openSansAdded) {
+    var openSans &#x3D; document.createElement(&#x27;link&#x27;);
+    openSans.href &#x3D; &#x27;https://fonts.googleapis.com/css?family&#x3D;Open+Sans&#x27;;
+    openSans.rel &#x3D; &#x27;stylesheet&#x27;;
+    document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(openSans);
+    openSansAdded &#x3D; true;
+  }
+  var font &#x3D; weight + &#x27; &#x27; + size + &#x27;/&#x27; + height + &#x27; &#x27; + dom.font.value;
+  var fillColor &#x3D; dom.color.value;
+  var outlineColor &#x3D; dom.outline.value;
+  var outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
+
+  return new Text({
+    textAlign: align &#x3D;&#x3D; &#x27;&#x27; ? undefined : align,
+    textBaseline: baseline,
+    font: font,
+    text: getText(feature, resolution, dom),
+    fill: new Fill({color: fillColor}),
+    stroke: new Stroke({color: outlineColor, width: outlineWidth}),
+    offsetX: offsetX,
+    offsetY: offsetY,
+    placement: placement,
+    maxAngle: maxAngle,
+    overflow: overflow,
+    rotation: rotation,
+  });
+};
+
+// Polygons
+function polygonStyleFunction(feature, resolution) {
+  return new Style({
+    stroke: new Stroke({
+      color: &#x27;blue&#x27;,
+      width: 1,
+    }),
+    fill: new Fill({
+      color: &#x27;rgba(0, 0, 255, 0.1)&#x27;,
+    }),
+    text: createTextStyle(feature, resolution, myDom.polygons),
+  });
+}
+
+var vectorPolygons &#x3D; new VectorLayer({
+  source: new VectorSource({
+    url: &#x27;data/geojson/polygon-samples.geojson&#x27;,
+    format: new GeoJSON(),
+  }),
+  style: polygonStyleFunction,
+});
+
+// Lines
+function lineStyleFunction(feature, resolution) {
+  return new Style({
+    stroke: new Stroke({
+      color: &#x27;green&#x27;,
+      width: 2,
+    }),
+    text: createTextStyle(feature, resolution, myDom.lines),
+  });
+}
+
+var vectorLines &#x3D; new VectorLayer({
+  source: new VectorSource({
+    url: &#x27;data/geojson/line-samples.geojson&#x27;,
+    format: new GeoJSON(),
+  }),
+  style: lineStyleFunction,
+});
+
+// Points
+function pointStyleFunction(feature, resolution) {
+  return new Style({
+    image: new CircleStyle({
+      radius: 10,
+      fill: new Fill({color: &#x27;rgba(255, 0, 0, 0.1)&#x27;}),
+      stroke: new Stroke({color: &#x27;red&#x27;, width: 1}),
+    }),
+    text: createTextStyle(feature, resolution, myDom.points),
+  });
+}
+
+var vectorPoints &#x3D; new VectorLayer({
+  source: new VectorSource({
+    url: &#x27;data/geojson/point-samples.geojson&#x27;,
+    format: new GeoJSON(),
+  }),
+  style: pointStyleFunction,
+});
+
+var map &#x3D; new Map({
+  layers: [
+    new TileLayer({
+      source: new OSM(),
+    }),
+    vectorPolygons,
+    vectorLines,
+    vectorPoints ],
+  target: &#x27;map&#x27;,
+  view: new View({
+    center: [-8161939, 6095025],
+    zoom: 8,
+  }),
+});
+
+document
+  .getElementById(&#x27;refresh-points&#x27;)
+  .addEventListener(&#x27;click&#x27;, function () {
+    vectorPoints.setStyle(pointStyleFunction);
+  });
+
+document.getElementById(&#x27;refresh-lines&#x27;).addEventListener(&#x27;click&#x27;, function () {
+  vectorLines.setStyle(lineStyleFunction);
+});
+
+document
+  .getElementById(&#x27;refresh-polygons&#x27;)
+  .addEventListener(&#x27;click&#x27;, function () {
+    vectorPolygons.setStyle(polygonStyleFunction);
+  });
+
+/**
+ * @param {number} n The max number of characters to keep.
+ * @return {string} Truncated string.
+ */
+String.prototype.trunc &#x3D;
+  String.prototype.trunc ||
+  function (n) {
+    return this.length &gt; n ? this.substr(0, n - 1) + &#x27;...&#x27; : this.substr(0);
+  };
+
+// http://stackoverflow.com/questions/14484787/wrap-text-in-javascript
+function stringDivider(str, width, spaceReplacer) {
+  if (str.length &gt; width) {
+    var p &#x3D; width;
+    while (p &gt; 0 &amp;&amp; str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;) {
+      p--;
+    }
+    if (p &gt; 0) {
+      var left;
+      if (str.substring(p, p + 1) &#x3D;&#x3D; &#x27;-&#x27;) {
+        left &#x3D; str.substring(0, p + 1);
+      } else {
+        left &#x3D; str.substring(0, p);
+      }
+      var right &#x3D; str.substring(p + 1);
+      return left + spaceReplacer + stringDivider(right, width, spaceReplacer);
+    }
+  }
+  return str;
+}
+</code></pre>
+      </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
           <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
@@ -869,272 +1132,12 @@
       &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class&#x3D;&quot;clearall&quot;&gt;&lt;/div&gt;
-    &lt;script src="index.js"&gt;&lt;/script&gt;
+    &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>
-      <div class="row-fluid">
-        <div class="source-controls">
-          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
-        </div>
-        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {
-  Circle as CircleStyle,
-  Fill,
-  Stroke,
-  Style,
-  Text,
-} from &#x27;ol/style&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var openSansAdded &#x3D; false;
 
-var myDom &#x3D; {
-  points: {
-    text: document.getElementById(&#x27;points-text&#x27;),
-    align: document.getElementById(&#x27;points-align&#x27;),
-    baseline: document.getElementById(&#x27;points-baseline&#x27;),
-    rotation: document.getElementById(&#x27;points-rotation&#x27;),
-    font: document.getElementById(&#x27;points-font&#x27;),
-    weight: document.getElementById(&#x27;points-weight&#x27;),
-    size: document.getElementById(&#x27;points-size&#x27;),
-    height: document.getElementById(&#x27;points-height&#x27;),
-    offsetX: document.getElementById(&#x27;points-offset-x&#x27;),
-    offsetY: document.getElementById(&#x27;points-offset-y&#x27;),
-    color: document.getElementById(&#x27;points-color&#x27;),
-    outline: document.getElementById(&#x27;points-outline&#x27;),
-    outlineWidth: document.getElementById(&#x27;points-outline-width&#x27;),
-    maxreso: document.getElementById(&#x27;points-maxreso&#x27;),
-  },
-  lines: {
-    text: document.getElementById(&#x27;lines-text&#x27;),
-    align: document.getElementById(&#x27;lines-align&#x27;),
-    baseline: document.getElementById(&#x27;lines-baseline&#x27;),
-    rotation: document.getElementById(&#x27;lines-rotation&#x27;),
-    font: document.getElementById(&#x27;lines-font&#x27;),
-    weight: document.getElementById(&#x27;lines-weight&#x27;),
-    placement: document.getElementById(&#x27;lines-placement&#x27;),
-    maxangle: document.getElementById(&#x27;lines-maxangle&#x27;),
-    overflow: document.getElementById(&#x27;lines-overflow&#x27;),
-    size: document.getElementById(&#x27;lines-size&#x27;),
-    height: document.getElementById(&#x27;lines-height&#x27;),
-    offsetX: document.getElementById(&#x27;lines-offset-x&#x27;),
-    offsetY: document.getElementById(&#x27;lines-offset-y&#x27;),
-    color: document.getElementById(&#x27;lines-color&#x27;),
-    outline: document.getElementById(&#x27;lines-outline&#x27;),
-    outlineWidth: document.getElementById(&#x27;lines-outline-width&#x27;),
-    maxreso: document.getElementById(&#x27;lines-maxreso&#x27;),
-  },
-  polygons: {
-    text: document.getElementById(&#x27;polygons-text&#x27;),
-    align: document.getElementById(&#x27;polygons-align&#x27;),
-    baseline: document.getElementById(&#x27;polygons-baseline&#x27;),
-    rotation: document.getElementById(&#x27;polygons-rotation&#x27;),
-    font: document.getElementById(&#x27;polygons-font&#x27;),
-    weight: document.getElementById(&#x27;polygons-weight&#x27;),
-    placement: document.getElementById(&#x27;polygons-placement&#x27;),
-    maxangle: document.getElementById(&#x27;polygons-maxangle&#x27;),
-    overflow: document.getElementById(&#x27;polygons-overflow&#x27;),
-    size: document.getElementById(&#x27;polygons-size&#x27;),
-    height: document.getElementById(&#x27;polygons-height&#x27;),
-    offsetX: document.getElementById(&#x27;polygons-offset-x&#x27;),
-    offsetY: document.getElementById(&#x27;polygons-offset-y&#x27;),
-    color: document.getElementById(&#x27;polygons-color&#x27;),
-    outline: document.getElementById(&#x27;polygons-outline&#x27;),
-    outlineWidth: document.getElementById(&#x27;polygons-outline-width&#x27;),
-    maxreso: document.getElementById(&#x27;polygons-maxreso&#x27;),
-  },
-};
-
-var getText &#x3D; function (feature, resolution, dom) {
-  var type &#x3D; dom.text.value;
-  var maxResolution &#x3D; dom.maxreso.value;
-  var text &#x3D; feature.get(&#x27;name&#x27;);
-
-  if (resolution &gt; maxResolution) {
-    text &#x3D; &#x27;&#x27;;
-  } else if (type &#x3D;&#x3D; &#x27;hide&#x27;) {
-    text &#x3D; &#x27;&#x27;;
-  } else if (type &#x3D;&#x3D; &#x27;shorten&#x27;) {
-    text &#x3D; text.trunc(12);
-  } else if (
-    type &#x3D;&#x3D; &#x27;wrap&#x27; &amp;&amp;
-    (!dom.placement || dom.placement.value !&#x3D; &#x27;line&#x27;)
-  ) {
-    text &#x3D; stringDivider(text, 16, &#x27;\n&#x27;);
-  }
-
-  return text;
-};
-
-var createTextStyle &#x3D; function (feature, resolution, dom) {
-  var align &#x3D; dom.align.value;
-  var baseline &#x3D; dom.baseline.value;
-  var size &#x3D; dom.size.value;
-  var height &#x3D; dom.height.value;
-  var offsetX &#x3D; parseInt(dom.offsetX.value, 10);
-  var offsetY &#x3D; parseInt(dom.offsetY.value, 10);
-  var weight &#x3D; dom.weight.value;
-  var placement &#x3D; dom.placement ? dom.placement.value : undefined;
-  var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
-  var overflow &#x3D; dom.overflow ? dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27; : undefined;
-  var rotation &#x3D; parseFloat(dom.rotation.value);
-  if (dom.font.value &#x3D;&#x3D; &quot;&#x27;Open Sans&#x27;&quot; &amp;&amp; !openSansAdded) {
-    var openSans &#x3D; document.createElement(&#x27;link&#x27;);
-    openSans.href &#x3D; &#x27;https://fonts.googleapis.com/css?family&#x3D;Open+Sans&#x27;;
-    openSans.rel &#x3D; &#x27;stylesheet&#x27;;
-    document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(openSans);
-    openSansAdded &#x3D; true;
-  }
-  var font &#x3D; weight + &#x27; &#x27; + size + &#x27;/&#x27; + height + &#x27; &#x27; + dom.font.value;
-  var fillColor &#x3D; dom.color.value;
-  var outlineColor &#x3D; dom.outline.value;
-  var outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
-
-  return new Text({
-    textAlign: align &#x3D;&#x3D; &#x27;&#x27; ? undefined : align,
-    textBaseline: baseline,
-    font: font,
-    text: getText(feature, resolution, dom),
-    fill: new Fill({color: fillColor}),
-    stroke: new Stroke({color: outlineColor, width: outlineWidth}),
-    offsetX: offsetX,
-    offsetY: offsetY,
-    placement: placement,
-    maxAngle: maxAngle,
-    overflow: overflow,
-    rotation: rotation,
-  });
-};
-
-// Polygons
-function polygonStyleFunction(feature, resolution) {
-  return new Style({
-    stroke: new Stroke({
-      color: &#x27;blue&#x27;,
-      width: 1,
-    }),
-    fill: new Fill({
-      color: &#x27;rgba(0, 0, 255, 0.1)&#x27;,
-    }),
-    text: createTextStyle(feature, resolution, myDom.polygons),
-  });
-}
-
-var vectorPolygons &#x3D; new VectorLayer({
-  source: new VectorSource({
-    url: &#x27;data/geojson/polygon-samples.geojson&#x27;,
-    format: new GeoJSON(),
-  }),
-  style: polygonStyleFunction,
-});
-
-// Lines
-function lineStyleFunction(feature, resolution) {
-  return new Style({
-    stroke: new Stroke({
-      color: &#x27;green&#x27;,
-      width: 2,
-    }),
-    text: createTextStyle(feature, resolution, myDom.lines),
-  });
-}
-
-var vectorLines &#x3D; new VectorLayer({
-  source: new VectorSource({
-    url: &#x27;data/geojson/line-samples.geojson&#x27;,
-    format: new GeoJSON(),
-  }),
-  style: lineStyleFunction,
-});
-
-// Points
-function pointStyleFunction(feature, resolution) {
-  return new Style({
-    image: new CircleStyle({
-      radius: 10,
-      fill: new Fill({color: &#x27;rgba(255, 0, 0, 0.1)&#x27;}),
-      stroke: new Stroke({color: &#x27;red&#x27;, width: 1}),
-    }),
-    text: createTextStyle(feature, resolution, myDom.points),
-  });
-}
-
-var vectorPoints &#x3D; new VectorLayer({
-  source: new VectorSource({
-    url: &#x27;data/geojson/point-samples.geojson&#x27;,
-    format: new GeoJSON(),
-  }),
-  style: pointStyleFunction,
-});
-
-var map &#x3D; new Map({
-  layers: [
-    new TileLayer({
-      source: new OSM(),
-    }),
-    vectorPolygons,
-    vectorLines,
-    vectorPoints ],
-  target: &#x27;map&#x27;,
-  view: new View({
-    center: [-8161939, 6095025],
-    zoom: 8,
-  }),
-});
-
-document
-  .getElementById(&#x27;refresh-points&#x27;)
-  .addEventListener(&#x27;click&#x27;, function () {
-    vectorPoints.setStyle(pointStyleFunction);
-  });
-
-document.getElementById(&#x27;refresh-lines&#x27;).addEventListener(&#x27;click&#x27;, function () {
-  vectorLines.setStyle(lineStyleFunction);
-});
-
-document
-  .getElementById(&#x27;refresh-polygons&#x27;)
-  .addEventListener(&#x27;click&#x27;, function () {
-    vectorPolygons.setStyle(polygonStyleFunction);
-  });
-
-/**
- * @param {number} n The max number of characters to keep.
- * @return {string} Truncated string.
- */
-String.prototype.trunc &#x3D;
-  String.prototype.trunc ||
-  function (n) {
-    return this.length &gt; n ? this.substr(0, n - 1) + &#x27;...&#x27; : this.substr(0);
-  };
-
-// http://stackoverflow.com/questions/14484787/wrap-text-in-javascript
-function stringDivider(str, width, spaceReplacer) {
-  if (str.length &gt; width) {
-    var p &#x3D; width;
-    while (p &gt; 0 &amp;&amp; str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;) {
-      p--;
-    }
-    if (p &gt; 0) {
-      var left;
-      if (str.substring(p, p + 1) &#x3D;&#x3D; &#x27;-&#x27;) {
-        left &#x3D; str.substring(0, p + 1);
-      } else {
-        left &#x3D; str.substring(0, p);
-      }
-      var right &#x3D; str.substring(p + 1);
-      return left + spaceReplacer + stringDivider(right, width, spaceReplacer);
-    }
-  }
-  return str;
-}
-</code></pre>
-      </div>
       <div class="row-fluid">
         <div class="source-controls">
           <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
@@ -1154,6 +1157,7 @@ function stringDivider(str, width, spaceReplacer) {
 }</code></pre>
       </div>
     </div>
+
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="vector-labels.js"></script>

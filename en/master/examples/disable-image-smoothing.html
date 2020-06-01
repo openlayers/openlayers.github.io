@@ -156,82 +156,16 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of disabling image smoothing</p>
-          <div id="docs"><p>Example of disabling image smoothing when using raster DEM (digital elevation model) data. The <code>imageSmoothing: false</code> setting is used to disable canvas image smoothing during reprojection and rendering. Elevation data is calculated from the pixel value returned by <b>forEachLayerAtPixel<b>. For comparison a second map with smoothing enabled returns inaccuate elevations which are very noticeable close to 3107 meters due to how elevation is calculated from the pixel value.</p>
+          <div id="docs"><p>Example of disabling image smoothing when using raster DEM (digital elevation model) data. The <code>imageSmoothing: false</code> setting is used to disable canvas image smoothing during reprojection and rendering. Elevation data is calculated from the pixel value returned by <b>forEachLayerAtPixel</b>. For comparison a second map with smoothing enabled returns inaccuate elevations which are very noticeable close to 3107 meters due to how elevation is calculated from the pixel value.</p>
 </div>
         </div>
       </div>
 
       <div class="row-fluid">
         <div class="source-controls">
-          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
-        </div>
-        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;title&gt;Disable Image Smoothing&lt;/title&gt;
-    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;style&gt;
-      .map {
-        width: 100%;
-        height:400px;
-      }
-      @media (min-width: 800px) {
-        .wrapper {
-          display: flex;
-        }
-        .half {
-          padding: 0 10px;
-          width: 50%;
-          float: left;
-        }
-      }
-      #opacity {
-        display: inline-block;
-        width: 150px;
-        vertical-align: text-bottom;
-      }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div class&#x3D;&quot;wrapper&quot;&gt;
-      &lt;div class&#x3D;&quot;half&quot;&gt;
-        &lt;h4&gt;Smoothing Disabled&lt;/h4&gt;
-        &lt;div id&#x3D;&quot;map1&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-        &lt;div&gt;
-          &lt;label&gt;
-            Elevation
-            &lt;span id&#x3D;&quot;info1&quot;&gt;0.0&lt;/span&gt; meters
-          &lt;/label&gt;
-        &lt;/div&gt;
-        &lt;div&gt;
-          &lt;label&gt;
-            Imagery opacity
-            &lt;input id&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; value&#x3D;&quot;80&quot; /&gt;
-            &lt;span id&#x3D;&quot;output&quot;&gt;&lt;/span&gt; %
-          &lt;/label&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class&#x3D;&quot;half&quot;&gt;
-        &lt;h4&gt;Uncorrected Comparison&lt;/h4&gt;
-        &lt;div id&#x3D;&quot;map2&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-        &lt;div&gt;
-          &lt;label&gt;
-            Elevation
-            &lt;span id&#x3D;&quot;info2&quot;&gt;0.0&lt;/span&gt; meters
-          &lt;/label&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;script src="index.js"&gt;&lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code></pre>
-      </div>
-      <div class="row-fluid">
-        <div class="source-controls">
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
-        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+        <pre><legend>main.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
@@ -354,6 +288,75 @@ map1.on(&#x27;pointermove&#x27;, showElevations);
 map2.on(&#x27;pointermove&#x27;, showElevations);
 </code></pre>
       </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;Disable Image Smoothing&lt;/title&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;style&gt;
+      .map {
+        width: 100%;
+        height:400px;
+      }
+      @media (min-width: 800px) {
+        .wrapper {
+          display: flex;
+        }
+        .half {
+          padding: 0 10px;
+          width: 50%;
+          float: left;
+        }
+      }
+      #opacity {
+        display: inline-block;
+        width: 150px;
+        vertical-align: text-bottom;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class&#x3D;&quot;wrapper&quot;&gt;
+      &lt;div class&#x3D;&quot;half&quot;&gt;
+        &lt;h4&gt;Smoothing Disabled&lt;/h4&gt;
+        &lt;div id&#x3D;&quot;map1&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+        &lt;div&gt;
+          &lt;label&gt;
+            Elevation
+            &lt;span id&#x3D;&quot;info1&quot;&gt;0.0&lt;/span&gt; meters
+          &lt;/label&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+          &lt;label&gt;
+            Imagery opacity
+            &lt;input id&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; value&#x3D;&quot;80&quot; /&gt;
+            &lt;span id&#x3D;&quot;output&quot;&gt;&lt;/span&gt; %
+          &lt;/label&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;half&quot;&gt;
+        &lt;h4&gt;Uncorrected Comparison&lt;/h4&gt;
+        &lt;div id&#x3D;&quot;map2&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+        &lt;div&gt;
+          &lt;label&gt;
+            Elevation
+            &lt;span id&#x3D;&quot;info2&quot;&gt;0.0&lt;/span&gt; meters
+          &lt;/label&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script src="main.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+
+
       <div class="row-fluid">
         <div class="source-controls">
           <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
@@ -373,6 +376,7 @@ map2.on(&#x27;pointermove&#x27;, showElevations);
 }</code></pre>
       </div>
     </div>
+
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="disable-image-smoothing.js"></script>

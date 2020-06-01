@@ -136,6 +136,59 @@
 
       <div class="row-fluid">
         <div class="source-controls">
+          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>main.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import Map from &#x27;ol/Map&#x27;;
+import OSM from &#x27;ol/source/OSM&#x27;;
+import TileLayer from &#x27;ol/layer/Tile&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {
+  DragRotateAndZoom,
+  defaults as defaultInteractions,
+} from &#x27;ol/interaction&#x27;;
+import {OverviewMap, defaults as defaultControls} from &#x27;ol/control&#x27;;
+
+var rotateWithView &#x3D; document.getElementById(&#x27;rotateWithView&#x27;);
+
+var overviewMapControl &#x3D; new OverviewMap({
+  // see in overviewmap-custom.html to see the custom CSS used
+  className: &#x27;ol-overviewmap ol-custom-overviewmap&#x27;,
+  layers: [
+    new TileLayer({
+      source: new OSM({
+        &#x27;url&#x27;:
+          &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27; +
+          &#x27;?apikey&#x3D;Your API key from http://www.thunderforest.com/docs/apikeys/ here&#x27;,
+      }),
+    }) ],
+  collapseLabel: &#x27;\u00BB&#x27;,
+  label: &#x27;\u00AB&#x27;,
+  collapsed: false,
+});
+
+rotateWithView.addEventListener(&#x27;change&#x27;, function () {
+  overviewMapControl.setRotateWithView(this.checked);
+});
+
+var map &#x3D; new Map({
+  controls: defaultControls().extend([overviewMapControl]),
+  interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
+  layers: [
+    new TileLayer({
+      source: new OSM(),
+    }) ],
+  target: &#x27;map&#x27;,
+  view: new View({
+    center: [500000, 6000000],
+    zoom: 7,
+  }),
+});
+</code></pre>
+      </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
           <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
@@ -192,62 +245,12 @@
       &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;/div&gt;
     &lt;div&gt;&lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;rotateWithView&quot;&gt;Rotate with view&lt;/div&gt;
-    &lt;script src="index.js"&gt;&lt;/script&gt;
+    &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>
-      <div class="row-fluid">
-        <div class="source-controls">
-          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
-        </div>
-        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
-import OSM from &#x27;ol/source/OSM&#x27;;
-import TileLayer from &#x27;ol/layer/Tile&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {
-  DragRotateAndZoom,
-  defaults as defaultInteractions,
-} from &#x27;ol/interaction&#x27;;
-import {OverviewMap, defaults as defaultControls} from &#x27;ol/control&#x27;;
 
-var rotateWithView &#x3D; document.getElementById(&#x27;rotateWithView&#x27;);
 
-var overviewMapControl &#x3D; new OverviewMap({
-  // see in overviewmap-custom.html to see the custom CSS used
-  className: &#x27;ol-overviewmap ol-custom-overviewmap&#x27;,
-  layers: [
-    new TileLayer({
-      source: new OSM({
-        &#x27;url&#x27;:
-          &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27; +
-          &#x27;?apikey&#x3D;Your API key from http://www.thunderforest.com/docs/apikeys/ here&#x27;,
-      }),
-    }) ],
-  collapseLabel: &#x27;\u00BB&#x27;,
-  label: &#x27;\u00AB&#x27;,
-  collapsed: false,
-});
-
-rotateWithView.addEventListener(&#x27;change&#x27;, function () {
-  overviewMapControl.setRotateWithView(this.checked);
-});
-
-var map &#x3D; new Map({
-  controls: defaultControls().extend([overviewMapControl]),
-  interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
-  layers: [
-    new TileLayer({
-      source: new OSM(),
-    }) ],
-  target: &#x27;map&#x27;,
-  view: new View({
-    center: [500000, 6000000],
-    zoom: 7,
-  }),
-});
-</code></pre>
-      </div>
       <div class="row-fluid">
         <div class="source-controls">
           <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
@@ -267,6 +270,7 @@ var map &#x3D; new Map({
 }</code></pre>
       </div>
     </div>
+
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="overviewmap-custom.js"></script>

@@ -168,70 +168,9 @@
 
       <div class="row-fluid">
         <div class="source-controls">
-          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
-        </div>
-        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;title&gt;Print to scale example&lt;/title&gt;
-    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://unpkg.com/dom-to-image-more@2.8.0/dist/dom-to-image-more.min.js&quot;&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js&quot;&gt;&lt;/script&gt;
-    &lt;style&gt;
-      .map {
-        width: 100%;
-        height:400px;
-      }
-      .wrapper {
-        max-width: 566px;
-        width: 100%;
-        height: 400px;
-        overflow: hidden;
-      }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div class&#x3D;&quot;wrapper&quot;&gt;
-      &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;/div&gt;
-    &lt;form class&#x3D;&quot;form&quot;&gt;
-      &lt;label&gt;Page size &lt;/label&gt;
-      &lt;select id&#x3D;&quot;format&quot;&gt;
-        &lt;option value&#x3D;&quot;a0&quot;&gt;A0 (slow)&lt;/option&gt;
-        &lt;option value&#x3D;&quot;a1&quot;&gt;A1&lt;/option&gt;
-        &lt;option value&#x3D;&quot;a2&quot;&gt;A2&lt;/option&gt;
-        &lt;option value&#x3D;&quot;a3&quot;&gt;A3&lt;/option&gt;
-        &lt;option value&#x3D;&quot;a4&quot; selected&gt;A4&lt;/option&gt;
-        &lt;option value&#x3D;&quot;a5&quot;&gt;A5 (fast)&lt;/option&gt;
-      &lt;/select&gt;
-      &lt;label&gt;Resolution &lt;/label&gt;
-      &lt;select id&#x3D;&quot;resolution&quot;&gt;
-        &lt;option value&#x3D;&quot;72&quot;&gt;72 dpi (fast)&lt;/option&gt;
-        &lt;option value&#x3D;&quot;150&quot;&gt;150 dpi&lt;/option&gt;
-        &lt;option value&#x3D;&quot;200&quot; selected&gt;200 dpi&lt;/option&gt;
-        &lt;option value&#x3D;&quot;300&quot;&gt;300 dpi (slow)&lt;/option&gt;
-      &lt;/select&gt;
-      &lt;label&gt;Scale &lt;/label&gt;
-      &lt;select id&#x3D;&quot;scale&quot;&gt;
-        &lt;option value&#x3D;&quot;500&quot;&gt;1:500000&lt;/option&gt;
-        &lt;option value&#x3D;&quot;250&quot; selected&gt;1:250000&lt;/option&gt;
-        &lt;option value&#x3D;&quot;100&quot;&gt;1:100000&lt;/option&gt;
-        &lt;option value&#x3D;&quot;50&quot;&gt;1:50000&lt;/option&gt;
-        &lt;option value&#x3D;&quot;25&quot;&gt;1:25000&lt;/option&gt;
-        &lt;option value&#x3D;&quot;10&quot;&gt;1:10000&lt;/option&gt;
-      &lt;/select&gt;
-    &lt;/form&gt;
-    &lt;button id&#x3D;&quot;export-pdf&quot;&gt;Export PDF&lt;/button&gt;
-    &lt;script src="index.js"&gt;&lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code></pre>
-      </div>
-      <div class="row-fluid">
-        <div class="source-controls">
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
-        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+        <pre><legend>main.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
@@ -370,6 +309,70 @@ exportButton.addEventListener(
 );
 </code></pre>
       </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;Print to scale example&lt;/title&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://unpkg.com/dom-to-image-more@2.8.0/dist/dom-to-image-more.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js&quot;&gt;&lt;/script&gt;
+    &lt;style&gt;
+      .map {
+        width: 100%;
+        height:400px;
+      }
+      .wrapper {
+        max-width: 566px;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class&#x3D;&quot;wrapper&quot;&gt;
+      &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;form class&#x3D;&quot;form&quot;&gt;
+      &lt;label&gt;Page size &lt;/label&gt;
+      &lt;select id&#x3D;&quot;format&quot;&gt;
+        &lt;option value&#x3D;&quot;a0&quot;&gt;A0 (slow)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;a1&quot;&gt;A1&lt;/option&gt;
+        &lt;option value&#x3D;&quot;a2&quot;&gt;A2&lt;/option&gt;
+        &lt;option value&#x3D;&quot;a3&quot;&gt;A3&lt;/option&gt;
+        &lt;option value&#x3D;&quot;a4&quot; selected&gt;A4&lt;/option&gt;
+        &lt;option value&#x3D;&quot;a5&quot;&gt;A5 (fast)&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;label&gt;Resolution &lt;/label&gt;
+      &lt;select id&#x3D;&quot;resolution&quot;&gt;
+        &lt;option value&#x3D;&quot;72&quot;&gt;72 dpi (fast)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;150&quot;&gt;150 dpi&lt;/option&gt;
+        &lt;option value&#x3D;&quot;200&quot; selected&gt;200 dpi&lt;/option&gt;
+        &lt;option value&#x3D;&quot;300&quot;&gt;300 dpi (slow)&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;label&gt;Scale &lt;/label&gt;
+      &lt;select id&#x3D;&quot;scale&quot;&gt;
+        &lt;option value&#x3D;&quot;500&quot;&gt;1:500000&lt;/option&gt;
+        &lt;option value&#x3D;&quot;250&quot; selected&gt;1:250000&lt;/option&gt;
+        &lt;option value&#x3D;&quot;100&quot;&gt;1:100000&lt;/option&gt;
+        &lt;option value&#x3D;&quot;50&quot;&gt;1:50000&lt;/option&gt;
+        &lt;option value&#x3D;&quot;25&quot;&gt;1:25000&lt;/option&gt;
+        &lt;option value&#x3D;&quot;10&quot;&gt;1:10000&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/form&gt;
+    &lt;button id&#x3D;&quot;export-pdf&quot;&gt;Export PDF&lt;/button&gt;
+    &lt;script src="main.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+
+
       <div class="row-fluid">
         <div class="source-controls">
           <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
@@ -378,7 +381,7 @@ exportButton.addEventListener(
   &quot;name&quot;: &quot;print-to-scale&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;6.3.2-dev&quot;,
-    &quot;proj4&quot;: &quot;2.6.1&quot;
+    &quot;proj4&quot;: &quot;2.6.2&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -390,6 +393,7 @@ exportButton.addEventListener(
 }</code></pre>
       </div>
     </div>
+
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="print-to-scale.js"></script>

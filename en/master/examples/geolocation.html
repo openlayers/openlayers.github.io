@@ -145,44 +145,9 @@
 
       <div class="row-fluid">
         <div class="source-controls">
-          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
-        </div>
-        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;title&gt;Geolocation&lt;/title&gt;
-    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;style&gt;
-      .map {
-        width: 100%;
-        height:400px;
-      }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id&#x3D;&quot;info&quot; style&#x3D;&quot;display: none;&quot;&gt;&lt;/div&gt;
-    &lt;label for&#x3D;&quot;track&quot;&gt;
-      track position
-      &lt;input id&#x3D;&quot;track&quot; type&#x3D;&quot;checkbox&quot;/&gt;
-    &lt;/label&gt;
-    &lt;p&gt;
-      position accuracy : &lt;code id&#x3D;&quot;accuracy&quot;&gt;&lt;/code&gt;&amp;nbsp;&amp;nbsp;
-      altitude : &lt;code id&#x3D;&quot;altitude&quot;&gt;&lt;/code&gt;&amp;nbsp;&amp;nbsp;
-      altitude accuracy : &lt;code id&#x3D;&quot;altitudeAccuracy&quot;&gt;&lt;/code&gt;&amp;nbsp;&amp;nbsp;
-      heading : &lt;code id&#x3D;&quot;heading&quot;&gt;&lt;/code&gt;&amp;nbsp;&amp;nbsp;
-      speed : &lt;code id&#x3D;&quot;speed&quot;&gt;&lt;/code&gt;
-    &lt;/p&gt;
-    &lt;script src="index.js"&gt;&lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code></pre>
-      </div>
-      <div class="row-fluid">
-        <div class="source-controls">
           <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
-        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+        <pre><legend>main.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Feature from &#x27;ol/Feature&#x27;;
 import Geolocation from &#x27;ol/Geolocation&#x27;;
 import Map from &#x27;ol/Map&#x27;;
@@ -272,6 +237,44 @@ new VectorLayer({
 });
 </code></pre>
       </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;Geolocation&lt;/title&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;style&gt;
+      .map {
+        width: 100%;
+        height:400px;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;info&quot; style&#x3D;&quot;display: none;&quot;&gt;&lt;/div&gt;
+    &lt;label for&#x3D;&quot;track&quot;&gt;
+      track position
+      &lt;input id&#x3D;&quot;track&quot; type&#x3D;&quot;checkbox&quot;/&gt;
+    &lt;/label&gt;
+    &lt;p&gt;
+      position accuracy : &lt;code id&#x3D;&quot;accuracy&quot;&gt;&lt;/code&gt;&amp;nbsp;&amp;nbsp;
+      altitude : &lt;code id&#x3D;&quot;altitude&quot;&gt;&lt;/code&gt;&amp;nbsp;&amp;nbsp;
+      altitude accuracy : &lt;code id&#x3D;&quot;altitudeAccuracy&quot;&gt;&lt;/code&gt;&amp;nbsp;&amp;nbsp;
+      heading : &lt;code id&#x3D;&quot;heading&quot;&gt;&lt;/code&gt;&amp;nbsp;&amp;nbsp;
+      speed : &lt;code id&#x3D;&quot;speed&quot;&gt;&lt;/code&gt;
+    &lt;/p&gt;
+    &lt;script src="main.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+
+
       <div class="row-fluid">
         <div class="source-controls">
           <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
@@ -291,6 +294,7 @@ new VectorLayer({
 }</code></pre>
       </div>
     </div>
+
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="geolocation.js"></script>

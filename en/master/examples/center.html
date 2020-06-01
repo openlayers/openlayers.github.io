@@ -144,6 +144,96 @@
 
       <div class="row-fluid">
         <div class="source-controls">
+          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>main.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
+import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+
+/** @type {VectorSource&lt;import(&quot;../src/ol/geom/SimpleGeometry.js&quot;).default&gt;} */
+var source &#x3D; new VectorSource({
+  url: &#x27;data/geojson/switzerland.geojson&#x27;,
+  format: new GeoJSON(),
+});
+var style &#x3D; new Style({
+  fill: new Fill({
+    color: &#x27;rgba(255, 255, 255, 0.6)&#x27;,
+  }),
+  stroke: new Stroke({
+    color: &#x27;#319FD3&#x27;,
+    width: 1,
+  }),
+  image: new CircleStyle({
+    radius: 5,
+    fill: new Fill({
+      color: &#x27;rgba(255, 255, 255, 0.6)&#x27;,
+    }),
+    stroke: new Stroke({
+      color: &#x27;#319FD3&#x27;,
+      width: 1,
+    }),
+  }),
+});
+var vectorLayer &#x3D; new VectorLayer({
+  source: source,
+  style: style,
+});
+var view &#x3D; new View({
+  center: [0, 0],
+  zoom: 1,
+});
+var map &#x3D; new Map({
+  layers: [
+    new TileLayer({
+      source: new OSM(),
+    }),
+    vectorLayer ],
+  target: &#x27;map&#x27;,
+  view: view,
+});
+
+var zoomtoswitzerland &#x3D; document.getElementById(&#x27;zoomtoswitzerland&#x27;);
+zoomtoswitzerland.addEventListener(
+  &#x27;click&#x27;,
+  function () {
+    var feature &#x3D; source.getFeatures()[0];
+    var polygon &#x3D; feature.getGeometry();
+    view.fit(polygon, {padding: [170, 50, 30, 150]});
+  },
+  false
+);
+
+var zoomtolausanne &#x3D; document.getElementById(&#x27;zoomtolausanne&#x27;);
+zoomtolausanne.addEventListener(
+  &#x27;click&#x27;,
+  function () {
+    var feature &#x3D; source.getFeatures()[1];
+    var point &#x3D; feature.getGeometry();
+    view.fit(point, {padding: [170, 50, 30, 150], minResolution: 50});
+  },
+  false
+);
+
+var centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
+centerlausanne.addEventListener(
+  &#x27;click&#x27;,
+  function () {
+    var feature &#x3D; source.getFeatures()[1];
+    var point &#x3D; feature.getGeometry();
+    var size &#x3D; map.getSize();
+    view.centerOn(point.getCoordinates(), size, [570, 500]);
+  },
+  false
+);
+</code></pre>
+      </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
           <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
@@ -231,99 +321,12 @@
     &lt;button id&#x3D;&quot;zoomtoswitzerland&quot;&gt;Zoom to Switzerland&lt;/button&gt; (best fit).&lt;br/&gt;
     &lt;button id&#x3D;&quot;zoomtolausanne&quot;&gt;Zoom to Lausanne&lt;/button&gt; (with min resolution),&lt;br/&gt;
     &lt;button id&#x3D;&quot;centerlausanne&quot;&gt;Center on Lausanne&lt;/button&gt;
-    &lt;script src="index.js"&gt;&lt;/script&gt;
+    &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>
-      <div class="row-fluid">
-        <div class="source-controls">
-          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
-        </div>
-        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-import Map from &#x27;ol/Map&#x27;;
-import View from &#x27;ol/View&#x27;;
-import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-/** @type {VectorSource&lt;import(&quot;../src/ol/geom/SimpleGeometry.js&quot;).default&gt;} */
-var source &#x3D; new VectorSource({
-  url: &#x27;data/geojson/switzerland.geojson&#x27;,
-  format: new GeoJSON(),
-});
-var style &#x3D; new Style({
-  fill: new Fill({
-    color: &#x27;rgba(255, 255, 255, 0.6)&#x27;,
-  }),
-  stroke: new Stroke({
-    color: &#x27;#319FD3&#x27;,
-    width: 1,
-  }),
-  image: new CircleStyle({
-    radius: 5,
-    fill: new Fill({
-      color: &#x27;rgba(255, 255, 255, 0.6)&#x27;,
-    }),
-    stroke: new Stroke({
-      color: &#x27;#319FD3&#x27;,
-      width: 1,
-    }),
-  }),
-});
-var vectorLayer &#x3D; new VectorLayer({
-  source: source,
-  style: style,
-});
-var view &#x3D; new View({
-  center: [0, 0],
-  zoom: 1,
-});
-var map &#x3D; new Map({
-  layers: [
-    new TileLayer({
-      source: new OSM(),
-    }),
-    vectorLayer ],
-  target: &#x27;map&#x27;,
-  view: view,
-});
 
-var zoomtoswitzerland &#x3D; document.getElementById(&#x27;zoomtoswitzerland&#x27;);
-zoomtoswitzerland.addEventListener(
-  &#x27;click&#x27;,
-  function () {
-    var feature &#x3D; source.getFeatures()[0];
-    var polygon &#x3D; feature.getGeometry();
-    view.fit(polygon, {padding: [170, 50, 30, 150]});
-  },
-  false
-);
-
-var zoomtolausanne &#x3D; document.getElementById(&#x27;zoomtolausanne&#x27;);
-zoomtolausanne.addEventListener(
-  &#x27;click&#x27;,
-  function () {
-    var feature &#x3D; source.getFeatures()[1];
-    var point &#x3D; feature.getGeometry();
-    view.fit(point, {padding: [170, 50, 30, 150], minResolution: 50});
-  },
-  false
-);
-
-var centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
-centerlausanne.addEventListener(
-  &#x27;click&#x27;,
-  function () {
-    var feature &#x3D; source.getFeatures()[1];
-    var point &#x3D; feature.getGeometry();
-    var size &#x3D; map.getSize();
-    view.centerOn(point.getCoordinates(), size, [570, 500]);
-  },
-  false
-);
-</code></pre>
-      </div>
       <div class="row-fluid">
         <div class="source-controls">
           <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
@@ -343,6 +346,7 @@ centerlausanne.addEventListener(
 }</code></pre>
       </div>
     </div>
+
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="center.js"></script>

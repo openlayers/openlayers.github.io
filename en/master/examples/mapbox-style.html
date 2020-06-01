@@ -135,6 +135,23 @@
 
       <div class="row-fluid">
         <div class="source-controls">
+          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>main.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import FullScreen from &#x27;ol/control/FullScreen&#x27;;
+import apply from &#x27;ol-mapbox-style&#x27;;
+
+apply(
+  &#x27;map&#x27;,
+  &#x27;https://api.maptiler.com/maps/topo/style.json?key&#x3D;Get your own API key at https://www.maptiler.com/cloud/&#x27;
+).then(function (map) {
+  map.addControl(new FullScreen());
+});
+</code></pre>
+      </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
           <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
@@ -157,26 +174,12 @@
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;script src="index.js"&gt;&lt;/script&gt;
+    &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>
-      <div class="row-fluid">
-        <div class="source-controls">
-          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
-        </div>
-        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import FullScreen from &#x27;ol/control/FullScreen&#x27;;
-import apply from &#x27;ol-mapbox-style&#x27;;
 
-apply(
-  &#x27;map&#x27;,
-  &#x27;https://api.maptiler.com/maps/topo/style.json?key&#x3D;Get your own API key at https://www.maptiler.com/cloud/&#x27;
-).then(function (map) {
-  map.addControl(new FullScreen());
-});
-</code></pre>
-      </div>
+
       <div class="row-fluid">
         <div class="source-controls">
           <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
@@ -184,8 +187,7 @@ apply(
         <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;mapbox-style&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.3.2-dev&quot;,
-    &quot;ol-mapbox-style&quot;: &quot;^6.1.1&quot;
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -197,6 +199,7 @@ apply(
 }</code></pre>
       </div>
     </div>
+
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="mapbox-style.js"></script>

@@ -145,6 +145,41 @@
 
       <div class="row-fluid">
         <div class="source-controls">
+          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>main.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import WMSGetFeatureInfo from &#x27;ol/format/WMSGetFeatureInfo&#x27;;
+
+fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;)
+  .then(function (response) {
+    return response.text();
+  })
+  .then(function (response) {
+    // this is the standard way to read the features
+    var allFeatures &#x3D; new WMSGetFeatureInfo().readFeatures(response);
+    document.getElementById(&#x27;all&#x27;).innerText &#x3D; allFeatures.length.toString();
+
+    // when specifying the &#x27;layers&#x27; options, only the features of those
+    // layers are returned by the format
+    var hotelFeatures &#x3D; new WMSGetFeatureInfo({
+      layers: [&#x27;hotel&#x27;],
+    }).readFeatures(response);
+    document.getElementById(
+      &#x27;hotel&#x27;
+    ).innerText &#x3D; hotelFeatures.length.toString();
+
+    var restaurantFeatures &#x3D; new WMSGetFeatureInfo({
+      layers: [&#x27;restaurant&#x27;],
+    }).readFeatures(response);
+    document.getElementById(
+      &#x27;restaurant&#x27;
+    ).innerText &#x3D; restaurantFeatures.length.toString();
+  });
+</code></pre>
+      </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
           <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
         </div>
         <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
@@ -175,44 +210,12 @@
         &lt;td id&#x3D;&quot;restaurant&quot;&gt;&lt;/td&gt;
       &lt;/tr&gt;
     &lt;/table&gt;
-    &lt;script src="index.js"&gt;&lt;/script&gt;
+    &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>
-      <div class="row-fluid">
-        <div class="source-controls">
-          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
-        </div>
-        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import WMSGetFeatureInfo from &#x27;ol/format/WMSGetFeatureInfo&#x27;;
 
-fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;)
-  .then(function (response) {
-    return response.text();
-  })
-  .then(function (response) {
-    // this is the standard way to read the features
-    var allFeatures &#x3D; new WMSGetFeatureInfo().readFeatures(response);
-    document.getElementById(&#x27;all&#x27;).innerText &#x3D; allFeatures.length.toString();
 
-    // when specifying the &#x27;layers&#x27; options, only the features of those
-    // layers are returned by the format
-    var hotelFeatures &#x3D; new WMSGetFeatureInfo({
-      layers: [&#x27;hotel&#x27;],
-    }).readFeatures(response);
-    document.getElementById(
-      &#x27;hotel&#x27;
-    ).innerText &#x3D; hotelFeatures.length.toString();
-
-    var restaurantFeatures &#x3D; new WMSGetFeatureInfo({
-      layers: [&#x27;restaurant&#x27;],
-    }).readFeatures(response);
-    document.getElementById(
-      &#x27;restaurant&#x27;
-    ).innerText &#x3D; restaurantFeatures.length.toString();
-  });
-</code></pre>
-      </div>
       <div class="row-fluid">
         <div class="source-controls">
           <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
@@ -232,6 +235,7 @@ fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;)
 }</code></pre>
       </div>
     </div>
+
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="getfeatureinfo-layers.js"></script>
