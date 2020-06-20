@@ -104,7 +104,7 @@
     zoom: <span class="number">4</span>
   })
 });</code></pre>
-<p>Note that this JavaScript code corresponds to OpenLayers&#39;s <a href="https://openlayers.org/en/master/examples/simple.html"><code>simple</code></a> example.</p>
+<p>Note that this JavaScript code corresponds to OpenLayers&#39;s <a href="https://openlayers.org/en/latest/examples/simple.html"><code>simple</code></a> example.</p>
 <p>You are now ready to create your first OpenLayers build. Use the following command to create the build:</p>
 <pre><code>$ cd node_modules/openlayers
 $ node tasks/build.js build/ol-custom.json build/ol-custom.js</code></pre>
@@ -164,7 +164,7 @@ info ol Compiling 364 sources</code></pre>
 <p>You can specify any of the other compiler options here as needed, such as the renaming reports, output manifest, or source maps. There is a full list of available options in <a href="https://github.com/openlayers/closure-util/blob/master/compiler-options.txt">closure-util</a>.</p>
 <p>Note that <code>build.js</code> currently requires you to enter an output file and will write the output from the compiler to it; it does not use the <code>js_output_file</code> compiler option. If you specify this in the config file, there will be no compiler output, so <code>build.js</code>&#39;s output file will be empty.</p>
 <h2 id="a-more-complicated-example">A more complicated example</h2>
-<p>Now let&#39;s try a more complicated example: <a href="https://openlayers.org/en/master/examples/heatmap-earthquakes.html"><code>heatmaps-earthquakes</code></a>. The build configuration file looks like this:</p>
+<p>Now let&#39;s try a more complicated example: <a href="https://openlayers.org/en/latest/examples/heatmap-earthquakes.html"><code>heatmaps-earthquakes</code></a>. The build configuration file looks like this:</p>
 <pre><code class="language-json">{
   "<span class="attribute">exports</span>": <span class="value">[
     <span class="string">"ol.layer.Heatmap"</span>,

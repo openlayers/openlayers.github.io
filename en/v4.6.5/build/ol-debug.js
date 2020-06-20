@@ -1,5 +1,5 @@
 // OpenLayers. See https://openlayers.org/
-// License: https://raw.githubusercontent.com/openlayers/openlayers/master/LICENSE.md
+// License: https://raw.githubusercontent.com/openlayers/openlayers/main/LICENSE.md
 // Version: v4.6.5
 ;(function (root, factory) {
   if (typeof exports === "object") {
