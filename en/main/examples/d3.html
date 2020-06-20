@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <script>
+    var gaProperty = 'UA-2577926-1';
+    // Disable tracking if the opt-out cookie exists.
+    var disableStr = 'ga-disable-' + gaProperty;
+    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+      window[disableStr] = true;
+    }
+    function gaOptout() {
+      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = true;
+    }
+    function gaOptoutRevoke() {
+      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = false;
+    }
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script src="https://unpkg.com/lz-string@1.4.4/libs/lz-string.min.js"></script>
+    <script>
+    window.addEventListener("load", function() {
+      window.cookieconsent.initialise({
+        'palette': {
+          'popup': {
+            'background': '#eaf7f7',
+            'text': '#5c7291'
+          },
+          'button': {
+            'background': '#56cbdb',
+            'text': '#ffffff'
+          }
+        },
+        'theme': 'edgeless',
+        'type': 'opt-out',
+        'onInitialise': function (status) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onStatusChange': function(status, chosenBefore) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onRevokeChoice': function() {
+          gaOptoutRevoke()
+        }
+      })
+    });
+    </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./resources/layout.css" type="text/css">
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://unpkg.com/elm-pep"></script>
+    <script src="https://unpkg.com/d3@5.9.2/dist/d3.js"></script>
+<script src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"></script>
+    <link rel="stylesheet" href="d3.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+    <title>d3 Integration</title>
+  </head>
+  <body>
+
+    <header class="navbar" role="navigation">
+      <div class="container">
+        <div class="display-table pull-left" id="navbar-logo-container">
+          <a class="navbar-brand" href="./"><img src="./resources/logo-70x70.png">&nbsp;OpenLayers</a>
+        </div>
+        <!-- menu items that get hidden below 768px width -->
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
+          <ul class="nav navbar-nav pull-right">
+            <li><a href="../doc">Docs</a></li>
+            <li><a class="active" href="index.html">Examples</a></li>
+            <li><a href="../apidoc">API</a></li>
+            <li><a href="https://github.com/openlayers/openlayers">Code</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container-fluid">
+
+      <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+      </div>
+
+      <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="experimental-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses features that are not part of the stable API and subject to change between releases.  Consult the <a href="https://openlayers.org/en/latest/apidoc/">API documentation</a>
+        to see what is supported in the latest release.
+      </div>
+
+      <div class="row-fluid">
+        <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
+        <div class="span12">
+          <h4 id="title">
+            d3 Integration
+          </h4>
+          <p class="tags">
+              <a href="./index.html?q=d3" class="label label-primary">d3</a>
+          </p>
+          <div id="map" class="map"></div>
+
+        </div>
+        <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+          <input id="codesandbox-params" type="hidden" name="parameters">
+        </form>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span12">
+          <p id="shortdesc">Example of using OpenLayers and d3 together.</p>
+          <div id="docs"><p>The example loads TopoJSON geometries and uses d3 (<code>d3.geo.path</code>) to render these geometries to a SVG element.</p>
+</div>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>main.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import Map from &#x27;ol/Map&#x27;;
+import SourceState from &#x27;ol/source/State&#x27;;
+import Stamen from &#x27;ol/source/Stamen&#x27;;
+import View from &#x27;ol/View&#x27;;
+import {Layer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
+import {fromLonLat, toLonLat} from &#x27;ol/proj&#x27;;
+import {getCenter, getWidth} from &#x27;ol/extent&#x27;;
+
+var CanvasLayer &#x3D; /*@__PURE__*/(function (Layer) {
+  function CanvasLayer(options) {
+    Layer.call(this, options);
+
+    this.features &#x3D; options.features;
+
+    this.svg &#x3D; d3
+      .select(document.createElement(&#x27;div&#x27;))
+      .append(&#x27;svg&#x27;)
+      .style(&#x27;position&#x27;, &#x27;absolute&#x27;);
+
+    this.svg.append(&#x27;path&#x27;).datum(this.features).attr(&#x27;class&#x27;, &#x27;boundary&#x27;);
+  }
+
+  if ( Layer ) CanvasLayer.__proto__ &#x3D; Layer;
+  CanvasLayer.prototype &#x3D; Object.create( Layer &amp;&amp; Layer.prototype );
+  CanvasLayer.prototype.constructor &#x3D; CanvasLayer;
+
+  CanvasLayer.prototype.getSourceState &#x3D; function getSourceState () {
+    return SourceState.READY;
+  };
+
+  CanvasLayer.prototype.render &#x3D; function render (frameState) {
+    var width &#x3D; frameState.size[0];
+    var height &#x3D; frameState.size[1];
+    var projection &#x3D; frameState.viewState.projection;
+    var d3Projection &#x3D; d3.geoMercator().scale(1).translate([0, 0]);
+    var d3Path &#x3D; d3.geoPath().projection(d3Projection);
+
+    var pixelBounds &#x3D; d3Path.bounds(this.features);
+    var pixelBoundsWidth &#x3D; pixelBounds[1][0] - pixelBounds[0][0];
+    var pixelBoundsHeight &#x3D; pixelBounds[1][1] - pixelBounds[0][1];
+
+    var geoBounds &#x3D; d3.geoBounds(this.features);
+    var geoBoundsLeftBottom &#x3D; fromLonLat(geoBounds[0], projection);
+    var geoBoundsRightTop &#x3D; fromLonLat(geoBounds[1], projection);
+    var geoBoundsWidth &#x3D; geoBoundsRightTop[0] - geoBoundsLeftBottom[0];
+    if (geoBoundsWidth &lt; 0) {
+      geoBoundsWidth +&#x3D; getWidth(projection.getExtent());
+    }
+    var geoBoundsHeight &#x3D; geoBoundsRightTop[1] - geoBoundsLeftBottom[1];
+
+    var widthResolution &#x3D; geoBoundsWidth / pixelBoundsWidth;
+    var heightResolution &#x3D; geoBoundsHeight / pixelBoundsHeight;
+    var r &#x3D; Math.max(widthResolution, heightResolution);
+    var scale &#x3D; r / frameState.viewState.resolution;
+
+    var center &#x3D; toLonLat(getCenter(frameState.extent), projection);
+    d3Projection
+      .scale(scale)
+      .center(center)
+      .translate([width / 2, height / 2]);
+
+    d3Path &#x3D; d3Path.projection(d3Projection);
+    d3Path(this.features);
+
+    this.svg.attr(&#x27;width&#x27;, width);
+    this.svg.attr(&#x27;height&#x27;, height);
+
+    this.svg.select(&#x27;path&#x27;).attr(&#x27;d&#x27;, d3Path);
+
+    return this.svg.node();
+  };
+
+  return CanvasLayer;
+}(Layer));
+
+var map &#x3D; new Map({
+  layers: [
+    new TileLayer({
+      source: new Stamen({
+        layer: &#x27;watercolor&#x27;,
+      }),
+    }) ],
+  target: &#x27;map&#x27;,
+  view: new View({
+    center: fromLonLat([-97, 38]),
+    zoom: 4,
+  }),
+});
+
+/**
+ * Load the topojson data and create an ol/layer/Image for that data.
+ */
+d3.json(&#x27;data/topojson/us.json&#x27;).then(function (us) {
+  var layer &#x3D; new CanvasLayer({
+    features: topojson.feature(us, us.objects.counties),
+  });
+
+  map.addLayer(layer);
+});
+</code></pre>
+      </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;d3 Integration&lt;/title&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
+    &lt;script src="https://unpkg.com/@openlayers/pepjs"&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://unpkg.com/d3@5.9.2/dist/d3.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://unpkg.com/topojson@3.0.2/dist/topojson.js&quot;&gt;&lt;/script&gt;
+    &lt;style&gt;
+      .map {
+        width: 100%;
+        height:400px;
+      }
+      path.boundary {
+        fill: none;
+        stroke: #777;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;script src="main.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+
+
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
+  &quot;name&quot;: &quot;d3&quot;,
+  &quot;dependencies&quot;: {
+    &quot;ol&quot;: &quot;6.3.2-dev&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;parcel&quot;: &quot;1.11.0&quot;
+  },
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;parcel index.html&quot;,
+    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+  }
+}</code></pre>
+      </div>
+    </div>
+
+    <script src="./resources/common.js"></script>
+    <script src="./resources/prism/prism.min.js"></script>
+    <script src="common.js"></script><script src="d3.js"></script>
+  </body>
+  <script>
+  var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
+  fetch(packageUrl).then(function(response) {
+    return response.json();
+  }).then(function(json) {
+    var latestVersion = json.version;
+    document.getElementById('latest-version').innerHTML = latestVersion;
+    var url = window.location.href;
+    var branchSearch = url.match(/\/([^\/]*)\/examples\//);
+    var cookieText = 'dismissed=-' + latestVersion + '-';
+    var dismissed = document.cookie.indexOf(cookieText) != -1;
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
+      var link = url.replace(branchSearch[0], '/latest/examples/');
+      fetch(link, {method: 'head'}).then(function(response) {
+        var a = document.getElementById('latest-link');
+        a.href = response.status == 200 ? link : '../../latest/examples/';
+      });
+      var latestCheck = document.getElementById('latest-check');
+      latestCheck.style.display = '';
+      document.getElementById('latest-dismiss').onclick = function() {
+        latestCheck.style.display = 'none';
+        document.cookie = cookieText;
+      }
+    }
+
+    var experimentalNotice = document.getElementById('experimental-notice');
+    if (window.experimental) {
+      experimentalNotice.style.display = 'block';
+      document.getElementById('experimental-dismiss').onclick = function() {
+        experimentalNotice.style.display = 'none';
+      }
+    }
+
+  });
+  </script>
+</html>
