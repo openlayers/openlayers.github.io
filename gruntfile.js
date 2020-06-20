@@ -12,7 +12,7 @@ var latest = 'v' + require('./package.json').version;
 /** @param {Object} grunt Grunt. */
 module.exports = function(grunt) {
 
-  var treeish = grunt.option('treeish') || process.env.treeish || 'origin/master';
+  var treeish = grunt.option('treeish') || process.env.treeish || 'origin/main';
   if (treeish === 'latest') {
     treeish = latest;
   }

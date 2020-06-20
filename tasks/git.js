@@ -43,7 +43,7 @@ function fetchTags(git, remote, dir) {
   return spawn(git, ['fetch', '--tags', remote], dir);
 }
 
-// check out a tree-ish (e.g. origin/master or r3.1.0-beta.4)
+// check out a tree-ish (e.g. origin/main or r3.1.0-beta.4)
 // this requires that fetch and fetchTags have been called first
 function checkout(git, treeish, dir) {
   return spawn(git, ['checkout', treeish, '-f'], dir);
