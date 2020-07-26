@@ -62,37 +62,36 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://unpkg.com/elm-pep"></script>
-    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="button-title.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <title>Custom Tooltips</title>
   </head>
   <body>
 
-    <header class="navbar" role="navigation">
-      <div class="container">
-        <div class="display-table pull-left" id="navbar-logo-container">
-          <a class="navbar-brand" href="./"><img src="./resources/logo-70x70.png">&nbsp;OpenLayers</a>
-        </div>
-        <!-- menu items that get hidden below 768px width -->
-        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
-          <ul class="nav navbar-nav pull-right">
-            <li><a href="../doc">Docs</a></li>
-            <li><a class="active" href="index.html">Examples</a></li>
-            <li><a href="../apidoc">API</a></li>
-            <li><a href="https://github.com/openlayers/openlayers">Code</a></li>
-          </ul>
-        </nav>
-      </div>
+    <header class="navbar navbar-expand-sm navbar-dark mb-3" role="navigation">
+      <a class="navbar-brand" href="https://openlayers.org/"><img src="./resources/logo-70x70.png">&nbsp;OpenLayers</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- menu items that get hidden below 768px width -->
+      <nav class="collapse navbar-collapse" id="olmenu">
+        <ul class="nav navbar-nav ml-auto" >
+          <li class="nav-item"><a class="nav-link" href="../doc">Docs</a></li>
+          <li class="nav-item active"><a class="nav-link" href="index.html">Examples</a></li>
+          <li class="nav-item"><a class="nav-link" href="../apidoc">API</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://github.com/openlayers/openlayers">Code</a></li>
+        </ul>
+      </nav>
     </header>
 
     <div class="container-fluid">
@@ -109,15 +108,57 @@
       </div>
 
       <div class="row-fluid">
-        <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
+        <a href="" class="codepen-button float-right"><i class="fa fa-codepen fa-lg"></i> Edit</a>
         <div class="span12">
           <h4 id="title">
             Custom Tooltips
           </h4>
           <p class="tags">
-              <a href="./index.html?q=custom" class="label label-primary">custom</a>
-              <a href="./index.html?q=tooltip" class="label label-primary">tooltip</a>
+            <span class="badge-group">
+              <a
+                href="./index.html?q=custom" class="badge badge-info">custom</a
+              ><a
+                class="badge badge-info tag-modal-toggle text-white"
+                data-toggle="modal"
+                data-target="#tag-example-list"
+                data-title="custom"
+                data-content="
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./custom-controls.html&quot;&gt;Custom Controls&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./custom-interactions.html&quot;&gt;Custom Interactions&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./button-title.html&quot;&gt;Custom Tooltips&lt;/a&gt;"
+                tabindex="0"
+                >3</a>
+            </span>
+            <span class="badge-group">
+              <a
+                href="./index.html?q=tooltip" class="badge badge-info">tooltip</a
+              ><a
+                class="badge badge-info tag-modal-toggle text-white"
+                data-toggle="modal"
+                data-target="#tag-example-list"
+                data-title="tooltip"
+                data-content="
+                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./button-title.html&quot;&gt;Custom Tooltips&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml-earthquakes.html&quot;&gt;Earthquakes in KML&lt;/a&gt;"
+                tabindex="0"
+                >2</a>
+            </span>
           </p>
+          <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="tag-example-title"></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="list-group"></div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div id="map" class="map"></div>
 
         </div>
@@ -136,9 +177,9 @@
 
       <div class="row-fluid">
         <div class="source-controls">
-          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <button class="copy-button btn btn-link" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard fa-lg"></i> Copy</button>
         </div>
-        <pre><legend>main.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+        <pre><legend>main.js</legend><hr /><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import Map from &#x27;ol/Map&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
@@ -168,9 +209,9 @@ $(&#x27;.ol-rotate-reset, .ol-attribution button[title]&#x27;).tooltip({
 
       <div class="row-fluid">
         <div class="source-controls">
-          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <button class="copy-button btn btn-link" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard fa-lg"></i> Copy</button>
         </div>
-        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
+        <pre><legend>index.html</legend><hr /><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;title&gt;Custom Tooltips&lt;/title&gt;
@@ -178,9 +219,9 @@ $(&#x27;.ol-rotate-reset, .ol-attribution button[title]&#x27;).tooltip({
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/@openlayers/pepjs"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-2.2.3.min.js&quot;&gt;&lt;/script&gt;
-    &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css&quot;&gt;
-    &lt;script src&#x3D;&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-3.5.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css&quot;&gt;
+    &lt;script src&#x3D;&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -201,9 +242,9 @@ $(&#x27;.ol-rotate-reset, .ol-attribution button[title]&#x27;).tooltip({
 
       <div class="row-fluid">
         <div class="source-controls">
-          <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
+          <button class="copy-button btn btn-link" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard fa-lg"></i> Copy</button>
         </div>
-        <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
+        <pre><legend>package.json</legend><hr /><code id="example-pkg-source" class="language-js">{
   &quot;name&quot;: &quot;button-title&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;6.3.2-dev&quot;
@@ -219,9 +260,21 @@ $(&#x27;.ol-rotate-reset, .ol-attribution button[title]&#x27;).tooltip({
       </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="./resources/common.js"></script>
     <script src="./resources/prism/prism.min.js"></script>
     <script src="common.js"></script><script src="button-title.js"></script>
+    <script>
+      $('#tag-example-list').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget); // Button that triggered the modal
+        const title = button.data('title');
+        const content = button.data('content');
+        const modal = $(this)
+        modal.find('.modal-title').text(title);
+        modal.find('.modal-body').html(content);
+      });
+    </script>
   </body>
   <script>
   var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
