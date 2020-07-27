@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.3.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.4.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -350,7 +350,7 @@ var map &#x3D; new Map({
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/@openlayers/pepjs"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://openlayers.org/en/v6.3.2-dev/examples/resources/mapbox-streets-v6-style.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://openlayers.org/en/v6.4.1-dev/examples/resources/mapbox-streets-v6-style.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -374,7 +374,7 @@ var map &#x3D; new Map({
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;mapbox-vector-tiles-advanced&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.3.2-dev&quot;
+    &quot;ol&quot;: &quot;6.4.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -413,7 +413,7 @@ var map &#x3D; new Map({
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.3.2-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');
