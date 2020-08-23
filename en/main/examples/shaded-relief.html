@@ -67,8 +67,8 @@
     <link rel="stylesheet" href="./resources/prism/prism-1.20.0.css" type="text/css">
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://unpkg.com/elm-pep"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     
     <link rel="stylesheet" href="shaded-relief.css">
     <title>Shaded Relief</title>
@@ -93,7 +93,7 @@
                 <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
                 <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
                 <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
-                <a class="dropdown-item" href="../workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
+                <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
@@ -104,7 +104,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right mb-3" aria-labelledby="codedropdown">
               <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
-              <a class="dropdown-item" href="../download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
+              <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
         </ul>
@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.4.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.4.4-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -174,16 +174,19 @@
           <div id="map" class="map"></div>
 <table class="controls">
   <tr>
-    <td>vertical exaggeration: <span id="vertOut"></span>x</td>
+    <td><label for="vert">vertical exaggeration:</label></td>
     <td><input id="vert" type="range" min="1" max="5" value="1"/></td>
+    <td><span id="vertOut"></span> x</td>
   </tr>
   <tr>
-    <td>sun elevation: <span id="sunElOut"></span>°</td>
+    <td><label for="sunEl">sun elevation:</label></td>
     <td><input id="sunEl" type="range" min="0" max="90" value="45"/></td>
+    <td><span id="sunElOut"></span> °</td>
   </tr>
   <tr>
-    <td>sun azimuth: <span id="sunAzOut"></span>°</td>
+    <td><label for="sunAz">sun azimuth:</label></td>
     <td><input id="sunAz" type="range" min="0" max="360" value="45"/></td>
+    <td><span id="sunAzOut"></span> °</td>
   </tr>
 </table>
 
@@ -395,18 +398,19 @@ raster.on(&#x27;beforeoperations&#x27;, function (event) {
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;title&gt;Shaded Relief&lt;/title&gt;
-    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/@openlayers/pepjs"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
         height:400px;
       }
       table.controls td {
-        text-align: center;
         padding: 2px 5px;
+      }
+      table.controls td:nth-child(3) {
+        text-align: right;
+        min-width: 3em;
       }
     &lt;/style&gt;
   &lt;/head&gt;
@@ -414,16 +418,19 @@ raster.on(&#x27;beforeoperations&#x27;, function (event) {
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;table class&#x3D;&quot;controls&quot;&gt;
       &lt;tr&gt;
-        &lt;td&gt;vertical exaggeration: &lt;span id&#x3D;&quot;vertOut&quot;&gt;&lt;/span&gt;x&lt;/td&gt;
+        &lt;td&gt;&lt;label for&#x3D;&quot;vert&quot;&gt;vertical exaggeration:&lt;/label&gt;&lt;/td&gt;
         &lt;td&gt;&lt;input id&#x3D;&quot;vert&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;1&quot; max&#x3D;&quot;5&quot; value&#x3D;&quot;1&quot;/&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;span id&#x3D;&quot;vertOut&quot;&gt;&lt;/span&gt; x&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
-        &lt;td&gt;sun elevation: &lt;span id&#x3D;&quot;sunElOut&quot;&gt;&lt;/span&gt;°&lt;/td&gt;
+        &lt;td&gt;&lt;label for&#x3D;&quot;sunEl&quot;&gt;sun elevation:&lt;/label&gt;&lt;/td&gt;
         &lt;td&gt;&lt;input id&#x3D;&quot;sunEl&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;90&quot; value&#x3D;&quot;45&quot;/&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;span id&#x3D;&quot;sunElOut&quot;&gt;&lt;/span&gt; °&lt;/td&gt;
       &lt;/tr&gt;
       &lt;tr&gt;
-        &lt;td&gt;sun azimuth: &lt;span id&#x3D;&quot;sunAzOut&quot;&gt;&lt;/span&gt;°&lt;/td&gt;
+        &lt;td&gt;&lt;label for&#x3D;&quot;sunAz&quot;&gt;sun azimuth:&lt;/label&gt;&lt;/td&gt;
         &lt;td&gt;&lt;input id&#x3D;&quot;sunAz&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;360&quot; value&#x3D;&quot;45&quot;/&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;span id&#x3D;&quot;sunAzOut&quot;&gt;&lt;/span&gt; °&lt;/td&gt;
       &lt;/tr&gt;
     &lt;/table&gt;
     &lt;script src="main.js"&gt;&lt;/script&gt;
@@ -437,7 +444,7 @@ raster.on(&#x27;beforeoperations&#x27;, function (event) {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;shaded-relief&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.4.1-dev&quot;
+    &quot;ol&quot;: &quot;6.4.4-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -476,7 +483,7 @@ raster.on(&#x27;beforeoperations&#x27;, function (event) {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.4-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

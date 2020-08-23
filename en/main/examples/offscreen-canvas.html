@@ -67,8 +67,8 @@
     <link rel="stylesheet" href="./resources/prism/prism-1.20.0.css" type="text/css">
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://unpkg.com/elm-pep"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     
     <link rel="stylesheet" href="offscreen-canvas.css">
     <title>Vector tiles rendered in an offscreen canvas</title>
@@ -93,7 +93,7 @@
                 <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
                 <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
                 <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
-                <a class="dropdown-item" href="../workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
+                <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
@@ -104,7 +104,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right mb-3" aria-labelledby="codedropdown">
               <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
-              <a class="dropdown-item" href="../download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
+              <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
         </ul>
@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.4.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.4.4-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert">
@@ -351,10 +351,8 @@ worker.addEventListener(&#x27;message&#x27;, function (message) {
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;title&gt;Vector tiles rendered in an offscreen canvas&lt;/title&gt;
-    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/@openlayers/pepjs"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -405,20 +403,20 @@ const sources &#x3D; {
     maxZoom: 9,
     format: new MVT(),
     url:
-      &#x27;https://api.maptiler.com/tiles/landcover/{z}/{x}/{y}.pbf?key&#x3D;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;,
+      &#x27;https://api.maptiler.com/tiles/landcover/{z}/{x}/{y}.pbf?key&#x3D;Get your own API key at https://www.maptiler.com/cloud/&#x27;,
   }),
   contours: new VectorTileSource({
     minZoom: 9,
     maxZoom: 14,
     format: new MVT(),
     url:
-      &#x27;https://api.maptiler.com/tiles/contours/{z}/{x}/{y}.pbf?key&#x3D;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;,
+      &#x27;https://api.maptiler.com/tiles/contours/{z}/{x}/{y}.pbf?key&#x3D;Get your own API key at https://www.maptiler.com/cloud/&#x27;,
   }),
   openmaptiles: new VectorTileSource({
     format: new MVT(),
     maxZoom: 14,
     url:
-      &#x27;https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key&#x3D;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;,
+      &#x27;https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key&#x3D;Get your own API key at https://www.maptiler.com/cloud/&#x27;,
   }),
 };
 const layers &#x3D; [];
@@ -430,7 +428,7 @@ function getFont(font) {
 
 function loadStyles() {
   const styleUrl &#x3D;
-    &#x27;https://api.maptiler.com/maps/topo/style.json?key&#x3D;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;;
+    &#x27;https://api.maptiler.com/maps/topo/style.json?key&#x3D;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
 
   fetch(styleUrl)
     .then((data) &#x3D;&gt; data.json())
@@ -551,7 +549,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;offscreen-canvas&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.4.1-dev&quot;,
+    &quot;ol&quot;: &quot;6.4.4-dev&quot;,
     &quot;json-stringify-safe&quot;: &quot;^5.0.1&quot;
   },
   &quot;devDependencies&quot;: {
@@ -591,7 +589,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.4-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

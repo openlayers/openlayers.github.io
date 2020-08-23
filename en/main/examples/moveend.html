@@ -67,8 +67,8 @@
     <link rel="stylesheet" href="./resources/prism/prism-1.20.0.css" type="text/css">
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://unpkg.com/elm-pep"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     
     
     <title>Moveend Event</title>
@@ -93,7 +93,7 @@
                 <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
                 <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
                 <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
-                <a class="dropdown-item" href="../workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
+                <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
@@ -104,7 +104,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right mb-3" aria-labelledby="codedropdown">
               <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
-              <a class="dropdown-item" href="../download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
+              <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
         </ul>
@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.4.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.4.4-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -182,10 +182,10 @@
             </div>
           </div>
           <div id="map" class="map"></div>
-<label>top</label><input type="text" id="top">
-<label>right</label><input type="text" id="right"><br>
-<label>bottom</label><input type="text" id="bottom">
-<label>left</label><input type="text" id="left">
+<label>left: <input readonly="readonly" type="text" id="left"></label>
+<label>right: <input readonly="readonly" type="text" id="right"></label>
+<label>bottom: <input readonly="readonly" type="text" id="bottom"></label>
+<label>top: <input readonly="readonly" type="text" id="top"></label>
 
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
@@ -196,7 +196,11 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Use of the moveend event.</p>
-          <div id="docs"><p>In this example, a listener is registered for the map's <code>moveend</code> event.  Whenever this listener is called, it updates the inputs below with the map extent in decimal degrees.</p>
+          <div id="docs"><p>
+  In this example, a listener is registered for the map's
+  <code>moveend</code> event.  Whenever this listener is called,
+  it updates the inputs below with the map extent in decimal degrees.
+</p>
 </div>
         </div>
       </div>
@@ -253,10 +257,8 @@ map.on(&#x27;moveend&#x27;, onMoveEnd);
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;title&gt;Moveend Event&lt;/title&gt;
-    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/@openlayers/pepjs"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -266,10 +268,10 @@ map.on(&#x27;moveend&#x27;, onMoveEnd);
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;label&gt;top&lt;/label&gt;&lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;top&quot;&gt;
-    &lt;label&gt;right&lt;/label&gt;&lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;right&quot;&gt;&lt;br&gt;
-    &lt;label&gt;bottom&lt;/label&gt;&lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;bottom&quot;&gt;
-    &lt;label&gt;left&lt;/label&gt;&lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;left&quot;&gt;
+    &lt;label&gt;left: &lt;input readonly&#x3D;&quot;readonly&quot; type&#x3D;&quot;text&quot; id&#x3D;&quot;left&quot;&gt;&lt;/label&gt;
+    &lt;label&gt;right: &lt;input readonly&#x3D;&quot;readonly&quot; type&#x3D;&quot;text&quot; id&#x3D;&quot;right&quot;&gt;&lt;/label&gt;
+    &lt;label&gt;bottom: &lt;input readonly&#x3D;&quot;readonly&quot; type&#x3D;&quot;text&quot; id&#x3D;&quot;bottom&quot;&gt;&lt;/label&gt;
+    &lt;label&gt;top: &lt;input readonly&#x3D;&quot;readonly&quot; type&#x3D;&quot;text&quot; id&#x3D;&quot;top&quot;&gt;&lt;/label&gt;
     &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -281,7 +283,7 @@ map.on(&#x27;moveend&#x27;, onMoveEnd);
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;moveend&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.4.1-dev&quot;
+    &quot;ol&quot;: &quot;6.4.4-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -320,7 +322,7 @@ map.on(&#x27;moveend&#x27;, onMoveEnd);
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.4-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

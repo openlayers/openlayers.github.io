@@ -67,8 +67,8 @@
     <link rel="stylesheet" href="./resources/prism/prism-1.20.0.css" type="text/css">
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://unpkg.com/elm-pep"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     
     <link rel="stylesheet" href="layer-group.css">
     <title>Layer Groups</title>
@@ -93,7 +93,7 @@
                 <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
                 <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
                 <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
-                <a class="dropdown-item" href="../workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
+                <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
@@ -104,7 +104,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right mb-3" aria-labelledby="codedropdown">
               <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
-              <a class="dropdown-item" href="../download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
+              <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
         </ul>
@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.4.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.4.4-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -218,37 +218,44 @@
     <li><span>OSM layer</span>
       <fieldset id="layer0">
         <label class="checkbox" for="visible0">
-          <input id="visible0" class="visible" type="checkbox"/>visibility
+          visibile <input id="visible0" class="visible" type="checkbox"/>
         </label>
-        <label>opacity</label>
-        <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+        <label>
+          opacity <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+        </label>
       </fieldset>
     </li>
-    <li><span>Layer group</span>
+    <li>
+      <span>Layer group</span>
       <fieldset id="layer1">
         <label class="checkbox" for="visible1">
-          <input id="visible1" class="visible" type="checkbox"/>visibility
+          visibile <input id="visible1" class="visible" type="checkbox"/>
         </label>
-        <label>opacity</label>
-        <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+        <label>
+          opacity <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+        </label>
       </fieldset>
       <ul>
-        <li><span>Food insecurity layer</span>
+        <li>
+          <span>Food insecurity layer</span>
           <fieldset id="layer10">
             <label class="checkbox" for="visible10">
-              <input id="visible10" class="visible" type="checkbox"/>visibility
+              visibile <input id="visible10" class="visible" type="checkbox"/>
             </label>
-            <label>opacity</label>
-            <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+            <label>
+              opacity <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+            </label>
           </fieldset>
         </li>
-        <li><span>World borders layer</span>
+        <li>
+          <span>World borders layer</span>
           <fieldset id="layer11">
             <label class="checkbox" for="visible11">
-              <input id="visible11" class="visible" type="checkbox"/>visibility
+              visibile <input id="visible11" class="visible" type="checkbox"/>
             </label>
-            <label>opacity</label>
-            <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+            <label>
+              opacity <input class="opacity" type="range" min="0" max="1" step="0.01"/>
+            </label>
           </fieldset>
         </li>
       </ul>
@@ -322,19 +329,21 @@ function bindInputs(layerid, layer) {
   visibilityInput.prop(&#x27;checked&#x27;, layer.getVisible());
 
   var opacityInput &#x3D; $(layerid + &#x27; input.opacity&#x27;);
-  opacityInput.on(&#x27;input change&#x27;, function () {
+  opacityInput.on(&#x27;input&#x27;, function () {
     layer.setOpacity(parseFloat(this.value));
   });
   opacityInput.val(String(layer.getOpacity()));
 }
-map.getLayers().forEach(function (layer, i) {
-  bindInputs(&#x27;#layer&#x27; + i, layer);
-  if (layer instanceof LayerGroup) {
-    layer.getLayers().forEach(function (sublayer, j) {
-      bindInputs(&#x27;#layer&#x27; + i + j, sublayer);
-    });
-  }
-});
+function setup(id, group) {
+  group.getLayers().forEach(function (layer, i) {
+    var layerid &#x3D; id + i;
+    bindInputs(layerid, layer);
+    if (layer instanceof LayerGroup) {
+      setup(layerid, layer);
+    }
+  });
+}
+setup(&#x27;#layer&#x27;, map.getLayerGroup());
 
 $(&#x27;#layertree li &gt; span&#x27;)
   .click(function () {
@@ -351,10 +360,10 @@ $(&#x27;#layertree li &gt; span&#x27;)
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;title&gt;Layer Groups&lt;/title&gt;
+    &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
+    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
-    &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/@openlayers/pepjs"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-3.5.1.min.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
@@ -363,7 +372,11 @@ $(&#x27;#layertree li &gt; span&#x27;)
       }
       #layertree li &gt; span {
         cursor: pointer;
-      }    &lt;/style&gt;
+      }
+      #layertree label {
+        display: block;
+      }
+    &lt;/style&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
@@ -373,37 +386,44 @@ $(&#x27;#layertree li &gt; span&#x27;)
         &lt;li&gt;&lt;span&gt;OSM layer&lt;/span&gt;
           &lt;fieldset id&#x3D;&quot;layer0&quot;&gt;
             &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;visible0&quot;&gt;
-              &lt;input id&#x3D;&quot;visible0&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;visibility
+              visibile &lt;input id&#x3D;&quot;visible0&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;
             &lt;/label&gt;
-            &lt;label&gt;opacity&lt;/label&gt;
-            &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
+            &lt;label&gt;
+              opacity &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
+            &lt;/label&gt;
           &lt;/fieldset&gt;
         &lt;/li&gt;
-        &lt;li&gt;&lt;span&gt;Layer group&lt;/span&gt;
+        &lt;li&gt;
+          &lt;span&gt;Layer group&lt;/span&gt;
           &lt;fieldset id&#x3D;&quot;layer1&quot;&gt;
             &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;visible1&quot;&gt;
-              &lt;input id&#x3D;&quot;visible1&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;visibility
+              visibile &lt;input id&#x3D;&quot;visible1&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;
             &lt;/label&gt;
-            &lt;label&gt;opacity&lt;/label&gt;
-            &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
+            &lt;label&gt;
+              opacity &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
+            &lt;/label&gt;
           &lt;/fieldset&gt;
           &lt;ul&gt;
-            &lt;li&gt;&lt;span&gt;Food insecurity layer&lt;/span&gt;
+            &lt;li&gt;
+              &lt;span&gt;Food insecurity layer&lt;/span&gt;
               &lt;fieldset id&#x3D;&quot;layer10&quot;&gt;
                 &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;visible10&quot;&gt;
-                  &lt;input id&#x3D;&quot;visible10&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;visibility
+                  visibile &lt;input id&#x3D;&quot;visible10&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;
                 &lt;/label&gt;
-                &lt;label&gt;opacity&lt;/label&gt;
-                &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
+                &lt;label&gt;
+                  opacity &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
+                &lt;/label&gt;
               &lt;/fieldset&gt;
             &lt;/li&gt;
-            &lt;li&gt;&lt;span&gt;World borders layer&lt;/span&gt;
+            &lt;li&gt;
+              &lt;span&gt;World borders layer&lt;/span&gt;
               &lt;fieldset id&#x3D;&quot;layer11&quot;&gt;
                 &lt;label class&#x3D;&quot;checkbox&quot; for&#x3D;&quot;visible11&quot;&gt;
-                  &lt;input id&#x3D;&quot;visible11&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;visibility
+                  visibile &lt;input id&#x3D;&quot;visible11&quot; class&#x3D;&quot;visible&quot; type&#x3D;&quot;checkbox&quot;/&gt;
                 &lt;/label&gt;
-                &lt;label&gt;opacity&lt;/label&gt;
-                &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
+                &lt;label&gt;
+                  opacity &lt;input class&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;1&quot; step&#x3D;&quot;0.01&quot;/&gt;
+                &lt;/label&gt;
               &lt;/fieldset&gt;
             &lt;/li&gt;
           &lt;/ul&gt;
@@ -421,7 +441,7 @@ $(&#x27;#layertree li &gt; span&#x27;)
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;layer-group&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.4.1-dev&quot;
+    &quot;ol&quot;: &quot;6.4.4-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -460,7 +480,7 @@ $(&#x27;#layertree li &gt; span&#x27;)
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.4-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

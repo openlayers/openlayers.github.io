@@ -23,20 +23,20 @@ const sources = {
     maxZoom: 9,
     format: new MVT(),
     url:
-      'https://api.maptiler.com/tiles/landcover/{z}/{x}/{y}.pbf?key=get_your_own_D6rA4zTHduk6KOKTXzGB',
+      'https://api.maptiler.com/tiles/landcover/{z}/{x}/{y}.pbf?key=Get your own API key at https://www.maptiler.com/cloud/',
   }),
   contours: new VectorTileSource({
     minZoom: 9,
     maxZoom: 14,
     format: new MVT(),
     url:
-      'https://api.maptiler.com/tiles/contours/{z}/{x}/{y}.pbf?key=get_your_own_D6rA4zTHduk6KOKTXzGB',
+      'https://api.maptiler.com/tiles/contours/{z}/{x}/{y}.pbf?key=Get your own API key at https://www.maptiler.com/cloud/',
   }),
   openmaptiles: new VectorTileSource({
     format: new MVT(),
     maxZoom: 14,
     url:
-      'https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key=get_your_own_D6rA4zTHduk6KOKTXzGB',
+      'https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key=Get your own API key at https://www.maptiler.com/cloud/',
   }),
 };
 const layers = [];
@@ -48,7 +48,7 @@ function getFont(font) {
 
 function loadStyles() {
   const styleUrl =
-    'https://api.maptiler.com/maps/topo/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB';
+    'https://api.maptiler.com/maps/topo/style.json?key=Get your own API key at https://www.maptiler.com/cloud/';
 
   fetch(styleUrl)
     .then((data) => data.json())

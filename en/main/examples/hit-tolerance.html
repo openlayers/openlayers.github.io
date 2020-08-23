@@ -67,8 +67,8 @@
     <link rel="stylesheet" href="./resources/prism/prism-1.20.0.css" type="text/css">
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://unpkg.com/elm-pep"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     
     
     <title>Hit Tolerance</title>
@@ -93,7 +93,7 @@
                 <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
                 <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
                 <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
-                <a class="dropdown-item" href="../workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
+                <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
@@ -104,7 +104,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right mb-3" aria-labelledby="codedropdown">
               <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
-              <a class="dropdown-item" href="../download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
+              <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
         </ul>
@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.4.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.4.4-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -156,17 +156,16 @@
             </div>
           </div>
           <div id="map" class="map"></div>
+<span id="status">Try to click the line in the map.</span>
 <form class="form-inline">
-  <span id="status">&nbsp;No feature got hit.</span>
-  <br />
-  <label>Hit tolerance for selecting features </label>
+  <label for="hitTolerance">Hit tolerance for selecting features: &nbsp;</label>
   <select id="hitTolerance" class="form-control">
     <option value="0" selected>0 Pixels</option>
     <option value="5">5 Pixels</option>
     <option value="10">10 Pixels</option>
   </select>
-  <br />
-  Area: &nbsp;<canvas id="circle" style="vertical-align: middle"/>
+  &nbsp; Area: &nbsp;
+  <canvas id="circle" style="vertical-align: middle" />
 </form>
 
         </div>
@@ -244,10 +243,10 @@ map.on(&#x27;singleclick&#x27;, function (e) {
   );
   if (hit) {
     style.getStroke().setColor(&#x27;green&#x27;);
-    statusElement.innerHTML &#x3D; &#x27;&amp;nbsp;A feature got hit!&#x27;;
+    statusElement.innerHTML &#x3D; &#x27;A feature got hit!&#x27;;
   } else {
     style.getStroke().setColor(&#x27;black&#x27;);
-    statusElement.innerHTML &#x3D; &#x27;&amp;nbsp;No feature got hit.&#x27;;
+    statusElement.innerHTML &#x3D; &#x27;No feature got hit.&#x27;;
   }
   feature.changed();
 });
@@ -286,10 +285,8 @@ changeHitTolerance();
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;title&gt;Hit Tolerance&lt;/title&gt;
-    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/@openlayers/pepjs"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -299,17 +296,16 @@ changeHitTolerance();
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;span id&#x3D;&quot;status&quot;&gt;Try to click the line in the map.&lt;/span&gt;
     &lt;form class&#x3D;&quot;form-inline&quot;&gt;
-      &lt;span id&#x3D;&quot;status&quot;&gt;&amp;nbsp;No feature got hit.&lt;/span&gt;
-      &lt;br /&gt;
-      &lt;label&gt;Hit tolerance for selecting features &lt;/label&gt;
+      &lt;label for&#x3D;&quot;hitTolerance&quot;&gt;Hit tolerance for selecting features: &amp;nbsp;&lt;/label&gt;
       &lt;select id&#x3D;&quot;hitTolerance&quot; class&#x3D;&quot;form-control&quot;&gt;
         &lt;option value&#x3D;&quot;0&quot; selected&gt;0 Pixels&lt;/option&gt;
         &lt;option value&#x3D;&quot;5&quot;&gt;5 Pixels&lt;/option&gt;
         &lt;option value&#x3D;&quot;10&quot;&gt;10 Pixels&lt;/option&gt;
       &lt;/select&gt;
-      &lt;br /&gt;
-      Area: &amp;nbsp;&lt;canvas id&#x3D;&quot;circle&quot; style&#x3D;&quot;vertical-align: middle&quot;/&gt;
+      &amp;nbsp; Area: &amp;nbsp;
+      &lt;canvas id&#x3D;&quot;circle&quot; style&#x3D;&quot;vertical-align: middle&quot; /&gt;
     &lt;/form&gt;
     &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
@@ -322,7 +318,7 @@ changeHitTolerance();
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;hit-tolerance&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.4.1-dev&quot;
+    &quot;ol&quot;: &quot;6.4.4-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -361,7 +357,7 @@ changeHitTolerance();
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.4-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

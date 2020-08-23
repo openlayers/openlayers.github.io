@@ -67,8 +67,8 @@
     <link rel="stylesheet" href="./resources/prism/prism-1.20.0.css" type="text/css">
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://unpkg.com/elm-pep"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     
     <link rel="stylesheet" href="vector-labels.css">
     <title>Vector Labels</title>
@@ -93,7 +93,7 @@
                 <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
                 <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
                 <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
-                <a class="dropdown-item" href="../workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
+                <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
@@ -104,7 +104,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right mb-3" aria-labelledby="codedropdown">
               <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
-              <a class="dropdown-item" href="../download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
+              <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
         </ul>
@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.4.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.4.4-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -283,7 +283,7 @@
   <input id="refresh-points" type="button" value="Refresh" />
   <h2>Points</h2>
   <div class="edit-form-elem">
-    <label>Text: </label>
+    <label for="points-text">Text: </label>
     <select id="points-text">
       <option value="hide">Hide</option>
       <option value="normal">Normal</option>
@@ -291,7 +291,7 @@
       <option value="wrap">Wrap</option>
     </select>
     <br />
-    <label title="Max Resolution Denominator">MaxReso.:</label>
+    <label for="points-maxreso" title="Max Resolution Denominator">MaxReso.: </label>
     <select id="points-maxreso">
       <option value="38400">38,400</option>
       <option value="19200">19,200</option>
@@ -308,7 +308,7 @@
       <option value="8">8</option>
     </select>
     <br />
-    <label>Align: </label>
+    <label for="points-align">Align: </label>
     <select id="points-align">
       <option value="center" selected="selected">Center</option>
       <option value="end">End</option>
@@ -317,7 +317,7 @@
       <option value="start">Start</option>
     </select>
     <br />
-    <label>Baseline: </label>
+    <label for="points-baseline">Baseline: </label>
     <select id="points-baseline">
       <option value="alphabetic">Alphabetic</option>
       <option value="bottom">Bottom</option>
@@ -327,14 +327,14 @@
       <option value="top">Top</option>
     </select>
     <br />
-    <label>Rotation: </label>
+    <label for="points-rotation">Rotation: </label>
     <select id="points-rotation">
       <option value="0">0°</option>
       <option value="0.785398164">45°</option>
       <option value="1.570796327">90°</option>
     </select>
     <br />
-    <label>Font: </label>
+    <label for="points-font">Font: </label>
     <select id="points-font">
       <option value="Arial" selected="selected">Arial</option>
       <option value="'Courier New'">Courier New</option>
@@ -342,50 +342,50 @@
       <option value="Verdana">Verdana</option>
     </select>
     <br />
-    <label>Weight: </label>
+    <label for="points-weight">Weight: </label>
     <select id="points-weight">
       <option value="bold">Bold</option>
       <option value="normal" selected="selected">Normal</option>
     </select>
     <br />
-    <label>Placement: </label>
+    <label for="points-placement">Placement: </label>
     <select disabled id="points-placement">
       <option value="line">Line</option>
       <option value="point" selected="selected">Point</option>
     </select>
     <br />
-    <label>Max Angle: </label>
+    <label for="points-maxangle">Max Angle: </label>
     <select disabled id="points-maxangle">
       <option value="0.7853981633974483" selected="selected">45°</option>
       <option value="2.0943951023931953">120°</option>
       <option value="6.283185307179586">360°</option>
     </select>
     <br />
-    <label>Exceed Len: </label>
+    <label for="points-overflow">Exceed Len: </label>
     <select disabled id="points-overflow">
       <option value="true">True</option>
       <option value="false" selected="selected">False</option>
     </select>
     <br />
-    <label>Size: </label>
+    <label for="points-size">Size: </label>
     <input type="text" value="12px" id="points-size" />
     <br />
-    <label>Line height: </label>
+    <label for="points-height">Line height: </label>
     <input type="text" value="1" id="points-height" />
     <br />
-    <label>Offset X:</label>
+    <label for="points-offset-x">Offset X: </label>
     <input type="text" value="0" id="points-offset-x" />
     <br />
-    <label>Offset Y:</label>
+    <label for="points-offset-y">Offset Y: </label>
     <input type="text" value="0" id="points-offset-y" />
     <br />
-    <label>Color :</label>
+    <label for="points-color">Color: </label>
     <input type="text" value="#aa3300" id="points-color" />
     <br />
-    <label title="Outline Color">O. Color:</label>
+    <label for="points-outline" title="Outline Color">O. Color: </label>
     <input type="text" value="#ffffff" id="points-outline" />
     <br />
-    <label title="Outline Width">O. Width :</label>
+    <label for="points-outline-width" title="Outline Width">O. Width: </label>
     <input type="text" value="3" id="points-outline-width" />
   </div>
 </div>
@@ -394,7 +394,7 @@
   <input id="refresh-lines" type="button" value="Refresh" />
   <h2>Lines</h2>
   <div class="edit-form-elem">
-    <label>Text: </label>
+    <label for="lines-text">Text: </label>
     <select id="lines-text">
       <option value="hide">Hide</option>
       <option value="normal">Normal</option>
@@ -402,7 +402,7 @@
       <option value="wrap" selected="selected">Wrap</option>
     </select>
     <br />
-    <label title="Max Resolution Denominator">MaxReso.:</label>
+    <label for="lines-maxreso" title="Max Resolution Denominator">MaxReso.: </label>
     <select id="lines-maxreso">
       <option value="38400">38,400</option>
       <option value="19200">19,200</option>
@@ -419,7 +419,7 @@
       <option value="8">8</option>
     </select>
     <br />
-    <label>Align: </label>
+    <label for="lines-align">Align: </label>
     <select id="lines-align">
       <option value="" selected="selected"></option>
       <option value="center">Center</option>
@@ -429,7 +429,7 @@
       <option value="start">Start</option>
     </select>
     <br />
-    <label>Baseline: </label>
+    <label for="lines-baseline">Baseline: </label>
     <select id="lines-baseline">
       <option value="alphabetic">Alphabetic</option>
       <option value="bottom">Bottom</option>
@@ -439,14 +439,14 @@
       <option value="top">Top</option>
     </select>
     <br />
-    <label>Rotation: </label>
+    <label for="lines-rotation">Rotation: </label>
     <select id="lines-rotation">
       <option value="0">0°</option>
       <option value="0.785398164">45°</option>
       <option value="1.570796327">90°</option>
     </select>
     <br />
-    <label>Font: </label>
+    <label for="lines-font">Font: </label>
     <select id="lines-font">
       <option value="Arial">Arial</option>
       <option value="'Courier New'" selected="selected">Courier New</option>
@@ -454,50 +454,50 @@
       <option value="Verdana">Verdana</option>
     </select>
     <br />
-    <label>Weight: </label>
+    <label for="lines-weight">Weight: </label>
     <select id="lines-weight">
       <option value="bold" selected="selected">Bold</option>
       <option value="normal">Normal</option>
     </select>
     <br />
-    <label>Placement: </label>
+    <label for="lines-placement">Placement: </label>
     <select id="lines-placement">
       <option value="line">Line</option>
       <option value="point" selected="selected">Point</option>
     </select>
     <br />
-    <label>Max Angle: </label>
+    <label for="lines-maxangle">Max Angle: </label>
     <select id="lines-maxangle">
       <option value="0.7853981633974483" selected="selected">45°</option>
       <option value="2.0943951023931953">120°</option>
       <option value="6.283185307179586">360°</option>
     </select>
     <br />
-    <label>Exceed Len: </label>
+    <label for="lines-overflow">Exceed Len: </label>
     <select id="lines-overflow">
       <option value="true">True</option>
       <option value="false" selected="selected">False</option>
     </select>
     <br />
-    <label>Size: </label>
+    <label for="lines-size">Size: </label>
     <input type="text" value="12px" id="lines-size" />
     <br />
-    <label>Line height: </label>
+    <label for="lines-height">Line height: </label>
     <input type="text" value="1.2" id="lines-height" />
     <br />
-    <label>Offset X:</label>
+    <label for="lines-offset-x">Offset X: </label>
     <input type="text" value="0" id="lines-offset-x" />
     <br />
-    <label>Offset Y:</label>
+    <label for="lines-offset-y">Offset Y: </label>
     <input type="text" value="0" id="lines-offset-y" />
     <br />
-    <label>Color :</label>
+    <label for="lines-color">Color: </label>
     <input type="text" value="green" id="lines-color" />
     <br />
-    <label title="Outline Color">O. Color:</label>
+    <label for="lines-outline" title="Outline Color">O. Color: </label>
     <input type="text" value="#ffffff" id="lines-outline" />
     <br />
-    <label title="Outline Width">O. Width :</label>
+    <label for="lines-outline-width" title="Outline Width">O. Width: </label>
     <input type="text" value="3" id="lines-outline-width" />
   </div>
 </div>
@@ -506,7 +506,7 @@
   <input id="refresh-polygons" type="button" value="Refresh" />
   <h2>Polygons</h2>
   <div class="edit-form-elem">
-    <label>Text: </label>
+    <label for="polygons-text">Text: </label>
     <select id="polygons-text">
       <option value="hide">Hide</option>
       <option value="normal" selected="selected">Normal</option>
@@ -514,7 +514,7 @@
       <option value="wrap">Wrap</option>
     </select>
     <br />
-    <label title="Max Resolution Denominator">MaxReso.:</label>
+    <label for="polygons-maxreso" title="Max Resolution Denominator">MaxReso.: </label>
     <select id="polygons-maxreso">
       <option value="38400">38,400</option>
       <option value="19200">19,200</option>
@@ -531,7 +531,7 @@
       <option value="8">8</option>
     </select>
     <br />
-    <label>Align: </label>
+    <label for="polygons-align">Align: </label>
     <select id="polygons-align">
       <option value="" selected="selected"></option>
       <option value="center">Center</option>
@@ -541,7 +541,7 @@
       <option value="start">Start</option>
     </select>
     <br />
-    <label>Baseline: </label>
+    <label for="polygons-baseline">Baseline: </label>
     <select id="polygons-baseline">
       <option value="alphabetic">Alphabetic</option>
       <option value="bottom">Bottom</option>
@@ -551,14 +551,14 @@
       <option value="top">Top</option>
     </select>
     <br />
-    <label>Rotation: </label>
+    <label for="polygons-rotation">Rotation: </label>
     <select id="polygons-rotation">
       <option value="0">0°</option>
       <option value="0.785398164">45°</option>
       <option value="1.570796327">90°</option>
     </select>
     <br />
-    <label>Font: </label>
+    <label for="polygons-font">Font: </label>
     <select id="polygons-font">
       <option value="Arial">Arial</option>
       <option value="'Courier New'">Courier New</option>
@@ -566,54 +566,53 @@
       <option value="Verdana" selected="selected">Verdana</option>
     </select>
     <br />
-    <label>Weight: </label>
+    <label for="polygons-weight">Weight: </label>
     <select id="polygons-weight">
       <option value="bold" selected="selected">Bold</option>
       <option value="normal">Normal</option>
     </select>
     <br />
-    <label>Placement: </label>
+    <label for="polygons-placement">Placement: </label>
     <select id="polygons-placement">
       <option value="line">Line</option>
       <option value="point" selected="selected">Point</option>
     </select>
     <br />
-    <label>Max Angle: </label>
+    <label for="polygons-maxangle">Max Angle: </label>
     <select id="polygons-maxangle">
       <option value="0.7853981633974483" selected="selected">45°</option>
       <option value="2.0943951023931953">120°</option>
       <option value="6.283185307179586">360°</option>
     </select>
     <br />
-    <label>Exceed Len: </label>
+    <label for="polygons-overflow">Exceed Len: </label>
     <select id="polygons-overflow">
       <option value="true">True</option>
       <option value="false" selected="selected">False</option>
     </select>
     <br />
-    <label>Size: </label>
+    <label for="polygons-size">Size: </label>
     <input type="text" value="10px" id="polygons-size" />
     <br />
-    <label>Line height: </label>
+    <label for="polygons-height">Line height: </label>
     <input type="text" value="1" id="polygons-height" />
     <br />
-    <label>Offset X:</label>
+    <label for="polygons-offset-x">Offset X: </label>
     <input type="text" value="0" id="polygons-offset-x" />
     <br />
-    <label>Offset Y:</label>
+    <label for="polygons-offset-y">Offset Y: </label>
     <input type="text" value="0" id="polygons-offset-y" />
     <br />
-    <label>Color :</label>
+    <label for="polygons-color">Color: </label>
     <input type="text" value="blue" id="polygons-color" />
     <br />
-    <label title="Outline Color">O. Color:</label>
+    <label for="polygons-outline" title="Outline Color">O. Color: </label>
     <input type="text" value="#ffffff" id="polygons-outline" />
     <br />
-    <label title="Outline Width">O. Width :</label>
+    <label for="polygons-outline-width" title="Outline Width">O. Width: </label>
     <input type="text" value="3" id="polygons-outline-width" />
   </div>
 </div>
-<div class="clearall"></div>
 
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
@@ -896,33 +895,23 @@ function stringDivider(str, width, spaceReplacer) {
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;title&gt;Vector Labels&lt;/title&gt;
-    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/@openlayers/pepjs"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
         height:400px;
       }
-      h2 {
-        font-size: 1.5em;
-        line-height: 15px;
-      }
-
-      .scale-cnt {
-        margin: 5px;
-      }
-
-      .edit-form-ctn {
-      }
-
       .edit-form {
-        float: left;
+        display: inline-block;
         margin: 5px;
-        width: 230px;
-        padding: 4px;
+        padding: 10px;
         border: 1px solid black;
+        white-space: nowrap;
+      }
+
+      .edit-form h2 {
+        font-size: 1.5em;
       }
 
       .edit-form input[type&#x3D;&quot;button&quot;] {
@@ -930,25 +919,13 @@ function stringDivider(str, width, spaceReplacer) {
       }
 
       .edit-form-elem label {
-        display: block;
-        float: left;
+        display: inline-block;
         width: 85px;
       }
 
-      .edit-form-elem input[type&#x3D;&quot;text&quot;] {
-        width: 60px;
-      }
-
+      .edit-form-elem input[type&#x3D;&quot;text&quot;],
       .edit-form-elem select {
         width: 130px;
-      }
-
-      .edit-form br {
-        clear: left;
-      }
-
-      .clearall {
-        clear: both;
       }
     &lt;/style&gt;
   &lt;/head&gt;
@@ -959,7 +936,7 @@ function stringDivider(str, width, spaceReplacer) {
       &lt;input id&#x3D;&quot;refresh-points&quot; type&#x3D;&quot;button&quot; value&#x3D;&quot;Refresh&quot; /&gt;
       &lt;h2&gt;Points&lt;/h2&gt;
       &lt;div class&#x3D;&quot;edit-form-elem&quot;&gt;
-        &lt;label&gt;Text: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-text&quot;&gt;Text: &lt;/label&gt;
         &lt;select id&#x3D;&quot;points-text&quot;&gt;
           &lt;option value&#x3D;&quot;hide&quot;&gt;Hide&lt;/option&gt;
           &lt;option value&#x3D;&quot;normal&quot;&gt;Normal&lt;/option&gt;
@@ -967,7 +944,7 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;wrap&quot;&gt;Wrap&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label title&#x3D;&quot;Max Resolution Denominator&quot;&gt;MaxReso.:&lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-maxreso&quot; title&#x3D;&quot;Max Resolution Denominator&quot;&gt;MaxReso.: &lt;/label&gt;
         &lt;select id&#x3D;&quot;points-maxreso&quot;&gt;
           &lt;option value&#x3D;&quot;38400&quot;&gt;38,400&lt;/option&gt;
           &lt;option value&#x3D;&quot;19200&quot;&gt;19,200&lt;/option&gt;
@@ -984,7 +961,7 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;8&quot;&gt;8&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Align: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-align&quot;&gt;Align: &lt;/label&gt;
         &lt;select id&#x3D;&quot;points-align&quot;&gt;
           &lt;option value&#x3D;&quot;center&quot; selected&#x3D;&quot;selected&quot;&gt;Center&lt;/option&gt;
           &lt;option value&#x3D;&quot;end&quot;&gt;End&lt;/option&gt;
@@ -993,7 +970,7 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;start&quot;&gt;Start&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Baseline: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-baseline&quot;&gt;Baseline: &lt;/label&gt;
         &lt;select id&#x3D;&quot;points-baseline&quot;&gt;
           &lt;option value&#x3D;&quot;alphabetic&quot;&gt;Alphabetic&lt;/option&gt;
           &lt;option value&#x3D;&quot;bottom&quot;&gt;Bottom&lt;/option&gt;
@@ -1003,14 +980,14 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;top&quot;&gt;Top&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Rotation: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-rotation&quot;&gt;Rotation: &lt;/label&gt;
         &lt;select id&#x3D;&quot;points-rotation&quot;&gt;
           &lt;option value&#x3D;&quot;0&quot;&gt;0°&lt;/option&gt;
           &lt;option value&#x3D;&quot;0.785398164&quot;&gt;45°&lt;/option&gt;
           &lt;option value&#x3D;&quot;1.570796327&quot;&gt;90°&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Font: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-font&quot;&gt;Font: &lt;/label&gt;
         &lt;select id&#x3D;&quot;points-font&quot;&gt;
           &lt;option value&#x3D;&quot;Arial&quot; selected&#x3D;&quot;selected&quot;&gt;Arial&lt;/option&gt;
           &lt;option value&#x3D;&quot;&#x27;Courier New&#x27;&quot;&gt;Courier New&lt;/option&gt;
@@ -1018,50 +995,50 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;Verdana&quot;&gt;Verdana&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Weight: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-weight&quot;&gt;Weight: &lt;/label&gt;
         &lt;select id&#x3D;&quot;points-weight&quot;&gt;
           &lt;option value&#x3D;&quot;bold&quot;&gt;Bold&lt;/option&gt;
           &lt;option value&#x3D;&quot;normal&quot; selected&#x3D;&quot;selected&quot;&gt;Normal&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Placement: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-placement&quot;&gt;Placement: &lt;/label&gt;
         &lt;select disabled id&#x3D;&quot;points-placement&quot;&gt;
           &lt;option value&#x3D;&quot;line&quot;&gt;Line&lt;/option&gt;
           &lt;option value&#x3D;&quot;point&quot; selected&#x3D;&quot;selected&quot;&gt;Point&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Max Angle: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-maxangle&quot;&gt;Max Angle: &lt;/label&gt;
         &lt;select disabled id&#x3D;&quot;points-maxangle&quot;&gt;
           &lt;option value&#x3D;&quot;0.7853981633974483&quot; selected&#x3D;&quot;selected&quot;&gt;45°&lt;/option&gt;
           &lt;option value&#x3D;&quot;2.0943951023931953&quot;&gt;120°&lt;/option&gt;
           &lt;option value&#x3D;&quot;6.283185307179586&quot;&gt;360°&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Exceed Len: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-overflow&quot;&gt;Exceed Len: &lt;/label&gt;
         &lt;select disabled id&#x3D;&quot;points-overflow&quot;&gt;
           &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
           &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Size: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-size&quot;&gt;Size: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;12px&quot; id&#x3D;&quot;points-size&quot; /&gt;
         &lt;br /&gt;
-        &lt;label&gt;Line height: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-height&quot;&gt;Line height: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;1&quot; id&#x3D;&quot;points-height&quot; /&gt;
         &lt;br /&gt;
-        &lt;label&gt;Offset X:&lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-offset-x&quot;&gt;Offset X: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;0&quot; id&#x3D;&quot;points-offset-x&quot; /&gt;
         &lt;br /&gt;
-        &lt;label&gt;Offset Y:&lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-offset-y&quot;&gt;Offset Y: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;0&quot; id&#x3D;&quot;points-offset-y&quot; /&gt;
         &lt;br /&gt;
-        &lt;label&gt;Color :&lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-color&quot;&gt;Color: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;#aa3300&quot; id&#x3D;&quot;points-color&quot; /&gt;
         &lt;br /&gt;
-        &lt;label title&#x3D;&quot;Outline Color&quot;&gt;O. Color:&lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-outline&quot; title&#x3D;&quot;Outline Color&quot;&gt;O. Color: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;#ffffff&quot; id&#x3D;&quot;points-outline&quot; /&gt;
         &lt;br /&gt;
-        &lt;label title&#x3D;&quot;Outline Width&quot;&gt;O. Width :&lt;/label&gt;
+        &lt;label for&#x3D;&quot;points-outline-width&quot; title&#x3D;&quot;Outline Width&quot;&gt;O. Width: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;3&quot; id&#x3D;&quot;points-outline-width&quot; /&gt;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -1070,7 +1047,7 @@ function stringDivider(str, width, spaceReplacer) {
       &lt;input id&#x3D;&quot;refresh-lines&quot; type&#x3D;&quot;button&quot; value&#x3D;&quot;Refresh&quot; /&gt;
       &lt;h2&gt;Lines&lt;/h2&gt;
       &lt;div class&#x3D;&quot;edit-form-elem&quot;&gt;
-        &lt;label&gt;Text: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-text&quot;&gt;Text: &lt;/label&gt;
         &lt;select id&#x3D;&quot;lines-text&quot;&gt;
           &lt;option value&#x3D;&quot;hide&quot;&gt;Hide&lt;/option&gt;
           &lt;option value&#x3D;&quot;normal&quot;&gt;Normal&lt;/option&gt;
@@ -1078,7 +1055,7 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;wrap&quot; selected&#x3D;&quot;selected&quot;&gt;Wrap&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label title&#x3D;&quot;Max Resolution Denominator&quot;&gt;MaxReso.:&lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-maxreso&quot; title&#x3D;&quot;Max Resolution Denominator&quot;&gt;MaxReso.: &lt;/label&gt;
         &lt;select id&#x3D;&quot;lines-maxreso&quot;&gt;
           &lt;option value&#x3D;&quot;38400&quot;&gt;38,400&lt;/option&gt;
           &lt;option value&#x3D;&quot;19200&quot;&gt;19,200&lt;/option&gt;
@@ -1095,7 +1072,7 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;8&quot;&gt;8&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Align: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-align&quot;&gt;Align: &lt;/label&gt;
         &lt;select id&#x3D;&quot;lines-align&quot;&gt;
           &lt;option value&#x3D;&quot;&quot; selected&#x3D;&quot;selected&quot;&gt;&lt;/option&gt;
           &lt;option value&#x3D;&quot;center&quot;&gt;Center&lt;/option&gt;
@@ -1105,7 +1082,7 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;start&quot;&gt;Start&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Baseline: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-baseline&quot;&gt;Baseline: &lt;/label&gt;
         &lt;select id&#x3D;&quot;lines-baseline&quot;&gt;
           &lt;option value&#x3D;&quot;alphabetic&quot;&gt;Alphabetic&lt;/option&gt;
           &lt;option value&#x3D;&quot;bottom&quot;&gt;Bottom&lt;/option&gt;
@@ -1115,14 +1092,14 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;top&quot;&gt;Top&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Rotation: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-rotation&quot;&gt;Rotation: &lt;/label&gt;
         &lt;select id&#x3D;&quot;lines-rotation&quot;&gt;
           &lt;option value&#x3D;&quot;0&quot;&gt;0°&lt;/option&gt;
           &lt;option value&#x3D;&quot;0.785398164&quot;&gt;45°&lt;/option&gt;
           &lt;option value&#x3D;&quot;1.570796327&quot;&gt;90°&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Font: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-font&quot;&gt;Font: &lt;/label&gt;
         &lt;select id&#x3D;&quot;lines-font&quot;&gt;
           &lt;option value&#x3D;&quot;Arial&quot;&gt;Arial&lt;/option&gt;
           &lt;option value&#x3D;&quot;&#x27;Courier New&#x27;&quot; selected&#x3D;&quot;selected&quot;&gt;Courier New&lt;/option&gt;
@@ -1130,50 +1107,50 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;Verdana&quot;&gt;Verdana&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Weight: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-weight&quot;&gt;Weight: &lt;/label&gt;
         &lt;select id&#x3D;&quot;lines-weight&quot;&gt;
           &lt;option value&#x3D;&quot;bold&quot; selected&#x3D;&quot;selected&quot;&gt;Bold&lt;/option&gt;
           &lt;option value&#x3D;&quot;normal&quot;&gt;Normal&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Placement: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-placement&quot;&gt;Placement: &lt;/label&gt;
         &lt;select id&#x3D;&quot;lines-placement&quot;&gt;
           &lt;option value&#x3D;&quot;line&quot;&gt;Line&lt;/option&gt;
           &lt;option value&#x3D;&quot;point&quot; selected&#x3D;&quot;selected&quot;&gt;Point&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Max Angle: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-maxangle&quot;&gt;Max Angle: &lt;/label&gt;
         &lt;select id&#x3D;&quot;lines-maxangle&quot;&gt;
           &lt;option value&#x3D;&quot;0.7853981633974483&quot; selected&#x3D;&quot;selected&quot;&gt;45°&lt;/option&gt;
           &lt;option value&#x3D;&quot;2.0943951023931953&quot;&gt;120°&lt;/option&gt;
           &lt;option value&#x3D;&quot;6.283185307179586&quot;&gt;360°&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Exceed Len: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-overflow&quot;&gt;Exceed Len: &lt;/label&gt;
         &lt;select id&#x3D;&quot;lines-overflow&quot;&gt;
           &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
           &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Size: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-size&quot;&gt;Size: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;12px&quot; id&#x3D;&quot;lines-size&quot; /&gt;
         &lt;br /&gt;
-        &lt;label&gt;Line height: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-height&quot;&gt;Line height: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;1.2&quot; id&#x3D;&quot;lines-height&quot; /&gt;
         &lt;br /&gt;
-        &lt;label&gt;Offset X:&lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-offset-x&quot;&gt;Offset X: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;0&quot; id&#x3D;&quot;lines-offset-x&quot; /&gt;
         &lt;br /&gt;
-        &lt;label&gt;Offset Y:&lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-offset-y&quot;&gt;Offset Y: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;0&quot; id&#x3D;&quot;lines-offset-y&quot; /&gt;
         &lt;br /&gt;
-        &lt;label&gt;Color :&lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-color&quot;&gt;Color: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;green&quot; id&#x3D;&quot;lines-color&quot; /&gt;
         &lt;br /&gt;
-        &lt;label title&#x3D;&quot;Outline Color&quot;&gt;O. Color:&lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-outline&quot; title&#x3D;&quot;Outline Color&quot;&gt;O. Color: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;#ffffff&quot; id&#x3D;&quot;lines-outline&quot; /&gt;
         &lt;br /&gt;
-        &lt;label title&#x3D;&quot;Outline Width&quot;&gt;O. Width :&lt;/label&gt;
+        &lt;label for&#x3D;&quot;lines-outline-width&quot; title&#x3D;&quot;Outline Width&quot;&gt;O. Width: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;3&quot; id&#x3D;&quot;lines-outline-width&quot; /&gt;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -1182,7 +1159,7 @@ function stringDivider(str, width, spaceReplacer) {
       &lt;input id&#x3D;&quot;refresh-polygons&quot; type&#x3D;&quot;button&quot; value&#x3D;&quot;Refresh&quot; /&gt;
       &lt;h2&gt;Polygons&lt;/h2&gt;
       &lt;div class&#x3D;&quot;edit-form-elem&quot;&gt;
-        &lt;label&gt;Text: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-text&quot;&gt;Text: &lt;/label&gt;
         &lt;select id&#x3D;&quot;polygons-text&quot;&gt;
           &lt;option value&#x3D;&quot;hide&quot;&gt;Hide&lt;/option&gt;
           &lt;option value&#x3D;&quot;normal&quot; selected&#x3D;&quot;selected&quot;&gt;Normal&lt;/option&gt;
@@ -1190,7 +1167,7 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;wrap&quot;&gt;Wrap&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label title&#x3D;&quot;Max Resolution Denominator&quot;&gt;MaxReso.:&lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-maxreso&quot; title&#x3D;&quot;Max Resolution Denominator&quot;&gt;MaxReso.: &lt;/label&gt;
         &lt;select id&#x3D;&quot;polygons-maxreso&quot;&gt;
           &lt;option value&#x3D;&quot;38400&quot;&gt;38,400&lt;/option&gt;
           &lt;option value&#x3D;&quot;19200&quot;&gt;19,200&lt;/option&gt;
@@ -1207,7 +1184,7 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;8&quot;&gt;8&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Align: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-align&quot;&gt;Align: &lt;/label&gt;
         &lt;select id&#x3D;&quot;polygons-align&quot;&gt;
           &lt;option value&#x3D;&quot;&quot; selected&#x3D;&quot;selected&quot;&gt;&lt;/option&gt;
           &lt;option value&#x3D;&quot;center&quot;&gt;Center&lt;/option&gt;
@@ -1217,7 +1194,7 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;start&quot;&gt;Start&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Baseline: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-baseline&quot;&gt;Baseline: &lt;/label&gt;
         &lt;select id&#x3D;&quot;polygons-baseline&quot;&gt;
           &lt;option value&#x3D;&quot;alphabetic&quot;&gt;Alphabetic&lt;/option&gt;
           &lt;option value&#x3D;&quot;bottom&quot;&gt;Bottom&lt;/option&gt;
@@ -1227,14 +1204,14 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;top&quot;&gt;Top&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Rotation: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-rotation&quot;&gt;Rotation: &lt;/label&gt;
         &lt;select id&#x3D;&quot;polygons-rotation&quot;&gt;
           &lt;option value&#x3D;&quot;0&quot;&gt;0°&lt;/option&gt;
           &lt;option value&#x3D;&quot;0.785398164&quot;&gt;45°&lt;/option&gt;
           &lt;option value&#x3D;&quot;1.570796327&quot;&gt;90°&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Font: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-font&quot;&gt;Font: &lt;/label&gt;
         &lt;select id&#x3D;&quot;polygons-font&quot;&gt;
           &lt;option value&#x3D;&quot;Arial&quot;&gt;Arial&lt;/option&gt;
           &lt;option value&#x3D;&quot;&#x27;Courier New&#x27;&quot;&gt;Courier New&lt;/option&gt;
@@ -1242,54 +1219,53 @@ function stringDivider(str, width, spaceReplacer) {
           &lt;option value&#x3D;&quot;Verdana&quot; selected&#x3D;&quot;selected&quot;&gt;Verdana&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Weight: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-weight&quot;&gt;Weight: &lt;/label&gt;
         &lt;select id&#x3D;&quot;polygons-weight&quot;&gt;
           &lt;option value&#x3D;&quot;bold&quot; selected&#x3D;&quot;selected&quot;&gt;Bold&lt;/option&gt;
           &lt;option value&#x3D;&quot;normal&quot;&gt;Normal&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Placement: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-placement&quot;&gt;Placement: &lt;/label&gt;
         &lt;select id&#x3D;&quot;polygons-placement&quot;&gt;
           &lt;option value&#x3D;&quot;line&quot;&gt;Line&lt;/option&gt;
           &lt;option value&#x3D;&quot;point&quot; selected&#x3D;&quot;selected&quot;&gt;Point&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Max Angle: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-maxangle&quot;&gt;Max Angle: &lt;/label&gt;
         &lt;select id&#x3D;&quot;polygons-maxangle&quot;&gt;
           &lt;option value&#x3D;&quot;0.7853981633974483&quot; selected&#x3D;&quot;selected&quot;&gt;45°&lt;/option&gt;
           &lt;option value&#x3D;&quot;2.0943951023931953&quot;&gt;120°&lt;/option&gt;
           &lt;option value&#x3D;&quot;6.283185307179586&quot;&gt;360°&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Exceed Len: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-overflow&quot;&gt;Exceed Len: &lt;/label&gt;
         &lt;select id&#x3D;&quot;polygons-overflow&quot;&gt;
           &lt;option value&#x3D;&quot;true&quot;&gt;True&lt;/option&gt;
           &lt;option value&#x3D;&quot;false&quot; selected&#x3D;&quot;selected&quot;&gt;False&lt;/option&gt;
         &lt;/select&gt;
         &lt;br /&gt;
-        &lt;label&gt;Size: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-size&quot;&gt;Size: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;10px&quot; id&#x3D;&quot;polygons-size&quot; /&gt;
         &lt;br /&gt;
-        &lt;label&gt;Line height: &lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-height&quot;&gt;Line height: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;1&quot; id&#x3D;&quot;polygons-height&quot; /&gt;
         &lt;br /&gt;
-        &lt;label&gt;Offset X:&lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-offset-x&quot;&gt;Offset X: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;0&quot; id&#x3D;&quot;polygons-offset-x&quot; /&gt;
         &lt;br /&gt;
-        &lt;label&gt;Offset Y:&lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-offset-y&quot;&gt;Offset Y: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;0&quot; id&#x3D;&quot;polygons-offset-y&quot; /&gt;
         &lt;br /&gt;
-        &lt;label&gt;Color :&lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-color&quot;&gt;Color: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;blue&quot; id&#x3D;&quot;polygons-color&quot; /&gt;
         &lt;br /&gt;
-        &lt;label title&#x3D;&quot;Outline Color&quot;&gt;O. Color:&lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-outline&quot; title&#x3D;&quot;Outline Color&quot;&gt;O. Color: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;#ffffff&quot; id&#x3D;&quot;polygons-outline&quot; /&gt;
         &lt;br /&gt;
-        &lt;label title&#x3D;&quot;Outline Width&quot;&gt;O. Width :&lt;/label&gt;
+        &lt;label for&#x3D;&quot;polygons-outline-width&quot; title&#x3D;&quot;Outline Width&quot;&gt;O. Width: &lt;/label&gt;
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;3&quot; id&#x3D;&quot;polygons-outline-width&quot; /&gt;
       &lt;/div&gt;
     &lt;/div&gt;
-    &lt;div class&#x3D;&quot;clearall&quot;&gt;&lt;/div&gt;
     &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -1301,7 +1277,7 @@ function stringDivider(str, width, spaceReplacer) {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;vector-labels&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.4.1-dev&quot;
+    &quot;ol&quot;: &quot;6.4.4-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;1.11.0&quot;
@@ -1340,7 +1316,7 @@ function stringDivider(str, width, spaceReplacer) {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.4-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');
