@@ -235,7 +235,7 @@ if (window.location.hash !&#x3D;&#x3D; &#x27;&#x27;) {
   var hash &#x3D; window.location.hash.replace(&#x27;#map&#x3D;&#x27;, &#x27;&#x27;);
   var parts &#x3D; hash.split(&#x27;/&#x27;);
   if (parts.length &#x3D;&#x3D;&#x3D; 4) {
-    zoom &#x3D; parseInt(parts[0], 10);
+    zoom &#x3D; parseFloat(parts[0]);
     center &#x3D; [parseFloat(parts[1]), parseFloat(parts[2])];
     rotation &#x3D; parseFloat(parts[3]);
   }
@@ -266,11 +266,11 @@ var updatePermalink &#x3D; function () {
   var center &#x3D; view.getCenter();
   var hash &#x3D;
     &#x27;#map&#x3D;&#x27; +
-    view.getZoom() +
+    view.getZoom().toFixed(2) +
     &#x27;/&#x27; +
-    Math.round(center[0] * 100) / 100 +
+    center[0].toFixed(2) +
     &#x27;/&#x27; +
-    Math.round(center[1] * 100) / 100 +
+    center[1].toFixed(2) +
     &#x27;/&#x27; +
     view.getRotation();
   var state &#x3D; {
@@ -302,6 +302,7 @@ window.addEventListener(&#x27;popstate&#x27;, function (event) {
         <pre><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;Permalink&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
@@ -328,11 +329,11 @@ window.addEventListener(&#x27;popstate&#x27;, function (event) {
     &quot;ol&quot;: &quot;6.4.4-dev&quot;
   },
   &quot;devDependencies&quot;: {
-    &quot;parcel&quot;: &quot;1.11.0&quot;
+    &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
   },
   &quot;scripts&quot;: {
     &quot;start&quot;: &quot;parcel index.html&quot;,
-    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+    &quot;build&quot;: &quot;parcel build --public-url . index.html&quot;
   }
 }</code></pre>
       </div>

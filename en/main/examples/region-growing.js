@@ -1,6 +1,6 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[115],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[116],{
 
-/***/ 344:
+/***/ 345:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -158,5 +158,5 @@ thresholdControl.addEventListener('input', function () {
 
 /***/ })
 
-},[[344,0]]]);
+},[[345,0]]]);
 //# sourceMappingURL=region-growing.js.map

@@ -350,6 +350,7 @@ worker.addEventListener(&#x27;message&#x27;, function (message) {
         <pre><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;Vector tiles rendered in an offscreen canvas&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
@@ -386,7 +387,6 @@ import stringify from &#x27;json-stringify-safe&#x27;;
 import styleFunction from &#x27;ol-mapbox-style/dist/stylefunction&#x27;;
 import {Projection} from &#x27;ol/proj&#x27;;
 import {inView} from &#x27;ol/layer/Layer&#x27;;
-import {renderDeclutterItems} from &#x27;ol/render&#x27;;
 import {getTilePriority as tilePriorityFunction} from &#x27;ol/TileQueue&#x27;;
 
 /** @type {any} */
@@ -525,7 +525,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
       renderer.renderFrame(frameState, canvas);
     }
   });
-  renderDeclutterItems(frameState, null);
+  layers.forEach((layer) &#x3D;&gt; layer.renderDeclutter(frameState));
   if (tileQueue.getTilesLoading() &lt; maxTotalLoading) {
     tileQueue.reprioritize();
     tileQueue.loadMoreTiles(maxTotalLoading, maxNewLoads);
@@ -553,11 +553,11 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
     &quot;json-stringify-safe&quot;: &quot;^5.0.1&quot;
   },
   &quot;devDependencies&quot;: {
-    &quot;parcel&quot;: &quot;1.11.0&quot;
+    &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
   },
   &quot;scripts&quot;: {
     &quot;start&quot;: &quot;parcel index.html&quot;,
-    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+    &quot;build&quot;: &quot;parcel build --public-url . index.html&quot;
   }
 }</code></pre>
       </div>

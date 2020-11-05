@@ -268,6 +268,7 @@ draw.on(&#x27;drawend&#x27;, function (event) {
         <pre><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;Smoothing lines using Chaikins algorithm&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
@@ -301,11 +302,11 @@ draw.on(&#x27;drawend&#x27;, function (event) {
     &quot;chaikin-smooth&quot;: &quot;^1.0.4&quot;
   },
   &quot;devDependencies&quot;: {
-    &quot;parcel&quot;: &quot;1.11.0&quot;
+    &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
   },
   &quot;scripts&quot;: {
     &quot;start&quot;: &quot;parcel index.html&quot;,
-    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+    &quot;build&quot;: &quot;parcel build --public-url . index.html&quot;
   }
 }</code></pre>
       </div>

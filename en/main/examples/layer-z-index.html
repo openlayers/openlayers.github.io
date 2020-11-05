@@ -272,7 +272,7 @@ function createLayer(coordinates, style, zIndex) {
   return vectorLayer;
 }
 
-var layer0 &#x3D; createLayer([40, 40], styles[&#x27;star&#x27;], 0);
+var layer0 &#x3D; createLayer([40, 40], styles[&#x27;star&#x27;]);
 var layer1 &#x3D; createLayer([0, 0], styles[&#x27;square&#x27;], 1);
 var layer2 &#x3D; createLayer([0, 40], styles[&#x27;triangle&#x27;], 0);
 
@@ -308,6 +308,7 @@ bindInputs(2, layer2);
         <pre><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;Layer Z-Index&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
@@ -345,11 +346,11 @@ bindInputs(2, layer2);
     &quot;ol&quot;: &quot;6.4.4-dev&quot;
   },
   &quot;devDependencies&quot;: {
-    &quot;parcel&quot;: &quot;1.11.0&quot;
+    &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
   },
   &quot;scripts&quot;: {
     &quot;start&quot;: &quot;parcel index.html&quot;,
-    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+    &quot;build&quot;: &quot;parcel build --public-url . index.html&quot;
   }
 }</code></pre>
       </div>

@@ -135,12 +135,13 @@
                 data-target="#tag-example-list"
                 data-title="animation"
                 data-content="
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./animated-gif.html&quot;&gt;Animated GIF&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./feature-animation.html&quot;&gt;Custom Animation&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./flight-animation.html&quot;&gt;Flight Animation&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./feature-move-animation.html&quot;&gt;Marker Animation&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./animation.html&quot;&gt;View Animation&lt;/a&gt;"
                 tabindex="0"
-                >4</a>
+                >5</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -389,6 +390,7 @@ onClick(&#x27;tour&#x27;, tour);
         <pre><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;View Animation&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
@@ -424,11 +426,11 @@ onClick(&#x27;tour&#x27;, tour);
     &quot;ol&quot;: &quot;6.4.4-dev&quot;
   },
   &quot;devDependencies&quot;: {
-    &quot;parcel&quot;: &quot;1.11.0&quot;
+    &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
   },
   &quot;scripts&quot;: {
     &quot;start&quot;: &quot;parcel index.html&quot;,
-    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+    &quot;build&quot;: &quot;parcel build --public-url . index.html&quot;
   }
 }</code></pre>
       </div>

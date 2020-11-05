@@ -241,14 +241,15 @@ var tileGrid &#x3D; new WMTSTileGrid({
 var scalgoToken &#x3D; &#x27;CC5BF28A7D96B320C7DFBFD1236B5BEB&#x27;;
 
 var wmtsSource &#x3D; new WMTS({
-  url: &#x27;http://ts2.scalgo.com/olpatch/wmts?token&#x3D;&#x27; + scalgoToken,
+  url: &#x27;https://ts2.scalgo.com/olpatch/wmts?token&#x3D;&#x27; + scalgoToken,
   layer: &#x27;SRTM_4_1:SRTM_4_1_flooded_sealevels&#x27;,
   format: &#x27;image/png&#x27;,
   matrixSet: &#x27;EPSG:3857&#x27;,
   attributions: [
-    &#x27;&lt;a href&#x3D;&quot;http://scalgo.com&quot;&gt;SCALGO&lt;/a&gt;&#x27;,
+    &#x27;&lt;a href&#x3D;&quot;https://scalgo.com&quot; target&#x3D;&quot;_blank&quot;&gt;SCALGO&lt;/a&gt;&#x27;,
     &#x27;&lt;a href&#x3D;&quot;https://cgiarcsi.community/data/&#x27; +
-      &#x27;srtm-90m-digital-elevation-database-v4-1&quot;&gt;CGIAR-CSI SRTM&lt;/a&gt;&#x27; ],
+      &#x27;srtm-90m-digital-elevation-database-v4-1&quot;&#x27; +
+      &#x27; target&#x3D;&quot;_blank&quot;&gt;CGIAR-CSI SRTM&lt;/a&gt;&#x27; ],
   tileGrid: tileGrid,
   style: &#x27;default&#x27;,
   dimensions: {
@@ -291,6 +292,7 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
         <pre><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;WMTS Tile Transitions&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
@@ -322,11 +324,11 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
     &quot;ol&quot;: &quot;6.4.4-dev&quot;
   },
   &quot;devDependencies&quot;: {
-    &quot;parcel&quot;: &quot;1.11.0&quot;
+    &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
   },
   &quot;scripts&quot;: {
     &quot;start&quot;: &quot;parcel index.html&quot;,
-    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+    &quot;build&quot;: &quot;parcel build --public-url . index.html&quot;
   }
 }</code></pre>
       </div>

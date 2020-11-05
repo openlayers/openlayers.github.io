@@ -335,7 +335,7 @@ import WMTSCapabilities from &#x27;ol/format/WMTSCapabilities&#x27;;
 import proj4 from &#x27;proj4&#x27;;
 import {OSM, TileImage, TileWMS} from &#x27;ol/source&#x27;;
 import {getCenter, getWidth} from &#x27;ol/extent&#x27;;
-import {get as getProjection} from &#x27;ol/proj&#x27;;
+import {get as getProjection, transformExtent} from &#x27;ol/proj&#x27;;
 import {register} from &#x27;ol/proj/proj4&#x27;;
 
 proj4.defs(
@@ -379,7 +379,7 @@ proj4.defs(
 register(proj4);
 
 var proj27700 &#x3D; getProjection(&#x27;EPSG:27700&#x27;);
-proj27700.setExtent([0, 0, 700000, 1300000]);
+proj27700.setExtent([-650000, -150000, 1350000, 1450000]);
 
 var proj23032 &#x3D; getProjection(&#x27;EPSG:23032&#x27;);
 proj23032.setExtent([-1206118.71, 4021309.92, 1295389.0, 8051813.28]);
@@ -467,7 +467,8 @@ fetch(urlB)
       layer: &#x27;OS_Open_Raster&#x27;,
     });
     options.attributions &#x3D;
-      &#x27;Contains OS data © Crown Copyright and database right 2019&#x27;;
+      &#x27;Contains OS data © Crown Copyright and database right &#x27; +
+      new Date().getFullYear();
     options.crossOrigin &#x3D; &#x27;&#x27;;
     options.projection &#x3D; &#x27;EPSG:27700&#x27;;
     options.wrapX &#x3D; false;
@@ -523,8 +524,10 @@ function updateViewProjection() {
   map.setView(newView);
 
   // Example how to prevent double occurrence of map by limiting layer extent
-  if (newProj &#x3D;&#x3D; getProjection(&#x27;EPSG:3857&#x27;)) {
-    layers[&#x27;bng&#x27;].setExtent([-1057216, 6405988, 404315, 8759696]);
+  if (newProj.isGlobal()) {
+    layers[&#x27;bng&#x27;].setExtent(
+      transformExtent(proj27700.getExtent(), proj27700, newProj, 2)
+    );
   } else {
     layers[&#x27;bng&#x27;].setExtent(undefined);
   }
@@ -589,6 +592,7 @@ renderEdgesCheckbox.onchange &#x3D; function () {
         <pre><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;Raster Reprojection&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
@@ -651,11 +655,11 @@ renderEdgesCheckbox.onchange &#x3D; function () {
     &quot;proj4&quot;: &quot;2.6.2&quot;
   },
   &quot;devDependencies&quot;: {
-    &quot;parcel&quot;: &quot;1.11.0&quot;
+    &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
   },
   &quot;scripts&quot;: {
     &quot;start&quot;: &quot;parcel index.html&quot;,
-    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+    &quot;build&quot;: &quot;parcel build --public-url . index.html&quot;
   }
 }</code></pre>
       </div>
