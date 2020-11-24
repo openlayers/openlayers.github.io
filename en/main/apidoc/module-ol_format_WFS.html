@@ -1387,6 +1387,7 @@
                 <span class="subtitle">Typedefs</span>
                 <ul>
                     <li data-name="featurecollectionmetadata"><a href="module-ol_format_WFS.html#~FeatureCollectionMetadata">FeatureCollectionMetadata</a>
+                    <li data-name="featuretype"><a href="module-ol_format_WFS.html#~FeatureType">FeatureType</a>
                     <li data-name="options"><a href="module-ol_format_WFS.html#~Options">Options</a>
                     <li data-name="transactionresponse"><a href="module-ol_format_WFS.html#~TransactionResponse">TransactionResponse</a>
                     <li data-name="writegetfeatureoptions"><a href="module-ol_format_WFS.html#~WriteGetFeatureOptions">WriteGetFeatureOptions</a>
@@ -6887,6 +6888,12 @@
                     <span class="fa fa-chevron-right mr-2 mt-1"></span>
                     <span><a href="module-ol_View-View.html">ol​/View</a></span>
                 </span>
+            <div class="member-list" data-type="members">
+                <span class="subtitle">Members</span>
+                <ul>
+                    <li data-name="padding"><a href="module-ol_View-View.html#padding">padding</a>
+                </ul>
+            </div>
             <div class="member-list" data-type="methods">
                 <span class="subtitle">Methods</span>
                 <ul>
@@ -7214,7 +7221,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js">format/WFS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js#L1291">line 1291</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js#L1330">line 1330</a>
         </div>
         
     </div>
@@ -7456,6 +7463,149 @@ Result.
             
             
             <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~FeatureType">
+        </div>
+        <h4 class="name">
+            FeatureType<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>The feature type name.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>bbox</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Extent to use for the BBOX filter.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>geometryName</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Geometry name to use in the BBOX filter.</p></td>
         </tr>
 	
 	
@@ -8034,7 +8184,7 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array.&lt;(string|<a href="module-ol_format_WFS.html#~FeatureType">module:ol/format/WFS~FeatureType</a>)></span>
 
 
             
@@ -8050,7 +8200,9 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
             
             
             
-            <td class="description last"><p>The feature type names.</p></td>
+            <td class="description last"><p>The feature type names or FeatureType objects to
+define a unique bbox filter per feature type name (in this case, options <code>bbox</code> and <code>geometryName</code> are
+ignored.).</p></td>
         </tr>
 	
 	
@@ -8364,7 +8516,8 @@ Web Feature Services have repurposed <code>maxfeatures</code> instead.</p></td>
             
             
             
-            <td class="description last"><p>Extent to use for the BBOX filter.</p></td>
+            <td class="description last"><p>Extent to use for the BBOX filter. The <code>geometryName</code>
+option must be set.</p></td>
         </tr>
 	
 	

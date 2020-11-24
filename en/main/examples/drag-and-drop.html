@@ -68,7 +68,7 @@
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/elm-pep"></script>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder"></script>
     
     
     <title>Drag-and-Drop</title>
@@ -135,9 +135,11 @@
                 data-target="#tag-example-list"
                 data-title="drag-and-drop"
                 data-content="
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-custom-kmz.html&quot;&gt;Custom Drag-and-Drop (KMZ)&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-custom-mvt.html&quot;&gt;Custom Drag-and-Drop (MVT preview)&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./drag-and-drop.html&quot;&gt;Drag-and-Drop&lt;/a&gt;"
                 tabindex="0"
-                >1</a>
+                >3</a>
             </span>
             <span class="badge-group">
               <a
@@ -198,6 +200,7 @@
                 data-target="#tag-example-list"
                 data-title="kml"
                 data-content="
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-custom-kmz.html&quot;&gt;Custom Drag-and-Drop (KMZ)&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./drag-and-drop.html&quot;&gt;Drag-and-Drop&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -207,7 +210,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml.html&quot;&gt;KML&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml-timezones.html&quot;&gt;Timezones in KML&lt;/a&gt;"
                 tabindex="0"
-                >8</a>
+                >9</a>
             </span>
             <span class="badge-group">
               <a
@@ -277,6 +280,22 @@
             </div>
           </div>
           <div id="map" class="map"></div>
+<div><label><input type="checkbox" id="extractstyles" checked /> Extract styles from KML</label></div>
+<br />
+<div>
+  <a id="download" download></a>
+  Download samples:&nbsp;&nbsp;
+  <button id="download-gpx">GPX</button>
+  &nbsp;
+  <button id="download-geojson">GeoJSON</button>
+  &nbsp;
+  <button id="download-igc">IGC</button>
+  &nbsp;
+  <button id="download-kml">KML</button>
+  &nbsp;
+  <button id="download-topojson">TopoJSON</button>
+</div>
+<br />
 <div id="info">&nbsp;</div>
 
         </div>
@@ -296,19 +315,12 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import DragAndDrop from &#x27;ol/interaction/DragAndDrop&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
-import {
-  DragAndDrop,
-  defaults as defaultInteractions,
-} from &#x27;ol/interaction&#x27;;
 import {GPX, GeoJSON, IGC, KML, TopoJSON} from &#x27;ol/format&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {Vector as VectorSource, XYZ} from &#x27;ol/source&#x27;;
-
-var dragAndDropInteraction &#x3D; new DragAndDrop({
-  formatConstructors: [GPX, GeoJSON, IGC, KML, TopoJSON],
-});
 
 var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
 var attributions &#x3D;
@@ -316,7 +328,6 @@ var attributions &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
 var map &#x3D; new Map({
-  interactions: defaultInteractions().extend([dragAndDropInteraction]),
   layers: [
     new TileLayer({
       source: new XYZ({
@@ -333,17 +344,38 @@ var map &#x3D; new Map({
   }),
 });
 
-dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function (event) {
-  var vectorSource &#x3D; new VectorSource({
-    features: event.features,
+var extractStyles &#x3D; document.getElementById(&#x27;extractstyles&#x27;);
+var dragAndDropInteraction;
+
+function setInteraction() {
+  if (dragAndDropInteraction) {
+    map.removeInteraction(dragAndDropInteraction);
+  }
+  dragAndDropInteraction &#x3D; new DragAndDrop({
+    formatConstructors: [
+      GPX,
+      GeoJSON,
+      IGC,
+      // use constructed format to set options
+      new KML({extractStyles: extractStyles.checked}),
+      TopoJSON ],
   });
-  map.addLayer(
-    new VectorLayer({
-      source: vectorSource,
-    })
-  );
-  map.getView().fit(vectorSource.getExtent());
-});
+  dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function (event) {
+    var vectorSource &#x3D; new VectorSource({
+      features: event.features,
+    });
+    map.addLayer(
+      new VectorLayer({
+        source: vectorSource,
+      })
+    );
+    map.getView().fit(vectorSource.getExtent());
+  });
+  map.addInteraction(dragAndDropInteraction);
+}
+setInteraction();
+
+extractStyles.addEventListener(&#x27;change&#x27;, setInteraction);
 
 var displayFeatureInfo &#x3D; function (pixel) {
   var features &#x3D; [];
@@ -373,6 +405,51 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
 map.on(&#x27;click&#x27;, function (evt) {
   displayFeatureInfo(evt.pixel);
 });
+
+// Sample data downloads
+
+var link &#x3D; document.getElementById(&#x27;download&#x27;);
+
+function download(fullpath, filename) {
+  fetch(fullpath)
+    .then(function (response) {
+      return response.blob();
+    })
+    .then(function (blob) {
+      if (navigator.msSaveBlob) {
+        // link download attribuute does not work on MS browsers
+        navigator.msSaveBlob(blob, filename);
+      } else {
+        link.href &#x3D; URL.createObjectURL(blob);
+        link.download &#x3D; filename;
+        link.click();
+      }
+    });
+}
+
+document.getElementById(&#x27;download-gpx&#x27;).addEventListener(&#x27;click&#x27;, function () {
+  download(&#x27;data/gpx/fells_loop.gpx&#x27;, &#x27;fells_loop.gpx&#x27;);
+});
+
+document
+  .getElementById(&#x27;download-geojson&#x27;)
+  .addEventListener(&#x27;click&#x27;, function () {
+    download(&#x27;data/geojson/roads-seoul.geojson&#x27;, &#x27;roads-seoul.geojson&#x27;);
+  });
+
+document.getElementById(&#x27;download-igc&#x27;).addEventListener(&#x27;click&#x27;, function () {
+  download(&#x27;data/igc/Ulrich-Prinz.igc&#x27;, &#x27;Ulrich-Prinz.igc&#x27;);
+});
+
+document.getElementById(&#x27;download-kml&#x27;).addEventListener(&#x27;click&#x27;, function () {
+  download(&#x27;data/kml/states.kml&#x27;, &#x27;states.kml&#x27;);
+});
+
+document
+  .getElementById(&#x27;download-topojson&#x27;)
+  .addEventListener(&#x27;click&#x27;, function () {
+    download(&#x27;data/topojson/fr-departments.json&#x27;, &#x27;fr-departments.json&#x27;);
+  });
 </code></pre>
       </div>
 
@@ -394,6 +471,22 @@ map.on(&#x27;click&#x27;, function (evt) {
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;label&gt;&lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;extractstyles&quot; checked /&gt; Extract styles from KML&lt;/label&gt;&lt;/div&gt;
+    &lt;br /&gt;
+    &lt;div&gt;
+      &lt;a id&#x3D;&quot;download&quot; download&gt;&lt;/a&gt;
+      Download samples:&amp;nbsp;&amp;nbsp;
+      &lt;button id&#x3D;&quot;download-gpx&quot;&gt;GPX&lt;/button&gt;
+      &amp;nbsp;
+      &lt;button id&#x3D;&quot;download-geojson&quot;&gt;GeoJSON&lt;/button&gt;
+      &amp;nbsp;
+      &lt;button id&#x3D;&quot;download-igc&quot;&gt;IGC&lt;/button&gt;
+      &amp;nbsp;
+      &lt;button id&#x3D;&quot;download-kml&quot;&gt;KML&lt;/button&gt;
+      &amp;nbsp;
+      &lt;button id&#x3D;&quot;download-topojson&quot;&gt;TopoJSON&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;br /&gt;
     &lt;div id&#x3D;&quot;info&quot;&gt;&amp;nbsp;&lt;/div&gt;
     &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;

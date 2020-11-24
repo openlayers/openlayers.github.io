@@ -68,7 +68,7 @@
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/elm-pep"></script>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder"></script>
     
     
     <title>WebGL points layer</title>
@@ -306,10 +306,13 @@ optional; if not specified, it will be set to 1.
 Note: <code>red</code>, <code>green</code> and <code>blue</code> components must be values between 0 and 255; <code>alpha</code> between 0 and 1.
 Values can either be literals or another operator, as they will be evaluated recursively.
 Literal values can be of the following types:</li>
-<li><code>boolean</code></li>
-<li><code>number</code></li>
-<li><code>string</code></li>
 </ul>
+</li>
+<li><p><code>boolean</code></p>
+</li>
+<li><p><code>number</code></p>
+</li>
+<li><p><code>string</code></p>
 </li>
 </ul>
 </div>

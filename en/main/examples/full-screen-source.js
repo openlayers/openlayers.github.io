@@ -1,2 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[46],{277:function(e,n,w){"use strict";w.r(n);var a=w(3),o=w(9),c=w(5),r=w(2),s=w(50),t=w(157),p=new r.a({center:[-9101767,2822912],zoom:14});new a.a({controls:Object(s.a)().extend([new t.a({source:"fullscreen"})]),layers:[new c.a({source:new o.b})],target:"map",view:p})}},[[277,0]]]);
+(window.webpackJsonp=window.webpackJsonp||[]).push([[48],{279:function(e,n,w){"use strict";w.r(n);var a=w(3),o=w(9),c=w(5),r=w(2),s=w(52),t=w(159),p=new r.a({center:[-9101767,2822912],zoom:14});new a.a({controls:Object(s.a)().extend([new t.a({source:"fullscreen"})]),layers:[new c.a({source:new o.b})],target:"map",view:p})}},[[279,0]]]);
 //# sourceMappingURL=full-screen-source.js.map

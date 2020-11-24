@@ -1387,6 +1387,7 @@
                 <span class="subtitle">Typedefs</span>
                 <ul>
                     <li data-name="featurecollectionmetadata"><a href="module-ol_format_WFS.html#~FeatureCollectionMetadata">FeatureCollectionMetadata</a>
+                    <li data-name="featuretype"><a href="module-ol_format_WFS.html#~FeatureType">FeatureType</a>
                     <li data-name="options"><a href="module-ol_format_WFS.html#~Options">Options</a>
                     <li data-name="transactionresponse"><a href="module-ol_format_WFS.html#~TransactionResponse">TransactionResponse</a>
                     <li data-name="writegetfeatureoptions"><a href="module-ol_format_WFS.html#~WriteGetFeatureOptions">WriteGetFeatureOptions</a>
@@ -6887,6 +6888,12 @@
                     <span class="fa fa-chevron-right mr-2 mt-1"></span>
                     <span><a href="module-ol_View-View.html">ol​/View</a></span>
                 </span>
+            <div class="member-list" data-type="members">
+                <span class="subtitle">Members</span>
+                <ul>
+                    <li data-name="padding"><a href="module-ol_View-View.html#padding">padding</a>
+                </ul>
+            </div>
             <div class="member-list" data-type="methods">
                 <span class="subtitle">Methods</span>
                 <ul>
@@ -7139,13 +7146,12 @@ defined in a URL template. By default, this follows the widely-used
 Google grid where <code>x</code> 0 and <code>y</code> 0 are in the top left. Grids like
 TMS where <code>x</code> 0 and <code>y</code> 0 are in the bottom left can be used by
 using the <code>{-y}</code> placeholder in the URL template, so long as the
-source does not have a custom tile grid. In this case,
-<a href="module-ol_source_TileImage.html"><code>module:ol/source/TileImage</code></a> can be used with a <code>tileUrlFunction</code>
-such as:</p>
-<p> tileUrlFunction: function(coordinate) {
-   return '<a href="http://mapserver.com/'">http://mapserver.com/'</a> + coordinate[0] + '/' +
-       coordinate[1] + '/' + coordinate[2] + '.png';
-   }</p></div>
+source does not have a custom tile grid. In this case
+a <code>tileUrlFunction</code> can be used, such as:</p>
+<pre class="prettyprint source lang-js"><code> tileUrlFunction: function(coordinate) {
+   return 'http://mapserver.com/' + coordinate[0] + '/' +
+     coordinate[1] + '/' + (-coordinate[2] - 1) + '.png';
+ }</code></pre></div>
     
     </div>
 </header>
@@ -7171,7 +7177,7 @@ such as:</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/XYZ.js">source/XYZ.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/XYZ.js#L71">line 71</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/XYZ.js#L70">line 70</a>
         </div>
         
     </div>
@@ -7763,6 +7769,8 @@ may be used instead of defining each one separately in the <code>urls</code> opt
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 250)
                 
             
             </td>

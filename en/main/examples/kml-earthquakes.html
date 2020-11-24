@@ -68,7 +68,7 @@
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/elm-pep"></script>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder"></script>
     
     <link rel="stylesheet" href="kml-earthquakes.css">
     <title>Earthquakes in KML</title>
@@ -135,6 +135,7 @@
                 data-target="#tag-example-list"
                 data-title="KML"
                 data-content="
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-custom-kmz.html&quot;&gt;Custom Drag-and-Drop (KMZ)&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop.html&quot;&gt;Drag-and-Drop&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -144,7 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml.html&quot;&gt;KML&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml-timezones.html&quot;&gt;Timezones in KML&lt;/a&gt;"
                 tabindex="0"
-                >8</a>
+                >9</a>
             </span>
             <span class="badge-group">
               <a
@@ -398,7 +399,7 @@ map.on(&#x27;click&#x27;, function (evt) {
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-3.5.1.min.js&quot;&gt;&lt;/script&gt;
     &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css&quot;&gt;
     &lt;script src&#x3D;&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;

@@ -1387,6 +1387,7 @@
                 <span class="subtitle">Typedefs</span>
                 <ul>
                     <li data-name="featurecollectionmetadata"><a href="module-ol_format_WFS.html#~FeatureCollectionMetadata">FeatureCollectionMetadata</a>
+                    <li data-name="featuretype"><a href="module-ol_format_WFS.html#~FeatureType">FeatureType</a>
                     <li data-name="options"><a href="module-ol_format_WFS.html#~Options">Options</a>
                     <li data-name="transactionresponse"><a href="module-ol_format_WFS.html#~TransactionResponse">TransactionResponse</a>
                     <li data-name="writegetfeatureoptions"><a href="module-ol_format_WFS.html#~WriteGetFeatureOptions">WriteGetFeatureOptions</a>
@@ -6887,6 +6888,12 @@
                     <span class="fa fa-chevron-right mr-2 mt-1"></span>
                     <span><a href="module-ol_View-View.html">ol​/View</a></span>
                 </span>
+            <div class="member-list" data-type="members">
+                <span class="subtitle">Members</span>
+                <ul>
+                    <li data-name="padding"><a href="module-ol_View-View.html#padding">padding</a>
+                </ul>
+            </div>
             <div class="member-list" data-type="methods">
                 <span class="subtitle">Methods</span>
                 <ul>
@@ -7134,7 +7141,10 @@
         <script async type="text/javascript" src="https://cdn.carbonads.com/carbon.js?serve=CE7DV53U&placement=openlayersorg" id="_carbonads_js"></script>
       </div>
     
-      <div class="class-description col-lg-7 align-self-center pl-0"><p>Handles input of vector data by drag and drop.</p></div>
+      <div class="class-description col-lg-7 align-self-center pl-0"><p>Handles input of vector data by drag and drop.</p>
+<p>Note that the DragAndDrop interaction uses the TextDecoder() constructor if the supplied
+combinnation of formats read both text string and ArrayBuffer sources. Older browsers such
+as IE which do not support this will need a TextDecoder polyfill to be loaded before use.</p></div>
     
     </div>
 </header>
@@ -7160,7 +7170,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/DragAndDrop.js">interaction/DragAndDrop.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/DragAndDrop.js#L82">line 82</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/DragAndDrop.js#L89">line 89</a>
         </div>
         
     </div>
@@ -7234,7 +7244,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;Class.&lt;<a href="module-ol_format_Feature-FeatureFormat.html">module:ol/format/Feature~FeatureFormat</a>>></span>
+<span class="param-type">Array.&lt;(Class.&lt;<a href="module-ol_format_Feature-FeatureFormat.html">module:ol/format/Feature~FeatureFormat</a>>|<a href="module-ol_format_Feature-FeatureFormat.html">module:ol/format/Feature~FeatureFormat</a>)></span>
 
 
                 
@@ -7245,7 +7255,8 @@
 
             <td  class="description last">
                 
-                <p>Format constructors.</p></td>
+                <p>Format constructors
+(and/or formats pre-constructed with options).</p></td>
         </tr>
 	
 	
@@ -8995,7 +9006,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/DragAndDrop.js">interaction/DragAndDrop.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/DragAndDrop.js#L188">line 188</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/DragAndDrop.js#L219">line 219</a>
         </div>
         
     </div>

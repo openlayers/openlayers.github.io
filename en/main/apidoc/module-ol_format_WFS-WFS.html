@@ -1387,6 +1387,7 @@
                 <span class="subtitle">Typedefs</span>
                 <ul>
                     <li data-name="featurecollectionmetadata"><a href="module-ol_format_WFS.html#~FeatureCollectionMetadata">FeatureCollectionMetadata</a>
+                    <li data-name="featuretype"><a href="module-ol_format_WFS.html#~FeatureType">FeatureType</a>
                     <li data-name="options"><a href="module-ol_format_WFS.html#~Options">Options</a>
                     <li data-name="transactionresponse"><a href="module-ol_format_WFS.html#~TransactionResponse">TransactionResponse</a>
                     <li data-name="writegetfeatureoptions"><a href="module-ol_format_WFS.html#~WriteGetFeatureOptions">WriteGetFeatureOptions</a>
@@ -6887,6 +6888,12 @@
                     <span class="fa fa-chevron-right mr-2 mt-1"></span>
                     <span><a href="module-ol_View-View.html">ol​/View</a></span>
                 </span>
+            <div class="member-list" data-type="members">
+                <span class="subtitle">Members</span>
+                <ul>
+                    <li data-name="padding"><a href="module-ol_View-View.html#padding">padding</a>
+                </ul>
+            </div>
             <div class="member-list" data-type="methods">
                 <span class="subtitle">Methods</span>
                 <ul>
@@ -7163,7 +7170,7 @@ Also see <a href="module-ol_format_GMLBase-GMLBase.html"><code>module:ol/format/
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js">format/WFS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js#L257">line 257</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js#L267">line 267</a>
         </div>
         
     </div>
@@ -7721,7 +7728,7 @@ Feature.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js">format/WFS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js#L384">line 384</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js#L394">line 394</a>
         </div>
         
     </div>
@@ -8275,7 +8282,7 @@ Projection.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js">format/WFS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js#L359">line 359</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js#L369">line 369</a>
         </div>
         
     </div>
@@ -8707,7 +8714,7 @@ Result.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js">format/WFS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js#L470">line 470</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js#L480">line 480</a>
         </div>
         
     </div>
@@ -8835,7 +8842,7 @@ Result.
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array.&lt;(string|<a href="module-ol_format_WFS.html#~FeatureType">module:ol/format/WFS~FeatureType</a>)></span>
 
 
                 
@@ -8846,7 +8853,9 @@ Result.
 
             <td  class="description last">
                 
-                <p>The feature type names.</p></td>
+                <p>The feature type names or FeatureType objects to
+define a unique bbox filter per feature type name (in this case, options <code>bbox</code> and <code>geometryName</code> are
+ignored.).</p></td>
         </tr>
 	
 	
@@ -9100,7 +9109,8 @@ Web Feature Services have repurposed <code>maxfeatures</code> instead.</p></td>
 
             <td  class="description last">
                 
-                <p>Extent to use for the BBOX filter.</p></td>
+                <p>Extent to use for the BBOX filter. The <code>geometryName</code>
+option must be set.</p></td>
         </tr>
 	
 	
@@ -9232,7 +9242,7 @@ Result.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js">format/WFS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js#L551">line 551</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/WFS.js#L590">line 590</a>
         </div>
         
     </div>

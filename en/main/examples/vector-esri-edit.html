@@ -68,7 +68,7 @@
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/elm-pep"></script>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder"></script>
     
     
     <title>Editable ArcGIS REST Feature Service</title>
@@ -421,9 +421,8 @@ import {fromLonLat} from &#x27;ol/proj&#x27;;
 import {tile as tileStrategy} from &#x27;ol/loadingstrategy&#x27;;
 
 var serviceUrl &#x3D;
-  &#x27;https://services.arcgis.com/rOo16HdIMeOBI4Mb/arcgis/rest/&#x27; +
-  &#x27;services/PDX_Pedestrian_Districts/FeatureServer/&#x27;;
-var layer &#x3D; &#x27;0&#x27;;
+  &#x27;https://sampleserver6.arcgisonline.com/arcgis/rest/services/Wildfire/FeatureServer/&#x27;;
+var layer &#x3D; &#x27;2&#x27;;
 
 var esrijsonFormat &#x3D; new EsriJSON();
 
@@ -508,8 +507,8 @@ var map &#x3D; new Map({
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
-    center: fromLonLat([-122.619, 45.512]),
-    zoom: 12,
+    center: fromLonLat([-110.875, 37.345]),
+    zoom: 5,
   }),
 });
 
@@ -529,13 +528,13 @@ var dirty &#x3D; {};
 selected.on(&#x27;add&#x27;, function (evt) {
   var feature &#x3D; evt.element;
   feature.on(&#x27;change&#x27;, function (evt) {
-    dirty[evt.target.getId()] &#x3D; true;
+    dirty[evt.target.get(&#x27;objectid&#x27;)] &#x3D; true;
   });
 });
 
 selected.on(&#x27;remove&#x27;, function (evt) {
   var feature &#x3D; evt.element;
-  var fid &#x3D; feature.getId();
+  var fid &#x3D; feature.get(&#x27;objectid&#x27;);
   if (dirty[fid] &#x3D;&#x3D;&#x3D; true) {
     var payload &#x3D;
       &#x27;[&#x27; +
@@ -545,7 +544,7 @@ selected.on(&#x27;remove&#x27;, function (evt) {
       &#x27;]&#x27;;
     var url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
     $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function (data) {
-      var result &#x3D; JSON.parse(data);
+      var result &#x3D; typeof data &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? JSON.parse(data) : data;
       if (result.updateResults &amp;&amp; result.updateResults.length &gt; 0) {
         if (result.updateResults[0].success !&#x3D;&#x3D; true) {
           var error &#x3D; result.updateResults[0].error;
@@ -568,11 +567,10 @@ draw.on(&#x27;drawend&#x27;, function (evt) {
     &#x27;]&#x27;;
   var url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
   $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function (data) {
-    var result &#x3D; JSON.parse(data);
+    var result &#x3D; typeof data &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? JSON.parse(data) : data;
     if (result.addResults &amp;&amp; result.addResults.length &gt; 0) {
       if (result.addResults[0].success &#x3D;&#x3D;&#x3D; true) {
-        feature.setId(result.addResults[0][&#x27;objectId&#x27;]);
-        vectorSource.clear();
+        feature.set(&#x27;objectid&#x27;, result.addResults[0][&#x27;objectId&#x27;]);
       } else {
         var error &#x3D; result.addResults[0].error;
         alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
@@ -593,7 +591,7 @@ draw.on(&#x27;drawend&#x27;, function (evt) {
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-3.5.1.min.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {

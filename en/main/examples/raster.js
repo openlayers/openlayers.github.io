@@ -1,12 +1,12 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[115],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[117],{
 
-/***/ 344:
+/***/ 346:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(160);
+/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(162);
 /* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 /* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27);
 /* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
@@ -234,5 +234,5 @@ function message(value, area) {
 
 /***/ })
 
-},[[344,0]]]);
+},[[346,0]]]);
 //# sourceMappingURL=raster.js.map
