@@ -272,14 +272,15 @@
           </div>
           <div id="map" class="map"></div>
 <form class="form-inline">
-  <label for="type">Shape type &nbsp;</label>
-  <select id="type">
+  <label for="type">Shape type: &nbsp;</label>
+  <select class="form-control mr-2 mb-2 mt-2" id="type">
     <option value="Circle">Circle</option>
     <option value="Square">Square</option>
     <option value="Box">Box</option>
     <option value="Star">Star</option>
     <option value="None">None</option>
   </select>
+  <input class="form-control mr-2 mb-2 mt-2" type="button" value="Undo" id="undo">
 </form>
 
         </div>
@@ -291,7 +292,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Using the ol/interaction/Draw to create regular shapes</p>
-          <div id="docs"><p>This demonstrates the use of the <code>geometryFunction</code> option for the <code>ol/interaction/Draw</code>. Select a shape type from the dropdown above to start drawing. To activate freehand drawing, hold the <code>Shift</code> key. Square drawing is achieved by using <code>type: &#39;Circle&#39;</code> type with a <code>geometryFunction</code> that creates a 4-sided regular polygon instead of a circle. Box drawing uses <code>type: &#39;Circle&#39;</code> with a <code>geometryFunction</code> that creates a box-shaped polygon instead of a circle.  Star drawing uses a custom geometry function that coverts a circle into a start using the center and radius provided by the draw interaction.</p>
+          <div id="docs"><p>This demonstrates the use of the <code>geometryFunction</code> option for the <code>ol/interaction/Draw</code>. Select a shape type from the dropdown above to start drawing. To activate freehand drawing, hold the <code>Shift</code> key. Square drawing is achieved by using <code>type: &#39;Circle&#39;</code> type with a <code>geometryFunction</code> that creates a 4-sided regular polygon instead of a circle. Box drawing uses <code>type: &#39;Circle&#39;</code> with a <code>geometryFunction</code> that creates a box-shaped polygon instead of a circle. Star drawing uses a custom geometry function that converts a circle into a star using the center and radius provided by the draw interaction.</p>
 </div>
         </div>
       </div>
@@ -344,28 +345,30 @@ function addInteraction() {
     } else if (value &#x3D;&#x3D;&#x3D; &#x27;Star&#x27;) {
       value &#x3D; &#x27;Circle&#x27;;
       geometryFunction &#x3D; function (coordinates, geometry) {
-        var center &#x3D; coordinates[0];
-        var last &#x3D; coordinates[1];
-        var dx &#x3D; center[0] - last[0];
-        var dy &#x3D; center[1] - last[1];
-        var radius &#x3D; Math.sqrt(dx * dx + dy * dy);
-        var rotation &#x3D; Math.atan2(dy, dx);
-        var newCoordinates &#x3D; [];
-        var numPoints &#x3D; 12;
-        for (var i &#x3D; 0; i &lt; numPoints; ++i) {
-          var angle &#x3D; rotation + (i * 2 * Math.PI) / numPoints;
-          var fraction &#x3D; i % 2 &#x3D;&#x3D;&#x3D; 0 ? 1 : 0.5;
-          var offsetX &#x3D; radius * fraction * Math.cos(angle);
-          var offsetY &#x3D; radius * fraction * Math.sin(angle);
-          newCoordinates.push([center[0] + offsetX, center[1] + offsetY]);
+        if (coordinates.length) {
+          var center &#x3D; coordinates[0];
+          var last &#x3D; coordinates[coordinates.length - 1];
+          var dx &#x3D; center[0] - last[0];
+          var dy &#x3D; center[1] - last[1];
+          var radius &#x3D; Math.sqrt(dx * dx + dy * dy);
+          var rotation &#x3D; Math.atan2(dy, dx);
+          var newCoordinates &#x3D; [];
+          var numPoints &#x3D; 12;
+          for (var i &#x3D; 0; i &lt; numPoints; ++i) {
+            var angle &#x3D; rotation + (i * 2 * Math.PI) / numPoints;
+            var fraction &#x3D; i % 2 &#x3D;&#x3D;&#x3D; 0 ? 1 : 0.5;
+            var offsetX &#x3D; radius * fraction * Math.cos(angle);
+            var offsetY &#x3D; radius * fraction * Math.sin(angle);
+            newCoordinates.push([center[0] + offsetX, center[1] + offsetY]);
+          }
+          newCoordinates.push(newCoordinates[0].slice());
+          if (!geometry) {
+            geometry &#x3D; new Polygon([newCoordinates]);
+          } else {
+            geometry.setCoordinates([newCoordinates]);
+          }
+          return geometry;
         }
-        newCoordinates.push(newCoordinates[0].slice());
-        if (!geometry) {
-          geometry &#x3D; new Polygon([newCoordinates]);
-        } else {
-          geometry.setCoordinates([newCoordinates]);
-        }
-        return geometry;
       };
     }
     draw &#x3D; new Draw({
@@ -384,6 +387,10 @@ typeSelect.onchange &#x3D; function () {
   map.removeInteraction(draw);
   addInteraction();
 };
+
+document.getElementById(&#x27;undo&#x27;).addEventListener(&#x27;click&#x27;, function () {
+  draw.removeLastPoint();
+});
 
 addInteraction();
 </code></pre>
@@ -408,14 +415,15 @@ addInteraction();
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;form class&#x3D;&quot;form-inline&quot;&gt;
-      &lt;label for&#x3D;&quot;type&quot;&gt;Shape type &amp;nbsp;&lt;/label&gt;
-      &lt;select id&#x3D;&quot;type&quot;&gt;
+      &lt;label for&#x3D;&quot;type&quot;&gt;Shape type: &amp;nbsp;&lt;/label&gt;
+      &lt;select class&#x3D;&quot;form-control mr-2 mb-2 mt-2&quot; id&#x3D;&quot;type&quot;&gt;
         &lt;option value&#x3D;&quot;Circle&quot;&gt;Circle&lt;/option&gt;
         &lt;option value&#x3D;&quot;Square&quot;&gt;Square&lt;/option&gt;
         &lt;option value&#x3D;&quot;Box&quot;&gt;Box&lt;/option&gt;
         &lt;option value&#x3D;&quot;Star&quot;&gt;Star&lt;/option&gt;
         &lt;option value&#x3D;&quot;None&quot;&gt;None&lt;/option&gt;
       &lt;/select&gt;
+      &lt;input class&#x3D;&quot;form-control mr-2 mb-2 mt-2&quot; type&#x3D;&quot;button&quot; value&#x3D;&quot;Undo&quot; id&#x3D;&quot;undo&quot;&gt;
     &lt;/form&gt;
     &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;

@@ -2284,6 +2284,7 @@
             <div class="member-list" data-type="fires">
                 <span class="subtitle">Fires</span>
                 <ul>
+                    <li data-name="boxcancel"><a href="module-ol_interaction_DragBox.DragBoxEvent.html#event:boxcancel">boxcancel</a>
                     <li data-name="boxdrag"><a href="module-ol_interaction_DragBox.DragBoxEvent.html#event:boxdrag">boxdrag</a>
                     <li data-name="boxend"><a href="module-ol_interaction_DragBox.DragBoxEvent.html#event:boxend">boxend</a>
                     <li data-name="boxstart"><a href="module-ol_interaction_DragBox.DragBoxEvent.html#event:boxstart">boxstart</a>
@@ -2453,6 +2454,7 @@
             <div class="member-list" data-type="fires">
                 <span class="subtitle">Fires</span>
                 <ul>
+                    <li data-name="boxcancel"><a href="module-ol_interaction_DragBox.DragBoxEvent.html#event:boxcancel">boxcancel</a>
                     <li data-name="boxdrag"><a href="module-ol_interaction_DragBox.DragBoxEvent.html#event:boxdrag">boxdrag</a>
                     <li data-name="boxend"><a href="module-ol_interaction_DragBox.DragBoxEvent.html#event:boxend">boxend</a>
                     <li data-name="boxstart"><a href="module-ol_interaction_DragBox.DragBoxEvent.html#event:boxstart">boxstart</a>
@@ -7224,7 +7226,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1159">line 1159</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1181">line 1181</a>
         </div>
         
     </div>
@@ -7318,7 +7320,7 @@ Function that draws a box-shaped polygon.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1123">line 1123</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1141">line 1141</a>
         </div>
         
     </div>
@@ -7334,7 +7336,7 @@ Function that draws a box-shaped polygon.
     
     <div class="description">
         <p>Create a <code>geometryFunction</code> for <code>type: 'Circle'</code> that will create a regular
-polygon with a user specified number of sides and start angle instead of an
+polygon with a user specified number of sides and start angle instead of a
 <code>module:ol/geom/Circle~Circle</code> geometry.</p>
     </div>
     
@@ -7383,8 +7385,8 @@ polygon with a user specified number of sides and start angle instead of an
 
             <td  class="description last">
                 
-                <p>Number of sides of the regular polygon. Default is
-    32.</p></td>
+                <p>Number of sides of the regular polygon.
+    Default is 32.</p></td>
         </tr>
 	
 	
@@ -7409,7 +7411,8 @@ polygon with a user specified number of sides and start angle instead of an
 
             <td  class="description last">
                 
-                <p>Angle of the first point in radians. 0 means East.
+                <p>Angle of the first point in counter-clockwise
+    radians. 0 means East.
     Default is the angle defined by the heading from the center of the
     regular polygon to the current pointer position.</p></td>
         </tr>
@@ -7460,8 +7463,7 @@ polygon with a user specified number of sides and start angle instead of an
 
 
 <h5>Returns:</h5>
-Function that draws a
-    polygon.
+Function that draws a polygon.
 <br />
 
     

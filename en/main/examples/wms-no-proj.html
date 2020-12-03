@@ -217,8 +217,8 @@ var layers &#x3D; [
   new TileLayer({
     source: new TileWMS({
       attributions:
-        &#x27;© &lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
-        &#x27;en/home.html&quot;&gt;Pixelmap 1:1000000 / geo.admin.ch&lt;/a&gt;&#x27;,
+        &#x27;© &lt;a href&#x3D;&quot;https://shop.swisstopo.admin.ch/en/products/maps/national/lk1000&quot;&#x27; +
+        &#x27;target&#x3D;&quot;_blank&quot;&gt;Pixelmap 1:1000000 / geo.admin.ch&lt;/a&gt;&#x27;,
       crossOrigin: &#x27;anonymous&#x27;,
       params: {
         &#x27;LAYERS&#x27;: &#x27;ch.swisstopo.pixelkarte-farbe-pk1000.noscale&#x27;,
@@ -230,10 +230,10 @@ var layers &#x3D; [
   new ImageLayer({
     source: new ImageWMS({
       attributions:
-        &#x27;© &lt;a href&#x3D;&quot;http://www.geo.admin.ch/internet/geoportal/&#x27; +
-        &#x27;en/home.html&quot;&gt;National parks / geo.admin.ch&lt;/a&gt;&#x27;,
+        &#x27;© &lt;a href&#x3D;&quot;https://www.hydrodaten.admin.ch/en/notes-on-the-flood-alert-maps.html&quot;&#x27; +
+        &#x27;target&#x3D;&quot;_blank&quot;&gt;Flood Alert / geo.admin.ch&lt;/a&gt;&#x27;,
       crossOrigin: &#x27;anonymous&#x27;,
-      params: {&#x27;LAYERS&#x27;: &#x27;ch.bafu.schutzgebiete-paerke_nationaler_bedeutung&#x27;},
+      params: {&#x27;LAYERS&#x27;: &#x27;ch.bafu.hydroweb-warnkarte_national&#x27;},
       serverType: &#x27;mapserver&#x27;,
       url: &#x27;https://wms.geo.admin.ch/&#x27;,
     }),
