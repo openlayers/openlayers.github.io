@@ -215,6 +215,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geojson.html&quot;&gt;GeoJSON&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geojson-vt.html&quot;&gt;geojson-vt integration&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon-color.html&quot;&gt;Icon Colors&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-icon.html&quot;&gt;Icon modification&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon-negative.html&quot;&gt;Icon Pixel Operations&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon-scale.html&quot;&gt;Icon Scale&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon.html&quot;&gt;Icon Symbolizer&lt;/a&gt;
@@ -252,7 +253,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >58</a>
+                >59</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -345,30 +346,28 @@ function addInteraction() {
     } else if (value &#x3D;&#x3D;&#x3D; &#x27;Star&#x27;) {
       value &#x3D; &#x27;Circle&#x27;;
       geometryFunction &#x3D; function (coordinates, geometry) {
-        if (coordinates.length) {
-          var center &#x3D; coordinates[0];
-          var last &#x3D; coordinates[coordinates.length - 1];
-          var dx &#x3D; center[0] - last[0];
-          var dy &#x3D; center[1] - last[1];
-          var radius &#x3D; Math.sqrt(dx * dx + dy * dy);
-          var rotation &#x3D; Math.atan2(dy, dx);
-          var newCoordinates &#x3D; [];
-          var numPoints &#x3D; 12;
-          for (var i &#x3D; 0; i &lt; numPoints; ++i) {
-            var angle &#x3D; rotation + (i * 2 * Math.PI) / numPoints;
-            var fraction &#x3D; i % 2 &#x3D;&#x3D;&#x3D; 0 ? 1 : 0.5;
-            var offsetX &#x3D; radius * fraction * Math.cos(angle);
-            var offsetY &#x3D; radius * fraction * Math.sin(angle);
-            newCoordinates.push([center[0] + offsetX, center[1] + offsetY]);
-          }
-          newCoordinates.push(newCoordinates[0].slice());
-          if (!geometry) {
-            geometry &#x3D; new Polygon([newCoordinates]);
-          } else {
-            geometry.setCoordinates([newCoordinates]);
-          }
-          return geometry;
+        var center &#x3D; coordinates[0];
+        var last &#x3D; coordinates[coordinates.length - 1];
+        var dx &#x3D; center[0] - last[0];
+        var dy &#x3D; center[1] - last[1];
+        var radius &#x3D; Math.sqrt(dx * dx + dy * dy);
+        var rotation &#x3D; Math.atan2(dy, dx);
+        var newCoordinates &#x3D; [];
+        var numPoints &#x3D; 12;
+        for (var i &#x3D; 0; i &lt; numPoints; ++i) {
+          var angle &#x3D; rotation + (i * 2 * Math.PI) / numPoints;
+          var fraction &#x3D; i % 2 &#x3D;&#x3D;&#x3D; 0 ? 1 : 0.5;
+          var offsetX &#x3D; radius * fraction * Math.cos(angle);
+          var offsetY &#x3D; radius * fraction * Math.sin(angle);
+          newCoordinates.push([center[0] + offsetX, center[1] + offsetY]);
         }
+        newCoordinates.push(newCoordinates[0].slice());
+        if (!geometry) {
+          geometry &#x3D; new Polygon([newCoordinates]);
+        } else {
+          geometry.setCoordinates([newCoordinates]);
+        }
+        return geometry;
       };
     }
     draw &#x3D; new Draw({

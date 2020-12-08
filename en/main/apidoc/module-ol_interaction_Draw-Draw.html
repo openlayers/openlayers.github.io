@@ -7169,7 +7169,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L182">line 182</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L183">line 183</a>
         </div>
         
     </div>
@@ -7502,7 +7502,8 @@ polygon rings and <code>2</code> for line strings.</p></td>
                 
                 <p>A function
 that takes an <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>module:ol/MapBrowserEvent~MapBrowserEvent</code></a> and returns a
-boolean to indicate whether the drawing can be finished.</p></td>
+boolean to indicate whether the drawing can be finished. Not used when drawing
+POINT or MULTI_POINT geometries.</p></td>
         </tr>
 	
 	
@@ -7915,7 +7916,7 @@ overlay.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1018">line 1018</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1010">line 1010</a>
         </div>
         
     </div>
@@ -7996,7 +7997,7 @@ overlay.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1034">line 1034</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1026">line 1026</a>
         </div>
         
     </div>
@@ -8012,7 +8013,7 @@ overlay.</p></td>
         <p>Append coordinates to the end of the geometry that is currently being drawn.
 This can be used when drawing LineStrings or Polygons. Coordinates will
 either be appended to the current LineString or the outer ring of the current
-Polygon.</p>
+Polygon. If no geometry is being drawn, a new one will be created.</p>
     </div>
     
 
@@ -8060,7 +8061,7 @@ Polygon.</p>
 
             <td  class="description last">
                 
-                <p>Linear coordinates to be appended into
+                <p>Linear coordinates to be appended to
 the coordinate array.</p></td>
         </tr>
 	
@@ -8352,7 +8353,7 @@ Object with a <code>type</code> property.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1070">line 1070</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1075">line 1075</a>
         </div>
         
     </div>
@@ -8483,7 +8484,7 @@ This will change the original feature, instead of drawing a copy.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L953">line 953</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L945">line 945</a>
         </div>
         
     </div>
@@ -8979,7 +8980,7 @@ Map.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L506">line 506</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L502">line 502</a>
         </div>
         
     </div>
@@ -9347,7 +9348,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L516">line 516</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L512">line 512</a>
         </div>
         
     </div>
@@ -9816,7 +9817,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L902">line 902</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L898">line 898</a>
         </div>
         
     </div>
@@ -9829,7 +9830,8 @@ Unique key for the listener. If
 
     
     <div class="description">
-        <p>Remove last point of the feature currently being drawn.</p>
+        <p>Remove last point of the feature currently being drawn. Does not do anything when
+drawing POINT or MULTI_POINT geometries.</p>
     </div>
     
 
