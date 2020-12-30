@@ -68,7 +68,7 @@
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/elm-pep"></script>
-    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder"></script>
+    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"></script>
     
     
     <title>WMS without Projection</title>
@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.4.4-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.5.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -212,6 +212,7 @@ import Projection from &#x27;ol/proj/Projection&#x27;;
 import TileWMS from &#x27;ol/source/TileWMS&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
+import {ScaleLine, defaults as defaultControls} from &#x27;ol/control&#x27;;
 
 var layers &#x3D; [
   new TileLayer({
@@ -244,12 +245,18 @@ var layers &#x3D; [
 // projection object. Requesting tiles only needs the code together with a
 // tile grid of Cartesian coordinates; it does not matter how those
 // coordinates relate to latitude or longitude.
+//
+// With no transforms available projection units must be assumed to represent
+// true distances. In the case of local projections this may be a sufficiently
+// close approximation for a meaningful (if not 100% accurate) ScaleLine control.
+
 var projection &#x3D; new Projection({
   code: &#x27;EPSG:21781&#x27;,
   units: &#x27;m&#x27;,
 });
 
 var map &#x3D; new Map({
+  controls: defaultControls().extend([new ScaleLine()]),
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({
@@ -290,7 +297,7 @@ var map &#x3D; new Map({
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;wms-no-proj&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.4.4-dev&quot;
+    &quot;ol&quot;: &quot;6.5.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
@@ -329,7 +336,7 @@ var map &#x3D; new Map({
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.4.4-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.5.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');
