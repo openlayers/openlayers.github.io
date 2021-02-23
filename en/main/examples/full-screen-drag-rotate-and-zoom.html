@@ -274,7 +274,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of drag rotate and zoom control with full screen effect.</p>
-          <div id="docs"><p>Hold down <code>Shift+Drag</code> to rotate and zoom.  Click the button in the top right corner to go full screen.  Then do the <code>Shift+Drag</code> thing again.</p> <p>If there is no button on the map, your browser does not support the <a href="http://caniuse.com/#feat=fullscreen">Full Screen API</a>.</p>
+          <div id="docs"><p>Hold down <code>Shift+Drag</code> to rotate and zoom.  Click the button in the top right corner to go full screen.  Then do the <code>Shift+Drag</code> thing again.</p> <p>If there is no button on the map, your browser does not support the <a href="https://caniuse.com/fullscreen">Full Screen API</a>.</p>
 </div>
         </div>
       </div>
@@ -328,6 +328,8 @@ var map &#x3D; new Map({
     &lt;title&gt;Full Screen Drag, Rotate, and Zoom&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

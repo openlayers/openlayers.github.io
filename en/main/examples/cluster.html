@@ -264,6 +264,7 @@ import {
 } from &#x27;ol/style&#x27;;
 import {Cluster, OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {boundingExtent} from &#x27;ol/extent&#x27;;
 
 var distance &#x3D; document.getElementById(&#x27;distance&#x27;);
 
@@ -330,6 +331,21 @@ var map &#x3D; new Map({
 distance.addEventListener(&#x27;input&#x27;, function () {
   clusterSource.setDistance(parseInt(distance.value, 10));
 });
+
+map.on(&#x27;click&#x27;, function (e) {
+  clusters.getFeatures(e.pixel).then(function (clickedFeatures) {
+    if (clickedFeatures.length) {
+      // Get clustered Coordinates
+      var features &#x3D; clickedFeatures[0].get(&#x27;features&#x27;);
+      if (features.length &gt; 1) {
+        var extent &#x3D; boundingExtent(
+          features.map(function (r) { return r.getGeometry().getCoordinates(); })
+        );
+        map.getView().fit(extent, {duration: 1000, padding: [50, 50, 50, 50]});
+      }
+    }
+  });
+});
 </code></pre>
       </div>
 
@@ -342,6 +358,8 @@ distance.addEventListener(&#x27;input&#x27;, function () {
     &lt;title&gt;Clustered Features&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

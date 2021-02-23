@@ -412,8 +412,9 @@ var geojsonObject &#x3D; {
         &#x27;coordinates&#x27;: [
           [
             [-5e6, -1e6],
+            [-3e6, -1e6],
             [-4e6, 1e6],
-            [-3e6, -1e6] ] ],
+            [-5e6, -1e6] ] ],
       },
     },
     {
@@ -443,21 +444,24 @@ var geojsonObject &#x3D; {
           [
             [
               [-5e6, 6e6],
-              [-5e6, 8e6],
+              [-3e6, 6e6],
               [-3e6, 8e6],
-              [-3e6, 6e6] ] ],
+              [-5e6, 8e6],
+              [-5e6, 6e6] ] ],
           [
             [
               [-2e6, 6e6],
-              [-2e6, 8e6],
+              [0, 6e6],
               [0, 8e6],
-              [0, 6e6] ] ],
+              [-2e6, 8e6],
+              [-2e6, 6e6] ] ],
           [
             [
               [1e6, 6e6],
-              [1e6, 8e6],
+              [3e6, 6e6],
               [3e6, 8e6],
-              [3e6, 6e6] ] ] ],
+              [1e6, 8e6],
+              [1e6, 6e6] ] ] ],
       },
     },
     {
@@ -480,8 +484,9 @@ var geojsonObject &#x3D; {
             &#x27;coordinates&#x27;: [
               [
                 [1e6, -6e6],
+                [3e6, -6e6],
                 [2e6, -4e6],
-                [3e6, -6e6] ] ],
+                [1e6, -6e6] ] ],
           } ],
       },
     } ],
@@ -522,6 +527,8 @@ var map &#x3D; new Map({
     &lt;title&gt;GeoJSON&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

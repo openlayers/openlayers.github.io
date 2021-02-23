@@ -180,7 +180,7 @@
         <div class="span12">
           <p id="shortdesc">Example of a static image layer.</p>
           <div id="docs"><p>
-  This example uses a <a href="http://xkcd.com/256/">static image</a>
+  This example uses a <a href="https://xkcd.com/256/">static image</a>
   as a layer source.  The map view is configured with a custom
   projection that translates image coordinates directly into map
   coordinates.
@@ -213,7 +213,7 @@ var map &#x3D; new Map({
   layers: [
     new ImageLayer({
       source: new Static({
-        attributions: &#x27;© &lt;a href&#x3D;&quot;http://xkcd.com/license.html&quot;&gt;xkcd&lt;/a&gt;&#x27;,
+        attributions: &#x27;© &lt;a href&#x3D;&quot;https://xkcd.com/license.html&quot;&gt;xkcd&lt;/a&gt;&#x27;,
         url: &#x27;https://imgs.xkcd.com/comics/online_communities.png&#x27;,
         projection: projection,
         imageExtent: extent,
@@ -239,6 +239,8 @@ var map &#x3D; new Map({
     &lt;title&gt;Static Image&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

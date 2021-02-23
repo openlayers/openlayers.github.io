@@ -216,8 +216,7 @@ import WMTS, {optionsFromCapabilities} from &#x27;ol/source/WMTS&#x27;;
 import WMTSCapabilities from &#x27;ol/format/WMTSCapabilities&#x27;;
 import {DEVICE_PIXEL_RATIO} from &#x27;ol/has&#x27;;
 
-var capabilitiesUrl &#x3D;
-  &#x27;https://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml&#x27;;
+var capabilitiesUrl &#x3D; &#x27;https://basemap.at/wmts/1.0.0/WMTSCapabilities.xml&#x27;;
 
 // HiDPI support:
 // * Use &#x27;bmaphidpi&#x27; layer (pixel ratio 2) for device pixel ratio &gt; 1
@@ -246,6 +245,8 @@ fetch(capabilitiesUrl)
       style: &#x27;normal&#x27;,
     });
     options.tilePixelRatio &#x3D; tilePixelRatio;
+    options.attributions &#x3D;
+      &#x27;Grundkarte: &lt;a target&#x3D;&quot;_blank&quot; href&#x3D;&quot;https://basemap.at/&quot;&gt;basemap.at&lt;/a&gt;&#x27;;
     map.addLayer(
       new TileLayer({
         source: new WMTS(options),
@@ -264,6 +265,8 @@ fetch(capabilitiesUrl)
     &lt;title&gt;High DPI WMTS&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

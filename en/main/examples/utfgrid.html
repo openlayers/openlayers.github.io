@@ -190,7 +190,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">This example shows how to read data from a UTFGrid source.</p>
-          <div id="docs"><p>Point to a country to see its name and flag.</p> Tiles made with <a href="http://tilemill.com">TileMill</a>. Hosting on <a href="mapbox.com">mapbox.com</a> or with open-source <a href="https://github.com/klokantech/tileserver-php/">TileServer</a>.
+          <div id="docs"><p>Point to a country to see its name and flag.</p> Tiles made with <a href="https://tilemill-project.github.io/tilemill/">TileMill</a>. Hosting on <a href="https://www.mapbox.com/">mapbox.com</a> or with open-source <a href="https://github.com/maptiler/tileserver-php">TileServer</a>.
 </div>
         </div>
       </div>
@@ -289,6 +289,8 @@ map.on(&#x27;click&#x27;, function (evt) {
     &lt;title&gt;UTFGrid&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

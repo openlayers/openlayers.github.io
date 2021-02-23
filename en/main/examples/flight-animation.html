@@ -291,7 +291,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Demonstrates how to animate flights with ´postrender´.</p>
-          <div id="docs"><p>This example shows how to use <b>postrender</b> and <b>vectorContext</b> to animate flights. A great circle arc between two airports is calculated using <a href="https://github.com/springmeyer/arc.js">arc.js</a> and then the flight paths are animated with <b>postrender</b>. The flight data is provided by <a href="http://openflights.org/data.html">OpenFlights</a> (a simplified data set from the <a href="https://www.mapbox.com/mapbox.js/example/v1.0.0/animating-flight-paths/"> Mapbox.js documentation</a> is used).</p>
+          <div id="docs"><p>This example shows how to use <b>postrender</b> and <b>vectorContext</b> to animate flights. A great circle arc between two airports is calculated using <a href="https://github.com/springmeyer/arc.js">arc.js</a> and then the flight paths are animated with <b>postrender</b>. The flight data is provided by <a href="https://openflights.org/data.html">OpenFlights</a> (a simplified data set from the <a href="https://docs.mapbox.com/mapbox.js/example/v1.0.0/animating-flight-paths/"> Mapbox.js documentation</a> is used).</p>
 </div>
         </div>
       </div>
@@ -335,7 +335,7 @@ var flightsSource &#x3D; new VectorSource({
   wrapX: false,
   attributions:
     &#x27;Flight data by &#x27; +
-    &#x27;&lt;a href&#x3D;&quot;http://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;,
+    &#x27;&lt;a href&#x3D;&quot;https://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;,
   loader: function () {
     var url &#x3D; &#x27;data/openflights/flights.json&#x27;;
     fetch(url)
@@ -438,7 +438,7 @@ function addLater(feature, timeout) {
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://api.mapbox.com/mapbox.js/plugins/arc.js/v0.1.0/arc.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {

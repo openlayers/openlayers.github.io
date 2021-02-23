@@ -183,7 +183,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Draw Tissot&#x27;s indicatrices on maps.</p>
-          <div id="docs"><p>Example of <a href="http://en.wikipedia.org/wiki/Tissot&#39;s_indicatrix">Tissot indicatrix</a> maps. The map on the top is an <code>EPSG:4326</code> map. The one on the bottom is <code>EPSG:3857</code>.</p>
+          <div id="docs"><p>Example of <a href="https://en.wikipedia.org/wiki/Tissot&#39;s_indicatrix">Tissot indicatrix</a> maps. The map on the top is an <code>EPSG:4326</code> map. The one on the bottom is <code>EPSG:3857</code>.</p>
 </div>
         </div>
       </div>
@@ -268,6 +268,8 @@ for (x &#x3D; -180; x &lt; 180; x +&#x3D; 30) {
     &lt;title&gt;Tissot Indicatrix&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

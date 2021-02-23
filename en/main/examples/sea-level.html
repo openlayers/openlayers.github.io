@@ -208,7 +208,7 @@ Go to
           <p id="shortdesc">Render sea level at different elevations</p>
           <div id="docs"><p>
   This example uses a <code>ol/source/Raster</code> with
-  <a href="https://www.mapbox.com/blog/terrain-rgb/">Mapbox Terrain-RGB tiles</a>
+  <a href="https://blog.mapbox.com/styling-mapbox-terrain-rgb-c75d1cd71471">Mapbox Terrain-RGB tiles</a>
   to "flood" areas below the elevation shown on the sea level slider.
 </p> <p>
   <code>ol/source/Raster</code> can take either a tile source or layer.
@@ -323,6 +323,8 @@ function relocate(event) {
     &lt;title&gt;Sea Level&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

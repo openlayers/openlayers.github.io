@@ -213,7 +213,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of a localized OpenStreetMap map with a custom tile server and a custom attribution.</p>
-          <div id="docs"><p>The base layer is <a href="https://www.opencyclemap.org/">OpenCycleMap</a> with an overlay from <a href="http://www.openseamap.org/">OpenSeaMap</a>.
+          <div id="docs"><p>The base layer is <a href="https://www.opencyclemap.org/">OpenCycleMap</a> with an overlay from <a href="https://www.openseamap.org/">OpenSeaMap</a>.
 </div>
         </div>
       </div>
@@ -233,14 +233,14 @@ var openCycleMapLayer &#x3D; new TileLayer({
       ATTRIBUTION ],
     url:
       &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27; +
-      &#x27;?apikey&#x3D;Your API key from http://www.thunderforest.com/docs/apikeys/ here&#x27;,
+      &#x27;?apikey&#x3D;Your API key from https://www.thunderforest.com/docs/apikeys/ here&#x27;,
   }),
 });
 
 var openSeaMapLayer &#x3D; new TileLayer({
   source: new OSM({
     attributions: [
-      &#x27;All maps © &lt;a href&#x3D;&quot;http://www.openseamap.org/&quot;&gt;OpenSeaMap&lt;/a&gt;&#x27;,
+      &#x27;All maps © &lt;a href&#x3D;&quot;https://www.openseamap.org/&quot;&gt;OpenSeaMap&lt;/a&gt;&#x27;,
       ATTRIBUTION ],
     opaque: false,
     url: &#x27;https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png&#x27;,
@@ -268,6 +268,8 @@ var map &#x3D; new Map({
     &lt;title&gt;Localized OpenStreetMap&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

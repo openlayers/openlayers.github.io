@@ -204,7 +204,7 @@ var map1 &#x3D; new Map({
     new TileLayer({
       preload: Infinity,
       source: new BingMaps({
-        key: &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;,
+        key: &#x27;Your Bing Maps Key from https://www.bingmapsportal.com/ here&#x27;,
         imagerySet: &#x27;Aerial&#x27;,
       }),
     }) ],
@@ -217,7 +217,7 @@ var map2 &#x3D; new Map({
     new TileLayer({
       preload: 0, // default value
       source: new BingMaps({
-        key: &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;,
+        key: &#x27;Your Bing Maps Key from https://www.bingmapsportal.com/ here&#x27;,
         imagerySet: &#x27;AerialWithLabelsOnDemand&#x27;,
       }),
     }) ],
@@ -236,6 +236,8 @@ var map2 &#x3D; new Map({
     &lt;title&gt;Preload Tiles&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

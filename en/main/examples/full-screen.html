@@ -224,7 +224,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of a full screen control.</p>
-          <div id="docs"><p>Click the control in the top right corner to go full screen.  Click it again to exit full screen.</p> <p>If there is no button on the map, your browser does not support the <a href="http://caniuse.com/#feat=fullscreen">Full Screen API</a>.</p>
+          <div id="docs"><p>Click the control in the top right corner to go full screen.  Click it again to exit full screen.</p> <p>If there is no button on the map, your browser does not support the <a href="https://caniuse.com/fullscreen">Full Screen API</a>.</p>
 </div>
         </div>
       </div>
@@ -274,6 +274,8 @@ var map &#x3D; new Map({
     &lt;title&gt;Full Screen Control&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

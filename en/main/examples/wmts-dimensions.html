@@ -205,7 +205,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of smooth tile transitions when changing the dimension of a WMTS layer.</p>
-          <div id="docs"><p>Demonstrates smooth reloading of layers when changing a dimension continuously. The demonstration layer is a global sea-level computation (flooding computation from <a href="http://scalgo.com">SCALGO</a>, underlying data from <a href="https://cgiarcsi.community/data/srtm-90m-digital-elevation-database-v4-1">CGIAR-CSI SRTM</a>) where cells that are flooded if the sea-level rises to more than <em>x</em> m are colored blue. The user selects the sea-level dimension using a slider.</p>
+          <div id="docs"><p>Demonstrates smooth reloading of layers when changing a dimension continuously. The demonstration layer is a global sea-level computation (flooding computation from <a href="https://scalgo.com/">SCALGO</a>, underlying data from <a href="https://cgiarcsi.community/data/srtm-90m-digital-elevation-database-v4-1">CGIAR-CSI SRTM</a>) where cells that are flooded if the sea-level rises to more than <em>x</em> m are colored blue. The user selects the sea-level dimension using a slider.</p>
 </div>
         </div>
       </div>
@@ -296,6 +296,8 @@ document.getElementById(&#x27;slider&#x27;).addEventListener(&#x27;input&#x27;, 
     &lt;title&gt;WMTS Tile Transitions&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

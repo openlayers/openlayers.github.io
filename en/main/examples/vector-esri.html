@@ -411,7 +411,7 @@ var styleCache &#x3D; {
 };
 
 var vectorSource &#x3D; new VectorSource({
-  loader: function (extent, resolution, projection) {
+  loader: function (extent, resolution, projection, success, failure) {
     var url &#x3D;
       serviceUrl +
       layer +
@@ -438,6 +438,7 @@ var vectorSource &#x3D; new VectorSource({
           alert(
             response.error.message + &#x27;\n&#x27; + response.error.details.join(&#x27;\n&#x27;)
           );
+          failure();
         } else {
           // dataProjection will be read from document
           var features &#x3D; esrijsonFormat.readFeatures(response, {
@@ -446,8 +447,10 @@ var vectorSource &#x3D; new VectorSource({
           if (features.length &gt; 0) {
             vectorSource.addFeatures(features);
           }
+          success(features);
         }
       },
+      error: failure,
     });
   },
   strategy: tileStrategy(
@@ -528,7 +531,7 @@ map.on(&#x27;click&#x27;, function (evt) {
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-3.5.1.min.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {

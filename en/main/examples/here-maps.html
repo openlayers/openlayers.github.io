@@ -200,7 +200,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of a map with map tiles from HERE.</p>
-          <div id="docs"><p><a href="https://developer.here.com/rest-apis/documentation/enterprise-map-tile">HERE Map Tile API</a> used with <code>ol/source/XYZ</code>.</p> <p>Be sure to respect the <a href="https://legal.here.com/en/terms/serviceterms/us/">HERE Service Terms</a> when using their tile API.</p>
+          <div id="docs"><p><a href="https://developer.here.com/rest-apis/documentation/enterprise-map-tile" target="_blank">HERE Map Tile API</a> used with <code>ol/source/XYZ</code>.</p> <p>Be sure to respect the <a href="https://legal.here.com/en/terms/serviceterms/us/" target="_blank">HERE Service Terms</a> when using their tile API.</p>
 </div>
         </div>
       </div>
@@ -213,55 +213,48 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 import XYZ from &#x27;ol/source/XYZ&#x27;;
 
-var appId &#x3D; &#x27;Your HERE Maps appId from https://developer.here.com/&#x27;;
-var appCode &#x3D; &#x27;Your HERE Maps appCode from https://developer.here.com/&#x27;;
+var apiKey &#x3D; &#x27;Your HERE Maps API key from https://developer.here.com/&#x27;;
 var hereLayers &#x3D; [
   {
     base: &#x27;base&#x27;,
     type: &#x27;maptile&#x27;,
     scheme: &#x27;normal.day&#x27;,
-    app_id: appId,
-    app_code: appCode,
+    apiKey: apiKey,
   },
   {
     base: &#x27;base&#x27;,
     type: &#x27;maptile&#x27;,
     scheme: &#x27;normal.day.transit&#x27;,
-    app_id: appId,
-    app_code: appCode,
+    apiKey: apiKey,
   },
   {
     base: &#x27;base&#x27;,
     type: &#x27;maptile&#x27;,
     scheme: &#x27;pedestrian.day&#x27;,
-    app_id: appId,
-    app_code: appCode,
+    apiKey: apiKey,
   },
   {
     base: &#x27;aerial&#x27;,
     type: &#x27;maptile&#x27;,
     scheme: &#x27;terrain.day&#x27;,
-    app_id: appId,
-    app_code: appCode,
+    apiKey: apiKey,
   },
   {
     base: &#x27;aerial&#x27;,
     type: &#x27;maptile&#x27;,
     scheme: &#x27;satellite.day&#x27;,
-    app_id: appId,
-    app_code: appCode,
+    apiKey: apiKey,
   },
   {
     base: &#x27;aerial&#x27;,
     type: &#x27;maptile&#x27;,
     scheme: &#x27;hybrid.day&#x27;,
-    app_id: appId,
-    app_code: appCode,
+    apiKey: apiKey,
   } ];
 var urlTpl &#x3D;
-  &#x27;https://{1-4}.{base}.maps.cit.api.here.com&#x27; +
+  &#x27;https://{1-4}.{base}.maps.ls.hereapi.com&#x27; +
   &#x27;/{type}/2.1/maptile/newest/{scheme}/{z}/{x}/{y}/256/png&#x27; +
-  &#x27;?app_id&#x3D;{app_id}&amp;app_code&#x3D;{app_code}&#x27;;
+  &#x27;?apiKey&#x3D;{apiKey}&#x27;;
 var layers &#x3D; [];
 var i, ii;
 for (i &#x3D; 0, ii &#x3D; hereLayers.length; i &lt; ii; ++i) {
@@ -276,7 +269,7 @@ for (i &#x3D; 0, ii &#x3D; hereLayers.length; i &lt; ii; ++i) {
           &#x27;Map Tiles &amp;copy; &#x27; +
           new Date().getFullYear() +
           &#x27; &#x27; +
-          &#x27;&lt;a href&#x3D;&quot;http://developer.here.com&quot;&gt;HERE&lt;/a&gt;&#x27;,
+          &#x27;&lt;a href&#x3D;&quot;https://developer.here.com/&quot; target&#x3D;&quot;_blank&quot;&gt;HERE&lt;/a&gt;&#x27;,
       }),
     })
   );
@@ -296,8 +289,7 @@ function createUrl(tpl, layerDesc) {
     .replace(&#x27;{base}&#x27;, layerDesc.base)
     .replace(&#x27;{type}&#x27;, layerDesc.type)
     .replace(&#x27;{scheme}&#x27;, layerDesc.scheme)
-    .replace(&#x27;{app_id}&#x27;, layerDesc.app_id)
-    .replace(&#x27;{app_code}&#x27;, layerDesc.app_code);
+    .replace(&#x27;{apiKey}&#x27;, layerDesc.apiKey);
 }
 
 var select &#x3D; document.getElementById(&#x27;layer-select&#x27;);
@@ -321,6 +313,8 @@ onChange();
     &lt;title&gt;HERE Map Tile API&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

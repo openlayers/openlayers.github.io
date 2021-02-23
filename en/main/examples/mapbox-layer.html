@@ -69,8 +69,8 @@
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/elm-pep"></script>
     <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"></script>
-    <script src="https://unpkg.com/mapbox-gl@1.11.1/dist/mapbox-gl.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/mapbox-gl@1.11.1/dist/mapbox-gl.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/1.13.0/mapbox-gl.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/1.13.0/mapbox-gl.css">
     <link rel="stylesheet" href="mapbox-layer.css">
     <title>Mapbox-gl Layer</title>
   </head>
@@ -319,7 +319,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of a Mapbox-gl-js layer integration.</p>
-          <div id="docs"><p>Show how to add a mapbox-gl-js layer in an openlayers map. <strong>Note</strong>: Make sure to get your own API key at <a href="https://www.maptiler.com/cloud/">https://www.maptiler.com/cloud/</a> when using this example. No map will be visible when the API key has expired.</p>
+          <div id="docs"><p>Show how to add a mapbox-gl-js layer in an OpenLayers map. <strong>Note</strong>: Make sure to get your own API key at <a href="https://www.maptiler.com/cloud/">https://www.maptiler.com/cloud/</a> when using this example. No map will be visible when the API key has expired. mapbox-gl-js version 1.13.0 is used in this example as later versions require a Mapbox access token and are not compatible with older browsers.</p>
 </div>
         </div>
       </div>
@@ -430,9 +430,9 @@ var map &#x3D; new Map({
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://unpkg.com/mapbox-gl@1.11.1/dist/mapbox-gl.js&quot;&gt;&lt;/script&gt;
-    &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https://unpkg.com/mapbox-gl@1.11.1/dist/mapbox-gl.css&quot;&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/1.13.0/mapbox-gl.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/1.13.0/mapbox-gl.css&quot;&gt;
     &lt;style&gt;
       .map {
         width: 100%;

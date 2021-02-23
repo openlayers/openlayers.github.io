@@ -252,10 +252,10 @@ var tileGrid &#x3D; new WMTSTileGrid({
 });
 
 // For more information about the IGN API key see
-// https://geoservices.ign.fr/blog/2017/06/28/geoportail_sans_compte.html
+// https://geoservices.ign.fr/blog/2018/09/06/acces_geoportail_sans_compte.html
 
 var ign_source &#x3D; new WMTS({
-  url: &#x27;https://wxs.ign.fr/pratique/geoportail/wmts&#x27;,
+  url: &#x27;https://wxs.ign.fr/choisirgeoportail/geoportail/wmts&#x27;,
   layer: &#x27;GEOGRAPHICALGRIDSYSTEMS.MAPS&#x27;,
   matrixSet: &#x27;PM&#x27;,
   format: &#x27;image/jpeg&#x27;,
@@ -263,7 +263,7 @@ var ign_source &#x3D; new WMTS({
   tileGrid: tileGrid,
   style: &#x27;normal&#x27;,
   attributions:
-    &#x27;&lt;a href&#x3D;&quot;http://www.ign.fr&quot; target&#x3D;&quot;_blank&quot;&gt;&#x27; +
+    &#x27;&lt;a href&#x3D;&quot;https://www.ign.fr/&quot; target&#x3D;&quot;_blank&quot;&gt;&#x27; +
     &#x27;&lt;img src&#x3D;&quot;https://wxs.ign.fr/static/logos/IGN/IGN.gif&quot; title&#x3D;&quot;Institut national de l\&#x27;&#x27; +
     &#x27;information géographique et forestière&quot; alt&#x3D;&quot;IGN&quot;&gt;&lt;/a&gt;&#x27;,
 });
@@ -285,6 +285,8 @@ map.addLayer(ign);
     &lt;title&gt;IGN WMTS&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

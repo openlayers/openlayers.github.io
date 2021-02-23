@@ -333,7 +333,7 @@ var map &#x3D; new Map({
 
 /*
  * Swiss projection transform functions downloaded from
- * http://www.swisstopo.admin.ch/internet/swisstopo/en/home/products/software/products/skripts.html
+ * https://www.swisstopo.admin.ch/en/knowledge-facts/surveying-geodesy/reference-systems/map-projections.html
  */
 
 // Convert WGS lat/long (° dec) to CH y
@@ -346,7 +346,7 @@ function WGStoCHy(lat, lng) {
   lat &#x3D; DEGtoSEC(lat);
   lng &#x3D; DEGtoSEC(lng);
 
-  // Axiliary values (% Bern)
+  // Axillary values (% Bern)
   var lat_aux &#x3D; (lat - 169028.66) / 10000;
   var lng_aux &#x3D; (lng - 26782.5) / 10000;
 
@@ -371,7 +371,7 @@ function WGStoCHx(lat, lng) {
   lat &#x3D; DEGtoSEC(lat);
   lng &#x3D; DEGtoSEC(lng);
 
-  // Axiliary values (% Bern)
+  // Axillary values (% Bern)
   var lat_aux &#x3D; (lat - 169028.66) / 10000;
   var lng_aux &#x3D; (lng - 26782.5) / 10000;
 
@@ -389,8 +389,8 @@ function WGStoCHx(lat, lng) {
 
 // Convert CH y/x to WGS lat
 function CHtoWGSlat(y, x) {
-  // Converts militar to civil and  to unit &#x3D; 1000km
-  // Axiliary values (% Bern)
+  // Converts military to civil and to unit &#x3D; 1000km
+  // Axillary values (% Bern)
   var y_aux &#x3D; (y - 600000) / 1000000;
   var x_aux &#x3D; (x - 200000) / 1000000;
 
@@ -411,8 +411,8 @@ function CHtoWGSlat(y, x) {
 
 // Convert CH y/x to WGS long
 function CHtoWGSlng(y, x) {
-  // Converts militar to civil and  to unit &#x3D; 1000km
-  // Axiliary values (% Bern)
+  // Converts military to civil and to unit &#x3D; 1000km
+  // Axillary values (% Bern)
   var y_aux &#x3D; (y - 600000) / 1000000;
   var x_aux &#x3D; (x - 200000) / 1000000;
 
@@ -470,6 +470,8 @@ function DEGtoSEC(angle) {
     &lt;title&gt;Custom Tiled WMS&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

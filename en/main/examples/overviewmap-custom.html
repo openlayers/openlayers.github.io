@@ -210,7 +210,7 @@ var overviewMapControl &#x3D; new OverviewMap({
       source: new OSM({
         &#x27;url&#x27;:
           &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27; +
-          &#x27;?apikey&#x3D;Your API key from http://www.thunderforest.com/docs/apikeys/ here&#x27;,
+          &#x27;?apikey&#x3D;Your API key from https://www.thunderforest.com/docs/apikeys/ here&#x27;,
       }),
     }) ],
   collapseLabel: &#x27;\u00BB&#x27;,
@@ -247,6 +247,8 @@ var map &#x3D; new Map({
     &lt;title&gt;Custom Overview Map&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

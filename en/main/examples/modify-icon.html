@@ -278,7 +278,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example using a Modify interaction to edit an icon.</p>
-          <div id="docs"><p>The icon on this map can be dragged to modify its location. <p>The Modify interaction can be configured with a <code>layer</code> option. With this option, hit detection will be used to determine the modification candidate.</p></p>
+          <div id="docs"><p>The icon on this map can be dragged to modify its location. <p>The Modify interaction can be configured with a <code>hitDetection</code> option. With this option, the modification candidate will not be determined by the <code>pixelTolerance</code>, but match the visual appearance of the geometry.</p></p>
 </div>
         </div>
       </div>
@@ -364,6 +364,8 @@ map.addInteraction(modify);
     &lt;title&gt;Icon modification&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

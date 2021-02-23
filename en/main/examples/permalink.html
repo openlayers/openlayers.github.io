@@ -213,7 +213,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example on how to create permalinks.</p>
-          <div id="docs"><p>In this example the <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history" target="_blank">HTML 5 History API</a> is used to update the browser URL with the current zoom-level, center and rotation when the map is moved. Note that the History API is not supported in <a href="http://caniuse.com/#feat=history" target="_blank">all browsers</a>, one might consider to use a <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills#html5-history-api-pushstate-replacestate-popstate" target="_blank">a polyfill</a>.</p>
+          <div id="docs"><p>In this example the <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Manipulating_the_browser_history" target="_blank">HTML 5 History API</a> is used to update the browser URL with the current zoom-level, center and rotation when the map is moved. Note that the History API is not supported in <a href="https://caniuse.com/history" target="_blank">all browsers</a>, one might consider to use a <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills#html5-history-api-pushstate-replacestate-popstate" target="_blank">a polyfill</a>.</p>
 </div>
         </div>
       </div>
@@ -307,6 +307,8 @@ window.addEventListener(&#x27;popstate&#x27;, function (event) {
     &lt;title&gt;Permalink&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

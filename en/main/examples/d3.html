@@ -231,10 +231,13 @@ var CanvasLayer &#x3D; /*@__PURE__*/(function (Layer) {
     var scale &#x3D; r / frameState.viewState.resolution;
 
     var center &#x3D; toLonLat(getCenter(frameState.extent), projection);
+    var angle &#x3D; (-frameState.viewState.rotation * 180) / Math.PI;
+
     d3Projection
       .scale(scale)
       .center(center)
-      .translate([width / 2, height / 2]);
+      .translate([width / 2, height / 2])
+      .angle(angle);
 
     d3Path &#x3D; d3Path.projection(d3Projection);
     d3Path(this.features);
@@ -287,7 +290,7 @@ d3.json(&#x27;data/topojson/us.json&#x27;).then(function (us) {
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://unpkg.com/d3@5.9.2/dist/d3.js&quot;&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://unpkg.com/topojson@3.0.2/dist/topojson.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;

@@ -214,7 +214,7 @@ for (i &#x3D; 0, ii &#x3D; styles.length; i &lt; ii; ++i) {
       visible: false,
       preload: Infinity,
       source: new BingMaps({
-        key: &#x27;Your Bing Maps Key from http://www.bingmapsportal.com/ here&#x27;,
+        key: &#x27;Your Bing Maps Key from https://www.bingmapsportal.com/ here&#x27;,
         imagerySet: styles[i],
         // use maxZoom 19 to see stretched tiles instead of the BingMaps
         // &quot;no photos at this zoom level&quot; tiles
@@ -253,6 +253,8 @@ onChange();
     &lt;title&gt;Bing Maps&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;

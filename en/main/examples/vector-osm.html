@@ -335,7 +335,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of using the OSM XML source.</p>
-          <div id="docs"><p>OSM XML vector data is loaded dynamically from a the <a href="http://overpass-api.de">Overpass API</a> using a bbox strategy. Note that panning and zooming will eventually lead to &quot;Too many requests&quot; errors from the Overpass API.</p>
+          <div id="docs"><p>OSM XML vector data is loaded dynamically from a the <a href="https://overpass-api.de/">Overpass API</a> using a bbox strategy. Note that panning and zooming will eventually lead to &quot;Too many requests&quot; errors from the Overpass API.</p>
 </div>
         </div>
       </div>
@@ -419,7 +419,7 @@ var styles &#x3D; {
 
 var vectorSource &#x3D; new VectorSource({
   format: new OSMXML(),
-  loader: function (extent, resolution, projection) {
+  loader: function (extent, resolution, projection, success, failure) {
     var epsg4326Extent &#x3D; transformExtent(extent, projection, &#x27;EPSG:4326&#x27;);
     var client &#x3D; new XMLHttpRequest();
     client.open(&#x27;POST&#x27;, &#x27;https://overpass-api.de/api/interpreter&#x27;);
@@ -428,7 +428,9 @@ var vectorSource &#x3D; new VectorSource({
         featureProjection: map.getView().getProjection(),
       });
       vectorSource.addFeatures(features);
+      success(features);
     });
+    client.addEventListener(&#x27;error&#x27;, failure);
     var query &#x3D;
       &#x27;(node(&#x27; +
       epsg4326Extent[1] +
@@ -495,6 +497,8 @@ map &#x3D; new Map({
     &lt;title&gt;OSM XML&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
