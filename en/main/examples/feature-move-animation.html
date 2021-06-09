@@ -285,13 +285,13 @@ import {
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {getVectorContext} from &#x27;ol/render&#x27;;
 
-var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
-var attributions &#x3D;
+const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
+const attributions &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
-var center &#x3D; [-5639523.95, -3501274.52];
-var map &#x3D; new Map({
+const center &#x3D; [-5639523.95, -3501274.52];
+const map &#x3D; new Map({
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
     center: center,
@@ -306,40 +306,41 @@ var map &#x3D; new Map({
         url: &#x27;https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
         tileSize: 512,
       }),
-    }) ],
+    }),
+  ],
 });
 
 // The polyline string is read from a JSON similiar to those returned
 // by directions APIs such as Openrouteservice and Mapbox.
 fetch(&#x27;data/polyline/route.json&#x27;).then(function (response) {
   response.json().then(function (result) {
-    var polyline &#x3D; result.routes[0].geometry;
+    const polyline &#x3D; result.routes[0].geometry;
 
-    var route &#x3D; new Polyline({
+    const route &#x3D; new Polyline({
       factor: 1e6,
     }).readGeometry(polyline, {
       dataProjection: &#x27;EPSG:4326&#x27;,
       featureProjection: &#x27;EPSG:3857&#x27;,
     });
 
-    var routeFeature &#x3D; new Feature({
+    const routeFeature &#x3D; new Feature({
       type: &#x27;route&#x27;,
       geometry: route,
     });
-    var geoMarker &#x3D; new Feature({
+    const geoMarker &#x3D; new Feature({
       type: &#x27;geoMarker&#x27;,
       geometry: new Point(route.getCoordinateAt(0)),
     });
-    var startMarker &#x3D; new Feature({
+    const startMarker &#x3D; new Feature({
       type: &#x27;icon&#x27;,
       geometry: new Point(route.getCoordinateAt(0)),
     });
-    var endMarker &#x3D; new Feature({
+    const endMarker &#x3D; new Feature({
       type: &#x27;icon&#x27;,
       geometry: new Point(route.getCoordinateAt(1)),
     });
 
-    var styles &#x3D; {
+    const styles &#x3D; {
       &#x27;route&#x27;: new Style({
         stroke: new Stroke({
           width: 6,
@@ -364,9 +365,9 @@ fetch(&#x27;data/polyline/route.json&#x27;).then(function (response) {
       }),
     };
 
-    var animating &#x3D; false;
+    let animating &#x3D; false;
 
-    var vectorLayer &#x3D; new VectorLayer({
+    const vectorLayer &#x3D; new VectorLayer({
       source: new VectorSource({
         features: [routeFeature, geoMarker, startMarker, endMarker],
       }),
@@ -381,25 +382,25 @@ fetch(&#x27;data/polyline/route.json&#x27;).then(function (response) {
 
     map.addLayer(vectorLayer);
 
-    var speed, startTime;
-    var speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
-    var startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
+    let speed, startTime;
+    const speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
+    const startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
 
     function moveFeature(event) {
-      var vectorContext &#x3D; getVectorContext(event);
-      var frameState &#x3D; event.frameState;
+      const vectorContext &#x3D; getVectorContext(event);
+      const frameState &#x3D; event.frameState;
 
       if (animating) {
-        var elapsedTime &#x3D; frameState.time - startTime;
-        var distance &#x3D; (speed * elapsedTime) / 1e6;
+        const elapsedTime &#x3D; frameState.time - startTime;
+        const distance &#x3D; (speed * elapsedTime) / 1e6;
 
         if (distance &gt;&#x3D; 1) {
           stopAnimation(true);
           return;
         }
 
-        var currentPoint &#x3D; new Point(route.getCoordinateAt(distance));
-        var feature &#x3D; new Feature(currentPoint);
+        const currentPoint &#x3D; new Point(route.getCoordinateAt(distance));
+        const feature &#x3D; new Feature(currentPoint);
         vectorContext.drawFeature(feature, styles.geoMarker);
       }
       // tell OpenLayers to continue the postrender animation
@@ -428,7 +429,7 @@ fetch(&#x27;data/polyline/route.json&#x27;).then(function (response) {
       startButton.textContent &#x3D; &#x27;Start Animation&#x27;;
 
       // if animation cancelled set the marker at the beginning
-      var coord &#x3D; route.getCoordinateAt(ended ? 1 : 0);
+      const coord &#x3D; route.getCoordinateAt(ended ? 1 : 0);
       geoMarker.getGeometry().setCoordinates(coord);
       // remove listener
       vectorLayer.un(&#x27;postrender&#x27;, moveFeature);

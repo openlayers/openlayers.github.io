@@ -1400,6 +1400,23 @@
                     <li data-name="writefilter"><a href="module-ol_format_WFS.html#.writeFilter">writeFilter</a>
                 </ul>
             </div>
+            <li class="item item-class" data-longname="module:ol/format/WKB~WKB" data-name="ol/format/wkb">
+                <span class="title toggle">
+                    <span class="fa fa-chevron-right mr-2 mt-1"></span>
+                    <span><a href="module-ol_format_WKB-WKB.html">ol​/format​/WKB</a></span>
+                </span>
+            <div class="member-list" data-type="methods">
+                <span class="subtitle">Methods</span>
+                <ul>
+                    <li data-name="readfeature"><a href="module-ol_format_WKB-WKB.html#readFeature">readFeature</a>
+                    <li data-name="readfeatures"><a href="module-ol_format_WKB-WKB.html#readFeatures">readFeatures</a>
+                    <li data-name="readgeometry"><a href="module-ol_format_WKB-WKB.html#readGeometry">readGeometry</a>
+                    <li data-name="readprojection"><a href="module-ol_format_WKB-WKB.html#readProjection">readProjection</a>
+                    <li data-name="writefeature"><a href="module-ol_format_WKB-WKB.html#writeFeature">writeFeature</a>
+                    <li data-name="writefeatures"><a href="module-ol_format_WKB-WKB.html#writeFeatures">writeFeatures</a>
+                    <li data-name="writegeometry"><a href="module-ol_format_WKB-WKB.html#writeGeometry">writeGeometry</a>
+                </ul>
+            </div>
             <li class="item item-class" data-longname="module:ol/format/WKT~WKT" data-name="ol/format/wkt">
                 <span class="title toggle">
                     <span class="fa fa-chevron-right mr-2 mt-1"></span>
@@ -4969,6 +4986,7 @@
                     <li data-name="getfeaturesinextent"><a href="module-ol_source_Cluster-Cluster.html#getFeaturesInExtent">getFeaturesInExtent</a>
                     <li data-name="getformat"><a href="module-ol_source_Cluster-Cluster.html#getFormat">getFormat</a>
                     <li data-name="getkeys"><a href="module-ol_source_Cluster-Cluster.html#getKeys">getKeys</a>
+                    <li data-name="getmindistance"><a href="module-ol_source_Cluster-Cluster.html#getMinDistance">getMinDistance</a>
                     <li data-name="getprojection"><a href="module-ol_source_Cluster-Cluster.html#getProjection">getProjection</a>
                     <li data-name="getproperties"><a href="module-ol_source_Cluster-Cluster.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_source_Cluster-Cluster.html#getRevision">getRevision</a>
@@ -4984,6 +5002,7 @@
                     <li data-name="setattributions"><a href="module-ol_source_Cluster-Cluster.html#setAttributions">setAttributions</a>
                     <li data-name="setdistance"><a href="module-ol_source_Cluster-Cluster.html#setDistance">setDistance</a>
                     <li data-name="setloader"><a href="module-ol_source_Cluster-Cluster.html#setLoader">setLoader</a>
+                    <li data-name="setmindistance"><a href="module-ol_source_Cluster-Cluster.html#setMinDistance">setMinDistance</a>
                     <li data-name="setproperties"><a href="module-ol_source_Cluster-Cluster.html#setProperties">setProperties</a>
                     <li data-name="setsource"><a href="module-ol_source_Cluster-Cluster.html#setSource">setSource</a>
                     <li data-name="seturl"><a href="module-ol_source_Cluster-Cluster.html#setUrl">setUrl</a>
@@ -7132,7 +7151,7 @@ from the wrapped source.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js">source/Cluster.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L47">line 47</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L58">line 58</a>
         </div>
         
     </div>
@@ -7244,7 +7263,39 @@ from the wrapped source.</p></div>
 
             <td  class="description last">
                 
-                <p>Minimum distance in pixels between clusters.</p></td>
+                <p>Distance in pixels within which features will
+be clustered together.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>minDistance</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    (defaults to 0)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Minimum distance in pixels between clusters.
+Will be capped at the configured distance.
+By default no minimum distance is guaranteed. This config can be used to avoid
+overlapping icons. As a tradoff, the cluster feature's position will no longer be
+the center of all its features.</p></td>
         </tr>
 	
 	
@@ -7272,7 +7323,7 @@ from the wrapped source.</p></div>
                 <p>Function that takes an <a href="module-ol_Feature.html"><code>module:ol/Feature</code></a> as argument and returns an
 <a href="module-ol_geom_Point.html"><code>module:ol/geom/Point</code></a> as cluster calculation point for the feature. When a
 feature should not be considered for clustering, the function should return
-<code>null</code>. The default, which works when the underyling source contains point
+<code>null</code>. The default, which works when the underlying source contains point
 features only, is</p>
 <pre class="prettyprint source lang-js"><code>function(feature) {
   return feature.getGeometry();
@@ -7899,7 +7950,7 @@ be removed from it right away.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js">source/Cluster.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L98">line 98</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L128">line 128</a>
         </div>
         
     </div>
@@ -8785,7 +8836,7 @@ Value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L721">line 721</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L722">line 722</a>
         </div>
         
     </div>
@@ -8949,7 +9000,7 @@ Closest feature.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js">source/Cluster.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L108">line 108</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L138">line 138</a>
         </div>
         
     </div>
@@ -9041,7 +9092,7 @@ Distance.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L779">line 779</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L780">line 780</a>
         </div>
         
     </div>
@@ -9181,7 +9232,7 @@ Extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L792">line 792</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L793">line 793</a>
         </div>
         
     </div>
@@ -9323,7 +9374,7 @@ The feature (or <code>null</code> if not found).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L660">line 660</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L661">line 661</a>
         </div>
         
     </div>
@@ -9336,7 +9387,8 @@ The feature (or <code>null</code> if not found).
 
     
     <div class="description">
-        <p>Get all features on the source in random order.</p>
+        <p>Get a snapshot of the features currently on the source in random order. The returned array
+is a copy, the features are references to the features in the source.</p>
     </div>
     
 
@@ -9415,7 +9467,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L679">line 679</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L680">line 680</a>
         </div>
         
     </div>
@@ -9646,7 +9698,7 @@ The collection of features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L699">line 699</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L700">line 700</a>
         </div>
         
     </div>
@@ -9787,7 +9839,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L814">line 814</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L815">line 815</a>
         </div>
         
     </div>
@@ -9945,6 +9997,96 @@ The feature format.
 
 <h5>Returns:</h5>
 List of property names.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="getMinDistance">
+        </div>
+        <h4 class="name">
+            getMinDistance<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js">source/Cluster.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L188">line 188</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>The configured minimum distance between clusters.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The minimum distance in pixels.
 <br />
 
     
@@ -10246,7 +10388,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js">source/Cluster.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L117">line 117</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L147">line 147</a>
         </div>
         
     </div>
@@ -10430,7 +10572,7 @@ State.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L831">line 831</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L832">line 832</a>
         </div>
         
     </div>
@@ -10522,7 +10664,7 @@ The url.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L886">line 886</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L887">line 887</a>
         </div>
         
     </div>
@@ -10993,7 +11135,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L988">line 988</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L989">line 989</a>
         </div>
         
     </div>
@@ -11123,7 +11265,7 @@ instead.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L967">line 967</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L968">line 968</a>
         </div>
         
     </div>
@@ -11560,7 +11702,7 @@ instead.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js">source/Cluster.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L141">line 141</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L169">line 169</a>
         </div>
         
     </div>
@@ -11573,7 +11715,7 @@ instead.</p>
 
     
     <div class="description">
-        <p>Set the distance in pixels between clusters.</p>
+        <p>Set the distance within which features will be clusterd together.</p>
     </div>
     
 
@@ -11688,7 +11830,7 @@ instead.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1045">line 1045</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1046">line 1046</a>
         </div>
         
     </div>
@@ -11751,6 +11893,133 @@ new loader.</p>
             <td  class="description last">
                 
                 <p>The loader to set.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="setMinDistance">
+        </div>
+        <h4 class="name">
+            setMinDistance<span class="signature">(minDistance)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js">source/Cluster.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L179">line 179</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Set the minimum distance between clusters. Will be capped at the
+configured distance.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>minDistance</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The minimum distance in pixels.</p></td>
         </tr>
 	
 	
@@ -11969,7 +12238,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js">source/Cluster.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L151">line 151</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Cluster.js#L197">line 197</a>
         </div>
         
     </div>
@@ -12097,7 +12366,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1054">line 1054</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1055">line 1055</a>
         </div>
         
     </div>

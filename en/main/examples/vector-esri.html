@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -364,14 +365,14 @@ import {createXYZ} from &#x27;ol/tilegrid&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 import {tile as tileStrategy} from &#x27;ol/loadingstrategy&#x27;;
 
-var serviceUrl &#x3D;
+const serviceUrl &#x3D;
   &#x27;https://sampleserver3.arcgisonline.com/ArcGIS/rest/services/&#x27; +
   &#x27;Petroleum/KSFields/FeatureServer/&#x27;;
-var layer &#x3D; &#x27;0&#x27;;
+const layer &#x3D; &#x27;0&#x27;;
 
-var esrijsonFormat &#x3D; new EsriJSON();
+const esrijsonFormat &#x3D; new EsriJSON();
 
-var styleCache &#x3D; {
+const styleCache &#x3D; {
   &#x27;ABANDONED&#x27;: new Style({
     fill: new Fill({
       color: &#x27;rgba(225, 225, 225, 255)&#x27;,
@@ -410,9 +411,9 @@ var styleCache &#x3D; {
   }),
 };
 
-var vectorSource &#x3D; new VectorSource({
+const vectorSource &#x3D; new VectorSource({
   loader: function (extent, resolution, projection, success, failure) {
-    var url &#x3D;
+    const url &#x3D;
       serviceUrl +
       layer +
       &#x27;/query/?f&#x3D;json&amp;&#x27; +
@@ -441,7 +442,7 @@ var vectorSource &#x3D; new VectorSource({
           failure();
         } else {
           // dataProjection will be read from document
-          var features &#x3D; esrijsonFormat.readFeatures(response, {
+          const features &#x3D; esrijsonFormat.readFeatures(response, {
             featureProjection: projection,
           });
           if (features.length &gt; 0) {
@@ -460,15 +461,15 @@ var vectorSource &#x3D; new VectorSource({
   ),
 });
 
-var vector &#x3D; new VectorLayer({
+const vector &#x3D; new VectorLayer({
   source: vectorSource,
   style: function (feature) {
-    var classify &#x3D; feature.get(&#x27;activeprod&#x27;);
+    const classify &#x3D; feature.get(&#x27;activeprod&#x27;);
     return styleCache[classify];
   },
 });
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new XYZ({
     attributions:
       &#x27;Tiles © &lt;a href&#x3D;&quot;https://services.arcgisonline.com/ArcGIS/&#x27; +
@@ -479,7 +480,7 @@ var raster &#x3D; new TileLayer({
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
@@ -488,14 +489,14 @@ var map &#x3D; new Map({
   }),
 });
 
-var displayFeatureInfo &#x3D; function (pixel) {
-  var features &#x3D; [];
+const displayFeatureInfo &#x3D; function (pixel) {
+  const features &#x3D; [];
   map.forEachFeatureAtPixel(pixel, function (feature) {
     features.push(feature);
   });
   if (features.length &gt; 0) {
-    var info &#x3D; [];
-    var i, ii;
+    const info &#x3D; [];
+    let i, ii;
     for (i &#x3D; 0, ii &#x3D; features.length; i &lt; ii; ++i) {
       info.push(features[i].get(&#x27;field_name&#x27;));
     }
@@ -511,7 +512,7 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
-  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
+  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
   displayFeatureInfo(pixel);
 });
 

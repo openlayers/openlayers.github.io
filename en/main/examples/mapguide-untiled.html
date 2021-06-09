@@ -179,14 +179,15 @@ import ImageMapGuide from &#x27;ol/source/ImageMapGuide&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var mdf &#x3D; &#x27;Library://Samples/Sheboygan/Maps/Sheboygan.MapDefinition&#x27;;
-var agentUrl &#x3D; &#x27;http://138.197.230.93:8008/mapguide/mapagent/mapagent.fcgi?&#x27;;
-var bounds &#x3D; [
+const mdf &#x3D; &#x27;Library://Samples/Sheboygan/Maps/Sheboygan.MapDefinition&#x27;;
+const agentUrl &#x3D; &#x27;https://mikenunn.net/mapguide/mapagent/mapagent.fcgi?&#x27;;
+const bounds &#x3D; [
   -87.865114442365922,
   43.665065564837931,
   -87.595394059497067,
-  43.823852564430069 ];
-var map &#x3D; new Map({
+  43.823852564430069,
+];
+const map &#x3D; new Map({
   layers: [
     new ImageLayer({
       extent: bounds,
@@ -204,7 +205,8 @@ var map &#x3D; new Map({
         },
         ratio: 2,
       }),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [-87.7302542509315, 43.744459064634],

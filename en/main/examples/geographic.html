@@ -194,11 +194,11 @@ import {useGeographic} from &#x27;ol/proj&#x27;;
 
 useGeographic();
 
-var place &#x3D; [-110, 45];
+const place &#x3D; [-110, 45];
 
-var point &#x3D; new Point(place);
+const point &#x3D; new Point(place);
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: place,
@@ -218,12 +218,13 @@ var map &#x3D; new Map({
           fill: new Fill({color: &#x27;red&#x27;}),
         }),
       }),
-    }) ],
+    }),
+  ],
 });
 
-var element &#x3D; document.getElementById(&#x27;popup&#x27;);
+const element &#x3D; document.getElementById(&#x27;popup&#x27;);
 
-var popup &#x3D; new Overlay({
+const popup &#x3D; new Overlay({
   element: element,
   positioning: &#x27;bottom-center&#x27;,
   stopEvent: false,
@@ -232,20 +233,26 @@ var popup &#x3D; new Overlay({
 map.addOverlay(popup);
 
 function formatCoordinate(coordinate) {
-  return (&quot;\n    &lt;table&gt;\n      &lt;tbody&gt;\n        &lt;tr&gt;&lt;th&gt;lon&lt;/th&gt;&lt;td&gt;&quot; + (coordinate[0].toFixed(2)) + &quot;&lt;/td&gt;&lt;/tr&gt;\n        &lt;tr&gt;&lt;th&gt;lat&lt;/th&gt;&lt;td&gt;&quot; + (coordinate[1].toFixed(2)) + &quot;&lt;/td&gt;&lt;/tr&gt;\n      &lt;/tbody&gt;\n    &lt;/table&gt;&quot;);
+  return &#x60;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;&lt;th&gt;lon&lt;/th&gt;&lt;td&gt;${coordinate[0].toFixed(2)}&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;th&gt;lat&lt;/th&gt;&lt;td&gt;${coordinate[1].toFixed(2)}&lt;/td&gt;&lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;&#x60;;
 }
 
-var info &#x3D; document.getElementById(&#x27;info&#x27;);
+const info &#x3D; document.getElementById(&#x27;info&#x27;);
 map.on(&#x27;moveend&#x27;, function () {
-  var view &#x3D; map.getView();
-  var center &#x3D; view.getCenter();
+  const view &#x3D; map.getView();
+  const center &#x3D; view.getCenter();
   info.innerHTML &#x3D; formatCoordinate(center);
 });
 
 map.on(&#x27;click&#x27;, function (event) {
-  var feature &#x3D; map.getFeaturesAtPixel(event.pixel)[0];
+  const feature &#x3D; map.getFeaturesAtPixel(event.pixel)[0];
   if (feature) {
-    var coordinate &#x3D; feature.getGeometry().getCoordinates();
+    const coordinate &#x3D; feature.getGeometry().getCoordinates();
     popup.setPosition(coordinate);
     $(element).popover({
       container: element.parentElement,

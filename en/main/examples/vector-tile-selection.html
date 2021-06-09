@@ -214,9 +214,9 @@ import View from &#x27;ol/View&#x27;;
 import {Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 
 // lookup for selection objects
-var selection &#x3D; {};
+let selection &#x3D; {};
 
-var country &#x3D; new Style({
+const country &#x3D; new Style({
   stroke: new Stroke({
     color: &#x27;gray&#x27;,
     width: 1,
@@ -225,7 +225,7 @@ var country &#x3D; new Style({
     color: &#x27;rgba(20,20,20,0.9)&#x27;,
   }),
 });
-var selectedCountry &#x3D; new Style({
+const selectedCountry &#x3D; new Style({
   stroke: new Stroke({
     color: &#x27;rgba(200,20,20,0.8)&#x27;,
     width: 2,
@@ -235,7 +235,7 @@ var selectedCountry &#x3D; new Style({
   }),
 });
 
-var vtLayer &#x3D; new VectorTileLayer({
+const vtLayer &#x3D; new VectorTileLayer({
   declutter: true,
   source: new VectorTileSource({
     maxZoom: 15,
@@ -249,7 +249,7 @@ var vtLayer &#x3D; new VectorTileLayer({
   style: country,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [vtLayer],
   target: &#x27;map&#x27;,
   view: new View({
@@ -260,7 +260,7 @@ var map &#x3D; new Map({
 });
 
 // Selection
-var selectionLayer &#x3D; new VectorTileLayer({
+const selectionLayer &#x3D; new VectorTileLayer({
   map: map,
   renderMode: &#x27;vector&#x27;,
   source: vtLayer.getSource(),
@@ -271,7 +271,7 @@ var selectionLayer &#x3D; new VectorTileLayer({
   },
 });
 
-var selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
+const selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
 
 map.on([&#x27;click&#x27;, &#x27;pointermove&#x27;], function (event) {
   if (
@@ -288,13 +288,13 @@ map.on([&#x27;click&#x27;, &#x27;pointermove&#x27;], function (event) {
       selectionLayer.changed();
       return;
     }
-    var feature &#x3D; features[0];
+    const feature &#x3D; features[0];
     if (!feature) {
       return;
     }
-    var fid &#x3D; feature.getId();
+    const fid &#x3D; feature.getId();
 
-    if (selectElement.value.startsWith(&#x27;singleselect&#x27;)) {
+    if (selectElement.value.indexOf(&#x27;singleselect&#x27;) &#x3D;&#x3D;&#x3D; 0) {
       selection &#x3D; {};
     }
     // add selected feature to lookup

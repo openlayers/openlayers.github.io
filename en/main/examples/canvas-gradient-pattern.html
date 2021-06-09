@@ -241,16 +241,16 @@ import {DEVICE_PIXEL_RATIO} from &#x27;ol/has&#x27;;
 import {Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 
-var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
+const canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+const context &#x3D; canvas.getContext(&#x27;2d&#x27;);
 
 // Gradient and pattern are in canvas pixel space, so we adjust for the
 // renderer&#x27;s pixel ratio
-var pixelRatio &#x3D; DEVICE_PIXEL_RATIO;
+const pixelRatio &#x3D; DEVICE_PIXEL_RATIO;
 
 // Generate a rainbow gradient
-var gradient &#x3D; (function () {
-  var grad &#x3D; context.createLinearGradient(0, 0, 512 * pixelRatio, 0);
+const gradient &#x3D; (function () {
+  const grad &#x3D; context.createLinearGradient(0, 0, 512 * pixelRatio, 0);
   grad.addColorStop(0, &#x27;red&#x27;);
   grad.addColorStop(1 / 6, &#x27;orange&#x27;);
   grad.addColorStop(2 / 6, &#x27;yellow&#x27;);
@@ -262,7 +262,7 @@ var gradient &#x3D; (function () {
 })();
 
 // Generate a canvasPattern with two circles on white background
-var pattern &#x3D; (function () {
+const pattern &#x3D; (function () {
   canvas.width &#x3D; 8 * pixelRatio;
   canvas.height &#x3D; 8 * pixelRatio;
   // white background
@@ -282,8 +282,8 @@ var pattern &#x3D; (function () {
 })();
 
 // Generate style for gradient or pattern fill
-var fill &#x3D; new Fill();
-var style &#x3D; new Style({
+const fill &#x3D; new Fill();
+const style &#x3D; new Style({
   fill: fill,
   stroke: new Stroke({
     color: &#x27;#333&#x27;,
@@ -298,14 +298,14 @@ var style &#x3D; new Style({
  * @param {import(&quot;../src/ol/Feature.js&quot;).default} feature The feature to style.
  * @return {Style} The style to use for the feature.
  */
-var getStackedStyle &#x3D; function (feature) {
-  var id &#x3D; feature.getId();
+const getStackedStyle &#x3D; function (feature) {
+  const id &#x3D; feature.getId();
   fill.setColor(id &gt; &#x27;J&#x27; ? gradient : pattern);
   return style;
 };
 
 // Create a vector layer that makes use of the style function above…
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/countries.geojson&#x27;,
     format: new GeoJSON(),
@@ -314,7 +314,7 @@ var vectorLayer &#x3D; new VectorLayer({
 });
 
 // … finally create a map with that layer.
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [vectorLayer],
   target: &#x27;map&#x27;,
   view: new View({

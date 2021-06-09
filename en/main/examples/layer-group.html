@@ -287,10 +287,10 @@ import View from &#x27;ol/View&#x27;;
 import {Group as LayerGroup, Tile as TileLayer} from &#x27;ol/layer&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 
-var key &#x3D;
+const key &#x3D;
   &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
@@ -312,8 +312,10 @@ var map &#x3D; new Map({
               key,
             crossOrigin: &#x27;anonymous&#x27;,
           }),
-        }) ],
-    }) ],
+        }),
+      ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: fromLonLat([37.4057, 8.81566]),
@@ -322,13 +324,13 @@ var map &#x3D; new Map({
 });
 
 function bindInputs(layerid, layer) {
-  var visibilityInput &#x3D; $(layerid + &#x27; input.visible&#x27;);
+  const visibilityInput &#x3D; $(layerid + &#x27; input.visible&#x27;);
   visibilityInput.on(&#x27;change&#x27;, function () {
     layer.setVisible(this.checked);
   });
   visibilityInput.prop(&#x27;checked&#x27;, layer.getVisible());
 
-  var opacityInput &#x3D; $(layerid + &#x27; input.opacity&#x27;);
+  const opacityInput &#x3D; $(layerid + &#x27; input.opacity&#x27;);
   opacityInput.on(&#x27;input&#x27;, function () {
     layer.setOpacity(parseFloat(this.value));
   });
@@ -336,7 +338,7 @@ function bindInputs(layerid, layer) {
 }
 function setup(id, group) {
   group.getLayers().forEach(function (layer, i) {
-    var layerid &#x3D; id + i;
+    const layerid &#x3D; id + i;
     bindInputs(layerid, layer);
     if (layer instanceof LayerGroup) {
       setup(layerid, layer);

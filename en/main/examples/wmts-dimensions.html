@@ -223,24 +223,24 @@ import {get as getProjection} from &#x27;ol/proj&#x27;;
 import {getTopLeft, getWidth} from &#x27;ol/extent&#x27;;
 
 // create the WMTS tile grid in the google projection
-var projection &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
-var tileSizePixels &#x3D; 256;
-var tileSizeMtrs &#x3D; getWidth(projection.getExtent()) / tileSizePixels;
-var matrixIds &#x3D; [];
-var resolutions &#x3D; [];
-for (var i &#x3D; 0; i &lt;&#x3D; 14; i++) {
+const projection &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
+const tileSizePixels &#x3D; 256;
+const tileSizeMtrs &#x3D; getWidth(projection.getExtent()) / tileSizePixels;
+const matrixIds &#x3D; [];
+const resolutions &#x3D; [];
+for (let i &#x3D; 0; i &lt;&#x3D; 14; i++) {
   matrixIds[i] &#x3D; i;
   resolutions[i] &#x3D; tileSizeMtrs / Math.pow(2, i);
 }
-var tileGrid &#x3D; new WMTSTileGrid({
+const tileGrid &#x3D; new WMTSTileGrid({
   origin: getTopLeft(projection.getExtent()),
   resolutions: resolutions,
   matrixIds: matrixIds,
 });
 
-var scalgoToken &#x3D; &#x27;CC5BF28A7D96B320C7DFBFD1236B5BEB&#x27;;
+const scalgoToken &#x3D; &#x27;CC5BF28A7D96B320C7DFBFD1236B5BEB&#x27;;
 
-var wmtsSource &#x3D; new WMTS({
+const wmtsSource &#x3D; new WMTS({
   url: &#x27;https://ts2.scalgo.com/olpatch/wmts?token&#x3D;&#x27; + scalgoToken,
   layer: &#x27;SRTM_4_1:SRTM_4_1_flooded_sealevels&#x27;,
   format: &#x27;image/png&#x27;,
@@ -249,7 +249,8 @@ var wmtsSource &#x3D; new WMTS({
     &#x27;&lt;a href&#x3D;&quot;https://scalgo.com&quot; target&#x3D;&quot;_blank&quot;&gt;SCALGO&lt;/a&gt;&#x27;,
     &#x27;&lt;a href&#x3D;&quot;https://cgiarcsi.community/data/&#x27; +
       &#x27;srtm-90m-digital-elevation-database-v4-1&quot;&#x27; +
-      &#x27; target&#x3D;&quot;_blank&quot;&gt;CGIAR-CSI SRTM&lt;/a&gt;&#x27; ],
+      &#x27; target&#x3D;&quot;_blank&quot;&gt;CGIAR-CSI SRTM&lt;/a&gt;&#x27;,
+  ],
   tileGrid: tileGrid,
   style: &#x27;default&#x27;,
   dimensions: {
@@ -257,7 +258,7 @@ var wmtsSource &#x3D; new WMTS({
   },
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     projection: projection,
@@ -271,10 +272,11 @@ var map &#x3D; new Map({
     new TileLayer({
       opacity: 0.5,
       source: wmtsSource,
-    }) ],
+    }),
+  ],
 });
 
-var updateSourceDimension &#x3D; function (source, sliderVal) {
+const updateSourceDimension &#x3D; function (source, sliderVal) {
   source.updateDimensions({&#x27;threshold&#x27;: sliderVal});
   document.getElementById(&#x27;theinfo&#x27;).innerHTML &#x3D; sliderVal + &#x27; meters&#x27;;
 };

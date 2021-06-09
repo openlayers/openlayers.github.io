@@ -239,14 +239,14 @@ import {Raster as RasterSource, Stamen} from &#x27;ol/source&#x27;;
  * Color manipulation functions below are adapted from
  * https://github.com/d3/d3-color.
  */
-var Xn &#x3D; 0.95047;
-var Yn &#x3D; 1;
-var Zn &#x3D; 1.08883;
-var t0 &#x3D; 4 / 29;
-var t1 &#x3D; 6 / 29;
-var t2 &#x3D; 3 * t1 * t1;
-var t3 &#x3D; t1 * t1 * t1;
-var twoPi &#x3D; 2 * Math.PI;
+const Xn &#x3D; 0.95047;
+const Yn &#x3D; 1;
+const Zn &#x3D; 1.08883;
+const t0 &#x3D; 4 / 29;
+const t1 &#x3D; 6 / 29;
+const t2 &#x3D; 3 * t1 * t1;
+const t3 &#x3D; t1 * t1 * t1;
+const twoPi &#x3D; 2 * Math.PI;
 
 /**
  * Convert an RGB pixel into an HCL pixel.
@@ -254,26 +254,26 @@ var twoPi &#x3D; 2 * Math.PI;
  * @return {Array&lt;number&gt;} A pixel in HCL space.
  */
 function rgb2hcl(pixel) {
-  var red &#x3D; rgb2xyz(pixel[0]);
-  var green &#x3D; rgb2xyz(pixel[1]);
-  var blue &#x3D; rgb2xyz(pixel[2]);
+  const red &#x3D; rgb2xyz(pixel[0]);
+  const green &#x3D; rgb2xyz(pixel[1]);
+  const blue &#x3D; rgb2xyz(pixel[2]);
 
-  var x &#x3D; xyz2lab(
+  const x &#x3D; xyz2lab(
     (0.4124564 * red + 0.3575761 * green + 0.1804375 * blue) / Xn
   );
-  var y &#x3D; xyz2lab(
+  const y &#x3D; xyz2lab(
     (0.2126729 * red + 0.7151522 * green + 0.072175 * blue) / Yn
   );
-  var z &#x3D; xyz2lab(
+  const z &#x3D; xyz2lab(
     (0.0193339 * red + 0.119192 * green + 0.9503041 * blue) / Zn
   );
 
-  var l &#x3D; 116 * y - 16;
-  var a &#x3D; 500 * (x - y);
-  var b &#x3D; 200 * (y - z);
+  const l &#x3D; 116 * y - 16;
+  const a &#x3D; 500 * (x - y);
+  const b &#x3D; 200 * (y - z);
 
-  var c &#x3D; Math.sqrt(a * a + b * b);
-  var h &#x3D; Math.atan2(b, a);
+  const c &#x3D; Math.sqrt(a * a + b * b);
+  let h &#x3D; Math.atan2(b, a);
   if (h &lt; 0) {
     h +&#x3D; twoPi;
   }
@@ -291,16 +291,16 @@ function rgb2hcl(pixel) {
  * @return {Array&lt;number&gt;} A pixel in RGB space.
  */
 function hcl2rgb(pixel) {
-  var h &#x3D; pixel[0];
-  var c &#x3D; pixel[1];
-  var l &#x3D; pixel[2];
+  const h &#x3D; pixel[0];
+  const c &#x3D; pixel[1];
+  const l &#x3D; pixel[2];
 
-  var a &#x3D; Math.cos(h) * c;
-  var b &#x3D; Math.sin(h) * c;
+  const a &#x3D; Math.cos(h) * c;
+  const b &#x3D; Math.sin(h) * c;
 
-  var y &#x3D; (l + 16) / 116;
-  var x &#x3D; isNaN(a) ? y : y + a / 500;
-  var z &#x3D; isNaN(b) ? y : y - b / 200;
+  let y &#x3D; (l + 16) / 116;
+  let x &#x3D; isNaN(a) ? y : y + a / 500;
+  let z &#x3D; isNaN(b) ? y : y - b / 200;
 
   y &#x3D; Yn * lab2xyz(y);
   x &#x3D; Xn * lab2xyz(x);
@@ -331,15 +331,16 @@ function xyz2rgb(x) {
   );
 }
 
-var raster &#x3D; new RasterSource({
+const raster &#x3D; new RasterSource({
   sources: [
     new Stamen({
       layer: &#x27;watercolor&#x27;,
-    }) ],
+    }),
+  ],
   operation: function (pixels, data) {
-    var hcl &#x3D; rgb2hcl(pixels[0]);
+    const hcl &#x3D; rgb2hcl(pixels[0]);
 
-    var h &#x3D; hcl[0] + (Math.PI * data.hue) / 180;
+    let h &#x3D; hcl[0] + (Math.PI * data.hue) / 180;
     if (h &lt; 0) {
       h +&#x3D; twoPi;
     } else if (h &gt; twoPi) {
@@ -370,20 +371,21 @@ var raster &#x3D; new RasterSource({
   },
 });
 
-var controls &#x3D; {};
+const controls &#x3D; {};
 
 raster.on(&#x27;beforeoperations&#x27;, function (event) {
-  var data &#x3D; event.data;
-  for (var id in controls) {
+  const data &#x3D; event.data;
+  for (const id in controls) {
     data[id] &#x3D; Number(controls[id].value);
   }
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new ImageLayer({
       source: raster,
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 2500000],
@@ -392,10 +394,10 @@ var map &#x3D; new Map({
   }),
 });
 
-var controlIds &#x3D; [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
+const controlIds &#x3D; [&#x27;hue&#x27;, &#x27;chroma&#x27;, &#x27;lightness&#x27;];
 controlIds.forEach(function (id) {
-  var control &#x3D; document.getElementById(id);
-  var output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
+  const control &#x3D; document.getElementById(id);
+  const output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
   control.addEventListener(&#x27;input&#x27;, function () {
     output.innerText &#x3D; control.value;
     raster.changed();

@@ -166,6 +166,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -217,7 +218,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -323,32 +324,33 @@ import {Fill, Icon, Stroke, Style} from &#x27;ol/style&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {toContext} from &#x27;ol/render&#x27;;
 
-var symbol &#x3D; [
+const symbol &#x3D; [
   [0, 0],
   [4, 2],
   [6, 0],
   [10, 5],
   [6, 3],
   [4, 5],
-  [0, 0] ];
-var scale;
-var scaleFunction &#x3D; function (coordinate) {
+  [0, 0],
+];
+let scale;
+const scaleFunction &#x3D; function (coordinate) {
   return [coordinate[0] * scale, coordinate[1] * scale];
 };
 
-var styleCache &#x3D; {};
-var styleFunction &#x3D; function (feature) {
+const styleCache &#x3D; {};
+const styleFunction &#x3D; function (feature) {
   // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
   // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
   // the Placemark&#x27;s name instead.
-  var name &#x3D; feature.get(&#x27;name&#x27;);
-  var magnitude &#x3D; parseFloat(name.substr(2));
-  var size &#x3D; parseInt(10 + 40 * (magnitude - 5), 10);
+  const name &#x3D; feature.get(&#x27;name&#x27;);
+  const magnitude &#x3D; parseFloat(name.substr(2));
+  const size &#x3D; parseInt(10 + 40 * (magnitude - 5), 10);
   scale &#x3D; size / 10;
-  var style &#x3D; styleCache[size];
+  let style &#x3D; styleCache[size];
   if (!style) {
-    var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-    var vectorContext &#x3D; toContext(canvas.getContext(&#x27;2d&#x27;), {
+    const canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+    const vectorContext &#x3D; toContext(canvas.getContext(&#x27;2d&#x27;), {
       size: [size, size],
       pixelRatio: 1,
     });
@@ -371,7 +373,7 @@ var styleFunction &#x3D; function (feature) {
   return style;
 };
 
-var vector &#x3D; new VectorLayer({
+const vector &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
     format: new KML({
@@ -381,13 +383,13 @@ var vector &#x3D; new VectorLayer({
   style: styleFunction,
 });
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new Stamen({
     layer: &#x27;toner&#x27;,
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new View({

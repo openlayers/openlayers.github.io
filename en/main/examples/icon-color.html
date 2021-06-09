@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -307,21 +308,21 @@ import {Icon, Style} from &#x27;ol/style&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 
-var rome &#x3D; new Feature({
+const rome &#x3D; new Feature({
   geometry: new Point(fromLonLat([12.5, 41.9])),
 });
 
-var london &#x3D; new Feature({
+const london &#x3D; new Feature({
   geometry: new Point(fromLonLat([-0.12755, 51.507222])),
 });
 
-var madrid &#x3D; new Feature({
+const madrid &#x3D; new Feature({
   geometry: new Point(fromLonLat([-3.683333, 40.4])),
 });
-var paris &#x3D; new Feature({
+const paris &#x3D; new Feature({
   geometry: new Point(fromLonLat([2.353, 48.8566])),
 });
-var berlin &#x3D; new Feature({
+const berlin &#x3D; new Feature({
   geometry: new Point(fromLonLat([13.3884, 52.5169])),
 });
 
@@ -380,22 +381,22 @@ berlin.setStyle(
     }),
   })
 );
-var vectorSource &#x3D; new VectorSource({
+const vectorSource &#x3D; new VectorSource({
   features: [rome, london, madrid, paris, berlin],
 });
 
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: vectorSource,
 });
 
-var rasterLayer &#x3D; new TileLayer({
+const rasterLayer &#x3D; new TileLayer({
   source: new TileJSON({
     url: &#x27;https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json?secure&#x3D;1&#x27;,
     crossOrigin: &#x27;&#x27;,
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [rasterLayer, vectorLayer],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({

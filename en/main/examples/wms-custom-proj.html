@@ -258,7 +258,7 @@ import {
 // ol/proj~addProjection to make it available to the library for lookup by its
 // code.
 
-var projection &#x3D; new Projection({
+const projection &#x3D; new Projection({
   code: &#x27;EPSG:21781&#x27;,
   // The extent is used to determine zoom level 0. Recommended values for a
   // projection&#x27;s validity extent can be found at https://epsg.io/.
@@ -277,17 +277,19 @@ addCoordinateTransforms(
   function (coordinate) {
     return [
       WGStoCHy(coordinate[1], coordinate[0]),
-      WGStoCHx(coordinate[1], coordinate[0]) ];
+      WGStoCHx(coordinate[1], coordinate[0]),
+    ];
   },
   function (coordinate) {
     return [
       CHtoWGSlng(coordinate[0], coordinate[1]),
-      CHtoWGSlat(coordinate[0], coordinate[1]) ];
+      CHtoWGSlat(coordinate[0], coordinate[1]),
+    ];
   }
 );
 
-var extent &#x3D; [420000, 30000, 900000, 350000];
-var layers &#x3D; [
+const extent &#x3D; [420000, 30000, 900000, 350000];
+const layers &#x3D; [
   new TileLayer({
     extent: extent,
     source: new TileWMS({
@@ -314,13 +316,15 @@ var layers &#x3D; [
       params: {&#x27;LAYERS&#x27;: &#x27;ch.bafu.hydroweb-warnkarte_national&#x27;},
       serverType: &#x27;mapserver&#x27;,
     }),
-  }) ];
+  }),
+];
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   controls: defaultControls().extend([
     new ScaleLine({
       units: &#x27;metric&#x27;,
-    }) ]),
+    }),
+  ]),
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({
@@ -347,11 +351,11 @@ function WGStoCHy(lat, lng) {
   lng &#x3D; DEGtoSEC(lng);
 
   // Axillary values (% Bern)
-  var lat_aux &#x3D; (lat - 169028.66) / 10000;
-  var lng_aux &#x3D; (lng - 26782.5) / 10000;
+  const lat_aux &#x3D; (lat - 169028.66) / 10000;
+  const lng_aux &#x3D; (lng - 26782.5) / 10000;
 
   // Process Y
-  var y &#x3D;
+  const y &#x3D;
     600072.37 +
     211455.93 * lng_aux -
     10938.51 * lng_aux * lat_aux -
@@ -372,11 +376,11 @@ function WGStoCHx(lat, lng) {
   lng &#x3D; DEGtoSEC(lng);
 
   // Axillary values (% Bern)
-  var lat_aux &#x3D; (lat - 169028.66) / 10000;
-  var lng_aux &#x3D; (lng - 26782.5) / 10000;
+  const lat_aux &#x3D; (lat - 169028.66) / 10000;
+  const lng_aux &#x3D; (lng - 26782.5) / 10000;
 
   // Process X
-  var x &#x3D;
+  const x &#x3D;
     200147.07 +
     308807.95 * lat_aux +
     3745.25 * Math.pow(lng_aux, 2) +
@@ -391,11 +395,11 @@ function WGStoCHx(lat, lng) {
 function CHtoWGSlat(y, x) {
   // Converts military to civil and to unit &#x3D; 1000km
   // Axillary values (% Bern)
-  var y_aux &#x3D; (y - 600000) / 1000000;
-  var x_aux &#x3D; (x - 200000) / 1000000;
+  const y_aux &#x3D; (y - 600000) / 1000000;
+  const x_aux &#x3D; (x - 200000) / 1000000;
 
   // Process lat
-  var lat &#x3D;
+  let lat &#x3D;
     16.9023892 +
     3.238272 * x_aux -
     0.270978 * Math.pow(y_aux, 2) -
@@ -413,11 +417,11 @@ function CHtoWGSlat(y, x) {
 function CHtoWGSlng(y, x) {
   // Converts military to civil and to unit &#x3D; 1000km
   // Axillary values (% Bern)
-  var y_aux &#x3D; (y - 600000) / 1000000;
-  var x_aux &#x3D; (x - 200000) / 1000000;
+  const y_aux &#x3D; (y - 600000) / 1000000;
+  const x_aux &#x3D; (x - 200000) / 1000000;
 
   // Process long
-  var lng &#x3D;
+  let lng &#x3D;
     2.6779094 +
     4.728982 * y_aux +
     0.791484 * y_aux * x_aux +
@@ -433,9 +437,9 @@ function CHtoWGSlng(y, x) {
 // Convert DEC angle to SEX DMS
 function DECtoSEX(angle) {
   // Extract DMS
-  var deg &#x3D; parseInt(angle, 10);
-  var min &#x3D; parseInt((angle - deg) * 60, 10);
-  var sec &#x3D; ((angle - deg) * 60 - min) * 60;
+  const deg &#x3D; parseInt(angle, 10);
+  const min &#x3D; parseInt((angle - deg) * 60, 10);
+  const sec &#x3D; ((angle - deg) * 60 - min) * 60;
 
   // Result in degrees sex (dd.mmss)
   return deg + min / 100 + sec / 10000;
@@ -444,12 +448,12 @@ function DECtoSEX(angle) {
 // Convert Degrees angle to seconds
 function DEGtoSEC(angle) {
   // Extract DMS
-  var deg &#x3D; parseInt(angle, 10);
-  var min &#x3D; parseInt((angle - deg) * 100, 10);
-  var sec &#x3D; ((angle - deg) * 100 - min) * 100;
+  const deg &#x3D; parseInt(angle, 10);
+  let min &#x3D; parseInt((angle - deg) * 100, 10);
+  let sec &#x3D; ((angle - deg) * 100 - min) * 100;
 
   // Avoid rounding problems with seconds&#x3D;0
-  var parts &#x3D; String(angle).split(&#x27;.&#x27;);
+  const parts &#x3D; String(angle).split(&#x27;.&#x27;);
   if (parts.length &#x3D;&#x3D; 2 &amp;&amp; parts[1].length &#x3D;&#x3D; 2) {
     min &#x3D; Number(parts[1]);
     sec &#x3D; 0;

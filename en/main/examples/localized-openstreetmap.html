@@ -226,28 +226,30 @@ import OSM, {ATTRIBUTION} from &#x27;ol/source/OSM&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var openCycleMapLayer &#x3D; new TileLayer({
+const openCycleMapLayer &#x3D; new TileLayer({
   source: new OSM({
     attributions: [
       &#x27;All maps © &lt;a href&#x3D;&quot;https://www.opencyclemap.org/&quot;&gt;OpenCycleMap&lt;/a&gt;&#x27;,
-      ATTRIBUTION ],
+      ATTRIBUTION,
+    ],
     url:
       &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27; +
       &#x27;?apikey&#x3D;Your API key from https://www.thunderforest.com/docs/apikeys/ here&#x27;,
   }),
 });
 
-var openSeaMapLayer &#x3D; new TileLayer({
+const openSeaMapLayer &#x3D; new TileLayer({
   source: new OSM({
     attributions: [
       &#x27;All maps © &lt;a href&#x3D;&quot;https://www.openseamap.org/&quot;&gt;OpenSeaMap&lt;/a&gt;&#x27;,
-      ATTRIBUTION ],
+      ATTRIBUTION,
+    ],
     opaque: false,
     url: &#x27;https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png&#x27;,
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [openCycleMapLayer, openSeaMapLayer],
   target: &#x27;map&#x27;,
   view: new View({

@@ -182,11 +182,11 @@ import OSM from &#x27;ol/source/OSM&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var source &#x3D; new OSM();
+const source &#x3D; new OSM();
 
-var layer &#x3D; new TileLayer();
+const layer &#x3D; new TileLayer();
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [layer],
   target: &#x27;map&#x27;,
   view: new View({

@@ -206,13 +206,13 @@ import TileJSON from &#x27;ol/source/TileJSON&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var key &#x3D;
+const key &#x3D;
   &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
 /**
  * Create the map.
  */
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
@@ -228,7 +228,8 @@ var map &#x3D; new Map({
       }),
       minResolution: 2000,
       maxResolution: 20000,
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [653600, 5723680],

@@ -249,7 +249,7 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import TileWMS from &#x27;ol/source/TileWMS&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var layers &#x3D; [
+const layers &#x3D; [
   new TileLayer({
     source: new OSM(),
   }),
@@ -259,8 +259,9 @@ var layers &#x3D; [
       params: {&#x27;LAYERS&#x27;: &#x27;ne:ne_10m_admin_0_countries&#x27;, &#x27;TILED&#x27;: true},
       serverType: &#x27;geoserver&#x27;,
     }),
-  }) ];
-var map &#x3D; new Map({
+  }),
+];
+const map &#x3D; new Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({

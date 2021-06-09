@@ -136,9 +136,10 @@
                 data-title="circle"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./custom-circle-render.html&quot;&gt;Custom Circle Render&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./tissot.html&quot;&gt;Tissot Indicatrix&lt;/a&gt;"
                 tabindex="0"
-                >2</a>
+                >3</a>
             </span>
             <span class="badge-group">
               <a
@@ -182,6 +183,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -233,7 +235,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -310,27 +312,22 @@ import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Style} from &#x27;ol/style&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var circleFeature &#x3D; new Feature({
+const circleFeature &#x3D; new Feature({
   geometry: new Circle([12127398.797692968, 4063894.123105166], 50),
 });
 circleFeature.setStyle(
   new Style({
-    renderer: function renderer(coordinates, state) {
-      var coordinates_0 &#x3D; coordinates[0];
-      var x &#x3D; coordinates_0[0];
-      var y &#x3D; coordinates_0[1];
-      var coordinates_1 &#x3D; coordinates[1];
-      var x1 &#x3D; coordinates_1[0];
-      var y1 &#x3D; coordinates_1[1];
-      var ctx &#x3D; state.context;
-      var dx &#x3D; x1 - x;
-      var dy &#x3D; y1 - y;
-      var radius &#x3D; Math.sqrt(dx * dx + dy * dy);
+    renderer(coordinates, state) {
+      const [[x, y], [x1, y1]] &#x3D; coordinates;
+      const ctx &#x3D; state.context;
+      const dx &#x3D; x1 - x;
+      const dy &#x3D; y1 - y;
+      const radius &#x3D; Math.sqrt(dx * dx + dy * dy);
 
-      var innerRadius &#x3D; 0;
-      var outerRadius &#x3D; radius * 1.4;
+      const innerRadius &#x3D; 0;
+      const outerRadius &#x3D; radius * 1.4;
 
-      var gradient &#x3D; ctx.createRadialGradient(
+      const gradient &#x3D; ctx.createRadialGradient(
         x,
         y,
         innerRadius,
@@ -363,7 +360,8 @@ new Map({
       source: new VectorSource({
         features: [circleFeature],
       }),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [12127398.797692968, 4063894.123105166],

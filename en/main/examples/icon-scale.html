@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -322,29 +323,29 @@ import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 import {getVectorContext} from &#x27;ol/render&#x27;;
 
-var rasterLayer &#x3D; new TileLayer({
+const rasterLayer &#x3D; new TileLayer({
   source: new TileJSON({
     url: &#x27;https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json?secure&#x3D;1&#x27;,
     crossOrigin: &#x27;&#x27;,
   }),
 });
 
-var iconFeature &#x3D; new Feature({
+const iconFeature &#x3D; new Feature({
   geometry: new Point(fromLonLat([0, -10])),
   name: &#x27;Fish.1&#x27;,
 });
 
-var feature1 &#x3D; new Feature({
+const feature1 &#x3D; new Feature({
   geometry: new Point(fromLonLat([0, -10])),
   name: &#x27;Fish.1 Island&#x27;,
 });
 
-var feature2 &#x3D; new Feature({
+const feature2 &#x3D; new Feature({
   geometry: new Point(fromLonLat([-30, 10])),
   name: &#x27;Fish.2 Island&#x27;,
 });
 
-var iconStyle &#x3D; new Style({
+const iconStyle &#x3D; new Style({
   image: new Icon({
     anchor: [0.5, 0.9],
     src: &#x27;data/fish.png&#x27;,
@@ -361,35 +362,35 @@ var iconStyle &#x3D; new Style({
   }),
 });
 
-var i &#x3D; 0;
-var j &#x3D; 45;
+let i &#x3D; 0;
+let j &#x3D; 45;
 
 iconFeature.setStyle(function () {
-  var x &#x3D; Math.sin((i * Math.PI) / 180) * 3;
-  var y &#x3D; Math.sin((j * Math.PI) / 180) * 4;
+  const x &#x3D; Math.sin((i * Math.PI) / 180) * 3;
+  const y &#x3D; Math.sin((j * Math.PI) / 180) * 4;
   iconStyle.getImage().setScale([x, y]);
   iconStyle.getText().setScale([x, y]);
   return iconStyle;
 });
 
 rasterLayer.on(&#x27;postrender&#x27;, function (event) {
-  var vectorContext &#x3D; getVectorContext(event);
-  var x &#x3D; Math.cos((i * Math.PI) / 180) * 3;
-  var y &#x3D; Math.cos((j * Math.PI) / 180) * 4;
+  const vectorContext &#x3D; getVectorContext(event);
+  const x &#x3D; Math.cos((i * Math.PI) / 180) * 3;
+  const y &#x3D; Math.cos((j * Math.PI) / 180) * 4;
   iconStyle.getImage().setScale([x, y]);
   iconStyle.getText().setScale([x, y]);
   vectorContext.drawFeature(feature2, iconStyle);
 });
 
-var vectorSource &#x3D; new VectorSource({
+const vectorSource &#x3D; new VectorSource({
   features: [iconFeature, feature1, feature2],
 });
 
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: vectorSource,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [rasterLayer, vectorLayer],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
@@ -404,9 +405,9 @@ setInterval(function () {
   vectorSource.changed();
 }, 1000);
 
-var element &#x3D; document.getElementById(&#x27;popup&#x27;);
+const element &#x3D; document.getElementById(&#x27;popup&#x27;);
 
-var popup &#x3D; new Overlay({
+const popup &#x3D; new Overlay({
   element: element,
   positioning: &#x27;bottom-center&#x27;,
   stopEvent: false,
@@ -415,7 +416,7 @@ map.addOverlay(popup);
 
 // display popup on click
 map.on(&#x27;click&#x27;, function (evt) {
-  var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+  const feature &#x3D; map.forEachFeatureAtPixel(evt.pixel, function (feature) {
     return feature;
   });
   $(element).popover(&#x27;dispose&#x27;);
@@ -433,8 +434,8 @@ map.on(&#x27;click&#x27;, function (evt) {
 
 // change mouse cursor when over marker
 map.on(&#x27;pointermove&#x27;, function (e) {
-  var pixel &#x3D; map.getEventPixel(e.originalEvent);
-  var hit &#x3D; map.hasFeatureAtPixel(pixel);
+  const pixel &#x3D; map.getEventPixel(e.originalEvent);
+  const hit &#x3D; map.hasFeatureAtPixel(pixel);
   map.getTarget().style.cursor &#x3D; hit ? &#x27;pointer&#x27; : &#x27;&#x27;;
 });
 // Close the popup when the map is moved

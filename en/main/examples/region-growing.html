@@ -257,39 +257,39 @@ import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 
 function growRegion(inputs, data) {
-  var image &#x3D; inputs[0];
-  var seed &#x3D; data.pixel;
-  var delta &#x3D; parseInt(data.delta);
+  const image &#x3D; inputs[0];
+  let seed &#x3D; data.pixel;
+  const delta &#x3D; parseInt(data.delta);
   if (!seed) {
     return image;
   }
 
   seed &#x3D; seed.map(Math.round);
-  var width &#x3D; image.width;
-  var height &#x3D; image.height;
-  var inputData &#x3D; image.data;
-  var outputData &#x3D; new Uint8ClampedArray(inputData);
-  var seedIdx &#x3D; (seed[1] * width + seed[0]) * 4;
-  var seedR &#x3D; inputData[seedIdx];
-  var seedG &#x3D; inputData[seedIdx + 1];
-  var seedB &#x3D; inputData[seedIdx + 2];
-  var edge &#x3D; [seed];
+  const width &#x3D; image.width;
+  const height &#x3D; image.height;
+  const inputData &#x3D; image.data;
+  const outputData &#x3D; new Uint8ClampedArray(inputData);
+  const seedIdx &#x3D; (seed[1] * width + seed[0]) * 4;
+  const seedR &#x3D; inputData[seedIdx];
+  const seedG &#x3D; inputData[seedIdx + 1];
+  const seedB &#x3D; inputData[seedIdx + 2];
+  let edge &#x3D; [seed];
   while (edge.length) {
-    var newedge &#x3D; [];
-    for (var i &#x3D; 0, ii &#x3D; edge.length; i &lt; ii; i++) {
+    const newedge &#x3D; [];
+    for (let i &#x3D; 0, ii &#x3D; edge.length; i &lt; ii; i++) {
       // As noted in the Raster source constructor, this function is provided
       // using the &#x60;lib&#x60; option. Other functions will NOT be visible unless
       // provided using the &#x60;lib&#x60; option.
-      var next &#x3D; next4Edges(edge[i]);
-      for (var j &#x3D; 0, jj &#x3D; next.length; j &lt; jj; j++) {
-        var s &#x3D; next[j][0];
-        var t &#x3D; next[j][1];
+      const next &#x3D; next4Edges(edge[i]);
+      for (let j &#x3D; 0, jj &#x3D; next.length; j &lt; jj; j++) {
+        const s &#x3D; next[j][0];
+        const t &#x3D; next[j][1];
         if (s &gt;&#x3D; 0 &amp;&amp; s &lt; width &amp;&amp; t &gt;&#x3D; 0 &amp;&amp; t &lt; height) {
-          var ci &#x3D; (t * width + s) * 4;
-          var cr &#x3D; inputData[ci];
-          var cg &#x3D; inputData[ci + 1];
-          var cb &#x3D; inputData[ci + 2];
-          var ca &#x3D; inputData[ci + 3];
+          const ci &#x3D; (t * width + s) * 4;
+          const cr &#x3D; inputData[ci];
+          const cg &#x3D; inputData[ci + 1];
+          const cb &#x3D; inputData[ci + 2];
+          const ca &#x3D; inputData[ci + 3];
           // if alpha is zero, carry on
           if (ca &#x3D;&#x3D;&#x3D; 0) {
             continue;
@@ -316,21 +316,22 @@ function growRegion(inputs, data) {
 }
 
 function next4Edges(edge) {
-  var x &#x3D; edge[0];
-  var y &#x3D; edge[1];
+  const x &#x3D; edge[0];
+  const y &#x3D; edge[1];
   return [
     [x + 1, y],
     [x - 1, y],
     [x, y + 1],
-    [x, y - 1] ];
+    [x, y - 1],
+  ];
 }
 
-var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
-var attributions &#x3D;
+const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
+const attributions &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
-var imagery &#x3D; new TileLayer({
+const imagery &#x3D; new TileLayer({
   source: new XYZ({
     attributions: attributions,
     url: &#x27;https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
@@ -339,7 +340,7 @@ var imagery &#x3D; new TileLayer({
   }),
 });
 
-var raster &#x3D; new RasterSource({
+const raster &#x3D; new RasterSource({
   sources: [imagery.getSource()],
   operationType: &#x27;image&#x27;,
   operation: growRegion,
@@ -350,12 +351,12 @@ var raster &#x3D; new RasterSource({
   },
 });
 
-var rasterImage &#x3D; new ImageLayer({
+const rasterImage &#x3D; new ImageLayer({
   opacity: 0.7,
   source: raster,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [imagery, rasterImage],
   target: &#x27;map&#x27;,
   view: new View({
@@ -364,18 +365,18 @@ var map &#x3D; new Map({
   }),
 });
 
-var coordinate;
+let coordinate;
 
 map.on(&#x27;click&#x27;, function (event) {
   coordinate &#x3D; event.coordinate;
   raster.changed();
 });
 
-var thresholdControl &#x3D; document.getElementById(&#x27;threshold&#x27;);
+const thresholdControl &#x3D; document.getElementById(&#x27;threshold&#x27;);
 
 raster.on(&#x27;beforeoperations&#x27;, function (event) {
   // the event.data object will be passed to operations
-  var data &#x3D; event.data;
+  const data &#x3D; event.data;
   data.delta &#x3D; thresholdControl.value;
   if (coordinate) {
     data.pixel &#x3D; map.getPixelFromCoordinate(coordinate);

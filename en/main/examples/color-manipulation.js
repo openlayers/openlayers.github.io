@@ -1,15 +1,14 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[16],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[1135],{
 
-/***/ 249:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ 4134:
+/***/ (function(__unused_webpack___webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_ol_layer_Image_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(69);
-/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
-/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(162);
-/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(63);
+/* harmony import */ var _src_ol_layer_Image_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4743);
+/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1625);
+/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(640);
+/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9175);
+/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2157);
 
 
 
@@ -111,9 +110,9 @@ function xyz2rgb(x) {
   );
 }
 
-var raster = new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"]({
+var raster = new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_0__/* .default */ .ZP({
   sources: [
-    new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]({
+    new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_1__/* .default */ .Z({
       layer: 'watercolor',
     }) ],
   operation: function (pixels, data) {
@@ -159,13 +158,13 @@ raster.on('beforeoperations', function (event) {
   }
 });
 
-var map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"]({
+var map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__/* .default */ .Z({
   layers: [
-    new _src_ol_layer_Image_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]({
+    new _src_ol_layer_Image_js__WEBPACK_IMPORTED_MODULE_3__/* .default */ .Z({
       source: raster,
     }) ],
   target: 'map',
-  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]({
+  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_4__/* .default */ .ZP({
     center: [0, 2500000],
     zoom: 2,
     maxZoom: 18,
@@ -187,5 +186,12 @@ controlIds.forEach(function (id) {
 
 /***/ })
 
-},[[249,0]]]);
+},
+/******/ function(__webpack_require__) { // webpackRuntimeModules
+/******/ "use strict";
+/******/ 
+/******/ var __webpack_exec__ = function(moduleId) { return __webpack_require__(__webpack_require__.s = moduleId); }
+/******/ var __webpack_exports__ = (__webpack_exec__(4134));
+/******/ }
+]);
 //# sourceMappingURL=color-manipulation.js.map

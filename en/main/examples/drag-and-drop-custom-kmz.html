@@ -230,12 +230,12 @@ import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 // Create functions to extract KML and icons from KMZ array buffer,
 // which must be done synchronously.
 
-var zip &#x3D; new JSZip();
+const zip &#x3D; new JSZip();
 
 function getKMLData(buffer) {
-  var kmlData;
+  let kmlData;
   zip.load(buffer);
-  var kmlFile &#x3D; zip.file(/.kml$/i)[0];
+  const kmlFile &#x3D; zip.file(/.kml$/i)[0];
   if (kmlFile) {
     kmlData &#x3D; kmlFile.asText();
   }
@@ -243,12 +243,12 @@ function getKMLData(buffer) {
 }
 
 function getKMLImage(href) {
-  var url &#x3D; href;
-  var path &#x3D; window.location.href;
+  let url &#x3D; href;
+  let path &#x3D; window.location.href;
   path &#x3D; path.slice(0, path.lastIndexOf(&#x27;/&#x27;) + 1);
   if (href.indexOf(path) &#x3D;&#x3D;&#x3D; 0) {
-    var regexp &#x3D; new RegExp(href.replace(path, &#x27;&#x27;) + &#x27;$&#x27;, &#x27;i&#x27;);
-    var kmlFile &#x3D; zip.file(regexp)[0];
+    const regexp &#x3D; new RegExp(href.replace(path, &#x27;&#x27;) + &#x27;$&#x27;, &#x27;i&#x27;);
+    const kmlFile &#x3D; zip.file(regexp)[0];
     if (kmlFile) {
       url &#x3D; URL.createObjectURL(new Blob([kmlFile.asArrayBuffer()]));
     }
@@ -258,46 +258,41 @@ function getKMLImage(href) {
 
 // Define a KMZ format class by subclassing ol/format/KML
 
-var KMZ &#x3D; /*@__PURE__*/(function (KML) {
-  function KMZ(opt_options) {
-    var options &#x3D; opt_options || {};
+class KMZ extends KML {
+  constructor(opt_options) {
+    const options &#x3D; opt_options || {};
     options.iconUrlFunction &#x3D; getKMLImage;
-    KML.call(this, options);
+    super(options);
   }
 
-  if ( KML ) KMZ.__proto__ &#x3D; KML;
-  KMZ.prototype &#x3D; Object.create( KML &amp;&amp; KML.prototype );
-  KMZ.prototype.constructor &#x3D; KMZ;
-
-  KMZ.prototype.getType &#x3D; function getType () {
+  getType() {
     return &#x27;arraybuffer&#x27;;
-  };
+  }
 
-  KMZ.prototype.readFeature &#x3D; function readFeature (source, options) {
-    var kmlData &#x3D; getKMLData(source);
-    return KML.prototype.readFeature.call(this, kmlData, options);
-  };
+  readFeature(source, options) {
+    const kmlData &#x3D; getKMLData(source);
+    return super.readFeature(kmlData, options);
+  }
 
-  KMZ.prototype.readFeatures &#x3D; function readFeatures (source, options) {
-    var kmlData &#x3D; getKMLData(source);
-    return KML.prototype.readFeatures.call(this, kmlData, options);
-  };
-
-  return KMZ;
-}(KML));
+  readFeatures(source, options) {
+    const kmlData &#x3D; getKMLData(source);
+    return super.readFeatures(kmlData, options);
+  }
+}
 
 // Set up map with Drag and Drop interaction
 
-var dragAndDropInteraction &#x3D; new DragAndDrop({
+const dragAndDropInteraction &#x3D; new DragAndDrop({
   formatConstructors: [KMZ, GPX, GeoJSON, IGC, KML, TopoJSON],
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   interactions: defaultInteractions().extend([dragAndDropInteraction]),
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -306,7 +301,7 @@ var map &#x3D; new Map({
 });
 
 dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function (event) {
-  var vectorSource &#x3D; new VectorSource({
+  const vectorSource &#x3D; new VectorSource({
     features: event.features,
   });
   map.addLayer(
@@ -317,16 +312,16 @@ dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function (event) {
   map.getView().fit(vectorSource.getExtent());
 });
 
-var displayFeatureInfo &#x3D; function (pixel) {
-  var features &#x3D; [];
+const displayFeatureInfo &#x3D; function (pixel) {
+  const features &#x3D; [];
   map.forEachFeatureAtPixel(pixel, function (feature) {
     features.push(feature);
   });
   if (features.length &gt; 0) {
-    var info &#x3D; [];
-    var i, ii;
+    const info &#x3D; [];
+    let i, ii;
     for (i &#x3D; 0, ii &#x3D; features.length; i &lt; ii; ++i) {
-      var description &#x3D;
+      const description &#x3D;
         features[i].get(&#x27;description&#x27;) ||
         features[i].get(&#x27;name&#x27;) ||
         features[i].get(&#x27;_name&#x27;) ||
@@ -345,7 +340,7 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
-  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
+  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
   displayFeatureInfo(pixel);
 });
 
@@ -355,7 +350,7 @@ map.on(&#x27;click&#x27;, function (evt) {
 
 // Sample data download
 
-var link &#x3D; document.getElementById(&#x27;download&#x27;);
+const link &#x3D; document.getElementById(&#x27;download&#x27;);
 
 function download(fullpath, filename) {
   fetch(fullpath)

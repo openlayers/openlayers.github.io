@@ -208,7 +208,7 @@ import OSM from &#x27;ol/source/OSM&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
 
-var layers &#x3D; [
+const layers &#x3D; [
   new TileLayer({
     source: new OSM(),
   }),
@@ -220,8 +220,9 @@ var layers &#x3D; [
       ratio: 1,
       serverType: &#x27;geoserver&#x27;,
     }),
-  }) ];
-var map &#x3D; new Map({
+  }),
+];
+const map &#x3D; new Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({

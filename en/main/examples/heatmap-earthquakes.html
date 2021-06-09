@@ -179,6 +179,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -230,7 +231,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -324,10 +325,10 @@ import VectorSource from &#x27;ol/source/Vector&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Heatmap as HeatmapLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
 
-var blur &#x3D; document.getElementById(&#x27;blur&#x27;);
-var radius &#x3D; document.getElementById(&#x27;radius&#x27;);
+const blur &#x3D; document.getElementById(&#x27;blur&#x27;);
+const radius &#x3D; document.getElementById(&#x27;radius&#x27;);
 
-var vector &#x3D; new HeatmapLayer({
+const vector &#x3D; new HeatmapLayer({
   source: new VectorSource({
     url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
     format: new KML({
@@ -340,13 +341,13 @@ var vector &#x3D; new HeatmapLayer({
     // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
     // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
     // the Placemark&#x27;s name instead.
-    var name &#x3D; feature.get(&#x27;name&#x27;);
-    var magnitude &#x3D; parseFloat(name.substr(2));
+    const name &#x3D; feature.get(&#x27;name&#x27;);
+    const magnitude &#x3D; parseFloat(name.substr(2));
     return magnitude - 5;
   },
 });
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new Stamen({
     layer: &#x27;toner&#x27;,
   }),
@@ -361,13 +362,13 @@ new Map({
   }),
 });
 
-var blurHandler &#x3D; function () {
+const blurHandler &#x3D; function () {
   vector.setBlur(parseInt(blur.value, 10));
 };
 blur.addEventListener(&#x27;input&#x27;, blurHandler);
 blur.addEventListener(&#x27;change&#x27;, blurHandler);
 
-var radiusHandler &#x3D; function () {
+const radiusHandler &#x3D; function () {
   vector.setRadius(parseInt(radius.value, 10));
 };
 radius.addEventListener(&#x27;input&#x27;, radiusHandler);

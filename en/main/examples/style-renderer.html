@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -321,27 +322,27 @@ import {Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 import {getBottomLeft, getHeight, getWidth} from &#x27;ol/extent&#x27;;
 import {toContext} from &#x27;ol/render&#x27;;
 
-var fill &#x3D; new Fill();
-var stroke &#x3D; new Stroke({
+const fill &#x3D; new Fill();
+const stroke &#x3D; new Stroke({
   color: &#x27;rgba(255,255,255,0.8)&#x27;,
   width: 2,
 });
-var style &#x3D; new Style({
+const style &#x3D; new Style({
   renderer: function (pixelCoordinates, state) {
-    var context &#x3D; state.context;
-    var geometry &#x3D; state.geometry.clone();
+    const context &#x3D; state.context;
+    const geometry &#x3D; state.geometry.clone();
     geometry.setCoordinates(pixelCoordinates);
-    var extent &#x3D; geometry.getExtent();
-    var width &#x3D; getWidth(extent);
-    var height &#x3D; getHeight(extent);
-    var flag &#x3D; state.feature.get(&#x27;flag&#x27;);
+    const extent &#x3D; geometry.getExtent();
+    const width &#x3D; getWidth(extent);
+    const height &#x3D; getHeight(extent);
+    const flag &#x3D; state.feature.get(&#x27;flag&#x27;);
     if (!flag || height &lt; 1 || width &lt; 1) {
       return;
     }
 
     // Stitch out country shape from the blue canvas
     context.save();
-    var renderContext &#x3D; toContext(context, {
+    const renderContext &#x3D; toContext(context, {
       pixelRatio: 1,
     });
     renderContext.setFillStrokeStyle(fill, stroke);
@@ -349,15 +350,15 @@ var style &#x3D; new Style({
     context.clip();
 
     // Fill transparent country with the flag image
-    var bottomLeft &#x3D; getBottomLeft(extent);
-    var left &#x3D; bottomLeft[0];
-    var bottom &#x3D; bottomLeft[1];
+    const bottomLeft &#x3D; getBottomLeft(extent);
+    const left &#x3D; bottomLeft[0];
+    const bottom &#x3D; bottomLeft[1];
     context.drawImage(flag, left, bottom, width, height);
     context.restore();
   },
 });
 
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: new VectorSource({
     url:
       &#x27;https://openlayersbook.github.io/openlayers_book_samples/assets/data/countries.geojson&#x27;,
@@ -368,8 +369,8 @@ var vectorLayer &#x3D; new VectorLayer({
 
 // Load country flags and set them as &#x60;flag&#x60; attribute on the country feature
 vectorLayer.getSource().on(&#x27;addfeature&#x27;, function (event) {
-  var feature &#x3D; event.feature;
-  var img &#x3D; new Image();
+  const feature &#x3D; event.feature;
+  const img &#x3D; new Image();
   img.onload &#x3D; function () {
     feature.set(&#x27;flag&#x27;, img);
   };

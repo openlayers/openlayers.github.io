@@ -219,7 +219,7 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new Stamen({
@@ -230,7 +230,8 @@ var map &#x3D; new Map({
       source: new Stamen({
         layer: &#x27;terrain-labels&#x27;,
       }),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: fromLonLat([-122.416667, 37.783333]),

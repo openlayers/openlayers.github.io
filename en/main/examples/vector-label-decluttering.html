@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -266,7 +267,7 @@ import VectorSource from &#x27;ol/source/Vector&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Fill, Stroke, Style, Text} from &#x27;ol/style&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -274,7 +275,7 @@ var map &#x3D; new Map({
   }),
 });
 
-var labelStyle &#x3D; new Style({
+const labelStyle &#x3D; new Style({
   text: new Text({
     font: &#x27;12px Calibri,sans-serif&#x27;,
     overflow: true,
@@ -287,7 +288,7 @@ var labelStyle &#x3D; new Style({
     }),
   }),
 });
-var countryStyle &#x3D; new Style({
+const countryStyle &#x3D; new Style({
   fill: new Fill({
     color: &#x27;rgba(255, 255, 255, 0.6)&#x27;,
   }),
@@ -296,9 +297,9 @@ var countryStyle &#x3D; new Style({
     width: 1,
   }),
 });
-var style &#x3D; [countryStyle, labelStyle];
+const style &#x3D; [countryStyle, labelStyle];
 
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/countries.geojson&#x27;,
     format: new GeoJSON(),

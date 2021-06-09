@@ -225,7 +225,7 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import TileWMS from &#x27;ol/source/TileWMS&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var layers &#x3D; [
+const layers &#x3D; [
   new TileLayer({
     source: new OSM(),
   }),
@@ -238,8 +238,9 @@ var layers &#x3D; [
       // Countries have transparency, so do not fade tiles:
       transition: 0,
     }),
-  }) ];
-var map &#x3D; new Map({
+  }),
+];
+const map &#x3D; new Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({

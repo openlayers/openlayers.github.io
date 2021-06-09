@@ -162,6 +162,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -213,7 +214,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -292,12 +293,12 @@ import View from &#x27;ol/View&#x27;;
 import {Fill, Icon, Stroke, Style, Text} from &#x27;ol/style&#x27;;
 import {get as getProjection} from &#x27;ol/proj&#x27;;
 
-var key &#x3D;
+const key &#x3D;
   &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
 // Calculation of resolutions that match zoom levels 1, 3, 5, 7, 9, 11, 13, 15.
-var resolutions &#x3D; [];
-for (var i &#x3D; 0; i &lt;&#x3D; 8; ++i) {
+const resolutions &#x3D; [];
+for (let i &#x3D; 0; i &lt;&#x3D; 8; ++i) {
   resolutions.push(156543.03392804097 / Math.pow(2, i * 2));
 }
 // Calculation of tile urls for zoom levels 1, 3, 5, 7, 9, 11, 13, 15.
@@ -316,7 +317,7 @@ function tileUrlFunction(tileCoord) {
     );
 }
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new VectorTileLayer({
       source: new VectorTileSource({
@@ -333,7 +334,8 @@ var map &#x3D; new Map({
         tileUrlFunction: tileUrlFunction,
       }),
       style: createMapboxStreetsV6Style(Style, Fill, Stroke, Icon, Text),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],

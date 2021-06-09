@@ -212,15 +212,16 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {toRadians} from &#x27;ol/math&#x27;;
 
-var view &#x3D; new View({
+const view &#x3D; new View({
   center: [0, 0],
   zoom: 2,
 });
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: view,
 });
@@ -229,15 +230,15 @@ function el(id) {
   return document.getElementById(id);
 }
 
-var gn &#x3D; new GyroNorm();
+const gn &#x3D; new GyroNorm();
 
 gn.init().then(function () {
   gn.start(function (event) {
-    var center &#x3D; view.getCenter();
-    var resolution &#x3D; view.getResolution();
-    var alpha &#x3D; toRadians(event.do.alpha);
-    var beta &#x3D; toRadians(event.do.beta);
-    var gamma &#x3D; toRadians(event.do.gamma);
+    const center &#x3D; view.getCenter();
+    const resolution &#x3D; view.getResolution();
+    const alpha &#x3D; toRadians(event.do.alpha);
+    const beta &#x3D; toRadians(event.do.beta);
+    const gamma &#x3D; toRadians(event.do.gamma);
 
     el(&#x27;alpha&#x27;).innerText &#x3D; alpha + &#x27; [rad]&#x27;;
     el(&#x27;beta&#x27;).innerText &#x3D; beta + &#x27; [rad]&#x27;;

@@ -1,2 +1,2 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[129],{358:function(e,n,a){"use strict";a.r(n);var w=a(3),o=a(9),t=a(5),r=a(2);new w.a({layers:[new t.a({source:new o.b})],target:"map",view:new r.a({center:[142e5,413e4],rotation:Math.PI/6,zoom:10})})}},[[358,0]]]);
+(self.webpackChunk=self.webpackChunk||[]).push([[1870],{6039:function(e,t,n){"use strict";var r=n(1625),s=n(7340),a=n(7842),o=n(640);new r.Z({layers:[new a.Z({source:new s.Z})],target:"map",view:new o.ZP({center:[142e5,413e4],rotation:Math.PI/6,zoom:10})})}},function(e){"use strict";var t;t=6039,e(e.s=t)}]);
 //# sourceMappingURL=rotation.js.map

@@ -162,6 +162,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -213,7 +214,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -300,11 +301,11 @@ import {
 } from &#x27;ol/layer&#x27;;
 
 // Converts geojson-vt data to GeoJSON
-var replacer &#x3D; function (key, value) {
+const replacer &#x3D; function (key, value) {
   if (value.geometry) {
-    var type;
-    var rawType &#x3D; value.type;
-    var geometry &#x3D; value.geometry;
+    let type;
+    const rawType &#x3D; value.type;
+    let geometry &#x3D; value.geometry;
 
     if (rawType &#x3D;&#x3D;&#x3D; 1) {
       type &#x3D; &#x27;MultiPoint&#x27;;
@@ -339,11 +340,12 @@ var replacer &#x3D; function (key, value) {
   }
 };
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -351,17 +353,17 @@ var map &#x3D; new Map({
   }),
 });
 
-var url &#x3D; &#x27;data/geojson/countries.geojson&#x27;;
+const url &#x3D; &#x27;data/geojson/countries.geojson&#x27;;
 fetch(url)
   .then(function (response) {
     return response.json();
   })
   .then(function (json) {
-    var tileIndex &#x3D; geojsonvt(json, {
+    const tileIndex &#x3D; geojsonvt(json, {
       extent: 4096,
       debug: 1,
     });
-    var format &#x3D; new GeoJSON({
+    const format &#x3D; new GeoJSON({
       // Data returned from geojson-vt is in tile pixel units
       dataProjection: new Projection({
         code: &#x27;TILE_PIXELS&#x27;,
@@ -369,33 +371,33 @@ fetch(url)
         extent: [0, 0, 4096, 4096],
       }),
     });
-    var vectorSource &#x3D; new VectorTileSource({
+    const vectorSource &#x3D; new VectorTileSource({
       tileUrlFunction: function (tileCoord) {
         // Use the tile coordinate as a pseudo URL for caching purposes
         return JSON.stringify(tileCoord);
       },
       tileLoadFunction: function (tile, url) {
-        var tileCoord &#x3D; JSON.parse(url);
-        var data &#x3D; tileIndex.getTile(
+        const tileCoord &#x3D; JSON.parse(url);
+        const data &#x3D; tileIndex.getTile(
           tileCoord[0],
           tileCoord[1],
           tileCoord[2]
         );
-        var geojson &#x3D; JSON.stringify(
+        const geojson &#x3D; JSON.stringify(
           {
             type: &#x27;FeatureCollection&#x27;,
             features: data ? data.features : [],
           },
           replacer
         );
-        var features &#x3D; format.readFeatures(geojson, {
+        const features &#x3D; format.readFeatures(geojson, {
           extent: vectorSource.getTileGrid().getTileCoordExtent(tileCoord),
           featureProjection: map.getView().getProjection(),
         });
         tile.setFeatures(features);
       },
     });
-    var vectorLayer &#x3D; new VectorTileLayer({
+    const vectorLayer &#x3D; new VectorTileLayer({
       source: vectorSource,
     });
     map.addLayer(vectorLayer);

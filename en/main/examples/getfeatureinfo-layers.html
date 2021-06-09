@@ -183,19 +183,19 @@ fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;)
   })
   .then(function (response) {
     // this is the standard way to read the features
-    var allFeatures &#x3D; new WMSGetFeatureInfo().readFeatures(response);
+    const allFeatures &#x3D; new WMSGetFeatureInfo().readFeatures(response);
     document.getElementById(&#x27;all&#x27;).innerText &#x3D; allFeatures.length.toString();
 
     // when specifying the &#x27;layers&#x27; options, only the features of those
     // layers are returned by the format
-    var hotelFeatures &#x3D; new WMSGetFeatureInfo({
+    const hotelFeatures &#x3D; new WMSGetFeatureInfo({
       layers: [&#x27;hotel&#x27;],
     }).readFeatures(response);
     document.getElementById(
       &#x27;hotel&#x27;
     ).innerText &#x3D; hotelFeatures.length.toString();
 
-    var restaurantFeatures &#x3D; new WMSGetFeatureInfo({
+    const restaurantFeatures &#x3D; new WMSGetFeatureInfo({
       layers: [&#x27;restaurant&#x27;],
     }).readFeatures(response);
     document.getElementById(

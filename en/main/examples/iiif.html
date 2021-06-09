@@ -212,7 +212,7 @@ import Map from &#x27;ol/Map&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var layer &#x3D; new TileLayer(),
+const layer &#x3D; new TileLayer(),
   map &#x3D; new Map({
     layers: [layer],
     target: &#x27;map&#x27;,
@@ -227,14 +227,14 @@ function refreshMap(imageInfoUrl) {
       response
         .json()
         .then(function (imageInfo) {
-          var options &#x3D; new IIIFInfo(imageInfo).getTileSourceOptions();
+          const options &#x3D; new IIIFInfo(imageInfo).getTileSourceOptions();
           if (options &#x3D;&#x3D;&#x3D; undefined || options.version &#x3D;&#x3D;&#x3D; undefined) {
             notifyDiv.textContent &#x3D;
               &#x27;Data seems to be no valid IIIF image information.&#x27;;
             return;
           }
           options.zDirection &#x3D; -1;
-          var iiifTileSource &#x3D; new IIIF(options);
+          const iiifTileSource &#x3D; new IIIF(options);
           layer.setSource(iiifTileSource);
           map.setView(
             new View({

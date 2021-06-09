@@ -218,11 +218,11 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {OSM, TileArcGISRest} from &#x27;ol/source&#x27;;
 
-var url &#x3D;
+const url &#x3D;
   &#x27;https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/&#x27; +
   &#x27;Specialty/ESRI_StateCityHighway_USA/MapServer&#x27;;
 
-var layers &#x3D; [
+const layers &#x3D; [
   new TileLayer({
     source: new OSM(),
   }),
@@ -231,8 +231,9 @@ var layers &#x3D; [
     source: new TileArcGISRest({
       url: url,
     }),
-  }) ];
-var map &#x3D; new Map({
+  }),
+];
+const map &#x3D; new Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({

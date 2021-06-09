@@ -165,6 +165,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -216,7 +217,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -296,13 +297,13 @@ import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var image &#x3D; new CircleStyle({
+const image &#x3D; new CircleStyle({
   radius: 5,
   fill: null,
   stroke: new Stroke({color: &#x27;red&#x27;, width: 1}),
 });
 
-var styles &#x3D; {
+const styles &#x3D; {
   &#x27;Point&#x27;: new Style({
     image: image,
   }),
@@ -367,11 +368,11 @@ var styles &#x3D; {
   }),
 };
 
-var styleFunction &#x3D; function (feature) {
+const styleFunction &#x3D; function (feature) {
   return styles[feature.getGeometry().getType()];
 };
 
-var geojsonObject &#x3D; {
+const geojsonObject &#x3D; {
   &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
   &#x27;crs&#x27;: {
     &#x27;type&#x27;: &#x27;name&#x27;,
@@ -393,7 +394,8 @@ var geojsonObject &#x3D; {
         &#x27;type&#x27;: &#x27;LineString&#x27;,
         &#x27;coordinates&#x27;: [
           [4e6, -2e6],
-          [8e6, 2e6] ],
+          [8e6, 2e6],
+        ],
       },
     },
     {
@@ -402,7 +404,8 @@ var geojsonObject &#x3D; {
         &#x27;type&#x27;: &#x27;LineString&#x27;,
         &#x27;coordinates&#x27;: [
           [4e6, 2e6],
-          [8e6, -2e6] ],
+          [8e6, -2e6],
+        ],
       },
     },
     {
@@ -414,7 +417,9 @@ var geojsonObject &#x3D; {
             [-5e6, -1e6],
             [-3e6, -1e6],
             [-4e6, 1e6],
-            [-5e6, -1e6] ] ],
+            [-5e6, -1e6],
+          ],
+        ],
       },
     },
     {
@@ -424,16 +429,21 @@ var geojsonObject &#x3D; {
         &#x27;coordinates&#x27;: [
           [
             [-1e6, -7.5e5],
-            [-1e6, 7.5e5] ],
+            [-1e6, 7.5e5],
+          ],
           [
             [1e6, -7.5e5],
-            [1e6, 7.5e5] ],
+            [1e6, 7.5e5],
+          ],
           [
             [-7.5e5, -1e6],
-            [7.5e5, -1e6] ],
+            [7.5e5, -1e6],
+          ],
           [
             [-7.5e5, 1e6],
-            [7.5e5, 1e6] ] ],
+            [7.5e5, 1e6],
+          ],
+        ],
       },
     },
     {
@@ -447,21 +457,28 @@ var geojsonObject &#x3D; {
               [-3e6, 6e6],
               [-3e6, 8e6],
               [-5e6, 8e6],
-              [-5e6, 6e6] ] ],
+              [-5e6, 6e6],
+            ],
+          ],
           [
             [
               [-2e6, 6e6],
               [0, 6e6],
               [0, 8e6],
               [-2e6, 8e6],
-              [-2e6, 6e6] ] ],
+              [-2e6, 6e6],
+            ],
+          ],
           [
             [
               [1e6, 6e6],
               [3e6, 6e6],
               [3e6, 8e6],
               [1e6, 8e6],
-              [1e6, 6e6] ] ] ],
+              [1e6, 6e6],
+            ],
+          ],
+        ],
       },
     },
     {
@@ -473,7 +490,8 @@ var geojsonObject &#x3D; {
             &#x27;type&#x27;: &#x27;LineString&#x27;,
             &#x27;coordinates&#x27;: [
               [-5e6, -5e6],
-              [0, -5e6] ],
+              [0, -5e6],
+            ],
           },
           {
             &#x27;type&#x27;: &#x27;Point&#x27;,
@@ -486,29 +504,34 @@ var geojsonObject &#x3D; {
                 [1e6, -6e6],
                 [3e6, -6e6],
                 [2e6, -4e6],
-                [1e6, -6e6] ] ],
-          } ],
+                [1e6, -6e6],
+              ],
+            ],
+          },
+        ],
       },
-    } ],
+    },
+  ],
 };
 
-var vectorSource &#x3D; new VectorSource({
+const vectorSource &#x3D; new VectorSource({
   features: new GeoJSON().readFeatures(geojsonObject),
 });
 
 vectorSource.addFeature(new Feature(new Circle([5e6, 7e6], 1e6)));
 
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: vectorSource,
   style: styleFunction,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
     }),
-    vectorLayer ],
+    vectorLayer,
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],

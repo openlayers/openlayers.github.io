@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -260,7 +261,7 @@ import VectorSource from &#x27;ol/source/Vector&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Fill, Stroke, Style, Text} from &#x27;ol/style&#x27;;
 
-var style &#x3D; new Style({
+const style &#x3D; new Style({
   fill: new Fill({
     color: &#x27;rgba(255, 255, 255, 0.6)&#x27;,
   }),
@@ -271,7 +272,7 @@ var style &#x3D; new Style({
   text: new Text(),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new VectorImageLayer({
       imageRatio: 2,
@@ -283,7 +284,8 @@ var map &#x3D; new Map({
         style.getText().setText(feature.get(&#x27;name&#x27;));
         return style;
       },
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -291,7 +293,7 @@ var map &#x3D; new Map({
   }),
 });
 
-var featureOverlay &#x3D; new VectorLayer({
+const featureOverlay &#x3D; new VectorLayer({
   source: new VectorSource(),
   map: map,
   style: new Style({
@@ -305,16 +307,16 @@ var featureOverlay &#x3D; new VectorLayer({
   }),
 });
 
-var highlight;
-var displayFeatureInfo &#x3D; function (pixel) {
+let highlight;
+const displayFeatureInfo &#x3D; function (pixel) {
   map
     .getLayers()
     .item(0)
     .getFeatures(pixel)
     .then(function (features) {
-      var feature &#x3D; features.length &gt; 0 ? features[0] : undefined;
+      const feature &#x3D; features.length &gt; 0 ? features[0] : undefined;
 
-      var info &#x3D; document.getElementById(&#x27;info&#x27;);
+      const info &#x3D; document.getElementById(&#x27;info&#x27;);
       if (feature) {
         info.innerHTML &#x3D; feature.getId() + &#x27;: &#x27; + feature.get(&#x27;name&#x27;);
       } else {

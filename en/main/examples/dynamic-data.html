@@ -182,11 +182,11 @@ import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 import {MultiPoint, Point} from &#x27;ol/geom&#x27;;
 import {getVectorContext} from &#x27;ol/render&#x27;;
 
-var tileLayer &#x3D; new TileLayer({
+const tileLayer &#x3D; new TileLayer({
   source: new OSM(),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [tileLayer],
   target: &#x27;map&#x27;,
   view: new View({
@@ -195,7 +195,7 @@ var map &#x3D; new Map({
   }),
 });
 
-var imageStyle &#x3D; new Style({
+const imageStyle &#x3D; new Style({
   image: new CircleStyle({
     radius: 5,
     fill: new Fill({color: &#x27;yellow&#x27;}),
@@ -203,41 +203,41 @@ var imageStyle &#x3D; new Style({
   }),
 });
 
-var headInnerImageStyle &#x3D; new Style({
+const headInnerImageStyle &#x3D; new Style({
   image: new CircleStyle({
     radius: 2,
     fill: new Fill({color: &#x27;blue&#x27;}),
   }),
 });
 
-var headOuterImageStyle &#x3D; new Style({
+const headOuterImageStyle &#x3D; new Style({
   image: new CircleStyle({
     radius: 5,
     fill: new Fill({color: &#x27;black&#x27;}),
   }),
 });
 
-var n &#x3D; 200;
-var omegaTheta &#x3D; 30000; // Rotation period in ms
-var R &#x3D; 7e6;
-var r &#x3D; 2e6;
-var p &#x3D; 2e6;
+const n &#x3D; 200;
+const omegaTheta &#x3D; 30000; // Rotation period in ms
+const R &#x3D; 7e6;
+const r &#x3D; 2e6;
+const p &#x3D; 2e6;
 tileLayer.on(&#x27;postrender&#x27;, function (event) {
-  var vectorContext &#x3D; getVectorContext(event);
-  var frameState &#x3D; event.frameState;
-  var theta &#x3D; (2 * Math.PI * frameState.time) / omegaTheta;
-  var coordinates &#x3D; [];
-  var i;
+  const vectorContext &#x3D; getVectorContext(event);
+  const frameState &#x3D; event.frameState;
+  const theta &#x3D; (2 * Math.PI * frameState.time) / omegaTheta;
+  const coordinates &#x3D; [];
+  let i;
   for (i &#x3D; 0; i &lt; n; ++i) {
-    var t &#x3D; theta + (2 * Math.PI * i) / n;
-    var x &#x3D; (R + r) * Math.cos(t) + p * Math.cos(((R + r) * t) / r);
-    var y &#x3D; (R + r) * Math.sin(t) + p * Math.sin(((R + r) * t) / r);
+    const t &#x3D; theta + (2 * Math.PI * i) / n;
+    const x &#x3D; (R + r) * Math.cos(t) + p * Math.cos(((R + r) * t) / r);
+    const y &#x3D; (R + r) * Math.sin(t) + p * Math.sin(((R + r) * t) / r);
     coordinates.push([x, y]);
   }
   vectorContext.setStyle(imageStyle);
   vectorContext.drawGeometry(new MultiPoint(coordinates));
 
-  var headPoint &#x3D; new Point(coordinates[coordinates.length - 1]);
+  const headPoint &#x3D; new Point(coordinates[coordinates.length - 1]);
 
   vectorContext.setStyle(headOuterImageStyle);
   vectorContext.drawGeometry(headPoint);

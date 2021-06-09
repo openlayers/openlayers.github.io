@@ -162,6 +162,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -213,7 +214,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -298,13 +299,13 @@ import {fromLonLat} from &#x27;ol/proj&#x27;;
 import {getVectorContext} from &#x27;ol/render&#x27;;
 import {unByKey} from &#x27;ol/Observable&#x27;;
 
-var tileLayer &#x3D; new TileLayer({
+const tileLayer &#x3D; new TileLayer({
   source: new OSM({
     wrapX: false,
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [tileLayer],
   target: &#x27;map&#x27;,
   view: new View({
@@ -314,38 +315,38 @@ var map &#x3D; new Map({
   }),
 });
 
-var source &#x3D; new VectorSource({
+const source &#x3D; new VectorSource({
   wrapX: false,
 });
-var vector &#x3D; new VectorLayer({
+const vector &#x3D; new VectorLayer({
   source: source,
 });
 map.addLayer(vector);
 
 function addRandomFeature() {
-  var x &#x3D; Math.random() * 360 - 180;
-  var y &#x3D; Math.random() * 180 - 90;
-  var geom &#x3D; new Point(fromLonLat([x, y]));
-  var feature &#x3D; new Feature(geom);
+  const x &#x3D; Math.random() * 360 - 180;
+  const y &#x3D; Math.random() * 180 - 90;
+  const geom &#x3D; new Point(fromLonLat([x, y]));
+  const feature &#x3D; new Feature(geom);
   source.addFeature(feature);
 }
 
-var duration &#x3D; 3000;
+const duration &#x3D; 3000;
 function flash(feature) {
-  var start &#x3D; new Date().getTime();
-  var listenerKey &#x3D; tileLayer.on(&#x27;postrender&#x27;, animate);
+  const start &#x3D; new Date().getTime();
+  const listenerKey &#x3D; tileLayer.on(&#x27;postrender&#x27;, animate);
 
   function animate(event) {
-    var vectorContext &#x3D; getVectorContext(event);
-    var frameState &#x3D; event.frameState;
-    var flashGeom &#x3D; feature.getGeometry().clone();
-    var elapsed &#x3D; frameState.time - start;
-    var elapsedRatio &#x3D; elapsed / duration;
+    const vectorContext &#x3D; getVectorContext(event);
+    const frameState &#x3D; event.frameState;
+    const flashGeom &#x3D; feature.getGeometry().clone();
+    const elapsed &#x3D; frameState.time - start;
+    const elapsedRatio &#x3D; elapsed / duration;
     // radius will be 5 at start and 30 at end.
-    var radius &#x3D; easeOut(elapsedRatio) * 25 + 5;
-    var opacity &#x3D; easeOut(1 - elapsedRatio);
+    const radius &#x3D; easeOut(elapsedRatio) * 25 + 5;
+    const opacity &#x3D; easeOut(1 - elapsedRatio);
 
-    var style &#x3D; new Style({
+    const style &#x3D; new Style({
       image: new CircleStyle({
         radius: radius,
         stroke: new Stroke({

@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -324,8 +325,8 @@ import {
   like as likeFilter,
 } from &#x27;ol/format/filter&#x27;;
 
-var vectorSource &#x3D; new VectorSource();
-var vector &#x3D; new VectorLayer({
+const vectorSource &#x3D; new VectorSource();
+const vector &#x3D; new VectorLayer({
   source: vectorSource,
   style: new Style({
     stroke: new Stroke({
@@ -335,12 +336,12 @@ var vector &#x3D; new VectorLayer({
   }),
 });
 
-var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
-var attributions &#x3D;
+const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
+const attributions &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new XYZ({
     attributions: attributions,
     url: &#x27;https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
@@ -348,7 +349,7 @@ var raster &#x3D; new TileLayer({
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
@@ -359,7 +360,7 @@ var map &#x3D; new Map({
 });
 
 // generate a GetFeature request
-var featureRequest &#x3D; new WFS().writeGetFeature({
+const featureRequest &#x3D; new WFS().writeGetFeature({
   srsName: &#x27;EPSG:3857&#x27;,
   featureNS: &#x27;http://openstreemap.org&#x27;,
   featurePrefix: &#x27;osm&#x27;,
@@ -380,7 +381,7 @@ fetch(&#x27;https://ahocevar.com/geoserver/wfs&#x27;, {
     return response.json();
   })
   .then(function (json) {
-    var features &#x3D; new GeoJSON().readFeatures(json);
+    const features &#x3D; new GeoJSON().readFeatures(json);
     vectorSource.addFeatures(features);
     map.getView().fit(vectorSource.getExtent());
   });

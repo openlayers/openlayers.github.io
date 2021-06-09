@@ -136,12 +136,13 @@
                 data-title="modify"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-icon.html&quot;&gt;Icon modification&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-features.html&quot;&gt;Modify Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./modify-test.html&quot;&gt;Modify Features Test&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./snap.html&quot;&gt;Snap Interaction&lt;/a&gt;"
                 tabindex="0"
-                >5</a>
+                >6</a>
             </span>
             <span class="badge-group">
               <a
@@ -153,6 +154,7 @@
                 data-title="edit"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-esri-edit.html&quot;&gt;Editable ArcGIS REST Feature Service&lt;/a&gt;
@@ -163,7 +165,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./snap.html&quot;&gt;Snap Interaction&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./topolis.html&quot;&gt;topolis integration&lt;/a&gt;"
                 tabindex="0"
-                >10</a>
+                >11</a>
             </span>
             <span class="badge-group">
               <a
@@ -184,6 +186,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -235,7 +238,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -284,9 +287,9 @@ import {
   defaults as defaultInteractions,
 } from &#x27;ol/interaction&#x27;;
 
-var styleFunction &#x3D; (function () {
-  var styles &#x3D; {};
-  var image &#x3D; new CircleStyle({
+const styleFunction &#x3D; (function () {
+  const styles &#x3D; {};
+  const image &#x3D; new CircleStyle({
     radius: 5,
     fill: null,
     stroke: new Stroke({color: &#x27;orange&#x27;, width: 2}),
@@ -331,7 +334,7 @@ var styleFunction &#x3D; (function () {
   };
 })();
 
-var geojsonObject &#x3D; {
+const geojsonObject &#x3D; {
   &#x27;type&#x27;: &#x27;FeatureCollection&#x27;,
   &#x27;crs&#x27;: {
     &#x27;type&#x27;: &#x27;name&#x27;,
@@ -353,7 +356,8 @@ var geojsonObject &#x3D; {
         &#x27;type&#x27;: &#x27;MultiPoint&#x27;,
         &#x27;coordinates&#x27;: [
           [-2e6, 0],
-          [0, -2e6] ],
+          [0, -2e6],
+        ],
       },
     },
     {
@@ -363,7 +367,8 @@ var geojsonObject &#x3D; {
         &#x27;coordinates&#x27;: [
           [4e6, -2e6],
           [8e6, 2e6],
-          [9e6, 2e6] ],
+          [9e6, 2e6],
+        ],
       },
     },
     {
@@ -373,7 +378,8 @@ var geojsonObject &#x3D; {
         &#x27;coordinates&#x27;: [
           [4e6, -2e6],
           [8e6, 2e6],
-          [8e6, 3e6] ],
+          [8e6, 3e6],
+        ],
       },
     },
     {
@@ -385,12 +391,15 @@ var geojsonObject &#x3D; {
             [-5e6, -1e6],
             [-4e6, 1e6],
             [-3e6, -1e6],
-            [-5e6, -1e6] ],
+            [-5e6, -1e6],
+          ],
           [
             [-4.5e6, -0.5e6],
             [-3.5e6, -0.5e6],
             [-4e6, 0.5e6],
-            [-4.5e6, -0.5e6] ] ],
+            [-4.5e6, -0.5e6],
+          ],
+        ],
       },
     },
     {
@@ -400,23 +409,29 @@ var geojsonObject &#x3D; {
         &#x27;coordinates&#x27;: [
           [
             [-1e6, -7.5e5],
-            [-1e6, 7.5e5] ],
+            [-1e6, 7.5e5],
+          ],
           [
             [-1e6, -7.5e5],
             [-1e6, 7.5e5],
             [-5e5, 0],
-            [-1e6, -7.5e5] ],
+            [-1e6, -7.5e5],
+          ],
           [
             [1e6, -7.5e5],
             [15e5, 0],
             [15e5, 0],
-            [1e6, 7.5e5] ],
+            [1e6, 7.5e5],
+          ],
           [
             [-7.5e5, -1e6],
-            [7.5e5, -1e6] ],
+            [7.5e5, -1e6],
+          ],
           [
             [-7.5e5, 1e6],
-            [7.5e5, 1e6] ] ],
+            [7.5e5, 1e6],
+          ],
+        ],
       },
     },
     {
@@ -430,21 +445,28 @@ var geojsonObject &#x3D; {
               [-5e6, 8e6],
               [-3e6, 8e6],
               [-3e6, 6e6],
-              [-5e6, 6e6] ] ],
+              [-5e6, 6e6],
+            ],
+          ],
           [
             [
               [-3e6, 6e6],
               [-2e6, 8e6],
               [0, 8e6],
               [0, 6e6],
-              [-3e6, 6e6] ] ],
+              [-3e6, 6e6],
+            ],
+          ],
           [
             [
               [1e6, 6e6],
               [1e6, 8e6],
               [3e6, 8e6],
               [3e6, 6e6],
-              [1e6, 6e6] ] ] ],
+              [1e6, 6e6],
+            ],
+          ],
+        ],
       },
     },
     {
@@ -456,7 +478,8 @@ var geojsonObject &#x3D; {
             &#x27;type&#x27;: &#x27;LineString&#x27;,
             &#x27;coordinates&#x27;: [
               [-5e6, -5e6],
-              [0, -5e6] ],
+              [0, -5e6],
+            ],
           },
           {
             &#x27;type&#x27;: &#x27;Point&#x27;,
@@ -469,7 +492,9 @@ var geojsonObject &#x3D; {
                 [1e6, -5e6],
                 [2e6, -3.5e6],
                 [3e6, -5e6],
-                [1e6, -5e6] ] ],
+                [1e6, -5e6],
+              ],
+            ],
           },
           {
             &#x27;type&#x27;: &#x27;Polygon&#x27;,
@@ -478,23 +503,27 @@ var geojsonObject &#x3D; {
                 [1e6, -5e6],
                 [2e6, -6.5e6],
                 [3e6, -5e6],
-                [1e6, -5e6] ] ],
-          } ],
+                [1e6, -5e6],
+              ],
+            ],
+          },
+        ],
       },
-    } ],
+    },
+  ],
 };
 
-var source &#x3D; new VectorSource({
+const source &#x3D; new VectorSource({
   features: new GeoJSON().readFeatures(geojsonObject),
 });
 
-var layer &#x3D; new VectorLayer({
+const layer &#x3D; new VectorLayer({
   source: source,
   style: styleFunction,
 });
 
-var overlayStyle &#x3D; (function () {
-  var styles &#x3D; {};
+const overlayStyle &#x3D; (function () {
+  const styles &#x3D; {};
   styles[&#x27;Polygon&#x27;] &#x3D; [
     new Style({
       fill: new Fill({
@@ -512,7 +541,8 @@ var overlayStyle &#x3D; (function () {
         color: [0, 153, 255, 1],
         width: 3,
       }),
-    }) ];
+    }),
+  ];
   styles[&#x27;MultiPolygon&#x27;] &#x3D; styles[&#x27;Polygon&#x27;];
 
   styles[&#x27;LineString&#x27;] &#x3D; [
@@ -527,7 +557,8 @@ var overlayStyle &#x3D; (function () {
         color: [0, 153, 255, 1],
         width: 3,
       }),
-    }) ];
+    }),
+  ];
   styles[&#x27;MultiLineString&#x27;] &#x3D; styles[&#x27;LineString&#x27;];
 
   styles[&#x27;Point&#x27;] &#x3D; [
@@ -543,7 +574,8 @@ var overlayStyle &#x3D; (function () {
         }),
       }),
       zIndex: 100000,
-    }) ];
+    }),
+  ];
   styles[&#x27;MultiPoint&#x27;] &#x3D; styles[&#x27;Point&#x27;];
 
   styles[&#x27;GeometryCollection&#x27;] &#x3D; styles[&#x27;Polygon&#x27;].concat(styles[&#x27;Point&#x27;]);
@@ -553,11 +585,11 @@ var overlayStyle &#x3D; (function () {
   };
 })();
 
-var select &#x3D; new Select({
+const select &#x3D; new Select({
   style: overlayStyle,
 });
 
-var modify &#x3D; new Modify({
+const modify &#x3D; new Modify({
   features: select.getFeatures(),
   style: overlayStyle,
   insertVertexCondition: function () {
@@ -574,7 +606,7 @@ var modify &#x3D; new Modify({
   },
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   interactions: defaultInteractions().extend([select, modify]),
   layers: [layer],
   target: &#x27;map&#x27;,

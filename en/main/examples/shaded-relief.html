@@ -238,22 +238,22 @@ import {OSM, Raster, XYZ} from &#x27;ol/source&#x27;;
  * @return {ImageData} Output image.
  */
 function shade(inputs, data) {
-  var elevationImage &#x3D; inputs[0];
-  var width &#x3D; elevationImage.width;
-  var height &#x3D; elevationImage.height;
-  var elevationData &#x3D; elevationImage.data;
-  var shadeData &#x3D; new Uint8ClampedArray(elevationData.length);
-  var dp &#x3D; data.resolution * 2;
-  var maxX &#x3D; width - 1;
-  var maxY &#x3D; height - 1;
-  var pixel &#x3D; [0, 0, 0, 0];
-  var twoPi &#x3D; 2 * Math.PI;
-  var halfPi &#x3D; Math.PI / 2;
-  var sunEl &#x3D; (Math.PI * data.sunEl) / 180;
-  var sunAz &#x3D; (Math.PI * data.sunAz) / 180;
-  var cosSunEl &#x3D; Math.cos(sunEl);
-  var sinSunEl &#x3D; Math.sin(sunEl);
-  var pixelX,
+  const elevationImage &#x3D; inputs[0];
+  const width &#x3D; elevationImage.width;
+  const height &#x3D; elevationImage.height;
+  const elevationData &#x3D; elevationImage.data;
+  const shadeData &#x3D; new Uint8ClampedArray(elevationData.length);
+  const dp &#x3D; data.resolution * 2;
+  const maxX &#x3D; width - 1;
+  const maxY &#x3D; height - 1;
+  const pixel &#x3D; [0, 0, 0, 0];
+  const twoPi &#x3D; 2 * Math.PI;
+  const halfPi &#x3D; Math.PI / 2;
+  const sunEl &#x3D; (Math.PI * data.sunEl) / 180;
+  const sunAz &#x3D; (Math.PI * data.sunAz) / 180;
+  const cosSunEl &#x3D; Math.cos(sunEl);
+  const sinSunEl &#x3D; Math.sin(sunEl);
+  let pixelX,
     pixelY,
     x0,
     x1,
@@ -268,6 +268,18 @@ function shade(inputs, data) {
     aspect,
     cosIncidence,
     scaled;
+  function calculateElevation(pixel) {
+    // The method used to extract elevations from the DEM.
+    // In this case the format used is
+    // red + green * 2 + blue * 3
+    //
+    // Other frequently used methods include the Mapbox format
+    // (red * 256 * 256 + green * 256 + blue) * 0.1 - 10000
+    // and the Terrarium format
+    // (red * 256 + green + blue / 256) - 32768
+    //
+    return pixel[0] + pixel[1] * 2 + pixel[2] * 3;
+  }
   for (pixelY &#x3D; 0; pixelY &lt;&#x3D; maxY; ++pixelY) {
     y0 &#x3D; pixelY &#x3D;&#x3D;&#x3D; 0 ? 0 : pixelY - 1;
     y1 &#x3D; pixelY &#x3D;&#x3D;&#x3D; maxY ? maxY : pixelY + 1;
@@ -281,7 +293,7 @@ function shade(inputs, data) {
       pixel[1] &#x3D; elevationData[offset + 1];
       pixel[2] &#x3D; elevationData[offset + 2];
       pixel[3] &#x3D; elevationData[offset + 3];
-      z0 &#x3D; data.vert * (pixel[0] + pixel[1] * 2 + pixel[2] * 3);
+      z0 &#x3D; data.vert * calculateElevation(pixel);
 
       // determine elevation for (x1, pixelY)
       offset &#x3D; (pixelY * width + x1) * 4;
@@ -289,7 +301,7 @@ function shade(inputs, data) {
       pixel[1] &#x3D; elevationData[offset + 1];
       pixel[2] &#x3D; elevationData[offset + 2];
       pixel[3] &#x3D; elevationData[offset + 3];
-      z1 &#x3D; data.vert * (pixel[0] + pixel[1] * 2 + pixel[2] * 3);
+      z1 &#x3D; data.vert * calculateElevation(pixel);
 
       dzdx &#x3D; (z1 - z0) / dp;
 
@@ -299,7 +311,7 @@ function shade(inputs, data) {
       pixel[1] &#x3D; elevationData[offset + 1];
       pixel[2] &#x3D; elevationData[offset + 2];
       pixel[3] &#x3D; elevationData[offset + 3];
-      z0 &#x3D; data.vert * (pixel[0] + pixel[1] * 2 + pixel[2] * 3);
+      z0 &#x3D; data.vert * calculateElevation(pixel);
 
       // determine elevation for (pixelX, y1)
       offset &#x3D; (y1 * width + pixelX) * 4;
@@ -307,7 +319,7 @@ function shade(inputs, data) {
       pixel[1] &#x3D; elevationData[offset + 1];
       pixel[2] &#x3D; elevationData[offset + 2];
       pixel[3] &#x3D; elevationData[offset + 3];
-      z1 &#x3D; data.vert * (pixel[0] + pixel[1] * 2 + pixel[2] * 3);
+      z1 &#x3D; data.vert * calculateElevation(pixel);
 
       dzdy &#x3D; (z1 - z0) / dp;
 
@@ -338,18 +350,18 @@ function shade(inputs, data) {
   return {data: shadeData, width: width, height: height};
 }
 
-var elevation &#x3D; new XYZ({
+const elevation &#x3D; new XYZ({
   url: &#x27;https://{a-d}.tiles.mapbox.com/v3/aj.sf-dem/{z}/{x}/{y}.png&#x27;,
   crossOrigin: &#x27;anonymous&#x27;,
 });
 
-var raster &#x3D; new Raster({
+const raster &#x3D; new Raster({
   sources: [elevation],
   operationType: &#x27;image&#x27;,
   operation: shade,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   layers: [
     new TileLayer({
@@ -358,7 +370,8 @@ var map &#x3D; new Map({
     new ImageLayer({
       opacity: 0.3,
       source: raster,
-    }) ],
+    }),
+  ],
   view: new View({
     extent: [-13675026, 4439648, -13580856, 4580292],
     center: [-13615645, 4497969],
@@ -368,11 +381,11 @@ var map &#x3D; new Map({
   }),
 });
 
-var controlIds &#x3D; [&#x27;vert&#x27;, &#x27;sunEl&#x27;, &#x27;sunAz&#x27;];
-var controls &#x3D; {};
+const controlIds &#x3D; [&#x27;vert&#x27;, &#x27;sunEl&#x27;, &#x27;sunAz&#x27;];
+const controls &#x3D; {};
 controlIds.forEach(function (id) {
-  var control &#x3D; document.getElementById(id);
-  var output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
+  const control &#x3D; document.getElementById(id);
+  const output &#x3D; document.getElementById(id + &#x27;Out&#x27;);
   control.addEventListener(&#x27;input&#x27;, function () {
     output.innerText &#x3D; control.value;
     raster.changed();
@@ -383,9 +396,9 @@ controlIds.forEach(function (id) {
 
 raster.on(&#x27;beforeoperations&#x27;, function (event) {
   // the event.data object will be passed to operations
-  var data &#x3D; event.data;
+  const data &#x3D; event.data;
   data.resolution &#x3D; event.resolution;
-  for (var id in controls) {
+  for (const id in controls) {
     data[id] &#x3D; Number(controls[id].value);
   }
 });

@@ -267,13 +267,13 @@ proj4.defs(
 );
 register(proj4);
 
-var projection &#x3D; new Projection({
+const projection &#x3D; new Projection({
   code: &#x27;EPSG:21781&#x27;,
   extent: [485869.5728, 76443.1884, 837076.5648, 299941.7864],
 });
 
-var extent &#x3D; [420000, 30000, 900000, 350000];
-var layers &#x3D; [
+const extent &#x3D; [420000, 30000, 900000, 350000];
+const layers &#x3D; [
   new ImageLayer({
     extent: extent,
     source: new ImageWMS({
@@ -300,9 +300,10 @@ var layers &#x3D; [
       params: {&#x27;LAYERS&#x27;: &#x27;ch.bafu.hydroweb-warnkarte_national&#x27;},
       serverType: &#x27;mapserver&#x27;,
     }),
-  }) ];
+  }),
+];
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   controls: defaultControls().extend([new ScaleLine()]),
   layers: layers,
   target: &#x27;map&#x27;,
@@ -348,7 +349,7 @@ var map &#x3D; new Map({
   &quot;name&quot;: &quot;wms-image-custom-proj&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;6.5.1-dev&quot;,
-    &quot;proj4&quot;: &quot;2.7.0&quot;
+    &quot;proj4&quot;: &quot;2.7.2&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;

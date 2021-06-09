@@ -149,9 +149,10 @@
                 data-title="circle"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./custom-circle-render.html&quot;&gt;Custom Circle Render&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./tissot.html&quot;&gt;Tissot Indicatrix&lt;/a&gt;"
                 tabindex="0"
-                >2</a>
+                >3</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -199,15 +200,15 @@ import View from &#x27;ol/View&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {circular as circularPolygon} from &#x27;ol/geom/Polygon&#x27;;
 
-var vectorLayer4326 &#x3D; new VectorLayer({
+const vectorLayer4326 &#x3D; new VectorLayer({
   source: new VectorSource(),
 });
 
-var vectorLayer3857 &#x3D; new VectorLayer({
+const vectorLayer3857 &#x3D; new VectorLayer({
   source: new VectorSource(),
 });
 
-var map4326 &#x3D; new Map({
+const map4326 &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new TileWMS({
@@ -218,7 +219,8 @@ var map4326 &#x3D; new Map({
         },
       }),
     }),
-    vectorLayer4326 ],
+    vectorLayer4326,
+  ],
   target: &#x27;map4326&#x27;,
   view: new View({
     projection: &#x27;EPSG:4326&#x27;,
@@ -227,7 +229,7 @@ var map4326 &#x3D; new Map({
   }),
 });
 
-var map3857 &#x3D; new Map({
+const map3857 &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new TileWMS({
@@ -238,7 +240,8 @@ var map3857 &#x3D; new Map({
         },
       }),
     }),
-    vectorLayer3857 ],
+    vectorLayer3857,
+  ],
   target: &#x27;map3857&#x27;,
   view: new View({
     center: [0, 0],
@@ -246,12 +249,12 @@ var map3857 &#x3D; new Map({
   }),
 });
 
-var radius &#x3D; 800000;
-var x, y;
+const radius &#x3D; 800000;
+let x, y;
 for (x &#x3D; -180; x &lt; 180; x +&#x3D; 30) {
-  for (y &#x3D; -90; y &lt; 90; y +&#x3D; 30) {
-    var circle4326 &#x3D; circularPolygon([x, y], radius, 64);
-    var circle3857 &#x3D; circle4326.clone().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
+  for (y &#x3D; -90; y &lt;&#x3D; 90; y +&#x3D; 30) {
+    const circle4326 &#x3D; circularPolygon([x, y], radius, 64);
+    const circle3857 &#x3D; circle4326.clone().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
     vectorLayer4326.getSource().addFeature(new Feature(circle4326));
     vectorLayer3857.getSource().addFeature(new Feature(circle3857));
   }

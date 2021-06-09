@@ -241,11 +241,11 @@ import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
 /** @type {VectorSource&lt;import(&quot;../src/ol/geom/SimpleGeometry.js&quot;).default&gt;} */
-var source &#x3D; new VectorSource({
+const source &#x3D; new VectorSource({
   url: &#x27;data/geojson/switzerland.geojson&#x27;,
   format: new GeoJSON(),
 });
-var style &#x3D; new Style({
+const style &#x3D; new Style({
   fill: new Fill({
     color: &#x27;rgba(255, 255, 255, 0.6)&#x27;,
   }),
@@ -264,53 +264,54 @@ var style &#x3D; new Style({
     }),
   }),
 });
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: source,
   style: style,
 });
-var view &#x3D; new View({
+const view &#x3D; new View({
   center: [0, 0],
   zoom: 1,
 });
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
     }),
-    vectorLayer ],
+    vectorLayer,
+  ],
   target: &#x27;map&#x27;,
   view: view,
 });
 
-var zoomtoswitzerland &#x3D; document.getElementById(&#x27;zoomtoswitzerland&#x27;);
+const zoomtoswitzerland &#x3D; document.getElementById(&#x27;zoomtoswitzerland&#x27;);
 zoomtoswitzerland.addEventListener(
   &#x27;click&#x27;,
   function () {
-    var feature &#x3D; source.getFeatures()[0];
-    var polygon &#x3D; feature.getGeometry();
+    const feature &#x3D; source.getFeatures()[0];
+    const polygon &#x3D; feature.getGeometry();
     view.fit(polygon, {padding: [170, 50, 30, 150]});
   },
   false
 );
 
-var zoomtolausanne &#x3D; document.getElementById(&#x27;zoomtolausanne&#x27;);
+const zoomtolausanne &#x3D; document.getElementById(&#x27;zoomtolausanne&#x27;);
 zoomtolausanne.addEventListener(
   &#x27;click&#x27;,
   function () {
-    var feature &#x3D; source.getFeatures()[1];
-    var point &#x3D; feature.getGeometry();
+    const feature &#x3D; source.getFeatures()[1];
+    const point &#x3D; feature.getGeometry();
     view.fit(point, {padding: [170, 50, 30, 150], minResolution: 50});
   },
   false
 );
 
-var centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
+const centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
 centerlausanne.addEventListener(
   &#x27;click&#x27;,
   function () {
-    var feature &#x3D; source.getFeatures()[1];
-    var point &#x3D; feature.getGeometry();
-    var size &#x3D; map.getSize();
+    const feature &#x3D; source.getFeatures()[1];
+    const point &#x3D; feature.getGeometry();
+    const size &#x3D; map.getSize();
     view.centerOn(point.getCoordinates(), size, [570, 500]);
   },
   false

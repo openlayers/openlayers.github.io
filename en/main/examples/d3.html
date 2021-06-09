@@ -69,7 +69,7 @@
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/elm-pep"></script>
     <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"></script>
-    <script src="https://unpkg.com/d3@5.9.2/dist/d3.js"></script>
+    <script src="https://unpkg.com/d3@6.7.0/dist/d3.min.js"></script>
 <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.js"></script>
     <link rel="stylesheet" href="d3.css">
     <title>d3 Integration</title>
@@ -183,9 +183,9 @@ import {Layer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
 import {fromLonLat, toLonLat} from &#x27;ol/proj&#x27;;
 import {getCenter, getWidth} from &#x27;ol/extent&#x27;;
 
-var CanvasLayer &#x3D; /*@__PURE__*/(function (Layer) {
-  function CanvasLayer(options) {
-    Layer.call(this, options);
+class CanvasLayer extends Layer {
+  constructor(options) {
+    super(options);
 
     this.features &#x3D; options.features;
 
@@ -197,41 +197,37 @@ var CanvasLayer &#x3D; /*@__PURE__*/(function (Layer) {
     this.svg.append(&#x27;path&#x27;).datum(this.features).attr(&#x27;class&#x27;, &#x27;boundary&#x27;);
   }
 
-  if ( Layer ) CanvasLayer.__proto__ &#x3D; Layer;
-  CanvasLayer.prototype &#x3D; Object.create( Layer &amp;&amp; Layer.prototype );
-  CanvasLayer.prototype.constructor &#x3D; CanvasLayer;
-
-  CanvasLayer.prototype.getSourceState &#x3D; function getSourceState () {
+  getSourceState() {
     return SourceState.READY;
-  };
+  }
 
-  CanvasLayer.prototype.render &#x3D; function render (frameState) {
-    var width &#x3D; frameState.size[0];
-    var height &#x3D; frameState.size[1];
-    var projection &#x3D; frameState.viewState.projection;
-    var d3Projection &#x3D; d3.geoMercator().scale(1).translate([0, 0]);
-    var d3Path &#x3D; d3.geoPath().projection(d3Projection);
+  render(frameState) {
+    const width &#x3D; frameState.size[0];
+    const height &#x3D; frameState.size[1];
+    const projection &#x3D; frameState.viewState.projection;
+    const d3Projection &#x3D; d3.geoMercator().scale(1).translate([0, 0]);
+    let d3Path &#x3D; d3.geoPath().projection(d3Projection);
 
-    var pixelBounds &#x3D; d3Path.bounds(this.features);
-    var pixelBoundsWidth &#x3D; pixelBounds[1][0] - pixelBounds[0][0];
-    var pixelBoundsHeight &#x3D; pixelBounds[1][1] - pixelBounds[0][1];
+    const pixelBounds &#x3D; d3Path.bounds(this.features);
+    const pixelBoundsWidth &#x3D; pixelBounds[1][0] - pixelBounds[0][0];
+    const pixelBoundsHeight &#x3D; pixelBounds[1][1] - pixelBounds[0][1];
 
-    var geoBounds &#x3D; d3.geoBounds(this.features);
-    var geoBoundsLeftBottom &#x3D; fromLonLat(geoBounds[0], projection);
-    var geoBoundsRightTop &#x3D; fromLonLat(geoBounds[1], projection);
-    var geoBoundsWidth &#x3D; geoBoundsRightTop[0] - geoBoundsLeftBottom[0];
+    const geoBounds &#x3D; d3.geoBounds(this.features);
+    const geoBoundsLeftBottom &#x3D; fromLonLat(geoBounds[0], projection);
+    const geoBoundsRightTop &#x3D; fromLonLat(geoBounds[1], projection);
+    let geoBoundsWidth &#x3D; geoBoundsRightTop[0] - geoBoundsLeftBottom[0];
     if (geoBoundsWidth &lt; 0) {
       geoBoundsWidth +&#x3D; getWidth(projection.getExtent());
     }
-    var geoBoundsHeight &#x3D; geoBoundsRightTop[1] - geoBoundsLeftBottom[1];
+    const geoBoundsHeight &#x3D; geoBoundsRightTop[1] - geoBoundsLeftBottom[1];
 
-    var widthResolution &#x3D; geoBoundsWidth / pixelBoundsWidth;
-    var heightResolution &#x3D; geoBoundsHeight / pixelBoundsHeight;
-    var r &#x3D; Math.max(widthResolution, heightResolution);
-    var scale &#x3D; r / frameState.viewState.resolution;
+    const widthResolution &#x3D; geoBoundsWidth / pixelBoundsWidth;
+    const heightResolution &#x3D; geoBoundsHeight / pixelBoundsHeight;
+    const r &#x3D; Math.max(widthResolution, heightResolution);
+    const scale &#x3D; r / frameState.viewState.resolution;
 
-    var center &#x3D; toLonLat(getCenter(frameState.extent), projection);
-    var angle &#x3D; (-frameState.viewState.rotation * 180) / Math.PI;
+    const center &#x3D; toLonLat(getCenter(frameState.extent), projection);
+    const angle &#x3D; (-frameState.viewState.rotation * 180) / Math.PI;
 
     d3Projection
       .scale(scale)
@@ -248,18 +244,17 @@ var CanvasLayer &#x3D; /*@__PURE__*/(function (Layer) {
     this.svg.select(&#x27;path&#x27;).attr(&#x27;d&#x27;, d3Path);
 
     return this.svg.node();
-  };
+  }
+}
 
-  return CanvasLayer;
-}(Layer));
-
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new Stamen({
         layer: &#x27;watercolor&#x27;,
       }),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: fromLonLat([-97, 38]),
@@ -271,7 +266,7 @@ var map &#x3D; new Map({
  * Load the topojson data and create an ol/layer/Image for that data.
  */
 d3.json(&#x27;data/topojson/us.json&#x27;).then(function (us) {
-  var layer &#x3D; new CanvasLayer({
+  const layer &#x3D; new CanvasLayer({
     features: topojson.feature(us, us.objects.counties),
   });
 
@@ -291,7 +286,7 @@ d3.json(&#x27;data/topojson/us.json&#x27;).then(function (us) {
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://unpkg.com/d3@5.9.2/dist/d3.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://unpkg.com/d3@6.7.0/dist/d3.min.js&quot;&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://unpkg.com/topojson@3.0.2/dist/topojson.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {

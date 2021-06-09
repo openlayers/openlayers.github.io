@@ -185,6 +185,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -236,7 +237,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -337,10 +338,10 @@ import View from &#x27;ol/View&#x27;;
 import {Stroke, Style} from &#x27;ol/style&#x27;;
 import {fromLonLat, toLonLat} from &#x27;ol/proj&#x27;;
 
-var center &#x3D; [-98.8, 37.9];
-var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
+const center &#x3D; [-98.8, 37.9];
+const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
 
-var mbMap &#x3D; new mapboxgl.Map({
+const mbMap &#x3D; new mapboxgl.Map({
   style: &#x27;https://api.maptiler.com/maps/bright/style.json?key&#x3D;&#x27; + key,
   attributionControl: false,
   boxZoom: false,
@@ -356,19 +357,19 @@ var mbMap &#x3D; new mapboxgl.Map({
   touchZoomRotate: false,
 });
 
-var mbLayer &#x3D; new Layer({
+const mbLayer &#x3D; new Layer({
   render: function (frameState) {
-    var canvas &#x3D; mbMap.getCanvas();
-    var viewState &#x3D; frameState.viewState;
+    const canvas &#x3D; mbMap.getCanvas();
+    const viewState &#x3D; frameState.viewState;
 
-    var visible &#x3D; mbLayer.getVisible();
+    const visible &#x3D; mbLayer.getVisible();
     canvas.style.display &#x3D; visible ? &#x27;block&#x27; : &#x27;none&#x27;;
 
-    var opacity &#x3D; mbLayer.getOpacity();
+    const opacity &#x3D; mbLayer.getOpacity();
     canvas.style.opacity &#x3D; opacity;
 
     // adjust view parameters in mapbox
-    var rotation &#x3D; viewState.rotation;
+    const rotation &#x3D; viewState.rotation;
     mbMap.jumpTo({
       center: toLonLat(viewState.center),
       zoom: viewState.zoom - 1,
@@ -390,18 +391,19 @@ var mbLayer &#x3D; new Layer({
   source: new Source({
     attributions: [
       &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;© MapTiler&lt;/a&gt;&#x27;,
-      &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;© OpenStreetMap contributors&lt;/a&gt;&#x27; ],
+      &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;© OpenStreetMap contributors&lt;/a&gt;&#x27;,
+    ],
   }),
 });
 
-var style &#x3D; new Style({
+const style &#x3D; new Style({
   stroke: new Stroke({
     color: &#x27;#319FD3&#x27;,
     width: 2,
   }),
 });
 
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/countries.geojson&#x27;,
     format: new GeoJSON(),
@@ -409,7 +411,7 @@ var vectorLayer &#x3D; new VectorLayer({
   style: style,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: fromLonLat(center),

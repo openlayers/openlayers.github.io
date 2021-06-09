@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -240,18 +241,18 @@ import VectorSource from &#x27;ol/source/Vector&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Stroke, Style} from &#x27;ol/style&#x27;;
 
-var count &#x3D; 10000;
-var features &#x3D; new Array(count);
+const count &#x3D; 10000;
+const features &#x3D; new Array(count);
 
-var startPoint &#x3D; [0, 0];
-var endPoint;
+let startPoint &#x3D; [0, 0];
+let endPoint;
 
-var delta, deltaX, deltaY;
-var signX &#x3D; 1;
-var signY &#x3D; -1;
+let delta, deltaX, deltaY;
+let signX &#x3D; 1;
+let signY &#x3D; -1;
 
 // Create a square spiral.
-var i;
+let i;
 for (i &#x3D; 0; i &lt; count; ++i) {
   delta &#x3D; (i + 1) * 2500;
   if (i % 2 &#x3D;&#x3D;&#x3D; 0) {
@@ -268,7 +269,7 @@ for (i &#x3D; 0; i &lt; count; ++i) {
   startPoint &#x3D; endPoint;
 }
 
-var vector &#x3D; new VectorLayer({
+const vector &#x3D; new VectorLayer({
   source: new VectorSource({
     features: features,
     wrapX: false,
@@ -281,12 +282,12 @@ var vector &#x3D; new VectorLayer({
   }),
 });
 
-var view &#x3D; new View({
+const view &#x3D; new View({
   center: [0, 0],
   zoom: 0,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [vector],
   target: &#x27;map&#x27;,
   view: view,

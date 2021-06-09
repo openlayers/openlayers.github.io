@@ -166,6 +166,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -217,7 +218,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -329,21 +330,21 @@ import {
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {createEmpty, extend, getHeight, getWidth} from &#x27;ol/extent&#x27;;
 
-var earthquakeFill &#x3D; new Fill({
+const earthquakeFill &#x3D; new Fill({
   color: &#x27;rgba(255, 153, 0, 0.8)&#x27;,
 });
-var earthquakeStroke &#x3D; new Stroke({
+const earthquakeStroke &#x3D; new Stroke({
   color: &#x27;rgba(255, 204, 0, 0.2)&#x27;,
   width: 1,
 });
-var textFill &#x3D; new Fill({
+const textFill &#x3D; new Fill({
   color: &#x27;#fff&#x27;,
 });
-var textStroke &#x3D; new Stroke({
+const textStroke &#x3D; new Stroke({
   color: &#x27;rgba(0, 0, 0, 0.6)&#x27;,
   width: 3,
 });
-var invisibleFill &#x3D; new Fill({
+const invisibleFill &#x3D; new Fill({
   color: &#x27;rgba(255, 255, 255, 0.01)&#x27;,
 });
 
@@ -351,9 +352,9 @@ function createEarthquakeStyle(feature) {
   // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
   // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it
   // from the Placemark&#x27;s name instead.
-  var name &#x3D; feature.get(&#x27;name&#x27;);
-  var magnitude &#x3D; parseFloat(name.substr(2));
-  var radius &#x3D; 5 + 20 * (magnitude - 5);
+  const name &#x3D; feature.get(&#x27;name&#x27;);
+  const magnitude &#x3D; parseFloat(name.substr(2));
+  const radius &#x3D; 5 + 20 * (magnitude - 5);
 
   return new Style({
     geometry: feature.getGeometry(),
@@ -368,17 +369,17 @@ function createEarthquakeStyle(feature) {
   });
 }
 
-var maxFeatureCount;
-var vector &#x3D; null;
-var calculateClusterInfo &#x3D; function (resolution) {
+let maxFeatureCount;
+let vector &#x3D; null;
+const calculateClusterInfo &#x3D; function (resolution) {
   maxFeatureCount &#x3D; 0;
-  var features &#x3D; vector.getSource().getFeatures();
-  var feature, radius;
-  for (var i &#x3D; features.length - 1; i &gt;&#x3D; 0; --i) {
+  const features &#x3D; vector.getSource().getFeatures();
+  let feature, radius;
+  for (let i &#x3D; features.length - 1; i &gt;&#x3D; 0; --i) {
     feature &#x3D; features[i];
-    var originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
-    var extent &#x3D; createEmpty();
-    var j &#x3D; (void 0), jj &#x3D; (void 0);
+    const originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
+    const extent &#x3D; createEmpty();
+    let j, jj;
     for (j &#x3D; 0, jj &#x3D; originalFeatures.length; j &lt; jj; ++j) {
       extend(extent, originalFeatures[j].getGeometry().getExtent());
     }
@@ -388,14 +389,14 @@ var calculateClusterInfo &#x3D; function (resolution) {
   }
 };
 
-var currentResolution;
+let currentResolution;
 function styleFunction(feature, resolution) {
   if (resolution !&#x3D; currentResolution) {
     calculateClusterInfo(resolution);
     currentResolution &#x3D; resolution;
   }
-  var style;
-  var size &#x3D; feature.get(&#x27;features&#x27;).length;
+  let style;
+  const size &#x3D; feature.get(&#x27;features&#x27;).length;
   if (size &gt; 1) {
     style &#x3D; new Style({
       image: new CircleStyle({
@@ -411,23 +412,24 @@ function styleFunction(feature, resolution) {
       }),
     });
   } else {
-    var originalFeature &#x3D; feature.get(&#x27;features&#x27;)[0];
+    const originalFeature &#x3D; feature.get(&#x27;features&#x27;)[0];
     style &#x3D; createEarthquakeStyle(originalFeature);
   }
   return style;
 }
 
 function selectStyleFunction(feature) {
-  var styles &#x3D; [
+  const styles &#x3D; [
     new Style({
       image: new CircleStyle({
         radius: feature.get(&#x27;radius&#x27;),
         fill: invisibleFill,
       }),
-    }) ];
-  var originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
-  var originalFeature;
-  for (var i &#x3D; originalFeatures.length - 1; i &gt;&#x3D; 0; --i) {
+    }),
+  ];
+  const originalFeatures &#x3D; feature.get(&#x27;features&#x27;);
+  let originalFeature;
+  for (let i &#x3D; originalFeatures.length - 1; i &gt;&#x3D; 0; --i) {
     originalFeature &#x3D; originalFeatures[i];
     styles.push(createEarthquakeStyle(originalFeature));
   }
@@ -447,13 +449,13 @@ vector &#x3D; new VectorLayer({
   style: styleFunction,
 });
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new Stamen({
     layer: &#x27;toner&#x27;,
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster, vector],
   interactions: defaultInteractions().extend([
     new Select({
@@ -461,7 +463,8 @@ var map &#x3D; new Map({
         return evt.type &#x3D;&#x3D; &#x27;pointermove&#x27; || evt.type &#x3D;&#x3D; &#x27;singleclick&#x27;;
       },
       style: selectStyleFunction,
-    }) ]),
+    }),
+  ]),
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],

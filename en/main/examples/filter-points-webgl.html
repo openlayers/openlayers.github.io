@@ -278,14 +278,14 @@ import WebGLPointsLayer from &#x27;ol/layer/WebGLPoints&#x27;;
 import {Vector} from &#x27;ol/source&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 
-var vectorSource &#x3D; new Vector({
+const vectorSource &#x3D; new Vector({
   attributions: &#x27;NASA&#x27;,
 });
 
-var oldColor &#x3D; &#x27;rgba(242,56,22,0.61)&#x27;;
-var newColor &#x3D; &#x27;#ffe52c&#x27;;
-var period &#x3D; 12; // animation period in seconds
-var animRatio &#x3D; [
+const oldColor &#x3D; &#x27;rgba(242,56,22,0.61)&#x27;;
+const newColor &#x3D; &#x27;#ffe52c&#x27;;
+const period &#x3D; 12; // animation period in seconds
+const animRatio &#x3D; [
   &#x27;^&#x27;,
   [
     &#x27;/&#x27;,
@@ -294,12 +294,16 @@ var animRatio &#x3D; [
       [
         &#x27;+&#x27;,
         [&#x27;time&#x27;],
-        [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;get&#x27;, &#x27;year&#x27;], 1850, 0, 2015, period] ],
-      period ],
-    period ],
-  0.5 ];
+        [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;get&#x27;, &#x27;year&#x27;], 1850, 0, 2015, period],
+      ],
+      period,
+    ],
+    period,
+  ],
+  0.5,
+];
 
-var style &#x3D; {
+const style &#x3D; {
   variables: {
     minYear: 1850,
     maxYear: 2015,
@@ -310,15 +314,16 @@ var style &#x3D; {
     size: [
       &#x27;*&#x27;,
       [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;get&#x27;, &#x27;mass&#x27;], 0, 8, 200000, 26],
-      [&#x27;-&#x27;, 1.75, [&#x27;*&#x27;, animRatio, 0.75]] ],
+      [&#x27;-&#x27;, 1.75, [&#x27;*&#x27;, animRatio, 0.75]],
+    ],
     color: [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], animRatio, 0, newColor, 1, oldColor],
     opacity: [&#x27;-&#x27;, 1.0, [&#x27;*&#x27;, animRatio, 0.75]],
   },
 };
 
 // handle input values &amp; events
-var minYearInput &#x3D; document.getElementById(&#x27;min-year&#x27;);
-var maxYearInput &#x3D; document.getElementById(&#x27;max-year&#x27;);
+const minYearInput &#x3D; document.getElementById(&#x27;min-year&#x27;);
+const maxYearInput &#x3D; document.getElementById(&#x27;max-year&#x27;);
 
 function updateMinYear() {
   style.variables.minYear &#x3D; parseInt(minYearInput.value);
@@ -329,7 +334,7 @@ function updateMaxYear() {
   updateStatusText();
 }
 function updateStatusText() {
-  var div &#x3D; document.getElementById(&#x27;status&#x27;);
+  const div &#x3D; document.getElementById(&#x27;status&#x27;);
   div.querySelector(&#x27;span.min-year&#x27;).textContent &#x3D; minYearInput.value;
   div.querySelector(&#x27;span.max-year&#x27;).textContent &#x3D; maxYearInput.value;
 }
@@ -341,20 +346,20 @@ maxYearInput.addEventListener(&#x27;change&#x27;, updateMaxYear);
 updateStatusText();
 
 // load data
-var client &#x3D; new XMLHttpRequest();
+const client &#x3D; new XMLHttpRequest();
 client.open(&#x27;GET&#x27;, &#x27;data/csv/meteorite_landings.csv&#x27;);
 client.onload &#x3D; function () {
-  var csv &#x3D; client.responseText;
-  var features &#x3D; [];
+  const csv &#x3D; client.responseText;
+  const features &#x3D; [];
 
-  var prevIndex &#x3D; csv.indexOf(&#x27;\n&#x27;) + 1; // scan past the header line
+  let prevIndex &#x3D; csv.indexOf(&#x27;\n&#x27;) + 1; // scan past the header line
 
-  var curIndex;
+  let curIndex;
   while ((curIndex &#x3D; csv.indexOf(&#x27;\n&#x27;, prevIndex)) !&#x3D; -1) {
-    var line &#x3D; csv.substr(prevIndex, curIndex - prevIndex).split(&#x27;,&#x27;);
+    const line &#x3D; csv.substr(prevIndex, curIndex - prevIndex).split(&#x27;,&#x27;);
     prevIndex &#x3D; curIndex + 1;
 
-    var coords &#x3D; fromLonLat([parseFloat(line[4]), parseFloat(line[3])]);
+    const coords &#x3D; fromLonLat([parseFloat(line[4]), parseFloat(line[3])]);
     if (isNaN(coords[0]) || isNaN(coords[1])) {
       // guard against bad data
       continue;
@@ -373,7 +378,7 @@ client.onload &#x3D; function () {
 };
 client.send();
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new Stamen({
@@ -384,7 +389,8 @@ var map &#x3D; new Map({
       style: style,
       source: vectorSource,
       disableHitDetection: true,
-    }) ],
+    }),
+  ],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
     center: [0, 0],

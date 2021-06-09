@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -208,12 +209,13 @@
                 data-title="modify"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./modify-icon.html&quot;&gt;Icon modification&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-features.html&quot;&gt;Modify Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-test.html&quot;&gt;Modify Features Test&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./snap.html&quot;&gt;Snap Interaction&lt;/a&gt;"
                 tabindex="0"
-                >5</a>
+                >6</a>
             </span>
             <span class="badge-group">
               <a
@@ -296,14 +298,14 @@ import {Icon, Style} from &#x27;ol/style&#x27;;
 import {Modify} from &#x27;ol/interaction&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var iconFeature &#x3D; new Feature({
+const iconFeature &#x3D; new Feature({
   geometry: new Point([0, 0]),
   name: &#x27;Null Island&#x27;,
   population: 4000,
   rainfall: 500,
 });
 
-var iconStyle &#x3D; new Style({
+const iconStyle &#x3D; new Style({
   image: new Icon({
     anchor: [0.5, 46],
     anchorXUnits: &#x27;fraction&#x27;,
@@ -314,23 +316,23 @@ var iconStyle &#x3D; new Style({
 
 iconFeature.setStyle(iconStyle);
 
-var vectorSource &#x3D; new VectorSource({
+const vectorSource &#x3D; new VectorSource({
   features: [iconFeature],
 });
 
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: vectorSource,
 });
 
-var rasterLayer &#x3D; new TileLayer({
+const rasterLayer &#x3D; new TileLayer({
   source: new TileJSON({
     url: &#x27;https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json?secure&#x3D;1&#x27;,
     crossOrigin: &#x27;&#x27;,
   }),
 });
 
-var target &#x3D; document.getElementById(&#x27;map&#x27;);
-var map &#x3D; new Map({
+const target &#x3D; document.getElementById(&#x27;map&#x27;);
+const map &#x3D; new Map({
   layers: [rasterLayer, vectorLayer],
   target: target,
   view: new View({
@@ -339,14 +341,14 @@ var map &#x3D; new Map({
   }),
 });
 
-var modify &#x3D; new Modify({
+const modify &#x3D; new Modify({
   hitDetection: vectorLayer,
   source: vectorSource,
 });
 modify.on([&#x27;modifystart&#x27;, &#x27;modifyend&#x27;], function (evt) {
   target.style.cursor &#x3D; evt.type &#x3D;&#x3D;&#x3D; &#x27;modifystart&#x27; ? &#x27;grabbing&#x27; : &#x27;pointer&#x27;;
 });
-var overlaySource &#x3D; modify.getOverlay().getSource();
+const overlaySource &#x3D; modify.getOverlay().getSource();
 overlaySource.on([&#x27;addfeature&#x27;, &#x27;removefeature&#x27;], function (evt) {
   target.style.cursor &#x3D; evt.type &#x3D;&#x3D;&#x3D; &#x27;addfeature&#x27; ? &#x27;pointer&#x27; : &#x27;&#x27;;
 });

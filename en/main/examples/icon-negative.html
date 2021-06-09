@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -352,10 +353,10 @@ function createStyle(src, img) {
   });
 }
 
-var iconFeature &#x3D; new Feature(new Point([0, 0]));
+const iconFeature &#x3D; new Feature(new Point([0, 0]));
 iconFeature.set(&#x27;style&#x27;, createStyle(&#x27;data/icon.png&#x27;, undefined));
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new Stamen({layer: &#x27;watercolor&#x27;}),
@@ -365,7 +366,8 @@ var map &#x3D; new Map({
         return feature.get(&#x27;style&#x27;);
       },
       source: new VectorSource({features: [iconFeature]}),
-    }) ],
+    }),
+  ],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
     center: [0, 0],
@@ -373,19 +375,19 @@ var map &#x3D; new Map({
   }),
 });
 
-var selectStyle &#x3D; {};
-var select &#x3D; new Select({
+const selectStyle &#x3D; {};
+const select &#x3D; new Select({
   style: function (feature) {
-    var image &#x3D; feature.get(&#x27;style&#x27;).getImage().getImage();
+    const image &#x3D; feature.get(&#x27;style&#x27;).getImage().getImage();
     if (!selectStyle[image.src]) {
-      var canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-      var context &#x3D; canvas.getContext(&#x27;2d&#x27;);
+      const canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+      const context &#x3D; canvas.getContext(&#x27;2d&#x27;);
       canvas.width &#x3D; image.width;
       canvas.height &#x3D; image.height;
       context.drawImage(image, 0, 0, image.width, image.height);
-      var imageData &#x3D; context.getImageData(0, 0, canvas.width, canvas.height);
-      var data &#x3D; imageData.data;
-      for (var i &#x3D; 0, ii &#x3D; data.length; i &lt; ii; i &#x3D; i + (i % 4 &#x3D;&#x3D; 2 ? 2 : 1)) {
+      const imageData &#x3D; context.getImageData(0, 0, canvas.width, canvas.height);
+      const data &#x3D; imageData.data;
+      for (let i &#x3D; 0, ii &#x3D; data.length; i &lt; ii; i &#x3D; i + (i % 4 &#x3D;&#x3D; 2 ? 2 : 1)) {
         data[i] &#x3D; 255 - data[i];
       }
       context.putImageData(imageData, 0, 0);

@@ -170,10 +170,10 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 import XYZ from &#x27;ol/source/XYZ&#x27;;
 
-var key &#x3D;
+const key &#x3D;
   &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
-var baseUrl &#x3D; &#x27;https://{a-c}.tiles.mapbox.com/v4&#x27;;
-var urls &#x3D; [
+const baseUrl &#x3D; &#x27;https://{a-c}.tiles.mapbox.com/v4&#x27;;
+const urls &#x3D; [
   baseUrl + &#x27;/mapbox.blue-marble-topo-jan/{z}/{x}/{y}.png?access_token&#x3D;&#x27; + key,
   baseUrl +
     &#x27;/mapbox.blue-marble-topo-bathy-jan/{z}/{x}/{y}.png?access_token&#x3D;&#x27; +
@@ -181,16 +181,18 @@ var urls &#x3D; [
   baseUrl + &#x27;/mapbox.blue-marble-topo-jul/{z}/{x}/{y}.png?access_token&#x3D;&#x27; + key,
   baseUrl +
     &#x27;/mapbox.blue-marble-topo-bathy-jul/{z}/{x}/{y}.png?access_token&#x3D;&#x27; +
-    key ];
+    key,
+];
 
-var source &#x3D; new XYZ();
+const source &#x3D; new XYZ();
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   layers: [
     new TileLayer({
       source: source,
-    }) ],
+    }),
+  ],
   view: new View({
     center: [0, 0],
     zoom: 2,
@@ -201,9 +203,9 @@ function updateUrl(index) {
   source.setUrl(urls[index]);
 }
 
-var buttons &#x3D; document.getElementsByClassName(&#x27;switcher&#x27;);
-for (var i &#x3D; 0, ii &#x3D; buttons.length; i &lt; ii; ++i) {
-  var button &#x3D; buttons[i];
+const buttons &#x3D; document.getElementsByClassName(&#x27;switcher&#x27;);
+for (let i &#x3D; 0, ii &#x3D; buttons.length; i &lt; ii; ++i) {
+  const button &#x3D; buttons[i];
   button.addEventListener(&#x27;click&#x27;, updateUrl.bind(null, Number(button.value)));
 }
 

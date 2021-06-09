@@ -1400,6 +1400,23 @@
                     <li data-name="writefilter"><a href="module-ol_format_WFS.html#.writeFilter">writeFilter</a>
                 </ul>
             </div>
+            <li class="item item-class" data-longname="module:ol/format/WKB~WKB" data-name="ol/format/wkb">
+                <span class="title toggle">
+                    <span class="fa fa-chevron-right mr-2 mt-1"></span>
+                    <span><a href="module-ol_format_WKB-WKB.html">ol​/format​/WKB</a></span>
+                </span>
+            <div class="member-list" data-type="methods">
+                <span class="subtitle">Methods</span>
+                <ul>
+                    <li data-name="readfeature"><a href="module-ol_format_WKB-WKB.html#readFeature">readFeature</a>
+                    <li data-name="readfeatures"><a href="module-ol_format_WKB-WKB.html#readFeatures">readFeatures</a>
+                    <li data-name="readgeometry"><a href="module-ol_format_WKB-WKB.html#readGeometry">readGeometry</a>
+                    <li data-name="readprojection"><a href="module-ol_format_WKB-WKB.html#readProjection">readProjection</a>
+                    <li data-name="writefeature"><a href="module-ol_format_WKB-WKB.html#writeFeature">writeFeature</a>
+                    <li data-name="writefeatures"><a href="module-ol_format_WKB-WKB.html#writeFeatures">writeFeatures</a>
+                    <li data-name="writegeometry"><a href="module-ol_format_WKB-WKB.html#writeGeometry">writeGeometry</a>
+                </ul>
+            </div>
             <li class="item item-class" data-longname="module:ol/format/WKT~WKT" data-name="ol/format/wkt">
                 <span class="title toggle">
                     <span class="fa fa-chevron-right mr-2 mt-1"></span>
@@ -4969,6 +4986,7 @@
                     <li data-name="getfeaturesinextent"><a href="module-ol_source_Cluster-Cluster.html#getFeaturesInExtent">getFeaturesInExtent</a>
                     <li data-name="getformat"><a href="module-ol_source_Cluster-Cluster.html#getFormat">getFormat</a>
                     <li data-name="getkeys"><a href="module-ol_source_Cluster-Cluster.html#getKeys">getKeys</a>
+                    <li data-name="getmindistance"><a href="module-ol_source_Cluster-Cluster.html#getMinDistance">getMinDistance</a>
                     <li data-name="getprojection"><a href="module-ol_source_Cluster-Cluster.html#getProjection">getProjection</a>
                     <li data-name="getproperties"><a href="module-ol_source_Cluster-Cluster.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_source_Cluster-Cluster.html#getRevision">getRevision</a>
@@ -4984,6 +5002,7 @@
                     <li data-name="setattributions"><a href="module-ol_source_Cluster-Cluster.html#setAttributions">setAttributions</a>
                     <li data-name="setdistance"><a href="module-ol_source_Cluster-Cluster.html#setDistance">setDistance</a>
                     <li data-name="setloader"><a href="module-ol_source_Cluster-Cluster.html#setLoader">setLoader</a>
+                    <li data-name="setmindistance"><a href="module-ol_source_Cluster-Cluster.html#setMinDistance">setMinDistance</a>
                     <li data-name="setproperties"><a href="module-ol_source_Cluster-Cluster.html#setProperties">setProperties</a>
                     <li data-name="setsource"><a href="module-ol_source_Cluster-Cluster.html#setSource">setSource</a>
                     <li data-name="seturl"><a href="module-ol_source_Cluster-Cluster.html#setUrl">setUrl</a>
@@ -7941,7 +7960,7 @@ Anchor.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L309">line 309</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L313">line 313</a>
         </div>
         
     </div>
@@ -8123,7 +8142,7 @@ Shape's center displacement
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L319">line 319</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L323">line 323</a>
         </div>
         
     </div>
@@ -8350,7 +8369,7 @@ Opacity.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L366">line 366</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L370">line 370</a>
         </div>
         
     </div>
@@ -8440,7 +8459,7 @@ Origin.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L329">line 329</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L333">line 333</a>
         </div>
         
     </div>
@@ -8851,7 +8870,7 @@ Scale.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L413">line 413</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L414">line 414</a>
         </div>
         
     </div>
@@ -8941,7 +8960,7 @@ Image size.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L404">line 404</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L405">line 405</a>
         </div>
         
     </div>
@@ -9031,7 +9050,7 @@ Image src.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L431">line 431</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L432">line 432</a>
         </div>
         
     </div>
@@ -9115,7 +9134,7 @@ method yourself for preloading or other purposes.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L299">line 299</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L303">line 303</a>
         </div>
         
     </div>

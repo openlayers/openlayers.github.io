@@ -184,6 +184,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -235,7 +236,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -331,9 +332,9 @@ import {
 import {TileJSON, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var Drag &#x3D; /*@__PURE__*/(function (PointerInteraction) {
-  function Drag() {
-    PointerInteraction.call(this, {
+class Drag extends PointerInteraction {
+  constructor() {
+    super({
       handleDownEvent: handleDownEvent,
       handleDragEvent: handleDragEvent,
       handleMoveEvent: handleMoveEvent,
@@ -364,22 +365,16 @@ var Drag &#x3D; /*@__PURE__*/(function (PointerInteraction) {
      */
     this.previousCursor_ &#x3D; undefined;
   }
-
-  if ( PointerInteraction ) Drag.__proto__ &#x3D; PointerInteraction;
-  Drag.prototype &#x3D; Object.create( PointerInteraction &amp;&amp; PointerInteraction.prototype );
-  Drag.prototype.constructor &#x3D; Drag;
-
-  return Drag;
-}(PointerInteraction));
+}
 
 /**
  * @param {import(&quot;../src/ol/MapBrowserEvent.js&quot;).default} evt Map browser event.
  * @return {boolean} &#x60;true&#x60; to start the drag sequence.
  */
 function handleDownEvent(evt) {
-  var map &#x3D; evt.map;
+  const map &#x3D; evt.map;
 
-  var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+  const feature &#x3D; map.forEachFeatureAtPixel(evt.pixel, function (feature) {
     return feature;
   });
 
@@ -395,10 +390,10 @@ function handleDownEvent(evt) {
  * @param {import(&quot;../src/ol/MapBrowserEvent.js&quot;).default} evt Map browser event.
  */
 function handleDragEvent(evt) {
-  var deltaX &#x3D; evt.coordinate[0] - this.coordinate_[0];
-  var deltaY &#x3D; evt.coordinate[1] - this.coordinate_[1];
+  const deltaX &#x3D; evt.coordinate[0] - this.coordinate_[0];
+  const deltaY &#x3D; evt.coordinate[1] - this.coordinate_[1];
 
-  var geometry &#x3D; this.feature_.getGeometry();
+  const geometry &#x3D; this.feature_.getGeometry();
   geometry.translate(deltaX, deltaY);
 
   this.coordinate_[0] &#x3D; evt.coordinate[0];
@@ -410,11 +405,11 @@ function handleDragEvent(evt) {
  */
 function handleMoveEvent(evt) {
   if (this.cursor_) {
-    var map &#x3D; evt.map;
-    var feature &#x3D; map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+    const map &#x3D; evt.map;
+    const feature &#x3D; map.forEachFeatureAtPixel(evt.pixel, function (feature) {
       return feature;
     });
-    var element &#x3D; evt.map.getTargetElement();
+    const element &#x3D; evt.map.getTargetElement();
     if (feature) {
       if (element.style.cursor !&#x3D; this.cursor_) {
         this.previousCursor_ &#x3D; element.style.cursor;
@@ -436,28 +431,31 @@ function handleUpEvent() {
   return false;
 }
 
-var pointFeature &#x3D; new Feature(new Point([0, 0]));
+const pointFeature &#x3D; new Feature(new Point([0, 0]));
 
-var lineFeature &#x3D; new Feature(
+const lineFeature &#x3D; new Feature(
   new LineString([
     [-1e7, 1e6],
-    [-1e6, 3e6] ])
+    [-1e6, 3e6],
+  ])
 );
 
-var polygonFeature &#x3D; new Feature(
+const polygonFeature &#x3D; new Feature(
   new Polygon([
     [
       [-3e6, -1e6],
       [-3e6, 1e6],
       [-1e6, 1e6],
       [-1e6, -1e6],
-      [-3e6, -1e6] ] ])
+      [-3e6, -1e6],
+    ],
+  ])
 );
 
-var key &#x3D;
+const key &#x3D;
   &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   interactions: defaultInteractions().extend([new Drag()]),
   layers: [
     new TileLayer({
@@ -487,7 +485,8 @@ var map &#x3D; new Map({
           color: [0, 0, 255, 0.6],
         }),
       }),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],

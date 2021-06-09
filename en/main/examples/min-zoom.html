@@ -199,32 +199,33 @@ import OSM from &#x27;ol/source/OSM&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var viewport &#x3D; document.getElementById(&#x27;map&#x27;);
+const viewport &#x3D; document.getElementById(&#x27;map&#x27;);
 
 function getMinZoom() {
-  var width &#x3D; viewport.clientWidth;
+  const width &#x3D; viewport.clientWidth;
   return Math.ceil(Math.LOG2E * Math.log(width / 256));
 }
 
-var initialZoom &#x3D; getMinZoom();
+const initialZoom &#x3D; getMinZoom();
 
-var view &#x3D; new View({
+const view &#x3D; new View({
   center: [0, 0],
   minZoom: initialZoom,
   zoom: initialZoom,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: view,
 });
 
 window.addEventListener(&#x27;resize&#x27;, function () {
-  var minZoom &#x3D; getMinZoom();
+  const minZoom &#x3D; getMinZoom();
   if (minZoom !&#x3D;&#x3D; view.getMinZoom()) {
     view.setMinZoom(minZoom);
   }

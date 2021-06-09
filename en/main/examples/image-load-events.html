@@ -245,7 +245,7 @@ Progress.prototype.addLoading &#x3D; function () {
  * Increment the count of loaded tiles.
  */
 Progress.prototype.addLoaded &#x3D; function () {
-  var this_ &#x3D; this;
+  const this_ &#x3D; this;
   setTimeout(function () {
     ++this_.loaded;
     this_.update();
@@ -256,12 +256,12 @@ Progress.prototype.addLoaded &#x3D; function () {
  * Update the progress bar.
  */
 Progress.prototype.update &#x3D; function () {
-  var width &#x3D; ((this.loaded / this.loading) * 100).toFixed(1) + &#x27;%&#x27;;
+  const width &#x3D; ((this.loaded / this.loading) * 100).toFixed(1) + &#x27;%&#x27;;
   this.el.style.width &#x3D; width;
   if (this.loading &#x3D;&#x3D;&#x3D; this.loaded) {
     this.loading &#x3D; 0;
     this.loaded &#x3D; 0;
-    var this_ &#x3D; this;
+    const this_ &#x3D; this;
     setTimeout(function () {
       this_.hide();
     }, 500);
@@ -285,9 +285,9 @@ Progress.prototype.hide &#x3D; function () {
   }
 };
 
-var progress &#x3D; new Progress(document.getElementById(&#x27;progress&#x27;));
+const progress &#x3D; new Progress(document.getElementById(&#x27;progress&#x27;));
 
-var source &#x3D; new ImageWMS({
+const source &#x3D; new ImageWMS({
   url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
   params: {&#x27;LAYERS&#x27;: &#x27;topp:states&#x27;},
   serverType: &#x27;geoserver&#x27;,
@@ -304,7 +304,7 @@ source.on(&#x27;imageloaderror&#x27;, function () {
   progress.addLoaded();
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [new ImageLayer({source: source})],
   target: &#x27;map&#x27;,
   view: new View({

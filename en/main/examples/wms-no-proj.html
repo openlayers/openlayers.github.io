@@ -214,7 +214,7 @@ import View from &#x27;ol/View&#x27;;
 import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
 import {ScaleLine, defaults as defaultControls} from &#x27;ol/control&#x27;;
 
-var layers &#x3D; [
+const layers &#x3D; [
   new TileLayer({
     source: new TileWMS({
       attributions:
@@ -238,7 +238,8 @@ var layers &#x3D; [
       serverType: &#x27;mapserver&#x27;,
       url: &#x27;https://wms.geo.admin.ch/&#x27;,
     }),
-  }) ];
+  }),
+];
 
 // A minimal projection object is configured with only the SRS code and the map
 // units. No client-side coordinate transforms are possible with such a
@@ -250,12 +251,12 @@ var layers &#x3D; [
 // true distances. In the case of local projections this may be a sufficiently
 // close approximation for a meaningful (if not 100% accurate) ScaleLine control.
 
-var projection &#x3D; new Projection({
+const projection &#x3D; new Projection({
   code: &#x27;EPSG:21781&#x27;,
   units: &#x27;m&#x27;,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   controls: defaultControls().extend([new ScaleLine()]),
   layers: layers,
   target: &#x27;map&#x27;,

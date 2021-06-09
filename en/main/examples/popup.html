@@ -207,14 +207,14 @@ import {toStringHDMS} from &#x27;ol/coordinate&#x27;;
 /**
  * Elements that make up the popup.
  */
-var container &#x3D; document.getElementById(&#x27;popup&#x27;);
-var content &#x3D; document.getElementById(&#x27;popup-content&#x27;);
-var closer &#x3D; document.getElementById(&#x27;popup-closer&#x27;);
+const container &#x3D; document.getElementById(&#x27;popup&#x27;);
+const content &#x3D; document.getElementById(&#x27;popup-content&#x27;);
+const closer &#x3D; document.getElementById(&#x27;popup-closer&#x27;);
 
 /**
  * Create an overlay to anchor the popup to the map.
  */
-var overlay &#x3D; new Overlay({
+const overlay &#x3D; new Overlay({
   element: container,
   autoPan: true,
   autoPanAnimation: {
@@ -232,15 +232,15 @@ closer.onclick &#x3D; function () {
   return false;
 };
 
-var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
-var attributions &#x3D;
+const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
+const attributions &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
 /**
  * Create the map.
  */
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new XYZ({
@@ -248,7 +248,8 @@ var map &#x3D; new Map({
         url: &#x27;https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key&#x3D;&#x27; + key,
         tileSize: 512,
       }),
-    }) ],
+    }),
+  ],
   overlays: [overlay],
   target: &#x27;map&#x27;,
   view: new View({
@@ -261,8 +262,8 @@ var map &#x3D; new Map({
  * Add a click handler to the map to render the popup.
  */
 map.on(&#x27;singleclick&#x27;, function (evt) {
-  var coordinate &#x3D; evt.coordinate;
-  var hdms &#x3D; toStringHDMS(toLonLat(coordinate));
+  const coordinate &#x3D; evt.coordinate;
+  const hdms &#x3D; toStringHDMS(toLonLat(coordinate));
 
   content.innerHTML &#x3D; &#x27;&lt;p&gt;You clicked here:&lt;/p&gt;&lt;code&gt;&#x27; + hdms + &#x27;&lt;/code&gt;&#x27;;
   overlay.setPosition(coordinate);

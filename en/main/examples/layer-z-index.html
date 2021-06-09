@@ -222,9 +222,9 @@ import VectorSource from &#x27;ol/source/Vector&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Fill, RegularShape, Stroke, Style} from &#x27;ol/style&#x27;;
 
-var stroke &#x3D; new Stroke({color: &#x27;black&#x27;, width: 1});
+const stroke &#x3D; new Stroke({color: &#x27;black&#x27;, width: 1});
 
-var styles &#x3D; {
+const styles &#x3D; {
   &#x27;square&#x27;: new Style({
     image: new RegularShape({
       fill: new Fill({color: &#x27;blue&#x27;}),
@@ -257,14 +257,14 @@ var styles &#x3D; {
 };
 
 function createLayer(coordinates, style, zIndex) {
-  var feature &#x3D; new Feature(new Point(coordinates));
+  const feature &#x3D; new Feature(new Point(coordinates));
   feature.setStyle(style);
 
-  var source &#x3D; new VectorSource({
+  const source &#x3D; new VectorSource({
     features: [feature],
   });
 
-  var vectorLayer &#x3D; new VectorLayer({
+  const vectorLayer &#x3D; new VectorLayer({
     source: source,
   });
   vectorLayer.setZIndex(zIndex);
@@ -272,15 +272,15 @@ function createLayer(coordinates, style, zIndex) {
   return vectorLayer;
 }
 
-var layer0 &#x3D; createLayer([40, 40], styles[&#x27;star&#x27;]);
-var layer1 &#x3D; createLayer([0, 0], styles[&#x27;square&#x27;], 1);
-var layer2 &#x3D; createLayer([0, 40], styles[&#x27;triangle&#x27;], 0);
+const layer0 &#x3D; createLayer([40, 40], styles[&#x27;star&#x27;]);
+const layer1 &#x3D; createLayer([0, 0], styles[&#x27;square&#x27;], 1);
+const layer2 &#x3D; createLayer([0, 40], styles[&#x27;triangle&#x27;], 0);
 
-var layers &#x3D; [];
+const layers &#x3D; [];
 layers.push(layer1);
 layers.push(layer2);
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({
@@ -292,7 +292,7 @@ var map &#x3D; new Map({
 layer0.setMap(map);
 
 function bindInputs(id, layer) {
-  var idxInput &#x3D; document.getElementById(&#x27;idx&#x27; + id);
+  const idxInput &#x3D; document.getElementById(&#x27;idx&#x27; + id);
   idxInput.onchange &#x3D; function () {
     layer.setZIndex(parseInt(this.value, 10) || 0);
   };

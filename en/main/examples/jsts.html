@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -276,18 +277,18 @@ import {
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 
-var source &#x3D; new VectorSource();
+const source &#x3D; new VectorSource();
 fetch(&#x27;data/geojson/roads-seoul.geojson&#x27;)
   .then(function (response) {
     return response.json();
   })
   .then(function (json) {
-    var format &#x3D; new GeoJSON();
-    var features &#x3D; format.readFeatures(json, {
+    const format &#x3D; new GeoJSON();
+    const features &#x3D; format.readFeatures(json, {
       featureProjection: &#x27;EPSG:3857&#x27;,
     });
 
-    var parser &#x3D; new jsts.io.OL3Parser();
+    const parser &#x3D; new jsts.io.OL3Parser();
     parser.inject(
       Point,
       LineString,
@@ -298,13 +299,13 @@ fetch(&#x27;data/geojson/roads-seoul.geojson&#x27;)
       MultiPolygon
     );
 
-    for (var i &#x3D; 0; i &lt; features.length; i++) {
-      var feature &#x3D; features[i];
+    for (let i &#x3D; 0; i &lt; features.length; i++) {
+      const feature &#x3D; features[i];
       // convert the OpenLayers geometry to a JSTS geometry
-      var jstsGeom &#x3D; parser.read(feature.getGeometry());
+      const jstsGeom &#x3D; parser.read(feature.getGeometry());
 
       // create a buffer of 40 meters around each line
-      var buffered &#x3D; jstsGeom.buffer(40);
+      const buffered &#x3D; jstsGeom.buffer(40);
 
       // convert back from JSTS and replace the geometry on the feature
       feature.setGeometry(parser.write(buffered));
@@ -312,15 +313,15 @@ fetch(&#x27;data/geojson/roads-seoul.geojson&#x27;)
 
     source.addFeatures(features);
   });
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: source,
 });
 
-var rasterLayer &#x3D; new TileLayer({
+const rasterLayer &#x3D; new TileLayer({
   source: new OSM(),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [rasterLayer, vectorLayer],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({

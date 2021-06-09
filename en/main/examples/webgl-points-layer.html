@@ -331,12 +331,12 @@ import Vector from &#x27;ol/source/Vector&#x27;;
 import View from &#x27;ol/View&#x27;;
 import WebGLPointsLayer from &#x27;ol/layer/WebGLPoints&#x27;;
 
-var vectorSource &#x3D; new Vector({
+const vectorSource &#x3D; new Vector({
   url: &#x27;data/geojson/world-cities.geojson&#x27;,
   format: new GeoJSON(),
 });
 
-var predefinedStyles &#x3D; {
+const predefinedStyles &#x3D; {
   &#x27;icons&#x27;: {
     symbol: {
       symbolType: &#x27;image&#x27;,
@@ -358,7 +358,8 @@ var predefinedStyles &#x3D; {
         20000,
         &#x27;#5aca5b&#x27;,
         300000,
-        &#x27;#ff6a19&#x27; ],
+        &#x27;#ff6a19&#x27;,
+      ],
       rotateWithView: true,
     },
   },
@@ -372,7 +373,8 @@ var predefinedStyles &#x3D; {
         40000,
         12,
         2000000,
-        24 ],
+        24,
+      ],
       color: [
         &#x27;interpolate&#x27;,
         [&#x27;linear&#x27;],
@@ -384,7 +386,8 @@ var predefinedStyles &#x3D; {
         20,
         &#x27;#ffed02&#x27;,
         60,
-        &#x27;#00ff67&#x27; ],
+        &#x27;#00ff67&#x27;,
+      ],
       offset: [0, 0],
       opacity: 0.95,
     },
@@ -399,7 +402,8 @@ var predefinedStyles &#x3D; {
         40000,
         8,
         2000000,
-        28 ],
+        28,
+      ],
       color: &#x27;#006688&#x27;,
       rotateWithView: false,
       offset: [0, 0],
@@ -410,7 +414,8 @@ var predefinedStyles &#x3D; {
         40000,
         0.6,
         2000000,
-        0.92 ],
+        0.92,
+      ],
     },
   },
   &#x27;circles-zoom&#x27;: {
@@ -436,7 +441,9 @@ var predefinedStyles &#x3D; {
           20000,
           4,
           300000,
-          28 ] ],
+          28,
+        ],
+      ],
       color: [
         &#x27;interpolate&#x27;,
         [&#x27;linear&#x27;],
@@ -444,7 +451,8 @@ var predefinedStyles &#x3D; {
         20000,
         &#x27;#ffdc00&#x27;,
         300000,
-        &#x27;#ff5b19&#x27; ],
+        &#x27;#ff5b19&#x27;,
+      ],
       offset: [
         &#x27;array&#x27;,
         0,
@@ -455,16 +463,19 @@ var predefinedStyles &#x3D; {
           20000,
           2,
           300000,
-          14 ] ],
+          14,
+        ],
+      ],
     },
   },
 };
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
     center: [0, 0],
@@ -472,10 +483,10 @@ var map &#x3D; new Map({
   }),
 });
 
-var literalStyle;
-var pointsLayer;
+let literalStyle;
+let pointsLayer;
 function refreshLayer(newStyle) {
-  var previousLayer &#x3D; pointsLayer;
+  const previousLayer &#x3D; pointsLayer;
   pointsLayer &#x3D; new WebGLPointsLayer({
     source: vectorSource,
     style: newStyle,
@@ -490,20 +501,20 @@ function refreshLayer(newStyle) {
   literalStyle &#x3D; newStyle;
 }
 
-var spanValid &#x3D; document.getElementById(&#x27;style-valid&#x27;);
-var spanInvalid &#x3D; document.getElementById(&#x27;style-invalid&#x27;);
+const spanValid &#x3D; document.getElementById(&#x27;style-valid&#x27;);
+const spanInvalid &#x3D; document.getElementById(&#x27;style-invalid&#x27;);
 function setStyleStatus(errorMsg) {
-  var isError &#x3D; typeof errorMsg &#x3D;&#x3D;&#x3D; &#x27;string&#x27;;
+  const isError &#x3D; typeof errorMsg &#x3D;&#x3D;&#x3D; &#x27;string&#x27;;
   spanValid.style.display &#x3D; errorMsg &#x3D;&#x3D;&#x3D; null ? &#x27;initial&#x27; : &#x27;none&#x27;;
   spanInvalid.firstElementChild.innerText &#x3D; isError ? errorMsg : &#x27;&#x27;;
   spanInvalid.style.display &#x3D; isError ? &#x27;initial&#x27; : &#x27;none&#x27;;
 }
 
-var editor &#x3D; document.getElementById(&#x27;style-editor&#x27;);
+const editor &#x3D; document.getElementById(&#x27;style-editor&#x27;);
 editor.addEventListener(&#x27;input&#x27;, function () {
-  var textStyle &#x3D; editor.value;
+  const textStyle &#x3D; editor.value;
   try {
-    var newLiteralStyle &#x3D; JSON.parse(textStyle);
+    const newLiteralStyle &#x3D; JSON.parse(textStyle);
     if (JSON.stringify(newLiteralStyle) !&#x3D;&#x3D; JSON.stringify(literalStyle)) {
       refreshLayer(newLiteralStyle);
     }
@@ -513,11 +524,11 @@ editor.addEventListener(&#x27;input&#x27;, function () {
   }
 });
 
-var select &#x3D; document.getElementById(&#x27;style-select&#x27;);
+const select &#x3D; document.getElementById(&#x27;style-select&#x27;);
 select.value &#x3D; &#x27;circles&#x27;;
 function onSelectChange() {
-  var style &#x3D; select.value;
-  var newLiteralStyle &#x3D; predefinedStyles[style];
+  const style &#x3D; select.value;
+  const newLiteralStyle &#x3D; predefinedStyles[style];
   editor.value &#x3D; JSON.stringify(newLiteralStyle, null, 2);
   try {
     refreshLayer(newLiteralStyle);

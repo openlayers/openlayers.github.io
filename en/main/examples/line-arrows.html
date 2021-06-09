@@ -136,6 +136,7 @@
                 data-title="draw"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-freehand.html&quot;&gt;Freehand Drawing&lt;/a&gt;
@@ -145,7 +146,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./topolis.html&quot;&gt;topolis integration&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./tracing.html&quot;&gt;Tracing around a polygon&lt;/a&gt;"
                 tabindex="0"
-                >9</a>
+                >10</a>
             </span>
             <span class="badge-group">
               <a
@@ -166,6 +167,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -217,7 +219,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -275,27 +277,28 @@ import {Icon, Stroke, Style} from &#x27;ol/style&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new OSM(),
 });
 
-var source &#x3D; new VectorSource();
+const source &#x3D; new VectorSource();
 
-var styleFunction &#x3D; function (feature) {
-  var geometry &#x3D; feature.getGeometry();
-  var styles &#x3D; [
+const styleFunction &#x3D; function (feature) {
+  const geometry &#x3D; feature.getGeometry();
+  const styles &#x3D; [
     // linestring
     new Style({
       stroke: new Stroke({
         color: &#x27;#ffcc33&#x27;,
         width: 2,
       }),
-    }) ];
+    }),
+  ];
 
   geometry.forEachSegment(function (start, end) {
-    var dx &#x3D; end[0] - start[0];
-    var dy &#x3D; end[1] - start[1];
-    var rotation &#x3D; Math.atan2(dy, dx);
+    const dx &#x3D; end[0] - start[0];
+    const dy &#x3D; end[1] - start[1];
+    const rotation &#x3D; Math.atan2(dy, dx);
     // arrows
     styles.push(
       new Style({
@@ -312,12 +315,12 @@ var styleFunction &#x3D; function (feature) {
 
   return styles;
 };
-var vector &#x3D; new VectorLayer({
+const vector &#x3D; new VectorLayer({
   source: source,
   style: styleFunction,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new View({

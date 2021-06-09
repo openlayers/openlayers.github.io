@@ -214,14 +214,15 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Attribution, defaults as defaultControls} from &#x27;ol/control&#x27;;
 
-var attribution &#x3D; new Attribution({
+const attribution &#x3D; new Attribution({
   collapsible: false,
 });
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   controls: defaultControls({attribution: false}).extend([attribution]),
   target: &#x27;map&#x27;,
   view: new View({
@@ -231,7 +232,7 @@ var map &#x3D; new Map({
 });
 
 function checkSize() {
-  var small &#x3D; map.getSize()[0] &lt; 600;
+  const small &#x3D; map.getSize()[0] &lt; 600;
   attribution.setCollapsible(small);
   attribution.setCollapsed(small);
 }

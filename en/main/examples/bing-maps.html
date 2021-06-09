@@ -200,14 +200,15 @@ import Map from &#x27;ol/Map&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var styles &#x3D; [
+const styles &#x3D; [
   &#x27;RoadOnDemand&#x27;,
   &#x27;Aerial&#x27;,
   &#x27;AerialWithLabelsOnDemand&#x27;,
   &#x27;CanvasDark&#x27;,
-  &#x27;OrdnanceSurvey&#x27; ];
-var layers &#x3D; [];
-var i, ii;
+  &#x27;OrdnanceSurvey&#x27;,
+];
+const layers &#x3D; [];
+let i, ii;
 for (i &#x3D; 0, ii &#x3D; styles.length; i &lt; ii; ++i) {
   layers.push(
     new TileLayer({
@@ -223,7 +224,7 @@ for (i &#x3D; 0, ii &#x3D; styles.length; i &lt; ii; ++i) {
     })
   );
 }
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({
@@ -232,10 +233,10 @@ var map &#x3D; new Map({
   }),
 });
 
-var select &#x3D; document.getElementById(&#x27;layer-select&#x27;);
+const select &#x3D; document.getElementById(&#x27;layer-select&#x27;);
 function onChange() {
-  var style &#x3D; select.value;
-  for (var i &#x3D; 0, ii &#x3D; layers.length; i &lt; ii; ++i) {
+  const style &#x3D; select.value;
+  for (let i &#x3D; 0, ii &#x3D; layers.length; i &lt; ii; ++i) {
     layers[i].setVisible(styles[i] &#x3D;&#x3D;&#x3D; style);
   }
 }

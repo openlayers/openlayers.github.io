@@ -193,29 +193,29 @@ import WKT from &#x27;ol/format/WKT&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new OSM(),
 });
 
-var wkt &#x3D;
+const wkt &#x3D;
   &#x27;POLYGON((10.689 -25.092, 34.595 &#x27; +
   &#x27;-20.170, 38.814 -35.639, 13.502 &#x27; +
   &#x27;-39.155, 10.689 -25.092))&#x27;;
 
-var format &#x3D; new WKT();
+const format &#x3D; new WKT();
 
-var feature &#x3D; format.readFeature(wkt, {
+const feature &#x3D; format.readFeature(wkt, {
   dataProjection: &#x27;EPSG:4326&#x27;,
   featureProjection: &#x27;EPSG:3857&#x27;,
 });
 
-var vector &#x3D; new VectorLayer({
+const vector &#x3D; new VectorLayer({
   source: new VectorSource({
     features: [feature],
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new View({

@@ -187,8 +187,9 @@
               </div>
             </div>
           </div>
-          <div id="map" class="map"></div>
-
+          <div id="map" class="map">
+  <pre id="info" class="info"/>
+</div>
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
           <input id="codesandbox-params" type="hidden" name="parameters">
@@ -213,12 +214,12 @@ import View from &#x27;ol/View&#x27;;
 import stringify from &#x27;json-stringify-safe&#x27;;
 import {FullScreen} from &#x27;ol/control&#x27;;
 import {compose, create} from &#x27;ol/transform&#x27;;
-import {createTransformString} from &#x27;ol/render/canvas&#x27;;
 import {createXYZ} from &#x27;ol/tilegrid&#x27;;
+import {toString as toTransformString} from &#x27;ol/transform&#x27;;
 
-var worker &#x3D; new Worker(&#x27;./worker.js&#x27;);
+const worker &#x3D; new Worker(&#x27;./worker.js&#x27;);
 
-var container,
+let container,
   transformContainer,
   canvas,
   rendering,
@@ -229,15 +230,15 @@ var container,
 // main thread frameState and the (older) worker frameState
 function updateContainerTransform() {
   if (workerFrameState) {
-    var viewState &#x3D; mainThreadFrameState.viewState;
-    var renderedViewState &#x3D; workerFrameState.viewState;
-    var center &#x3D; viewState.center;
-    var resolution &#x3D; viewState.resolution;
-    var rotation &#x3D; viewState.rotation;
-    var renderedCenter &#x3D; renderedViewState.center;
-    var renderedResolution &#x3D; renderedViewState.resolution;
-    var renderedRotation &#x3D; renderedViewState.rotation;
-    var transform &#x3D; create();
+    const viewState &#x3D; mainThreadFrameState.viewState;
+    const renderedViewState &#x3D; workerFrameState.viewState;
+    const center &#x3D; viewState.center;
+    const resolution &#x3D; viewState.resolution;
+    const rotation &#x3D; viewState.rotation;
+    const renderedCenter &#x3D; renderedViewState.center;
+    const renderedResolution &#x3D; renderedViewState.resolution;
+    const renderedRotation &#x3D; renderedViewState.rotation;
+    const transform &#x3D; create();
     // Skip the extra transform for rotated views, because it will not work
     // correctly in that case
     if (!rotation) {
@@ -252,11 +253,11 @@ function updateContainerTransform() {
         0
       );
     }
-    transformContainer.style.transform &#x3D; createTransformString(transform);
+    transformContainer.style.transform &#x3D; toTransformString(transform);
   }
 }
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new Layer({
       render: function (frameState) {
@@ -292,9 +293,11 @@ var map &#x3D; new Map({
       source: new Source({
         attributions: [
           &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;© MapTiler&lt;/a&gt;&#x27;,
-          &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;© OpenStreetMap contributors&lt;/a&gt;&#x27; ],
+          &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;© OpenStreetMap contributors&lt;/a&gt;&#x27;,
+        ],
       }),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     resolutions: createXYZ({tileSize: 512}).getResolutions89,
@@ -304,15 +307,26 @@ var map &#x3D; new Map({
 });
 map.addControl(new FullScreen());
 
+map.on(&#x27;pointermove&#x27;, function (evt) {
+  if (evt.dragging) {
+    return;
+  }
+  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
+  worker.postMessage({
+    action: &#x27;requestFeatures&#x27;,
+    pixel: pixel,
+  });
+});
+
 // Worker messaging and actions
-worker.addEventListener(&#x27;message&#x27;, function (message) {
+worker.addEventListener(&#x27;message&#x27;, (message) &#x3D;&gt; {
   if (message.data.action &#x3D;&#x3D;&#x3D; &#x27;loadImage&#x27;) {
     // Image loader for ol-mapbox-style
-    var image &#x3D; new Image();
+    const image &#x3D; new Image();
     image.crossOrigin &#x3D; &#x27;anonymous&#x27;;
     image.addEventListener(&#x27;load&#x27;, function () {
       createImageBitmap(image, 0, 0, image.width, image.height).then(
-        function (imageBitmap) {
+        (imageBitmap) &#x3D;&gt; {
           worker.postMessage(
             {
               action: &#x27;imageLoaded&#x27;,
@@ -324,14 +338,16 @@ worker.addEventListener(&#x27;message&#x27;, function (message) {
         }
       );
     });
-    image.src &#x3D; event.data.src;
+    image.src &#x3D; message.data.src;
+  } else if (message.data.action &#x3D;&#x3D;&#x3D; &#x27;getFeatures&#x27;) {
+    showInfo(message.data.features);
   } else if (message.data.action &#x3D;&#x3D;&#x3D; &#x27;requestRender&#x27;) {
     // Worker requested a new render frame
     map.render();
   } else if (canvas &amp;&amp; message.data.action &#x3D;&#x3D;&#x3D; &#x27;rendered&#x27;) {
     // Worker provies a new render frame
     requestAnimationFrame(function () {
-      var imageData &#x3D; message.data.imageData;
+      const imageData &#x3D; message.data.imageData;
       canvas.width &#x3D; imageData.width;
       canvas.height &#x3D; imageData.height;
       canvas.getContext(&#x27;2d&#x27;).drawImage(imageData, 0, 0);
@@ -342,6 +358,22 @@ worker.addEventListener(&#x27;message&#x27;, function (message) {
     rendering &#x3D; false;
   }
 });
+
+const info &#x3D; document.getElementById(&#x27;info&#x27;);
+function showInfo(propertiesFromFeatures) {
+  if (propertiesFromFeatures.length &#x3D;&#x3D; 0) {
+    info.innerText &#x3D; &#x27;&#x27;;
+    info.style.opacity &#x3D; 0;
+    return;
+  }
+  const properties &#x3D; propertiesFromFeatures.map((e) &#x3D;&gt;
+    Object.keys(e)
+      .filter((key) &#x3D;&gt; !key.includes(&#x27;:&#x27;))
+      .reduce((newObj, currKey) &#x3D;&gt; ((newObj[currKey] &#x3D; e[currKey]), newObj), {})
+  );
+  info.innerText &#x3D; JSON.stringify(properties, null, 2);
+  info.style.opacity &#x3D; 1;
+}
 </code></pre>
       </div>
 
@@ -363,6 +395,7 @@ worker.addEventListener(&#x27;message&#x27;, function (message) {
       }
       .map {
         background: rgba(232, 230, 223, 1);
+        position: relative;
       }
       .map .ol-rotate {
         left: .5em;
@@ -370,11 +403,25 @@ worker.addEventListener(&#x27;message&#x27;, function (message) {
         top: auto;
         right: auto;
       }
+
+      .info {
+        z-index: 1;
+        opacity: 0;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        margin: 0;
+        background: rgba(0,60,136,0.7);
+        color: white;
+        border: 0;
+        transition: opacity 100ms ease-in;
+      }
     &lt;/style&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;script src="main.js"&gt;&lt;/script&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;
+      &lt;pre id&#x3D;&quot;info&quot; class&#x3D;&quot;info&quot;/&gt;
+    &lt;/div&gt;    &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>
@@ -387,7 +434,7 @@ import VectorTileLayer from &#x27;ol/layer/VectorTile&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile&#x27;;
 import stringify from &#x27;json-stringify-safe&#x27;;
 import styleFunction from &#x27;ol-mapbox-style/dist/stylefunction&#x27;;
-import {Projection} from &#x27;ol/proj&#x27;;
+import {get} from &#x27;ol/proj&#x27;;
 import {inView} from &#x27;ol/layer/Layer&#x27;;
 import {getTilePriority as tilePriorityFunction} from &#x27;ol/TileQueue&#x27;;
 
@@ -494,7 +541,6 @@ function loadStyles() {
 }
 
 // Minimal map-like functionality for rendering
-
 const tileQueue &#x3D; new TileQueue(
   (tile, tileSourceKey, tileCenter, tileResolution) &#x3D;&gt;
     tilePriorityFunction(
@@ -511,6 +557,23 @@ const maxTotalLoading &#x3D; 8;
 const maxNewLoads &#x3D; 2;
 
 worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
+  if (event.data.action &#x3D;&#x3D;&#x3D; &#x27;requestFeatures&#x27;) {
+    const layersInView &#x3D; layers.filter((l) &#x3D;&gt;
+      inView(l.getLayerState(), frameState.viewState)
+    );
+    const observables &#x3D; layersInView.map((l) &#x3D;&gt;
+      l.getFeatures(event.data.pixel)
+    );
+    Promise.all(observables).then((res) &#x3D;&gt; {
+      const features &#x3D; res.flat();
+      worker.postMessage({
+        action: &#x27;getFeatures&#x27;,
+        features: JSON.parse(stringify(features.map((e) &#x3D;&gt; e.getProperties()))),
+      });
+    });
+    return;
+  }
+
   if (event.data.action !&#x3D;&#x3D; &#x27;render&#x27;) {
     return;
   }
@@ -520,14 +583,16 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
     loadStyles();
   }
   frameState.tileQueue &#x3D; tileQueue;
-  frameState.viewState.projection.__proto__ &#x3D; Projection.prototype;
+  frameState.viewState.projection &#x3D; get(&#x27;EPSG:3857&#x27;);
   layers.forEach((layer) &#x3D;&gt; {
     if (inView(layer.getLayerState(), frameState.viewState)) {
       const renderer &#x3D; layer.getRenderer();
       renderer.renderFrame(frameState, canvas);
     }
   });
-  layers.forEach((layer) &#x3D;&gt; layer.renderDeclutter(frameState));
+  layers.forEach(
+    (layer) &#x3D;&gt; layer.getRenderer().context &amp;&amp; layer.renderDeclutter(frameState)
+  );
   if (tileQueue.getTilesLoading() &lt; maxTotalLoading) {
     tileQueue.reprioritize();
     tileQueue.loadMoreTiles(maxTotalLoading, maxNewLoads);

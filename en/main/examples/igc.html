@@ -228,7 +228,7 @@ import {LineString, Point} from &#x27;ol/geom&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {getVectorContext} from &#x27;ol/render&#x27;;
 
-var colors &#x3D; {
+const colors &#x3D; {
   &#x27;Clement Latour&#x27;: &#x27;rgba(0, 0, 255, 0.7)&#x27;,
   &#x27;Damien de Baesnt&#x27;: &#x27;rgba(0, 215, 255, 0.7)&#x27;,
   &#x27;Sylvain Dhonneur&#x27;: &#x27;rgba(0, 165, 255, 0.7)&#x27;,
@@ -236,10 +236,10 @@ var colors &#x3D; {
   &#x27;Ulrich Prinz&#x27;: &#x27;rgba(0, 215, 255, 0.7)&#x27;,
 };
 
-var styleCache &#x3D; {};
-var styleFunction &#x3D; function (feature) {
-  var color &#x3D; colors[feature.get(&#x27;PLT&#x27;)];
-  var style &#x3D; styleCache[color];
+const styleCache &#x3D; {};
+const styleFunction &#x3D; function (feature) {
+  const color &#x3D; colors[feature.get(&#x27;PLT&#x27;)];
+  let style &#x3D; styleCache[color];
   if (!style) {
     style &#x3D; new Style({
       stroke: new Stroke({
@@ -252,17 +252,18 @@ var styleFunction &#x3D; function (feature) {
   return style;
 };
 
-var vectorSource &#x3D; new VectorSource();
+const vectorSource &#x3D; new VectorSource();
 
-var igcUrls &#x3D; [
+const igcUrls &#x3D; [
   &#x27;data/igc/Clement-Latour.igc&#x27;,
   &#x27;data/igc/Damien-de-Baenst.igc&#x27;,
   &#x27;data/igc/Sylvain-Dhonneur.igc&#x27;,
   &#x27;data/igc/Tom-Payne.igc&#x27;,
-  &#x27;data/igc/Ulrich-Prinz.igc&#x27; ];
+  &#x27;data/igc/Ulrich-Prinz.igc&#x27;,
+];
 
 function get(url, callback) {
-  var client &#x3D; new XMLHttpRequest();
+  const client &#x3D; new XMLHttpRequest();
   client.open(&#x27;GET&#x27;, url);
   client.onload &#x3D; function () {
     callback(client.responseText);
@@ -270,46 +271,48 @@ function get(url, callback) {
   client.send();
 }
 
-var igcFormat &#x3D; new IGC();
-for (var i &#x3D; 0; i &lt; igcUrls.length; ++i) {
+const igcFormat &#x3D; new IGC();
+for (let i &#x3D; 0; i &lt; igcUrls.length; ++i) {
   get(igcUrls[i], function (data) {
-    var features &#x3D; igcFormat.readFeatures(data, {
+    const features &#x3D; igcFormat.readFeatures(data, {
       featureProjection: &#x27;EPSG:3857&#x27;,
     });
     vectorSource.addFeatures(features);
   });
 }
 
-var time &#x3D; {
+const time &#x3D; {
   start: Infinity,
   stop: -Infinity,
   duration: 0,
 };
 vectorSource.on(&#x27;addfeature&#x27;, function (event) {
-  var geometry &#x3D; event.feature.getGeometry();
+  const geometry &#x3D; event.feature.getGeometry();
   time.start &#x3D; Math.min(time.start, geometry.getFirstCoordinate()[2]);
   time.stop &#x3D; Math.max(time.stop, geometry.getLastCoordinate()[2]);
   time.duration &#x3D; time.stop - time.start;
 });
 
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: vectorSource,
   style: styleFunction,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM({
         attributions: [
           &#x27;All maps © &lt;a href&#x3D;&quot;https://www.opencyclemap.org/&quot;&gt;OpenCycleMap&lt;/a&gt;&#x27;,
-          ATTRIBUTION ],
+          ATTRIBUTION,
+        ],
         url:
           &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27; +
           &#x27;?apikey&#x3D;Your API key from https://www.thunderforest.com/docs/apikeys/ here&#x27;,
       }),
     }),
-    vectorLayer ],
+    vectorLayer,
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [703365.7089403362, 5714629.865071137],
@@ -317,27 +320,27 @@ var map &#x3D; new Map({
   }),
 });
 
-var point &#x3D; null;
-var line &#x3D; null;
-var displaySnap &#x3D; function (coordinate) {
-  var closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
-  var info &#x3D; document.getElementById(&#x27;info&#x27;);
+let point &#x3D; null;
+let line &#x3D; null;
+const displaySnap &#x3D; function (coordinate) {
+  const closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
+  const info &#x3D; document.getElementById(&#x27;info&#x27;);
   if (closestFeature &#x3D;&#x3D;&#x3D; null) {
     point &#x3D; null;
     line &#x3D; null;
     info.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
   } else {
-    var geometry &#x3D; closestFeature.getGeometry();
-    var closestPoint &#x3D; geometry.getClosestPoint(coordinate);
+    const geometry &#x3D; closestFeature.getGeometry();
+    const closestPoint &#x3D; geometry.getClosestPoint(coordinate);
     if (point &#x3D;&#x3D;&#x3D; null) {
       point &#x3D; new Point(closestPoint);
     } else {
       point.setCoordinates(closestPoint);
     }
-    var date &#x3D; new Date(closestPoint[2] * 1000);
+    const date &#x3D; new Date(closestPoint[2] * 1000);
     info.innerHTML &#x3D;
       closestFeature.get(&#x27;PLT&#x27;) + &#x27; (&#x27; + date.toUTCString() + &#x27;)&#x27;;
-    var coordinates &#x3D; [coordinate, [closestPoint[0], closestPoint[1]]];
+    const coordinates &#x3D; [coordinate, [closestPoint[0], closestPoint[1]]];
     if (line &#x3D;&#x3D;&#x3D; null) {
       line &#x3D; new LineString(coordinates);
     } else {
@@ -351,7 +354,7 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
-  var coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
+  const coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
   displaySnap(coordinate);
 });
 
@@ -359,11 +362,11 @@ map.on(&#x27;click&#x27;, function (evt) {
   displaySnap(evt.coordinate);
 });
 
-var stroke &#x3D; new Stroke({
+const stroke &#x3D; new Stroke({
   color: &#x27;rgba(255,0,0,0.9)&#x27;,
   width: 1,
 });
-var style &#x3D; new Style({
+const style &#x3D; new Style({
   stroke: stroke,
   image: new CircleStyle({
     radius: 5,
@@ -372,7 +375,7 @@ var style &#x3D; new Style({
   }),
 });
 vectorLayer.on(&#x27;postrender&#x27;, function (evt) {
-  var vectorContext &#x3D; getVectorContext(evt);
+  const vectorContext &#x3D; getVectorContext(evt);
   vectorContext.setStyle(style);
   if (point !&#x3D;&#x3D; null) {
     vectorContext.drawGeometry(point);
@@ -382,7 +385,7 @@ vectorLayer.on(&#x27;postrender&#x27;, function (evt) {
   }
 });
 
-var featureOverlay &#x3D; new VectorLayer({
+const featureOverlay &#x3D; new VectorLayer({
   source: new VectorSource(),
   map: map,
   style: new Style({
@@ -396,12 +399,12 @@ var featureOverlay &#x3D; new VectorLayer({
 });
 
 document.getElementById(&#x27;time&#x27;).addEventListener(&#x27;input&#x27;, function () {
-  var value &#x3D; parseInt(this.value, 10) / 100;
-  var m &#x3D; time.start + time.duration * value;
+  const value &#x3D; parseInt(this.value, 10) / 100;
+  const m &#x3D; time.start + time.duration * value;
   vectorSource.forEachFeature(function (feature) {
-    var geometry &#x3D; /** @type {import(&quot;../src/ol/geom/LineString.js&quot;).default} */ (feature.getGeometry());
-    var coordinate &#x3D; geometry.getCoordinateAtM(m, true);
-    var highlight &#x3D; feature.get(&#x27;highlight&#x27;);
+    const geometry &#x3D; /** @type {import(&quot;../src/ol/geom/LineString.js&quot;).default} */ (feature.getGeometry());
+    const coordinate &#x3D; geometry.getCoordinateAtM(m, true);
+    let highlight &#x3D; feature.get(&#x27;highlight&#x27;);
     if (highlight &#x3D;&#x3D;&#x3D; undefined) {
       highlight &#x3D; new Feature(new Point(coordinate));
       feature.set(&#x27;highlight&#x27;, highlight);

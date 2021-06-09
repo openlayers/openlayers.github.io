@@ -227,14 +227,14 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 
 // default zoom, center and rotation
-var zoom &#x3D; 2;
-var center &#x3D; [0, 0];
-var rotation &#x3D; 0;
+let zoom &#x3D; 2;
+let center &#x3D; [0, 0];
+let rotation &#x3D; 0;
 
 if (window.location.hash !&#x3D;&#x3D; &#x27;&#x27;) {
   // try to restore center, zoom-level and rotation from the URL
-  var hash &#x3D; window.location.hash.replace(&#x27;#map&#x3D;&#x27;, &#x27;&#x27;);
-  var parts &#x3D; hash.split(&#x27;/&#x27;);
+  const hash &#x3D; window.location.hash.replace(&#x27;#map&#x3D;&#x27;, &#x27;&#x27;);
+  const parts &#x3D; hash.split(&#x27;/&#x27;);
   if (parts.length &#x3D;&#x3D;&#x3D; 4) {
     zoom &#x3D; parseFloat(parts[0]);
     center &#x3D; [parseFloat(parts[1]), parseFloat(parts[2])];
@@ -242,11 +242,12 @@ if (window.location.hash !&#x3D;&#x3D; &#x27;&#x27;) {
   }
 }
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: center,
@@ -255,17 +256,17 @@ var map &#x3D; new Map({
   }),
 });
 
-var shouldUpdate &#x3D; true;
-var view &#x3D; map.getView();
-var updatePermalink &#x3D; function () {
+let shouldUpdate &#x3D; true;
+const view &#x3D; map.getView();
+const updatePermalink &#x3D; function () {
   if (!shouldUpdate) {
     // do not update the URL when the view was changed in the &#x27;popstate&#x27; handler
     shouldUpdate &#x3D; true;
     return;
   }
 
-  var center &#x3D; view.getCenter();
-  var hash &#x3D;
+  const center &#x3D; view.getCenter();
+  const hash &#x3D;
     &#x27;#map&#x3D;&#x27; +
     view.getZoom().toFixed(2) +
     &#x27;/&#x27; +
@@ -274,7 +275,7 @@ var updatePermalink &#x3D; function () {
     center[1].toFixed(2) +
     &#x27;/&#x27; +
     view.getRotation();
-  var state &#x3D; {
+  const state &#x3D; {
     zoom: view.getZoom(),
     center: view.getCenter(),
     rotation: view.getRotation(),

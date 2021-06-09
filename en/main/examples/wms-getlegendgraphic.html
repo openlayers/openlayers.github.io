@@ -219,29 +219,30 @@ import OSM from &#x27;ol/source/OSM&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
 
-var wmsSource &#x3D; new ImageWMS({
+const wmsSource &#x3D; new ImageWMS({
   url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
   params: {&#x27;LAYERS&#x27;: &#x27;topp:states&#x27;},
   ratio: 1,
   serverType: &#x27;geoserver&#x27;,
 });
 
-var updateLegend &#x3D; function (resolution) {
-  var graphicUrl &#x3D; wmsSource.getLegendUrl(resolution);
-  var img &#x3D; document.getElementById(&#x27;legend&#x27;);
+const updateLegend &#x3D; function (resolution) {
+  const graphicUrl &#x3D; wmsSource.getLegendUrl(resolution);
+  const img &#x3D; document.getElementById(&#x27;legend&#x27;);
   img.src &#x3D; graphicUrl;
 };
 
-var layers &#x3D; [
+const layers &#x3D; [
   new TileLayer({
     source: new OSM(),
   }),
   new ImageLayer({
     extent: [-13884991, 2870341, -7455066, 6338219],
     source: wmsSource,
-  }) ];
+  }),
+];
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({
@@ -251,12 +252,12 @@ var map &#x3D; new Map({
 });
 
 // Initial legend
-var resolution &#x3D; map.getView().getResolution();
+const resolution &#x3D; map.getView().getResolution();
 updateLegend(resolution);
 
 // Update the legend when the resolution changes
 map.getView().on(&#x27;change:resolution&#x27;, function (event) {
-  var resolution &#x3D; event.target.getResolution();
+  const resolution &#x3D; event.target.getResolution();
   updateLegend(resolution);
 });
 </code></pre>

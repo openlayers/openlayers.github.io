@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -241,20 +242,21 @@ import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 import {LineString, Point} from &#x27;ol/geom&#x27;;
 import {getVectorContext} from &#x27;ol/render&#x27;;
 
-var count &#x3D; 20000;
-var features &#x3D; new Array(count);
-var e &#x3D; 18000000;
-for (var i &#x3D; 0; i &lt; count; ++i) {
+const count &#x3D; 20000;
+const features &#x3D; new Array(count);
+const e &#x3D; 18000000;
+for (let i &#x3D; 0; i &lt; count; ++i) {
   features[i] &#x3D; new Feature({
     &#x27;geometry&#x27;: new Point([
       2 * e * Math.random() - e,
-      2 * e * Math.random() - e ]),
+      2 * e * Math.random() - e,
+    ]),
     &#x27;i&#x27;: i,
     &#x27;size&#x27;: i % 2 ? 10 : 20,
   });
 }
 
-var styles &#x3D; {
+const styles &#x3D; {
   &#x27;10&#x27;: new Style({
     image: new CircleStyle({
       radius: 5,
@@ -271,18 +273,18 @@ var styles &#x3D; {
   }),
 };
 
-var vectorSource &#x3D; new VectorSource({
+const vectorSource &#x3D; new VectorSource({
   features: features,
   wrapX: false,
 });
-var vector &#x3D; new VectorLayer({
+const vector &#x3D; new VectorLayer({
   source: vectorSource,
   style: function (feature) {
     return styles[feature.get(&#x27;size&#x27;)];
   },
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
@@ -291,16 +293,16 @@ var map &#x3D; new Map({
   }),
 });
 
-var point &#x3D; null;
-var line &#x3D; null;
-var displaySnap &#x3D; function (coordinate) {
-  var closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
+let point &#x3D; null;
+let line &#x3D; null;
+const displaySnap &#x3D; function (coordinate) {
+  const closestFeature &#x3D; vectorSource.getClosestFeatureToCoordinate(coordinate);
   if (closestFeature &#x3D;&#x3D;&#x3D; null) {
     point &#x3D; null;
     line &#x3D; null;
   } else {
-    var geometry &#x3D; closestFeature.getGeometry();
-    var closestPoint &#x3D; geometry.getClosestPoint(coordinate);
+    const geometry &#x3D; closestFeature.getGeometry();
+    const closestPoint &#x3D; geometry.getClosestPoint(coordinate);
     if (point &#x3D;&#x3D;&#x3D; null) {
       point &#x3D; new Point(closestPoint);
     } else {
@@ -319,7 +321,7 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
-  var coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
+  const coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
   displaySnap(coordinate);
 });
 
@@ -327,11 +329,11 @@ map.on(&#x27;click&#x27;, function (evt) {
   displaySnap(evt.coordinate);
 });
 
-var stroke &#x3D; new Stroke({
+const stroke &#x3D; new Stroke({
   color: &#x27;rgba(255,255,0,0.9)&#x27;,
   width: 3,
 });
-var style &#x3D; new Style({
+const style &#x3D; new Style({
   stroke: stroke,
   image: new CircleStyle({
     radius: 10,
@@ -340,7 +342,7 @@ var style &#x3D; new Style({
 });
 
 vector.on(&#x27;postrender&#x27;, function (evt) {
-  var vectorContext &#x3D; getVectorContext(evt);
+  const vectorContext &#x3D; getVectorContext(evt);
   vectorContext.setStyle(style);
   if (point !&#x3D;&#x3D; null) {
     vectorContext.drawGeometry(point);
@@ -354,8 +356,8 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
-  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
-  var hit &#x3D; map.hasFeatureAtPixel(pixel);
+  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
+  const hit &#x3D; map.hasFeatureAtPixel(pixel);
   if (hit) {
     map.getTarget().style.cursor &#x3D; &#x27;pointer&#x27;;
   } else {

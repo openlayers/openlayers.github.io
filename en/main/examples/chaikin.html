@@ -224,9 +224,9 @@ function makeSmooth(path, numIterations) {
   return path;
 }
 
-var vectorSource &#x3D; new VectorSource({});
+const vectorSource &#x3D; new VectorSource({});
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
@@ -234,7 +234,8 @@ var map &#x3D; new Map({
     }),
     new VectorLayer({
       source: vectorSource,
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [1078373.595, 6871994.591],
@@ -242,10 +243,10 @@ var map &#x3D; new Map({
   }),
 });
 
-var shallSmoothen &#x3D; document.getElementById(&#x27;shall-smoothen&#x27;);
-var numIterations &#x3D; document.getElementById(&#x27;iterations&#x27;);
+const shallSmoothen &#x3D; document.getElementById(&#x27;shall-smoothen&#x27;);
+const numIterations &#x3D; document.getElementById(&#x27;iterations&#x27;);
 
-var draw &#x3D; new Draw({
+const draw &#x3D; new Draw({
   source: vectorSource,
   type: &#x27;LineString&#x27;,
 });
@@ -254,10 +255,10 @@ draw.on(&#x27;drawend&#x27;, function (event) {
   if (!shallSmoothen.checked) {
     return;
   }
-  var feat &#x3D; event.feature;
-  var geometry &#x3D; feat.getGeometry();
-  var coords &#x3D; geometry.getCoordinates();
-  var smoothened &#x3D; makeSmooth(coords, parseInt(numIterations.value, 10) || 5);
+  const feat &#x3D; event.feature;
+  const geometry &#x3D; feat.getGeometry();
+  const coords &#x3D; geometry.getCoordinates();
+  const smoothened &#x3D; makeSmooth(coords, parseInt(numIterations.value, 10) || 5);
   geometry.setCoordinates(smoothened);
 });
 </code></pre>

@@ -185,7 +185,7 @@ import VectorTileLayer from &#x27;ol/layer/VectorTile&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -198,20 +198,21 @@ var map &#x3D; new Map({
         url:
           &#x27;https://basemaps.arcgis.com/v1/arcgis/rest/services/World_Basemap/VectorTileServer/tile/{z}/{y}/{x}.pbf&#x27;,
       }),
-    }) ],
+    }),
+  ],
 });
 
 map.on(&#x27;pointermove&#x27;, showInfo);
 
-var info &#x3D; document.getElementById(&#x27;info&#x27;);
+const info &#x3D; document.getElementById(&#x27;info&#x27;);
 function showInfo(event) {
-  var features &#x3D; map.getFeaturesAtPixel(event.pixel);
+  const features &#x3D; map.getFeaturesAtPixel(event.pixel);
   if (features.length &#x3D;&#x3D; 0) {
     info.innerText &#x3D; &#x27;&#x27;;
     info.style.opacity &#x3D; 0;
     return;
   }
-  var properties &#x3D; features[0].getProperties();
+  const properties &#x3D; features[0].getProperties();
   info.innerText &#x3D; JSON.stringify(properties, null, 2);
   info.style.opacity &#x3D; 1;
 }

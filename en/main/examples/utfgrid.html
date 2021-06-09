@@ -205,10 +205,10 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import UTFGrid from &#x27;ol/source/UTFGrid&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var key &#x3D;
+const key &#x3D;
   &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
-var mapLayer &#x3D; new TileLayer({
+const mapLayer &#x3D; new TileLayer({
   source: new TileJSON({
     url:
       &#x27;https://api.tiles.mapbox.com/v4/mapbox.geography-class.json?secure&amp;access_token&#x3D;&#x27; +
@@ -216,39 +216,39 @@ var mapLayer &#x3D; new TileLayer({
   }),
 });
 
-var gridSource &#x3D; new UTFGrid({
+const gridSource &#x3D; new UTFGrid({
   url:
     &#x27;https://api.tiles.mapbox.com/v4/mapbox.geography-class.json?secure&amp;access_token&#x3D;&#x27; +
     key,
 });
 
-var gridLayer &#x3D; new TileLayer({source: gridSource});
+const gridLayer &#x3D; new TileLayer({source: gridSource});
 
-var view &#x3D; new View({
+const view &#x3D; new View({
   center: [0, 0],
   zoom: 1,
 });
 
-var mapElement &#x3D; document.getElementById(&#x27;map&#x27;);
-var map &#x3D; new Map({
+const mapElement &#x3D; document.getElementById(&#x27;map&#x27;);
+const map &#x3D; new Map({
   layers: [mapLayer, gridLayer],
   target: mapElement,
   view: view,
 });
 
-var infoElement &#x3D; document.getElementById(&#x27;country-info&#x27;);
-var flagElement &#x3D; document.getElementById(&#x27;country-flag&#x27;);
-var nameElement &#x3D; document.getElementById(&#x27;country-name&#x27;);
+const infoElement &#x3D; document.getElementById(&#x27;country-info&#x27;);
+const flagElement &#x3D; document.getElementById(&#x27;country-flag&#x27;);
+const nameElement &#x3D; document.getElementById(&#x27;country-name&#x27;);
 
-var infoOverlay &#x3D; new Overlay({
+const infoOverlay &#x3D; new Overlay({
   element: infoElement,
   offset: [15, 15],
   stopEvent: false,
 });
 map.addOverlay(infoOverlay);
 
-var displayCountryInfo &#x3D; function (coordinate) {
-  var viewResolution &#x3D; /** @type {number} */ (view.getResolution());
+const displayCountryInfo &#x3D; function (coordinate) {
+  const viewResolution &#x3D; /** @type {number} */ (view.getResolution());
   gridSource.forDataAtCoordinateAndResolution(
     coordinate,
     viewResolution,
@@ -270,7 +270,7 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
-  var coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
+  const coordinate &#x3D; map.getEventCoordinate(evt.originalEvent);
   displayCountryInfo(coordinate);
 });
 

@@ -189,18 +189,18 @@ import WMTSTileGrid from &#x27;ol/tilegrid/WMTS&#x27;;
 import {get as getProjection} from &#x27;ol/proj&#x27;;
 import {getTopLeft, getWidth} from &#x27;ol/extent&#x27;;
 
-var projection &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
-var projectionExtent &#x3D; projection.getExtent();
-var size &#x3D; getWidth(projectionExtent) / 256;
-var resolutions &#x3D; new Array(14);
-var matrixIds &#x3D; new Array(14);
-for (var z &#x3D; 0; z &lt; 14; ++z) {
+const projection &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
+const projectionExtent &#x3D; projection.getExtent();
+const size &#x3D; getWidth(projectionExtent) / 256;
+const resolutions &#x3D; new Array(14);
+const matrixIds &#x3D; new Array(14);
+for (let z &#x3D; 0; z &lt; 14; ++z) {
   // generate resolutions and matrixIds arrays for this WMTS
   resolutions[z] &#x3D; size / Math.pow(2, z);
   matrixIds[z] &#x3D; z;
 }
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
@@ -227,7 +227,8 @@ var map &#x3D; new Map({
         style: &#x27;default&#x27;,
         wrapX: true,
       }),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [-11158582, 4813697],

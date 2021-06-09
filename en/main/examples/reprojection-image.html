@@ -272,15 +272,16 @@ proj4.defs(
 );
 register(proj4);
 
-var imageExtent &#x3D; [0, 0, 700000, 1300000];
-var imageLayer &#x3D; new ImageLayer();
+const imageExtent &#x3D; [0, 0, 700000, 1300000];
+const imageLayer &#x3D; new ImageLayer();
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
     }),
-    imageLayer ],
+    imageLayer,
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: transform(getCenter(imageExtent), &#x27;EPSG:27700&#x27;, &#x27;EPSG:3857&#x27;),
@@ -288,10 +289,10 @@ var map &#x3D; new Map({
   }),
 });
 
-var imageSmoothing &#x3D; document.getElementById(&#x27;imageSmoothing&#x27;);
+const imageSmoothing &#x3D; document.getElementById(&#x27;imageSmoothing&#x27;);
 
 function setSource() {
-  var source &#x3D; new Static({
+  const source &#x3D; new Static({
     url:
       &#x27;https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/&#x27; +
       &#x27;British_National_Grid.svg/2000px-British_National_Grid.svg.png&#x27;,
@@ -344,7 +345,7 @@ imageSmoothing.addEventListener(&#x27;change&#x27;, setSource);
   &quot;name&quot;: &quot;reprojection-image&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;6.5.1-dev&quot;,
-    &quot;proj4&quot;: &quot;2.7.0&quot;
+    &quot;proj4&quot;: &quot;2.7.2&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;

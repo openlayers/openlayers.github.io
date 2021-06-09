@@ -252,16 +252,16 @@ import View from &#x27;ol/View&#x27;;
 import XYZ from &#x27;ol/source/XYZ&#x27;;
 import {getRenderPixel} from &#x27;ol/render&#x27;;
 
-var osm &#x3D; new TileLayer({
+const osm &#x3D; new TileLayer({
   source: new OSM(),
 });
 
-var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
-var attributions &#x3D;
+const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
+const attributions &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
-var aerial &#x3D; new TileLayer({
+const aerial &#x3D; new TileLayer({
   source: new XYZ({
     attributions: attributions,
     url: &#x27;https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
@@ -269,7 +269,7 @@ var aerial &#x3D; new TileLayer({
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [osm, aerial],
   target: &#x27;map&#x27;,
   view: new View({
@@ -278,16 +278,16 @@ var map &#x3D; new Map({
   }),
 });
 
-var swipe &#x3D; document.getElementById(&#x27;swipe&#x27;);
+const swipe &#x3D; document.getElementById(&#x27;swipe&#x27;);
 
 aerial.on(&#x27;prerender&#x27;, function (event) {
-  var ctx &#x3D; event.context;
-  var mapSize &#x3D; map.getSize();
-  var width &#x3D; mapSize[0] * (swipe.value / 100);
-  var tl &#x3D; getRenderPixel(event, [width, 0]);
-  var tr &#x3D; getRenderPixel(event, [mapSize[0], 0]);
-  var bl &#x3D; getRenderPixel(event, [width, mapSize[1]]);
-  var br &#x3D; getRenderPixel(event, mapSize);
+  const ctx &#x3D; event.context;
+  const mapSize &#x3D; map.getSize();
+  const width &#x3D; mapSize[0] * (swipe.value / 100);
+  const tl &#x3D; getRenderPixel(event, [width, 0]);
+  const tr &#x3D; getRenderPixel(event, [mapSize[0], 0]);
+  const bl &#x3D; getRenderPixel(event, [width, mapSize[1]]);
+  const br &#x3D; getRenderPixel(event, mapSize);
 
   ctx.save();
   ctx.beginPath();
@@ -300,7 +300,7 @@ aerial.on(&#x27;prerender&#x27;, function (event) {
 });
 
 aerial.on(&#x27;postrender&#x27;, function (event) {
-  var ctx &#x3D; event.context;
+  const ctx &#x3D; event.context;
   ctx.restore();
 });
 

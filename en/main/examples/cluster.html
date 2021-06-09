@@ -159,6 +159,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -210,7 +211,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -230,8 +231,20 @@
           </div>
           <div id="map" class="map"></div>
 <form>
-  <label for="distance">cluster distance</label>
-  <input id="distance" type="range" min="0" max="100" step="1" value="40"/>
+  <div class="form-group">
+    <label for="distance" class="col-form-label">Cluster distance</label>
+    <input id="distance" class="form-control-range" type="range" min="0" max="200" step="1" value="40"/>
+    <small class="form-text text-muted">
+      The distance within which features will be clustered together.
+    </small>
+  </div>
+  <div class="form-group">
+    <label for="min-distance" class="col-form-label">Minimum distance</label>
+    <input id="min-distance" class="form-control-range" type="range" min="0" max="200" step="1" value="20"/>
+    <small class="form-text text-muted">
+      The minimum distance between clusters. Can't be larger than the configured distance.
+    </small>
+  </div>
 </form>
 
         </div>
@@ -266,31 +279,33 @@ import {Cluster, OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {boundingExtent} from &#x27;ol/extent&#x27;;
 
-var distance &#x3D; document.getElementById(&#x27;distance&#x27;);
+const distanceInput &#x3D; document.getElementById(&#x27;distance&#x27;);
+const minDistanceInput &#x3D; document.getElementById(&#x27;min-distance&#x27;);
 
-var count &#x3D; 20000;
-var features &#x3D; new Array(count);
-var e &#x3D; 4500000;
-for (var i &#x3D; 0; i &lt; count; ++i) {
-  var coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+const count &#x3D; 20000;
+const features &#x3D; new Array(count);
+const e &#x3D; 4500000;
+for (let i &#x3D; 0; i &lt; count; ++i) {
+  const coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
   features[i] &#x3D; new Feature(new Point(coordinates));
 }
 
-var source &#x3D; new VectorSource({
+const source &#x3D; new VectorSource({
   features: features,
 });
 
-var clusterSource &#x3D; new Cluster({
-  distance: parseInt(distance.value, 10),
+const clusterSource &#x3D; new Cluster({
+  distance: parseInt(distanceInput.value, 10),
+  minDistance: parseInt(minDistanceInput.value, 10),
   source: source,
 });
 
-var styleCache &#x3D; {};
-var clusters &#x3D; new VectorLayer({
+const styleCache &#x3D; {};
+const clusters &#x3D; new VectorLayer({
   source: clusterSource,
   style: function (feature) {
-    var size &#x3D; feature.get(&#x27;features&#x27;).length;
-    var style &#x3D; styleCache[size];
+    const size &#x3D; feature.get(&#x27;features&#x27;).length;
+    let style &#x3D; styleCache[size];
     if (!style) {
       style &#x3D; new Style({
         image: new CircleStyle({
@@ -315,11 +330,11 @@ var clusters &#x3D; new VectorLayer({
   },
 });
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new OSM(),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster, clusters],
   target: &#x27;map&#x27;,
   view: new View({
@@ -328,18 +343,22 @@ var map &#x3D; new Map({
   }),
 });
 
-distance.addEventListener(&#x27;input&#x27;, function () {
-  clusterSource.setDistance(parseInt(distance.value, 10));
+distanceInput.addEventListener(&#x27;input&#x27;, function () {
+  clusterSource.setDistance(parseInt(distanceInput.value, 10));
 });
 
-map.on(&#x27;click&#x27;, function (e) {
-  clusters.getFeatures(e.pixel).then(function (clickedFeatures) {
+minDistanceInput.addEventListener(&#x27;input&#x27;, function () {
+  clusterSource.setMinDistance(parseInt(minDistanceInput.value, 10));
+});
+
+map.on(&#x27;click&#x27;, (e) &#x3D;&gt; {
+  clusters.getFeatures(e.pixel).then((clickedFeatures) &#x3D;&gt; {
     if (clickedFeatures.length) {
       // Get clustered Coordinates
-      var features &#x3D; clickedFeatures[0].get(&#x27;features&#x27;);
+      const features &#x3D; clickedFeatures[0].get(&#x27;features&#x27;);
       if (features.length &gt; 1) {
-        var extent &#x3D; boundingExtent(
-          features.map(function (r) { return r.getGeometry().getCoordinates(); })
+        const extent &#x3D; boundingExtent(
+          features.map((r) &#x3D;&gt; r.getGeometry().getCoordinates())
         );
         map.getView().fit(extent, {duration: 1000, padding: [50, 50, 50, 50]});
       }
@@ -370,8 +389,20 @@ map.on(&#x27;click&#x27;, function (e) {
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;form&gt;
-      &lt;label for&#x3D;&quot;distance&quot;&gt;cluster distance&lt;/label&gt;
-      &lt;input id&#x3D;&quot;distance&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;40&quot;/&gt;
+      &lt;div class&#x3D;&quot;form-group&quot;&gt;
+        &lt;label for&#x3D;&quot;distance&quot; class&#x3D;&quot;col-form-label&quot;&gt;Cluster distance&lt;/label&gt;
+        &lt;input id&#x3D;&quot;distance&quot; class&#x3D;&quot;form-control-range&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;200&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;40&quot;/&gt;
+        &lt;small class&#x3D;&quot;form-text text-muted&quot;&gt;
+          The distance within which features will be clustered together.
+        &lt;/small&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;form-group&quot;&gt;
+        &lt;label for&#x3D;&quot;min-distance&quot; class&#x3D;&quot;col-form-label&quot;&gt;Minimum distance&lt;/label&gt;
+        &lt;input id&#x3D;&quot;min-distance&quot; class&#x3D;&quot;form-control-range&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;200&quot; step&#x3D;&quot;1&quot; value&#x3D;&quot;20&quot;/&gt;
+        &lt;small class&#x3D;&quot;form-text text-muted&quot;&gt;
+          The minimum distance between clusters. Can&#x27;t be larger than the configured distance.
+        &lt;/small&gt;
+      &lt;/div&gt;
     &lt;/form&gt;
     &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;

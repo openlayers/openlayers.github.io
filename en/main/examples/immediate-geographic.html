@@ -205,13 +205,13 @@ import {useGeographic} from &#x27;ol/proj&#x27;;
 
 useGeographic();
 
-var layer &#x3D; new TileLayer({
+const layer &#x3D; new TileLayer({
   source: new Stamen({
     layer: &#x27;toner&#x27;,
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [layer],
   target: &#x27;map&#x27;,
   view: new View({
@@ -220,29 +220,29 @@ var map &#x3D; new Map({
   }),
 });
 
-var image &#x3D; new Circle({
+const image &#x3D; new Circle({
   radius: 8,
   fill: new Fill({color: &#x27;rgb(255, 153, 0)&#x27;}),
 });
 
-var style &#x3D; new Style({
+const style &#x3D; new Style({
   image: image,
 });
 
-var n &#x3D; 1000;
-var geometries &#x3D; new Array(n);
+const n &#x3D; 1000;
+const geometries &#x3D; new Array(n);
 
-for (var i &#x3D; 0; i &lt; n; ++i) {
-  var lon &#x3D; 360 * Math.random() - 180;
-  var lat &#x3D; 180 * Math.random() - 90;
+for (let i &#x3D; 0; i &lt; n; ++i) {
+  const lon &#x3D; 360 * Math.random() - 180;
+  const lat &#x3D; 180 * Math.random() - 90;
   geometries[i] &#x3D; new Point([lon, lat]);
 }
 
 layer.on(&#x27;postrender&#x27;, function (event) {
-  var vectorContext &#x3D; getVectorContext(event);
+  const vectorContext &#x3D; getVectorContext(event);
 
-  for (var i &#x3D; 0; i &lt; n; ++i) {
-    var importance &#x3D; upAndDown(Math.pow((n - i) / n, 0.15));
+  for (let i &#x3D; 0; i &lt; n; ++i) {
+    const importance &#x3D; upAndDown(Math.pow((n - i) / n, 0.15));
     if (importance &lt; 0.1) {
       continue;
     }
@@ -252,8 +252,8 @@ layer.on(&#x27;postrender&#x27;, function (event) {
     vectorContext.drawGeometry(geometries[i]);
   }
 
-  var lon &#x3D; 360 * Math.random() - 180;
-  var lat &#x3D; 180 * Math.random() - 90;
+  const lon &#x3D; 360 * Math.random() - 180;
+  const lat &#x3D; 180 * Math.random() - 90;
   geometries.push(new Point([lon, lat]));
   geometries.shift();
   map.render();

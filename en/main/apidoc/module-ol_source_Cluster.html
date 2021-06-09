@@ -1400,6 +1400,23 @@
                     <li data-name="writefilter"><a href="module-ol_format_WFS.html#.writeFilter">writeFilter</a>
                 </ul>
             </div>
+            <li class="item item-class" data-longname="module:ol/format/WKB~WKB" data-name="ol/format/wkb">
+                <span class="title toggle">
+                    <span class="fa fa-chevron-right mr-2 mt-1"></span>
+                    <span><a href="module-ol_format_WKB-WKB.html">ol​/format​/WKB</a></span>
+                </span>
+            <div class="member-list" data-type="methods">
+                <span class="subtitle">Methods</span>
+                <ul>
+                    <li data-name="readfeature"><a href="module-ol_format_WKB-WKB.html#readFeature">readFeature</a>
+                    <li data-name="readfeatures"><a href="module-ol_format_WKB-WKB.html#readFeatures">readFeatures</a>
+                    <li data-name="readgeometry"><a href="module-ol_format_WKB-WKB.html#readGeometry">readGeometry</a>
+                    <li data-name="readprojection"><a href="module-ol_format_WKB-WKB.html#readProjection">readProjection</a>
+                    <li data-name="writefeature"><a href="module-ol_format_WKB-WKB.html#writeFeature">writeFeature</a>
+                    <li data-name="writefeatures"><a href="module-ol_format_WKB-WKB.html#writeFeatures">writeFeatures</a>
+                    <li data-name="writegeometry"><a href="module-ol_format_WKB-WKB.html#writeGeometry">writeGeometry</a>
+                </ul>
+            </div>
             <li class="item item-class" data-longname="module:ol/format/WKT~WKT" data-name="ol/format/wkt">
                 <span class="title toggle">
                     <span class="fa fa-chevron-right mr-2 mt-1"></span>
@@ -4969,6 +4986,7 @@
                     <li data-name="getfeaturesinextent"><a href="module-ol_source_Cluster-Cluster.html#getFeaturesInExtent">getFeaturesInExtent</a>
                     <li data-name="getformat"><a href="module-ol_source_Cluster-Cluster.html#getFormat">getFormat</a>
                     <li data-name="getkeys"><a href="module-ol_source_Cluster-Cluster.html#getKeys">getKeys</a>
+                    <li data-name="getmindistance"><a href="module-ol_source_Cluster-Cluster.html#getMinDistance">getMinDistance</a>
                     <li data-name="getprojection"><a href="module-ol_source_Cluster-Cluster.html#getProjection">getProjection</a>
                     <li data-name="getproperties"><a href="module-ol_source_Cluster-Cluster.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_source_Cluster-Cluster.html#getRevision">getRevision</a>
@@ -4984,6 +5002,7 @@
                     <li data-name="setattributions"><a href="module-ol_source_Cluster-Cluster.html#setAttributions">setAttributions</a>
                     <li data-name="setdistance"><a href="module-ol_source_Cluster-Cluster.html#setDistance">setDistance</a>
                     <li data-name="setloader"><a href="module-ol_source_Cluster-Cluster.html#setLoader">setLoader</a>
+                    <li data-name="setmindistance"><a href="module-ol_source_Cluster-Cluster.html#setMinDistance">setMinDistance</a>
                     <li data-name="setproperties"><a href="module-ol_source_Cluster-Cluster.html#setProperties">setProperties</a>
                     <li data-name="setsource"><a href="module-ol_source_Cluster-Cluster.html#setSource">setSource</a>
                     <li data-name="seturl"><a href="module-ol_source_Cluster-Cluster.html#setUrl">setUrl</a>
@@ -7282,7 +7301,49 @@
                 </td>
             
             
-            <td class="description last"><p>Minimum distance in pixels between clusters.</p></td>
+            <td class="description last"><p>Distance in pixels within which features will
+be clustered together.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>minDistance</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last"><p>Minimum distance in pixels between clusters.
+Will be capped at the configured distance.
+By default no minimum distance is guaranteed. This config can be used to avoid
+overlapping icons. As a tradoff, the cluster feature's position will no longer be
+the center of all its features.</p></td>
         </tr>
 	
 	
@@ -7320,7 +7381,7 @@
             <td class="description last"><p>Function that takes an <a href="module-ol_Feature.html"><code>module:ol/Feature</code></a> as argument and returns an
 <a href="module-ol_geom_Point.html"><code>module:ol/geom/Point</code></a> as cluster calculation point for the feature. When a
 feature should not be considered for clustering, the function should return
-<code>null</code>. The default, which works when the underyling source contains point
+<code>null</code>. The default, which works when the underlying source contains point
 features only, is</p>
 <pre class="prettyprint source lang-js"><code>function(feature) {
   return feature.getGeometry();

@@ -378,28 +378,28 @@ proj4.defs(
 );
 register(proj4);
 
-var proj27700 &#x3D; getProjection(&#x27;EPSG:27700&#x27;);
+const proj27700 &#x3D; getProjection(&#x27;EPSG:27700&#x27;);
 proj27700.setExtent([-650000, -150000, 1350000, 1450000]);
 
-var proj23032 &#x3D; getProjection(&#x27;EPSG:23032&#x27;);
+const proj23032 &#x3D; getProjection(&#x27;EPSG:23032&#x27;);
 proj23032.setExtent([-1206118.71, 4021309.92, 1295389.0, 8051813.28]);
 
-var proj5479 &#x3D; getProjection(&#x27;EPSG:5479&#x27;);
+const proj5479 &#x3D; getProjection(&#x27;EPSG:5479&#x27;);
 proj5479.setExtent([6825737.53, 4189159.8, 9633741.96, 5782472.71]);
 
-var proj21781 &#x3D; getProjection(&#x27;EPSG:21781&#x27;);
+const proj21781 &#x3D; getProjection(&#x27;EPSG:21781&#x27;);
 proj21781.setExtent([485071.54, 75346.36, 828515.78, 299941.84]);
 
-var proj3413 &#x3D; getProjection(&#x27;EPSG:3413&#x27;);
+const proj3413 &#x3D; getProjection(&#x27;EPSG:3413&#x27;);
 proj3413.setExtent([-4194304, -4194304, 4194304, 4194304]);
 
-var proj2163 &#x3D; getProjection(&#x27;EPSG:2163&#x27;);
+const proj2163 &#x3D; getProjection(&#x27;EPSG:2163&#x27;);
 proj2163.setExtent([-8040784.5135, -2577524.921, 3668901.4484, 4785105.1096]);
 
-var proj54009 &#x3D; getProjection(&#x27;ESRI:54009&#x27;);
+const proj54009 &#x3D; getProjection(&#x27;ESRI:54009&#x27;);
 proj54009.setExtent([-18e6, -9e6, 18e6, 9e6]);
 
-var layers &#x3D; {};
+const layers &#x3D; {};
 
 layers[&#x27;osm&#x27;] &#x3D; new TileLayer({
   source: new OSM(),
@@ -432,10 +432,10 @@ layers[&#x27;wms21781&#x27;] &#x3D; new TileLayer({
   }),
 });
 
-var parser &#x3D; new WMTSCapabilities();
+const parser &#x3D; new WMTSCapabilities();
 
 layers[&#x27;wmts3413&#x27;] &#x3D; new TileLayer();
-var urlA &#x3D;
+const urlA &#x3D;
   &#x27;https://map1.vis.earthdata.nasa.gov/wmts-arctic/&#x27; +
   &#x27;wmts.cgi?SERVICE&#x3D;WMTS&amp;request&#x3D;GetCapabilities&#x27;;
 fetch(urlA)
@@ -443,8 +443,8 @@ fetch(urlA)
     return response.text();
   })
   .then(function (text) {
-    var result &#x3D; parser.read(text);
-    var options &#x3D; optionsFromCapabilities(result, {
+    const result &#x3D; parser.read(text);
+    const options &#x3D; optionsFromCapabilities(result, {
       layer: &#x27;OSM_Land_Mask&#x27;,
       matrixSet: &#x27;EPSG3413_250m&#x27;,
     });
@@ -455,15 +455,15 @@ fetch(urlA)
   });
 
 layers[&#x27;bng&#x27;] &#x3D; new TileLayer();
-var urlB &#x3D;
+const urlB &#x3D;
   &#x27;https://tiles.arcgis.com/tiles/qHLhLQrcvEnxjtPr/arcgis/rest/services/OS_Open_Raster/MapServer/WMTS&#x27;;
 fetch(urlB)
   .then(function (response) {
     return response.text();
   })
   .then(function (text) {
-    var result &#x3D; parser.read(text);
-    var options &#x3D; optionsFromCapabilities(result, {
+    const result &#x3D; parser.read(text);
+    const options &#x3D; optionsFromCapabilities(result, {
       layer: &#x27;OS_Open_Raster&#x27;,
     });
     options.attributions &#x3D;
@@ -475,9 +475,9 @@ fetch(urlB)
     layers[&#x27;bng&#x27;].setSource(new WMTS(options));
   });
 
-var startResolution &#x3D; getWidth(getProjection(&#x27;EPSG:3857&#x27;).getExtent()) / 256;
-var resolutions &#x3D; new Array(22);
-for (var i &#x3D; 0, ii &#x3D; resolutions.length; i &lt; ii; ++i) {
+const startResolution &#x3D; getWidth(getProjection(&#x27;EPSG:3857&#x27;).getExtent()) / 256;
+const resolutions &#x3D; new Array(22);
+for (let i &#x3D; 0, ii &#x3D; resolutions.length; i &lt; ii; ++i) {
   resolutions[i] &#x3D; startResolution / Math.pow(2, i);
 }
 
@@ -496,7 +496,7 @@ layers[&#x27;states&#x27;] &#x3D; new TileLayer({
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [layers[&#x27;osm&#x27;], layers[&#x27;bng&#x27;]],
   target: &#x27;map&#x27;,
   view: new View({
@@ -506,16 +506,16 @@ var map &#x3D; new Map({
   }),
 });
 
-var baseLayerSelect &#x3D; document.getElementById(&#x27;base-layer&#x27;);
-var overlayLayerSelect &#x3D; document.getElementById(&#x27;overlay-layer&#x27;);
-var viewProjSelect &#x3D; document.getElementById(&#x27;view-projection&#x27;);
-var renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
-var renderEdges &#x3D; false;
+const baseLayerSelect &#x3D; document.getElementById(&#x27;base-layer&#x27;);
+const overlayLayerSelect &#x3D; document.getElementById(&#x27;overlay-layer&#x27;);
+const viewProjSelect &#x3D; document.getElementById(&#x27;view-projection&#x27;);
+const renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
+let renderEdges &#x3D; false;
 
 function updateViewProjection() {
-  var newProj &#x3D; getProjection(viewProjSelect.value);
-  var newProjExtent &#x3D; newProj.getExtent();
-  var newView &#x3D; new View({
+  const newProj &#x3D; getProjection(viewProjSelect.value);
+  const newProjExtent &#x3D; newProj.getExtent();
+  const newView &#x3D; new View({
     projection: newProj,
     center: getCenter(newProjExtent || [0, 0, 0, 0]),
     zoom: 0,
@@ -542,9 +542,9 @@ viewProjSelect.onchange &#x3D; function () {
 
 updateViewProjection();
 
-var updateRenderEdgesOnLayer &#x3D; function (layer) {
+const updateRenderEdgesOnLayer &#x3D; function (layer) {
   if (layer instanceof TileLayer) {
-    var source &#x3D; layer.getSource();
+    const source &#x3D; layer.getSource();
     if (source instanceof TileImage) {
       source.setRenderReprojectionEdges(renderEdges);
     }
@@ -555,7 +555,7 @@ var updateRenderEdgesOnLayer &#x3D; function (layer) {
  * Handle change event.
  */
 baseLayerSelect.onchange &#x3D; function () {
-  var layer &#x3D; layers[baseLayerSelect.value];
+  const layer &#x3D; layers[baseLayerSelect.value];
   if (layer) {
     layer.setOpacity(1);
     updateRenderEdgesOnLayer(layer);
@@ -567,7 +567,7 @@ baseLayerSelect.onchange &#x3D; function () {
  * Handle change event.
  */
 overlayLayerSelect.onchange &#x3D; function () {
-  var layer &#x3D; layers[overlayLayerSelect.value];
+  const layer &#x3D; layers[overlayLayerSelect.value];
   if (layer) {
     layer.setOpacity(0.7);
     updateRenderEdgesOnLayer(layer);
@@ -654,7 +654,7 @@ renderEdgesCheckbox.onchange &#x3D; function () {
   &quot;name&quot;: &quot;reprojection&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;6.5.1-dev&quot;,
-    &quot;proj4&quot;: &quot;2.7.0&quot;
+    &quot;proj4&quot;: &quot;2.7.2&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;

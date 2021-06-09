@@ -295,20 +295,20 @@ proj4.defs(
 
 register(proj4);
 
-var proj27700 &#x3D; getProjection(&#x27;EPSG:27700&#x27;);
+const proj27700 &#x3D; getProjection(&#x27;EPSG:27700&#x27;);
 proj27700.setExtent([0, 0, 700000, 1300000]);
 
-var raster &#x3D; new TileLayer();
+const raster &#x3D; new TileLayer();
 
-var url &#x3D;
+const url &#x3D;
   &#x27;https://tiles.arcgis.com/tiles/qHLhLQrcvEnxjtPr/arcgis/rest/services/OS_Open_Raster/MapServer/WMTS&#x27;;
 fetch(url)
   .then(function (response) {
     return response.text();
   })
   .then(function (text) {
-    var result &#x3D; new WMTSCapabilities().read(text);
-    var options &#x3D; optionsFromCapabilities(result, {
+    const result &#x3D; new WMTSCapabilities().read(text);
+    const options &#x3D; optionsFromCapabilities(result, {
       layer: &#x27;OS_Open_Raster&#x27;,
     });
     options.attributions &#x3D;
@@ -320,7 +320,7 @@ fetch(url)
     raster.setSource(new WMTS(options));
   });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster],
   controls: defaultControls({
     attributionOptions: {collapsible: false},
@@ -333,10 +333,10 @@ var map &#x3D; new Map({
   }),
 });
 
-var scaleLine &#x3D; new ScaleLine({bar: true, text: true, minWidth: 125});
+const scaleLine &#x3D; new ScaleLine({bar: true, text: true, minWidth: 125});
 map.addControl(scaleLine);
 
-var dims &#x3D; {
+const dims &#x3D; {
   a0: [1189, 841],
   a1: [841, 594],
   a2: [594, 420],
@@ -347,9 +347,9 @@ var dims &#x3D; {
 
 // export options for html-to-image.
 // See: https://github.com/bubkoo/html-to-image#options
-var exportOptions &#x3D; {
+const exportOptions &#x3D; {
   filter: function (element) {
-    var className &#x3D; element.className || &#x27;&#x27;;
+    const className &#x3D; element.className || &#x27;&#x27;;
     return (
       className.indexOf(&#x27;ol-control&#x27;) &#x3D;&#x3D;&#x3D; -1 ||
       className.indexOf(&#x27;ol-scale&#x27;) &gt; -1 ||
@@ -359,7 +359,7 @@ var exportOptions &#x3D; {
   },
 };
 
-var exportButton &#x3D; document.getElementById(&#x27;export-pdf&#x27;);
+const exportButton &#x3D; document.getElementById(&#x27;export-pdf&#x27;);
 
 exportButton.addEventListener(
   &#x27;click&#x27;,
@@ -367,14 +367,14 @@ exportButton.addEventListener(
     exportButton.disabled &#x3D; true;
     document.body.style.cursor &#x3D; &#x27;progress&#x27;;
 
-    var format &#x3D; document.getElementById(&#x27;format&#x27;).value;
-    var resolution &#x3D; document.getElementById(&#x27;resolution&#x27;).value;
-    var scale &#x3D; document.getElementById(&#x27;scale&#x27;).value;
-    var dim &#x3D; dims[format];
-    var width &#x3D; Math.round((dim[0] * resolution) / 25.4);
-    var height &#x3D; Math.round((dim[1] * resolution) / 25.4);
-    var viewResolution &#x3D; map.getView().getResolution();
-    var scaleResolution &#x3D;
+    const format &#x3D; document.getElementById(&#x27;format&#x27;).value;
+    const resolution &#x3D; document.getElementById(&#x27;resolution&#x27;).value;
+    const scale &#x3D; document.getElementById(&#x27;scale&#x27;).value;
+    const dim &#x3D; dims[format];
+    const width &#x3D; Math.round((dim[0] * resolution) / 25.4);
+    const height &#x3D; Math.round((dim[1] * resolution) / 25.4);
+    const viewResolution &#x3D; map.getView().getResolution();
+    const scaleResolution &#x3D;
       scale /
       getPointResolution(
         map.getView().getProjection(),
@@ -388,7 +388,7 @@ exportButton.addEventListener(
       domtoimage
         .toJpeg(map.getViewport(), exportOptions)
         .then(function (dataUrl) {
-          var pdf &#x3D; new jsPDF(&#x27;landscape&#x27;, undefined, format);
+          const pdf &#x3D; new jsPDF(&#x27;landscape&#x27;, undefined, format);
           pdf.addImage(dataUrl, &#x27;JPEG&#x27;, 0, 0, dim[0], dim[1]);
           pdf.save(&#x27;map.pdf&#x27;);
           // Reset original map size
@@ -484,7 +484,7 @@ exportButton.addEventListener(
   &quot;name&quot;: &quot;print-to-scale&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;6.5.1-dev&quot;,
-    &quot;proj4&quot;: &quot;2.7.0&quot;
+    &quot;proj4&quot;: &quot;2.7.2&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;

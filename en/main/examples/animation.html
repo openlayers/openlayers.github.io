@@ -194,32 +194,33 @@ import View from &#x27;ol/View&#x27;;
 import {easeIn, easeOut} from &#x27;ol/easing&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 
-var london &#x3D; fromLonLat([-0.12755, 51.507222]);
-var moscow &#x3D; fromLonLat([37.6178, 55.7517]);
-var istanbul &#x3D; fromLonLat([28.9744, 41.0128]);
-var rome &#x3D; fromLonLat([12.5, 41.9]);
-var bern &#x3D; fromLonLat([7.4458, 46.95]);
+const london &#x3D; fromLonLat([-0.12755, 51.507222]);
+const moscow &#x3D; fromLonLat([37.6178, 55.7517]);
+const istanbul &#x3D; fromLonLat([28.9744, 41.0128]);
+const rome &#x3D; fromLonLat([12.5, 41.9]);
+const bern &#x3D; fromLonLat([7.4458, 46.95]);
 
-var view &#x3D; new View({
+const view &#x3D; new View({
   center: istanbul,
   zoom: 6,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   layers: [
     new TileLayer({
       preload: 4,
       source: new OSM(),
-    }) ],
+    }),
+  ],
   view: view,
 });
 
 // A bounce easing method (from https://github.com/DmitryBaranovskiy/raphael).
 function bounce(t) {
-  var s &#x3D; 7.5625;
-  var p &#x3D; 2.75;
-  var l;
+  const s &#x3D; 7.5625;
+  const p &#x3D; 2.75;
+  let l;
   if (t &lt; 1 / p) {
     l &#x3D; s * t * t;
   } else {
@@ -264,7 +265,7 @@ onClick(&#x27;rotate-right&#x27;, function () {
 
 onClick(&#x27;rotate-around-rome&#x27;, function () {
   // Rotation animation takes the shortest arc, so animate in two parts
-  var rotation &#x3D; view.getRotation();
+  const rotation &#x3D; view.getRotation();
   view.animate(
     {
       rotation: rotation + Math.PI,
@@ -304,12 +305,13 @@ onClick(&#x27;bounce-to-istanbul&#x27;, function () {
 
 onClick(&#x27;spin-to-rome&#x27;, function () {
   // Rotation animation takes the shortest arc, so animate in two parts
-  var center &#x3D; view.getCenter();
+  const center &#x3D; view.getCenter();
   view.animate(
     {
       center: [
         center[0] + (rome[0] - center[0]) / 2,
-        center[1] + (rome[1] - center[1]) / 2 ],
+        center[1] + (rome[1] - center[1]) / 2,
+      ],
       rotation: Math.PI,
       easing: easeIn,
     },
@@ -322,10 +324,10 @@ onClick(&#x27;spin-to-rome&#x27;, function () {
 });
 
 function flyTo(location, done) {
-  var duration &#x3D; 2000;
-  var zoom &#x3D; view.getZoom();
-  var parts &#x3D; 2;
-  var called &#x3D; false;
+  const duration &#x3D; 2000;
+  const zoom &#x3D; view.getZoom();
+  let parts &#x3D; 2;
+  let called &#x3D; false;
   function callback(complete) {
     --parts;
     if (called) {
@@ -361,13 +363,13 @@ onClick(&#x27;fly-to-bern&#x27;, function () {
 });
 
 function tour() {
-  var locations &#x3D; [london, bern, rome, moscow, istanbul];
-  var index &#x3D; -1;
+  const locations &#x3D; [london, bern, rome, moscow, istanbul];
+  let index &#x3D; -1;
   function next(more) {
     if (more) {
       ++index;
       if (index &lt; locations.length) {
-        var delay &#x3D; index &#x3D;&#x3D;&#x3D; 0 ? 0 : 750;
+        const delay &#x3D; index &#x3D;&#x3D;&#x3D; 0 ? 0 : 750;
         setTimeout(function () {
           flyTo(locations[index], next);
         }, delay);

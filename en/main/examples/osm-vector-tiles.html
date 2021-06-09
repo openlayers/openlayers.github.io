@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -288,15 +289,15 @@ import View from &#x27;ol/View&#x27;;
 import {Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 
-var key &#x3D; &#x27;Your Nextzen API key from https://developers.nextzen.org/&#x27;;
+const key &#x3D; &#x27;Your Nextzen API key from https://developers.nextzen.org/&#x27;;
 
-var roadStyleCache &#x3D; {};
-var roadColor &#x3D; {
+const roadStyleCache &#x3D; {};
+const roadColor &#x3D; {
   &#x27;major_road&#x27;: &#x27;#776&#x27;,
   &#x27;minor_road&#x27;: &#x27;#ccb&#x27;,
   &#x27;highway&#x27;: &#x27;#f39&#x27;,
 };
-var buildingStyle &#x3D; new Style({
+const buildingStyle &#x3D; new Style({
   fill: new Fill({
     color: &#x27;#666&#x27;,
     opacity: 0.4,
@@ -306,19 +307,19 @@ var buildingStyle &#x3D; new Style({
     width: 1,
   }),
 });
-var waterStyle &#x3D; new Style({
+const waterStyle &#x3D; new Style({
   fill: new Fill({
     color: &#x27;#9db9e8&#x27;,
   }),
 });
-var roadStyle &#x3D; function (feature) {
-  var kind &#x3D; feature.get(&#x27;kind&#x27;);
-  var railway &#x3D; feature.get(&#x27;railway&#x27;);
-  var sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
-  var styleKey &#x3D; kind + &#x27;/&#x27; + railway + &#x27;/&#x27; + sort_key;
-  var style &#x3D; roadStyleCache[styleKey];
+const roadStyle &#x3D; function (feature) {
+  const kind &#x3D; feature.get(&#x27;kind&#x27;);
+  const railway &#x3D; feature.get(&#x27;railway&#x27;);
+  const sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
+  const styleKey &#x3D; kind + &#x27;/&#x27; + railway + &#x27;/&#x27; + sort_key;
+  let style &#x3D; roadStyleCache[styleKey];
   if (!style) {
-    var color, width;
+    let color, width;
     if (railway) {
       color &#x3D; &#x27;#7de&#x27;;
       width &#x3D; 1;
@@ -338,7 +339,7 @@ var roadStyle &#x3D; function (feature) {
   return style;
 };
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new VectorTileLayer({
       source: new VectorTileSource({
@@ -366,7 +367,8 @@ var map &#x3D; new Map({
             return null;
         }
       },
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: fromLonLat([-74.0064, 40.7142]),

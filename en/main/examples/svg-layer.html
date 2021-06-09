@@ -223,7 +223,7 @@ import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {composeCssTransform} from &#x27;ol/transform&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -233,19 +233,19 @@ var map &#x3D; new Map({
   }),
 });
 
-var svgContainer &#x3D; document.createElement(&#x27;div&#x27;);
-var xhr &#x3D; new XMLHttpRequest();
+const svgContainer &#x3D; document.createElement(&#x27;div&#x27;);
+const xhr &#x3D; new XMLHttpRequest();
 xhr.open(&#x27;GET&#x27;, &#x27;data/world.svg&#x27;);
 xhr.addEventListener(&#x27;load&#x27;, function () {
-  var svg &#x3D; xhr.responseXML.documentElement;
+  const svg &#x3D; xhr.responseXML.documentElement;
   svgContainer.ownerDocument.importNode(svg);
   svgContainer.appendChild(svg);
 });
 xhr.send();
 
-var width &#x3D; 2560;
-var height &#x3D; 1280;
-var svgResolution &#x3D; 360 / width;
+const width &#x3D; 2560;
+const height &#x3D; 1280;
+const svgResolution &#x3D; 360 / width;
 svgContainer.style.width &#x3D; width + &#x27;px&#x27;;
 svgContainer.style.height &#x3D; height + &#x27;px&#x27;;
 svgContainer.style.transformOrigin &#x3D; &#x27;top left&#x27;;
@@ -254,10 +254,10 @@ svgContainer.className &#x3D; &#x27;svg-layer&#x27;;
 map.addLayer(
   new Layer({
     render: function (frameState) {
-      var scale &#x3D; svgResolution / frameState.viewState.resolution;
-      var center &#x3D; frameState.viewState.center;
-      var size &#x3D; frameState.size;
-      var cssTransform &#x3D; composeCssTransform(
+      const scale &#x3D; svgResolution / frameState.viewState.resolution;
+      const center &#x3D; frameState.viewState.center;
+      const size &#x3D; frameState.size;
+      const cssTransform &#x3D; composeCssTransform(
         size[0] / 2,
         size[1] / 2,
         scale,

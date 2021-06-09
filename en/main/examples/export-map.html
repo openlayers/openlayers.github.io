@@ -231,7 +231,7 @@ import View from &#x27;ol/View&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
@@ -242,7 +242,8 @@ var map &#x3D; new Map({
         format: new GeoJSON(),
       }),
       opacity: 0.5,
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -252,20 +253,20 @@ var map &#x3D; new Map({
 
 document.getElementById(&#x27;export-png&#x27;).addEventListener(&#x27;click&#x27;, function () {
   map.once(&#x27;rendercomplete&#x27;, function () {
-    var mapCanvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-    var size &#x3D; map.getSize();
+    const mapCanvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+    const size &#x3D; map.getSize();
     mapCanvas.width &#x3D; size[0];
     mapCanvas.height &#x3D; size[1];
-    var mapContext &#x3D; mapCanvas.getContext(&#x27;2d&#x27;);
+    const mapContext &#x3D; mapCanvas.getContext(&#x27;2d&#x27;);
     Array.prototype.forEach.call(
       document.querySelectorAll(&#x27;.ol-layer canvas&#x27;),
       function (canvas) {
         if (canvas.width &gt; 0) {
-          var opacity &#x3D; canvas.parentNode.style.opacity;
+          const opacity &#x3D; canvas.parentNode.style.opacity;
           mapContext.globalAlpha &#x3D; opacity &#x3D;&#x3D;&#x3D; &#x27;&#x27; ? 1 : Number(opacity);
-          var transform &#x3D; canvas.style.transform;
+          const transform &#x3D; canvas.style.transform;
           // Get the transform parameters from the style&#x27;s transform matrix
-          var matrix &#x3D; transform
+          const matrix &#x3D; transform
             .match(/^matrix\(([^\(]*)\)$/)[1]
             .split(&#x27;,&#x27;)
             .map(Number);
@@ -282,7 +283,7 @@ document.getElementById(&#x27;export-png&#x27;).addEventListener(&#x27;click&#x2
       // link download attribuute does not work on MS browsers
       navigator.msSaveBlob(mapCanvas.msToBlob(), &#x27;map.png&#x27;);
     } else {
-      var link &#x3D; document.getElementById(&#x27;image-download&#x27;);
+      const link &#x3D; document.getElementById(&#x27;image-download&#x27;);
       link.href &#x3D; mapCanvas.toDataURL();
       link.click();
     }

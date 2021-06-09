@@ -244,7 +244,7 @@ import View from &#x27;ol/View&#x27;;
 import {DragPan, MouseWheelZoom, defaults} from &#x27;ol/interaction&#x27;;
 import {platformModifierKeyOnly} from &#x27;ol/events/condition&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   interactions: defaults({dragPan: false, mouseWheelZoom: false}).extend([
     new DragPan({
       condition: function (event) {
@@ -253,11 +253,13 @@ var map &#x3D; new Map({
     }),
     new MouseWheelZoom({
       condition: platformModifierKeyOnly,
-    }) ]),
+    }),
+  ]),
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],

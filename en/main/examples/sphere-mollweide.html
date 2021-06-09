@@ -247,17 +247,18 @@ register(proj4);
 
 // Configure the Sphere Mollweide projection object with an extent,
 // and a world extent. These are required for the Graticule.
-var sphereMollweideProjection &#x3D; new Projection({
+const sphereMollweideProjection &#x3D; new Projection({
   code: &#x27;ESRI:53009&#x27;,
   extent: [
     -18019909.21177587,
     -9009954.605703328,
     18019909.21177587,
-    9009954.605703328 ],
+    9009954.605703328,
+  ],
   worldExtent: [-179, -89.99, 179, 89.99],
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   keyboardEventTarget: document,
   layers: [
     new VectorLayer({
@@ -266,7 +267,8 @@ var map &#x3D; new Map({
         format: new GeoJSON(),
       }),
     }),
-    new Graticule() ],
+    new Graticule(),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -309,7 +311,7 @@ var map &#x3D; new Map({
   &quot;name&quot;: &quot;sphere-mollweide&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;6.5.1-dev&quot;,
-    &quot;proj4&quot;: &quot;2.7.0&quot;
+    &quot;proj4&quot;: &quot;2.7.2&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;

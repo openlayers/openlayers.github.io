@@ -234,19 +234,20 @@ import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {platformModifierKeyOnly} from &#x27;ol/events/condition&#x27;;
 
-var vectorSource &#x3D; new VectorSource({
+const vectorSource &#x3D; new VectorSource({
   url: &#x27;data/geojson/countries.geojson&#x27;,
   format: new GeoJSON(),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
     }),
     new VectorLayer({
       source: vectorSource,
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -256,13 +257,13 @@ var map &#x3D; new Map({
 });
 
 // a normal select interaction to handle click
-var select &#x3D; new Select();
+const select &#x3D; new Select();
 map.addInteraction(select);
 
-var selectedFeatures &#x3D; select.getFeatures();
+const selectedFeatures &#x3D; select.getFeatures();
 
 // a DragBox interaction used to select features by drawing boxes
-var dragBox &#x3D; new DragBox({
+const dragBox &#x3D; new DragBox({
   condition: platformModifierKeyOnly,
 });
 
@@ -275,10 +276,10 @@ dragBox.on(&#x27;boxend&#x27;, function () {
   // if the view is not obliquely rotated the box geometry and
   // its extent are equalivalent so intersecting features can
   // be added directly to the collection
-  var rotation &#x3D; map.getView().getRotation();
-  var oblique &#x3D; rotation % (Math.PI / 2) !&#x3D;&#x3D; 0;
-  var candidateFeatures &#x3D; oblique ? [] : selectedFeatures;
-  var extent &#x3D; dragBox.getGeometry().getExtent();
+  const rotation &#x3D; map.getView().getRotation();
+  const oblique &#x3D; rotation % (Math.PI / 2) !&#x3D;&#x3D; 0;
+  const candidateFeatures &#x3D; oblique ? [] : selectedFeatures;
+  const extent &#x3D; dragBox.getGeometry().getExtent();
   vectorSource.forEachFeatureIntersectingExtent(extent, function (feature) {
     candidateFeatures.push(feature);
   });
@@ -289,14 +290,14 @@ dragBox.on(&#x27;boxend&#x27;, function () {
   // to confirm that, with the box geometry aligned with its
   // extent, the geometries intersect
   if (oblique) {
-    var anchor &#x3D; [0, 0];
-    var geometry &#x3D; dragBox.getGeometry().clone();
+    const anchor &#x3D; [0, 0];
+    const geometry &#x3D; dragBox.getGeometry().clone();
     geometry.rotate(-rotation, anchor);
-    var extent$1 &#x3D; geometry.getExtent();
+    const extent &#x3D; geometry.getExtent();
     candidateFeatures.forEach(function (feature) {
-      var geometry &#x3D; feature.getGeometry().clone();
+      const geometry &#x3D; feature.getGeometry().clone();
       geometry.rotate(-rotation, anchor);
-      if (geometry.intersectsExtent(extent$1)) {
+      if (geometry.intersectsExtent(extent)) {
         selectedFeatures.push(feature);
       }
     });
@@ -308,10 +309,10 @@ dragBox.on(&#x27;boxstart&#x27;, function () {
   selectedFeatures.clear();
 });
 
-var infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
+const infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
 
 selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function () {
-  var names &#x3D; selectedFeatures.getArray().map(function (feature) {
+  const names &#x3D; selectedFeatures.getArray().map(function (feature) {
     return feature.get(&#x27;name&#x27;);
   });
   if (names.length &gt; 0) {

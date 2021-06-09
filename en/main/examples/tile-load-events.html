@@ -247,7 +247,7 @@ Progress.prototype.addLoading &#x3D; function () {
  * Increment the count of loaded tiles.
  */
 Progress.prototype.addLoaded &#x3D; function () {
-  var this_ &#x3D; this;
+  const this_ &#x3D; this;
   setTimeout(function () {
     ++this_.loaded;
     this_.update();
@@ -258,12 +258,12 @@ Progress.prototype.addLoaded &#x3D; function () {
  * Update the progress bar.
  */
 Progress.prototype.update &#x3D; function () {
-  var width &#x3D; ((this.loaded / this.loading) * 100).toFixed(1) + &#x27;%&#x27;;
+  const width &#x3D; ((this.loaded / this.loading) * 100).toFixed(1) + &#x27;%&#x27;;
   this.el.style.width &#x3D; width;
   if (this.loading &#x3D;&#x3D;&#x3D; this.loaded) {
     this.loading &#x3D; 0;
     this.loaded &#x3D; 0;
-    var this_ &#x3D; this;
+    const this_ &#x3D; this;
     setTimeout(function () {
       this_.hide();
     }, 500);
@@ -287,14 +287,14 @@ Progress.prototype.hide &#x3D; function () {
   }
 };
 
-var progress &#x3D; new Progress(document.getElementById(&#x27;progress&#x27;));
+const progress &#x3D; new Progress(document.getElementById(&#x27;progress&#x27;));
 
-var key &#x3D; &#x27;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;;
-var attributions &#x3D;
+const key &#x3D; &#x27;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;;
+const attributions &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
-var source &#x3D; new XYZ({
+const source &#x3D; new XYZ({
   attributions: attributions,
   url: &#x27;https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key&#x3D;&#x27; + key,
   tileSize: 512,
@@ -311,7 +311,7 @@ source.on(&#x27;tileloaderror&#x27;, function () {
   progress.addLoaded();
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [new TileLayer({source: source})],
   target: &#x27;map&#x27;,
   view: new View({

@@ -136,6 +136,7 @@
                 data-title="draw"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-freehand.html&quot;&gt;Freehand Drawing&lt;/a&gt;
@@ -145,7 +146,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./topolis.html&quot;&gt;topolis integration&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./tracing.html&quot;&gt;Tracing around a polygon&lt;/a&gt;"
                 tabindex="0"
-                >9</a>
+                >10</a>
             </span>
             <span class="badge-group">
               <a
@@ -193,6 +194,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -244,7 +246,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -327,9 +329,9 @@ function length(a, b) {
 
 // coordinates; will return true if c is on the [a, b] segment
 function isOnSegment(c, a, b) {
-  var lengthAc &#x3D; length(a, c);
-  var lengthAb &#x3D; length(a, b);
-  var dot &#x3D;
+  const lengthAc &#x3D; length(a, c);
+  const lengthAb &#x3D; length(a, b);
+  const dot &#x3D;
     ((c[0] - a[0]) * (b[0] - a[0]) + (c[1] - a[1]) * (b[1] - a[1])) / lengthAb;
   return Math.abs(lengthAc - dot) &lt; 1e-6 &amp;&amp; lengthAc &lt; lengthAb;
 }
@@ -343,13 +345,13 @@ function mod(a, b) {
 // outer ring between the start and end points
 // Note: this assumes the base feature is a single polygon
 function getPartialRingCoords(feature, startPoint, endPoint) {
-  var polygon &#x3D; feature.getGeometry();
+  let polygon &#x3D; feature.getGeometry();
   if (polygon.getType() &#x3D;&#x3D;&#x3D; &#x27;MultiPolygon&#x27;) {
     polygon &#x3D; polygon.getPolygon(0);
   }
-  var ringCoords &#x3D; polygon.getLinearRing().getCoordinates();
+  const ringCoords &#x3D; polygon.getLinearRing().getCoordinates();
 
-  var i,
+  let i,
     pointA,
     pointB,
     startSegmentIndex &#x3D; -1;
@@ -364,10 +366,10 @@ function getPartialRingCoords(feature, startPoint, endPoint) {
     }
   }
 
-  var cwCoordinates &#x3D; [];
-  var cwLength &#x3D; 0;
-  var ccwCoordinates &#x3D; [];
-  var ccwLength &#x3D; 0;
+  const cwCoordinates &#x3D; [];
+  let cwLength &#x3D; 0;
+  const ccwCoordinates &#x3D; [];
+  let ccwLength &#x3D; 0;
 
   // build clockwise coordinates
   for (i &#x3D; 0; i &lt; ringCoords.length; i++) {
@@ -411,12 +413,12 @@ function getPartialRingCoords(feature, startPoint, endPoint) {
 
 // layers definition
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new OSM(),
 });
 
 // features in this layer will be snapped to
-var baseVector &#x3D; new VectorLayer({
+const baseVector &#x3D; new VectorLayer({
   source: new VectorSource({
     format: new GeoJSON(),
     url:
@@ -425,7 +427,7 @@ var baseVector &#x3D; new VectorLayer({
 });
 
 // this is were the drawn features go
-var drawVector &#x3D; new VectorLayer({
+const drawVector &#x3D; new VectorLayer({
   source: new VectorSource(),
   style: new Style({
     stroke: new Stroke({
@@ -439,10 +441,10 @@ var drawVector &#x3D; new VectorLayer({
 });
 
 // this line only appears when we&#x27;re tracing a feature outer ring
-var previewLine &#x3D; new Feature({
+const previewLine &#x3D; new Feature({
   geometry: new LineString([]),
 });
-var previewVector &#x3D; new VectorLayer({
+const previewVector &#x3D; new VectorLayer({
   source: new VectorSource({
     features: [previewLine],
   }),
@@ -454,7 +456,7 @@ var previewVector &#x3D; new VectorLayer({
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster, baseVector, drawVector, previewVector],
   target: &#x27;map&#x27;,
   view: new View({
@@ -463,37 +465,37 @@ var map &#x3D; new Map({
   }),
 });
 
-var drawInteraction, tracingFeature, startPoint, endPoint;
-var drawing &#x3D; false;
+let drawInteraction, tracingFeature, startPoint, endPoint;
+let drawing &#x3D; false;
 
-var getFeatureOptions &#x3D; {
+const getFeatureOptions &#x3D; {
   hitTolerance: 10,
-  layerFilter: function (layer) {
+  layerFilter: (layer) &#x3D;&gt; {
     return layer &#x3D;&#x3D;&#x3D; baseVector;
   },
 };
 
 // the click event is used to start/end tracing around a feature
-map.on(&#x27;click&#x27;, function (event) {
+map.on(&#x27;click&#x27;, (event) &#x3D;&gt; {
   if (!drawing) {
     return;
   }
 
-  var hit &#x3D; false;
+  let hit &#x3D; false;
   map.forEachFeatureAtPixel(
     event.pixel,
-    function (feature) {
+    (feature) &#x3D;&gt; {
       if (tracingFeature &amp;&amp; feature !&#x3D;&#x3D; tracingFeature) {
         return;
       }
 
       hit &#x3D; true;
-      var coord &#x3D; map.getCoordinateFromPixel(event.pixel);
+      const coord &#x3D; map.getCoordinateFromPixel(event.pixel);
 
       // second click on the tracing feature: append the ring coordinates
       if (feature &#x3D;&#x3D;&#x3D; tracingFeature) {
         endPoint &#x3D; tracingFeature.getGeometry().getClosestPoint(coord);
-        var appendCoords &#x3D; getPartialRingCoords(
+        const appendCoords &#x3D; getPartialRingCoords(
           tracingFeature,
           startPoint,
           endPoint
@@ -518,12 +520,12 @@ map.on(&#x27;click&#x27;, function (event) {
 });
 
 // the pointermove event is used to show a preview of the result of the tracing
-map.on(&#x27;pointermove&#x27;, function (event) {
+map.on(&#x27;pointermove&#x27;, (event) &#x3D;&gt; {
   if (tracingFeature &amp;&amp; drawing) {
-    var coord &#x3D; null;
+    let coord &#x3D; null;
     map.forEachFeatureAtPixel(
       event.pixel,
-      function (feature) {
+      (feature) &#x3D;&gt; {
         if (tracingFeature &#x3D;&#x3D;&#x3D; feature) {
           coord &#x3D; map.getCoordinateFromPixel(event.pixel);
         }
@@ -531,7 +533,7 @@ map.on(&#x27;pointermove&#x27;, function (event) {
       getFeatureOptions
     );
 
-    var previewCoords &#x3D; [];
+    let previewCoords &#x3D; [];
     if (coord) {
       endPoint &#x3D; tracingFeature.getGeometry().getClosestPoint(coord);
       previewCoords &#x3D; getPartialRingCoords(
@@ -544,23 +546,23 @@ map.on(&#x27;pointermove&#x27;, function (event) {
   }
 });
 
-var snapInteraction &#x3D; new Snap({
+const snapInteraction &#x3D; new Snap({
   source: baseVector.getSource(),
 });
 
-var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+const typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
 function addInteraction() {
-  var value &#x3D; typeSelect.value;
+  const value &#x3D; typeSelect.value;
   if (value !&#x3D;&#x3D; &#x27;None&#x27;) {
     drawInteraction &#x3D; new Draw({
       source: drawVector.getSource(),
       type: typeSelect.value,
     });
-    drawInteraction.on(&#x27;drawstart&#x27;, function () {
+    drawInteraction.on(&#x27;drawstart&#x27;, () &#x3D;&gt; {
       drawing &#x3D; true;
     });
-    drawInteraction.on(&#x27;drawend&#x27;, function () {
+    drawInteraction.on(&#x27;drawend&#x27;, () &#x3D;&gt; {
       drawing &#x3D; false;
       previewLine.getGeometry().setCoordinates([]);
       tracingFeature &#x3D; null;

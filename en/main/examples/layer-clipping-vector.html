@@ -193,6 +193,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -244,7 +245,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -291,18 +292,18 @@ import {fromLonLat} from &#x27;ol/proj&#x27;;
 import {getVectorContext} from &#x27;ol/render&#x27;;
 
 //A distinct className is required to use another canvas for the background
-var background &#x3D; new TileLayer({
+const background &#x3D; new TileLayer({
   className: &#x27;stamen&#x27;,
   source: new Stamen({
     layer: &#x27;toner&#x27;,
   }),
 });
 
-var base &#x3D; new TileLayer({
+const base &#x3D; new TileLayer({
   source: new OSM(),
 });
 
-var clipLayer &#x3D; new VectorLayer({
+const clipLayer &#x3D; new VectorLayer({
   style: null,
   source: new VectorSource({
     url: &#x27;./data/geojson/switzerland.geojson&#x27;,
@@ -315,14 +316,14 @@ clipLayer.getSource().on(&#x27;addfeature&#x27;, function () {
   base.setExtent(clipLayer.getSource().getExtent());
 });
 
-var style &#x3D; new Style({
+const style &#x3D; new Style({
   fill: new Fill({
     color: &#x27;black&#x27;,
   }),
 });
 
 base.on(&#x27;postrender&#x27;, function (e) {
-  var vectorContext &#x3D; getVectorContext(e);
+  const vectorContext &#x3D; getVectorContext(e);
   e.context.globalCompositeOperation &#x3D; &#x27;destination-in&#x27;;
   clipLayer.getSource().forEachFeature(function (feature) {
     vectorContext.drawFeature(feature, style);
@@ -330,7 +331,7 @@ base.on(&#x27;postrender&#x27;, function (e) {
   e.context.globalCompositeOperation &#x3D; &#x27;source-over&#x27;;
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [background, base, clipLayer],
   target: &#x27;map&#x27;,
   view: new View({

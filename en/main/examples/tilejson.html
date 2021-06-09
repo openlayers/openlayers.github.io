@@ -183,14 +183,15 @@ import TileJSON from &#x27;ol/source/TileJSON&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new TileJSON({
         url: &#x27;https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json?secure&#x3D;1&#x27;,
         crossOrigin: &#x27;anonymous&#x27;,
       }),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],

@@ -136,6 +136,7 @@
                 data-title="draw"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-freehand.html&quot;&gt;Freehand Drawing&lt;/a&gt;
@@ -145,7 +146,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./topolis.html&quot;&gt;topolis integration&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./tracing.html&quot;&gt;Tracing around a polygon&lt;/a&gt;"
                 tabindex="0"
-                >9</a>
+                >10</a>
             </span>
             <span class="badge-group">
               <a
@@ -157,6 +158,7 @@
                 data-title="edit"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-esri-edit.html&quot;&gt;Editable ArcGIS REST Feature Service&lt;/a&gt;
@@ -167,7 +169,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./snap.html&quot;&gt;Snap Interaction&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./topolis.html&quot;&gt;topolis integration&lt;/a&gt;"
                 tabindex="0"
-                >10</a>
+                >11</a>
             </span>
             <span class="badge-group">
               <a
@@ -201,6 +203,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -252,7 +255,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -307,13 +310,13 @@ import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {getArea, getLength} from &#x27;ol/sphere&#x27;;
 import {unByKey} from &#x27;ol/Observable&#x27;;
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new OSM(),
 });
 
-var source &#x3D; new VectorSource();
+const source &#x3D; new VectorSource();
 
-var vector &#x3D; new VectorLayer({
+const vector &#x3D; new VectorLayer({
   source: source,
   style: new Style({
     fill: new Fill({
@@ -336,57 +339,57 @@ var vector &#x3D; new VectorLayer({
  * Currently drawn feature.
  * @type {import(&quot;../src/ol/Feature.js&quot;).default}
  */
-var sketch;
+let sketch;
 
 /**
  * The help tooltip element.
  * @type {HTMLElement}
  */
-var helpTooltipElement;
+let helpTooltipElement;
 
 /**
  * Overlay to show the help messages.
  * @type {Overlay}
  */
-var helpTooltip;
+let helpTooltip;
 
 /**
  * The measure tooltip element.
  * @type {HTMLElement}
  */
-var measureTooltipElement;
+let measureTooltipElement;
 
 /**
  * Overlay to show the measurement.
  * @type {Overlay}
  */
-var measureTooltip;
+let measureTooltip;
 
 /**
  * Message to show when the user is drawing a polygon.
  * @type {string}
  */
-var continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
+const continuePolygonMsg &#x3D; &#x27;Click to continue drawing the polygon&#x27;;
 
 /**
  * Message to show when the user is drawing a line.
  * @type {string}
  */
-var continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
+const continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
 
 /**
  * Handle pointer move.
  * @param {import(&quot;../src/ol/MapBrowserEvent&quot;).default} evt The event.
  */
-var pointerMoveHandler &#x3D; function (evt) {
+const pointerMoveHandler &#x3D; function (evt) {
   if (evt.dragging) {
     return;
   }
   /** @type {string} */
-  var helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
+  let helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
 
   if (sketch) {
-    var geom &#x3D; sketch.getGeometry();
+    const geom &#x3D; sketch.getGeometry();
     if (geom instanceof Polygon) {
       helpMsg &#x3D; continuePolygonMsg;
     } else if (geom instanceof LineString) {
@@ -400,7 +403,7 @@ var pointerMoveHandler &#x3D; function (evt) {
   helpTooltipElement.classList.remove(&#x27;hidden&#x27;);
 };
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new View({
@@ -415,18 +418,18 @@ map.getViewport().addEventListener(&#x27;mouseout&#x27;, function () {
   helpTooltipElement.classList.add(&#x27;hidden&#x27;);
 });
 
-var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+const typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
-var draw; // global so we can remove it later
+let draw; // global so we can remove it later
 
 /**
  * Format length output.
  * @param {LineString} line The line.
  * @return {string} The formatted length.
  */
-var formatLength &#x3D; function (line) {
-  var length &#x3D; getLength(line);
-  var output;
+const formatLength &#x3D; function (line) {
+  const length &#x3D; getLength(line);
+  let output;
   if (length &gt; 100) {
     output &#x3D; Math.round((length / 1000) * 100) / 100 + &#x27; &#x27; + &#x27;km&#x27;;
   } else {
@@ -440,9 +443,9 @@ var formatLength &#x3D; function (line) {
  * @param {Polygon} polygon The polygon.
  * @return {string} Formatted area.
  */
-var formatArea &#x3D; function (polygon) {
-  var area &#x3D; getArea(polygon);
-  var output;
+const formatArea &#x3D; function (polygon) {
+  const area &#x3D; getArea(polygon);
+  let output;
   if (area &gt; 10000) {
     output &#x3D; Math.round((area / 1000000) * 100) / 100 + &#x27; &#x27; + &#x27;km&lt;sup&gt;2&lt;/sup&gt;&#x27;;
   } else {
@@ -452,7 +455,7 @@ var formatArea &#x3D; function (polygon) {
 };
 
 function addInteraction() {
-  var type &#x3D; typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;;
+  const type &#x3D; typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;;
   draw &#x3D; new Draw({
     source: source,
     type: type,
@@ -481,17 +484,17 @@ function addInteraction() {
   createMeasureTooltip();
   createHelpTooltip();
 
-  var listener;
+  let listener;
   draw.on(&#x27;drawstart&#x27;, function (evt) {
     // set sketch
     sketch &#x3D; evt.feature;
 
     /** @type {import(&quot;../src/ol/coordinate.js&quot;).Coordinate|undefined} */
-    var tooltipCoord &#x3D; evt.coordinate;
+    let tooltipCoord &#x3D; evt.coordinate;
 
     listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function (evt) {
-      var geom &#x3D; evt.target;
-      var output;
+      const geom &#x3D; evt.target;
+      let output;
       if (geom instanceof Polygon) {
         output &#x3D; formatArea(geom);
         tooltipCoord &#x3D; geom.getInteriorPoint().getCoordinates();

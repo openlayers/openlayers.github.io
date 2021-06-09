@@ -194,12 +194,12 @@ import Map from &#x27;ol/Map&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 
-var view &#x3D; new View({
+const view &#x3D; new View({
   center: [-4808600, -2620936],
   zoom: 8,
 });
 
-var map1 &#x3D; new Map({
+const map1 &#x3D; new Map({
   layers: [
     new TileLayer({
       preload: Infinity,
@@ -207,12 +207,13 @@ var map1 &#x3D; new Map({
         key: &#x27;Your Bing Maps Key from https://www.bingmapsportal.com/ here&#x27;,
         imagerySet: &#x27;Aerial&#x27;,
       }),
-    }) ],
+    }),
+  ],
   target: &#x27;map1&#x27;,
   view: view,
 });
 
-var map2 &#x3D; new Map({
+const map2 &#x3D; new Map({
   layers: [
     new TileLayer({
       preload: 0, // default value
@@ -220,7 +221,8 @@ var map2 &#x3D; new Map({
         key: &#x27;Your Bing Maps Key from https://www.bingmapsportal.com/ here&#x27;,
         imagerySet: &#x27;AerialWithLabelsOnDemand&#x27;,
       }),
-    }) ],
+    }),
+  ],
   target: &#x27;map2&#x27;,
   view: view,
 });

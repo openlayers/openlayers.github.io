@@ -1,16 +1,15 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[120],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[6386],{
 
-/***/ 349:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ 3411:
+/***/ (function(__unused_webpack___webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(162);
-/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
-/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(69);
+/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1625);
+/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9175);
+/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(640);
+/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6343);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7842);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4743);
 
 
 
@@ -62,7 +61,7 @@ var attributions =
   '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
   '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
 
-var aerial = new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"]({
+var aerial = new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__/* .default */ .Z({
   attributions: attributions,
   url: 'https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=' + key,
   maxZoom: 20,
@@ -73,7 +72,7 @@ var aerial = new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_3__[/* default *
  * Create a raster source where pixels with VGI values above a threshold will
  * be colored green.
  */
-var raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"]({
+var raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__/* .default */ .ZP({
   sources: [aerial],
   /**
    * Run calculations on pixel data.
@@ -124,16 +123,16 @@ raster.on('afteroperations', function (event) {
   schedulePlot(event.resolution, event.data.counts, event.data.threshold);
 });
 
-var map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"]({
+var map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__/* .default */ .Z({
   layers: [
-    new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]({
+    new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__/* .default */ .Z({
       source: aerial,
     }),
-    new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"]({
+    new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__/* .default */ .Z({
       source: raster,
     }) ],
   target: 'map',
-  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"]({
+  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_5__/* .default */ .ZP({
     center: [-9651695, 4937351],
     zoom: 13,
     minZoom: 12,
@@ -192,7 +191,8 @@ function plot(resolution, counts, threshold) {
     })
     .attr('height', yScale);
 
-  bar.on('mousemove', function (count, index) {
+  bar.on('mousemove', function () {
+    var index = bar.nodes().indexOf(this);
     var threshold = counts.min + index * counts.delta;
     if (raster.get('threshold') !== threshold) {
       raster.set('threshold', threshold);
@@ -200,25 +200,26 @@ function plot(resolution, counts, threshold) {
     }
   });
 
-  bar.on('mouseover', function (count, index) {
+  bar.on('mouseover', function (event) {
+    var index = bar.nodes().indexOf(this);
     var area = 0;
     for (var i = counts.values.length - 1; i >= index; --i) {
       area += resolution * resolution * counts.values[i];
     }
     tip.html(message(counts.min + index * counts.delta, area));
     tip.style('display', 'block');
-    tip.transition().style({
-      left: chartRect.left + index * barWidth + barWidth / 2 + 'px',
-      top: d3.event.y - 60 + 'px',
-      opacity: 1,
-    });
+    tip
+      .transition()
+      .style('left', chartRect.left + index * barWidth + barWidth / 2 + 'px')
+      .style('top', event.y - 60 + 'px')
+      .style('opacity', 1);
   });
 
   bar.on('mouseout', function () {
     tip
       .transition()
       .style('opacity', 0)
-      .each('end', function () {
+      .on('end', function () {
         tip.style('display', 'none');
       });
   });
@@ -234,5 +235,12 @@ function message(value, area) {
 
 /***/ })
 
-},[[349,0]]]);
+},
+/******/ function(__webpack_require__) { // webpackRuntimeModules
+/******/ "use strict";
+/******/ 
+/******/ var __webpack_exec__ = function(moduleId) { return __webpack_require__(__webpack_require__.s = moduleId); }
+/******/ var __webpack_exports__ = (__webpack_exec__(3411));
+/******/ }
+]);
 //# sourceMappingURL=raster.js.map

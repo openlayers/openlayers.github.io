@@ -231,21 +231,22 @@ import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var view &#x3D; new View({
+const view &#x3D; new View({
   center: [0, 0],
   zoom: 2,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: view,
 });
 
-var geolocation &#x3D; new Geolocation({
+const geolocation &#x3D; new Geolocation({
   // enableHighAccuracy must be set to true to have the heading value.
   trackingOptions: {
     enableHighAccuracy: true,
@@ -272,17 +273,17 @@ geolocation.on(&#x27;change&#x27;, function () {
 
 // handle geolocation error.
 geolocation.on(&#x27;error&#x27;, function (error) {
-  var info &#x3D; document.getElementById(&#x27;info&#x27;);
+  const info &#x3D; document.getElementById(&#x27;info&#x27;);
   info.innerHTML &#x3D; error.message;
   info.style.display &#x3D; &#x27;&#x27;;
 });
 
-var accuracyFeature &#x3D; new Feature();
+const accuracyFeature &#x3D; new Feature();
 geolocation.on(&#x27;change:accuracyGeometry&#x27;, function () {
   accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
 });
 
-var positionFeature &#x3D; new Feature();
+const positionFeature &#x3D; new Feature();
 positionFeature.setStyle(
   new Style({
     image: new CircleStyle({
@@ -299,7 +300,7 @@ positionFeature.setStyle(
 );
 
 geolocation.on(&#x27;change:position&#x27;, function () {
-  var coordinates &#x3D; geolocation.getPosition();
+  const coordinates &#x3D; geolocation.getPosition();
   positionFeature.setGeometry(coordinates ? new Point(coordinates) : null);
 });
 

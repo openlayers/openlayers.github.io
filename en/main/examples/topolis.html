@@ -138,6 +138,7 @@
                 data-title="draw"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-freehand.html&quot;&gt;Freehand Drawing&lt;/a&gt;
@@ -147,7 +148,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./topolis.html&quot;&gt;topolis integration&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./tracing.html&quot;&gt;Tracing around a polygon&lt;/a&gt;"
                 tabindex="0"
-                >9</a>
+                >10</a>
             </span>
             <span class="badge-group">
               <a
@@ -159,6 +160,7 @@
                 data-title="edit"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-esri-edit.html&quot;&gt;Editable ArcGIS REST Feature Service&lt;/a&gt;
@@ -169,7 +171,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./snap.html&quot;&gt;Snap Interaction&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./topolis.html&quot;&gt;topolis integration&lt;/a&gt;"
                 tabindex="0"
-                >10</a>
+                >11</a>
             </span>
             <span class="badge-group">
               <a
@@ -190,6 +192,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -241,7 +244,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -321,15 +324,15 @@ import {LineString, Point, Polygon} from &#x27;ol/geom&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new OSM(),
 });
 
-var nodes &#x3D; new VectorSource({wrapX: false});
-var nodesLayer &#x3D; new VectorLayer({
+const nodes &#x3D; new VectorSource({wrapX: false});
+const nodesLayer &#x3D; new VectorLayer({
   source: nodes,
   style: function (f) {
-    var style &#x3D; new Style({
+    const style &#x3D; new Style({
       image: new CircleStyle({
         radius: 8,
         fill: new Fill({color: &#x27;rgba(255, 0, 0, 0.2)&#x27;}),
@@ -348,11 +351,11 @@ var nodesLayer &#x3D; new VectorLayer({
   },
 });
 
-var edges &#x3D; new VectorSource({wrapX: false});
-var edgesLayer &#x3D; new VectorLayer({
+const edges &#x3D; new VectorSource({wrapX: false});
+const edgesLayer &#x3D; new VectorLayer({
   source: edges,
   style: function (f) {
-    var style &#x3D; new Style({
+    const style &#x3D; new Style({
       stroke: new Stroke({
         color: &#x27;blue&#x27;,
         width: 1,
@@ -370,11 +373,11 @@ var edgesLayer &#x3D; new VectorLayer({
   },
 });
 
-var faces &#x3D; new VectorSource({wrapX: false});
-var facesLayer &#x3D; new VectorLayer({
+const faces &#x3D; new VectorSource({wrapX: false});
+const facesLayer &#x3D; new VectorLayer({
   source: faces,
   style: function (f) {
-    var style &#x3D; new Style({
+    const style &#x3D; new Style({
       stroke: new Stroke({
         color: &#x27;black&#x27;,
         width: 1,
@@ -396,7 +399,7 @@ var facesLayer &#x3D; new VectorLayer({
   },
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster, facesLayer, edgesLayer, nodesLayer],
   target: &#x27;map&#x27;,
   view: new View({
@@ -405,7 +408,7 @@ var map &#x3D; new Map({
   }),
 });
 
-var topo &#x3D; topolis.createTopology();
+const topo &#x3D; topolis.createTopology();
 
 topo.on(&#x27;addnode&#x27;, nodeToFeature);
 topo.on(&#x27;removenode&#x27;, function (e) {
@@ -413,7 +416,7 @@ topo.on(&#x27;removenode&#x27;, function (e) {
 });
 topo.on(&#x27;addedge&#x27;, edgeToFeature);
 topo.on(&#x27;modedge&#x27;, function (e) {
-  var feature &#x3D; edges.getFeatureById(e.id);
+  const feature &#x3D; edges.getFeatureById(e.id);
   feature.setGeometry(new LineString(e.coordinates));
 });
 topo.on(&#x27;removeedge&#x27;, function (e) {
@@ -425,12 +428,12 @@ topo.on(&#x27;removeface&#x27;, function (e) {
 });
 
 function removeElementFeature(source, element) {
-  var feature &#x3D; source.getFeatureById(element.id);
+  const feature &#x3D; source.getFeatureById(element.id);
   source.removeFeature(feature);
 }
 
 function nodeToFeature(node) {
-  var feature &#x3D; new Feature({
+  const feature &#x3D; new Feature({
     geometry: new Point(node.coordinate),
     node: node,
   });
@@ -439,7 +442,7 @@ function nodeToFeature(node) {
 }
 
 function edgeToFeature(edge) {
-  var feature &#x3D; new Feature({
+  const feature &#x3D; new Feature({
     geometry: new LineString(edge.coordinates),
     edge: edge,
   });
@@ -448,8 +451,8 @@ function edgeToFeature(edge) {
 }
 
 function faceToFeature(face) {
-  var coordinates &#x3D; topo.getFaceGeometry(face);
-  var feature &#x3D; new Feature({
+  const coordinates &#x3D; topo.getFaceGeometry(face);
+  const feature &#x3D; new Feature({
     geometry: new Polygon(coordinates),
     face: face,
   });
@@ -458,8 +461,8 @@ function faceToFeature(face) {
 }
 
 function createNode(topo, coord) {
-  var node;
-  var existingEdge &#x3D; topo.getEdgeByPoint(coord, 5)[0];
+  let node;
+  const existingEdge &#x3D; topo.getEdgeByPoint(coord, 5)[0];
   if (existingEdge) {
     node &#x3D; topo.modEdgeSplit(existingEdge, coord);
   } else {
@@ -469,16 +472,16 @@ function createNode(topo, coord) {
 }
 
 function onDrawend(e) {
-  var edgeGeom &#x3D; e.feature.getGeometry().getCoordinates();
-  var startCoord &#x3D; edgeGeom[0];
-  var endCoord &#x3D; edgeGeom[edgeGeom.length - 1];
-  var start, end;
+  const edgeGeom &#x3D; e.feature.getGeometry().getCoordinates();
+  const startCoord &#x3D; edgeGeom[0];
+  const endCoord &#x3D; edgeGeom[edgeGeom.length - 1];
+  let start, end;
   try {
     start &#x3D; topo.getNodeByPoint(startCoord);
     end &#x3D; topo.getNodeByPoint(endCoord);
-    var edgesAtStart &#x3D; topo.getEdgeByPoint(startCoord, 5);
-    var edgesAtEnd &#x3D; topo.getEdgeByPoint(endCoord, 5);
-    var crossing &#x3D; topo.getEdgesByLine(edgeGeom);
+    const edgesAtStart &#x3D; topo.getEdgeByPoint(startCoord, 5);
+    const edgesAtEnd &#x3D; topo.getEdgeByPoint(endCoord, 5);
+    const crossing &#x3D; topo.getEdgesByLine(edgeGeom);
     if (
       crossing.length &#x3D;&#x3D;&#x3D; 1 &amp;&amp;
       !start &amp;&amp;
@@ -506,17 +509,17 @@ function onDrawend(e) {
       edgeGeom[edgeGeom.length - 1] &#x3D; end.coordinate;
     }
     topo.addEdgeNewFaces(start, end, edgeGeom);
-  } catch (e$1) {
-    toastr.warning(e$1.toString());
+  } catch (e) {
+    toastr.warning(e.toString());
   }
 }
 
-var draw &#x3D; new Draw({
+const draw &#x3D; new Draw({
   type: &#x27;LineString&#x27;,
 });
 draw.on(&#x27;drawend&#x27;, onDrawend);
 map.addInteraction(draw);
-var snap &#x3D; new Snap({
+const snap &#x3D; new Snap({
   source: edges,
 });
 map.addInteraction(snap);

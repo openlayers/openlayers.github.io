@@ -221,7 +221,7 @@ import View from &#x27;ol/View&#x27;;
 import {Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 import {Point} from &#x27;ol/geom&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -230,7 +230,7 @@ var map &#x3D; new Map({
   }),
 });
 
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: new VectorSource({
     features: [
       new Feature({
@@ -248,9 +248,10 @@ var vectorLayer &#x3D; new VectorLayer({
       new Feature({
         geometry: new Point([-10, 10]),
         color: &#x27;cyan&#x27;,
-      }) ],
+      }),
+    ],
   }),
-  style: function (feature) {
+  style: (feature) &#x3D;&gt; {
     return new Style({
       image: new CircleStyle({
         radius: 5,
@@ -267,7 +268,7 @@ var vectorLayer &#x3D; new VectorLayer({
 });
 map.addLayer(vectorLayer);
 
-var highlightFeature &#x3D; new Feature(new Point([NaN, NaN]));
+const highlightFeature &#x3D; new Feature(new Point([NaN, NaN]));
 highlightFeature.setStyle(
   new Style({
     image: new CircleStyle({
@@ -280,10 +281,10 @@ highlightFeature.setStyle(
   })
 );
 vectorLayer.getSource().addFeature(highlightFeature);
-map.on(&#x27;pointermove&#x27;, function (e) {
-  var hit &#x3D; map.forEachFeatureAtPixel(
+map.on(&#x27;pointermove&#x27;, (e) &#x3D;&gt; {
+  const hit &#x3D; map.forEachFeatureAtPixel(
     e.pixel,
-    function (feature) {
+    (feature) &#x3D;&gt; {
       highlightFeature.setGeometry(feature.getGeometry().clone());
       return true;
     },

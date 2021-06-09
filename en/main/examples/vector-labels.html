@@ -165,6 +165,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -216,7 +217,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -650,9 +651,9 @@ import {
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var openSansAdded &#x3D; false;
+let openSansAdded &#x3D; false;
 
-var myDom &#x3D; {
+const myDom &#x3D; {
   points: {
     text: document.getElementById(&#x27;points-text&#x27;),
     align: document.getElementById(&#x27;points-align&#x27;),
@@ -709,10 +710,10 @@ var myDom &#x3D; {
   },
 };
 
-var getText &#x3D; function (feature, resolution, dom) {
-  var type &#x3D; dom.text.value;
-  var maxResolution &#x3D; dom.maxreso.value;
-  var text &#x3D; feature.get(&#x27;name&#x27;);
+const getText &#x3D; function (feature, resolution, dom) {
+  const type &#x3D; dom.text.value;
+  const maxResolution &#x3D; dom.maxreso.value;
+  let text &#x3D; feature.get(&#x27;name&#x27;);
 
   if (resolution &gt; maxResolution) {
     text &#x3D; &#x27;&#x27;;
@@ -730,29 +731,29 @@ var getText &#x3D; function (feature, resolution, dom) {
   return text;
 };
 
-var createTextStyle &#x3D; function (feature, resolution, dom) {
-  var align &#x3D; dom.align.value;
-  var baseline &#x3D; dom.baseline.value;
-  var size &#x3D; dom.size.value;
-  var height &#x3D; dom.height.value;
-  var offsetX &#x3D; parseInt(dom.offsetX.value, 10);
-  var offsetY &#x3D; parseInt(dom.offsetY.value, 10);
-  var weight &#x3D; dom.weight.value;
-  var placement &#x3D; dom.placement ? dom.placement.value : undefined;
-  var maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
-  var overflow &#x3D; dom.overflow ? dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27; : undefined;
-  var rotation &#x3D; parseFloat(dom.rotation.value);
+const createTextStyle &#x3D; function (feature, resolution, dom) {
+  const align &#x3D; dom.align.value;
+  const baseline &#x3D; dom.baseline.value;
+  const size &#x3D; dom.size.value;
+  const height &#x3D; dom.height.value;
+  const offsetX &#x3D; parseInt(dom.offsetX.value, 10);
+  const offsetY &#x3D; parseInt(dom.offsetY.value, 10);
+  const weight &#x3D; dom.weight.value;
+  const placement &#x3D; dom.placement ? dom.placement.value : undefined;
+  const maxAngle &#x3D; dom.maxangle ? parseFloat(dom.maxangle.value) : undefined;
+  const overflow &#x3D; dom.overflow ? dom.overflow.value &#x3D;&#x3D; &#x27;true&#x27; : undefined;
+  const rotation &#x3D; parseFloat(dom.rotation.value);
   if (dom.font.value &#x3D;&#x3D; &quot;&#x27;Open Sans&#x27;&quot; &amp;&amp; !openSansAdded) {
-    var openSans &#x3D; document.createElement(&#x27;link&#x27;);
+    const openSans &#x3D; document.createElement(&#x27;link&#x27;);
     openSans.href &#x3D; &#x27;https://fonts.googleapis.com/css?family&#x3D;Open+Sans&#x27;;
     openSans.rel &#x3D; &#x27;stylesheet&#x27;;
     document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(openSans);
     openSansAdded &#x3D; true;
   }
-  var font &#x3D; weight + &#x27; &#x27; + size + &#x27;/&#x27; + height + &#x27; &#x27; + dom.font.value;
-  var fillColor &#x3D; dom.color.value;
-  var outlineColor &#x3D; dom.outline.value;
-  var outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
+  const font &#x3D; weight + &#x27; &#x27; + size + &#x27;/&#x27; + height + &#x27; &#x27; + dom.font.value;
+  const fillColor &#x3D; dom.color.value;
+  const outlineColor &#x3D; dom.outline.value;
+  const outlineWidth &#x3D; parseInt(dom.outlineWidth.value, 10);
 
   return new Text({
     textAlign: align &#x3D;&#x3D; &#x27;&#x27; ? undefined : align,
@@ -784,7 +785,7 @@ function polygonStyleFunction(feature, resolution) {
   });
 }
 
-var vectorPolygons &#x3D; new VectorLayer({
+const vectorPolygons &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/polygon-samples.geojson&#x27;,
     format: new GeoJSON(),
@@ -803,7 +804,7 @@ function lineStyleFunction(feature, resolution) {
   });
 }
 
-var vectorLines &#x3D; new VectorLayer({
+const vectorLines &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/line-samples.geojson&#x27;,
     format: new GeoJSON(),
@@ -823,7 +824,7 @@ function pointStyleFunction(feature, resolution) {
   });
 }
 
-var vectorPoints &#x3D; new VectorLayer({
+const vectorPoints &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/geojson/point-samples.geojson&#x27;,
     format: new GeoJSON(),
@@ -831,14 +832,15 @@ var vectorPoints &#x3D; new VectorLayer({
   style: pointStyleFunction,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
     }),
     vectorPolygons,
     vectorLines,
-    vectorPoints ],
+    vectorPoints,
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [-8161939, 6095025],
@@ -875,18 +877,18 @@ String.prototype.trunc &#x3D;
 // https://stackoverflow.com/questions/14484787/wrap-text-in-javascript
 function stringDivider(str, width, spaceReplacer) {
   if (str.length &gt; width) {
-    var p &#x3D; width;
+    let p &#x3D; width;
     while (p &gt; 0 &amp;&amp; str[p] !&#x3D; &#x27; &#x27; &amp;&amp; str[p] !&#x3D; &#x27;-&#x27;) {
       p--;
     }
     if (p &gt; 0) {
-      var left;
+      let left;
       if (str.substring(p, p + 1) &#x3D;&#x3D; &#x27;-&#x27;) {
         left &#x3D; str.substring(0, p + 1);
       } else {
         left &#x3D; str.substring(0, p);
       }
-      var right &#x3D; str.substring(p + 1);
+      const right &#x3D; str.substring(p + 1);
       return left + spaceReplacer + stringDivider(right, width, spaceReplacer);
     }
   }

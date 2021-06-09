@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -327,6 +328,7 @@
                 data-title="edit"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./vector-esri-edit.html&quot;&gt;Editable ArcGIS REST Feature Service&lt;/a&gt;
@@ -337,7 +339,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./snap.html&quot;&gt;Snap Interaction&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./topolis.html&quot;&gt;topolis integration&lt;/a&gt;"
                 tabindex="0"
-                >10</a>
+                >11</a>
             </span>
             <span class="badge-group">
               <a
@@ -423,15 +425,15 @@ import {createXYZ} from &#x27;ol/tilegrid&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 import {tile as tileStrategy} from &#x27;ol/loadingstrategy&#x27;;
 
-var serviceUrl &#x3D;
+const serviceUrl &#x3D;
   &#x27;https://sampleserver6.arcgisonline.com/arcgis/rest/services/Wildfire/FeatureServer/&#x27;;
-var layer &#x3D; &#x27;2&#x27;;
+const layer &#x3D; &#x27;2&#x27;;
 
-var esrijsonFormat &#x3D; new EsriJSON();
+const esrijsonFormat &#x3D; new EsriJSON();
 
-var vectorSource &#x3D; new VectorSource({
+const vectorSource &#x3D; new VectorSource({
   loader: function (extent, resolution, projection) {
-    var url &#x3D;
+    const url &#x3D;
       serviceUrl +
       layer +
       &#x27;/query/?f&#x3D;json&amp;&#x27; +
@@ -459,7 +461,7 @@ var vectorSource &#x3D; new VectorSource({
           );
         } else {
           // dataProjection will be read from document
-          var features &#x3D; esrijsonFormat.readFeatures(response, {
+          const features &#x3D; esrijsonFormat.readFeatures(response, {
             featureProjection: projection,
           });
           if (features.length &gt; 0) {
@@ -476,11 +478,11 @@ var vectorSource &#x3D; new VectorSource({
   ),
 });
 
-var vector &#x3D; new VectorLayer({
+const vector &#x3D; new VectorLayer({
   source: vectorSource,
 });
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new XYZ({
     attributions:
       &#x27;Tiles © &lt;a href&#x3D;&quot;https://services.arcgisonline.com/ArcGIS/&#x27; +
@@ -491,21 +493,21 @@ var raster &#x3D; new TileLayer({
   }),
 });
 
-var draw &#x3D; new Draw({
+const draw &#x3D; new Draw({
   source: vectorSource,
   type: &#x27;Polygon&#x27;,
 });
 
-var select &#x3D; new Select();
+const select &#x3D; new Select();
 select.setActive(false);
-var selected &#x3D; select.getFeatures();
+const selected &#x3D; select.getFeatures();
 
-var modify &#x3D; new Modify({
+const modify &#x3D; new Modify({
   features: selected,
 });
 modify.setActive(false);
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   interactions: defaultInteractions().extend([draw, select, modify]),
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
@@ -515,7 +517,7 @@ var map &#x3D; new Map({
   }),
 });
 
-var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+const typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
 /**
  * Let user change the interaction type.
@@ -526,31 +528,31 @@ typeSelect.onchange &#x3D; function () {
   modify.setActive(typeSelect.value &#x3D;&#x3D;&#x3D; &#x27;MODIFY&#x27;);
 };
 
-var dirty &#x3D; {};
+const dirty &#x3D; {};
 
 selected.on(&#x27;add&#x27;, function (evt) {
-  var feature &#x3D; evt.element;
+  const feature &#x3D; evt.element;
   feature.on(&#x27;change&#x27;, function (evt) {
     dirty[evt.target.get(&#x27;objectid&#x27;)] &#x3D; true;
   });
 });
 
 selected.on(&#x27;remove&#x27;, function (evt) {
-  var feature &#x3D; evt.element;
-  var fid &#x3D; feature.get(&#x27;objectid&#x27;);
+  const feature &#x3D; evt.element;
+  const fid &#x3D; feature.get(&#x27;objectid&#x27;);
   if (dirty[fid] &#x3D;&#x3D;&#x3D; true) {
-    var payload &#x3D;
+    const payload &#x3D;
       &#x27;[&#x27; +
       esrijsonFormat.writeFeature(feature, {
         featureProjection: map.getView().getProjection(),
       }) +
       &#x27;]&#x27;;
-    var url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
+    const url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
     $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function (data) {
-      var result &#x3D; typeof data &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? JSON.parse(data) : data;
+      const result &#x3D; typeof data &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? JSON.parse(data) : data;
       if (result.updateResults &amp;&amp; result.updateResults.length &gt; 0) {
         if (result.updateResults[0].success !&#x3D;&#x3D; true) {
-          var error &#x3D; result.updateResults[0].error;
+          const error &#x3D; result.updateResults[0].error;
           alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
         } else {
           delete dirty[fid];
@@ -561,21 +563,21 @@ selected.on(&#x27;remove&#x27;, function (evt) {
 });
 
 draw.on(&#x27;drawend&#x27;, function (evt) {
-  var feature &#x3D; evt.feature;
-  var payload &#x3D;
+  const feature &#x3D; evt.feature;
+  const payload &#x3D;
     &#x27;[&#x27; +
     esrijsonFormat.writeFeature(feature, {
       featureProjection: map.getView().getProjection(),
     }) +
     &#x27;]&#x27;;
-  var url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
+  const url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
   $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function (data) {
-    var result &#x3D; typeof data &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? JSON.parse(data) : data;
+    const result &#x3D; typeof data &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? JSON.parse(data) : data;
     if (result.addResults &amp;&amp; result.addResults.length &gt; 0) {
       if (result.addResults[0].success &#x3D;&#x3D;&#x3D; true) {
         feature.set(&#x27;objectid&#x27;, result.addResults[0][&#x27;objectId&#x27;]);
       } else {
-        var error &#x3D; result.addResults[0].error;
+        const error &#x3D; result.addResults[0].error;
         alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
       }
     }

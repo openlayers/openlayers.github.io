@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -375,10 +376,10 @@ import VectorSource from &#x27;ol/source/Vector&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Fill, RegularShape, Stroke, Style} from &#x27;ol/style&#x27;;
 
-var stroke &#x3D; new Stroke({color: &#x27;black&#x27;, width: 2});
-var fill &#x3D; new Fill({color: &#x27;red&#x27;});
+const stroke &#x3D; new Stroke({color: &#x27;black&#x27;, width: 2});
+const fill &#x3D; new Fill({color: &#x27;red&#x27;});
 
-var styles &#x3D; {
+const styles &#x3D; {
   &#x27;square&#x27;: new Style({
     image: new RegularShape({
       fill: fill,
@@ -458,37 +459,39 @@ var styles &#x3D; {
         radius: 10,
         angle: Math.PI / 4,
       }),
-    }) ],
+    }),
+  ],
 };
 
-var styleKeys &#x3D; [
+const styleKeys &#x3D; [
   &#x27;x&#x27;,
   &#x27;cross&#x27;,
   &#x27;star&#x27;,
   &#x27;triangle&#x27;,
   &#x27;square&#x27;,
   &#x27;rectangle&#x27;,
-  &#x27;stacked&#x27; ];
-var count &#x3D; 250;
-var features &#x3D; new Array(count);
-var e &#x3D; 4500000;
-for (var i &#x3D; 0; i &lt; count; ++i) {
-  var coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+  &#x27;stacked&#x27;,
+];
+const count &#x3D; 250;
+const features &#x3D; new Array(count);
+const e &#x3D; 4500000;
+for (let i &#x3D; 0; i &lt; count; ++i) {
+  const coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
   features[i] &#x3D; new Feature(new Point(coordinates));
   features[i].setStyle(
     styles[styleKeys[Math.floor(Math.random() * styleKeys.length)]]
   );
 }
 
-var source &#x3D; new VectorSource({
+const source &#x3D; new VectorSource({
   features: features,
 });
 
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: source,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [vectorLayer],
   target: &#x27;map&#x27;,
   view: new View({

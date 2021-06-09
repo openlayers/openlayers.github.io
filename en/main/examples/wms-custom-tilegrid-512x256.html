@@ -226,19 +226,19 @@ import View from &#x27;ol/View&#x27;;
 import {get as getProjection} from &#x27;ol/proj&#x27;;
 import {getWidth} from &#x27;ol/extent&#x27;;
 
-var projExtent &#x3D; getProjection(&#x27;EPSG:3857&#x27;).getExtent();
-var startResolution &#x3D; getWidth(projExtent) / 256;
-var resolutions &#x3D; new Array(22);
-for (var i &#x3D; 0, ii &#x3D; resolutions.length; i &lt; ii; ++i) {
+const projExtent &#x3D; getProjection(&#x27;EPSG:3857&#x27;).getExtent();
+const startResolution &#x3D; getWidth(projExtent) / 256;
+const resolutions &#x3D; new Array(22);
+for (let i &#x3D; 0, ii &#x3D; resolutions.length; i &lt; ii; ++i) {
   resolutions[i] &#x3D; startResolution / Math.pow(2, i);
 }
-var tileGrid &#x3D; new TileGrid({
+const tileGrid &#x3D; new TileGrid({
   extent: [-13884991, 2870341, -7455066, 6338219],
   resolutions: resolutions,
   tileSize: [512, 256],
 });
 
-var layers &#x3D; [
+const layers &#x3D; [
   new TileLayer({
     source: new OSM(),
   }),
@@ -249,8 +249,9 @@ var layers &#x3D; [
       serverType: &#x27;geoserver&#x27;,
       tileGrid: tileGrid,
     }),
-  }) ];
-var map &#x3D; new Map({
+  }),
+];
+const map &#x3D; new Map({
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({

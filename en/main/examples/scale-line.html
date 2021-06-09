@@ -236,16 +236,16 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {ScaleLine, defaults as defaultControls} from &#x27;ol/control&#x27;;
 
-var unitsSelect &#x3D; document.getElementById(&#x27;units&#x27;);
-var typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
-var stepsSelect &#x3D; document.getElementById(&#x27;steps&#x27;);
-var scaleTextCheckbox &#x3D; document.getElementById(&#x27;showScaleText&#x27;);
-var showScaleTextDiv &#x3D; document.getElementById(&#x27;showScaleTextDiv&#x27;);
+const unitsSelect &#x3D; document.getElementById(&#x27;units&#x27;);
+const typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
+const stepsSelect &#x3D; document.getElementById(&#x27;steps&#x27;);
+const scaleTextCheckbox &#x3D; document.getElementById(&#x27;showScaleText&#x27;);
+const showScaleTextDiv &#x3D; document.getElementById(&#x27;showScaleTextDiv&#x27;);
 
-var scaleType &#x3D; &#x27;scaleline&#x27;;
-var scaleBarSteps &#x3D; 4;
-var scaleBarText &#x3D; true;
-var control;
+let scaleType &#x3D; &#x27;scaleline&#x27;;
+let scaleBarSteps &#x3D; 4;
+let scaleBarText &#x3D; true;
+let control;
 
 function scaleControl() {
   if (scaleType &#x3D;&#x3D;&#x3D; &#x27;scaleline&#x27;) {
@@ -263,12 +263,13 @@ function scaleControl() {
   });
   return control;
 }
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   controls: defaultControls().extend([scaleControl()]),
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],

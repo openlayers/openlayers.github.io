@@ -215,41 +215,37 @@ import {createXYZ} from &#x27;ol/tilegrid&#x27;;
 
 // Define a custom MVT format as ol/format/MVT requires an extent
 
-var tileCoordZ &#x3D; document.getElementById(&#x27;tileCoordZ&#x27;);
-var tileCoordX &#x3D; document.getElementById(&#x27;tileCoordX&#x27;);
-var tileCoordY &#x3D; document.getElementById(&#x27;tileCoordY&#x27;);
+const tileCoordZ &#x3D; document.getElementById(&#x27;tileCoordZ&#x27;);
+const tileCoordX &#x3D; document.getElementById(&#x27;tileCoordX&#x27;);
+const tileCoordY &#x3D; document.getElementById(&#x27;tileCoordY&#x27;);
 
-var customMVT &#x3D; /*@__PURE__*/(function (MVT) {
-  function customMVT() {
-    MVT.call(this, {featureClass: Feature});
+class customMVT extends MVT {
+  constructor() {
+    super({featureClass: Feature});
   }
-
-  if ( MVT ) customMVT.__proto__ &#x3D; MVT;
-  customMVT.prototype &#x3D; Object.create( MVT &amp;&amp; MVT.prototype );
-  customMVT.prototype.constructor &#x3D; customMVT;
-  customMVT.prototype.readFeatures &#x3D; function readFeatures (source, options) {
+  readFeatures(source, options) {
     options.extent &#x3D; createXYZ().getTileCoordExtent([
       parseInt(tileCoordZ.value),
       parseInt(tileCoordX.value),
-      parseInt(tileCoordY.value) ]);
-    return MVT.prototype.readFeatures.call(this, source, options);
-  };
-
-  return customMVT;
-}(MVT));
+      parseInt(tileCoordY.value),
+    ]);
+    return super.readFeatures(source, options);
+  }
+}
 
 // Set up map with Drag and Drop interaction
 
-var dragAndDropInteraction &#x3D; new DragAndDrop({
+const dragAndDropInteraction &#x3D; new DragAndDrop({
   formatConstructors: [customMVT, GPX, GeoJSON, IGC, KML, TopoJSON],
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   interactions: defaultInteractions().extend([dragAndDropInteraction]),
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -258,7 +254,7 @@ var map &#x3D; new Map({
 });
 
 dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function (event) {
-  var vectorSource &#x3D; new VectorSource({
+  const vectorSource &#x3D; new VectorSource({
     features: event.features,
   });
   map.addLayer(
@@ -269,16 +265,16 @@ dragAndDropInteraction.on(&#x27;addfeatures&#x27;, function (event) {
   map.getView().fit(vectorSource.getExtent());
 });
 
-var displayFeatureInfo &#x3D; function (pixel) {
-  var features &#x3D; [];
+const displayFeatureInfo &#x3D; function (pixel) {
+  const features &#x3D; [];
   map.forEachFeatureAtPixel(pixel, function (feature) {
     features.push(feature);
   });
   if (features.length &gt; 0) {
-    var info &#x3D; [];
-    var i, ii;
+    const info &#x3D; [];
+    let i, ii;
     for (i &#x3D; 0, ii &#x3D; features.length; i &lt; ii; ++i) {
-      var description &#x3D;
+      const description &#x3D;
         features[i].get(&#x27;name&#x27;) ||
         features[i].get(&#x27;_name&#x27;) ||
         features[i].get(&#x27;layer&#x27;);
@@ -296,7 +292,7 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
-  var pixel &#x3D; map.getEventPixel(evt.originalEvent);
+  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
   displayFeatureInfo(pixel);
 });
 
@@ -306,7 +302,7 @@ map.on(&#x27;click&#x27;, function (evt) {
 
 // Sample data download
 
-var link &#x3D; document.getElementById(&#x27;download&#x27;);
+const link &#x3D; document.getElementById(&#x27;download&#x27;);
 
 function download(fullpath, filename) {
   fetch(fullpath)
@@ -326,7 +322,7 @@ function download(fullpath, filename) {
 }
 
 document.getElementById(&#x27;download-mvt&#x27;).addEventListener(&#x27;click&#x27;, function () {
-  var fullpath &#x3D;
+  const fullpath &#x3D;
     &#x27;https://basemaps.arcgis.com/v1/arcgis/rest/services/World_Basemap/VectorTileServer/tile/&#x27; +
     tileCoordZ.value +
     &#x27;/&#x27; +
@@ -334,7 +330,7 @@ document.getElementById(&#x27;download-mvt&#x27;).addEventListener(&#x27;click&#
     &#x27;/&#x27; +
     tileCoordX.value +
     &#x27;.pbf&#x27;;
-  var filename &#x3D;
+  const filename &#x3D;
     tileCoordZ.value + &#x27;-&#x27; + tileCoordX.value + &#x27;-&#x27; + tileCoordY.value + &#x27;.mvt&#x27;;
   download(fullpath, filename);
 });

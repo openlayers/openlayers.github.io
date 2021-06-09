@@ -235,7 +235,7 @@ import View from &#x27;ol/View&#x27;;
 import XYZ from &#x27;ol/source/XYZ&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   layers: [
     new TileLayer({
@@ -247,7 +247,8 @@ var map &#x3D; new Map({
           &#x27;https://server.arcgisonline.com/ArcGIS/rest/services/&#x27; +
           &#x27;World_Topo_Map/MapServer/tile/{z}/{y}/{x}&#x27;,
       }),
-    }) ],
+    }),
+  ],
   view: new View({
     center: fromLonLat([-121.1, 47.5]),
     zoom: 7,

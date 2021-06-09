@@ -228,7 +228,7 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 import XYZ from &#x27;ol/source/XYZ&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   layers: [
     new TileLayer({
@@ -243,7 +243,8 @@ var map &#x3D; new Map({
         maxResolution: 180 / 512, // Esri&#x27;s tile grid fits 180 degrees on one 512 px tile
         wrapX: true,
       }),
-    }) ],
+    }),
+  ],
   view: new View({
     center: [0, 0],
     projection: &#x27;EPSG:4326&#x27;,

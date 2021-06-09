@@ -200,9 +200,9 @@ import {
 } from &#x27;ol/interaction&#x27;;
 import {OverviewMap, defaults as defaultControls} from &#x27;ol/control&#x27;;
 
-var rotateWithView &#x3D; document.getElementById(&#x27;rotateWithView&#x27;);
+const rotateWithView &#x3D; document.getElementById(&#x27;rotateWithView&#x27;);
 
-var overviewMapControl &#x3D; new OverviewMap({
+const overviewMapControl &#x3D; new OverviewMap({
   // see in overviewmap-custom.html to see the custom CSS used
   className: &#x27;ol-overviewmap ol-custom-overviewmap&#x27;,
   layers: [
@@ -212,7 +212,8 @@ var overviewMapControl &#x3D; new OverviewMap({
           &#x27;https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png&#x27; +
           &#x27;?apikey&#x3D;Your API key from https://www.thunderforest.com/docs/apikeys/ here&#x27;,
       }),
-    }) ],
+    }),
+  ],
   collapseLabel: &#x27;\u00BB&#x27;,
   label: &#x27;\u00AB&#x27;,
   collapsed: false,
@@ -222,13 +223,14 @@ rotateWithView.addEventListener(&#x27;change&#x27;, function () {
   overviewMapControl.setRotateWithView(this.checked);
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   controls: defaultControls().extend([overviewMapControl]),
   interactions: defaultInteractions().extend([new DragRotateAndZoom()]),
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [500000, 6000000],

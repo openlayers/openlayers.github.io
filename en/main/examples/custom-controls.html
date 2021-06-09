@@ -203,18 +203,21 @@ import {Control, defaults as defaultControls} from &#x27;ol/control&#x27;;
 // Define rotate to north control.
 //
 
-var RotateNorthControl &#x3D; /*@__PURE__*/(function (Control) {
-  function RotateNorthControl(opt_options) {
-    var options &#x3D; opt_options || {};
+class RotateNorthControl extends Control {
+  /**
+   * @param {Object} [opt_options] Control options.
+   */
+  constructor(opt_options) {
+    const options &#x3D; opt_options || {};
 
-    var button &#x3D; document.createElement(&#x27;button&#x27;);
+    const button &#x3D; document.createElement(&#x27;button&#x27;);
     button.innerHTML &#x3D; &#x27;N&#x27;;
 
-    var element &#x3D; document.createElement(&#x27;div&#x27;);
+    const element &#x3D; document.createElement(&#x27;div&#x27;);
     element.className &#x3D; &#x27;rotate-north ol-unselectable ol-control&#x27;;
     element.appendChild(button);
 
-    Control.call(this, {
+    super({
       element: element,
       target: options.target,
     });
@@ -222,27 +225,22 @@ var RotateNorthControl &#x3D; /*@__PURE__*/(function (Control) {
     button.addEventListener(&#x27;click&#x27;, this.handleRotateNorth.bind(this), false);
   }
 
-  if ( Control ) RotateNorthControl.__proto__ &#x3D; Control;
-  RotateNorthControl.prototype &#x3D; Object.create( Control &amp;&amp; Control.prototype );
-  RotateNorthControl.prototype.constructor &#x3D; RotateNorthControl;
-
-  RotateNorthControl.prototype.handleRotateNorth &#x3D; function handleRotateNorth () {
+  handleRotateNorth() {
     this.getMap().getView().setRotation(0);
-  };
-
-  return RotateNorthControl;
-}(Control));
+  }
+}
 
 //
 // Create map, giving it a rotate to north control.
 //
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   controls: defaultControls().extend([new RotateNorthControl()]),
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],

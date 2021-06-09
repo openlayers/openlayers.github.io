@@ -244,20 +244,22 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {FullScreen, defaults as defaultControls} from &#x27;ol/control&#x27;;
 
-var view &#x3D; new View({
+const view &#x3D; new View({
   center: [-9101767, 2822912],
   zoom: 14,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   controls: defaultControls().extend([
     new FullScreen({
       source: &#x27;fullscreen&#x27;,
-    }) ]),
+    }),
+  ]),
   layers: [
     new TileLayer({
       source: new OSM(),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: view,
 });

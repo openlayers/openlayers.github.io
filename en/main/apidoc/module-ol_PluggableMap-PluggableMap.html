@@ -1400,6 +1400,23 @@
                     <li data-name="writefilter"><a href="module-ol_format_WFS.html#.writeFilter">writeFilter</a>
                 </ul>
             </div>
+            <li class="item item-class" data-longname="module:ol/format/WKB~WKB" data-name="ol/format/wkb">
+                <span class="title toggle">
+                    <span class="fa fa-chevron-right mr-2 mt-1"></span>
+                    <span><a href="module-ol_format_WKB-WKB.html">ol​/format​/WKB</a></span>
+                </span>
+            <div class="member-list" data-type="methods">
+                <span class="subtitle">Methods</span>
+                <ul>
+                    <li data-name="readfeature"><a href="module-ol_format_WKB-WKB.html#readFeature">readFeature</a>
+                    <li data-name="readfeatures"><a href="module-ol_format_WKB-WKB.html#readFeatures">readFeatures</a>
+                    <li data-name="readgeometry"><a href="module-ol_format_WKB-WKB.html#readGeometry">readGeometry</a>
+                    <li data-name="readprojection"><a href="module-ol_format_WKB-WKB.html#readProjection">readProjection</a>
+                    <li data-name="writefeature"><a href="module-ol_format_WKB-WKB.html#writeFeature">writeFeature</a>
+                    <li data-name="writefeatures"><a href="module-ol_format_WKB-WKB.html#writeFeatures">writeFeatures</a>
+                    <li data-name="writegeometry"><a href="module-ol_format_WKB-WKB.html#writeGeometry">writeGeometry</a>
+                </ul>
+            </div>
             <li class="item item-class" data-longname="module:ol/format/WKT~WKT" data-name="ol/format/wkt">
                 <span class="title toggle">
                     <span class="fa fa-chevron-right mr-2 mt-1"></span>
@@ -4969,6 +4986,7 @@
                     <li data-name="getfeaturesinextent"><a href="module-ol_source_Cluster-Cluster.html#getFeaturesInExtent">getFeaturesInExtent</a>
                     <li data-name="getformat"><a href="module-ol_source_Cluster-Cluster.html#getFormat">getFormat</a>
                     <li data-name="getkeys"><a href="module-ol_source_Cluster-Cluster.html#getKeys">getKeys</a>
+                    <li data-name="getmindistance"><a href="module-ol_source_Cluster-Cluster.html#getMinDistance">getMinDistance</a>
                     <li data-name="getprojection"><a href="module-ol_source_Cluster-Cluster.html#getProjection">getProjection</a>
                     <li data-name="getproperties"><a href="module-ol_source_Cluster-Cluster.html#getProperties">getProperties</a>
                     <li data-name="getrevision"><a href="module-ol_source_Cluster-Cluster.html#getRevision">getRevision</a>
@@ -4984,6 +5002,7 @@
                     <li data-name="setattributions"><a href="module-ol_source_Cluster-Cluster.html#setAttributions">setAttributions</a>
                     <li data-name="setdistance"><a href="module-ol_source_Cluster-Cluster.html#setDistance">setDistance</a>
                     <li data-name="setloader"><a href="module-ol_source_Cluster-Cluster.html#setLoader">setLoader</a>
+                    <li data-name="setmindistance"><a href="module-ol_source_Cluster-Cluster.html#setMinDistance">setMinDistance</a>
                     <li data-name="setproperties"><a href="module-ol_source_Cluster-Cluster.html#setProperties">setProperties</a>
                     <li data-name="setsource"><a href="module-ol_source_Cluster-Cluster.html#setSource">setSource</a>
                     <li data-name="seturl"><a href="module-ol_source_Cluster-Cluster.html#setUrl">setUrl</a>
@@ -7125,7 +7144,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L141">line 141</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L137">line 137</a>
         </div>
         
     </div>
@@ -7905,7 +7924,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L476">line 476</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L472">line 472</a>
         </div>
         
     </div>
@@ -8031,7 +8050,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L489">line 489</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L485">line 485</a>
         </div>
         
     </div>
@@ -8161,7 +8180,7 @@ get to handle the events in the reverse order of this collection.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L500">line 500</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L496">line 496</a>
         </div>
         
     </div>
@@ -8289,7 +8308,7 @@ elsewhere in the stack, use <code>getLayers()</code> and the methods available o
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L510">line 510</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L506">line 506</a>
         </div>
         
     </div>
@@ -8641,7 +8660,7 @@ Object with a <code>type</code> property.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L554">line 554</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L550">line 550</a>
         </div>
         
     </div>
@@ -8932,7 +8951,7 @@ callback execution, or the first truthy callback return value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L618">line 618</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L614">line 614</a>
         </div>
         
     </div>
@@ -9360,7 +9379,7 @@ Value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L774">line 774</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L770">line 770</a>
         </div>
         
     </div>
@@ -9451,7 +9470,7 @@ Controls.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L743">line 743</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L739">line 739</a>
         </div>
         
     </div>
@@ -9587,7 +9606,7 @@ The coordinate for the pixel position.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L670">line 670</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L666">line 666</a>
         </div>
         
     </div>
@@ -9722,7 +9741,7 @@ Coordinate.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L689">line 689</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L685">line 685</a>
         </div>
         
     </div>
@@ -9857,7 +9876,7 @@ Pixel.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L585">line 585</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L581">line 581</a>
         </div>
         
     </div>
@@ -10115,7 +10134,7 @@ an empty array if none were found.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L809">line 809</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L805">line 805</a>
         </div>
         
     </div>
@@ -10299,7 +10318,7 @@ List of property names.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L819">line 819</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L815">line 815</a>
         </div>
         
     </div>
@@ -10389,7 +10408,7 @@ A layer group containing the layers in this map.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L828">line 828</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L824">line 824</a>
         </div>
         
     </div>
@@ -10479,7 +10498,7 @@ Layers.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L796">line 796</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L792">line 792</a>
         </div>
         
     </div>
@@ -10619,7 +10638,7 @@ Overlay.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L784">line 784</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L780">line 780</a>
         </div>
         
     </div>
@@ -10710,7 +10729,7 @@ Overlays.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L855">line 855</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L851">line 851</a>
         </div>
         
     </div>
@@ -11031,7 +11050,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L895">line 895</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L891">line 891</a>
         </div>
         
     </div>
@@ -11121,7 +11140,7 @@ The size in pixels of the map in the DOM.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L712">line 712</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L708">line 708</a>
         </div>
         
     </div>
@@ -11214,7 +11233,7 @@ The Element or id of the Element that the
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L725">line 725</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L721">line 721</a>
         </div>
         
     </div>
@@ -11306,7 +11325,7 @@ The element that the map is rendered in.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L908">line 908</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L904">line 904</a>
         </div>
         
     </div>
@@ -11397,7 +11416,7 @@ The view that controls this map.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L917">line 917</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L913">line 913</a>
         </div>
         
     </div>
@@ -11487,7 +11506,7 @@ Viewport.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L643">line 643</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L639">line 639</a>
         </div>
         
     </div>
@@ -12079,7 +12098,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1322">line 1322</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1310">line 1310</a>
         </div>
         
     </div>
@@ -12215,7 +12234,7 @@ The removed control (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1333">line 1333</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1321">line 1321</a>
         </div>
         
     </div>
@@ -12351,7 +12370,7 @@ The removed interaction (or
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1344">line 1344</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1332">line 1332</a>
         </div>
         
     </div>
@@ -12487,7 +12506,7 @@ The removed layer (or undefined if the
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1356">line 1356</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1344">line 1344</a>
         </div>
         
     </div>
@@ -12623,7 +12642,7 @@ The removed overlay (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1309">line 1309</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1297">line 1297</a>
         </div>
         
     </div>
@@ -12704,7 +12723,7 @@ The removed overlay (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1285">line 1285</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1273">line 1273</a>
         </div>
         
     </div>
@@ -12963,7 +12982,7 @@ The removed overlay (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1456">line 1456</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1444">line 1444</a>
         </div>
         
     </div>
@@ -13243,7 +13262,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1466">line 1466</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1454">line 1454</a>
         </div>
         
     </div>
@@ -13372,7 +13391,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1477">line 1477</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1465">line 1465</a>
         </div>
         
     </div>
@@ -13505,7 +13524,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1487">line 1487</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1475">line 1475</a>
         </div>
         
     </div>
@@ -13940,7 +13959,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1496">line 1496</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1484">line 1484</a>
         </div>
         
     </div>

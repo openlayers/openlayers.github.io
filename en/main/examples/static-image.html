@@ -202,14 +202,14 @@ import {getCenter} from &#x27;ol/extent&#x27;;
 // Map views always need a projection.  Here we just want to map image
 // coordinates directly to map coordinates, so we create a projection that uses
 // the image extent in pixels.
-var extent &#x3D; [0, 0, 1024, 968];
-var projection &#x3D; new Projection({
+const extent &#x3D; [0, 0, 1024, 968];
+const projection &#x3D; new Projection({
   code: &#x27;xkcd-image&#x27;,
   units: &#x27;pixels&#x27;,
   extent: extent,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new ImageLayer({
       source: new Static({
@@ -218,7 +218,8 @@ var map &#x3D; new Map({
         projection: projection,
         imageExtent: extent,
       }),
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     projection: projection,

@@ -162,6 +162,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -213,7 +214,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -319,25 +320,25 @@ import {Icon, Style} from &#x27;ol/style&#x27;;
 import {Stamen, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var iconFeature &#x3D; new Feature({
+const iconFeature &#x3D; new Feature({
   geometry: new Point([0, 0]),
 });
 
-var vectorSource &#x3D; new VectorSource({
+const vectorSource &#x3D; new VectorSource({
   features: [iconFeature],
 });
 
-var vectorLayer &#x3D; new VectorLayer({
+const vectorLayer &#x3D; new VectorLayer({
   source: vectorSource,
 });
 
-var rasterLayer &#x3D; new TileLayer({
+const rasterLayer &#x3D; new TileLayer({
   source: new Stamen({
     layer: &#x27;toner&#x27;,
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [rasterLayer, vectorLayer],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
@@ -346,8 +347,8 @@ var map &#x3D; new Map({
   }),
 });
 
-var gifUrl &#x3D; &#x27;data/globe.gif&#x27;;
-var gif &#x3D; gifler(gifUrl);
+const gifUrl &#x3D; &#x27;data/globe.gif&#x27;;
+const gif &#x3D; gifler(gifUrl);
 gif.frames(
   document.createElement(&#x27;canvas&#x27;),
   function (ctx, frame) {
@@ -371,8 +372,8 @@ gif.frames(
 
 // change mouse cursor when over icon
 map.on(&#x27;pointermove&#x27;, function (e) {
-  var pixel &#x3D; map.getEventPixel(e.originalEvent);
-  var hit &#x3D; map.hasFeatureAtPixel(pixel);
+  const pixel &#x3D; map.getEventPixel(e.originalEvent);
+  const hit &#x3D; map.hasFeatureAtPixel(pixel);
   map.getTarget().style.cursor &#x3D; hit ? &#x27;pointer&#x27; : &#x27;&#x27;;
 });
 </code></pre>

@@ -227,7 +227,7 @@ import WMTSTileGrid from &#x27;ol/tilegrid/WMTS&#x27;;
 import {fromLonLat, get as getProjection} from &#x27;ol/proj&#x27;;
 import {getWidth} from &#x27;ol/extent&#x27;;
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     zoom: 5,
@@ -235,30 +235,30 @@ var map &#x3D; new Map({
   }),
 });
 
-var resolutions &#x3D; [];
-var matrixIds &#x3D; [];
-var proj3857 &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
-var maxResolution &#x3D; getWidth(proj3857.getExtent()) / 256;
+const resolutions &#x3D; [];
+const matrixIds &#x3D; [];
+const proj3857 &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
+const maxResolution &#x3D; getWidth(proj3857.getExtent()) / 256;
 
-for (var i &#x3D; 0; i &lt; 18; i++) {
+for (let i &#x3D; 0; i &lt; 20; i++) {
   matrixIds[i] &#x3D; i.toString();
   resolutions[i] &#x3D; maxResolution / Math.pow(2, i);
 }
 
-var tileGrid &#x3D; new WMTSTileGrid({
+const tileGrid &#x3D; new WMTSTileGrid({
   origin: [-20037508, 20037508],
   resolutions: resolutions,
   matrixIds: matrixIds,
 });
 
 // For more information about the IGN API key see
-// https://geoservices.ign.fr/blog/2018/09/06/acces_geoportail_sans_compte.html
+// https://geoservices.ign.fr/blog/2021/01/29/Maj_Cles_Geoservices.html
 
-var ign_source &#x3D; new WMTS({
+const ign_source &#x3D; new WMTS({
   url: &#x27;https://wxs.ign.fr/choisirgeoportail/geoportail/wmts&#x27;,
-  layer: &#x27;GEOGRAPHICALGRIDSYSTEMS.MAPS&#x27;,
+  layer: &#x27;GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&#x27;,
   matrixSet: &#x27;PM&#x27;,
-  format: &#x27;image/jpeg&#x27;,
+  format: &#x27;image/png&#x27;,
   projection: &#x27;EPSG:3857&#x27;,
   tileGrid: tileGrid,
   style: &#x27;normal&#x27;,
@@ -268,7 +268,7 @@ var ign_source &#x3D; new WMTS({
     &#x27;information géographique et forestière&quot; alt&#x3D;&quot;IGN&quot;&gt;&lt;/a&gt;&#x27;,
 });
 
-var ign &#x3D; new TileLayer({
+const ign &#x3D; new TileLayer({
   source: ign_source,
 });
 

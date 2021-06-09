@@ -195,20 +195,22 @@ import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {OverviewMap, defaults as defaultControls} from &#x27;ol/control&#x27;;
 
-var source &#x3D; new OSM();
-var overviewMapControl &#x3D; new OverviewMap({
+const source &#x3D; new OSM();
+const overviewMapControl &#x3D; new OverviewMap({
   layers: [
     new TileLayer({
       source: source,
-    }) ],
+    }),
+  ],
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   controls: defaultControls().extend([overviewMapControl]),
   layers: [
     new TileLayer({
       source: source,
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [500000, 6000000],

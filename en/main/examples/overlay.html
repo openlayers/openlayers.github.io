@@ -231,11 +231,11 @@ import View from &#x27;ol/View&#x27;;
 import {fromLonLat, toLonLat} from &#x27;ol/proj&#x27;;
 import {toStringHDMS} from &#x27;ol/coordinate&#x27;;
 
-var layer &#x3D; new TileLayer({
+const layer &#x3D; new TileLayer({
   source: new OSM(),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [layer],
   target: &#x27;map&#x27;,
   view: new View({
@@ -244,16 +244,16 @@ var map &#x3D; new Map({
   }),
 });
 
-var pos &#x3D; fromLonLat([16.3725, 48.208889]);
+const pos &#x3D; fromLonLat([16.3725, 48.208889]);
 
 // Popup showing the position the user clicked
-var popup &#x3D; new Overlay({
+const popup &#x3D; new Overlay({
   element: document.getElementById(&#x27;popup&#x27;),
 });
 map.addOverlay(popup);
 
 // Vienna marker
-var marker &#x3D; new Overlay({
+const marker &#x3D; new Overlay({
   position: pos,
   positioning: &#x27;center-center&#x27;,
   element: document.getElementById(&#x27;marker&#x27;),
@@ -262,16 +262,16 @@ var marker &#x3D; new Overlay({
 map.addOverlay(marker);
 
 // Vienna label
-var vienna &#x3D; new Overlay({
+const vienna &#x3D; new Overlay({
   position: pos,
   element: document.getElementById(&#x27;vienna&#x27;),
 });
 map.addOverlay(vienna);
 
 map.on(&#x27;click&#x27;, function (evt) {
-  var element &#x3D; popup.getElement();
-  var coordinate &#x3D; evt.coordinate;
-  var hdms &#x3D; toStringHDMS(toLonLat(coordinate));
+  const element &#x3D; popup.getElement();
+  const coordinate &#x3D; evt.coordinate;
+  const hdms &#x3D; toStringHDMS(toLonLat(coordinate));
 
   $(element).popover(&#x27;dispose&#x27;);
   popup.setPosition(coordinate);

@@ -193,31 +193,32 @@ import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Stroke, Style} from &#x27;ol/style&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new OSM(),
 });
 
-var style &#x3D; new Style({
+const style &#x3D; new Style({
   stroke: new Stroke({
     color: &#x27;black&#x27;,
     width: 1,
   }),
 });
 
-var feature &#x3D; new Feature(
+const feature &#x3D; new Feature(
   new LineString([
     [-4000000, 0],
-    [4000000, 0] ])
+    [4000000, 0],
+  ])
 );
 
-var vector &#x3D; new VectorLayer({
+const vector &#x3D; new VectorLayer({
   source: new VectorSource({
     features: [feature],
   }),
   style: style,
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new View({
@@ -226,12 +227,12 @@ var map &#x3D; new Map({
   }),
 });
 
-var hitTolerance;
+let hitTolerance;
 
-var statusElement &#x3D; document.getElementById(&#x27;status&#x27;);
+const statusElement &#x3D; document.getElementById(&#x27;status&#x27;);
 
 map.on(&#x27;singleclick&#x27;, function (e) {
-  var hit &#x3D; false;
+  let hit &#x3D; false;
   map.forEachFeatureAtPixel(
     e.pixel,
     function () {
@@ -251,16 +252,16 @@ map.on(&#x27;singleclick&#x27;, function (e) {
   feature.changed();
 });
 
-var selectHitToleranceElement &#x3D; document.getElementById(&#x27;hitTolerance&#x27;);
-var circleCanvas &#x3D; document.getElementById(&#x27;circle&#x27;);
+const selectHitToleranceElement &#x3D; document.getElementById(&#x27;hitTolerance&#x27;);
+const circleCanvas &#x3D; document.getElementById(&#x27;circle&#x27;);
 
-var changeHitTolerance &#x3D; function () {
+const changeHitTolerance &#x3D; function () {
   hitTolerance &#x3D; parseInt(selectHitToleranceElement.value, 10);
 
-  var size &#x3D; 2 * hitTolerance + 2;
+  const size &#x3D; 2 * hitTolerance + 2;
   circleCanvas.width &#x3D; size;
   circleCanvas.height &#x3D; size;
-  var ctx &#x3D; circleCanvas.getContext(&#x27;2d&#x27;);
+  const ctx &#x3D; circleCanvas.getContext(&#x27;2d&#x27;);
   ctx.clearRect(0, 0, size, size);
   ctx.beginPath();
   ctx.arc(

@@ -181,7 +181,7 @@ import TileWMS from &#x27;ol/source/TileWMS&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {ScaleLine, defaults as defaultControls} from &#x27;ol/control&#x27;;
 
-var layers &#x3D; [
+const layers &#x3D; [
   new TileLayer({
     source: new TileWMS({
       url: &#x27;https://ahocevar.com/geoserver/wms&#x27;,
@@ -190,13 +190,15 @@ var layers &#x3D; [
         &#x27;TILED&#x27;: true,
       },
     }),
-  }) ];
+  }),
+];
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   controls: defaultControls().extend([
     new ScaleLine({
       units: &#x27;degrees&#x27;,
-    }) ]),
+    }),
+  ]),
   layers: layers,
   target: &#x27;map&#x27;,
   view: new View({

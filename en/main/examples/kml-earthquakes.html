@@ -166,6 +166,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -217,7 +218,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -304,15 +305,15 @@ import View from &#x27;ol/View&#x27;;
 import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 
-var styleCache &#x3D; {};
-var styleFunction &#x3D; function (feature) {
+const styleCache &#x3D; {};
+const styleFunction &#x3D; function (feature) {
   // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
   // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
   // the Placemark&#x27;s name instead.
-  var name &#x3D; feature.get(&#x27;name&#x27;);
-  var magnitude &#x3D; parseFloat(name.substr(2));
-  var radius &#x3D; 5 + 20 * (magnitude - 5);
-  var style &#x3D; styleCache[radius];
+  const name &#x3D; feature.get(&#x27;name&#x27;);
+  const magnitude &#x3D; parseFloat(name.substr(2));
+  const radius &#x3D; 5 + 20 * (magnitude - 5);
+  let style &#x3D; styleCache[radius];
   if (!style) {
     style &#x3D; new Style({
       image: new CircleStyle({
@@ -331,7 +332,7 @@ var styleFunction &#x3D; function (feature) {
   return style;
 };
 
-var vector &#x3D; new VectorLayer({
+const vector &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;data/kml/2012_Earthquakes_Mag5.kml&#x27;,
     format: new KML({
@@ -341,13 +342,13 @@ var vector &#x3D; new VectorLayer({
   style: styleFunction,
 });
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new Stamen({
     layer: &#x27;toner&#x27;,
   }),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new View({
@@ -356,18 +357,18 @@ var map &#x3D; new Map({
   }),
 });
 
-var info &#x3D; $(&#x27;#info&#x27;);
+const info &#x3D; $(&#x27;#info&#x27;);
 info.tooltip({
   animation: false,
   trigger: &#x27;manual&#x27;,
 });
 
-var displayFeatureInfo &#x3D; function (pixel) {
+const displayFeatureInfo &#x3D; function (pixel) {
   info.css({
     left: pixel[0] + &#x27;px&#x27;,
     top: pixel[1] - 15 + &#x27;px&#x27;,
   });
-  var feature &#x3D; map.forEachFeatureAtPixel(pixel, function (feature) {
+  const feature &#x3D; map.forEachFeatureAtPixel(pixel, function (feature) {
     return feature;
   });
   if (feature) {

@@ -145,6 +145,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -196,7 +197,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;"
                 tabindex="0"
-                >60</a>
+                >61</a>
             </span>
             <span class="badge-group">
               <a
@@ -353,9 +354,9 @@ import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {bbox as bboxStrategy} from &#x27;ol/loadingstrategy&#x27;;
 import {transformExtent} from &#x27;ol/proj&#x27;;
 
-var map &#x3D; null;
+let map &#x3D; null;
 
-var styles &#x3D; {
+const styles &#x3D; {
   &#x27;amenity&#x27;: {
     &#x27;parking&#x27;: new Style({
       stroke: new Stroke({
@@ -417,21 +418,21 @@ var styles &#x3D; {
   },
 };
 
-var vectorSource &#x3D; new VectorSource({
+const vectorSource &#x3D; new VectorSource({
   format: new OSMXML(),
   loader: function (extent, resolution, projection, success, failure) {
-    var epsg4326Extent &#x3D; transformExtent(extent, projection, &#x27;EPSG:4326&#x27;);
-    var client &#x3D; new XMLHttpRequest();
+    const epsg4326Extent &#x3D; transformExtent(extent, projection, &#x27;EPSG:4326&#x27;);
+    const client &#x3D; new XMLHttpRequest();
     client.open(&#x27;POST&#x27;, &#x27;https://overpass-api.de/api/interpreter&#x27;);
     client.addEventListener(&#x27;load&#x27;, function () {
-      var features &#x3D; new OSMXML().readFeatures(client.responseText, {
+      const features &#x3D; new OSMXML().readFeatures(client.responseText, {
         featureProjection: map.getView().getProjection(),
       });
       vectorSource.addFeatures(features);
       success(features);
     });
     client.addEventListener(&#x27;error&#x27;, failure);
-    var query &#x3D;
+    const query &#x3D;
       &#x27;(node(&#x27; +
       epsg4326Extent[1] +
       &#x27;,&#x27; +
@@ -446,13 +447,13 @@ var vectorSource &#x3D; new VectorSource({
   strategy: bboxStrategy,
 });
 
-var vector &#x3D; new VectorLayer({
+const vector &#x3D; new VectorLayer({
   source: vectorSource,
   style: function (feature) {
-    for (var key in styles) {
-      var value &#x3D; feature.get(key);
+    for (const key in styles) {
+      const value &#x3D; feature.get(key);
       if (value !&#x3D;&#x3D; undefined) {
-        for (var regexp in styles[key]) {
+        for (const regexp in styles[key]) {
           if (new RegExp(regexp).test(value)) {
             return styles[key][regexp];
           }
@@ -463,12 +464,12 @@ var vector &#x3D; new VectorLayer({
   },
 });
 
-var key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
-var attributions &#x3D;
+const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
+const attributions &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
-var raster &#x3D; new TileLayer({
+const raster &#x3D; new TileLayer({
   source: new XYZ({
     attributions: attributions,
     url: &#x27;https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,

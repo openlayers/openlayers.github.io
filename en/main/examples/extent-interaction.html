@@ -217,19 +217,20 @@ import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {shiftKeyOnly} from &#x27;ol/events/condition&#x27;;
 
-var vectorSource &#x3D; new VectorSource({
+const vectorSource &#x3D; new VectorSource({
   url: &#x27;data/geojson/countries.geojson&#x27;,
   format: new GeoJSON(),
 });
 
-var map &#x3D; new Map({
+const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
     }),
     new VectorLayer({
       source: vectorSource,
-    }) ],
+    }),
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
@@ -237,7 +238,7 @@ var map &#x3D; new Map({
   }),
 });
 
-var extent &#x3D; new ExtentInteraction({condition: shiftKeyOnly});
+const extent &#x3D; new ExtentInteraction({condition: shiftKeyOnly});
 map.addInteraction(extent);
 </code></pre>
       </div>
