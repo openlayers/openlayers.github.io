@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[4929],{8265:function(e,n,r){"use strict";var s=r(1625),t=r(7340),c=r(7842),o=r(640),w=r(7088),a=r(5982),u=new t.Z,i=new w.Z({layers:[new c.Z({source:u})]});new s.Z({controls:(0,a.ce)().extend([i]),layers:[new c.Z({source:u})],target:"map",view:new o.ZP({center:[5e5,6e6],zoom:7})})}},function(e){"use strict";var n;n=8265,e(e.s=n)}]);
+//# sourceMappingURL=overviewmap.js.map

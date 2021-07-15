@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[266],{9112:function(e,t,c){"use strict";var n=c(1625),r=c(7842),s=c(640),a=c(6343);new n.Z({target:"map",layers:[new r.Z({source:new a.Z({url:"https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=0e6fc415256d4fbb9b5166a718591d71"})})],view:new s.ZP({center:[-472202,7530279],zoom:12})})}},function(e){"use strict";var t;t=9112,e(e.s=t)}]);
+//# sourceMappingURL=xyz.js.map

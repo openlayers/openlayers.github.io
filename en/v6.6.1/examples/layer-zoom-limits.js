@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[8261],{6488:function(e,o,n){"use strict";var t=n(1625),r=n(7340),s=n(9180),i=n(7842),a=n(640),m=n(4589);new t.Z({target:"map",layers:[new i.Z({maxZoom:14,source:new r.Z}),new i.Z({minZoom:14,source:new s.Z({url:"https://api.maptiler.com/maps/outdoor/tiles.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB",tileSize:512})})],view:new a.ZP({center:(0,m.mi)([-112.18688965,36.057944835]),zoom:15,maxZoom:18,constrainOnlyCenter:!0})})}},function(e){"use strict";var o;o=6488,e(e.s=o)}]);
+//# sourceMappingURL=layer-zoom-limits.js.map

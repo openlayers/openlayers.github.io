@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[5595],{4164:function(t,s,e){"use strict";var n=e(2582);(0,e(3561).ZP)("map","https://api.maptiler.com/maps/topo/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB").then((function(t){t.addControl(new n.Z)}))}},function(t){"use strict";var s;s=4164,t(t.s=s)}]);
+//# sourceMappingURL=mapbox-style.js.map

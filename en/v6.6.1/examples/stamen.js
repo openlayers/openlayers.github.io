@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[3656],{2451:function(e,r,n){"use strict";var t=n(1625),a=n(2157),s=n(7842),c=n(640),l=n(4589);new t.Z({layers:[new s.Z({source:new a.Z({layer:"watercolor"})}),new s.Z({source:new a.Z({layer:"terrain-labels"})})],target:"map",view:new c.ZP({center:(0,l.mi)([-122.416667,37.783333]),zoom:12})})}},function(e){"use strict";var r;r=2451,e(e.s=r)}]);
+//# sourceMappingURL=stamen.js.map

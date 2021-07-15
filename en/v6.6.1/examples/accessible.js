@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[453],{9426:function(e,n,o){"use strict";var t=o(1625),c=o(7340),r=o(7842),u=o(640),i=new t.Z({layers:[new r.Z({source:new c.Z})],target:"map",view:new u.ZP({center:[0,0],zoom:2})});document.getElementById("zoom-out").onclick=function(){var e=i.getView(),n=e.getZoom();e.setZoom(n-1)},document.getElementById("zoom-in").onclick=function(){var e=i.getView(),n=e.getZoom();e.setZoom(n+1)}}},function(e){"use strict";var n;n=9426,e(e.s=n)}]);
+//# sourceMappingURL=accessible.js.map

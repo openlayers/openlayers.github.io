@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[5006],{4843:function(e,n,r){"use strict";var t=r(1625),a=r(7340),s=r(7842),c=r(640),u=r(888);function i(e){var n=new a.Z,r=new s.Z({source:n}),i=new t.Z({layers:[r],target:e,view:new c.ZP({center:[0,0],zoom:2})}),o=new u.Z;return i.addControl(o),i}i("map1"),i("map2"),i("map3")}},function(e){"use strict";var n;n=4843,e(e.s=n)}]);
+//# sourceMappingURL=zoomslider.js.map

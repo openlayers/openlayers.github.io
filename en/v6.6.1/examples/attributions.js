@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[9088],{5771:function(e,n,t){"use strict";var r=t(1625),i=t(7340),o=t(7842),s=t(640),c=t(2673),a=t(5982),w=new c.Z({collapsible:!1}),l=new r.Z({layers:[new o.Z({source:new i.Z})],controls:(0,a.ce)({attribution:!1}).extend([w]),target:"map",view:new s.ZP({center:[0,0],zoom:2})});function u(){var e=l.getSize()[0]<600;w.setCollapsible(e),w.setCollapsed(e)}window.addEventListener("resize",u),u()}},function(e){"use strict";var n;n=5771,e(e.s=n)}]);
+//# sourceMappingURL=attributions.js.map

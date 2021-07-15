@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[2976],{1677:function(e,n,t){"use strict";var o=t(1625),i=t(7340),r=t(7842),s=t(640),c=t(5848),a=t(9654),u=t(2026),w=t(2049);new o.Z({interactions:(0,c.ce)({dragPan:!1,mouseWheelZoom:!1}).extend([new a.Z({condition:function(e){return 2===this.getPointerCount()||(0,w.QC)(e)}}),new u.Z({condition:w.QC})]),layers:[new r.Z({source:new i.Z})],target:"map",view:new s.ZP({center:[0,0],zoom:2})})}},function(e){"use strict";var n;n=1677,e(e.s=n)}]);
+//# sourceMappingURL=two-finger-pan-scroll.js.map

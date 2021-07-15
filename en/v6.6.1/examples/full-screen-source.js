@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[1112],{4354:function(e,n,r){"use strict";var s=r(1625),t=r(7340),c=r(7842),o=r(640),u=r(5982),l=r(2582),w=new o.ZP({center:[-9101767,2822912],zoom:14});new s.Z({controls:(0,u.ce)().extend([new l.Z({source:"fullscreen"})]),layers:[new c.Z({source:new t.Z})],target:"map",view:w})}},function(e){"use strict";var n;n=4354,e(e.s=n)}]);
+//# sourceMappingURL=full-screen-source.js.map

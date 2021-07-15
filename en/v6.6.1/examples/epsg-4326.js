@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[4983],{9980:function(e,r,s){"use strict";var n=s(1625),t=s(7842),o=s(6942),c=s(640),a=s(5982),i=s(8875),u=[new t.Z({source:new o.Z({url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"ne:NE1_HR_LC_SR_W_DR",TILED:!0}})})];new n.Z({controls:(0,a.ce)().extend([new i.Z({units:"degrees"})]),layers:u,target:"map",view:new c.ZP({projection:"EPSG:4326",center:[0,0],zoom:2})})}},function(e){"use strict";var r;r=9980,e(e.s=r)}]);
+//# sourceMappingURL=epsg-4326.js.map

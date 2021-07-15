@@ -1,0 +1,2 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[7816],{7236:function(e,n,r){"use strict";var s=r(1625),t=r(7842),c=r(640),w=r(7340),o=r(144);new s.Z({layers:[new t.Z({source:new w.Z}),new t.Z({source:new o.Z})],target:"map",view:new c.ZP({center:[0,0],zoom:1})})}},function(e){"use strict";var n;n=7236,e(e.s=n)}]);
+//# sourceMappingURL=canvas-tiles.js.map
