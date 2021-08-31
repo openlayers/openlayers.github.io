@@ -1,15 +1,15 @@
+"use strict";
 (self["webpackChunk"] = self["webpackChunk"] || []).push([[6386],{
 
-/***/ 3411:
+/***/ 52173:
 /***/ (function(__unused_webpack___webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1625);
-/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9175);
-/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(640);
-/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6343);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7842);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4743);
+/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(33156);
+/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32670);
+/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(29123);
+/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(93613);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(86395);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(78412);
 
 
 
@@ -17,7 +17,7 @@
 
 
 var minVgi = 0;
-var maxVgi = 0.25;
+var maxVgi = 0.5;
 var bins = 10;
 
 /**
@@ -99,7 +99,7 @@ var raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__/* .defaul
     summarize: summarize,
   },
 });
-raster.set('threshold', 0.1);
+raster.set('threshold', 0.25);
 
 function createCounts(min, max, num) {
   var values = new Array(num);
@@ -237,10 +237,8 @@ function message(value, area) {
 
 },
 /******/ function(__webpack_require__) { // webpackRuntimeModules
-/******/ "use strict";
-/******/ 
 /******/ var __webpack_exec__ = function(moduleId) { return __webpack_require__(__webpack_require__.s = moduleId); }
-/******/ var __webpack_exports__ = (__webpack_exec__(3411));
+/******/ var __webpack_exports__ = (__webpack_exec__(52173));
 /******/ }
 ]);
 //# sourceMappingURL=raster.js.map

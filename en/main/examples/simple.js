@@ -1,2 +1,2 @@
-(self.webpackChunk=self.webpackChunk||[]).push([[4899],{2584:function(e,n,t){"use strict";var r=t(1625),s=t(7340),c=t(7842),a=t(640);new r.Z({layers:[new c.Z({source:new s.Z})],target:"map",view:new a.ZP({center:[0,0],zoom:2})})}},function(e){"use strict";var n;n=2584,e(e.s=n)}]);
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4899],{5435:function(e,n,r){var t=r(33156),s=r(19987),a=r(86395),c=r(29123);new t.Z({layers:[new a.Z({source:new s.Z})],target:"map",view:new c.ZP({center:[0,0],zoom:2})})}},function(e){var n;n=5435,e(e.s=n)}]);
 //# sourceMappingURL=simple.js.map

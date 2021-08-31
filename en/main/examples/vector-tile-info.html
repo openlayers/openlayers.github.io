@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.5.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.6.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -135,12 +135,13 @@
                 data-target="#tag-example-list"
                 data-title="vectortiles"
                 data-content="
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./canvas-tiles-tms.html&quot;&gt;Custom Canvas Tiles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./vector-tile-info.html&quot;&gt;Vector Tile Info&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-tile-selection.html&quot;&gt;Vector Tile Selection&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./mapbox-style.html&quot;&gt;Vector tiles created from a Mapbox Style object&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-tiles-4326.html&quot;&gt;Vector tiles in EPSG:4326&lt;/a&gt;"
                 tabindex="0"
-                >4</a>
+                >5</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -195,8 +196,7 @@ const map &#x3D; new Map({
     new VectorTileLayer({
       source: new VectorTileSource({
         format: new MVT(),
-        url:
-          &#x27;https://basemaps.arcgis.com/v1/arcgis/rest/services/World_Basemap/VectorTileServer/tile/{z}/{y}/{x}.pbf&#x27;,
+        url: &#x27;https://basemaps.arcgis.com/v1/arcgis/rest/services/World_Basemap/VectorTileServer/tile/{z}/{y}/{x}.pbf&#x27;,
       }),
     }),
   ],
@@ -268,7 +268,7 @@ function showInfo(event) {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;vector-tile-info&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.5.1-dev&quot;
+    &quot;ol&quot;: &quot;6.6.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
@@ -307,7 +307,7 @@ function showInfo(event) {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.5.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.6.2-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

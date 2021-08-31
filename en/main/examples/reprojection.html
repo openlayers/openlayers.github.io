@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.5.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.6.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -195,9 +195,10 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./full-screen-source.html&quot;&gt;Full Screen Control with extended source element&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./osm-vector-tiles.html&quot;&gt;OSM Vector Tiles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection.html&quot;&gt;Raster Reprojection&lt;/a&gt;
-                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./semi-transparent-layer.html&quot;&gt;Semi-Transparent Layer&lt;/a&gt;"
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./semi-transparent-layer.html&quot;&gt;Semi-Transparent Layer&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./webgl-tiles.html&quot;&gt;WebGL Tiles&lt;/a&gt;"
                 tabindex="0"
-                >4</a>
+                >5</a>
             </span>
             <span class="badge-group">
               <a
@@ -255,6 +256,26 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./xyz-retina.html&quot;&gt;XYZ Retina Tiles&lt;/a&gt;"
                 tabindex="0"
                 >3</a>
+            </span>
+            <span class="badge-group">
+              <a
+                href="./index.html?q=grid" class="badge badge-info">grid</a
+              ><a
+                class="badge badge-info tag-modal-toggle text-white"
+                data-toggle="modal"
+                data-target="#tag-example-list"
+                data-title="grid"
+                data-content="
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./mapbox-vector-tiles-advanced.html&quot;&gt;Advanced Mapbox Vector Tiles&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wmts-ign.html&quot;&gt;IGN WMTS&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./print-to-scale.html&quot;&gt;Print to scale example&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection.html&quot;&gt;Raster Reprojection&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-tiles-4326.html&quot;&gt;Vector tiles in EPSG:4326&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-custom-tilegrid-512x256.html&quot;&gt;WMS 512x256 Tiles&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wmts.html&quot;&gt;WMTS&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wmts-dimensions.html&quot;&gt;WMTS Tile Transitions&lt;/a&gt;"
+                tabindex="0"
+                >8</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -653,8 +674,8 @@ renderEdgesCheckbox.onchange &#x3D; function () {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;reprojection&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.5.1-dev&quot;,
-    &quot;proj4&quot;: &quot;2.7.2&quot;
+    &quot;ol&quot;: &quot;6.6.2-dev&quot;,
+    &quot;proj4&quot;: &quot;^2.7.5&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
@@ -693,7 +714,7 @@ renderEdgesCheckbox.onchange &#x3D; function () {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.5.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.6.2-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

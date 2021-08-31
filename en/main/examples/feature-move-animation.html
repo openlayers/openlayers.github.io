@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.5.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.6.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -327,17 +327,18 @@ fetch(&#x27;data/polyline/route.json&#x27;).then(function (response) {
       type: &#x27;route&#x27;,
       geometry: route,
     });
-    const geoMarker &#x3D; new Feature({
-      type: &#x27;geoMarker&#x27;,
-      geometry: new Point(route.getCoordinateAt(0)),
-    });
     const startMarker &#x3D; new Feature({
       type: &#x27;icon&#x27;,
-      geometry: new Point(route.getCoordinateAt(0)),
+      geometry: new Point(route.getFirstCoordinate()),
     });
     const endMarker &#x3D; new Feature({
       type: &#x27;icon&#x27;,
-      geometry: new Point(route.getCoordinateAt(1)),
+      geometry: new Point(route.getLastCoordinate()),
+    });
+    const position &#x3D; startMarker.getGeometry().clone();
+    const geoMarker &#x3D; new Feature({
+      type: &#x27;geoMarker&#x27;,
+      geometry: position,
     });
 
     const styles &#x3D; {
@@ -365,77 +366,66 @@ fetch(&#x27;data/polyline/route.json&#x27;).then(function (response) {
       }),
     };
 
-    let animating &#x3D; false;
-
     const vectorLayer &#x3D; new VectorLayer({
       source: new VectorSource({
         features: [routeFeature, geoMarker, startMarker, endMarker],
       }),
       style: function (feature) {
-        // hide geoMarker if animation is active
-        if (animating &amp;&amp; feature.get(&#x27;type&#x27;) &#x3D;&#x3D;&#x3D; &#x27;geoMarker&#x27;) {
-          return null;
-        }
         return styles[feature.get(&#x27;type&#x27;)];
       },
     });
 
     map.addLayer(vectorLayer);
 
-    let speed, startTime;
     const speedInput &#x3D; document.getElementById(&#x27;speed&#x27;);
     const startButton &#x3D; document.getElementById(&#x27;start-animation&#x27;);
+    let animating &#x3D; false;
+    let distance &#x3D; 0;
+    let lastTime;
 
     function moveFeature(event) {
+      const speed &#x3D; Number(speedInput.value);
+      const time &#x3D; event.frameState.time;
+      const elapsedTime &#x3D; time - lastTime;
+      distance &#x3D; (distance + (speed * elapsedTime) / 1e6) % 2;
+      lastTime &#x3D; time;
+
+      const currentCoordinate &#x3D; route.getCoordinateAt(
+        distance &gt; 1 ? 2 - distance : distance
+      );
+      position.setCoordinates(currentCoordinate);
       const vectorContext &#x3D; getVectorContext(event);
-      const frameState &#x3D; event.frameState;
-
-      if (animating) {
-        const elapsedTime &#x3D; frameState.time - startTime;
-        const distance &#x3D; (speed * elapsedTime) / 1e6;
-
-        if (distance &gt;&#x3D; 1) {
-          stopAnimation(true);
-          return;
-        }
-
-        const currentPoint &#x3D; new Point(route.getCoordinateAt(distance));
-        const feature &#x3D; new Feature(currentPoint);
-        vectorContext.drawFeature(feature, styles.geoMarker);
-      }
+      vectorContext.setStyle(styles.geoMarker);
+      vectorContext.drawGeometry(position);
       // tell OpenLayers to continue the postrender animation
       map.render();
     }
 
     function startAnimation() {
-      if (animating) {
-        stopAnimation(false);
-      } else {
-        animating &#x3D; true;
-        startTime &#x3D; new Date().getTime();
-        speed &#x3D; speedInput.value;
-        startButton.textContent &#x3D; &#x27;Cancel Animation&#x27;;
-        // hide geoMarker
-        geoMarker.changed();
-        // just in case you pan somewhere else
-        map.getView().setCenter(center);
-        vectorLayer.on(&#x27;postrender&#x27;, moveFeature);
-        map.render();
-      }
+      animating &#x3D; true;
+      lastTime &#x3D; Date.now();
+      startButton.textContent &#x3D; &#x27;Stop Animation&#x27;;
+      vectorLayer.on(&#x27;postrender&#x27;, moveFeature);
+      // hide geoMarker and trigger map render through change event
+      geoMarker.setGeometry(null);
     }
 
-    function stopAnimation(ended) {
+    function stopAnimation() {
       animating &#x3D; false;
       startButton.textContent &#x3D; &#x27;Start Animation&#x27;;
 
-      // if animation cancelled set the marker at the beginning
-      const coord &#x3D; route.getCoordinateAt(ended ? 1 : 0);
-      geoMarker.getGeometry().setCoordinates(coord);
-      // remove listener
+      // Keep marker at current animation position
+      geoMarker.setGeometry(position);
       vectorLayer.un(&#x27;postrender&#x27;, moveFeature);
     }
 
-    startButton.addEventListener(&#x27;click&#x27;, startAnimation, false);
+    startButton.addEventListener(&#x27;click&#x27;, function () {
+      if (animating) {
+        stopAnimation();
+      } else {
+        startAnimation();
+      }
+    });
   });
 });
 </code></pre>
@@ -477,7 +467,7 @@ fetch(&#x27;data/polyline/route.json&#x27;).then(function (response) {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;feature-move-animation&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.5.1-dev&quot;
+    &quot;ol&quot;: &quot;6.6.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
@@ -516,7 +506,7 @@ fetch(&#x27;data/polyline/route.json&#x27;).then(function (response) {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.5.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.6.2-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.5.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.6.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -229,20 +229,26 @@
           </div>
           <div id="map" class="map"></div>
 <form class="form-inline">
-  <label for="epsg-query">Search projection:</label>
+  <label for="epsg-query">Search projection:&nbsp</label>
   <input type="text" id="epsg-query" placeholder="4326, 27700, 3031, US National Atlas, Swiss, France, ..." class="form-control" size="50" />
   <button id="epsg-search" class="btn">Search</button>
   <span id="epsg-result"></span>
-  <div>
-    <label for="render-edges">
-      Render reprojection edges
-      <input type="checkbox" id="render-edges">
-    </label>
-    <label for="show-graticule">
-      &nbsp;&nbsp;&nbsp;Show graticule
-      <input type="checkbox" id="show-graticule" />
-    </label>
-  </div>
+</form>
+<form class="form-inline">
+  <label for="render-edges">
+    Render reprojection edges:&nbsp;
+    <input type="checkbox" id="render-edges" />
+  </label>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <label for="show-tiles">
+    Show tile coordinates:&nbsp;
+    <input type="checkbox" id="show-tiles" />
+  </label>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <label for="show-graticule">
+    Show graticule:&nbsp;
+    <input type="checkbox" id="show-graticule" />
+  </label>
 </form>
 
         </div>
@@ -266,13 +272,23 @@ import Graticule from &#x27;ol/layer/Graticule&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
 import Stroke from &#x27;ol/style/Stroke&#x27;;
-import TileImage from &#x27;ol/source/TileImage&#x27;;
+import TileDebug from &#x27;ol/source/TileDebug&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
 import View from &#x27;ol/View&#x27;;
 import proj4 from &#x27;proj4&#x27;;
 import {applyTransform} from &#x27;ol/extent&#x27;;
 import {get as getProjection, getTransform} from &#x27;ol/proj&#x27;;
 import {register} from &#x27;ol/proj/proj4&#x27;;
+
+const osmSource &#x3D; new OSM();
+
+const debugLayer &#x3D; new TileLayer({
+  source: new TileDebug({
+    tileGrid: osmSource.getTileGrid(),
+    projection: osmSource.getProjection(),
+  }),
+  visible: false,
+});
 
 const graticule &#x3D; new Graticule({
   // the style to use for the lines, optional.
@@ -289,8 +305,9 @@ const graticule &#x3D; new Graticule({
 const map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new OSM(),
+      source: osmSource,
     }),
+    debugLayer,
     graticule,
   ],
   target: &#x27;map&#x27;,
@@ -305,6 +322,7 @@ const queryInput &#x3D; document.getElementById(&#x27;epsg-query&#x27;);
 const searchButton &#x3D; document.getElementById(&#x27;epsg-search&#x27;);
 const resultSpan &#x3D; document.getElementById(&#x27;epsg-result&#x27;);
 const renderEdgesCheckbox &#x3D; document.getElementById(&#x27;render-edges&#x27;);
+const showTilesCheckbox &#x3D; document.getElementById(&#x27;show-tiles&#x27;);
 const showGraticuleCheckbox &#x3D; document.getElementById(&#x27;show-graticule&#x27;);
 
 function setProjection(code, name, proj4def, bbox) {
@@ -389,22 +407,14 @@ searchButton.onclick &#x3D; function (event) {
 };
 
 /**
- * Handle checkbox change event.
+ * Handle checkbox change events.
  */
 renderEdgesCheckbox.onchange &#x3D; function () {
-  map.getLayers().forEach(function (layer) {
-    if (layer instanceof TileLayer) {
-      const source &#x3D; layer.getSource();
-      if (source instanceof TileImage) {
-        source.setRenderReprojectionEdges(renderEdgesCheckbox.checked);
-      }
-    }
-  });
+  osmSource.setRenderReprojectionEdges(renderEdgesCheckbox.checked);
 };
-
-/**
- * Handle checkbox change event.
- */
+showTilesCheckbox.onchange &#x3D; function () {
+  debugLayer.setVisible(showTilesCheckbox.checked);
+};
 showGraticuleCheckbox.onchange &#x3D; function () {
   graticule.setVisible(showGraticuleCheckbox.checked);
 };
@@ -432,20 +442,26 @@ showGraticuleCheckbox.onchange &#x3D; function () {
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;form class&#x3D;&quot;form-inline&quot;&gt;
-      &lt;label for&#x3D;&quot;epsg-query&quot;&gt;Search projection:&lt;/label&gt;
+      &lt;label for&#x3D;&quot;epsg-query&quot;&gt;Search projection:&amp;nbsp&lt;/label&gt;
       &lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;epsg-query&quot; placeholder&#x3D;&quot;4326, 27700, 3031, US National Atlas, Swiss, France, ...&quot; class&#x3D;&quot;form-control&quot; size&#x3D;&quot;50&quot; /&gt;
       &lt;button id&#x3D;&quot;epsg-search&quot; class&#x3D;&quot;btn&quot;&gt;Search&lt;/button&gt;
       &lt;span id&#x3D;&quot;epsg-result&quot;&gt;&lt;/span&gt;
-      &lt;div&gt;
-        &lt;label for&#x3D;&quot;render-edges&quot;&gt;
-          Render reprojection edges
-          &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;render-edges&quot;&gt;
-        &lt;/label&gt;
-        &lt;label for&#x3D;&quot;show-graticule&quot;&gt;
-          &amp;nbsp;&amp;nbsp;&amp;nbsp;Show graticule
-          &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;show-graticule&quot; /&gt;
-        &lt;/label&gt;
-      &lt;/div&gt;
+    &lt;/form&gt;
+    &lt;form class&#x3D;&quot;form-inline&quot;&gt;
+      &lt;label for&#x3D;&quot;render-edges&quot;&gt;
+        Render reprojection edges:&amp;nbsp;
+        &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;render-edges&quot; /&gt;
+      &lt;/label&gt;
+      &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+      &lt;label for&#x3D;&quot;show-tiles&quot;&gt;
+        Show tile coordinates:&amp;nbsp;
+        &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;show-tiles&quot; /&gt;
+      &lt;/label&gt;
+      &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+      &lt;label for&#x3D;&quot;show-graticule&quot;&gt;
+        Show graticule:&amp;nbsp;
+        &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;show-graticule&quot; /&gt;
+      &lt;/label&gt;
     &lt;/form&gt;
     &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
@@ -458,8 +474,8 @@ showGraticuleCheckbox.onchange &#x3D; function () {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;reprojection-by-code&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.5.1-dev&quot;,
-    &quot;proj4&quot;: &quot;2.7.2&quot;
+    &quot;ol&quot;: &quot;6.6.2-dev&quot;,
+    &quot;proj4&quot;: &quot;^2.7.5&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
@@ -498,7 +514,7 @@ showGraticuleCheckbox.onchange &#x3D; function () {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.5.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.6.2-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

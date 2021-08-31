@@ -69,8 +69,8 @@
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/elm-pep"></script>
     <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"></script>
-    <script src="https://unpkg.com/dom-to-image-more@2.8.0/dist/dom-to-image-more.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="print-to-scale.css">
     <title>Print to scale example</title>
   </head>
@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.5.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.6.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -163,9 +163,10 @@
                 data-title="scale"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon-scale.html&quot;&gt;Icon Scale&lt;/a&gt;
-                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./print-to-scale.html&quot;&gt;Print to scale example&lt;/a&gt;"
+                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./print-to-scale.html&quot;&gt;Print to scale example&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-scale-and-rotate.html&quot;&gt;Scale and Rotate using Modify Interaction&lt;/a&gt;"
                 tabindex="0"
-                >2</a>
+                >3</a>
             </span>
             <span class="badge-group">
               <a
@@ -209,6 +210,26 @@
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./print-to-scale.html&quot;&gt;Print to scale example&lt;/a&gt;"
                 tabindex="0"
                 >2</a>
+            </span>
+            <span class="badge-group">
+              <a
+                href="./index.html?q=grid" class="badge badge-info">grid</a
+              ><a
+                class="badge badge-info tag-modal-toggle text-white"
+                data-toggle="modal"
+                data-target="#tag-example-list"
+                data-title="grid"
+                data-content="
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./mapbox-vector-tiles-advanced.html&quot;&gt;Advanced Mapbox Vector Tiles&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wmts-ign.html&quot;&gt;IGN WMTS&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./print-to-scale.html&quot;&gt;Print to scale example&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection.html&quot;&gt;Raster Reprojection&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-tiles-4326.html&quot;&gt;Vector tiles in EPSG:4326&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-custom-tilegrid-512x256.html&quot;&gt;WMS 512x256 Tiles&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wmts.html&quot;&gt;WMTS&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wmts-dimensions.html&quot;&gt;WMTS Tile Transitions&lt;/a&gt;"
+                tabindex="0"
+                >8</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -267,7 +288,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of printing a map to a specified scale.</p>
-          <div id="docs"><p>Example of printing a map to a specified scale. The print is exported as a PDF using the <a href="https://github.com/MrRio/jsPDF" target="_blank">jsPDF</a> library. Unlike the <a href="export-pdf.html">Export PDF example</a> the on screen map is only used to set the center and rotation. The extent printed depends on the scale and page size. To print the scale bar and attributions the example uses the <a href="https://github.com/1904labs/dom-to-image-more" target="_blank">dom-to-image-more</a> library. Due to browser limitations and restrictions <b>Internet Explorer and Safari are not supported</b>.</p>
+          <div id="docs"><p>Example of printing a map to a specified scale. The print is exported as a PDF using the <a href="https://github.com/MrRio/jsPDF" target="_blank">jsPDF</a> library. Unlike the <a href="export-pdf.html">Export PDF example</a> the on screen map is only used to set the center and rotation. The extent printed depends on the scale and page size. To print the scale bar and attributions the example uses the <a href="https://html2canvas.hertzen.com/" target="_blank">html2canvas</a> library.</p>
 </div>
         </div>
       </div>
@@ -345,12 +366,13 @@ const dims &#x3D; {
   a5: [210, 148],
 };
 
-// export options for html-to-image.
-// See: https://github.com/bubkoo/html-to-image#options
+// export options for html2canvase.
+// See: https://html2canvas.hertzen.com/configuration
 const exportOptions &#x3D; {
-  filter: function (element) {
+  useCORS: true,
+  ignoreElements: function (element) {
     const className &#x3D; element.className || &#x27;&#x27;;
-    return (
+    return !(
       className.indexOf(&#x27;ol-control&#x27;) &#x3D;&#x3D;&#x3D; -1 ||
       className.indexOf(&#x27;ol-scale&#x27;) &gt; -1 ||
       (className.indexOf(&#x27;ol-attribution&#x27;) &gt; -1 &amp;&amp;
@@ -385,21 +407,26 @@ exportButton.addEventListener(
     map.once(&#x27;rendercomplete&#x27;, function () {
       exportOptions.width &#x3D; width;
       exportOptions.height &#x3D; height;
-      domtoimage
-        .toJpeg(map.getViewport(), exportOptions)
-        .then(function (dataUrl) {
-          const pdf &#x3D; new jsPDF(&#x27;landscape&#x27;, undefined, format);
-          pdf.addImage(dataUrl, &#x27;JPEG&#x27;, 0, 0, dim[0], dim[1]);
-          pdf.save(&#x27;map.pdf&#x27;);
-          // Reset original map size
-          scaleLine.setDpi();
-          map.getTargetElement().style.width &#x3D; &#x27;&#x27;;
-          map.getTargetElement().style.height &#x3D; &#x27;&#x27;;
-          map.updateSize();
-          map.getView().setResolution(viewResolution);
-          exportButton.disabled &#x3D; false;
-          document.body.style.cursor &#x3D; &#x27;auto&#x27;;
-        });
+      html2canvas(map.getViewport(), exportOptions).then(function (canvas) {
+        const pdf &#x3D; new jspdf.jsPDF(&#x27;landscape&#x27;, undefined, format);
+        pdf.addImage(
+          canvas.toDataURL(&#x27;image/jpeg&#x27;),
+          &#x27;JPEG&#x27;,
+          0,
+          0,
+          dim[0],
+          dim[1]
+        );
+        pdf.save(&#x27;map.pdf&#x27;);
+        // Reset original map size
+        scaleLine.setDpi();
+        map.getTargetElement().style.width &#x3D; &#x27;&#x27;;
+        map.getTargetElement().style.height &#x3D; &#x27;&#x27;;
+        map.updateSize();
+        map.getView().setResolution(viewResolution);
+        exportButton.disabled &#x3D; false;
+        document.body.style.cursor &#x3D; &#x27;auto&#x27;;
+      });
     });
 
     // Set print size
@@ -425,8 +452,8 @@ exportButton.addEventListener(
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
     &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://unpkg.com/dom-to-image-more@2.8.0/dist/dom-to-image-more.min.js&quot;&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://html2canvas.hertzen.com/dist/html2canvas.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -483,8 +510,8 @@ exportButton.addEventListener(
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;print-to-scale&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.5.1-dev&quot;,
-    &quot;proj4&quot;: &quot;2.7.2&quot;
+    &quot;ol&quot;: &quot;6.6.2-dev&quot;,
+    &quot;proj4&quot;: &quot;^2.7.5&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
@@ -523,7 +550,7 @@ exportButton.addEventListener(
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.5.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.6.2-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

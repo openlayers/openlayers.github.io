@@ -115,7 +115,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.5.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.6.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -250,7 +250,7 @@ import XYZ from &#x27;ol/source/XYZ&#x27;;
 import {Image as ImageLayer, Tile as TileLayer} from &#x27;ol/layer&#x27;;
 
 const minVgi &#x3D; 0;
-const maxVgi &#x3D; 0.25;
+const maxVgi &#x3D; 0.5;
 const bins &#x3D; 10;
 
 /**
@@ -332,7 +332,7 @@ const raster &#x3D; new RasterSource({
     summarize: summarize,
   },
 });
-raster.set(&#x27;threshold&#x27;, 0.1);
+raster.set(&#x27;threshold&#x27;, 0.25);
 
 function createCounts(min, max, num) {
   const values &#x3D; new Array(num);
@@ -534,7 +534,7 @@ function message(value, area) {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;raster&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.5.1-dev&quot;
+    &quot;ol&quot;: &quot;6.6.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
@@ -573,7 +573,7 @@ function message(value, area) {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.5.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.6.2-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');
