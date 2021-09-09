@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2876],{11411:function(e,o,r){var t=r(33156),c=r(77013),n=r(86395),a=r(29123);new t.Z({target:"map",layers:[new n.Z({source:new c.Z({url:"https://maps.ecere.com/ogcapi/collections/blueMarble/map/tiles/WorldCRS84Quad"})})],view:new a.ZP({projection:"EPSG:4326",center:[0,0],zoom:1})})}},function(e){var o;o=11411,e(e.s=o)}]);
+//# sourceMappingURL=ogc-map-tiles-geographic.js.map
