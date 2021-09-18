@@ -1,4 +1,4 @@
-var key = 'pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2t0Znl4aWJ2MGQxOTJ6cW5waWkwZWZ4ayJ9.Vgh43s6uPiHP5q3uhhLtng';
+var key = 'pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2t0cGdwMHVnMGdlbzMxbDhwazBic2xrNSJ9.WbcTL9uj8JPAsnT9mgb7oQ';
 
 // For how many zoom levels do we want to use the same vector tiles?
 // 1 means "use tiles from all zoom levels". 2 means "use the same tiles for 2
