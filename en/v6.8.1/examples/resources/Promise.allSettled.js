@@ -1,0 +1,1 @@
+"undefined"!=typeof Promise&&!Promise.allSettled&&Array.from&&(Promise.allSettled=function(e){return Promise.all(Array.from(e,(function(e){return e.then((function(e){return{status:"fulfilled",value:e}})).catch((function(e){return{status:"rejected",reason:e}}))})))});

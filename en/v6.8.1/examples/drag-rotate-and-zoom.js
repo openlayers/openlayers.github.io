@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7983],{7332:function(e,n,t){var c=t(41376),r=t(79847),s=t(42010),u=t(54354),a=t(12174),w=t(96505);new c.Z({interactions:(0,a.ce)().extend([new w.Z]),layers:[new s.Z({source:new r.Z})],target:"map",view:new u.ZP({center:[0,0],zoom:2})})}},function(e){var n=function(n){return e(e.s=n)};n(9877),n(7332)}]);
+//# sourceMappingURL=drag-rotate-and-zoom.js.map
