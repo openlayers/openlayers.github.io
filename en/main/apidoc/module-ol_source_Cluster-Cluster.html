@@ -59,7 +59,7 @@
       })
     });
     </script>
-    <title>OpenLayers v6.6.2-dev API - Class: Cluster</title>
+    <title>OpenLayers v6.9.1-dev API - Class: Cluster</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -1155,6 +1155,20 @@
                     <li data-name="writefeatures"><a href="module-ol_format_GML32-GML32.html#writeFeatures">writeFeatures</a>
                     <li data-name="writefeaturesnode"><a href="module-ol_format_GML32-GML32.html#writeFeaturesNode">writeFeaturesNode</a>
                     <li data-name="writegeometrynode"><a href="module-ol_format_GML32-GML32.html#writeGeometryNode">writeGeometryNode</a>
+                </ul>
+            </div>
+            <li class="item item-class" data-longname="module:ol/format/GMLBase~GMLBase" data-name="ol/format/gmlbase">
+                <span class="title toggle">
+                    <span class="fa fa-chevron-right mr-2 mt-1"></span>
+                    <span><a href="module-ol_format_GMLBase-GMLBase.html">ol​/format​/GMLBase</a></span>
+                </span>
+            <div class="member-list" data-type="methods">
+                <span class="subtitle">Methods</span>
+                <ul>
+                    <li data-name="readfeature"><a href="module-ol_format_GMLBase-GMLBase.html#readFeature">readFeature</a>
+                    <li data-name="readfeatures"><a href="module-ol_format_GMLBase-GMLBase.html#readFeatures">readFeatures</a>
+                    <li data-name="readprojection"><a href="module-ol_format_GMLBase-GMLBase.html#readProjection">readProjection</a>
+                    <li data-name="writefeatures"><a href="module-ol_format_GMLBase-GMLBase.html#writeFeatures">writeFeatures</a>
                 </ul>
             </div>
             <li class="item item-class" data-longname="module:ol/format/GPX~GPX" data-name="ol/format/gpx">
@@ -4154,6 +4168,7 @@
                 <ul>
                     <li data-name="changed"><a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#dispatchEvent">dispatchEvent</a>
+                    <li data-name="dispose"><a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#dispose">dispose</a>
                     <li data-name="get"><a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#get">get</a>
                     <li data-name="getextent"><a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#getExtent">getExtent</a>
                     <li data-name="getkeys"><a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#getKeys">getKeys</a>
@@ -4284,6 +4299,7 @@
                     <li data-name="rendersync"><a href="module-ol_Map-Map.html#renderSync">renderSync</a>
                     <li data-name="set"><a href="module-ol_Map-Map.html#set">set</a>
                     <li data-name="setlayergroup"><a href="module-ol_Map-Map.html#setLayerGroup">setLayerGroup</a>
+                    <li data-name="setlayers"><a href="module-ol_Map-Map.html#setLayers">setLayers</a>
                     <li data-name="setproperties"><a href="module-ol_Map-Map.html#setProperties">setProperties</a>
                     <li data-name="setsize"><a href="module-ol_Map-Map.html#setSize">setSize</a>
                     <li data-name="settarget"><a href="module-ol_Map-Map.html#setTarget">setTarget</a>
@@ -4583,6 +4599,7 @@
                     <li data-name="rendersync"><a href="module-ol_PluggableMap-PluggableMap.html#renderSync">renderSync</a>
                     <li data-name="set"><a href="module-ol_PluggableMap-PluggableMap.html#set">set</a>
                     <li data-name="setlayergroup"><a href="module-ol_PluggableMap-PluggableMap.html#setLayerGroup">setLayerGroup</a>
+                    <li data-name="setlayers"><a href="module-ol_PluggableMap-PluggableMap.html#setLayers">setLayers</a>
                     <li data-name="setproperties"><a href="module-ol_PluggableMap-PluggableMap.html#setProperties">setProperties</a>
                     <li data-name="setsize"><a href="module-ol_PluggableMap-PluggableMap.html#setSize">setSize</a>
                     <li data-name="settarget"><a href="module-ol_PluggableMap-PluggableMap.html#setTarget">setTarget</a>
@@ -5262,6 +5279,7 @@
                     <li data-name="getrevision"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#getRevision">getRevision</a>
                     <li data-name="getstate"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#getState">getState</a>
                     <li data-name="gettilegrid"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#getTileGrid">getTileGrid</a>
+                    <li data-name="getview"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#getView">getView</a>
                     <li data-name="on"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#on">on</a>
                     <li data-name="once"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#once">once</a>
                     <li data-name="refresh"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#refresh">refresh</a>
@@ -5291,6 +5309,10 @@
             <div class="member-list" data-type="typedefs">
                 <span class="subtitle">Typedefs</span>
                 <ul>
+                    <li data-name="geokeys"><a href="module-ol_source_GeoTIFF.html#~GeoKeys">GeoKeys</a>
+                    <li data-name="geotiff"><a href="module-ol_source_GeoTIFF.html#~GeoTIFF">GeoTIFF</a>
+                    <li data-name="geotiffimage"><a href="module-ol_source_GeoTIFF.html#~GeoTIFFImage">GeoTIFFImage</a>
+                    <li data-name="multigeotiff"><a href="module-ol_source_GeoTIFF.html#~MultiGeoTIFF">MultiGeoTIFF</a>
                     <li data-name="options"><a href="module-ol_source_GeoTIFF.html#~Options">Options</a>
                     <li data-name="sourceinfo"><a href="module-ol_source_GeoTIFF.html#~SourceInfo">SourceInfo</a>
                 </ul>
@@ -6730,6 +6752,7 @@
                     <li data-name="getscale"><a href="module-ol_style_Circle-CircleStyle.html#getScale">getScale</a>
                     <li data-name="getsize"><a href="module-ol_style_Circle-CircleStyle.html#getSize">getSize</a>
                     <li data-name="getstroke"><a href="module-ol_style_Circle-CircleStyle.html#getStroke">getStroke</a>
+                    <li data-name="setdisplacement"><a href="module-ol_style_Circle-CircleStyle.html#setDisplacement">setDisplacement</a>
                     <li data-name="setopacity"><a href="module-ol_style_Circle-CircleStyle.html#setOpacity">setOpacity</a>
                     <li data-name="setradius"><a href="module-ol_style_Circle-CircleStyle.html#setRadius">setRadius</a>
                     <li data-name="setrotatewithview"><a href="module-ol_style_Circle-CircleStyle.html#setRotateWithView">setRotateWithView</a>
@@ -6792,6 +6815,7 @@
                     <li data-name="getsrc"><a href="module-ol_style_Icon-Icon.html#getSrc">getSrc</a>
                     <li data-name="load"><a href="module-ol_style_Icon-Icon.html#load">load</a>
                     <li data-name="setanchor"><a href="module-ol_style_Icon-Icon.html#setAnchor">setAnchor</a>
+                    <li data-name="setdisplacement"><a href="module-ol_style_Icon-Icon.html#setDisplacement">setDisplacement</a>
                     <li data-name="setopacity"><a href="module-ol_style_Icon-Icon.html#setOpacity">setOpacity</a>
                     <li data-name="setrotatewithview"><a href="module-ol_style_Icon-Icon.html#setRotateWithView">setRotateWithView</a>
                     <li data-name="setrotation"><a href="module-ol_style_Icon-Icon.html#setRotation">setRotation</a>
@@ -6862,6 +6886,7 @@
                     <li data-name="getrotatewithview"><a href="module-ol_style_Image-ImageStyle.html#getRotateWithView">getRotateWithView</a>
                     <li data-name="getrotation"><a href="module-ol_style_Image-ImageStyle.html#getRotation">getRotation</a>
                     <li data-name="getscale"><a href="module-ol_style_Image-ImageStyle.html#getScale">getScale</a>
+                    <li data-name="setdisplacement"><a href="module-ol_style_Image-ImageStyle.html#setDisplacement">setDisplacement</a>
                     <li data-name="setopacity"><a href="module-ol_style_Image-ImageStyle.html#setOpacity">setOpacity</a>
                     <li data-name="setrotatewithview"><a href="module-ol_style_Image-ImageStyle.html#setRotateWithView">setRotateWithView</a>
                     <li data-name="setrotation"><a href="module-ol_style_Image-ImageStyle.html#setRotation">setRotation</a>
@@ -6892,6 +6917,7 @@
                     <li data-name="getscale"><a href="module-ol_style_RegularShape-RegularShape.html#getScale">getScale</a>
                     <li data-name="getsize"><a href="module-ol_style_RegularShape-RegularShape.html#getSize">getSize</a>
                     <li data-name="getstroke"><a href="module-ol_style_RegularShape-RegularShape.html#getStroke">getStroke</a>
+                    <li data-name="setdisplacement"><a href="module-ol_style_RegularShape-RegularShape.html#setDisplacement">setDisplacement</a>
                     <li data-name="setopacity"><a href="module-ol_style_RegularShape-RegularShape.html#setOpacity">setOpacity</a>
                     <li data-name="setrotatewithview"><a href="module-ol_style_RegularShape-RegularShape.html#setRotateWithView">setRotateWithView</a>
                     <li data-name="setrotation"><a href="module-ol_style_RegularShape-RegularShape.html#setRotation">setRotation</a>
@@ -6947,6 +6973,7 @@
                     <li data-name="getfill"><a href="module-ol_style_Style-Style.html#getFill">getFill</a>
                     <li data-name="getgeometry"><a href="module-ol_style_Style-Style.html#getGeometry">getGeometry</a>
                     <li data-name="getgeometryfunction"><a href="module-ol_style_Style-Style.html#getGeometryFunction">getGeometryFunction</a>
+                    <li data-name="gethitdetectionrenderer"><a href="module-ol_style_Style-Style.html#getHitDetectionRenderer">getHitDetectionRenderer</a>
                     <li data-name="getimage"><a href="module-ol_style_Style-Style.html#getImage">getImage</a>
                     <li data-name="getrenderer"><a href="module-ol_style_Style-Style.html#getRenderer">getRenderer</a>
                     <li data-name="getstroke"><a href="module-ol_style_Style-Style.html#getStroke">getStroke</a>
@@ -6954,6 +6981,7 @@
                     <li data-name="getzindex"><a href="module-ol_style_Style-Style.html#getZIndex">getZIndex</a>
                     <li data-name="setfill"><a href="module-ol_style_Style-Style.html#setFill">setFill</a>
                     <li data-name="setgeometry"><a href="module-ol_style_Style-Style.html#setGeometry">setGeometry</a>
+                    <li data-name="sethitdetectionrenderer"><a href="module-ol_style_Style-Style.html#setHitDetectionRenderer">setHitDetectionRenderer</a>
                     <li data-name="setimage"><a href="module-ol_style_Style-Style.html#setImage">setImage</a>
                     <li data-name="setrenderer"><a href="module-ol_style_Style-Style.html#setRenderer">setRenderer</a>
                     <li data-name="setstroke"><a href="module-ol_style_Style-Style.html#setStroke">setStroke</a>
@@ -7439,7 +7467,7 @@
               <h1 class="page-title" data-filename="module-ol_source_Cluster-Cluster.html">Class: Cluster</h1>
               <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
                 <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                This documentation is for OpenLayers v<span id="package-version">6.6.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+                This documentation is for OpenLayers v<span id="package-version">6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
               </div>
               
 
@@ -7570,7 +7598,7 @@ from the wrapped source.</p></div>
                 
 <span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">module:ol/source/Source~AttributionLike</a></span>
 
-
+ | undefined
                 
             
             </td>
@@ -7654,7 +7682,7 @@ the center of all its features.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
                 
             
             </td>
@@ -7687,7 +7715,7 @@ calculation point for polygons.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
                 
             
             </td>
@@ -7720,7 +7748,7 @@ of <a href="module-ol_Feature.html"><code>module:ol/Feature</code></a> included 
                 
 <span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">module:ol/source/Vector~VectorSource</a></span>
 
-
+ | undefined
                 
             
             </td>
@@ -8245,7 +8273,7 @@ be removed from it right away.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js">Observable.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js#L70">line 70</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js#L68">line 68</a>
         </div>
         
     </div>
@@ -8378,7 +8406,7 @@ be removed from it right away.</p>
                 
 <span class="param-type">boolean</span>
 
-
+ | undefined
                 
             
             </td>
@@ -8597,7 +8625,7 @@ Object with a <code>type</code> property.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L579">line 579</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L582">line 582</a>
         </div>
         
     </div>
@@ -8738,7 +8766,7 @@ The return value from the last call to the callback.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L630">line 630</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L633">line 633</a>
         </div>
         
     </div>
@@ -8908,7 +8936,7 @@ The return value from the last call to the callback.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L653">line 653</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L656">line 656</a>
         </div>
         
     </div>
@@ -9212,7 +9240,7 @@ Value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js">source/Source.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js#L100">line 100</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js#L122">line 122</a>
         </div>
         
     </div>
@@ -9304,7 +9332,7 @@ Attribution function.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js">source/Source.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js#L108">line 108</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js#L130">line 130</a>
         </div>
         
     </div>
@@ -9392,7 +9420,7 @@ Attributions are collapsible.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L752">line 752</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L755">line 755</a>
         </div>
         
     </div>
@@ -9471,7 +9499,7 @@ Attributions are collapsible.
                 
 <span class="param-type">function</span>
 
-
+ | undefined
                 
             
             </td>
@@ -9648,7 +9676,7 @@ Distance.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L810">line 810</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L813">line 813</a>
         </div>
         
     </div>
@@ -9702,7 +9730,7 @@ Distance.
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
 
-
+ | undefined
                 
             
             </td>
@@ -9788,7 +9816,7 @@ Extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L823">line 823</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L826">line 826</a>
         </div>
         
     </div>
@@ -9930,7 +9958,7 @@ The feature (or <code>null</code> if not found).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L689">line 689</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L692">line 692</a>
         </div>
         
     </div>
@@ -10023,7 +10051,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L710">line 710</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L713">line 713</a>
         </div>
         
     </div>
@@ -10160,7 +10188,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L679">line 679</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L682">line 682</a>
         </div>
         
     </div>
@@ -10254,7 +10282,7 @@ The collection of features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L730">line 730</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L733">line 733</a>
         </div>
         
     </div>
@@ -10395,7 +10423,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L845">line 845</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L848">line 848</a>
         </div>
         
     </div>
@@ -10669,7 +10697,7 @@ The minimum distance in pixels.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js">source/Source.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js#L117">line 117</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js#L139">line 139</a>
         </div>
         
     </div>
@@ -10853,7 +10881,7 @@ Object.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js">Observable.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js#L81">line 81</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js#L79">line 79</a>
         </div>
         
     </div>
@@ -11036,7 +11064,7 @@ Source.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js">source/Source.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js#L134">line 134</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js#L163">line 163</a>
         </div>
         
     </div>
@@ -11128,7 +11156,7 @@ State.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L862">line 862</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L865">line 865</a>
         </div>
         
     </div>
@@ -11220,7 +11248,7 @@ The url.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L919">line 919</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L922">line 922</a>
         </div>
         
     </div>
@@ -11357,7 +11385,7 @@ Has feature.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js">Observable.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js#L155">line 155</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js#L153">line 153</a>
         </div>
         
     </div>
@@ -11524,7 +11552,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js">Observable.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js#L167">line 167</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js#L165">line 165</a>
         </div>
         
     </div>
@@ -11691,7 +11719,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1021">line 1021</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1024">line 1024</a>
         </div>
         
     </div>
@@ -11821,7 +11849,7 @@ instead.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1000">line 1000</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1003">line 1003</a>
         </div>
         
     </div>
@@ -12051,7 +12079,7 @@ instead.</p>
                 
 <span class="param-type">boolean</span>
 
-
+ | undefined
                 
             
             </td>
@@ -12127,7 +12155,7 @@ instead.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js">source/Source.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js#L167">line 167</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Source.js#L196">line 196</a>
         </div>
         
     </div>
@@ -12386,7 +12414,7 @@ instead.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1078">line 1078</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1093">line 1093</a>
         </div>
         
     </div>
@@ -12720,7 +12748,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
 <span class="param-type">boolean</span>
 
-
+ | undefined
                 
             
             </td>
@@ -12922,7 +12950,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1087">line 1087</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1102">line 1102</a>
         </div>
         
     </div>
@@ -13053,7 +13081,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js">Observable.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js#L176">line 176</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Observable.js#L174">line 174</a>
         </div>
         
     </div>
@@ -13286,7 +13314,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
 <span class="param-type">boolean</span>
 
-
+ | undefined
                 
             
             </td>

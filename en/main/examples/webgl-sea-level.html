@@ -68,7 +68,8 @@
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/elm-pep"></script>
-    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"></script>
+    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"></script>
     
     <link rel="stylesheet" href="webgl-sea-level.css">
     <title>Sea Level (with WebGL)</title>
@@ -115,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.6.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -138,13 +139,15 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./heatmap-earthquakes.html&quot;&gt;Earthquakes Heatmap&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./filter-points-webgl.html&quot;&gt;Filtering features with WebGL&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon-sprite-webgl.html&quot;&gt;Icon Sprites with WebGL&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./webgl-layer-swipe.html&quot;&gt;Layer Swipe (WebGL)&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./numpytile.html&quot;&gt;Rendering 16-bit NumpyTiles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./webgl-sea-level.html&quot;&gt;Sea Level (with WebGL)&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./webgl-shaded-relief.html&quot;&gt;Shaded Relief (with WebGL)&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./webgl-points-layer.html&quot;&gt;WebGL points layer&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./webgl-tile-style.html&quot;&gt;WebGL Tile Layer Styles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./webgl-tiles.html&quot;&gt;WebGL Tiles&lt;/a&gt;"
                 tabindex="0"
-                >8</a>
+                >10</a>
             </span>
             <span class="badge-group">
               <a
@@ -219,7 +222,7 @@ Go to
   values ranging from 0 to 1.  The <code>band</code> operator is used to select normalized values
   from a single band.
 </p><p>
-  After converting the normalized RGB values to elevation, the <code>interpolate</code> expression
+  After converting the normalized RGB values to elevation, the <code>case</code> expression
   is used to pick colors to apply at a given elevation.  Instead of using constant
   numeric values as the stops in the colors array, the <code>var</code> operator allows you to
   use a value that can be modified by your application.  When the user drags the
@@ -244,7 +247,24 @@ const attributions &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
-const elevation &#x3D; new TileLayer({
+// band math operates on normalized values from 0-1
+// so we scale by 255 to align with the elevation formula
+// from https://cloud.maptiler.com/tiles/terrain-rgb/
+const elevation &#x3D; [
+  &#x27;+&#x27;,
+  -10000,
+  [
+    &#x27;*&#x27;,
+    0.1 * 255,
+    [
+      &#x27;+&#x27;,
+      [&#x27;*&#x27;, 256 * 256, [&#x27;band&#x27;, 1]],
+      [&#x27;+&#x27;, [&#x27;*&#x27;, 256, [&#x27;band&#x27;, 2]], [&#x27;band&#x27;, 3]],
+    ],
+  ],
+];
+
+const layer &#x3D; new TileLayer({
   opacity: 0.6,
   source: new XYZ({
     url:
@@ -258,28 +278,10 @@ const elevation &#x3D; new TileLayer({
       level: 0,
     },
     color: [
-      &#x27;interpolate&#x27;,
-      [&#x27;linear&#x27;],
-      // band math operates on normalized values from 0-1
-      // so we scale by 255 to align with the elevation formula
-      // from https://cloud.maptiler.com/tiles/terrain-rgb/
-      [
-        &#x27;+&#x27;,
-        -10000,
-        [
-          &#x27;*&#x27;,
-          0.1 * 255,
-          [
-            &#x27;+&#x27;,
-            [&#x27;*&#x27;, 256 * 256, [&#x27;band&#x27;, 1]],
-            [&#x27;+&#x27;, [&#x27;*&#x27;, 256, [&#x27;band&#x27;, 2]], [&#x27;band&#x27;, 3]],
-          ],
-        ],
-      ],
-      // use the &#x60;level&#x60; style variable as a stop in the color ramp
-      [&#x27;var&#x27;, &#x27;level&#x27;],
+      &#x27;case&#x27;,
+      // use the &#x60;level&#x60; style variable to determine the color
+      [&#x27;&lt;&#x3D;&#x27;, elevation, [&#x27;var&#x27;, &#x27;level&#x27;]],
       [139, 212, 255, 1],
-      [&#x27;+&#x27;, 0.01, [&#x27;var&#x27;, &#x27;level&#x27;]],
       [139, 212, 255, 0],
     ],
   },
@@ -296,7 +298,7 @@ const map &#x3D; new Map({
         tileSize: 512,
       }),
     }),
-    elevation,
+    layer,
   ],
   view: new View({
     center: fromLonLat([-122.3267, 37.8377]),
@@ -306,10 +308,12 @@ const map &#x3D; new Map({
 
 const control &#x3D; document.getElementById(&#x27;level&#x27;);
 const output &#x3D; document.getElementById(&#x27;output&#x27;);
-control.addEventListener(&#x27;input&#x27;, function () {
+const listener &#x3D; function () {
   output.innerText &#x3D; control.value;
-  elevation.updateStyleVariables({level: parseFloat(control.value)});
-});
+  layer.updateStyleVariables({level: parseFloat(control.value)});
+};
+control.addEventListener(&#x27;input&#x27;, listener);
+control.addEventListener(&#x27;change&#x27;, listener);
 output.innerText &#x3D; control.value;
 
 const locations &#x3D; document.getElementsByClassName(&#x27;location&#x27;);
@@ -335,8 +339,9 @@ function relocate(event) {
     &lt;title&gt;Sea Level (with WebGL)&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
-    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
+    &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -375,16 +380,15 @@ function relocate(event) {
 &lt;/html&gt;</code></pre>
       </div>
 
-
       <div class="row-fluid">
         <h5 class="source-heading">package.json</h5>
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;webgl-sea-level&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.6.2-dev&quot;
+    &quot;ol&quot;: &quot;6.9.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
-    &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
+    &quot;parcel&quot;: &quot;^2.0.0&quot;
   },
   &quot;scripts&quot;: {
     &quot;start&quot;: &quot;parcel index.html&quot;,
@@ -420,7 +424,7 @@ function relocate(event) {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.6.2-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.9.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

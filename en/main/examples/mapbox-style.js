@@ -1,2 +1,2 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5595],{40018:function(t,n,o){var e=o(62140);(0,o(67316).ZP)("map","https://api.maptiler.com/maps/topo/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB").then((function(t){t.addControl(new e.Z)}))}},function(t){var n;n=40018,t(t.s=n)}]);
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5595],{8876:function(n,t,e){var o=e(45486);(0,e(7834).ZP)("map","https://api.maptiler.com/maps/topo/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB").then((function(n){n.addControl(new o.Z)}))}},function(n){var t=function(t){return n(n.s=t)};t(9877),t(8876)}]);
 //# sourceMappingURL=mapbox-style.js.map

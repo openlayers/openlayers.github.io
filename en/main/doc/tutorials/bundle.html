@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>OpenLayers - Basic project setup using NPM and Parcel</title>
+    <title>OpenLayers - Basic project setup using NPM and Vite</title>
     <script>
     var gaProperty = 'UA-2577926-1';
     // Disable tracking if the opt-out cookie exists.
@@ -112,14 +112,15 @@
 <div class='container'>
 <h1 id="introduction">Introduction</h1>
 <p>Modern JavaScript works best when using and authoring modules. The recommended way of using OpenLayers is installing the <a href="https://npmjs.com/package/ol"><code>ol</code></a> package. This tutorial walks you through setting up a simple dev environment, which requires <a href="https://nodejs.org">node</a> for everything to work.</p>
-<p>In this tutorial, we will be using <a href="https://parceljs.org">Parcel</a> to bundle our application. There are several other options, some of which are linked from the <a href="https://npmjs.com/package/ol">README</a>.</p>
+<p>In this tutorial, we will be using <a href="https://vitejs.dev/">Vite</a> as a development tool and to bundle our application for production. There are several other options, some of which are linked from the <a href="https://npmjs.com/package/ol">README</a>.</p>
 <h2 id="application-setup">Application setup</h2>
 <p>Create a new empty directory for your project and navigate to it by running <code>mkdir new-project &amp;&amp; cd new-project</code>. Initialize your project with</p>
 <pre><code>npx create-ol-app</code></pre>
-<p>This will install the <code>ol</code> package, set up a development environment with additional dependencies, and give you an <code>index.html</code> and <code>main.js</code> starting point for your application.  By default, <a href="https://parceljs.org">Parcel</a> will be used as a module loader and bundler.  See the <a href="https://github.com/openlayers/create-ol-app"><code>create-ol-app</code></a> documentation for details on using another bundler.</p>
+<p><em>You will need to have <code>git</code> installed for the above command to work.  If you receive an error, make sure that <a href="https://github.com/git-guides/install-git">Git is installed</a> on your system.</em></p>
+<p>This will install the <code>ol</code> package, set up a development environment with additional dependencies, and give you an <code>index.html</code> and <code>main.js</code> starting point for your application.  By default, <a href="https://vitejs.dev/">Vite</a> will be used as a module loader and bundler.  See the <a href="https://github.com/openlayers/create-ol-app"><code>create-ol-app</code></a> documentation for details on using another bundler.</p>
 <p>To start the development server</p>
 <pre><code>npm start</code></pre>
-<p>You can now visit <a href="http://localhost:1234/">http://localhost:1234/</a> to view your application.  Begin making changes to the <code>index.html</code> and <code>main.js</code> files to add additional functionality.</p>
+<p>You can now visit <a href="http://localhost:3000/">http://localhost:3000/</a> to view your application.  Begin making changes to the <code>index.html</code> and <code>main.js</code> files to add additional functionality.</p>
 <p>To create a production bundle of your application, simply type</p>
 <pre><code>npm run build</code></pre>
 <p>and copy the <code>dist/</code> folder to your production server.</p>

@@ -68,7 +68,8 @@
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/elm-pep"></script>
-    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"></script>
+    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"></script>
     
     
     <title>WMTS</title>
@@ -115,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.6.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -212,9 +213,9 @@ import {getTopLeft, getWidth} from &#x27;ol/extent&#x27;;
 const projection &#x3D; getProjection(&#x27;EPSG:3857&#x27;);
 const projectionExtent &#x3D; projection.getExtent();
 const size &#x3D; getWidth(projectionExtent) / 256;
-const resolutions &#x3D; new Array(14);
-const matrixIds &#x3D; new Array(14);
-for (let z &#x3D; 0; z &lt; 14; ++z) {
+const resolutions &#x3D; new Array(19);
+const matrixIds &#x3D; new Array(19);
+for (let z &#x3D; 0; z &lt; 19; ++z) {
   // generate resolutions and matrixIds arrays for this WMTS
   resolutions[z] &#x3D; size / Math.pow(2, z);
   matrixIds[z] &#x3D; z;
@@ -224,19 +225,16 @@ const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
-      opacity: 0.7,
     }),
     new TileLayer({
       opacity: 0.7,
       source: new WMTS({
         attributions:
-          &#x27;Tiles © &lt;a href&#x3D;&quot;https://services.arcgisonline.com/arcgis/rest/&#x27; +
-          &#x27;services/Demographics/USA_Population_Density/MapServer/&quot;&gt;ArcGIS&lt;/a&gt;&#x27;,
-        url:
-          &#x27;https://services.arcgisonline.com/arcgis/rest/&#x27; +
-          &#x27;services/Demographics/USA_Population_Density/MapServer/WMTS/&#x27;,
-        layer: &#x27;0&#x27;,
-        matrixSet: &#x27;EPSG:3857&#x27;,
+          &#x27;Tiles © &lt;a href&#x3D;&quot;https://mrdata.usgs.gov/geology/state/&quot;&#x27; +
+          &#x27; target&#x3D;&quot;_blank&quot;&gt;USGS&lt;/a&gt;&#x27;,
+        url: &#x27;https://mrdata.usgs.gov/mapcache/wmts&#x27;,
+        layer: &#x27;sgmc2&#x27;,
+        matrixSet: &#x27;GoogleMapsCompatible&#x27;,
         format: &#x27;image/png&#x27;,
         projection: projection,
         tileGrid: new WMTSTileGrid({
@@ -267,8 +265,9 @@ const map &#x3D; new Map({
     &lt;title&gt;WMTS&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
-    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
+    &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -283,16 +282,15 @@ const map &#x3D; new Map({
 &lt;/html&gt;</code></pre>
       </div>
 
-
       <div class="row-fluid">
         <h5 class="source-heading">package.json</h5>
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;wmts&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.6.2-dev&quot;
+    &quot;ol&quot;: &quot;6.9.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
-    &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
+    &quot;parcel&quot;: &quot;^2.0.0&quot;
   },
   &quot;scripts&quot;: {
     &quot;start&quot;: &quot;parcel index.html&quot;,
@@ -328,7 +326,7 @@ const map &#x3D; new Map({
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.6.2-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.9.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

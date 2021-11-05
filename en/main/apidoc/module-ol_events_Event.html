@@ -59,7 +59,7 @@
       })
     });
     </script>
-    <title>OpenLayers v6.6.2-dev API - Module: ol/events/Event</title>
+    <title>OpenLayers v6.9.1-dev API - Module: ol/events/Event</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -1155,6 +1155,20 @@
                     <li data-name="writefeatures"><a href="module-ol_format_GML32-GML32.html#writeFeatures">writeFeatures</a>
                     <li data-name="writefeaturesnode"><a href="module-ol_format_GML32-GML32.html#writeFeaturesNode">writeFeaturesNode</a>
                     <li data-name="writegeometrynode"><a href="module-ol_format_GML32-GML32.html#writeGeometryNode">writeGeometryNode</a>
+                </ul>
+            </div>
+            <li class="item item-class" data-longname="module:ol/format/GMLBase~GMLBase" data-name="ol/format/gmlbase">
+                <span class="title toggle">
+                    <span class="fa fa-chevron-right mr-2 mt-1"></span>
+                    <span><a href="module-ol_format_GMLBase-GMLBase.html">ol​/format​/GMLBase</a></span>
+                </span>
+            <div class="member-list" data-type="methods">
+                <span class="subtitle">Methods</span>
+                <ul>
+                    <li data-name="readfeature"><a href="module-ol_format_GMLBase-GMLBase.html#readFeature">readFeature</a>
+                    <li data-name="readfeatures"><a href="module-ol_format_GMLBase-GMLBase.html#readFeatures">readFeatures</a>
+                    <li data-name="readprojection"><a href="module-ol_format_GMLBase-GMLBase.html#readProjection">readProjection</a>
+                    <li data-name="writefeatures"><a href="module-ol_format_GMLBase-GMLBase.html#writeFeatures">writeFeatures</a>
                 </ul>
             </div>
             <li class="item item-class" data-longname="module:ol/format/GPX~GPX" data-name="ol/format/gpx">
@@ -4154,6 +4168,7 @@
                 <ul>
                     <li data-name="changed"><a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#dispatchEvent">dispatchEvent</a>
+                    <li data-name="dispose"><a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#dispose">dispose</a>
                     <li data-name="get"><a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#get">get</a>
                     <li data-name="getextent"><a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#getExtent">getExtent</a>
                     <li data-name="getkeys"><a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#getKeys">getKeys</a>
@@ -4284,6 +4299,7 @@
                     <li data-name="rendersync"><a href="module-ol_Map-Map.html#renderSync">renderSync</a>
                     <li data-name="set"><a href="module-ol_Map-Map.html#set">set</a>
                     <li data-name="setlayergroup"><a href="module-ol_Map-Map.html#setLayerGroup">setLayerGroup</a>
+                    <li data-name="setlayers"><a href="module-ol_Map-Map.html#setLayers">setLayers</a>
                     <li data-name="setproperties"><a href="module-ol_Map-Map.html#setProperties">setProperties</a>
                     <li data-name="setsize"><a href="module-ol_Map-Map.html#setSize">setSize</a>
                     <li data-name="settarget"><a href="module-ol_Map-Map.html#setTarget">setTarget</a>
@@ -4583,6 +4599,7 @@
                     <li data-name="rendersync"><a href="module-ol_PluggableMap-PluggableMap.html#renderSync">renderSync</a>
                     <li data-name="set"><a href="module-ol_PluggableMap-PluggableMap.html#set">set</a>
                     <li data-name="setlayergroup"><a href="module-ol_PluggableMap-PluggableMap.html#setLayerGroup">setLayerGroup</a>
+                    <li data-name="setlayers"><a href="module-ol_PluggableMap-PluggableMap.html#setLayers">setLayers</a>
                     <li data-name="setproperties"><a href="module-ol_PluggableMap-PluggableMap.html#setProperties">setProperties</a>
                     <li data-name="setsize"><a href="module-ol_PluggableMap-PluggableMap.html#setSize">setSize</a>
                     <li data-name="settarget"><a href="module-ol_PluggableMap-PluggableMap.html#setTarget">setTarget</a>
@@ -5262,6 +5279,7 @@
                     <li data-name="getrevision"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#getRevision">getRevision</a>
                     <li data-name="getstate"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#getState">getState</a>
                     <li data-name="gettilegrid"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#getTileGrid">getTileGrid</a>
+                    <li data-name="getview"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#getView">getView</a>
                     <li data-name="on"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#on">on</a>
                     <li data-name="once"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#once">once</a>
                     <li data-name="refresh"><a href="module-ol_source_GeoTIFF-GeoTIFFSource.html#refresh">refresh</a>
@@ -5291,6 +5309,10 @@
             <div class="member-list" data-type="typedefs">
                 <span class="subtitle">Typedefs</span>
                 <ul>
+                    <li data-name="geokeys"><a href="module-ol_source_GeoTIFF.html#~GeoKeys">GeoKeys</a>
+                    <li data-name="geotiff"><a href="module-ol_source_GeoTIFF.html#~GeoTIFF">GeoTIFF</a>
+                    <li data-name="geotiffimage"><a href="module-ol_source_GeoTIFF.html#~GeoTIFFImage">GeoTIFFImage</a>
+                    <li data-name="multigeotiff"><a href="module-ol_source_GeoTIFF.html#~MultiGeoTIFF">MultiGeoTIFF</a>
                     <li data-name="options"><a href="module-ol_source_GeoTIFF.html#~Options">Options</a>
                     <li data-name="sourceinfo"><a href="module-ol_source_GeoTIFF.html#~SourceInfo">SourceInfo</a>
                 </ul>
@@ -6730,6 +6752,7 @@
                     <li data-name="getscale"><a href="module-ol_style_Circle-CircleStyle.html#getScale">getScale</a>
                     <li data-name="getsize"><a href="module-ol_style_Circle-CircleStyle.html#getSize">getSize</a>
                     <li data-name="getstroke"><a href="module-ol_style_Circle-CircleStyle.html#getStroke">getStroke</a>
+                    <li data-name="setdisplacement"><a href="module-ol_style_Circle-CircleStyle.html#setDisplacement">setDisplacement</a>
                     <li data-name="setopacity"><a href="module-ol_style_Circle-CircleStyle.html#setOpacity">setOpacity</a>
                     <li data-name="setradius"><a href="module-ol_style_Circle-CircleStyle.html#setRadius">setRadius</a>
                     <li data-name="setrotatewithview"><a href="module-ol_style_Circle-CircleStyle.html#setRotateWithView">setRotateWithView</a>
@@ -6792,6 +6815,7 @@
                     <li data-name="getsrc"><a href="module-ol_style_Icon-Icon.html#getSrc">getSrc</a>
                     <li data-name="load"><a href="module-ol_style_Icon-Icon.html#load">load</a>
                     <li data-name="setanchor"><a href="module-ol_style_Icon-Icon.html#setAnchor">setAnchor</a>
+                    <li data-name="setdisplacement"><a href="module-ol_style_Icon-Icon.html#setDisplacement">setDisplacement</a>
                     <li data-name="setopacity"><a href="module-ol_style_Icon-Icon.html#setOpacity">setOpacity</a>
                     <li data-name="setrotatewithview"><a href="module-ol_style_Icon-Icon.html#setRotateWithView">setRotateWithView</a>
                     <li data-name="setrotation"><a href="module-ol_style_Icon-Icon.html#setRotation">setRotation</a>
@@ -6862,6 +6886,7 @@
                     <li data-name="getrotatewithview"><a href="module-ol_style_Image-ImageStyle.html#getRotateWithView">getRotateWithView</a>
                     <li data-name="getrotation"><a href="module-ol_style_Image-ImageStyle.html#getRotation">getRotation</a>
                     <li data-name="getscale"><a href="module-ol_style_Image-ImageStyle.html#getScale">getScale</a>
+                    <li data-name="setdisplacement"><a href="module-ol_style_Image-ImageStyle.html#setDisplacement">setDisplacement</a>
                     <li data-name="setopacity"><a href="module-ol_style_Image-ImageStyle.html#setOpacity">setOpacity</a>
                     <li data-name="setrotatewithview"><a href="module-ol_style_Image-ImageStyle.html#setRotateWithView">setRotateWithView</a>
                     <li data-name="setrotation"><a href="module-ol_style_Image-ImageStyle.html#setRotation">setRotation</a>
@@ -6892,6 +6917,7 @@
                     <li data-name="getscale"><a href="module-ol_style_RegularShape-RegularShape.html#getScale">getScale</a>
                     <li data-name="getsize"><a href="module-ol_style_RegularShape-RegularShape.html#getSize">getSize</a>
                     <li data-name="getstroke"><a href="module-ol_style_RegularShape-RegularShape.html#getStroke">getStroke</a>
+                    <li data-name="setdisplacement"><a href="module-ol_style_RegularShape-RegularShape.html#setDisplacement">setDisplacement</a>
                     <li data-name="setopacity"><a href="module-ol_style_RegularShape-RegularShape.html#setOpacity">setOpacity</a>
                     <li data-name="setrotatewithview"><a href="module-ol_style_RegularShape-RegularShape.html#setRotateWithView">setRotateWithView</a>
                     <li data-name="setrotation"><a href="module-ol_style_RegularShape-RegularShape.html#setRotation">setRotation</a>
@@ -6947,6 +6973,7 @@
                     <li data-name="getfill"><a href="module-ol_style_Style-Style.html#getFill">getFill</a>
                     <li data-name="getgeometry"><a href="module-ol_style_Style-Style.html#getGeometry">getGeometry</a>
                     <li data-name="getgeometryfunction"><a href="module-ol_style_Style-Style.html#getGeometryFunction">getGeometryFunction</a>
+                    <li data-name="gethitdetectionrenderer"><a href="module-ol_style_Style-Style.html#getHitDetectionRenderer">getHitDetectionRenderer</a>
                     <li data-name="getimage"><a href="module-ol_style_Style-Style.html#getImage">getImage</a>
                     <li data-name="getrenderer"><a href="module-ol_style_Style-Style.html#getRenderer">getRenderer</a>
                     <li data-name="getstroke"><a href="module-ol_style_Style-Style.html#getStroke">getStroke</a>
@@ -6954,6 +6981,7 @@
                     <li data-name="getzindex"><a href="module-ol_style_Style-Style.html#getZIndex">getZIndex</a>
                     <li data-name="setfill"><a href="module-ol_style_Style-Style.html#setFill">setFill</a>
                     <li data-name="setgeometry"><a href="module-ol_style_Style-Style.html#setGeometry">setGeometry</a>
+                    <li data-name="sethitdetectionrenderer"><a href="module-ol_style_Style-Style.html#setHitDetectionRenderer">setHitDetectionRenderer</a>
                     <li data-name="setimage"><a href="module-ol_style_Style-Style.html#setImage">setImage</a>
                     <li data-name="setrenderer"><a href="module-ol_style_Style-Style.html#setRenderer">setRenderer</a>
                     <li data-name="setstroke"><a href="module-ol_style_Style-Style.html#setStroke">setStroke</a>
@@ -7439,7 +7467,7 @@
               <h1 class="page-title" data-filename="module-ol_events_Event.html">Module: ol/events/Event</h1>
               <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
                 <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                This documentation is for OpenLayers v<span id="package-version">6.6.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+                This documentation is for OpenLayers v<span id="package-version">6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
               </div>
               
 

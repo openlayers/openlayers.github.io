@@ -1,2 +1,2 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8419],{19930:function(e,n,r){var t=r(33156),o=r(19987),c=r(86395),s=r(29123);new t.Z({layers:[new c.Z({source:new o.Z})],target:"map",view:new s.ZP({projection:"EPSG:4326",center:[0,0],zoom:2})})}},function(e){var n;n=19930,e(e.s=n)}]);
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8419],{94077:function(e,n,r){var t=r(41376),c=r(79847),u=r(42010),o=r(54354);new t.Z({layers:[new u.Z({source:new c.Z})],target:"map",view:new o.ZP({projection:"EPSG:4326",center:[0,0],zoom:2})})}},function(e){var n=function(n){return e(e.s=n)};n(9877),n(94077)}]);
 //# sourceMappingURL=reprojection-wgs84.js.map

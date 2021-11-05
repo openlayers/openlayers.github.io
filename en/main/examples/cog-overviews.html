@@ -68,7 +68,8 @@
     <link rel="stylesheet" href="./css/ol.css" type="text/css">
     <link rel="stylesheet" href="./resources/layout.css" type="text/css">
     <script src="https://unpkg.com/elm-pep"></script>
-    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"></script>
+    <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"></script>
     
     
     <title>GeoTIFF with Overviews</title>
@@ -115,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.6.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -180,71 +181,52 @@
         <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import GeoTIFF from &#x27;ol/source/GeoTIFF&#x27;;
 import Map from &#x27;ol/Map&#x27;;
-import Projection from &#x27;ol/proj/Projection&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile&#x27;;
-import View from &#x27;ol/View&#x27;;
-import proj4 from &#x27;proj4&#x27;;
-import {getCenter} from &#x27;ol/extent&#x27;;
-import {register} from &#x27;ol/proj/proj4&#x27;;
-
-proj4.defs(&#x27;EPSG:32645&#x27;, &#x27;+proj&#x3D;utm +zone&#x3D;45 +datum&#x3D;WGS84 +units&#x3D;m +no_defs&#x27;);
-register(proj4);
-
-const projection &#x3D; new Projection({
-  code: &#x27;EPSG:32645&#x27;,
-  extent: [166021.44, 0.0, 534994.66, 9329005.18],
-});
-
-const sourceExtent &#x3D; [382200, 2279370, 610530, 2512500];
-
-const base &#x3D;
-  &#x27;https://landsat-pds.s3.amazonaws.com/c1/L8/139/045/LC08_L1TP_139045_20170304_20170316_01_T1/LC08_L1TP_139045_20170304_20170316_01_T1&#x27;;
 
 // scale values in this range to 0 - 1
 const min &#x3D; 10000;
 const max &#x3D; 15000;
 
+const base &#x3D;
+  &#x27;https://landsat-pds.s3.amazonaws.com/c1/L8/139/045/LC08_L1TP_139045_20170304_20170316_01_T1/LC08_L1TP_139045_20170304_20170316_01_T1&#x27;;
+
+const source &#x3D; new GeoTIFF({
+  sources: [
+    {
+      url: &#x60;${base}_B6.TIF&#x60;,
+      overviews: [&#x60;${base}_B6.TIF.ovr&#x60;],
+      min: min,
+      max: max,
+      nodata: 0,
+    },
+    {
+      url: &#x60;${base}_B5.TIF&#x60;,
+      overviews: [&#x60;${base}_B5.TIF.ovr&#x60;],
+      min: min,
+      max: max,
+      nodata: 0,
+    },
+    {
+      url: &#x60;${base}_B3.TIF&#x60;,
+      overviews: [&#x60;${base}_B3.TIF.ovr&#x60;],
+      min: min,
+      max: max,
+      nodata: 0,
+    },
+  ],
+});
+
 const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   layers: [
     new TileLayer({
-      extent: sourceExtent,
       style: {
         saturation: -0.3,
       },
-      source: new GeoTIFF({
-        sources: [
-          {
-            url: &#x60;${base}_B6.TIF&#x60;,
-            overviews: [&#x60;${base}_B6.TIF.ovr&#x60;],
-            min: min,
-            max: max,
-            nodata: 0,
-          },
-          {
-            url: &#x60;${base}_B5.TIF&#x60;,
-            overviews: [&#x60;${base}_B5.TIF.ovr&#x60;],
-            min: min,
-            max: max,
-            nodata: 0,
-          },
-          {
-            url: &#x60;${base}_B3.TIF&#x60;,
-            overviews: [&#x60;${base}_B3.TIF.ovr&#x60;],
-            min: min,
-            max: max,
-            nodata: 0,
-          },
-        ],
-      }),
+      source: source,
     }),
   ],
-  view: new View({
-    center: getCenter(sourceExtent),
-    extent: sourceExtent,
-    zoom: 8,
-    projection: projection,
-  }),
+  view: source.getView(),
 });
 </code></pre>
       </div>
@@ -258,8 +240,9 @@ const map &#x3D; new Map({
     &lt;title&gt;GeoTIFF with Overviews&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
-    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
-    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL,TextDecoder,Number.isInteger"&gt;&lt;/script&gt;
+    &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -274,17 +257,15 @@ const map &#x3D; new Map({
 &lt;/html&gt;</code></pre>
       </div>
 
-
       <div class="row-fluid">
         <h5 class="source-heading">package.json</h5>
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;cog-overviews&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.6.2-dev&quot;,
-    &quot;proj4&quot;: &quot;^2.7.5&quot;
+    &quot;ol&quot;: &quot;6.9.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
-    &quot;parcel&quot;: &quot;^2.0.0-beta.1&quot;
+    &quot;parcel&quot;: &quot;^2.0.0&quot;
   },
   &quot;scripts&quot;: {
     &quot;start&quot;: &quot;parcel index.html&quot;,
@@ -320,7 +301,7 @@ const map &#x3D; new Map({
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.6.2-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.9.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');
