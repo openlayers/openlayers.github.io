@@ -71,7 +71,7 @@
     <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"></script>
     
-    
+    <link rel="stylesheet" href="reprojection.css">
     <title>Raster Reprojection</title>
   </head>
   <body>
@@ -325,10 +325,14 @@
       <option value="EPSG:5479">RSRGD2000 / MSLC2000 (EPSG:5479)</option>
     </select>
   </div>
-  <label>
-    Render reprojection edges
-    <input type="checkbox" id="render-edges">
-  </label>
+</form>
+<form class="form-inline">
+  <div class="col-md-auto">
+    <label>
+      Render reprojection edges:&nbsp;
+      <input type="checkbox" id="render-edges" />
+    </label>
+  </div>
 </form>
 
         </div>
@@ -626,6 +630,9 @@ renderEdgesCheckbox.onchange &#x3D; function () {
         width: 100%;
         height:400px;
       }
+      .form-inline label {
+        justify-content: left;
+      }
     &lt;/style&gt;
   &lt;/head&gt;
   &lt;body&gt;
@@ -660,10 +667,14 @@ renderEdgesCheckbox.onchange &#x3D; function () {
           &lt;option value&#x3D;&quot;EPSG:5479&quot;&gt;RSRGD2000 / MSLC2000 (EPSG:5479)&lt;/option&gt;
         &lt;/select&gt;
       &lt;/div&gt;
-      &lt;label&gt;
-        Render reprojection edges
-        &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;render-edges&quot;&gt;
-      &lt;/label&gt;
+    &lt;/form&gt;
+    &lt;form class&#x3D;&quot;form-inline&quot;&gt;
+      &lt;div class&#x3D;&quot;col-md-auto&quot;&gt;
+        &lt;label&gt;
+          Render reprojection edges:&amp;nbsp;
+          &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;render-edges&quot; /&gt;
+        &lt;/label&gt;
+      &lt;/div&gt;
     &lt;/form&gt;
     &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
