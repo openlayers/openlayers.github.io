@@ -277,27 +277,23 @@ Note: those will be taken from the attributes provided to the renderer</li>
 </ul>
 </li>
 <li><p>Transform operators:</p>
-</li>
-<li><p><code>[&#39;case&#39;, condition1, output1, ...conditionN, outputN, fallback]</code> selects the first output whose corresponding</p>
-</li>
-</ul>
-<pre><code> condition evaluates to `true`. If no match is found, returns the `fallback` value.
- All conditions should be `boolean`, output and fallback can be any kind.
-</code></pre>
 <ul>
-<li><p><code>[&#39;match&#39;, input, match1, output1, ...matchN, outputN, fallback]</code> compares the <code>input</code> value against all
+<li><code>[&#39;case&#39;, condition1, output1, ...conditionN, outputN, fallback]</code> selects the first output whose corresponding
+condition evaluates to <code>true</code>. If no match is found, returns the <code>fallback</code> value.
+All conditions should be <code>boolean</code>, output and fallback can be any kind.</li>
+<li><code>[&#39;match&#39;, input, match1, output1, ...matchN, outputN, fallback]</code> compares the <code>input</code> value against all
 provided <code>matchX</code> values, returning the output associated with the first valid match. If no match is found,
 returns the <code>fallback</code> value.
 <code>input</code> and <code>matchX</code> values must all be of the same type, and can be <code>number</code> or <code>string</code>. <code>outputX</code> and
-<code>fallback</code> values must be of the same type, and can be of any kind.</p>
-</li>
-<li><p><code>[&#39;interpolate&#39;, interpolation, input, stop1, output1, ...stopN, outputN]</code> returns a value by interpolating between
+<code>fallback</code> values must be of the same type, and can be of any kind.</li>
+<li><code>[&#39;interpolate&#39;, interpolation, input, stop1, output1, ...stopN, outputN]</code> returns a value by interpolating between
 pairs of inputs and outputs; <code>interpolation</code> can either be <code>[&#39;linear&#39;]</code> or <code>[&#39;exponential&#39;, base]</code> where <code>base</code> is
 the rate of increase from stop A to stop B (i.e. power to which the interpolation ratio is raised); a value
 of 1 is equivalent to <code>[&#39;linear&#39;]</code>.
 <code>input</code> and <code>stopX</code> values must all be of type <code>number</code>. <code>outputX</code> values can be <code>number</code> or <code>color</code> values.
 Note: <code>input</code> will be clamped between <code>stop1</code> and <code>stopN</code>, meaning that all output values will be comprised
-between <code>output1</code> and <code>outputN</code>.</p>
+between <code>output1</code> and <code>outputN</code>.</li>
+</ul>
 </li>
 <li><p>Logical operators:</p>
 <ul>
@@ -313,21 +309,22 @@ between <code>output1</code> and <code>outputN</code>.</p>
 </ul>
 </li>
 <li><p>Conversion operators:</p>
-</li>
-<li><p><code>[&#39;array&#39;, value1, ...valueN]</code> creates a numerical array from <code>number</code> values; please note that the amount of</p>
-</li>
-</ul>
-<pre><code> values can currently only be 2, 3 or 4.
-</code></pre>
 <ul>
+<li><code>[&#39;array&#39;, value1, ...valueN]</code> creates a numerical array from <code>number</code> values; please note that the amount of
+values can currently only be 2, 3 or 4.</li>
 <li><code>[&#39;color&#39;, red, green, blue, alpha]</code> creates a <code>color</code> value from <code>number</code> values; the <code>alpha</code> parameter is
 optional; if not specified, it will be set to 1.
 Note: <code>red</code>, <code>green</code> and <code>blue</code> components must be values between 0 and 255; <code>alpha</code> between 0 and 1.
  Values can either be literals or another operator, as they will be evaluated recursively.
  Literal values can be of the following types:</li>
-<li><code>boolean</code></li>
-<li><code>number</code></li>
-<li><code>string</code></li>
+</ul>
+</li>
+<li><p><code>boolean</code></p>
+</li>
+<li><p><code>number</code></p>
+</li>
+<li><p><code>string</code></p>
+</li>
 </ul>
 </div>
         </div>

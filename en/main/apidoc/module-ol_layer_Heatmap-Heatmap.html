@@ -3255,6 +3255,7 @@
             <div class="member-list" data-type="typedefs">
                 <span class="subtitle">Typedefs</span>
                 <ul>
+                    <li data-name="backgroundcolor"><a href="module-ol_layer_Base.html#~BackgroundColor">BackgroundColor</a>
                     <li data-name="baselayerobjecteventtypes"><a href="module-ol_layer_Base.html#~BaseLayerObjectEventTypes">BaseLayerObjectEventTypes</a>
                     <li data-name="options"><a href="module-ol_layer_Base.html#~Options">Options</a>
                 </ul>
@@ -3827,6 +3828,7 @@
                     <li data-name="changed"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#dispatchEvent">dispatchEvent</a>
                     <li data-name="get"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#get">get</a>
+                    <li data-name="getbackground"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getBackground">getBackground</a>
                     <li data-name="getextent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getExtent">getExtent</a>
                     <li data-name="getfeatures"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getFeatures">getFeatures</a>
                     <li data-name="getkeys"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getKeys">getKeys</a>
@@ -3847,6 +3849,7 @@
                     <li data-name="on"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#on">on</a>
                     <li data-name="once"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#once">once</a>
                     <li data-name="set"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#set">set</a>
+                    <li data-name="setbackground"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setBackground">setBackground</a>
                     <li data-name="setextent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setExtent">setExtent</a>
                     <li data-name="setmap"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setMap">setMap</a>
                     <li data-name="setmaxresolution"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setMaxResolution">setMaxResolution</a>
@@ -4105,6 +4108,7 @@
                     <li data-name="changed"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#dispatchEvent">dispatchEvent</a>
                     <li data-name="get"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#get">get</a>
+                    <li data-name="getbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getBackground">getBackground</a>
                     <li data-name="getextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getExtent">getExtent</a>
                     <li data-name="getfeatures"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getFeatures">getFeatures</a>
                     <li data-name="getkeys"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getKeys">getKeys</a>
@@ -4125,6 +4129,7 @@
                     <li data-name="on"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#on">on</a>
                     <li data-name="once"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#once">once</a>
                     <li data-name="set"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#set">set</a>
+                    <li data-name="setbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setBackground">setBackground</a>
                     <li data-name="setextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setExtent">setExtent</a>
                     <li data-name="setmap"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMap">setMap</a>
                     <li data-name="setmaxresolution"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMaxResolution">setMaxResolution</a>
@@ -7411,7 +7416,6 @@
                     <li data-name="createtexture"><a href="module-ol_webgl_Helper-WebGLHelper.html#createTexture">createTexture</a>
                     <li data-name="drawelements"><a href="module-ol_webgl_Helper-WebGLHelper.html#drawElements">drawElements</a>
                     <li data-name="enableattributes"><a href="module-ol_webgl_Helper-WebGLHelper.html#enableAttributes">enableAttributes</a>
-                    <li data-name="finalizedraw"><a href="module-ol_webgl_Helper-WebGLHelper.html#finalizeDraw">finalizeDraw</a>
                     <li data-name="flushbufferdata"><a href="module-ol_webgl_Helper-WebGLHelper.html#flushBufferData">flushBufferData</a>
                     <li data-name="getattributelocation"><a href="module-ol_webgl_Helper-WebGLHelper.html#getAttributeLocation">getAttributeLocation</a>
                     <li data-name="getcanvas"><a href="module-ol_webgl_Helper-WebGLHelper.html#getCanvas">getCanvas</a>
@@ -8226,8 +8230,9 @@ should range from 0 to 1 (and values outside will be clamped to that range).</p>
             
 
              -
-            Triggered after all layers are rendered.
-The event object will not have a context set.
+            Triggered after layers are composed.  When dispatched by the map, the event object will not have
+a context set.  When dispatched by a layer, the event object will have a context set.  Only
+WebGL layers currently dispatch this event.
             
         </li>
     
@@ -8251,8 +8256,9 @@ The event object will not have a context set.
             
 
              -
-            Triggered before layers are rendered.
-The event object will not have a context set.
+            Triggered before layers are composed.  When dispatched by the map, the event object will not have
+a context set.  When dispatched by a layer, the event object will have a context set.  Only
+WebGL layers currently dispatch this event.
             
         </li>
     
@@ -9024,7 +9030,7 @@ Blur size in pixels.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L183">line 183</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L206">line 206</a>
         </div>
         
     </div>
@@ -9117,7 +9123,7 @@ The layer extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L165">line 165</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L167">line 167</a>
         </div>
         
     </div>
@@ -9442,7 +9448,7 @@ List of property names.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L195">line 195</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L218">line 218</a>
         </div>
         
     </div>
@@ -9534,7 +9540,7 @@ The maximum resolution of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L225">line 225</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L248">line 248</a>
         </div>
         
     </div>
@@ -9626,7 +9632,7 @@ The maximum zoom level of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L205">line 205</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L228">line 228</a>
         </div>
         
     </div>
@@ -9718,7 +9724,7 @@ The minimum resolution of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L215">line 215</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L238">line 238</a>
         </div>
         
     </div>
@@ -9810,7 +9816,7 @@ The minimum zoom level of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L235">line 235</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L258">line 258</a>
         </div>
         
     </div>
@@ -10269,7 +10275,7 @@ The layer source (or <code>null</code> if not yet set).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L192">line 192</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L194">line 194</a>
         </div>
         
     </div>
@@ -10362,7 +10368,7 @@ Layer style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L201">line 201</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L203">line 203</a>
         </div>
         
     </div>
@@ -10454,7 +10460,7 @@ Layer style function.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L253">line 253</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L276">line 276</a>
         </div>
         
     </div>
@@ -10546,7 +10552,7 @@ The visibility of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L264">line 264</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L287">line 287</a>
         </div>
         
     </div>
@@ -11277,7 +11283,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L275">line 275</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L307">line 307</a>
         </div>
         
     </div>
@@ -11669,7 +11675,7 @@ use <code>#setMap(null)</code>.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L285">line 285</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L317">line 317</a>
         </div>
         
     </div>
@@ -11797,7 +11803,7 @@ use <code>#setMap(null)</code>.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L307">line 307</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L339">line 339</a>
         </div>
         
     </div>
@@ -11927,7 +11933,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L295">line 295</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L327">line 327</a>
         </div>
         
     </div>
@@ -12055,7 +12061,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L319">line 319</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L351">line 351</a>
         </div>
         
     </div>
@@ -12185,7 +12191,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L329">line 329</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L361">line 361</a>
         </div>
         
     </div>
@@ -12721,7 +12727,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L250">line 250</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L252">line 252</a>
         </div>
         
     </div>
@@ -12857,7 +12863,7 @@ so only features that have their own styles will be rendered in the layer. Call
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L340">line 340</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L372">line 372</a>
         </div>
         
     </div>
@@ -12985,7 +12991,7 @@ so only features that have their own styles will be rendered in the layer. Call
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L351">line 351</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L383">line 383</a>
         </div>
         
     </div>

@@ -3255,6 +3255,7 @@
             <div class="member-list" data-type="typedefs">
                 <span class="subtitle">Typedefs</span>
                 <ul>
+                    <li data-name="backgroundcolor"><a href="module-ol_layer_Base.html#~BackgroundColor">BackgroundColor</a>
                     <li data-name="baselayerobjecteventtypes"><a href="module-ol_layer_Base.html#~BaseLayerObjectEventTypes">BaseLayerObjectEventTypes</a>
                     <li data-name="options"><a href="module-ol_layer_Base.html#~Options">Options</a>
                 </ul>
@@ -3827,6 +3828,7 @@
                     <li data-name="changed"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#dispatchEvent">dispatchEvent</a>
                     <li data-name="get"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#get">get</a>
+                    <li data-name="getbackground"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getBackground">getBackground</a>
                     <li data-name="getextent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getExtent">getExtent</a>
                     <li data-name="getfeatures"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getFeatures">getFeatures</a>
                     <li data-name="getkeys"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getKeys">getKeys</a>
@@ -3847,6 +3849,7 @@
                     <li data-name="on"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#on">on</a>
                     <li data-name="once"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#once">once</a>
                     <li data-name="set"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#set">set</a>
+                    <li data-name="setbackground"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setBackground">setBackground</a>
                     <li data-name="setextent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setExtent">setExtent</a>
                     <li data-name="setmap"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setMap">setMap</a>
                     <li data-name="setmaxresolution"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setMaxResolution">setMaxResolution</a>
@@ -4105,6 +4108,7 @@
                     <li data-name="changed"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#dispatchEvent">dispatchEvent</a>
                     <li data-name="get"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#get">get</a>
+                    <li data-name="getbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getBackground">getBackground</a>
                     <li data-name="getextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getExtent">getExtent</a>
                     <li data-name="getfeatures"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getFeatures">getFeatures</a>
                     <li data-name="getkeys"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getKeys">getKeys</a>
@@ -4125,6 +4129,7 @@
                     <li data-name="on"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#on">on</a>
                     <li data-name="once"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#once">once</a>
                     <li data-name="set"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#set">set</a>
+                    <li data-name="setbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setBackground">setBackground</a>
                     <li data-name="setextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setExtent">setExtent</a>
                     <li data-name="setmap"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMap">setMap</a>
                     <li data-name="setmaxresolution"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMaxResolution">setMaxResolution</a>
@@ -7411,7 +7416,6 @@
                     <li data-name="createtexture"><a href="module-ol_webgl_Helper-WebGLHelper.html#createTexture">createTexture</a>
                     <li data-name="drawelements"><a href="module-ol_webgl_Helper-WebGLHelper.html#drawElements">drawElements</a>
                     <li data-name="enableattributes"><a href="module-ol_webgl_Helper-WebGLHelper.html#enableAttributes">enableAttributes</a>
-                    <li data-name="finalizedraw"><a href="module-ol_webgl_Helper-WebGLHelper.html#finalizeDraw">finalizeDraw</a>
                     <li data-name="flushbufferdata"><a href="module-ol_webgl_Helper-WebGLHelper.html#flushBufferData">flushBufferData</a>
                     <li data-name="getattributelocation"><a href="module-ol_webgl_Helper-WebGLHelper.html#getAttributeLocation">getAttributeLocation</a>
                     <li data-name="getcanvas"><a href="module-ol_webgl_Helper-WebGLHelper.html#getCanvas">getCanvas</a>
@@ -7604,6 +7608,86 @@
         <h3 class="subsection-title">Type Definitions</h3>
 
         <dl>
+                
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="~BackgroundColor">
+        </div>
+        <h4 class="name">
+            BackgroundColor<span class="signature">()</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L11">line 11</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>A css color, or a function called with a view resolution returning a css color.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
                 
 <dt class="">
     <div class="nameContainer">
@@ -8023,6 +8107,42 @@ visible.</p></td>
             
             <td class="description last"><p>The maximum view zoom level (inclusive) at which this layer will
 be visible.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>background</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_layer_Base.html#~BackgroundColor">module:ol/layer/Base~BackgroundColor</a></span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                </td>
+            
+            
+            <td class="description last"><p>Background color for the layer. If not specified, no background
+will be rendered.</p></td>
         </tr>
 	
 	

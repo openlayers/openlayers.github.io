@@ -3255,6 +3255,7 @@
             <div class="member-list" data-type="typedefs">
                 <span class="subtitle">Typedefs</span>
                 <ul>
+                    <li data-name="backgroundcolor"><a href="module-ol_layer_Base.html#~BackgroundColor">BackgroundColor</a>
                     <li data-name="baselayerobjecteventtypes"><a href="module-ol_layer_Base.html#~BaseLayerObjectEventTypes">BaseLayerObjectEventTypes</a>
                     <li data-name="options"><a href="module-ol_layer_Base.html#~Options">Options</a>
                 </ul>
@@ -3827,6 +3828,7 @@
                     <li data-name="changed"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#dispatchEvent">dispatchEvent</a>
                     <li data-name="get"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#get">get</a>
+                    <li data-name="getbackground"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getBackground">getBackground</a>
                     <li data-name="getextent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getExtent">getExtent</a>
                     <li data-name="getfeatures"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getFeatures">getFeatures</a>
                     <li data-name="getkeys"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getKeys">getKeys</a>
@@ -3847,6 +3849,7 @@
                     <li data-name="on"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#on">on</a>
                     <li data-name="once"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#once">once</a>
                     <li data-name="set"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#set">set</a>
+                    <li data-name="setbackground"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setBackground">setBackground</a>
                     <li data-name="setextent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setExtent">setExtent</a>
                     <li data-name="setmap"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setMap">setMap</a>
                     <li data-name="setmaxresolution"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setMaxResolution">setMaxResolution</a>
@@ -4105,6 +4108,7 @@
                     <li data-name="changed"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#dispatchEvent">dispatchEvent</a>
                     <li data-name="get"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#get">get</a>
+                    <li data-name="getbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getBackground">getBackground</a>
                     <li data-name="getextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getExtent">getExtent</a>
                     <li data-name="getfeatures"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getFeatures">getFeatures</a>
                     <li data-name="getkeys"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getKeys">getKeys</a>
@@ -4125,6 +4129,7 @@
                     <li data-name="on"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#on">on</a>
                     <li data-name="once"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#once">once</a>
                     <li data-name="set"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#set">set</a>
+                    <li data-name="setbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setBackground">setBackground</a>
                     <li data-name="setextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setExtent">setExtent</a>
                     <li data-name="setmap"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMap">setMap</a>
                     <li data-name="setmaxresolution"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMaxResolution">setMaxResolution</a>
@@ -7411,7 +7416,6 @@
                     <li data-name="createtexture"><a href="module-ol_webgl_Helper-WebGLHelper.html#createTexture">createTexture</a>
                     <li data-name="drawelements"><a href="module-ol_webgl_Helper-WebGLHelper.html#drawElements">drawElements</a>
                     <li data-name="enableattributes"><a href="module-ol_webgl_Helper-WebGLHelper.html#enableAttributes">enableAttributes</a>
-                    <li data-name="finalizedraw"><a href="module-ol_webgl_Helper-WebGLHelper.html#finalizeDraw">finalizeDraw</a>
                     <li data-name="flushbufferdata"><a href="module-ol_webgl_Helper-WebGLHelper.html#flushBufferData">flushBufferData</a>
                     <li data-name="getattributelocation"><a href="module-ol_webgl_Helper-WebGLHelper.html#getAttributeLocation">getAttributeLocation</a>
                     <li data-name="getcanvas"><a href="module-ol_webgl_Helper-WebGLHelper.html#getCanvas">getCanvas</a>
@@ -8013,7 +8017,7 @@ the cache.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js">webgl/Helper.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L1045">line 1045</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L1055">line 1055</a>
         </div>
         
     </div>
@@ -8358,7 +8362,7 @@ The generated texture
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js">webgl/Helper.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L1003">line 1003</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L1013">line 1013</a>
         </div>
         
     </div>
@@ -8422,619 +8426,6 @@ size/type/order of attributes will most likely break the rendering and throw a W
             <td  class="description last">
                 
                 <p>Ordered list of attributes to read from the buffer</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-            
-<dt class="">
-    
-    <div class="nameContainer">
-        <div class="anchor" id="finalizeDraw">
-        </div>
-        <h4 class="name">
-            finalizeDraw<span class="signature">(frameState)</span>
-            
-            
-
-        </h4>
-        
-        <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js">webgl/Helper.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L642">line 642</a>
-        </div>
-        
-    </div>
-    
-    
-</dt>
-<dd class="">
-
-
-
-    
-    <div class="description">
-        <p>Apply the successive post process passes which will eventually render to the actual canvas.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>frameState</code></td>
-            
-            
-            
-
-            <td colspan=2 class="description last">
-                
-                <p>current frame state</p>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>pixelRatio</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>The pixel ratio of the frame.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>time</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>The time when rendering of the frame was requested.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>viewState</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_View.html#~State">module:ol/View~State</a></span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>The state of the current view.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>animate</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>Animate.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>coordinateToPixelTransform</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_transform.html#~Transform">module:ol/transform~Transform</a></span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>CoordinateToPixelTransform.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>declutterTree</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">module:rbush</span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>DeclutterTree.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>extent</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">null</span>
-|
-
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>Extent.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>nextExtent</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
-
- | undefined
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>Next extent during an animation series.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>index</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>Index.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>layerStatesArray</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="module-ol_layer_Layer.html#~State">module:ol/layer/Layer~State</a>></span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>LayerStatesArray.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>layerIndex</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>LayerIndex.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>pixelToCoordinateTransform</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_transform.html#~Transform">module:ol/transform~Transform</a></span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>PixelToCoordinateTransform.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>postRenderFunctions</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="module-ol_PluggableMap.html#~PostRenderFunction">module:ol/PluggableMap~PostRenderFunction</a>></span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>PostRenderFunctions.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>size</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_size.html#~Size">module:ol/size~Size</a></span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>Size.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>tileQueue</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">module:ol/TileQueue~TileQueue</span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>TileQueue.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>usedTiles</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, Object.&lt;string, boolean>></span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>UsedTiles.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>viewHints</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>ViewHints.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>wantedTiles</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object.&lt;string, Object.&lt;string, boolean>></span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>WantedTiles.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>mapId</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>The id of the map.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
         </tr>
 	
 	
@@ -9226,7 +8617,7 @@ new data to be rendered</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js">webgl/Helper.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L907">line 907</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L917">line 917</a>
         </div>
         
     </div>
@@ -9361,7 +8752,7 @@ attribLocation
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js">webgl/Helper.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L656">line 656</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L666">line 666</a>
         </div>
         
     </div>
@@ -9447,7 +8838,7 @@ Canvas.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js">webgl/Helper.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L665">line 665</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L675">line 675</a>
         </div>
         
     </div>
@@ -9537,7 +8928,7 @@ The rendering context.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js">webgl/Helper.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L841">line 841</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L851">line 851</a>
         </div>
         
     </div>
@@ -9697,7 +9088,7 @@ Program
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js">webgl/Helper.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L891">line 891</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L901">line 901</a>
         </div>
         
     </div>
@@ -9832,7 +9223,7 @@ uniformLocation
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js">webgl/Helper.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L925">line 925</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L935">line 935</a>
         </div>
         
     </div>
@@ -10398,6 +9789,31 @@ The resulting transform can be used to convert world space coordinates to view c
             <td  class="description last">
                 
                 <p>The id of the map.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>frameState.renderTargets</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, boolean></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Identifiers of previously rendered elements.</p></td>
         </tr>
 	
 	
@@ -11041,6 +10457,31 @@ subsequent draw calls.</p>
         </tr>
 	
 	
+	
+        <tr class="">
+            
+                <td class="name"><code>frameState.renderTargets</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, boolean></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Identifiers of previously rendered elements.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table>
     
@@ -11102,7 +10543,7 @@ subsequent draw calls.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js">webgl/Helper.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L951">line 951</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L961">line 961</a>
         </div>
         
     </div>
@@ -11253,7 +10694,7 @@ subsequent draw calls.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js">webgl/Helper.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L961">line 961</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L971">line 971</a>
         </div>
         
     </div>
@@ -11404,7 +10845,7 @@ subsequent draw calls.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js">webgl/Helper.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L804">line 804</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/Helper.js#L814">line 814</a>
         </div>
         
     </div>

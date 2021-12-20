@@ -3255,6 +3255,7 @@
             <div class="member-list" data-type="typedefs">
                 <span class="subtitle">Typedefs</span>
                 <ul>
+                    <li data-name="backgroundcolor"><a href="module-ol_layer_Base.html#~BackgroundColor">BackgroundColor</a>
                     <li data-name="baselayerobjecteventtypes"><a href="module-ol_layer_Base.html#~BaseLayerObjectEventTypes">BaseLayerObjectEventTypes</a>
                     <li data-name="options"><a href="module-ol_layer_Base.html#~Options">Options</a>
                 </ul>
@@ -3827,6 +3828,7 @@
                     <li data-name="changed"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#dispatchEvent">dispatchEvent</a>
                     <li data-name="get"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#get">get</a>
+                    <li data-name="getbackground"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getBackground">getBackground</a>
                     <li data-name="getextent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getExtent">getExtent</a>
                     <li data-name="getfeatures"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getFeatures">getFeatures</a>
                     <li data-name="getkeys"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getKeys">getKeys</a>
@@ -3847,6 +3849,7 @@
                     <li data-name="on"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#on">on</a>
                     <li data-name="once"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#once">once</a>
                     <li data-name="set"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#set">set</a>
+                    <li data-name="setbackground"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setBackground">setBackground</a>
                     <li data-name="setextent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setExtent">setExtent</a>
                     <li data-name="setmap"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setMap">setMap</a>
                     <li data-name="setmaxresolution"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setMaxResolution">setMaxResolution</a>
@@ -4105,6 +4108,7 @@
                     <li data-name="changed"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#dispatchEvent">dispatchEvent</a>
                     <li data-name="get"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#get">get</a>
+                    <li data-name="getbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getBackground">getBackground</a>
                     <li data-name="getextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getExtent">getExtent</a>
                     <li data-name="getfeatures"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getFeatures">getFeatures</a>
                     <li data-name="getkeys"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getKeys">getKeys</a>
@@ -4125,6 +4129,7 @@
                     <li data-name="on"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#on">on</a>
                     <li data-name="once"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#once">once</a>
                     <li data-name="set"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#set">set</a>
+                    <li data-name="setbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setBackground">setBackground</a>
                     <li data-name="setextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setExtent">setExtent</a>
                     <li data-name="setmap"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMap">setMap</a>
                     <li data-name="setmaxresolution"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMaxResolution">setMaxResolution</a>
@@ -7411,7 +7416,6 @@
                     <li data-name="createtexture"><a href="module-ol_webgl_Helper-WebGLHelper.html#createTexture">createTexture</a>
                     <li data-name="drawelements"><a href="module-ol_webgl_Helper-WebGLHelper.html#drawElements">drawElements</a>
                     <li data-name="enableattributes"><a href="module-ol_webgl_Helper-WebGLHelper.html#enableAttributes">enableAttributes</a>
-                    <li data-name="finalizedraw"><a href="module-ol_webgl_Helper-WebGLHelper.html#finalizeDraw">finalizeDraw</a>
                     <li data-name="flushbufferdata"><a href="module-ol_webgl_Helper-WebGLHelper.html#flushBufferData">flushBufferData</a>
                     <li data-name="getattributelocation"><a href="module-ol_webgl_Helper-WebGLHelper.html#getAttributeLocation">getAttributeLocation</a>
                     <li data-name="getcanvas"><a href="module-ol_webgl_Helper-WebGLHelper.html#getCanvas">getCanvas</a>
@@ -7707,25 +7711,23 @@ Note: those will be taken from the attributes provided to the renderer</li>
 </ul>
 </li>
 <li><p>Transform operators:</p>
-</li>
-<li><p><code>['case', condition1, output1, ...conditionN, outputN, fallback]</code> selects the first output whose corresponding</p>
-</li>
-</ul>
-<pre class="prettyprint source"><code>condition evaluates to `true`. If no match is found, returns the `fallback` value.
-All conditions should be `boolean`, output and fallback can be any kind.</code></pre><ul>
-<li><p><code>['match', input, match1, output1, ...matchN, outputN, fallback]</code> compares the <code>input</code> value against all
+<ul>
+<li><code>['case', condition1, output1, ...conditionN, outputN, fallback]</code> selects the first output whose corresponding
+condition evaluates to <code>true</code>. If no match is found, returns the <code>fallback</code> value.
+All conditions should be <code>boolean</code>, output and fallback can be any kind.</li>
+<li><code>['match', input, match1, output1, ...matchN, outputN, fallback]</code> compares the <code>input</code> value against all
 provided <code>matchX</code> values, returning the output associated with the first valid match. If no match is found,
 returns the <code>fallback</code> value.
 <code>input</code> and <code>matchX</code> values must all be of the same type, and can be <code>number</code> or <code>string</code>. <code>outputX</code> and
-<code>fallback</code> values must be of the same type, and can be of any kind.</p>
-</li>
-<li><p><code>['interpolate', interpolation, input, stop1, output1, ...stopN, outputN]</code> returns a value by interpolating between
+<code>fallback</code> values must be of the same type, and can be of any kind.</li>
+<li><code>['interpolate', interpolation, input, stop1, output1, ...stopN, outputN]</code> returns a value by interpolating between
 pairs of inputs and outputs; <code>interpolation</code> can either be <code>['linear']</code> or <code>['exponential', base]</code> where <code>base</code> is
 the rate of increase from stop A to stop B (i.e. power to which the interpolation ratio is raised); a value
 of 1 is equivalent to <code>['linear']</code>.
 <code>input</code> and <code>stopX</code> values must all be of type <code>number</code>. <code>outputX</code> values can be <code>number</code> or <code>color</code> values.
 Note: <code>input</code> will be clamped between <code>stop1</code> and <code>stopN</code>, meaning that all output values will be comprised
-between <code>output1</code> and <code>outputN</code>.</p>
+between <code>output1</code> and <code>outputN</code>.</li>
+</ul>
 </li>
 <li><p>Logical operators:</p>
 <ul>
@@ -7743,14 +7745,14 @@ between <code>output1</code> and <code>outputN</code>.</p>
 </ul>
 </li>
 <li><p>Conversion operators:</p>
-</li>
-<li><p><code>['array', value1, ...valueN]</code> creates a numerical array from <code>number</code> values; please note that the amount of</p>
-</li>
-</ul>
-<pre class="prettyprint source"><code>values can currently only be 2, 3 or 4.</code></pre><ul>
+<ul>
+<li><code>['array', value1, ...valueN]</code> creates a numerical array from <code>number</code> values; please note that the amount of
+values can currently only be 2, 3 or 4.</li>
 <li><code>['color', red, green, blue, alpha]</code> creates a <code>color</code> value from <code>number</code> values; the <code>alpha</code> parameter is
 optional; if not specified, it will be set to 1.
 Note: <code>red</code>, <code>green</code> and <code>blue</code> components must be values between 0 and 255; <code>alpha</code> between 0 and 1.</li>
+</ul>
+</li>
 </ul>
 <p>Values can either be literals or another operator, as they will be evaluated recursively.
 Literal values can be of the following types:</p>

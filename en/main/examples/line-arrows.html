@@ -286,6 +286,7 @@ import View from &#x27;ol/View&#x27;;
 import {Icon, Stroke, Style} from &#x27;ol/style&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {get} from &#x27;ol/proj&#x27;;
 
 const raster &#x3D; new TileLayer({
   source: new OSM(),
@@ -330,12 +331,19 @@ const vector &#x3D; new VectorLayer({
   style: styleFunction,
 });
 
+// Limit multi-world panning to one world east and west of the real world.
+// Geometry coordinates have to be within that range.
+const extent &#x3D; get(&#x27;EPSG:3857&#x27;).getExtent().slice();
+extent[0] +&#x3D; extent[0];
+extent[2] +&#x3D; extent[2];
+
 const map &#x3D; new Map({
   layers: [raster, vector],
   target: &#x27;map&#x27;,
   view: new View({
     center: [-11000000, 4600000],
     zoom: 4,
+    extent,
   }),
 });
 

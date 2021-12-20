@@ -271,8 +271,8 @@ const layer &#x3D; new TileLayer({
   source: new XYZ({
     url:
       &#x27;https://api.maptiler.com/tiles/terrain-rgb/{z}/{x}/{y}.png?key&#x3D;&#x27; + key,
-    maxZoom: 10,
     tileSize: 512,
+    maxZoom: 12,
     crossOrigin: &#x27;anonymous&#x27;,
   }),
   style: {
@@ -298,6 +298,7 @@ const map &#x3D; new Map({
         attributions: attributions,
         crossOrigin: &#x27;anonymous&#x27;,
         tileSize: 512,
+        maxZoom: 22,
       }),
     }),
     layer,

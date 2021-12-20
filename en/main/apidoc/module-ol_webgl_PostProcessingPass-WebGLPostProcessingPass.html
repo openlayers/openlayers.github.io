@@ -3255,6 +3255,7 @@
             <div class="member-list" data-type="typedefs">
                 <span class="subtitle">Typedefs</span>
                 <ul>
+                    <li data-name="backgroundcolor"><a href="module-ol_layer_Base.html#~BackgroundColor">BackgroundColor</a>
                     <li data-name="baselayerobjecteventtypes"><a href="module-ol_layer_Base.html#~BaseLayerObjectEventTypes">BaseLayerObjectEventTypes</a>
                     <li data-name="options"><a href="module-ol_layer_Base.html#~Options">Options</a>
                 </ul>
@@ -3827,6 +3828,7 @@
                     <li data-name="changed"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#dispatchEvent">dispatchEvent</a>
                     <li data-name="get"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#get">get</a>
+                    <li data-name="getbackground"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getBackground">getBackground</a>
                     <li data-name="getextent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getExtent">getExtent</a>
                     <li data-name="getfeatures"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getFeatures">getFeatures</a>
                     <li data-name="getkeys"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getKeys">getKeys</a>
@@ -3847,6 +3849,7 @@
                     <li data-name="on"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#on">on</a>
                     <li data-name="once"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#once">once</a>
                     <li data-name="set"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#set">set</a>
+                    <li data-name="setbackground"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setBackground">setBackground</a>
                     <li data-name="setextent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setExtent">setExtent</a>
                     <li data-name="setmap"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setMap">setMap</a>
                     <li data-name="setmaxresolution"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setMaxResolution">setMaxResolution</a>
@@ -4105,6 +4108,7 @@
                     <li data-name="changed"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#dispatchEvent">dispatchEvent</a>
                     <li data-name="get"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#get">get</a>
+                    <li data-name="getbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getBackground">getBackground</a>
                     <li data-name="getextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getExtent">getExtent</a>
                     <li data-name="getfeatures"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getFeatures">getFeatures</a>
                     <li data-name="getkeys"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getKeys">getKeys</a>
@@ -4125,6 +4129,7 @@
                     <li data-name="on"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#on">on</a>
                     <li data-name="once"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#once">once</a>
                     <li data-name="set"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#set">set</a>
+                    <li data-name="setbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setBackground">setBackground</a>
                     <li data-name="setextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setExtent">setExtent</a>
                     <li data-name="setmap"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMap">setMap</a>
                     <li data-name="setmaxresolution"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMaxResolution">setMaxResolution</a>
@@ -7411,7 +7416,6 @@
                     <li data-name="createtexture"><a href="module-ol_webgl_Helper-WebGLHelper.html#createTexture">createTexture</a>
                     <li data-name="drawelements"><a href="module-ol_webgl_Helper-WebGLHelper.html#drawElements">drawElements</a>
                     <li data-name="enableattributes"><a href="module-ol_webgl_Helper-WebGLHelper.html#enableAttributes">enableAttributes</a>
-                    <li data-name="finalizedraw"><a href="module-ol_webgl_Helper-WebGLHelper.html#finalizeDraw">finalizeDraw</a>
                     <li data-name="flushbufferdata"><a href="module-ol_webgl_Helper-WebGLHelper.html#flushBufferData">flushBufferData</a>
                     <li data-name="getattributelocation"><a href="module-ol_webgl_Helper-WebGLHelper.html#getAttributeLocation">getAttributeLocation</a>
                     <li data-name="getcanvas"><a href="module-ol_webgl_Helper-WebGLHelper.html#getCanvas">getCanvas</a>
@@ -7598,7 +7602,7 @@ void main() {
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js">webgl/PostProcessingPass.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js#L101">line 101</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js#L103">line 103</a>
         </div>
         
     </div>
@@ -7870,7 +7874,7 @@ the main canvas that will then be sampled up (useful for saving resource on blur
         <div class="anchor" id="apply">
         </div>
         <h4 class="name">
-            apply<span class="signature">(frameState, <span class="optional">nextPass</span>)</span>
+            apply<span class="signature">(frameState, <span class="optional">nextPass</span>, <span class="optional">preCompose</span>, <span class="optional">postCompose</span>)</span>
             
             
 
@@ -7878,7 +7882,7 @@ the main canvas that will then be sampled up (useful for saving resource on blur
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js">webgl/PostProcessingPass.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js#L255">line 255</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js#L259">line 259</a>
         </div>
         
     </div>
@@ -7965,6 +7969,56 @@ the main canvas that will then be sampled up (useful for saving resource on blur
             <td  class="description last">
                 
                 <p>Next pass, optional</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>preCompose</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Called before composing.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>postCompose</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Called before composing.</p></td>
         </tr>
 	
 	
@@ -8446,6 +8500,31 @@ the main canvas that will then be sampled up (useful for saving resource on blur
         </tr>
 	
 	
+	
+        <tr class="">
+            
+                <td class="name"><code>frameState.renderTargets</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, boolean></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Identifiers of previously rendered elements.</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table>
     
@@ -8507,7 +8586,7 @@ the main canvas that will then be sampled up (useful for saving resource on blur
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js">webgl/PostProcessingPass.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js#L298">line 298</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js#L322">line 322</a>
         </div>
         
     </div>
@@ -8593,7 +8672,7 @@ Frame buffer
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js">webgl/PostProcessingPass.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js#L184">line 184</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js#L186">line 186</a>
         </div>
         
     </div>
@@ -8683,7 +8762,7 @@ The rendering context.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js">webgl/PostProcessingPass.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js#L195">line 195</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/webgl/PostProcessingPass.js#L197">line 197</a>
         </div>
         
     </div>
@@ -9228,6 +9307,31 @@ The last step to be initialized will be the one where the primitives are rendere
             <td  class="description last">
                 
                 <p>The id of the map.</p></td>
+        </tr>
+	
+	
+	
+        <tr class="">
+            
+                <td class="name"><code>renderTargets</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, boolean></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Identifiers of previously rendered elements.</p></td>
         </tr>
 	
 	

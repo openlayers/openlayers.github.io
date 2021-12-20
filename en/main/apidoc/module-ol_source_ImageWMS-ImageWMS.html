@@ -3255,6 +3255,7 @@
             <div class="member-list" data-type="typedefs">
                 <span class="subtitle">Typedefs</span>
                 <ul>
+                    <li data-name="backgroundcolor"><a href="module-ol_layer_Base.html#~BackgroundColor">BackgroundColor</a>
                     <li data-name="baselayerobjecteventtypes"><a href="module-ol_layer_Base.html#~BaseLayerObjectEventTypes">BaseLayerObjectEventTypes</a>
                     <li data-name="options"><a href="module-ol_layer_Base.html#~Options">Options</a>
                 </ul>
@@ -3827,6 +3828,7 @@
                     <li data-name="changed"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#dispatchEvent">dispatchEvent</a>
                     <li data-name="get"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#get">get</a>
+                    <li data-name="getbackground"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getBackground">getBackground</a>
                     <li data-name="getextent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getExtent">getExtent</a>
                     <li data-name="getfeatures"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getFeatures">getFeatures</a>
                     <li data-name="getkeys"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#getKeys">getKeys</a>
@@ -3847,6 +3849,7 @@
                     <li data-name="on"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#on">on</a>
                     <li data-name="once"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#once">once</a>
                     <li data-name="set"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#set">set</a>
+                    <li data-name="setbackground"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setBackground">setBackground</a>
                     <li data-name="setextent"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setExtent">setExtent</a>
                     <li data-name="setmap"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setMap">setMap</a>
                     <li data-name="setmaxresolution"><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html#setMaxResolution">setMaxResolution</a>
@@ -4105,6 +4108,7 @@
                     <li data-name="changed"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#changed">changed</a>
                     <li data-name="dispatchevent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#dispatchEvent">dispatchEvent</a>
                     <li data-name="get"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#get">get</a>
+                    <li data-name="getbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getBackground">getBackground</a>
                     <li data-name="getextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getExtent">getExtent</a>
                     <li data-name="getfeatures"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getFeatures">getFeatures</a>
                     <li data-name="getkeys"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getKeys">getKeys</a>
@@ -4125,6 +4129,7 @@
                     <li data-name="on"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#on">on</a>
                     <li data-name="once"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#once">once</a>
                     <li data-name="set"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#set">set</a>
+                    <li data-name="setbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setBackground">setBackground</a>
                     <li data-name="setextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setExtent">setExtent</a>
                     <li data-name="setmap"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMap">setMap</a>
                     <li data-name="setmaxresolution"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#setMaxResolution">setMaxResolution</a>
@@ -7411,7 +7416,6 @@
                     <li data-name="createtexture"><a href="module-ol_webgl_Helper-WebGLHelper.html#createTexture">createTexture</a>
                     <li data-name="drawelements"><a href="module-ol_webgl_Helper-WebGLHelper.html#drawElements">drawElements</a>
                     <li data-name="enableattributes"><a href="module-ol_webgl_Helper-WebGLHelper.html#enableAttributes">enableAttributes</a>
-                    <li data-name="finalizedraw"><a href="module-ol_webgl_Helper-WebGLHelper.html#finalizeDraw">finalizeDraw</a>
                     <li data-name="flushbufferdata"><a href="module-ol_webgl_Helper-WebGLHelper.html#flushBufferData">flushBufferData</a>
                     <li data-name="getattributelocation"><a href="module-ol_webgl_Helper-WebGLHelper.html#getAttributeLocation">getAttributeLocation</a>
                     <li data-name="getcanvas"><a href="module-ol_webgl_Helper-WebGLHelper.html#getCanvas">getCanvas</a>
@@ -7564,7 +7568,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js">source/ImageWMS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L63">line 63</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L70">line 70</a>
         </div>
         
     </div>
@@ -8639,7 +8643,7 @@ Attributions are collapsible.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js">source/ImageWMS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L166">line 166</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L173">line 173</a>
         </div>
         
     </div>
@@ -8854,7 +8858,7 @@ GetFeatureInfo URL.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js">source/ImageWMS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L365">line 365</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L380">line 380</a>
         </div>
         
     </div>
@@ -9036,7 +9040,7 @@ List of property names.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js">source/ImageWMS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L228">line 228</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L235">line 235</a>
         </div>
         
     </div>
@@ -9202,7 +9206,7 @@ GetLegendGraphic URL.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js">source/ImageWMS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L268">line 268</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L275">line 275</a>
         </div>
         
     </div>
@@ -9662,7 +9666,7 @@ State.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js">source/ImageWMS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L430">line 430</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L445">line 445</a>
         </div>
         
     </div>
@@ -10480,7 +10484,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js">source/ImageWMS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L439">line 439</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L454">line 454</a>
         </div>
         
     </div>
@@ -10760,7 +10764,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js">source/ImageWMS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L450">line 450</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L465">line 465</a>
         </div>
         
     </div>
@@ -11198,7 +11202,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js">source/ImageWMS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L463">line 463</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/ImageWMS.js#L478">line 478</a>
         </div>
         
     </div>
