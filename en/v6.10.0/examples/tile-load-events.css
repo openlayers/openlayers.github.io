@@ -1,0 +1,15 @@
+.map {
+  background: #85ccf9;
+}
+.wrapper {
+  position: relative;
+}
+#progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 0;
+  box-shadow: 0px 0px 1px 2px rgb(255,204,0);
+  width: 0;
+  transition: width 250ms;
+}

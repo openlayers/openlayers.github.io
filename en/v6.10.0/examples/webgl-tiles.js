@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[98],{50521:function(e,n,r){var t=r(41376),u=r(79847),c=r(52139),s=r(54354);new t.Z({target:"map",layers:[new c.Z({source:new u.Z})],view:new s.ZP({center:[0,0],zoom:0})})}},function(e){var n=function(n){return e(e.s=n)};n(9877),n(50521)}]);
+//# sourceMappingURL=webgl-tiles.js.map
