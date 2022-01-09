@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2657],{73637:function(e,r,n){var s=n(41376),t=n(79847),a=n(42010),o=n(35673),c=n(54354),u=[new a.Z({source:new t.Z}),new a.Z({extent:[-13884991,2870341,-7455066,6338219],source:new o.Z({url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"topp:states",TILED:!0},serverType:"geoserver",transition:0})})];new s.Z({layers:u,target:"map",view:new c.ZP({center:[-10997148,4569099],zoom:4})})}},function(e){var r=function(r){return e(e.s=r)};r(9877),r(73637)}]);
+//# sourceMappingURL=wms-tiled.js.map
