@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[18],{261:function(e,r,a){"use strict";a.r(r);var s=a(3),o=a(2),n=a(5),t=a(75),w=a(125),p=a(6),c=[new n.a({source:new p.b}),new t.a({extent:[-13884991,2870341,-7455066,6338219],source:new w.a({url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"topp:states"},ratio:1,serverType:"geoserver"})})];new s.a({layers:c,target:"map",view:new o.a({center:[-10997148,4569099],zoom:4})})}},[[261,0]]]);
-//# sourceMappingURL=wms-image.js.map

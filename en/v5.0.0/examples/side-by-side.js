@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[53],{288:function(e,a,n){"use strict";n.r(a);var w=n(5),s=n(136),o=n(4),r=n(11),t=n(19);const c=new r.a({source:new t.b}),p=new o.a({center:[0,0],zoom:1});new w.a({target:"canvasMap",layers:[c],view:p}),new s.a({target:"webglMap",layers:[c],view:p})}},[[288,0]]]);
-//# sourceMappingURL=side-by-side.js.map

@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[165],{404:function(e,r,a){"use strict";a.r(r);var s=a(5),n=a(4),t=a(10),c=a(16);const w=[new t.d({source:new c.f}),new t.c({source:new c.d({ratio:1,params:{},url:"https://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Specialty/ESRI_StateCityHighway_USA/MapServer"})})];new s.a({layers:w,target:"map",view:new n.a({center:[-10997148,4569099],zoom:4})})}},[[404,0]]]);
-//# sourceMappingURL=arcgis-image.js.map

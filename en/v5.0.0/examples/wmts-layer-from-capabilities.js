@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[9],{245:function(e,t,n){"use strict";n.r(t);var a=n(5),c=n(4),o=n(137),r=n(11),w=n(19),i=n(98);const s=new o.a;let p;fetch("data/WMTSCapabilities.xml").then(function(e){return e.text()}).then(function(e){const t=s.read(e),n=Object(i.b)(t,{layer:"layer-7328",matrixSet:"EPSG:3857"});p=new a.a({layers:[new r.a({source:new w.b,opacity:.7}),new r.a({opacity:1,source:new i.a(n)})],target:"map",view:new c.a({center:[19412406.33,-5050500.21],zoom:5})})})}},[[245,0]]]);
-//# sourceMappingURL=wmts-layer-from-capabilities.js.map

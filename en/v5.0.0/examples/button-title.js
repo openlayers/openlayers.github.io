@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[159],{396:function(t,o,e){"use strict";e.r(o);var n=e(5),a=e(4),i=e(11),r=e(19);new n.a({layers:[new i.a({source:new r.b})],target:"map",view:new a.a({center:[-873e4,593e4],rotation:Math.PI/5,zoom:8})});$(".ol-zoom-in, .ol-zoom-out").tooltip({placement:"right"}),$(".ol-rotate-reset, .ol-attribution button[title]").tooltip({placement:"left"})}},[[396,0]]]);
-//# sourceMappingURL=button-title.js.map

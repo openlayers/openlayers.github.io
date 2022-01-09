@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[86],{321:function(n,e,t){"use strict";t.r(e);var o=t(5),i=t(4),c=t(11),a=t(19);const s=document.getElementById("map");function w(){const n=s.clientWidth;return Math.ceil(Math.LOG2E*Math.log(n/256))}const r=w(),m=new i.a({center:[0,0],minZoom:r,zoom:r});new o.a({layers:[new c.a({source:new a.b})],target:"map",view:m});window.addEventListener("resize",function(){const n=w();n!==m.getMinZoom()&&m.setMinZoom(n)})}},[[321,0]]]);
-//# sourceMappingURL=min-zoom.js.map

@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[95],{318:function(e,n,o){"use strict";o.r(n);var a=o(1),t=o(0),w=o(47),c=o(175),i=o(3),s=o(4);new a.a({interactions:Object(w.a)({pinchZoom:!1}).extend([new c.a({constrainResolution:!0})]),layers:[new i.a({source:new s.b})],target:"map",view:new t.a({center:[0,0],zoom:2})})}},[[318,0]]]);
-//# sourceMappingURL=pinch-zoom.js.map

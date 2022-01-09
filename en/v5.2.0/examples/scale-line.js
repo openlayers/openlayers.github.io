@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[109],{332:function(e,n,t){"use strict";t.r(n);var a=t(1),o=t(0),s=t(185),i=t(386),c=t(3),w=t(4),r=new s.a,u=(new a.a({controls:Object(i.a)({attributionOptions:{collapsible:!1}}).extend([r]),layers:[new c.a({source:new w.b})],target:"map",view:new o.a({center:[0,0],zoom:2})}),document.getElementById("units"));function onChange(){r.setUnits(u.value)}u.addEventListener("change",onChange),onChange()}},[[332,0]]]);
-//# sourceMappingURL=scale-line.js.map

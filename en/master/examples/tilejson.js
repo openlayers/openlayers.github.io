@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[144],{376:function(e,n,a){"use strict";a.r(n);var o=a(3),s=a(73),r=a(5),w=a(2);new o.a({layers:[new r.a({source:new s.a({url:"https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json",crossOrigin:"anonymous"})})],target:"map",view:new w.a({center:[0,0],zoom:2})})}},[[376,0]]]);
-//# sourceMappingURL=tilejson.js.map

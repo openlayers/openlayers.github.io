@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[79],{314:function(e,n,t){"use strict";t.r(n);var o=t(5),w=t(4),a=t(24),s=t(11),c=t(19);new o.a({controls:Object(a.h)({attributionOptions:{collapsible:!1}}).extend([new a.g({extent:[813079.7791264898,5929220.284081122,848966.9639063801,5936863.986909639]})]),layers:[new s.a({source:new c.b})],target:"map",view:new w.a({center:[0,0],zoom:2})})}},[[314,0]]]);
-//# sourceMappingURL=navigation-controls.js.map

@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[1],{237:function(n,e,a){"use strict";a.r(e);var o=a(5),w=a(4),r=a(24),t=a(11),c=a(19);function p(n){const e=new c.b,a=new t.a({source:e}),p=new o.a({layers:[a],target:n,view:new w.a({center:[0,0],zoom:2})}),s=new r.f;return p.addControl(s),p}p("map1"),p("map2"),p("map3")}},[[237,0]]]);
-//# sourceMappingURL=zoomslider.js.map

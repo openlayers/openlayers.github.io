@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[22],{258:function(n,t,e){"use strict";e.r(t);const o=new(e(206).a);fetch("data/ogcsample.xml").then(function(n){return n.text()}).then(function(n){const t=o.read(n);document.getElementById("log").innerText=JSON.stringify(t,null,2)})}},[[258,0]]]);
-//# sourceMappingURL=wms-capabilities.js.map

@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[143],{378:function(e,n,o){"use strict";o.r(n);var t=o(5),c=o(4),a=o(101),w=o(10),r=o(16);const u=new w.d({source:new r.f}),s=new r.n({wrapX:!1}),i=new w.e({source:s}),p=new t.a({layers:[u,i],target:"map",view:new c.a({center:[-11e6,46e5],zoom:4})}),d=document.getElementById("type");let l;function m(){"None"!==d.value&&(l=new a.c({source:s,type:d.value}),p.addInteraction(l))}d.onchange=function(){p.removeInteraction(l),m()},m()}},[[378,0]]]);
-//# sourceMappingURL=draw-features.js.map

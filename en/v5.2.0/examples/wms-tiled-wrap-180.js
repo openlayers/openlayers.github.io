@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[152],{371:function(e,n,r){"use strict";r.r(n);var a=r(1),s=r(0),o=r(3),w=r(4),c=r(66),p=[new o.a({source:new w.b}),new o.a({source:new c.a({url:"https://ahocevar.com/geoserver/ne/wms",params:{LAYERS:"ne:ne_10m_admin_0_countries",TILED:!0},serverType:"geoserver"})})];new a.a({layers:p,target:"map",view:new s.a({center:[0,0],zoom:1})})}},[[371,0]]]);
-//# sourceMappingURL=wms-tiled-wrap-180.js.map

@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[157],{394:function(e,n,o){"use strict";o.r(n);var t=o(5),i=o(4),c=o(24),r=o(11),w=o(7),a=o(16);const s=new a.f;new t.a({layers:[new r.a({source:s}),new r.a({source:new a.j({projection:"EPSG:3857",tileGrid:s.getTileGrid()})})],target:"map",controls:Object(c.h)({attributionOptions:{collapsible:!1}}),view:new i.a({center:Object(w.g)([-.1275,51.507222]),zoom:10})})}},[[394,0]]]);
-//# sourceMappingURL=canvas-tiles.js.map

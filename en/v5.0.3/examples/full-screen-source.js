@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[128],{364:function(e,n,w){"use strict";w.r(n);var a=w(3),o=w(2),c=w(243),r=w(221),s=w(5),t=w(6),p=new o.a({center:[-9101767,2822912],zoom:14});new a.a({controls:Object(c.a)().extend([new r.a({source:"fullscreen"})]),layers:[new s.a({source:new t.b})],target:"map",view:p})}},[[364,0]]]);
-//# sourceMappingURL=full-screen-source.js.map

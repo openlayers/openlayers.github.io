@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[39],{265:function(e,a,n){"use strict";n.r(a);var t=n(1),o=n(0),r=n(386),w=n(223),c=n(47),i=n(181),s=n(3),b=n(40);new t.a({controls:Object(r.a)().extend([new w.a]),interactions:Object(c.a)().extend([new i.a]),layers:[new s.a({source:new b.a({key:"As1HiMj1PvLPlqc_gtM7AqZfBL8ZL3VrjaS3zIb22Uvb9WKhuJObROC-qUpa81U5",imagerySet:"Aerial"})})],target:"map",view:new o.a({center:[-33519607,5616436],rotation:-Math.PI/8,zoom:8})})}},[[265,0]]]);
-//# sourceMappingURL=full-screen-drag-rotate-and-zoom.js.map
