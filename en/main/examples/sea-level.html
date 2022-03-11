@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -212,10 +212,6 @@ Go to
   This example uses a <code>ol/source/Raster</code> with
   <a href="https://blog.mapbox.com/styling-mapbox-terrain-rgb-c75d1cd71471">Mapbox Terrain-RGB tiles</a>
   to "flood" areas below the elevation shown on the sea level slider.
-</p> <p>
-  <code>ol/source/Raster</code> can take either a tile source or layer.
-  In this case a layer is used to allow disabling at the <code>prerender</code> event
-  of image smoothing which would change the precise elevation values set in the pixels.
 </p>
 </div>
         </div>
@@ -252,18 +248,14 @@ const attributions &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
-const elevation &#x3D; new TileLayer({
-  source: new XYZ({
-    url:
-      &#x27;https://api.maptiler.com/tiles/terrain-rgb/{z}/{x}/{y}.png?key&#x3D;&#x27; + key,
-    tileSize: 512,
-    maxZoom: 12,
-    crossOrigin: &#x27;&#x27;,
-  }),
-});
-elevation.on(&#x27;prerender&#x27;, function (evt) {
-  evt.context.imageSmoothingEnabled &#x3D; false;
-  evt.context.msImageSmoothingEnabled &#x3D; false;
+const elevation &#x3D; new XYZ({
+  // The RGB values in the source collectively represent elevation.
+  // Interpolation of individual colors would produce incorrect evelations and is disabled.
+  url: &#x27;https://api.maptiler.com/tiles/terrain-rgb/{z}/{x}/{y}.png?key&#x3D;&#x27; + key,
+  tileSize: 512,
+  maxZoom: 12,
+  crossOrigin: &#x27;&#x27;,
+  interpolate: false,
 });
 
 const raster &#x3D; new RasterSource({
@@ -329,7 +321,7 @@ function relocate(event) {
     &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;Sea Level&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"&gt;&lt;/script&gt;
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
@@ -376,7 +368,7 @@ function relocate(event) {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;sea-level&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.9.1-dev&quot;
+    &quot;ol&quot;: &quot;6.13.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0&quot;
@@ -415,7 +407,7 @@ function relocate(event) {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.9.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

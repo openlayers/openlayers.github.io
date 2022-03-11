@@ -71,8 +71,8 @@
     <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"></script>
     
-    <link rel="stylesheet" href="disable-image-smoothing.css">
-    <title>Disable Image Smoothing</title>
+    <link rel="stylesheet" href="interpolation.css">
+    <title>Interpolation</title>
   </head>
   <body>
 
@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -125,18 +125,18 @@
           <i class="fa fa-codepen fa-lg"></i> Edit
         </a>
         <div class="span12">
-          <h4 id="title">Disable Image Smoothing</h4>
+          <h4 id="title">Interpolation</h4>
           <p class="tags">
             <span class="badge-group">
               <a
-                href="./index.html?q=disableimagesmoothing" class="badge badge-info">disableimagesmoothing</a
+                href="./index.html?q=disableimageinterpolation" class="badge badge-info">disableimageinterpolation</a
               ><a
                 class="badge badge-info tag-modal-toggle text-white"
                 data-toggle="modal"
                 data-target="#tag-example-list"
-                data-title="disableimagesmoothing"
+                data-title="disableimageinterpolation"
                 data-content="
-                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./disable-image-smoothing.html&quot;&gt;Disable Image Smoothing&lt;/a&gt;"
+                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./interpolation.html&quot;&gt;Interpolation&lt;/a&gt;"
                 tabindex="0"
                 >1</a>
             </span>
@@ -150,9 +150,9 @@
                 data-title="xyz"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./xyz-esri-4326-512.html&quot;&gt;ArcGIS REST with 512x512 Tiles&lt;/a&gt;
-                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./disable-image-smoothing.html&quot;&gt;Disable Image Smoothing&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./full-screen.html&quot;&gt;Full Screen Control&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./full-screen-drag-rotate-and-zoom.html&quot;&gt;Full Screen Drag, Rotate, and Zoom&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./interpolation.html&quot;&gt;Interpolation&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./side-by-side.html&quot;&gt;Shared Views&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./xyz.html&quot;&gt;XYZ&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./xyz-esri.html&quot;&gt;XYZ Esri&lt;/a&gt;
@@ -170,13 +170,13 @@
                 data-title="maptiler"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./zoom-constrained.html&quot;&gt;Constrained Zoom&lt;/a&gt;
-                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./disable-image-smoothing.html&quot;&gt;Disable Image Smoothing&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop.html&quot;&gt;Drag-and-Drop&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./full-screen.html&quot;&gt;Full Screen Control&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./full-screen-drag-rotate-and-zoom.html&quot;&gt;Full Screen Drag, Rotate, and Zoom&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./gpx.html&quot;&gt;GPX Data&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./image-filter.html&quot;&gt;Image Filters&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./interpolation.html&quot;&gt;Interpolation&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml.html&quot;&gt;KML&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./layer-spy.html&quot;&gt;Layer Spy&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./layer-swipe.html&quot;&gt;Layer Swipe&lt;/a&gt;
@@ -206,8 +206,8 @@
                 data-target="#tag-example-list"
                 data-title="reprojection"
                 data-content="
-                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./disable-image-smoothing.html&quot;&gt;Disable Image Smoothing&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection-image.html&quot;&gt;Image Reprojection&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./interpolation.html&quot;&gt;Interpolation&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection-wgs84.html&quot;&gt;OpenStreetMap Reprojection&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./scaleline-indiana-east.html&quot;&gt;OpenStreetMap Reprojection with ScaleLine Control&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection.html&quot;&gt;Raster Reprojection&lt;/a&gt;
@@ -233,7 +233,7 @@
           </div>
           <div class="wrapper">
   <div class="half">
-    <h4>Smoothing Disabled</h4>
+    <h4>Not Interpolated</h4>
     <div id="map1" class="map"></div>
     <div>
       <label>
@@ -241,16 +241,9 @@
         <span id="info1">0.0</span> meters
       </label>
     </div>
-    <div>
-      <label>
-        Imagery opacity
-        <input id="opacity" type="range" min="0" max="100" value="80" />
-        <span id="output"></span> %
-      </label>
-    </div>
   </div>
   <div class="half">
-    <h4>Uncorrected Comparison</h4>
+    <h4>Interpolated</h4>
     <div id="map2" class="map"></div>
     <div>
       <label>
@@ -269,8 +262,8 @@
 
       <div class="row-fluid">
         <div class="span12">
-          <p id="shortdesc">Example of disabling image smoothing</p>
-          <div id="docs"><p>Example of disabling image smoothing when using raster DEM (digital elevation model) data. The <code>imageSmoothing: false</code> setting is used to disable canvas image smoothing during reprojection and rendering. Elevation data is calculated from the pixel value returned by <b>forEachLayerAtPixel</b>. For comparison a second map with smoothing enabled returns inaccuate elevations which are very noticeable close to 3107 meters due to how elevation is calculated from the pixel value.</p>
+          <p id="shortdesc">Example of data interpolation</p>
+          <div id="docs"><p>Example of data resampling when using raster DEM (digital elevation model) data. The <code>interpolate: false</code> setting is used to disable interpolation of data values during reprojection and rendering. Elevation data is calculated from the pixel value returned by <b>forEachLayerAtPixel</b>. For comparison a second map with interpolation enabled returns inaccurate elevations which are very noticeable close to 3107 meters due to how elevation is calculated from the pixel value.</p>
 </div>
         </div>
       </div>
@@ -288,7 +281,7 @@ const attributions &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
-const disabledLayer &#x3D; new TileLayer({
+const notInterpolated &#x3D; new TileLayer({
   // specify className so forEachLayerAtPixel can distinguish layers
   className: &#x27;ol-layer-dem&#x27;,
   source: new XYZ({
@@ -298,21 +291,11 @@ const disabledLayer &#x3D; new TileLayer({
     tileSize: 512,
     maxZoom: 12,
     crossOrigin: &#x27;&#x27;,
-    imageSmoothing: false,
+    interpolate: false,
   }),
 });
 
-const imagery &#x3D; new TileLayer({
-  className: &#x27;ol-layer-imagery&#x27;,
-  source: new XYZ({
-    attributions: attributions,
-    url: &#x27;https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
-    maxZoom: 20,
-    crossOrigin: &#x27;&#x27;,
-  }),
-});
-
-const enabledLayer &#x3D; new TileLayer({
+const interpolated &#x3D; new TileLayer({
   source: new XYZ({
     attributions: attributions,
     url:
@@ -323,30 +306,6 @@ const enabledLayer &#x3D; new TileLayer({
   }),
 });
 
-imagery.on(&#x27;prerender&#x27;, function (evt) {
-  // use opaque background to conceal DEM while fully opaque imagery renders
-  if (imagery.getOpacity() &#x3D;&#x3D;&#x3D; 1) {
-    evt.context.fillStyle &#x3D; &#x27;white&#x27;;
-    evt.context.fillRect(
-      0,
-      0,
-      evt.context.canvas.width,
-      evt.context.canvas.height
-    );
-  }
-});
-
-const control &#x3D; document.getElementById(&#x27;opacity&#x27;);
-const output &#x3D; document.getElementById(&#x27;output&#x27;);
-const listener &#x3D; function () {
-  output.innerText &#x3D; control.value;
-  imagery.setOpacity(control.value / 100);
-};
-control.addEventListener(&#x27;input&#x27;, listener);
-control.addEventListener(&#x27;change&#x27;, listener);
-output.innerText &#x3D; control.value;
-imagery.setOpacity(control.value / 100);
-
 const view &#x3D; new View({
   center: [6.893, 45.8295],
   zoom: 16,
@@ -355,13 +314,13 @@ const view &#x3D; new View({
 
 const map1 &#x3D; new Map({
   target: &#x27;map1&#x27;,
-  layers: [disabledLayer, imagery],
+  layers: [notInterpolated],
   view: view,
 });
 
 const map2 &#x3D; new Map({
   target: &#x27;map2&#x27;,
-  layers: [enabledLayer],
+  layers: [interpolated],
   view: view,
 });
 
@@ -381,7 +340,7 @@ const showElevations &#x3D; function (evt) {
     },
     {
       layerFilter: function (layer) {
-        return layer &#x3D;&#x3D;&#x3D; disabledLayer;
+        return layer &#x3D;&#x3D;&#x3D; notInterpolated;
       },
     }
   );
@@ -394,7 +353,7 @@ const showElevations &#x3D; function (evt) {
     },
     {
       layerFilter: function (layer) {
-        return layer &#x3D;&#x3D;&#x3D; enabledLayer;
+        return layer &#x3D;&#x3D;&#x3D; interpolated;
       },
     }
   );
@@ -411,9 +370,9 @@ map2.on(&#x27;pointermove&#x27;, showElevations);
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;Disable Image Smoothing&lt;/title&gt;
+    &lt;title&gt;Interpolation&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"&gt;&lt;/script&gt;
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
@@ -442,7 +401,7 @@ map2.on(&#x27;pointermove&#x27;, showElevations);
   &lt;body&gt;
     &lt;div class&#x3D;&quot;wrapper&quot;&gt;
       &lt;div class&#x3D;&quot;half&quot;&gt;
-        &lt;h4&gt;Smoothing Disabled&lt;/h4&gt;
+        &lt;h4&gt;Not Interpolated&lt;/h4&gt;
         &lt;div id&#x3D;&quot;map1&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
         &lt;div&gt;
           &lt;label&gt;
@@ -450,16 +409,9 @@ map2.on(&#x27;pointermove&#x27;, showElevations);
             &lt;span id&#x3D;&quot;info1&quot;&gt;0.0&lt;/span&gt; meters
           &lt;/label&gt;
         &lt;/div&gt;
-        &lt;div&gt;
-          &lt;label&gt;
-            Imagery opacity
-            &lt;input id&#x3D;&quot;opacity&quot; type&#x3D;&quot;range&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; value&#x3D;&quot;80&quot; /&gt;
-            &lt;span id&#x3D;&quot;output&quot;&gt;&lt;/span&gt; %
-          &lt;/label&gt;
-        &lt;/div&gt;
       &lt;/div&gt;
       &lt;div class&#x3D;&quot;half&quot;&gt;
-        &lt;h4&gt;Uncorrected Comparison&lt;/h4&gt;
+        &lt;h4&gt;Interpolated&lt;/h4&gt;
         &lt;div id&#x3D;&quot;map2&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
         &lt;div&gt;
           &lt;label&gt;
@@ -477,9 +429,9 @@ map2.on(&#x27;pointermove&#x27;, showElevations);
       <div class="row-fluid">
         <h5 class="source-heading">package.json</h5>
         <pre><code id="example-pkg-source" class="language-json">{
-  &quot;name&quot;: &quot;disable-image-smoothing&quot;,
+  &quot;name&quot;: &quot;interpolation&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.9.1-dev&quot;
+    &quot;ol&quot;: &quot;6.13.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0&quot;
@@ -497,7 +449,7 @@ map2.on(&#x27;pointermove&#x27;, showElevations);
     <script src="./resources/prism/prism-1.20.0.min.js"></script>
     <script src="./resources/common.js"></script>
     <script src="common.js"></script>
-        <script src="disable-image-smoothing.js"></script>
+        <script src="interpolation.js"></script>
     <script>
       $('#tag-example-list').on('show.bs.modal', function (event) {
         const button = $(event.relatedTarget); // Button that triggered the modal
@@ -518,7 +470,7 @@ map2.on(&#x27;pointermove&#x27;, showElevations);
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.9.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

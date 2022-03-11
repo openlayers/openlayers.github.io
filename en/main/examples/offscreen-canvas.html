@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert">
@@ -214,9 +214,12 @@ import Source from &#x27;ol/source/Source&#x27;;
 import View from &#x27;ol/View&#x27;;
 import stringify from &#x27;json-stringify-safe&#x27;;
 import {FullScreen} from &#x27;ol/control&#x27;;
-import {compose, create} from &#x27;ol/transform&#x27;;
+import {
+  compose,
+  create,
+  toString as toTransformString,
+} from &#x27;ol/transform&#x27;;
 import {createXYZ} from &#x27;ol/tilegrid&#x27;;
-import {toString as toTransformString} from &#x27;ol/transform&#x27;;
 
 const worker &#x3D; new Worker(&#x27;./worker.js&#x27;, {type: &#x27;module&#x27;});
 
@@ -386,7 +389,7 @@ function showInfo(propertiesFromFeatures) {
     &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;Vector tiles rendered in an offscreen canvas&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"&gt;&lt;/script&gt;
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
@@ -431,14 +434,15 @@ function showInfo(propertiesFromFeatures) {
       <div class="row-fluid extra-source">
         <h5 class="source-heading">worker.js</h5>
         <pre><code class="language-js">import MVT from &#x27;ol/format/MVT&#x27;;
-import TileQueue from &#x27;ol/TileQueue&#x27;;
+import TileQueue, {
+  getTilePriority as tilePriorityFunction,
+} from &#x27;ol/TileQueue&#x27;;
 import VectorTileLayer from &#x27;ol/layer/VectorTile&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile&#x27;;
 import stringify from &#x27;json-stringify-safe&#x27;;
 import styleFunction from &#x27;ol-mapbox-style/dist/stylefunction&#x27;;
 import {get} from &#x27;ol/proj&#x27;;
 import {inView} from &#x27;ol/layer/Layer&#x27;;
-import {getTilePriority as tilePriorityFunction} from &#x27;ol/TileQueue&#x27;;
 
 /** @type {any} */
 const worker &#x3D; self;
@@ -617,7 +621,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;offscreen-canvas&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.9.1-dev&quot;,
+    &quot;ol&quot;: &quot;6.13.1-dev&quot;,
     &quot;json-stringify-safe&quot;: &quot;^5.0.1&quot;
   },
   &quot;devDependencies&quot;: {
@@ -657,7 +661,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.9.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

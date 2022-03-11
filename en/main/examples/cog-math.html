@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -136,7 +136,7 @@
                 data-target="#tag-example-list"
                 data-title="cog"
                 data-content="
-                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-stretch.html&quot;&gt;Band Constrast Stretch&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-stretch.html&quot;&gt;Band Contrast Stretch&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-style.html&quot;&gt;Change Tile Layer Style&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog.html&quot;&gt;Cloud Optimized GeoTIFF (COG)&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-pyramid.html&quot;&gt;GeoTIFF tile pyramid&lt;/a&gt;
@@ -179,6 +179,7 @@
             </div>
           </div>
           <div id="map" class="map"></div>
+<div>NDVI: <span id="output"></span></div>
 
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
@@ -189,7 +190,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Calculating NDVI and applying a custom color map.</p>
-          <div id="docs"><p>The GeoTIFF layer in this example draws from two Sentinel 2 sources: a red band and a near infrared band. The layer style includes a <code>color</code> expression that calculates the Normalized Difference Vegetation Index (NDVI) from values in the two bands.  The <code>interpolate</code> expression is used to map NDVI values to colors.</p>
+          <div id="docs"><p>The GeoTIFF layer in this example draws from two Sentinel 2 sources: a red band and a near-infrared band. The layer style includes a <code>color</code> expression that calculates the Normalized Difference Vegetation Index (NDVI) from values in the two bands.  The <code>interpolate</code> expression is used to map NDVI values to colors. The <code>layer.getData()</code> method can be used to retrieve pixel values from the GeoTIFF.  Move your mouse or tap on the map to see calculated NDVI values based on the red and near-infrared pixel values.</p>
 </div>
         </div>
       </div>
@@ -216,68 +217,77 @@ const source &#x3D; new GeoTIFF({
   ],
 });
 
+const layer &#x3D; new TileLayer({
+  style: {
+    color: [
+      &#x27;interpolate&#x27;,
+      [&#x27;linear&#x27;],
+      // calculate NDVI, bands come from the sources below
+      [&#x27;/&#x27;, [&#x27;-&#x27;, [&#x27;band&#x27;, 2], [&#x27;band&#x27;, 1]], [&#x27;+&#x27;, [&#x27;band&#x27;, 2], [&#x27;band&#x27;, 1]]],
+      // color ramp for NDVI values, ranging from -1 to 1
+      -0.2,
+      [191, 191, 191],
+      -0.1,
+      [219, 219, 219],
+      0,
+      [255, 255, 224],
+      0.025,
+      [255, 250, 204],
+      0.05,
+      [237, 232, 181],
+      0.075,
+      [222, 217, 156],
+      0.1,
+      [204, 199, 130],
+      0.125,
+      [189, 184, 107],
+      0.15,
+      [176, 194, 97],
+      0.175,
+      [163, 204, 89],
+      0.2,
+      [145, 191, 82],
+      0.25,
+      [128, 179, 71],
+      0.3,
+      [112, 163, 64],
+      0.35,
+      [97, 150, 54],
+      0.4,
+      [79, 138, 46],
+      0.45,
+      [64, 125, 36],
+      0.5,
+      [48, 110, 28],
+      0.55,
+      [33, 97, 18],
+      0.6,
+      [15, 84, 10],
+      0.65,
+      [0, 69, 0],
+    ],
+  },
+  source: source,
+});
+
 const map &#x3D; new Map({
   target: &#x27;map&#x27;,
-  layers: [
-    new TileLayer({
-      style: {
-        color: [
-          &#x27;interpolate&#x27;,
-          [&#x27;linear&#x27;],
-          // calculate NDVI, bands come from the sources below
-          [
-            &#x27;/&#x27;,
-            [&#x27;-&#x27;, [&#x27;band&#x27;, 2], [&#x27;band&#x27;, 1]],
-            [&#x27;+&#x27;, [&#x27;band&#x27;, 2], [&#x27;band&#x27;, 1]],
-          ],
-          // color ramp for NDVI values, ranging from -1 to 1
-          -0.2,
-          [191, 191, 191],
-          -0.1,
-          [219, 219, 219],
-          0,
-          [255, 255, 224],
-          0.025,
-          [255, 250, 204],
-          0.05,
-          [237, 232, 181],
-          0.075,
-          [222, 217, 156],
-          0.1,
-          [204, 199, 130],
-          0.125,
-          [189, 184, 107],
-          0.15,
-          [176, 194, 97],
-          0.175,
-          [163, 204, 89],
-          0.2,
-          [145, 191, 82],
-          0.25,
-          [128, 179, 71],
-          0.3,
-          [112, 163, 64],
-          0.35,
-          [97, 150, 54],
-          0.4,
-          [79, 138, 46],
-          0.45,
-          [64, 125, 36],
-          0.5,
-          [48, 110, 28],
-          0.55,
-          [33, 97, 18],
-          0.6,
-          [15, 84, 10],
-          0.65,
-          [0, 69, 0],
-        ],
-      },
-      source: source,
-    }),
-  ],
+  layers: [layer],
   view: source.getView(),
 });
+
+const output &#x3D; document.getElementById(&#x27;output&#x27;);
+function displayPixelValue(event) {
+  const data &#x3D; layer.getData(event.pixel);
+  if (!data) {
+    return;
+  }
+  const red &#x3D; data[0];
+  const nir &#x3D; data[1];
+  const ndvi &#x3D; (nir - red) / (nir + red);
+  output.textContent &#x3D; ndvi.toFixed(2);
+}
+map.on([&#x27;pointermove&#x27;, &#x27;click&#x27;], displayPixelValue);
 </code></pre>
       </div>
 
@@ -289,7 +299,7 @@ const map &#x3D; new Map({
     &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;NDVI from a Sentinel 2 COG&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"&gt;&lt;/script&gt;
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
@@ -302,6 +312,7 @@ const map &#x3D; new Map({
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div&gt;NDVI: &lt;span id&#x3D;&quot;output&quot;&gt;&lt;/span&gt;&lt;/div&gt;
     &lt;script src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -312,7 +323,7 @@ const map &#x3D; new Map({
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;cog-math&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.9.1-dev&quot;
+    &quot;ol&quot;: &quot;6.13.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0&quot;
@@ -351,7 +362,7 @@ const map &#x3D; new Map({
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.9.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

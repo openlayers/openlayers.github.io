@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -227,21 +227,47 @@
         <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
 import Map from &#x27;ol/Map&#x27;;
+import VectorSource from &#x27;ol/source/Vector&#x27;;
 import View from &#x27;ol/View&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {Fill, Style} from &#x27;ol/style&#x27;;
+import {
+  Heatmap as HeatmapLayer,
+  Vector as VectorLayer,
+} from &#x27;ol/layer&#x27;;
+import {asArray} from &#x27;ol/color&#x27;;
+
+const style &#x3D; new Style({
+  fill: new Fill({
+    color: &#x27;#eeeeee&#x27;,
+  }),
+});
 
 const map &#x3D; new Map({
   layers: [
-    new TileLayer({
-      source: new OSM(),
-    }),
     new VectorLayer({
       source: new VectorSource({
-        url: &#x27;data/geojson/countries.geojson&#x27;,
+        url: &#x27;https://openlayers.org/data/vector/ecoregions.json&#x27;,
         format: new GeoJSON(),
       }),
-      opacity: 0.5,
+      background: &#x27;white&#x27;,
+      style: function (feature) {
+        const color &#x3D; asArray(feature.get(&#x27;COLOR_NNH&#x27;) || &#x27;#eeeeee&#x27;);
+        color[3] &#x3D; 0.75;
+        style.getFill().setColor(color);
+        return style;
+      },
+    }),
+    new HeatmapLayer({
+      source: new VectorSource({
+        url: &#x27;data/geojson/world-cities.geojson&#x27;,
+        format: new GeoJSON(),
+      }),
+      weight: function (feature) {
+        return feature.get(&#x27;population&#x27;) / 1e7;
+      },
+      radius: 15,
+      blur: 15,
+      opacity: 0.75,
     }),
   ],
   target: &#x27;map&#x27;,
@@ -259,17 +285,37 @@ document.getElementById(&#x27;export-png&#x27;).addEventListener(&#x27;click&#x2
     mapCanvas.height &#x3D; size[1];
     const mapContext &#x3D; mapCanvas.getContext(&#x27;2d&#x27;);
     Array.prototype.forEach.call(
-      document.querySelectorAll(&#x27;.ol-layer canvas&#x27;),
+      map.getViewport().querySelectorAll(&#x27;.ol-layer canvas, canvas.ol-layer&#x27;),
       function (canvas) {
         if (canvas.width &gt; 0) {
-          const opacity &#x3D; canvas.parentNode.style.opacity;
+          const opacity &#x3D;
+            canvas.parentNode.style.opacity || canvas.style.opacity;
           mapContext.globalAlpha &#x3D; opacity &#x3D;&#x3D;&#x3D; &#x27;&#x27; ? 1 : Number(opacity);
+
+          const backgroundColor &#x3D; canvas.parentNode.style.backgroundColor;
+          if (backgroundColor) {
+            mapContext.fillStyle &#x3D; backgroundColor;
+            mapContext.fillRect(0, 0, canvas.width, canvas.height);
+          }
+
+          let matrix;
           const transform &#x3D; canvas.style.transform;
-          // Get the transform parameters from the style&#x27;s transform matrix
-          const matrix &#x3D; transform
-            .match(/^matrix\(([^\(]*)\)$/)[1]
-            .split(&#x27;,&#x27;)
-            .map(Number);
+          if (transform) {
+            // Get the transform parameters from the style&#x27;s transform matrix
+            matrix &#x3D; transform
+              .match(/^matrix\(([^\(]*)\)$/)[1]
+              .split(&#x27;,&#x27;)
+              .map(Number);
+          } else {
+            matrix &#x3D; [
+              parseFloat(canvas.style.width) / canvas.width,
+              0,
+              0,
+              parseFloat(canvas.style.height) / canvas.height,
+              0,
+              0,
+            ];
+          }
           // Apply the transform to the export map context
           CanvasRenderingContext2D.prototype.setTransform.apply(
             mapContext,
@@ -279,6 +325,7 @@ document.getElementById(&#x27;export-png&#x27;).addEventListener(&#x27;click&#x2
         }
       }
     );
+    mapContext.globalAlpha &#x3D; 1;
     if (navigator.msSaveBlob) {
       // link download attribute does not work on MS browsers
       navigator.msSaveBlob(mapCanvas.msToBlob(), &#x27;map.png&#x27;);
@@ -301,7 +348,7 @@ document.getElementById(&#x27;export-png&#x27;).addEventListener(&#x27;click&#x2
     &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;Map Export&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"&gt;&lt;/script&gt;
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
@@ -326,7 +373,7 @@ document.getElementById(&#x27;export-png&#x27;).addEventListener(&#x27;click&#x2
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;export-map&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.9.1-dev&quot;
+    &quot;ol&quot;: &quot;6.13.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0&quot;
@@ -365,7 +412,7 @@ document.getElementById(&#x27;export-png&#x27;).addEventListener(&#x27;click&#x2
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.9.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

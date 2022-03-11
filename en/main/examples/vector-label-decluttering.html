@@ -70,7 +70,7 @@
     <script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"></script>
     <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"></script>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Set""></script>
+    
     
     <title>Vector Label Decluttering</title>
   </head>
@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -150,6 +150,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./clusters-dynamic.html&quot;&gt;Dynamic clusters&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./heatmap-earthquakes.html&quot;&gt;Earthquakes Heatmap&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml-earthquakes.html&quot;&gt;Earthquakes in KML&lt;/a&gt;
@@ -178,6 +179,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./osm-vector-tiles.html&quot;&gt;OSM Vector Tiles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-osm.html&quot;&gt;OSM XML&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./regularshape.html&quot;&gt;Regular Shapes&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./rich-text-labels.html&quot;&gt;Rich Text Labels&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-scale-and-rotate.html&quot;&gt;Scale and Rotate using Modify Interaction&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./select-features.html&quot;&gt;Select Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./select-hover-features.html&quot;&gt;Select Features by Hover&lt;/a&gt;
@@ -204,7 +206,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-geographic.html&quot;&gt;WFS with geographic coordinates&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wind-arrows.html&quot;&gt;Wind Arrows&lt;/a&gt;"
                 tabindex="0"
-                >67</a>
+                >69</a>
             </span>
             <span class="badge-group">
               <a
@@ -228,9 +230,10 @@
                 data-target="#tag-example-list"
                 data-title="labels"
                 data-content="
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./rich-text-labels.html&quot;&gt;Rich Text Labels&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./vector-label-decluttering.html&quot;&gt;Vector Label Decluttering&lt;/a&gt;"
                 tabindex="0"
-                >1</a>
+                >2</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -273,12 +276,13 @@ import VectorLayer from &#x27;ol/layer/Vector&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {Fill, Stroke, Style, Text} from &#x27;ol/style&#x27;;
+import {fromLonLat} from &#x27;ol/proj&#x27;;
 
 const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
-    center: [0, 0],
-    zoom: 1,
+    center: fromLonLat([-100, 38.5]),
+    zoom: 4,
   }),
 });
 
@@ -307,12 +311,14 @@ const countryStyle &#x3D; new Style({
 const style &#x3D; [countryStyle, labelStyle];
 
 const vectorLayer &#x3D; new VectorLayer({
+  background: &#x27;white&#x27;,
   source: new VectorSource({
-    url: &#x27;data/geojson/countries.geojson&#x27;,
+    url: &#x27;https://openlayers.org/data/vector/us-states.json&#x27;,
     format: new GeoJSON(),
   }),
   style: function (feature) {
-    labelStyle.getText().setText(feature.get(&#x27;name&#x27;));
+    const label &#x3D; feature.get(&#x27;name&#x27;).split(&#x27; &#x27;).join(&#x27;\n&#x27;);
+    labelStyle.getText().setText(label);
     return style;
   },
   declutter: true,
@@ -330,11 +336,10 @@ map.addLayer(vectorLayer);
     &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;Vector Label Decluttering&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"&gt;&lt;/script&gt;
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
-    &lt;script src&#x3D;&quot;https://cdn.polyfill.io/v2/polyfill.min.js?features&#x3D;Set&quot;&quot;&gt;&lt;/script&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -354,7 +359,7 @@ map.addLayer(vectorLayer);
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;vector-label-decluttering&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.9.1-dev&quot;
+    &quot;ol&quot;: &quot;6.13.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0&quot;
@@ -393,7 +398,7 @@ map.addLayer(vectorLayer);
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.9.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

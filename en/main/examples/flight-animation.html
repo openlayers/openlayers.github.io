@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -167,6 +167,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./clusters-dynamic.html&quot;&gt;Dynamic clusters&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./heatmap-earthquakes.html&quot;&gt;Earthquakes Heatmap&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml-earthquakes.html&quot;&gt;Earthquakes in KML&lt;/a&gt;
@@ -195,6 +196,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./osm-vector-tiles.html&quot;&gt;OSM Vector Tiles&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-osm.html&quot;&gt;OSM XML&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./regularshape.html&quot;&gt;Regular Shapes&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./rich-text-labels.html&quot;&gt;Rich Text Labels&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-scale-and-rotate.html&quot;&gt;Scale and Rotate using Modify Interaction&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./select-features.html&quot;&gt;Select Features&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./select-hover-features.html&quot;&gt;Select Features by Hover&lt;/a&gt;
@@ -221,7 +223,7 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-geographic.html&quot;&gt;WFS with geographic coordinates&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wind-arrows.html&quot;&gt;Wind Arrows&lt;/a&gt;"
                 tabindex="0"
-                >67</a>
+                >69</a>
             </span>
             <span class="badge-group">
               <a
@@ -317,6 +319,7 @@ import View from &#x27;ol/View&#x27;;
 import {Stroke, Style} from &#x27;ol/style&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
 import {getVectorContext} from &#x27;ol/render&#x27;;
+import {getWidth} from &#x27;ol/extent&#x27;;
 
 const tileLayer &#x3D; new TileLayer({
   source: new Stamen({
@@ -328,7 +331,7 @@ const map &#x3D; new Map({
   layers: [tileLayer],
   target: &#x27;map&#x27;,
   view: new View({
-    center: [0, 0],
+    center: [-11000000, 4600000],
     zoom: 2,
   }),
 });
@@ -341,7 +344,6 @@ const style &#x3D; new Style({
 });
 
 const flightsSource &#x3D; new VectorSource({
-  wrapX: false,
   attributions:
     &#x27;Flight data by &#x27; +
     &#x27;&lt;a href&#x3D;&quot;https://openflights.org/data.html&quot;&gt;OpenFlights&lt;/a&gt;,&#x27;,
@@ -365,18 +367,23 @@ const flightsSource &#x3D; new VectorSource({
           );
 
           const arcLine &#x3D; arcGenerator.Arc(100, {offset: 10});
-          if (arcLine.geometries.length &#x3D;&#x3D;&#x3D; 1) {
-            const line &#x3D; new LineString(arcLine.geometries[0].coords);
+          // paths which cross the -180°/+180° meridian are split
+          // into two sections which will be animated sequentially
+          const features &#x3D; [];
+          arcLine.geometries.forEach(function (geometry) {
+            const line &#x3D; new LineString(geometry.coords);
             line.transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
 
-            const feature &#x3D; new Feature({
-              geometry: line,
-              finished: false,
-            });
-            // add the feature with a delay so that the animation
-            // for all features does not start at the same time
-            addLater(feature, i * 50);
-          }
+            features.push(
+              new Feature({
+                geometry: line,
+                finished: false,
+              })
+            );
+          });
+          // add the features with a delay so that the animation
+          // for all features does not start at the same time
+          addLater(features, i * 50);
         }
         tileLayer.on(&#x27;postrender&#x27;, animateFlights);
       });
@@ -398,7 +405,7 @@ const flightsLayer &#x3D; new VectorLayer({
 
 map.addLayer(flightsLayer);
 
-const pointsPerMs &#x3D; 0.1;
+const pointsPerMs &#x3D; 0.02;
 function animateFlights(event) {
   const vectorContext &#x3D; getVectorContext(event);
   const frameState &#x3D; event.frameState;
@@ -411,27 +418,42 @@ function animateFlights(event) {
       // only draw the lines for which the animation has not finished yet
       const coords &#x3D; feature.getGeometry().getCoordinates();
       const elapsedTime &#x3D; frameState.time - feature.get(&#x27;start&#x27;);
-      const elapsedPoints &#x3D; elapsedTime * pointsPerMs;
+      if (elapsedTime &gt;&#x3D; 0) {
+        const elapsedPoints &#x3D; elapsedTime * pointsPerMs;
 
-      if (elapsedPoints &gt;&#x3D; coords.length) {
-        feature.set(&#x27;finished&#x27;, true);
+        if (elapsedPoints &gt;&#x3D; coords.length) {
+          feature.set(&#x27;finished&#x27;, true);
+        }
+
+        const maxIndex &#x3D; Math.min(elapsedPoints, coords.length);
+        const currentLine &#x3D; new LineString(coords.slice(0, maxIndex));
+
+        // animation is needed in the current and nearest adjacent wrapped world
+        const worldWidth &#x3D; getWidth(map.getView().getProjection().getExtent());
+        const offset &#x3D; Math.floor(map.getView().getCenter()[0] / worldWidth);
+
+        // directly draw the lines with the vector context
+        currentLine.translate(offset * worldWidth, 0);
+        vectorContext.drawGeometry(currentLine);
+        currentLine.translate(worldWidth, 0);
+        vectorContext.drawGeometry(currentLine);
       }
-
-      const maxIndex &#x3D; Math.min(elapsedPoints, coords.length);
-      const currentLine &#x3D; new LineString(coords.slice(0, maxIndex));
-
-      // directly draw the line with the vector context
-      vectorContext.drawGeometry(currentLine);
     }
   }
   // tell OpenLayers to continue the animation
   map.render();
 }
 
-function addLater(feature, timeout) {
+function addLater(features, timeout) {
   window.setTimeout(function () {
-    feature.set(&#x27;start&#x27;, Date.now());
-    flightsSource.addFeature(feature);
+    let start &#x3D; Date.now();
+    features.forEach(function (feature) {
+      feature.set(&#x27;start&#x27;, start);
+      flightsSource.addFeature(feature);
+      const duration &#x3D;
+        (feature.getGeometry().getCoordinates().length - 1) / pointsPerMs;
+      start +&#x3D; duration;
+    });
   }, timeout);
 }
 </code></pre>
@@ -445,7 +467,7 @@ function addLater(feature, timeout) {
     &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;Flight Animation&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"&gt;&lt;/script&gt;
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
@@ -469,7 +491,7 @@ function addLater(feature, timeout) {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;flight-animation&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.9.1-dev&quot;
+    &quot;ol&quot;: &quot;6.13.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0&quot;
@@ -508,7 +530,7 @@ function addLater(feature, timeout) {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.9.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

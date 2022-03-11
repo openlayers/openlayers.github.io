@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -136,7 +136,7 @@
                 data-target="#tag-example-list"
                 data-title="cog"
                 data-content="
-                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-stretch.html&quot;&gt;Band Constrast Stretch&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-stretch.html&quot;&gt;Band Contrast Stretch&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-style.html&quot;&gt;Change Tile Layer Style&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog.html&quot;&gt;Cloud Optimized GeoTIFF (COG)&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-pyramid.html&quot;&gt;GeoTIFF tile pyramid&lt;/a&gt;
@@ -200,7 +200,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Rendering a COG tile pyramid as layer group.</p>
-          <div id="docs"><p>Data from a Cloud Optimized GeoTIFF (COG) tile pyramid can be rendered as a set of layers.  In this example, a pyramid of 3-band GeoTIFFs is used to render RGB data. For each tile of the pyramid, a separate layer is created on demand. The lowest resolution layer serves as preview while higher resolutions are loading.</p>
+          <div id="docs"><p>Data from a Cloud Optimized GeoTIFF (COG) tile pyramid can be rendered as a set of layers.  In this example, a pyramid of 3-band GeoTIFFs is used to render RGB data. The <code>ol/source.sourcesFromTileGrid</code> helper function creates sources from this pyramid on demand. The GeoTIFFs used by those sources have a resolution range that matches the range of a single z of the pyramid tile grid.</p>
 </div>
         </div>
       </div>
@@ -209,18 +209,17 @@
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
 import GeoTIFF from &#x27;ol/source/GeoTIFF&#x27;;
-import LayerGroup from &#x27;ol/layer/Group&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import TileGrid from &#x27;ol/tilegrid/TileGrid&#x27;;
 import View from &#x27;ol/View&#x27;;
 import WebGLTileLayer from &#x27;ol/layer/WebGLTile&#x27;;
-import {getIntersection} from &#x27;ol/extent&#x27;;
+import {sourcesFromTileGrid} from &#x27;ol/source&#x27;;
 
 // Metadata from https://s2downloads.eox.at/demo/EOxCloudless/2019/rgb/2019_EOxCloudless_rgb.json
 
 // Tile grid of the GeoTIFF pyramid layout
 const tileGrid &#x3D; new TileGrid({
-  origin: [-180, 90],
+  extent: [-180, -90, 180, 90],
   resolutions: [0.703125, 0.3515625, 0.17578125, 8.7890625e-2, 4.39453125e-2],
   tileSizes: [
     [512, 256],
@@ -231,30 +230,19 @@ const tileGrid &#x3D; new TileGrid({
   ],
 });
 
-const pyramid &#x3D; new LayerGroup();
-const layerForUrl &#x3D; {};
-const zs &#x3D; tileGrid.getResolutions().length;
-
-function useLayer(z, x, y) {
-  const url &#x3D; &#x60;https://s2downloads.eox.at/demo/EOxCloudless/2019/rgb/${z}/${y}/${x}.tif&#x60;;
-  if (!(url in layerForUrl)) {
-    pyramid.getLayers().push(
-      new WebGLTileLayer({
-        minZoom: z,
-        maxZoom: z &#x3D;&#x3D;&#x3D; 0 || z &#x3D;&#x3D;&#x3D; zs - 1 ? undefined : z + 1,
-        extent: tileGrid.getTileCoordExtent([z, x, y]),
-        source: new GeoTIFF({
-          sources: [
-            {
-              url: url,
-            },
-          ],
-        }),
+const pyramid &#x3D; new WebGLTileLayer({
+  sources: sourcesFromTileGrid(
+    tileGrid,
+    ([z, x, y]) &#x3D;&gt;
+      new GeoTIFF({
+        sources: [
+          {
+            url: &#x60;https://s2downloads.eox.at/demo/EOxCloudless/2019/rgb/${z}/${y}/${x}.tif&#x60;,
+          },
+        ],
       })
-    );
-    layerForUrl[url] &#x3D; true;
-  }
-}
+  ),
+});
 
 const map &#x3D; new Map({
   target: &#x27;map&#x27;,
@@ -265,19 +253,6 @@ const map &#x3D; new Map({
     zoom: 0,
     showFullExtent: true,
   }),
-});
-
-// Add overview layer
-useLayer(0, 0, 0);
-
-// Add layer for specific extent on demand
-map.on(&#x27;moveend&#x27;, () &#x3D;&gt; {
-  const view &#x3D; map.getView();
-  tileGrid.forEachTileCoord(
-    getIntersection([-180, -90, 180, 90], view.calculateExtent()),
-    tileGrid.getZForResolution(view.getResolution()),
-    ([z, x, y]) &#x3D;&gt; useLayer(z, x, y)
-  );
 });
 </code></pre>
       </div>
@@ -290,7 +265,7 @@ map.on(&#x27;moveend&#x27;, () &#x3D;&gt; {
     &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;GeoTIFF tile pyramid&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"&gt;&lt;/script&gt;
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
@@ -313,7 +288,7 @@ map.on(&#x27;moveend&#x27;, () &#x3D;&gt; {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;cog-pyramid&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.9.1-dev&quot;
+    &quot;ol&quot;: &quot;6.13.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0&quot;
@@ -352,7 +327,7 @@ map.on(&#x27;moveend&#x27;, () &#x3D;&gt; {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.9.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

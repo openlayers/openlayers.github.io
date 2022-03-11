@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -143,12 +143,12 @@
             </span>
             <span class="badge-group">
               <a
-                href="./index.html?q=forEachLayerAtPixel" class="badge badge-info">forEachLayerAtPixel</a
+                href="./index.html?q=getData" class="badge badge-info">getData</a
               ><a
                 class="badge badge-info tag-modal-toggle text-white"
                 data-toggle="modal"
                 data-target="#tag-example-list"
-                data-title="forEachLayerAtPixel"
+                data-title="getData"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./getfeatureinfo-image.html&quot;&gt;WMS GetFeatureInfo (Image Layer)&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./getfeatureinfo-tile.html&quot;&gt;WMS GetFeatureInfo (Tile Layer)&lt;/a&gt;"
@@ -183,7 +183,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Using an image WMS source with GetFeatureInfo requests</p>
-          <div id="docs"><p>This example shows how to trigger WMS GetFeatureInfo requests on click for a WMS image layer.  Additionally <code>map.forEachLayerAtPixel</code> is used to change the mouse pointer when hovering a non-transparent pixel on the map.</p>
+          <div id="docs"><p>This example shows how to trigger WMS GetFeatureInfo requests on click for a WMS image layer.  Additionally <code>layer.getData(pixel)</code> is used to change the mouse pointer when hovering a non-transparent pixel on the map.</p>
 </div>
         </div>
       </div>
@@ -240,10 +240,8 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
-  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
-  const hit &#x3D; map.forEachLayerAtPixel(pixel, function () {
-    return true;
-  });
+  const data &#x3D; wmsLayer.getData(evt.pixel);
+  const hit &#x3D; data &amp;&amp; data[3] &gt; 0; // transparent pixels have zero for data[3]
   map.getTargetElement().style.cursor &#x3D; hit ? &#x27;pointer&#x27; : &#x27;&#x27;;
 });
 </code></pre>
@@ -257,7 +255,7 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
     &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;WMS GetFeatureInfo (Image Layer)&lt;/title&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
-    &lt;script src="https://unpkg.com/elm-pep"&gt;&lt;/script&gt;
+    &lt;script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"&gt;&lt;/script&gt;
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
@@ -281,7 +279,7 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;getfeatureinfo-image&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.9.1-dev&quot;
+    &quot;ol&quot;: &quot;6.13.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0&quot;
@@ -320,7 +318,7 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.9.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');
