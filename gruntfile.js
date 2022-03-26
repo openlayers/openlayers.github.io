@@ -30,7 +30,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     checkout: {
       options: {
-        repo: 'git://github.com/openlayers/openlayers.git',
+        repo: 'https://github.com/openlayers/openlayers.git',
         treeish: treeish,
         dir: repo
       }
