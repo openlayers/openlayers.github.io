@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6628],{19702:function(e,n,t){var o=t(41376),i=t(79847),r=t(42010),a=t(54354),c=document.getElementById("map");function u(){var e=c.clientWidth;return Math.ceil(Math.LOG2E*Math.log(e/256))}var s=u(),m=new a.ZP({center:[0,0],minZoom:s,zoom:s});new o.Z({layers:[new r.Z({source:new i.Z})],target:"map",view:m});window.addEventListener("resize",(function(){var e=u();e!==m.getMinZoom()&&m.setMinZoom(e)}))}},function(e){var n=function(n){return e(e.s=n)};n(9877),n(19702)}]);
+//# sourceMappingURL=min-zoom.js.map

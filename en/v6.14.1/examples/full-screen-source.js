@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1112],{48837:function(e,n,c){var r=c(41376),s=c(79847),t=c(42010),u=c(54354),o=c(45830),w=c(45486),a=new u.ZP({center:[-9101767,2822912],zoom:14});new r.Z({controls:(0,o.ce)().extend([new w.Z({source:"fullscreen"})]),layers:[new t.Z({source:new s.Z})],target:"map",view:a})}},function(e){var n=function(n){return e(e.s=n)};n(9877),n(48837)}]);
+//# sourceMappingURL=full-screen-source.js.map
