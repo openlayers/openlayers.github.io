@@ -59,7 +59,7 @@
       })
     });
     </script>
-    <title>OpenLayers v6.13.1-dev API - Module: ol/source/DataTile</title>
+    <title>OpenLayers v6.14.2-dev API - Module: ol/source/DataTile</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -141,7 +141,7 @@
             <h1 class="page-title" data-filename="module-ol_source_DataTile.html">Module: ol/source/DataTile</h1>
             <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
               <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              This documentation is for OpenLayers v<span id="package-version">6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+              This documentation is for OpenLayers v<span id="package-version">6.14.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
             </div>
             
 
@@ -578,6 +578,45 @@ Returns <a href="module-ol_DataTile.html#~Data"><code>data</code></a> for a tile
             
             
             <td class="description last"><p>The pixel width and height of the tiles.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>gutter</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                </td>
+            
+            
+            
+                <td class="default">
+                
+                    0
+                
+                </td>
+            
+            
+            <td class="description last"><p>The size in pixels of the gutter around data tiles to ignore.
+This allows artifacts of rendering at tile edges to be ignored.
+Supported data should be wider and taller than the tile size by a value of <code>2 x gutter</code>.</p></td>
         </tr>
 	
 	

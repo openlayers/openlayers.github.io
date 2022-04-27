@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.14.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -155,9 +155,10 @@
                 data-title="events"
                 data-content="
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./image-load-events.html&quot;&gt;Image Load Events&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./load-events.html&quot;&gt;Loading Spinner&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./tile-load-events.html&quot;&gt;Tile Load Events&lt;/a&gt;"
                 tabindex="0"
-                >2</a>
+                >3</a>
             </span>
             <span class="badge-group">
               <a
@@ -171,12 +172,13 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-esri.html&quot;&gt;ArcGIS REST Feature Service&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-esri-edit.html&quot;&gt;Editable ArcGIS REST Feature Service&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./image-load-events.html&quot;&gt;Image Load Events&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./load-events.html&quot;&gt;Loading Spinner&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-osm.html&quot;&gt;OSM XML&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./tile-load-events.html&quot;&gt;Tile Load Events&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-geographic.html&quot;&gt;WFS with geographic coordinates&lt;/a&gt;"
                 tabindex="0"
-                >7</a>
+                >8</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -208,7 +210,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example using image load events.</p>
-          <div id="docs"><p>Image sources fire events related to image loading.  You can listen for <code>imageloadstart</code>, <code>imageloadend</code>, and <code>imageloaderror</code> type events to monitor image loading progress.  This example registers listeners for these events and renders an image loading progress bar at the bottom of the map.</p>
+          <div id="docs"><p>Image sources fire events related to image loading.  You can listen for <code>imageloadstart</code>, <code>imageloadend</code>, and <code>imageloaderror</code> type events to monitor image loading progress.  This example registers listeners for these events and renders an image loading progress bar at the bottom of the map. The progress bar is shown and hidden according to the map&#39;s <code>loadstart</code> and <code>loadend</code> events.</p>
 </div>
         </div>
       </div>
@@ -236,9 +238,6 @@ function Progress(el) {
  * Increment the count of loading tiles.
  */
 Progress.prototype.addLoading &#x3D; function () {
-  if (this.loading &#x3D;&#x3D;&#x3D; 0) {
-    this.show();
-  }
   ++this.loading;
   this.update();
 };
@@ -247,11 +246,8 @@ Progress.prototype.addLoading &#x3D; function () {
  * Increment the count of loaded tiles.
  */
 Progress.prototype.addLoaded &#x3D; function () {
-  const this_ &#x3D; this;
-  setTimeout(function () {
-    ++this_.loaded;
-    this_.update();
-  }, 100);
+  ++this.loaded;
+  this.update();
 };
 
 /**
@@ -260,14 +256,6 @@ Progress.prototype.addLoaded &#x3D; function () {
 Progress.prototype.update &#x3D; function () {
   const width &#x3D; ((this.loaded / this.loading) * 100).toFixed(1) + &#x27;%&#x27;;
   this.el.style.width &#x3D; width;
-  if (this.loading &#x3D;&#x3D;&#x3D; this.loaded) {
-    this.loading &#x3D; 0;
-    this.loaded &#x3D; 0;
-    const this_ &#x3D; this;
-    setTimeout(function () {
-      this_.hide();
-    }, 500);
-  }
 };
 
 /**
@@ -281,10 +269,11 @@ Progress.prototype.show &#x3D; function () {
  * Hide the progress bar.
  */
 Progress.prototype.hide &#x3D; function () {
-  if (this.loading &#x3D;&#x3D;&#x3D; this.loaded) {
-    this.el.style.visibility &#x3D; &#x27;hidden&#x27;;
-    this.el.style.width &#x3D; 0;
-  }
+  const style &#x3D; this.el.style;
+  setTimeout(function () {
+    style.visibility &#x3D; &#x27;hidden&#x27;;
+    style.width &#x3D; 0;
+  }, 250);
 };
 
 const progress &#x3D; new Progress(document.getElementById(&#x27;progress&#x27;));
@@ -298,11 +287,7 @@ const source &#x3D; new ImageWMS({
 source.on(&#x27;imageloadstart&#x27;, function () {
   progress.addLoading();
 });
-
-source.on(&#x27;imageloadend&#x27;, function () {
-  progress.addLoaded();
-});
-source.on(&#x27;imageloaderror&#x27;, function () {
+source.on([&#x27;imageloadend&#x27;, &#x27;imageloaderror&#x27;], function () {
   progress.addLoaded();
 });
 
@@ -313,6 +298,13 @@ const map &#x3D; new Map({
     center: [-10997148, 4569099],
     zoom: 4,
   }),
+});
+
+map.on(&#x27;loadstart&#x27;, function () {
+  progress.show();
+});
+map.on(&#x27;loadend&#x27;, function () {
+  progress.hide();
 });
 </code></pre>
       </div>
@@ -365,7 +357,7 @@ const map &#x3D; new Map({
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;image-load-events&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.13.1-dev&quot;
+    &quot;ol&quot;: &quot;6.14.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0&quot;
@@ -404,7 +396,7 @@ const map &#x3D; new Map({
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.14.2-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

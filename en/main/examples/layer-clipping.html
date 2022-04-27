@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.14.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -170,9 +170,10 @@
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./teleport.html&quot;&gt;Teleporting Maps&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./layer-clipping-vector.html&quot;&gt;Vector Clipping Layer&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-labels.html&quot;&gt;Vector Labels&lt;/a&gt;
+                  &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-labels-justify-text.html&quot;&gt;Vector Labels - Justify Text&lt;/a&gt;
                   &lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./rotation.html&quot;&gt;View Rotation&lt;/a&gt;"
                 tabindex="0"
-                >21</a>
+                >22</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -301,7 +302,7 @@ osm.on(&#x27;postrender&#x27;, function (event) {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;layer-clipping&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.13.1-dev&quot;
+    &quot;ol&quot;: &quot;6.14.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0&quot;
@@ -340,7 +341,7 @@ osm.on(&#x27;postrender&#x27;, function (event) {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.14.2-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

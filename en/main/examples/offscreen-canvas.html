@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.14.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert">
@@ -440,9 +440,9 @@ import TileQueue, {
 import VectorTileLayer from &#x27;ol/layer/VectorTile&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile&#x27;;
 import stringify from &#x27;json-stringify-safe&#x27;;
-import styleFunction from &#x27;ol-mapbox-style/dist/stylefunction&#x27;;
 import {get} from &#x27;ol/proj&#x27;;
 import {inView} from &#x27;ol/layer/Layer&#x27;;
+import {stylefunction} from &#x27;ol-mapbox-style&#x27;;
 
 /** @type {any} */
 const worker &#x3D; self;
@@ -530,7 +530,7 @@ function loadStyles() {
               };
               rendererTransform &#x3D; transform;
             };
-            styleFunction(
+            stylefunction(
               layer,
               styleJson,
               bucket.layers,
@@ -621,7 +621,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;offscreen-canvas&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.13.1-dev&quot;,
+    &quot;ol&quot;: &quot;6.14.2-dev&quot;,
     &quot;json-stringify-safe&quot;: &quot;^5.0.1&quot;
   },
   &quot;devDependencies&quot;: {
@@ -661,7 +661,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.14.2-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

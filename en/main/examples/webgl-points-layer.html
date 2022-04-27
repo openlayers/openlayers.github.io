@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.14.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
       <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert">
@@ -344,6 +344,7 @@ import WebGLPointsLayer from &#x27;ol/layer/WebGLPoints&#x27;;
 const vectorSource &#x3D; new Vector({
   url: &#x27;data/geojson/world-cities.geojson&#x27;,
   format: new GeoJSON(),
+  wrapX: true,
 });
 
 const predefinedStyles &#x3D; {
@@ -414,7 +415,7 @@ const predefinedStyles &#x3D; {
         2000000,
         28,
       ],
-      color: &#x27;#006688&#x27;,
+      color: [&#x27;match&#x27;, [&#x27;get&#x27;, &#x27;hover&#x27;], 1, &#x27;#ff3f3f&#x27;, &#x27;#006688&#x27;],
       rotateWithView: false,
       offset: [0, 0],
       opacity: [
@@ -432,7 +433,7 @@ const predefinedStyles &#x3D; {
     symbol: {
       symbolType: &#x27;circle&#x27;,
       size: [&#x27;interpolate&#x27;, [&#x27;exponential&#x27;, 2.5], [&#x27;zoom&#x27;], 2, 1, 14, 32],
-      color: &#x27;#240572&#x27;,
+      color: [&#x27;match&#x27;, [&#x27;get&#x27;, &#x27;hover&#x27;], 1, &#x27;#ff3f3f&#x27;, &#x27;#006688&#x27;],
       offset: [0, 0],
       opacity: 0.95,
     },
@@ -495,12 +496,27 @@ const map &#x3D; new Map({
 
 let literalStyle;
 let pointsLayer;
+
+let selected &#x3D; null;
+
+map.on(&#x27;pointermove&#x27;, function (ev) {
+  if (selected !&#x3D;&#x3D; null) {
+    selected.set(&#x27;hover&#x27;, 0);
+    selected &#x3D; null;
+  }
+
+  map.forEachFeatureAtPixel(ev.pixel, function (feature) {
+    feature.set(&#x27;hover&#x27;, 1);
+    selected &#x3D; feature;
+    return true;
+  });
+});
+
 function refreshLayer(newStyle) {
   const previousLayer &#x3D; pointsLayer;
   pointsLayer &#x3D; new WebGLPointsLayer({
     source: vectorSource,
     style: newStyle,
-    disableHitDetection: true,
   });
   map.addLayer(pointsLayer);
 
@@ -605,7 +621,7 @@ animate();
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;webgl-points-layer&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.13.1-dev&quot;
+    &quot;ol&quot;: &quot;6.14.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0&quot;
@@ -644,7 +660,7 @@ animate();
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.14.2-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');

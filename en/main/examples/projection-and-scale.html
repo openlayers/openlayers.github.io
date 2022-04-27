@@ -116,7 +116,7 @@
 
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        This example uses OpenLayers v<span>6.13.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>6.14.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -253,18 +253,13 @@ function onChangeProjection() {
   const currentCenter &#x3D; currentView.getCenter();
   const currentRotation &#x3D; currentView.getRotation();
   const newCenter &#x3D; transform(currentCenter, currentProjection, newProjection);
-  const currentPointResolution &#x3D; getPointResolution(
-    currentProjection,
-    1,
-    currentCenter,
-    &#x27;m&#x27;
-  );
-  const newPointResolution &#x3D; getPointResolution(
-    newProjection,
-    1,
-    newCenter,
-    &#x27;m&#x27;
-  );
+  const currentMPU &#x3D; currentProjection.getMetersPerUnit();
+  const newMPU &#x3D; newProjection.getMetersPerUnit();
+  const currentPointResolution &#x3D;
+    getPointResolution(currentProjection, 1 / currentMPU, currentCenter, &#x27;m&#x27;) *
+    currentMPU;
+  const newPointResolution &#x3D;
+    getPointResolution(newProjection, 1 / newMPU, newCenter, &#x27;m&#x27;) * newMPU;
   const newResolution &#x3D;
     (currentResolution * currentPointResolution) / newPointResolution;
   const newView &#x3D; new View({
@@ -317,7 +312,7 @@ viewProjSelect.addEventListener(&#x27;change&#x27;, onChangeProjection);
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;projection-and-scale&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;6.13.1-dev&quot;
+    &quot;ol&quot;: &quot;6.14.2-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;parcel&quot;: &quot;^2.0.0&quot;
@@ -356,7 +351,7 @@ viewProjSelect.addEventListener(&#x27;change&#x27;, onChangeProjection);
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
         var cookieText = 'dismissed=-' + latestVersion + '-';
         var dismissed = document.cookie.indexOf(cookieText) != -1;
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.13.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.14.2-dev' != latestVersion) {
           var link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             var a = document.getElementById('latest-link');
