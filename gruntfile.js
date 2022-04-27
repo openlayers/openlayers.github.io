@@ -68,8 +68,7 @@ module.exports = function(grunt) {
       },
       ol: {
         src: [
-          repo + '/build/legacy/ol.js*',
-          repo + '/build/legacy/ol.js.map'
+          repo + '/build/legacy/*ol.js*'
         ],
         dest: dist + '/en/' + branch + '/build/'
       },
@@ -221,8 +220,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: [
-          dist + '/en/' + branch + '/build/ol.js',
-          dist + '/en/' + branch + '/build/ol.js.map',
+          dist + '/en/' + branch + '/build/*ol.js*',
           dist + '/en/' + branch + '/css/ol.css',
           dist + '/en/' + branch + '/css/ol.css.map',
         ],
