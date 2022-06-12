@@ -367,8 +367,7 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import EsriJSON from &#x27;ol/format/EsriJSON&#x27;;
+        <pre><code id="example-js-source" class="language-js">import EsriJSON from &#x27;ol/format/EsriJSON&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import VectorSource from &#x27;ol/source/Vector&#x27;;
 import View from &#x27;ol/View&#x27;;
@@ -549,6 +548,7 @@ map.on(&#x27;click&#x27;, function (evt) {
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-3.5.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -559,7 +559,7 @@ map.on(&#x27;click&#x27;, function (evt) {
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;div id&#x3D;&quot;info&quot;&gt;&amp;nbsp;&lt;/div&gt;
-    &lt;script src="main.js"&gt;&lt;/script&gt;
+    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>

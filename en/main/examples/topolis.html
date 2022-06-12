@@ -321,8 +321,7 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Feature from &#x27;ol/Feature&#x27;;
+        <pre><code id="example-js-source" class="language-js">import Feature from &#x27;ol/Feature&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import MousePosition from &#x27;ol/control/MousePosition&#x27;;
 import View from &#x27;ol/View&#x27;;
@@ -557,6 +556,7 @@ map.addControl(new MousePosition());
     &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-3.5.1.min.js&quot;&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.js&quot;&gt;&lt;/script&gt;
     &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.css&quot;&gt;
+    &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -566,7 +566,7 @@ map.addControl(new MousePosition());
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;script src="main.js"&gt;&lt;/script&gt;
+    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>

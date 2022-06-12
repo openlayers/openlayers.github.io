@@ -246,7 +246,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/DataTile.js">source/DataTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/DataTile.js#L15">line 15</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/DataTile.js#L16">line 16</a>
         </div>
         
     </div>
@@ -577,7 +577,8 @@ Returns <a href="module-ol_DataTile.html#~Data"><code>data</code></a> for a tile
                 </td>
             
             
-            <td class="description last"><p>The pixel width and height of the tiles.</p></td>
+            <td class="description last"><p>The pixel width and height of the source tiles.
+This may be different than the rendered pixel size if a <code>tileGrid</code> is provided.</p></td>
         </tr>
 	
 	
@@ -830,7 +831,8 @@ Supported data should be wider and taller than the tile size by a value of <code
                 </td>
             
             
-            <td class="description last"><p>Tile pixel ratio.</p></td>
+            <td class="description last"><p>Deprecated.  To have tiles scaled, pass a <code>tileSize</code> representing
+the source tile size and a <code>tileGrid</code> with the desired rendered tile size.</p></td>
         </tr>
 	
 	

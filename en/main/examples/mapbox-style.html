@@ -243,8 +243,7 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import FullScreen from &#x27;ol/control/FullScreen&#x27;;
+        <pre><code id="example-js-source" class="language-js">import FullScreen from &#x27;ol/control/FullScreen&#x27;;
 import olms from &#x27;ol-mapbox-style&#x27;;
 
 olms(
@@ -268,6 +267,7 @@ olms(
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -292,7 +292,7 @@ olms(
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;script src="main.js"&gt;&lt;/script&gt;
+    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>

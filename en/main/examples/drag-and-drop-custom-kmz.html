@@ -217,8 +217,7 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
+        <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {
   DragAndDrop,
@@ -389,6 +388,7 @@ document.getElementById(&#x27;download-kmz&#x27;).addEventListener(&#x27;click&#
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/jszip/2.6.1/jszip.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -414,7 +414,7 @@ document.getElementById(&#x27;download-kmz&#x27;).addEventListener(&#x27;click&#
     &lt;/div&gt;
     &lt;br /&gt;
     &lt;div id&#x3D;&quot;info&quot;&gt;&amp;nbsp;&lt;/div&gt;
-    &lt;script src="main.js"&gt;&lt;/script&gt;
+    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>

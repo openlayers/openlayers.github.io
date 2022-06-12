@@ -297,8 +297,7 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Circle from &#x27;ol/geom/Circle&#x27;;
+        <pre><code id="example-js-source" class="language-js">import Circle from &#x27;ol/geom/Circle&#x27;;
 import Feature from &#x27;ol/Feature&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
 import Map from &#x27;ol/Map&#x27;;
@@ -563,6 +562,7 @@ const map &#x3D; new Map({
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -572,7 +572,7 @@ const map &#x3D; new Map({
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;script src="main.js"&gt;&lt;/script&gt;
+    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>

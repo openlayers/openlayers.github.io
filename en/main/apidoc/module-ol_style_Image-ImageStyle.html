@@ -129,6 +129,7 @@
         <span class="subtitle">Methods</span>
         <ul>
             <li data-name="clone"><a href="module-ol_style_Image-ImageStyle.html#clone">clone</a>
+            <li data-name="getdecluttermode"><a href="module-ol_style_Image-ImageStyle.html#getDeclutterMode">getDeclutterMode</a>
             <li data-name="getdisplacement"><a href="module-ol_style_Image-ImageStyle.html#getDisplacement">getDisplacement</a>
             <li data-name="getopacity"><a href="module-ol_style_Image-ImageStyle.html#getOpacity">getOpacity</a>
             <li data-name="getrotatewithview"><a href="module-ol_style_Image-ImageStyle.html#getRotateWithView">getRotateWithView</a>
@@ -394,6 +395,40 @@ apps. Base class for <a href="module-ol_style_Icon-Icon.html"><code>module:ol/st
         </tr>
 	
 	
+	
+        <tr class="">
+            
+                <td class="name"><code>declutterMode</code></td>
+            
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">"declutter"</span>
+|
+
+<span class="param-type">"obstacle"</span>
+|
+
+<span class="param-type">"none"</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Declutter mode: <code>declutter</code>, <code>obstacle</code>, 'none</p></td>
+        </tr>
+	
+	
 	</tbody>
 </table>
             </td>
@@ -495,7 +530,7 @@ apps. Base class for <a href="module-ol_style_Icon-Icon.html"><code>module:ol/st
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L71">line 71</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L77">line 77</a>
         </div>
         
     </div>
@@ -574,6 +609,96 @@ The cloned style.
 <dt class="">
     
     <div class="nameContainer">
+        <div class="anchor" id="getDeclutterMode">
+        </div>
+        <h4 class="name">
+            getDeclutterMode<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{"declutter"|"obstacle"|"none"|undefined}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L147">line 147</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the declutter mode of the shape</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Shape's declutter mode
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
         <div class="anchor" id="getDisplacement">
         </div>
         <h4 class="name">
@@ -585,7 +710,7 @@ The cloned style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L131">line 131</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L138">line 138</a>
         </div>
         
     </div>
@@ -675,7 +800,7 @@ Shape's center displacement
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L87">line 87</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L94">line 94</a>
         </div>
         
     </div>
@@ -765,7 +890,7 @@ Opacity.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L96">line 96</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L103">line 103</a>
         </div>
         
     </div>
@@ -855,7 +980,7 @@ Rotate with map.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L105">line 105</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L112">line 112</a>
         </div>
         
     </div>
@@ -945,7 +1070,7 @@ Rotation.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L114">line 114</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L121">line 121</a>
         </div>
         
     </div>
@@ -1035,7 +1160,7 @@ Scale.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L212">line 212</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L228">line 228</a>
         </div>
         
     </div>
@@ -1161,7 +1286,7 @@ Scale.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L222">line 222</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L238">line 238</a>
         </div>
         
     </div>
@@ -1287,7 +1412,7 @@ Scale.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L232">line 232</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L248">line 248</a>
         </div>
         
     </div>
@@ -1413,7 +1538,7 @@ Scale.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L242">line 242</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L258">line 258</a>
         </div>
         
     </div>
@@ -1539,7 +1664,7 @@ Scale.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L251">line 251</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L267">line 267</a>
         </div>
         
     </div>

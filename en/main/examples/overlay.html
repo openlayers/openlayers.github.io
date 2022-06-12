@@ -223,8 +223,7 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import Map from &#x27;ol/Map&#x27;;
+        <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
 import Overlay from &#x27;ol/Overlay&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
@@ -303,6 +302,7 @@ map.on(&#x27;click&#x27;, function (evt) {
     &lt;script src&#x3D;&quot;https://code.jquery.com/jquery-3.5.1.min.js&quot;&gt;&lt;/script&gt;
     &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css&quot;&gt;
     &lt;script src&#x3D;&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -337,7 +337,7 @@ map.on(&#x27;click&#x27;, function (evt) {
       &lt;!-- Popup --&gt;
       &lt;div id&#x3D;&quot;popup&quot; title&#x3D;&quot;Welcome to OpenLayers&quot;&gt;&lt;/div&gt;
     &lt;/div&gt;
-    &lt;script src="main.js"&gt;&lt;/script&gt;
+    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>

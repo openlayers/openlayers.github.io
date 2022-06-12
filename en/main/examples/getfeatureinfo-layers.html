@@ -175,8 +175,7 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import WMSGetFeatureInfo from &#x27;ol/format/WMSGetFeatureInfo&#x27;;
+        <pre><code id="example-js-source" class="language-js">import WMSGetFeatureInfo from &#x27;ol/format/WMSGetFeatureInfo&#x27;;
 
 fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;)
   .then(function (response) {
@@ -216,6 +215,7 @@ fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;)
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -238,7 +238,7 @@ fetch(&#x27;data/wmsgetfeatureinfo/osm-restaurant-hotel.xml&#x27;)
         &lt;td id&#x3D;&quot;restaurant&quot;&gt;&lt;/td&gt;
       &lt;/tr&gt;
     &lt;/table&gt;
-    &lt;script src="main.js"&gt;&lt;/script&gt;
+    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>

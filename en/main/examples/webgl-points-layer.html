@@ -332,8 +332,7 @@ Note: <code>red</code>, <code>green</code> and <code>blue</code> components must
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
+        <pre><code id="example-js-source" class="language-js">import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import OSM from &#x27;ol/source/OSM&#x27;;
 import TileLayer from &#x27;ol/layer/Tile&#x27;;
@@ -587,6 +586,7 @@ animate();
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -611,7 +611,7 @@ animate();
       &lt;span id&#x3D;&quot;style-invalid&quot; style&#x3D;&quot;display: none; color: grey&quot;&gt;✗ &lt;span&gt;style not yet valid...&lt;/span&gt;&lt;/span&gt;
       &amp;nbsp;
     &lt;/small&gt;
-    &lt;script src="main.js"&gt;&lt;/script&gt;
+    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>

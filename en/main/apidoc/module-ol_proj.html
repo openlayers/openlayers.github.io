@@ -260,7 +260,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L374">line 374</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L376">line 376</a>
         </div>
         
     </div>
@@ -408,7 +408,10 @@ extents and coordinate arrays.</p>
                 <p>The inverse transform
     function (that is, from the destination projection to the source
     projection) that takes a <a href="module-ol_coordinate.html#~Coordinate"><code>module:ol/coordinate~Coordinate</code></a> as argument and returns
-    the transformed <a href="module-ol_coordinate.html#~Coordinate"><code>module:ol/coordinate~Coordinate</code></a>.</p></td>
+    the transformed <a href="module-ol_coordinate.html#~Coordinate"><code>module:ol/coordinate~Coordinate</code></a>. If the transform function can only
+    transform less dimensions than the input coordinate, it is supposeed to return a coordinate
+    with only the length it can transform. The other dimensions will be taken unchanged from the
+    source.</p></td>
         </tr>
 	
 	
@@ -731,7 +734,7 @@ looked up by their code.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L565">line 565</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L567">line 567</a>
         </div>
         
     </div>
@@ -814,7 +817,7 @@ looked up by their code.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L439">line 439</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L441">line 441</a>
         </div>
         
     </div>
@@ -978,7 +981,7 @@ Equivalent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L398">line 398</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L400">line 400</a>
         </div>
         
     </div>
@@ -1504,7 +1507,7 @@ Point resolution.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L484">line 484</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L486">line 486</a>
         </div>
         
     </div>
@@ -1668,7 +1671,7 @@ Transform function.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L576">line 576</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L578">line 578</a>
         </div>
         
     </div>
@@ -1762,7 +1765,7 @@ The user projection (or null if not set).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L557">line 557</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L559">line 559</a>
         </div>
         
     </div>
@@ -1891,7 +1894,7 @@ This includes all API methods except for those interacting with tile grids.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L416">line 416</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L418">line 418</a>
         </div>
         
     </div>
@@ -2055,7 +2058,7 @@ Coordinate as longitude and latitude, i.e. an array
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L504">line 504</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L506">line 506</a>
         </div>
         
     </div>
@@ -2246,7 +2249,7 @@ Coordinate.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L521">line 521</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L523">line 523</a>
         </div>
         
     </div>
@@ -2460,7 +2463,7 @@ The transformed extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L585">line 585</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L587">line 587</a>
         </div>
         
     </div>

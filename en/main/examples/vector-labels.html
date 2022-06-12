@@ -648,8 +648,7 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
+        <pre><code id="example-js-source" class="language-js">import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {
@@ -758,7 +757,7 @@ const createTextStyle &#x3D; function (feature, resolution, dom) {
     const openSans &#x3D; document.createElement(&#x27;link&#x27;);
     openSans.href &#x3D; &#x27;https://fonts.googleapis.com/css?family&#x3D;Open+Sans&#x27;;
     openSans.rel &#x3D; &#x27;stylesheet&#x27;;
-    document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild(openSans);
+    document.head.appendChild(openSans);
     openSansAdded &#x3D; true;
   }
   const font &#x3D; weight + &#x27; &#x27; + size + &#x27;/&#x27; + height + &#x27; &#x27; + dom.font.value;
@@ -920,6 +919,7 @@ function stringDivider(str, width, spaceReplacer) {
     &lt;!-- The lines below are only needed for old environments like Internet Explorer and Android 4.x --&gt;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -1289,7 +1289,7 @@ function stringDivider(str, width, spaceReplacer) {
         &lt;input type&#x3D;&quot;text&quot; value&#x3D;&quot;3&quot; id&#x3D;&quot;polygons-outline-width&quot; /&gt;
       &lt;/div&gt;
     &lt;/div&gt;
-    &lt;script src="main.js"&gt;&lt;/script&gt;
+    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>

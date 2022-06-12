@@ -206,8 +206,7 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import 'ol/ol.css';
-import DataTileSource from &#x27;ol/source/DataTile&#x27;;
+        <pre><code id="example-js-source" class="language-js">import DataTileSource from &#x27;ol/source/DataTile&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile&#x27;;
 import View from &#x27;ol/View&#x27;;
@@ -332,6 +331,7 @@ outputMax.innerText &#x3D; initialMax;
     &lt;script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,TextDecoder"&gt;&lt;/script&gt;
     &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"&gt;&lt;/script&gt;
     &lt;script src&#x3D;&quot;https://unpkg.com/@planet/ol-numpytiles@2.0.2/umd/NumpyLoader.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
@@ -352,7 +352,7 @@ outputMax.innerText &#x3D; initialMax;
         &lt;li&gt;Max &lt;input type&#x3D;&quot;range&quot; min&#x3D;&quot;10000&quot; max&#x3D;&quot;50000&quot; id&#x3D;&quot;input-max&quot;/&gt; &lt;span id&#x3D;&quot;output-max&quot;&gt;&lt;/span&gt;&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/div&gt;
-    &lt;script src="main.js"&gt;&lt;/script&gt;
+    &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
       </div>
