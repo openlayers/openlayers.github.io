@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4929],{2714:function(e,n,c){var r=c(1376),s=c(9847),t=c(2010),o=c(4354),u=c(2021),w=c(5830);const a=new s.Z,Z=new u.Z({layers:[new t.Z({source:a})]});new r.Z({controls:(0,w.ce)().extend([Z]),layers:[new t.Z({source:a})],target:"map",view:new o.ZP({center:[5e5,6e6],zoom:7})})}},function(e){var n=function(n){return e(e.s=n)};n(9877),n(2714)}]);
+//# sourceMappingURL=overviewmap.js.map

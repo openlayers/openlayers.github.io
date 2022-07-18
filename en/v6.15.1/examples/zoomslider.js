@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5006],{6224:function(n,e,t){var r=t(1376),u=t(9847),a=t(2010),c=t(4354),o=t(6936);function s(n){const e=new u.Z,t=new a.Z({source:e}),s=new r.Z({layers:[t],target:n,view:new c.ZP({center:[0,0],zoom:2})}),w=new o.Z;return s.addControl(w),s}s("map1"),s("map2"),s("map3")}},function(n){var e=function(e){return n(n.s=e)};e(9877),e(6224)}]);
+//# sourceMappingURL=zoomslider.js.map

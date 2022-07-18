@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[266],{2547:function(e,n,t){var c=t(1376),r=t(2010),u=t(4354),a=t(1998);new c.Z({target:"map",layers:[new r.Z({source:new a.Z({url:"https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=0e6fc415256d4fbb9b5166a718591d71"})})],view:new u.ZP({center:[-472202,7530279],zoom:12})})}},function(e){var n=function(n){return e(e.s=n)};n(9877),n(2547)}]);
+//# sourceMappingURL=xyz.js.map

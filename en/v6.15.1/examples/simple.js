@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4899],{6627:function(e,n,r){var t=r(1376),u=r(9847),c=r(2010),s=r(4354);new t.Z({layers:[new c.Z({source:new u.Z})],target:"map",view:new s.ZP({center:[0,0],zoom:2})})}},function(e){var n=function(n){return e(e.s=n)};n(9877),n(6627)}]);
+//# sourceMappingURL=simple.js.map
