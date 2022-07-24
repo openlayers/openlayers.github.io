@@ -15,9 +15,9 @@
 
 
 
-var minVgi = 0;
-var maxVgi = 0.5;
-var bins = 10;
+const minVgi = 0;
+const maxVgi = 0.5;
+const bins = 10;
 /**
  * Calculate the Vegetation Greenness Index (VGI) from an input pixel.  This
  * is a rough estimate assuming that pixel values correspond to reflectance.
@@ -26,9 +26,9 @@ var bins = 10;
  */
 
 function vgi(pixel) {
-  var r = pixel[0] / 255;
-  var g = pixel[1] / 255;
-  var b = pixel[2] / 255;
+  const r = pixel[0] / 255;
+  const g = pixel[1] / 255;
+  const b = pixel[2] / 255;
   return (2 * g - r - b) / (2 * g + r + b);
 }
 /**
@@ -39,15 +39,15 @@ function vgi(pixel) {
 
 
 function summarize(value, counts) {
-  var min = counts.min;
-  var max = counts.max;
-  var num = counts.values.length;
+  const min = counts.min;
+  const max = counts.max;
+  const num = counts.values.length;
 
   if (value < min) {// do nothing
   } else if (value >= max) {
     counts.values[num - 1] += 1;
   } else {
-    var index = Math.floor((value - min) / counts.delta);
+    const index = Math.floor((value - min) / counts.delta);
     counts.values[index] += 1;
   }
 }
@@ -56,9 +56,9 @@ function summarize(value, counts) {
  */
 
 
-var key = 'get_your_own_D6rA4zTHduk6KOKTXzGB';
-var attributions = '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' + '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
-var aerial = new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z({
+const key = 'get_your_own_D6rA4zTHduk6KOKTXzGB';
+const attributions = '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' + '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
+const aerial = new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z({
   attributions: attributions,
   url: 'https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=' + key,
   maxZoom: 20,
@@ -69,7 +69,7 @@ var aerial = new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"
  * be colored green.
  */
 
-var raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .ZP({
+const raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .ZP({
   sources: [aerial],
 
   /**
@@ -78,9 +78,9 @@ var raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__/* ["defau
    * @param {Object} data User data object.
    * @return {Array} The output pixel.
    */
-  operation: function operation(pixels, data) {
-    var pixel = pixels[0];
-    var value = vgi(pixel);
+  operation: function (pixels, data) {
+    const pixel = pixels[0];
+    const value = vgi(pixel);
     summarize(value, data.counts);
 
     if (value >= data.threshold) {
@@ -102,9 +102,9 @@ var raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__/* ["defau
 raster.set('threshold', 0.25);
 
 function createCounts(min, max, num) {
-  var values = new Array(num);
+  const values = new Array(num);
 
-  for (var i = 0; i < num; ++i) {
+  for (let i = 0; i < num; ++i) {
     values[i] = 0;
   }
 
@@ -123,7 +123,7 @@ raster.on('beforeoperations', function (event) {
 raster.on('afteroperations', function (event) {
   schedulePlot(event.resolution, event.data.counts, event.data.threshold);
 });
-var map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z({
+const map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z({
   layers: [new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z({
     source: aerial
   }), new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .Z({
@@ -137,7 +137,7 @@ var map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z({
     maxZoom: 19
   })
 });
-var timer = null;
+let timer = null;
 
 function schedulePlot(resolution, counts, threshold) {
   if (timer) {
@@ -148,26 +148,26 @@ function schedulePlot(resolution, counts, threshold) {
   timer = setTimeout(plot.bind(null, resolution, counts, threshold), 1000 / 60);
 }
 
-var barWidth = 15;
-var plotHeight = 150;
-var chart = d3.select('#plot').append('svg').attr('width', barWidth * bins).attr('height', plotHeight);
-var chartRect = chart.node().getBoundingClientRect();
-var tip = d3.select(document.body).append('div').attr('class', 'tip');
+const barWidth = 15;
+const plotHeight = 150;
+const chart = d3.select('#plot').append('svg').attr('width', barWidth * bins).attr('height', plotHeight);
+const chartRect = chart.node().getBoundingClientRect();
+const tip = d3.select(document.body).append('div').attr('class', 'tip');
 
 function plot(resolution, counts, threshold) {
-  var yScale = d3.scaleLinear().domain([0, d3.max(counts.values)]).range([0, plotHeight]);
-  var bar = chart.selectAll('rect').data(counts.values);
+  const yScale = d3.scaleLinear().domain([0, d3.max(counts.values)]).range([0, plotHeight]);
+  const bar = chart.selectAll('rect').data(counts.values);
   bar.enter().append('rect');
   bar.attr('class', function (count, index) {
-    var value = counts.min + index * counts.delta;
+    const value = counts.min + index * counts.delta;
     return 'bar' + (value >= threshold ? ' selected' : '');
   }).attr('width', barWidth - 2);
   bar.transition().attr('transform', function (value, index) {
     return 'translate(' + index * barWidth + ', ' + (plotHeight - yScale(value)) + ')';
   }).attr('height', yScale);
   bar.on('mousemove', function () {
-    var index = bar.nodes().indexOf(this);
-    var threshold = counts.min + index * counts.delta;
+    const index = bar.nodes().indexOf(this);
+    const threshold = counts.min + index * counts.delta;
 
     if (raster.get('threshold') !== threshold) {
       raster.set('threshold', threshold);
@@ -175,10 +175,10 @@ function plot(resolution, counts, threshold) {
     }
   });
   bar.on('mouseover', function (event) {
-    var index = bar.nodes().indexOf(this);
-    var area = 0;
+    const index = bar.nodes().indexOf(this);
+    let area = 0;
 
-    for (var i = counts.values.length - 1; i >= index; --i) {
+    for (let i = counts.values.length - 1; i >= index; --i) {
       area += resolution * resolution * counts.values[i];
     }
 
@@ -194,7 +194,7 @@ function plot(resolution, counts, threshold) {
 }
 
 function message(value, area) {
-  var acres = (area / 4046.86).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const acres = (area / 4046.86).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   return acres + ' acres at<br>' + value.toFixed(2) + ' VGI or above';
 }
 

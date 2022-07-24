@@ -59,7 +59,7 @@
       })
     });
     </script>
-    <title>OpenLayers v6.14.2-dev API - Module: ol/Overlay</title>
+    <title>OpenLayers v7.0.0-dev API - Module: ol/Overlay</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -132,6 +132,7 @@
             <li data-name="overlayobjecteventtypes"><a href="module-ol_Overlay.html#~OverlayObjectEventTypes">OverlayObjectEventTypes</a>
             <li data-name="panintoviewoptions"><a href="module-ol_Overlay.html#~PanIntoViewOptions">PanIntoViewOptions</a>
             <li data-name="panoptions"><a href="module-ol_Overlay.html#~PanOptions">PanOptions</a>
+            <li data-name="positioning"><a href="module-ol_Overlay.html#~Positioning">Positioning</a>
         </ul>
     </div>
               <li class="loading">Loading …
@@ -143,7 +144,7 @@
             <h1 class="page-title" data-filename="module-ol_Overlay.html">Module: ol/Overlay</h1>
             <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
               <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              This documentation is for OpenLayers v<span id="package-version">6.14.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+              This documentation is for OpenLayers v<span id="package-version">7.0.0-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
             </div>
             
 
@@ -440,7 +441,7 @@ in map projection.</p></td>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_OverlayPositioning.html">module:ol/OverlayPositioning</a></span>
+<span class="param-type"><a href="module-ol_Overlay.html#~Positioning">module:ol/Overlay~Positioning</a></span>
 
 
             
@@ -591,124 +592,7 @@ controls.</p></td>
             
             
             <td class="description last"><p>Pan the map when calling
-<code>setPosition</code>, so that the overlay is entirely visible in the current viewport?
-If <code>true</code> (deprecated), then <code>autoPanAnimation</code> and <code>autoPanMargin</code> will be
-used to determine the panning parameters; if an object is supplied then other
-parameters are ignored.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>autoPanAnimation</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_Overlay.html#~PanOptions">module:ol/Overlay~PanOptions</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last"><p>The animation options used to pan
-the overlay into view. This animation is only used when <code>autoPan</code> is enabled.
-A <code>duration</code> and <code>easing</code> may be provided to customize the animation.
-Deprecated and ignored if <code>autoPan</code> is supplied as an object.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>autoPanMargin</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                    20
-                
-                </td>
-            
-            
-            <td class="description last"><p>The margin (in pixels) between the
-overlay and the borders of the map when autopanning. Deprecated and ignored
-if <code>autoPan</code> is supplied as an object.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>autoPanOptions</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_Overlay.html#~PanIntoViewOptions">module:ol/Overlay~PanIntoViewOptions</a></span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last"><p>The options to use for the
-autoPan. This is only used when <code>autoPan</code> is enabled and has preference over
-the individual <code>autoPanMargin</code> and <code>autoPanOptions</code>.</p></td>
+<code>setPosition</code>, so that the overlay is entirely visible in the current viewport.</p></td>
         </tr>
 	
 	
@@ -1105,6 +989,58 @@ Default is <a href="module-ol_easing.html#.inAndOut"><code>module:ol/easing.inAn
 	</tbody>
 </table></dl>
         
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~Positioning">
+        </div>
+        <h4 class="name">
+            Positioning<span class="type-signature type 'bottom-left'">{'bottom-left'}</span> <span class="type-signature type 'bottom-center'">{'bottom-center'}</span> <span class="type-signature type 'bottom-right'">{'bottom-right'}</span> <span class="type-signature type 'center-left'">{'center-left'}</span> <span class="type-signature type 'center-center'">{'center-center'}</span> <span class="type-signature type 'center-right'">{'center-right'}</span> <span class="type-signature type 'top-left'">{'top-left'}</span> <span class="type-signature type 'top-center'">{'top-center'}</span> <span class="type-signature type 'top-right'">{'top-right'}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>The overlay position: <code>'bottom-left'</code>, <code>'bottom-center'</code>,  <code>'bottom-right'</code>,
+<code>'center-left'</code>, <code>'center-center'</code>, <code>'center-right'</code>, <code>'top-left'</code>,
+<code>'top-center'</code>, or <code>'top-right'</code>.</p>
+    </div>
+    
+
+    
+<dl class="details">
     
         
     

@@ -59,7 +59,7 @@
       })
     });
     </script>
-    <title>OpenLayers v6.14.2-dev API - Class: ImageTile</title>
+    <title>OpenLayers v7.0.0-dev API - Class: ImageTile</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -144,7 +144,7 @@
             <h1 class="page-title" data-filename="module-ol_ImageTile-ImageTile.html">Class: ImageTile</h1>
             <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
               <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              This documentation is for OpenLayers v<span id="package-version">6.14.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+              This documentation is for OpenLayers v<span id="package-version">7.0.0-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
             </div>
             
 
@@ -509,7 +509,7 @@ Image.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Tile.js">Tile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Tile.js#L228">line 228</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Tile.js#L233">line 233</a>
         </div>
         
     </div>
@@ -599,7 +599,7 @@ The tile coordinate.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/ImageTile.js">ImageTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/ImageTile.js#L118">line 118</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/ImageTile.js#L151">line 151</a>
         </div>
         
     </div>
@@ -612,7 +612,35 @@ The tile coordinate.
 
     
     <div class="description">
-        <p>Load not yet loaded URI.</p>
+        <p>Load the image or retry if loading previously failed.
+Loading is taken care of by the tile queue, and calling this method is
+only needed for preloading or for reloading in case of an error.</p>
+<p>To retry loading tiles on failed requests, use a custom <code>tileLoadFunction</code>
+that checks for error status codes and reloads only when the status code is
+408, 429, 500, 502, 503 and 504, and only when not too many retries have been
+made already:</p>
+<pre class="prettyprint source lang-js"><code>const retryCodes = [408, 429, 500, 502, 503, 504];
+const retries = {};
+source.setTileLoadFunction((tile, src) => {
+  const image = tile.getImage();
+  fetch(src)
+    .then((response) => {
+      if (retryCodes.includes(response.status)) {
+        retries[src] = (retries[src] || 0) + 1;
+        if (retries[src] &lt;= 3) {
+          setTimeout(() => tile.load(), retries[src] * 1000);
+        }
+        return Promise.reject();
+      }
+      return response.blob();
+    })
+    .then((blob) => {
+      const imageUrl = URL.createObjectURL(blob);
+      image.src = imageUrl;
+      setTimeout(() => URL.revokeObjectURL(imageUrl), 5000);
+    })
+    .catch(() => tile.setState(3)); // error
+});</code></pre>
     </div>
     
 
@@ -682,7 +710,7 @@ The tile coordinate.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Tile.js">Tile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Tile.js#L247">line 247</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Tile.js#L252">line 252</a>
         </div>
         
     </div>

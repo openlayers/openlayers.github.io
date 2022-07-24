@@ -59,7 +59,7 @@
       })
     });
     </script>
-    <title>OpenLayers v6.14.2-dev API - Module: ol/layer/WebGLTile</title>
+    <title>OpenLayers v7.0.0-dev API - Module: ol/layer/WebGLTile</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -143,7 +143,7 @@
             <h1 class="page-title" data-filename="module-ol_layer_WebGLTile.html">Module: ol/layer/WebGLTile</h1>
             <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
               <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              This documentation is for OpenLayers v<span id="package-version">6.14.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+              This documentation is for OpenLayers v<span id="package-version">7.0.0-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
             </div>
             
 
@@ -755,7 +755,7 @@ means no preloading.</p></td>
 of sources for this layer. Takes precedence over <code>source</code>. Can either be an array of sources, or a function that
 expects an extent and a resolution (in view projection units per pixel) and returns an array of sources. See
 <a href="module-ol_source.html#.sourcesFromTileGrid"><code>module:ol/source.sourcesFromTileGrid</code></a> for a helper function to generate sources that are organized in a
-pyramid following the same pattern as a tile grid.</p></td>
+pyramid following the same pattern as a tile grid. <strong>Note:</strong> All sources must have the same band count and content.</p></td>
         </tr>
 	
 	

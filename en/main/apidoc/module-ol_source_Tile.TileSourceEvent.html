@@ -59,7 +59,7 @@
       })
     });
     </script>
-    <title>OpenLayers v6.14.2-dev API - Class: TileSourceEvent</title>
+    <title>OpenLayers v7.0.0-dev API - Class: TileSourceEvent</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -149,7 +149,7 @@
             <h1 class="page-title" data-filename="module-ol_source_Tile.TileSourceEvent.html">Class: TileSourceEvent</h1>
             <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
               <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              This documentation is for OpenLayers v<span id="package-version">6.14.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+              This documentation is for OpenLayers v<span id="package-version">7.0.0-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
             </div>
             
 
@@ -868,7 +868,9 @@ or when loading was aborted because the tile is no longer needed.</p>
 
     
     <div class="description">
-        <p>Triggered if tile loading results in an error.</p>
+        <p>Triggered if tile loading results in an error. Note that this is not the
+right place to re-fetch tiles. See <a href="module-ol_ImageTile-ImageTile.html#load"><code>module:ol/ImageTile~ImageTile#load</code></a>
+for details.</p>
     </div>
     
 

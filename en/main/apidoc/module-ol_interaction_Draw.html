@@ -59,7 +59,7 @@
       })
     });
     </script>
-    <title>OpenLayers v6.14.2-dev API - Module: ol/interaction/Draw</title>
+    <title>OpenLayers v7.0.0-dev API - Module: ol/interaction/Draw</title>
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -130,6 +130,7 @@
         <ul>
             <li data-name="geometryfunction"><a href="module-ol_interaction_Draw.html#~GeometryFunction">GeometryFunction</a>
             <li data-name="linecoordtype"><a href="module-ol_interaction_Draw.html#~LineCoordType">LineCoordType</a>
+            <li data-name="mode"><a href="module-ol_interaction_Draw.html#~Mode">Mode</a>
             <li data-name="options"><a href="module-ol_interaction_Draw.html#~Options">Options</a>
             <li data-name="pointcoordtype"><a href="module-ol_interaction_Draw.html#~PointCoordType">PointCoordType</a>
             <li data-name="polycoordtype"><a href="module-ol_interaction_Draw.html#~PolyCoordType">PolyCoordType</a>
@@ -152,7 +153,7 @@
             <h1 class="page-title" data-filename="module-ol_interaction_Draw.html">Module: ol/interaction/Draw</h1>
             <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
               <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              This documentation is for OpenLayers v<span id="package-version">6.14.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+              This documentation is for OpenLayers v<span id="package-version">7.0.0-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
             </div>
             
 
@@ -259,7 +260,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1241">line 1241</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1229">line 1229</a>
         </div>
         
     </div>
@@ -353,7 +354,7 @@ Function that draws a box-shaped polygon.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1203">line 1203</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1191">line 1191</a>
         </div>
         
     </div>
@@ -526,7 +527,7 @@ Function that draws a polygon.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L111">line 111</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L109">line 109</a>
         </div>
         
     </div>
@@ -647,6 +648,57 @@ a second argument.</p>
                 
 <dt class="">
     <div class="nameContainer">
+        <div class="anchor" id="~Mode">
+        </div>
+        <h4 class="name">
+            Mode<span class="type-signature type 'point'">{'Point'}</span> <span class="type-signature type 'linestring'">{'LineString'}</span> <span class="type-signature type 'polygon'">{'Polygon'}</span> <span class="type-signature type 'circle'">{'Circle'}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Draw mode.  This collapses multi-part geometry types with their single-part
+cousins.</p>
+    </div>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
         <div class="anchor" id="~Options">
         </div>
         <h4 class="name">
@@ -700,7 +752,7 @@ a second argument.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_geom_GeometryType.html">module:ol/geom/GeometryType</a></span>
+<span class="param-type"><a href="module-ol_geom_Geometry.html#~Type">module:ol/geom/Geometry~Type</a></span>
 
 
             
@@ -1333,7 +1385,7 @@ overlay.</p></td>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_geom_GeometryLayout.html">module:ol/geom/GeometryLayout</a></span>
+<span class="param-type"><a href="module-ol_geom_Geometry.html#~GeometryLayout">module:ol/geom/Geometry~GeometryLayout</a></span>
 
 
             

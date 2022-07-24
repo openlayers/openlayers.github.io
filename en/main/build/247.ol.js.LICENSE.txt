@@ -1,3 +1,0 @@
-/*! pako 2.0.4 https://github.com/nodeca/pako @license (MIT AND Zlib) */
-
-/*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
