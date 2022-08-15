@@ -1,108 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
     <title>OpenLayers - Welcome</title>
-    <script>
-    var gaProperty = 'UA-2577926-1';
-    // Disable tracking if the opt-out cookie exists.
-    var disableStr = 'ga-disable-' + gaProperty;
-    if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-    }
-    function gaOptout() {
-      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = true;
-    }
-    function gaOptoutRevoke() {
-      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = false;
-    }
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
-    </script>
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function() {
-      window.cookieconsent.initialise({
-        'palette': {
-          'popup': {
-            'background': '#eaf7f7',
-            'text': '#5c7291'
-          },
-          'button': {
-            'background': '#56cbdb',
-            'text': '#ffffff'
-          }
-        },
-        'theme': 'edgeless',
-        'type': 'opt-out',
-        'onInitialise': function (status) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onStatusChange': function(status, chosenBefore) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onRevokeChoice': function() {
-          gaOptoutRevoke()
-        }
-      })
-    });
-    </script>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <link href='https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
-    <script src="//code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/toolbar/prism-toolbar.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href='assets/theme/site.css' rel='stylesheet' type='text/css'>
-    <link rel="icon" type="image/x-icon" href="assets/theme/img/favicon.ico" />
-    
-      <link rel="stylesheet" href="en/v6.15.1/css/ol.css" type="text/css">
-    
-      <link rel="stylesheet" href="assets/theme/index.css" type="text/css">
-    
-      <script src="https://unpkg.com/elm-pep@1.0.6/dist/elm-pep.js"></script>
-    
-      <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList"></script>
-    
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.18.3/minified.js"></script>
-    
+    <link rel="stylesheet"  type="text/css" href="https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700" crossorigin="anonymous">
+    <link rel="stylesheet"  type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet"  type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet"  type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet"  type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet"  type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet"  type="text/css" href="/theme/site.css">
+    <link rel="icon" type="image/svg+xml" href="/theme/img/logo-light.svg" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/svg+xml" href="/theme/img/logo-dark.svg" media="(prefers-color-scheme: dark)" />
+      <link rel="stylesheet" href="./theme/index.css" type="text/css">
   </head>
   <body>
     <header class="navbar navbar-expand-md navbar-dark mb-3 py-0 fixed-top" role="navigation">
-      <a href='/' class='navbar-brand'><img src='assets/theme/img/logo70.png'>&nbsp;OpenLayers</a>
+      <a href='/' class='navbar-brand'><img src="/theme/img/logo-dark.svg" width="70px" height="70px" alt="">&nbsp;OpenLayers</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <!-- menu items that get hidden below 768px width -->
       <nav class="collapse navbar-collapse" id="olmenu">
-        <ul class='nav navbar-nav  ml-auto'>
+        <ul class="nav navbar-nav ml-auto">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle " href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
+            <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
             <div class="dropdown-menu dropdown-menu-right mb-3" aria-labelledby="docdropdown">
-              <a class="dropdown-item" href="/en/latest/doc/">Docs</a>
+              <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/en/latest/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="/en/latest/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="/en/latest/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
                 <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="/en/latest/examples/">Examples</a></li>
@@ -110,16 +47,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right mb-3" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
               <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
         </ul>
       </nav>
     </header>
-    
-
-<div id='map'></div>
+      <div id='map'></div>
 <div class='container'>
   <blockquote id='tagline' class='text-right plain'>
     <p>A high-performance, feature-packed library for all your mapping needs.</p>
@@ -127,7 +62,7 @@
   <div class='row'>
     <div id='news' class='col-sm-12'>
       <h1 class='topic'><i class='fa fa-rss'></i> Latest</h1>
-      <p><strong>OpenLayers <a href="https://openlayers.org/download/">v6.15.1</a> is here!</strong> Check out the <a href="en/latest/doc/">docs</a> and the <a href="en/latest/examples/">examples</a> to get started. The full distribution can be downloaded from the <a href="https://openlayers.org/download/">release page</a>.</p>
+      <p><strong>OpenLayers <a href="/download/">v6.15.1</a> is here!</strong> Check out the <a href="/doc/">docs</a> and the <a href="/en/latest/examples/">examples</a> to get started. The full distribution can be downloaded from the <a href="/download/">release page</a>.</p>
     </div>
   </div>
   <div class='row'>
@@ -144,24 +79,24 @@
   <div class='row'>
     <div class='col-sm-6'>
       <h3>Tiled Layers</h3>
-      <img src='assets/theme/img/tiled-layers.png' class='thumb'>
+      <img src='/theme/img/tiled-layers.png' width="102" height="84" class='thumb' alt="tiled layers">
       <p>Pull tiles from OSM, Bing, MapBox, Stamen, and any other XYZ source you can find.  OGC mapping services and untiled layers also supported.</p>
     </div>
     <div class='col-sm-6'>
       <h3>Vector Layers</h3>
-      <img src='assets/theme/img/vector-layers.png' class='thumb'>
+      <img src='/theme/img/vector-layers.png' width="102" height="84" class='thumb' alt="vector layers">
       <p>Render vector data from GeoJSON, TopoJSON, KML, GML, Mapbox vector tiles, and other formats.</p>
     </div>
   </div>
   <div class='row'>
     <div class='col-sm-6'>
       <h3>Cutting Edge, Fast &amp; Mobile Ready</h3>
-      <img src='assets/theme/img/timeline.png' class='thumb'>
+      <img src='/theme/img/timeline.png' width="102" height="84" class='thumb' alt="mobile ready">
       <p>Leverages Canvas 2D, WebGL, and all the latest greatness from HTML5.  Mobile support out of the box.  Build lightweight custom profiles with just the components you need.</p>
     </div>
     <div class='col-sm-6'>
       <h3>Easy to Customize and Extend</h3>
-      <img src='assets/theme/img/popup.png' class='thumb'>
+      <img src='/theme/img/popup.png' width="102" height="84" class='thumb' alt="customizable">
       <p>Style your map controls with straight-forward CSS. Hook into different levels of the API or use <a href="/3rd-party/">3rd party libraries</a> to customize and extend functionality.</p>
     </div>
   </div>
@@ -170,13 +105,13 @@
   </div>
   <div class='row'>
     <div class='col-sm-6'>
-      <a href='en/latest/doc/quickstart.html' class='big-link'>
+      <a href='/doc/quickstart.html' class='big-link'>
         <h3><i class='fa fa-check'></i> Quick Start</h3>
         <p>Seen enough already?  Go here to get started.</p>
       </a>
     </div>
     <div class='col-sm-6'>
-      <a href='./download/' class='big-link'>
+      <a href='/download/' class='big-link'>
         <h3><i class='fa fa-download'></i> Get the Code</h3>
         <p>Get the latest release or dig through the archives.</p>
       </a>
@@ -184,13 +119,13 @@
   </div>
     <div class='row'>
     <div class='col-sm-6'>
-      <a href='en/latest/doc/tutorials/' class='big-link'>
+      <a href='/doc/tutorials/' class='big-link'>
         <h3><i class='fa fa-book'></i> Tutorials</h3>
         <p>Spend time learning the basics and graduate up to advanced mapping techniques.</p>
       </a>
     </div>
     <div class='col-sm-6'>
-      <a href='workshop/' class='big-link'>
+      <a href='/workshop/' class='big-link'>
         <h3><i class='fa fa-graduation-cap'></i> Workshop</h3>
         <p>Want to learn OpenLayers hands-on? Get started with the workshop.</p>
       </a>
@@ -198,7 +133,7 @@
   </div>
   <div class='row'>
     <div class='col-sm-6'>
-      <a href='en/latest/apidoc/' class='big-link'>
+      <a href='/en/latest/apidoc/' class='big-link'>
         <h3><i class='fa fa-sitemap'></i> API Docs</h3>
         <p>Browse through the API docs for details on code usage.</p>
       </a>
@@ -239,41 +174,15 @@
     </div>
   </div>
 </div>
-<script src='en/v6.15.1/build/ol.js'></script>
-<script>
-  var map = new ol.Map({
-    target: 'map',
-    renderer: 'canvas',
-    view: new ol.View({
-      center: [0, 6500000],
-      zoom: 2
-    }),
-    layers: [
-      new ol.layer.Tile({
-        source: new ol.source.Stamen({
-          layer: 'watercolor'
-        })
-      })
-    ]
-  });
-
-  var container = document.getElementById('map');
-  container.onmouseover = function() {
-    container.className = 'over';
-  };
-  container.onmouseout = function() {
-    container.className = '';
-  };
-</script>
+<script src="./main.js"></script>
 
     <footer>
-      Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>. Thanks to our <a href='/sponsors.html'>sponsors</a>.
+      Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>. Thanks to our <a href='https://opencollective.com/openlayers'>sponsors</a>.
       <br>
       <a href="https://www.netlify.com">
         This site is powered by Netlify.
       </a>
     </footer>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
-    
   </body>
 </html>

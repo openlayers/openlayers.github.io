@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>OpenLayers - Get the Code</title>
+    <title>OpenLayers - Background</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js"></script>
@@ -54,54 +54,29 @@
       </nav>
     </header>
       <div class="container">
-        <div class="container mt-4 pt-4">
-  <div class="row">
-    <h3 class="col-sm-12">The <code>ol</code> package</h3>
-    <div class="col-sm-12">
-      <p>
-        The recommended way to use OpenLayers is to work with the <a href="https://www.npmjs.com/package/ol"><code>ol</code> package</a>.  You can install the latest with <code>npm</code>:
-        <pre><code class="language-shell-session">npm install ol</code></pre>
-      </p>
-    </div>
-  </div>
-  <div class="row">
-    <h3 class="col-sm-12">Hosted builds for development</h3>
-    <div class="col-sm-12">
-      <p>
-        If you want to try out OpenLayers without downloading anything (<b>not recommended for production</b>), include the following in the head of your html page:
-<pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"&gt;&lt;/script&gt;
-&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/theme/ol.css"&gt;
+        <h1 id="background">Background</h1>
+<h2 id="overview">Overview</h2>
+<p>OpenLayers is a modular, high-performance, feature-packed library for displaying and interacting with maps and geospatial data.</p>
+<p>The library comes with built-in support for a wide range of commercial and free image and vector tile sources, and the most popular open and proprietary vector data formats. With OpenLayers&#39;s map projection support, data can be in any projection.</p>
+<h2 id="public-api">Public API</h2>
+<p>OpenLayers is available as <a href="https://npmjs.com/package/ol"><code>ol</code> npm package</a>, which provides all modules of the officially supported <a href="../../apidoc">API</a>.</p>
+<h2 id="browser-support">Browser Support</h2>
+<p>OpenLayers runs on all modern browsers (with greater than 1% global usage).  This includes Chrome, Firefox, Safari and Edge. For older browsers, <a href="https://polyfill.io/">polyfills</a> will likely need to be added.</p>
+<p>The library is intended for use on both desktop/laptop and mobile devices, and supports pointer and touch interactions.</p>
+<h2 id="module-and-naming-conventions">Module and Naming Conventions</h2>
+<p>OpenLayers modules with CamelCase names provide classes as default exports, and may contain additional constants or functions as named exports:</p>
+<pre><code class="language-js">import Map from &#39;ol/Map&#39;;
+import View from &#39;ol/View&#39;;
 </code></pre>
-      </p>
-    </div>
-  </div>
-  <div class="row">
-    <h3 class="col-sm-12">Downloads for the v6.15.1 release</h3>
-  </div>
-  <div class="row">
-    <div class="col-sm-12">
-      <table class="table table-hover">
-        <tbody>
-          <tr><th>Archive</th><th>Description</th></tr>
-          <tr>
-            <td><a href="https://github.com/openlayers/openlayers/releases/download/v6.15.1/v6.15.1-dist.zip">v6.15.1-dist.zip</a></td>
-            <td>Includes a full build of the library (<code>ol.js</code>), a source map (<code>ol.js.map</code>), and library CSS (<code>ol.css</code> with source map <code>ol.css.map</code>).</td>
-          </tr>
-          <tr>
-            <td><a href="https://github.com/openlayers/openlayers/releases/download/v6.15.1/v6.15.1.zip">v6.15.1.zip</a></td>
-            <td>Includes all of the above plus examples, API docs, and sources.</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>
-        See the <a href="https://github.com/openlayers/openlayers/releases/tag/v6.15.1">v6.15.1 release page</a> for a changelog and any special upgrade notes.
-      </p>
-      <p>
-        For archives of previous releases, see the <a href="https://github.com/openlayers/openlayers/releases/">complete list of releases</a>.
-      </p>
-    </div>
-  </div>
-</div>
+<p>Class hierarchies grouped by their parent are provided in a subfolder of the package, e.g. <code>layer/</code>.</p>
+<p>For convenience, these are also available as named exports, e.g.</p>
+<pre><code class="language-js">import {Map, View} from &#39;ol&#39;;
+import {Tile, Vector} from &#39;ol/layer&#39;;
+</code></pre>
+<p>In addition to these re-exported classes, modules with lowercase names also provide constants or functions as named exports:</p>
+<pre><code class="language-js">import {getUid} from &#39;ol&#39;;
+import {fromLonLat} from &#39;ol/proj&#39;;
+</code></pre>
 
       </div>
     <footer>
