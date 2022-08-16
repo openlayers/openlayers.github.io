@@ -2,82 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script>
-    var gaProperty = 'UA-2577926-1';
-    // Disable tracking if the opt-out cookie exists.
-    var disableStr = 'ga-disable-' + gaProperty;
-    if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-    }
-    function gaOptout() {
-      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = true;
-    }
-    function gaOptoutRevoke() {
-      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = false;
-    }
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
-    </script>
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function() {
-      window.cookieconsent.initialise({
-        'palette': {
-          'popup': {
-            'background': '#eaf7f7',
-            'text': '#5c7291'
-          },
-          'button': {
-            'background': '#56cbdb',
-            'text': '#ffffff'
-          }
-        },
-        'theme': 'edgeless',
-        'type': 'opt-out',
-        'onInitialise': function (status) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onStatusChange': function(status, chosenBefore) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onRevokeChoice': function() {
-          gaOptoutRevoke()
-        }
-      })
-    });
-    </script>
     <title>OpenLayers v7.0.0-dev API - Class: WebGLPostProcessingPass</title>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/bootstrap.bundle.min.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
-    <link type="text/css" rel="stylesheet" href="styles/site.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
   </head>
   <body>
     <div class="container-fluid">
       <header class="navbar navbar-expand-sm navbar-dark mb-3 py-0 fixed-top" role="navigation">
-        <a class="navbar-brand" href="https://openlayers.org/"><img src="logo-70x70.png" alt="">&nbsp;OpenLayers</a>
+        <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -89,14 +32,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="docdropdown">
-              <a class="dropdown-item" href="/en/latest/doc/">Docs</a>
+              <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
                 <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
@@ -104,7 +47,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
               <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
@@ -168,7 +111,7 @@
       </div>
     
       <div class="class-description col-lg-7 align-self-center pl-0"><p>This class is used to define Post Processing passes with custom shaders and uniforms.
-This is used internally by <code>module:ol/webgl/Helper~WebGLHelper</code>.</p>
+This is used internally by <code>WebGLHelper</code>.</p>
 <p>Please note that the final output on the DOM canvas is expected to have premultiplied alpha, which means that
 a pixel which is 100% red with an opacity of 50% must have a color of (r=0.5, g=0, b=0, a=0.5).
 Failing to provide pixel colors with premultiplied alpha will result in render anomalies.</p>
@@ -254,21 +197,21 @@ void main() {
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -282,21 +225,21 @@ void main() {
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>webGlContext</code></td>
             
-            
+
             
             <td class="type">
             
@@ -314,14 +257,14 @@ void main() {
                 
                 <p>WebGL context; mandatory.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>scaleRatio</code></td>
             
-            
+
             
             <td class="type">
             
@@ -340,14 +283,14 @@ void main() {
                 <p>Scale ratio; if &lt; 1, the post process will render to a texture smaller than
 the main canvas that will then be sampled up (useful for saving resource on blur steps).</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>vertexShader</code></td>
             
-            
+
             
             <td class="type">
             
@@ -365,14 +308,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>Vertex shader source</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>fragmentShader</code></td>
             
-            
+
             
             <td class="type">
             
@@ -390,19 +333,19 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>Fragment shader source</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>uniforms</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type">Object.&lt;string, <a href="module-ol_webgl_Helper.html#~UniformValue">module:ol/webgl/Helper~UniformValue</a>></span>
+<span class="param-type">Object<UniformValue></span>
 
  | undefined
                 
@@ -415,13 +358,13 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>Uniform definitions for the post process step</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -538,26 +481,26 @@ the main canvas that will then be sampled up (useful for saving resource on blur
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_PluggableMap.html#~FrameState">module:ol/PluggableMap~FrameState</a></span>
+<span class="param-type"><a href="module-ol_Map.html#~FrameState">FrameState</a></span>
 
 
                 
@@ -570,19 +513,19 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>current frame state</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>nextPass</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_webgl_PostProcessingPass-WebGLPostProcessingPass.html">module:ol/webgl/PostProcessingPass~WebGLPostProcessingPass</a></span>
+<span class="param-type"><a href="module-ol_webgl_PostProcessingPass-WebGLPostProcessingPass.html">WebGLPostProcessingPass</a></span>
 
  | undefined
                 
@@ -595,14 +538,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>Next pass, optional</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>preCompose</code></td>
             
-            
+
             
             <td class="type">
             
@@ -620,14 +563,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>Called before composing.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>postCompose</code></td>
             
-            
+
             
             <td class="type">
             
@@ -645,14 +588,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>Called before composing.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.pixelRatio</code></td>
             
-            
+
             
             <td class="type">
             
@@ -670,14 +613,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>The pixel ratio of the frame.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.time</code></td>
             
-            
+
             
             <td class="type">
             
@@ -695,19 +638,19 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>The time when rendering of the frame was requested.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.viewState</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_View.html#~State">module:ol/View~State</a></span>
+<span class="param-type"><a href="module-ol_View.html#~State">State</a></span>
 
 
                 
@@ -720,14 +663,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>The state of the current view.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.animate</code></td>
             
-            
+
             
             <td class="type">
             
@@ -745,19 +688,19 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>Animate.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.coordinateToPixelTransform</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_transform.html#~Transform">module:ol/transform~Transform</a></span>
+<span class="param-type"><a href="module-ol_transform.html#~Transform">Transform</a></span>
 
 
                 
@@ -770,14 +713,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>CoordinateToPixelTransform.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.declutterTree</code></td>
             
-            
+
             
             <td class="type">
             
@@ -795,14 +738,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>DeclutterTree.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.extent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -810,7 +753,7 @@ the main canvas that will then be sampled up (useful for saving resource on blur
 <span class="param-type">null</span>
 |
 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
 
                 
@@ -823,19 +766,19 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>Extent.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.nextExtent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
  | undefined
                 
@@ -848,14 +791,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>Next extent during an animation series.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.index</code></td>
             
-            
+
             
             <td class="type">
             
@@ -873,19 +816,19 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>Index.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.layerStatesArray</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="module-ol_layer_Layer.html#~State">module:ol/layer/Layer~State</a>></span>
+<span class="param-type">Array<<a href="module-ol_layer_Layer.html#~State">State</a>></span>
 
 
                 
@@ -898,14 +841,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>LayerStatesArray.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.layerIndex</code></td>
             
-            
+
             
             <td class="type">
             
@@ -923,19 +866,19 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>LayerIndex.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.pixelToCoordinateTransform</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_transform.html#~Transform">module:ol/transform~Transform</a></span>
+<span class="param-type"><a href="module-ol_transform.html#~Transform">Transform</a></span>
 
 
                 
@@ -948,19 +891,19 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>PixelToCoordinateTransform.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.postRenderFunctions</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="module-ol_PluggableMap.html#~PostRenderFunction">module:ol/PluggableMap~PostRenderFunction</a>></span>
+<span class="param-type">Array<<a href="module-ol_Map.html#~PostRenderFunction">PostRenderFunction</a>></span>
 
 
                 
@@ -973,19 +916,19 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>PostRenderFunctions.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.size</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_size.html#~Size">module:ol/size~Size</a></span>
+<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
 
                 
@@ -998,19 +941,19 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>Size.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.tileQueue</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type">module:ol/TileQueue~TileQueue</span>
+<span class="param-type">TileQueue</span>
 
 
                 
@@ -1023,14 +966,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>TileQueue.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.usedTiles</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1048,14 +991,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>UsedTiles.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.viewHints</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1073,14 +1016,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>ViewHints.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.wantedTiles</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1098,14 +1041,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>WantedTiles.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.mapId</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1123,14 +1066,14 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>The id of the map.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState.renderTargets</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1148,7 +1091,7 @@ the main canvas that will then be sampled up (useful for saving resource on blur
                 
                 <p>Identifiers of previously rendered elements.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1420,21 +1363,21 @@ The last step to be initialized will be the one where the primitives are rendere
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>frameState</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -1448,21 +1391,21 @@ The last step to be initialized will be the one where the primitives are rendere
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>pixelRatio</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1480,14 +1423,14 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>The pixel ratio of the frame.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>time</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1505,19 +1448,19 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>The time when rendering of the frame was requested.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>viewState</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_View.html#~State">module:ol/View~State</a></span>
+<span class="param-type"><a href="module-ol_View.html#~State">State</a></span>
 
 
                 
@@ -1530,14 +1473,14 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>The state of the current view.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>animate</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1555,19 +1498,19 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>Animate.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>coordinateToPixelTransform</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_transform.html#~Transform">module:ol/transform~Transform</a></span>
+<span class="param-type"><a href="module-ol_transform.html#~Transform">Transform</a></span>
 
 
                 
@@ -1580,14 +1523,14 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>CoordinateToPixelTransform.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>declutterTree</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1605,14 +1548,14 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>DeclutterTree.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>extent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1620,7 +1563,7 @@ The last step to be initialized will be the one where the primitives are rendere
 <span class="param-type">null</span>
 |
 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
 
                 
@@ -1633,19 +1576,19 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>Extent.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>nextExtent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
  | undefined
                 
@@ -1658,14 +1601,14 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>Next extent during an animation series.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>index</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1683,19 +1626,19 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>Index.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>layerStatesArray</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="module-ol_layer_Layer.html#~State">module:ol/layer/Layer~State</a>></span>
+<span class="param-type">Array<<a href="module-ol_layer_Layer.html#~State">State</a>></span>
 
 
                 
@@ -1708,14 +1651,14 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>LayerStatesArray.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>layerIndex</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1733,19 +1676,19 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>LayerIndex.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>pixelToCoordinateTransform</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_transform.html#~Transform">module:ol/transform~Transform</a></span>
+<span class="param-type"><a href="module-ol_transform.html#~Transform">Transform</a></span>
 
 
                 
@@ -1758,19 +1701,19 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>PixelToCoordinateTransform.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>postRenderFunctions</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="module-ol_PluggableMap.html#~PostRenderFunction">module:ol/PluggableMap~PostRenderFunction</a>></span>
+<span class="param-type">Array<<a href="module-ol_Map.html#~PostRenderFunction">PostRenderFunction</a>></span>
 
 
                 
@@ -1783,19 +1726,19 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>PostRenderFunctions.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>size</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_size.html#~Size">module:ol/size~Size</a></span>
+<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
 
                 
@@ -1808,19 +1751,19 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>Size.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>tileQueue</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type">module:ol/TileQueue~TileQueue</span>
+<span class="param-type">TileQueue</span>
 
 
                 
@@ -1833,14 +1776,14 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>TileQueue.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>usedTiles</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1858,14 +1801,14 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>UsedTiles.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>viewHints</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1883,14 +1826,14 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>ViewHints.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>wantedTiles</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1908,14 +1851,14 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>WantedTiles.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>mapId</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1933,14 +1876,14 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>The id of the map.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>renderTargets</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1958,13 +1901,13 @@ The last step to be initialized will be the one where the primitives are rendere
                 
                 <p>Identifiers of previously rendered elements.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>

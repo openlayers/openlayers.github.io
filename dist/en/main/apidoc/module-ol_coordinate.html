@@ -2,82 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script>
-    var gaProperty = 'UA-2577926-1';
-    // Disable tracking if the opt-out cookie exists.
-    var disableStr = 'ga-disable-' + gaProperty;
-    if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-    }
-    function gaOptout() {
-      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = true;
-    }
-    function gaOptoutRevoke() {
-      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = false;
-    }
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
-    </script>
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function() {
-      window.cookieconsent.initialise({
-        'palette': {
-          'popup': {
-            'background': '#eaf7f7',
-            'text': '#5c7291'
-          },
-          'button': {
-            'background': '#56cbdb',
-            'text': '#ffffff'
-          }
-        },
-        'theme': 'edgeless',
-        'type': 'opt-out',
-        'onInitialise': function (status) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onStatusChange': function(status, chosenBefore) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onRevokeChoice': function() {
-          gaOptoutRevoke()
-        }
-      })
-    });
-    </script>
     <title>OpenLayers v7.0.0-dev API - Module: ol/coordinate</title>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/bootstrap.bundle.min.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
-    <link type="text/css" rel="stylesheet" href="styles/site.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
   </head>
   <body>
     <div class="container-fluid">
       <header class="navbar navbar-expand-sm navbar-dark mb-3 py-0 fixed-top" role="navigation">
-        <a class="navbar-brand" href="https://openlayers.org/"><img src="logo-70x70.png" alt="">&nbsp;OpenLayers</a>
+        <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -89,14 +32,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="docdropdown">
-              <a class="dropdown-item" href="/en/latest/doc/">Docs</a>
+              <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
                 <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
@@ -104,7 +47,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
               <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
@@ -232,7 +175,7 @@
     
 
     
-        <h3 class="subsection-title">Methods</h3>
+        <h3 class="subsection-title">Functions</h3>
 
         <dl>
             
@@ -243,7 +186,7 @@
         <div class="anchor" id=".add">
         </div>
         <h4 class="name">
-            module:ol/coordinate.add<span class="signature">(coordinate, delta)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a>}</span>
+            add<span class="signature">(coordinate, delta)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>}</span>
             
             
 
@@ -261,7 +204,8 @@
 <dd class="">
 
 
-  <pre class="prettyprint source"><code>import {add} from 'ol/coordinate';</code></pre>
+    
+    <pre class="prettyprint source"><code>import {add} from 'ol/coordinate';</code></pre>
 
 
     
@@ -271,7 +215,7 @@ by the function.</p>
 <p>Example:</p>
 <pre class="prettyprint source"><code>import {add} from 'ol/coordinate';
 
-var coord = [7.85, 47.983333];
+const coord = [7.85, 47.983333];
 add(coord, [-2, 4]);
 // coord is now [5.85, 51.983333]</code></pre>
     </div>
@@ -291,26 +235,26 @@ add(coord, [-2, 4]);
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>coordinate</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
 
                 
@@ -323,19 +267,19 @@ add(coord, [-2, 4]);
                 
                 <p>Coordinate.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>delta</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
 
                 
@@ -348,7 +292,7 @@ add(coord, [-2, 4]);
                 
                 <p>Delta.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -413,7 +357,7 @@ the given delta.
         <div class="anchor" id=".createStringXY">
         </div>
         <h4 class="name">
-            module:ol/coordinate.createStringXY<span class="signature">(<span class="optional">opt_fractionDigits</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~CoordinateFormat">module:ol/coordinate~CoordinateFormat</a>}</span>
+            createStringXY<span class="signature">(<span class="optional">fractionDigits</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~CoordinateFormat">CoordinateFormat</a>}</span>
             
             
 
@@ -431,26 +375,27 @@ the given delta.
 <dd class="">
 
 
-  <pre class="prettyprint source"><code>import {createStringXY} from 'ol/coordinate';</code></pre>
+    
+    <pre class="prettyprint source"><code>import {createStringXY} from 'ol/coordinate';</code></pre>
 
 
     
     <div class="description">
-        <p>Returns a <a href="module-ol_coordinate.html#~CoordinateFormat"><code>module:ol/coordinate~CoordinateFormat</code></a> function that can be
+        <p>Returns a <a href="module-ol_coordinate.html#~CoordinateFormat"><code>CoordinateFormat</code></a> function that can be
 used to format
 a {Coordinate} to a string.</p>
 <p>Example without specifying the fractional digits:</p>
 <pre class="prettyprint source"><code>import {createStringXY} from 'ol/coordinate';
 
-var coord = [7.85, 47.983333];
-var stringifyFunc = createStringXY();
-var out = stringifyFunc(coord);
+const coord = [7.85, 47.983333];
+const stringifyFunc = createStringXY();
+const out = stringifyFunc(coord);
 // out is now '8, 48'</code></pre><p>Example with explicitly specifying 2 fractional digits:</p>
 <pre class="prettyprint source"><code>import {createStringXY} from 'ol/coordinate';
 
-var coord = [7.85, 47.983333];
-var stringifyFunc = createStringXY(2);
-var out = stringifyFunc(coord);
+const coord = [7.85, 47.983333];
+const stringifyFunc = createStringXY(2);
+const out = stringifyFunc(coord);
 // out is now '7.85, 47.98'</code></pre>
     </div>
     
@@ -469,21 +414,21 @@ var out = stringifyFunc(coord);
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>fractionDigits</code></td>
             
-            
+
             
             <td class="type">
             
@@ -502,7 +447,7 @@ var out = stringifyFunc(coord);
                 <p>The number of digits to include
    after the decimal point. Default is <code>0</code>.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -566,7 +511,7 @@ Coordinate format.
         <div class="anchor" id=".format">
         </div>
         <h4 class="name">
-            module:ol/coordinate.format<span class="signature">(coordinate, template, <span class="optional">opt_fractionDigits</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
+            format<span class="signature">(coordinate, template, <span class="optional">fractionDigits</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
             
             
 
@@ -574,7 +519,7 @@ Coordinate format.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/coordinate.js">coordinate.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/coordinate.js#L227">line 227</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/coordinate.js#L226">line 226</a>
         </div>
         
     </div>
@@ -584,26 +529,27 @@ Coordinate format.
 <dd class="">
 
 
-  <pre class="prettyprint source"><code>import {format} from 'ol/coordinate';</code></pre>
+    
+    <pre class="prettyprint source"><code>import {format} from 'ol/coordinate';</code></pre>
 
 
     
     <div class="description">
-        <p>Transforms the given <a href="module-ol_coordinate.html#~Coordinate"><code>module:ol/coordinate~Coordinate</code></a> to a string
+        <p>Transforms the given <a href="module-ol_coordinate.html#~Coordinate"><code>Coordinate</code></a> to a string
 using the given string template. The strings <code>{x}</code> and <code>{y}</code> in the template
 will be replaced with the first and second coordinate values respectively.</p>
 <p>Example without specifying the fractional digits:</p>
 <pre class="prettyprint source"><code>import {format} from 'ol/coordinate';
 
-var coord = [7.85, 47.983333];
-var template = 'Coordinate is ({x}|{y}).';
-var out = format(coord, template);
+const coord = [7.85, 47.983333];
+const template = 'Coordinate is ({x}|{y}).';
+const out = format(coord, template);
 // out is now 'Coordinate is (8|48).'</code></pre><p>Example explicitly specifying the fractional digits:</p>
 <pre class="prettyprint source"><code>import {format} from 'ol/coordinate';
 
-var coord = [7.85, 47.983333];
-var template = 'Coordinate is ({x}|{y}).';
-var out = format(coord, template, 2);
+const coord = [7.85, 47.983333];
+const template = 'Coordinate is ({x}|{y}).';
+const out = format(coord, template, 2);
 // out is now 'Coordinate is (7.85|47.98).'</code></pre>
     </div>
     
@@ -622,26 +568,26 @@ var out = format(coord, template, 2);
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>coordinate</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
 
                 
@@ -654,14 +600,14 @@ var out = format(coord, template, 2);
                 
                 <p>Coordinate.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>template</code></td>
             
-            
+
             
             <td class="type">
             
@@ -680,14 +626,14 @@ var out = format(coord, template, 2);
                 <p>A template string with <code>{x}</code> and <code>{y}</code> placeholders
     that will be replaced by first and second coordinate values.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>fractionDigits</code></td>
             
-            
+
             
             <td class="type">
             
@@ -706,7 +652,7 @@ var out = format(coord, template, 2);
                 <p>The number of digits to include
    after the decimal point. Default is <code>0</code>.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -770,7 +716,7 @@ Formatted coordinate.
         <div class="anchor" id=".rotate">
         </div>
         <h4 class="name">
-            module:ol/coordinate.rotate<span class="signature">(coordinate, angle)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a>}</span>
+            rotate<span class="signature">(coordinate, angle)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>}</span>
             
             
 
@@ -778,7 +724,7 @@ Formatted coordinate.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/coordinate.js">coordinate.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/coordinate.js#L271">line 271</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/coordinate.js#L270">line 270</a>
         </div>
         
     </div>
@@ -788,7 +734,8 @@ Formatted coordinate.
 <dd class="">
 
 
-  <pre class="prettyprint source"><code>import {rotate} from 'ol/coordinate';</code></pre>
+    
+    <pre class="prettyprint source"><code>import {rotate} from 'ol/coordinate';</code></pre>
 
 
     
@@ -798,8 +745,8 @@ returned by the function.</p>
 <p>Example:</p>
 <pre class="prettyprint source"><code>import {rotate} from 'ol/coordinate';
 
-var coord = [7.85, 47.983333];
-var rotateRadians = Math.PI / 2; // 90 degrees
+const coord = [7.85, 47.983333];
+const rotateRadians = Math.PI / 2; // 90 degrees
 rotate(coord, rotateRadians);
 // coord is now [-47.983333, 7.85]</code></pre>
     </div>
@@ -819,26 +766,26 @@ rotate(coord, rotateRadians);
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>coordinate</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
 
                 
@@ -851,14 +798,14 @@ rotate(coord, rotateRadians);
                 
                 <p>Coordinate.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>angle</code></td>
             
-            
+
             
             <td class="type">
             
@@ -876,7 +823,7 @@ rotate(coord, rotateRadians);
                 
                 <p>Angle in radian.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -940,7 +887,7 @@ Coordinate.
         <div class="anchor" id=".toStringHDMS">
         </div>
         <h4 class="name">
-            module:ol/coordinate.toStringHDMS<span class="signature">(coordinate, <span class="optional">opt_fractionDigits</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
+            toStringHDMS<span class="signature">(coordinate, <span class="optional">fractionDigits</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
             
             
 
@@ -948,7 +895,7 @@ Coordinate.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/coordinate.js">coordinate.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/coordinate.js#L362">line 362</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/coordinate.js#L361">line 361</a>
         </div>
         
     </div>
@@ -958,7 +905,8 @@ Coordinate.
 <dd class="">
 
 
-  <pre class="prettyprint source"><code>import {toStringHDMS} from 'ol/coordinate';</code></pre>
+    
+    <pre class="prettyprint source"><code>import {toStringHDMS} from 'ol/coordinate';</code></pre>
 
 
     
@@ -968,13 +916,13 @@ seconds.</p>
 <p>Example without specifying fractional digits:</p>
 <pre class="prettyprint source"><code>import {toStringHDMS} from 'ol/coordinate';
 
-var coord = [7.85, 47.983333];
-var out = toStringHDMS(coord);
+const coord = [7.85, 47.983333];
+const out = toStringHDMS(coord);
 // out is now '47° 58′ 60″ N 7° 50′ 60″ E'</code></pre><p>Example explicitly specifying 1 fractional digit:</p>
 <pre class="prettyprint source"><code>import {toStringHDMS} from 'ol/coordinate';
 
-var coord = [7.85, 47.983333];
-var out = toStringHDMS(coord, 1);
+const coord = [7.85, 47.983333];
+const out = toStringHDMS(coord, 1);
 // out is now '47° 58′ 60.0″ N 7° 50′ 60.0″ E'</code></pre>
     </div>
     
@@ -993,26 +941,26 @@ var out = toStringHDMS(coord, 1);
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>coordinate</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
 
                 
@@ -1025,14 +973,14 @@ var out = toStringHDMS(coord, 1);
                 
                 <p>Coordinate.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>fractionDigits</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1051,7 +999,7 @@ var out = toStringHDMS(coord, 1);
                 <p>The number of digits to include
    after the decimal point. Default is <code>0</code>.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1115,7 +1063,7 @@ Hemisphere, degrees, minutes and seconds.
         <div class="anchor" id=".toStringXY">
         </div>
         <h4 class="name">
-            module:ol/coordinate.toStringXY<span class="signature">(coordinate, <span class="optional">opt_fractionDigits</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
+            toStringXY<span class="signature">(coordinate, <span class="optional">fractionDigits</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
             
             
 
@@ -1123,7 +1071,7 @@ Hemisphere, degrees, minutes and seconds.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/coordinate.js">coordinate.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/coordinate.js#L399">line 399</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/coordinate.js#L398">line 398</a>
         </div>
         
     </div>
@@ -1133,7 +1081,8 @@ Hemisphere, degrees, minutes and seconds.
 <dd class="">
 
 
-  <pre class="prettyprint source"><code>import {toStringXY} from 'ol/coordinate';</code></pre>
+    
+    <pre class="prettyprint source"><code>import {toStringXY} from 'ol/coordinate';</code></pre>
 
 
     
@@ -1142,13 +1091,13 @@ Hemisphere, degrees, minutes and seconds.
 <p>Example without specifying fractional digits:</p>
 <pre class="prettyprint source"><code>import {toStringXY} from 'ol/coordinate';
 
-var coord = [7.85, 47.983333];
-var out = toStringXY(coord);
+const coord = [7.85, 47.983333];
+const out = toStringXY(coord);
 // out is now '8, 48'</code></pre><p>Example explicitly specifying 1 fractional digit:</p>
 <pre class="prettyprint source"><code>import {toStringXY} from 'ol/coordinate';
 
-var coord = [7.85, 47.983333];
-var out = toStringXY(coord, 1);
+const coord = [7.85, 47.983333];
+const out = toStringXY(coord, 1);
 // out is now '7.8, 48.0'</code></pre>
     </div>
     
@@ -1167,26 +1116,26 @@ var out = toStringXY(coord, 1);
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>coordinate</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
 
                 
@@ -1199,14 +1148,14 @@ var out = toStringXY(coord, 1);
                 
                 <p>Coordinate.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>fractionDigits</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1225,7 +1174,7 @@ var out = toStringXY(coord, 1);
                 <p>The number of digits to include
    after the decimal point. Default is <code>0</code>.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1365,7 +1314,7 @@ XY.
 
     
     <div class="description">
-        <p>A function that takes a <a href="module-ol_coordinate.html#~Coordinate"><code>module:ol/coordinate~Coordinate</code></a> and
+        <p>A function that takes a <a href="module-ol_coordinate.html#~Coordinate"><code>Coordinate</code></a> and
 transforms it into a <code>{string}</code>.</p>
     </div>
     

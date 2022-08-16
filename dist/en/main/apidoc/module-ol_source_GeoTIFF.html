@@ -2,82 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script>
-    var gaProperty = 'UA-2577926-1';
-    // Disable tracking if the opt-out cookie exists.
-    var disableStr = 'ga-disable-' + gaProperty;
-    if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-    }
-    function gaOptout() {
-      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = true;
-    }
-    function gaOptoutRevoke() {
-      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = false;
-    }
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
-    </script>
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function() {
-      window.cookieconsent.initialise({
-        'palette': {
-          'popup': {
-            'background': '#eaf7f7',
-            'text': '#5c7291'
-          },
-          'button': {
-            'background': '#56cbdb',
-            'text': '#ffffff'
-          }
-        },
-        'theme': 'edgeless',
-        'type': 'opt-out',
-        'onInitialise': function (status) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onStatusChange': function(status, chosenBefore) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onRevokeChoice': function() {
-          gaOptoutRevoke()
-        }
-      })
-    });
-    </script>
     <title>OpenLayers v7.0.0-dev API - Module: ol/source/GeoTIFF</title>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/bootstrap.bundle.min.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
-    <link type="text/css" rel="stylesheet" href="styles/site.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
   </head>
   <body>
     <div class="container-fluid">
       <header class="navbar navbar-expand-sm navbar-dark mb-3 py-0 fixed-top" role="navigation">
-        <a class="navbar-brand" href="https://openlayers.org/"><img src="logo-70x70.png" alt="">&nbsp;OpenLayers</a>
+        <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -89,14 +32,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="docdropdown">
-              <a class="dropdown-item" href="/en/latest/doc/">Docs</a>
+              <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
                 <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
@@ -104,7 +47,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
               <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
@@ -267,25 +210,25 @@
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
+
 		
+
 		
-		
-		
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr>
             
                 <td class="name"><code>STATISTICS_MINIMUM</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -294,21 +237,21 @@
 
             
             </td>
+
             
+
             
-            
-            
-            
+
             <td class="description last"><p>The minimum value (as a string).</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>STATISTICS_MAXIMUM</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -317,14 +260,14 @@
 
             
             </td>
+
             
+
             
-            
-            
-            
+
             <td class="description last"><p>The maximum value (as a string).</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table></dl>
@@ -387,25 +330,25 @@
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
+
 		
+
 		
-		
-		
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr>
             
                 <td class="name"><code>GTModelTypeGeoKey</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -414,21 +357,21 @@
 
             
             </td>
+
             
+
             
-            
-            
-            
+
             <td class="description last"><p>Model type.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>GTRasterTypeGeoKey</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -437,21 +380,21 @@
 
             
             </td>
+
             
+
             
-            
-            
-            
+
             <td class="description last"><p>Raster type.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>GeogAngularUnitsGeoKey</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -460,21 +403,21 @@
 
             
             </td>
+
             
+
             
-            
-            
-            
+
             <td class="description last"><p>Angular units.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>GeogInvFlatteningGeoKey</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -483,21 +426,21 @@
 
             
             </td>
+
             
+
             
-            
-            
-            
+
             <td class="description last"><p>Inverse flattening.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>GeogSemiMajorAxisGeoKey</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -506,21 +449,21 @@
 
             
             </td>
+
             
+
             
-            
-            
-            
+
             <td class="description last"><p>Semi-major axis.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>GeographicTypeGeoKey</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -529,21 +472,21 @@
 
             
             </td>
+
             
+
             
-            
-            
-            
+
             <td class="description last"><p>Geographic coordinate system code.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>ProjLinearUnitsGeoKey</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -552,21 +495,21 @@
 
             
             </td>
+
             
+
             
-            
-            
-            
+
             <td class="description last"><p>Projected linear unit code.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>ProjectedCSTypeGeoKey</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -575,14 +518,14 @@
 
             
             </td>
+
             
+
             
-            
-            
-            
+
             <td class="description last"><p>Projected coordinate system code.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table></dl>
@@ -737,29 +680,29 @@
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		
 		<th>Argument</th>
 		
-		
+
 		
 		<th>Default</th>
 		
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr>
             
                 <td class="name"><code>forceXHR</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -768,17 +711,17 @@
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
@@ -786,17 +729,17 @@
                 
                 </td>
             
-            
+
             <td class="description last"><p>Whether to force the usage of the browsers XMLHttpRequest API.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>headers</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -805,33 +748,33 @@
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
                 </td>
             
-            
+
             <td class="description last"><p>additional key-value pairs of headers to be passed with each request. Key is the header name, value the header value.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>credentials</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -840,34 +783,34 @@
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
                 </td>
             
-            
+
             <td class="description last"><p>How credentials shall be handled. See
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/fetch">https://developer.mozilla.org/en-US/docs/Web/API/fetch</a> for reference and possible values</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>maxRanges</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -876,34 +819,34 @@
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
                 </td>
             
-            
+
             <td class="description last"><p>The maximum amount of ranges to request in a single multi-range request.
 By default only a single range is used.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>allowFullFile</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -912,17 +855,17 @@ By default only a single range is used.</p></td>
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
@@ -930,18 +873,18 @@ By default only a single range is used.</p></td>
                 
                 </td>
             
-            
+
             <td class="description last"><p>Whether or not a full file is accepted when only a portion is
 requested. Only use this when you know the source image to be small enough to fit in memory.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>blockSize</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -950,17 +893,17 @@ requested. Only use this when you know the source image to be small enough to fi
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
@@ -968,17 +911,17 @@ requested. Only use this when you know the source image to be small enough to fi
                 
                 </td>
             
-            
+
             <td class="description last"><p>The block size to use.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>cacheSize</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -987,17 +930,17 @@ requested. Only use this when you know the source image to be small enough to fi
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
@@ -1005,10 +948,10 @@ requested. Only use this when you know the source image to be small enough to fi
                 
                 </td>
             
-            
+
             <td class="description last"><p>The number of blocks that shall be held in a LRU cache.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table></dl>
@@ -1117,52 +1060,52 @@ requested. Only use this when you know the source image to be small enough to fi
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		
 		<th>Argument</th>
 		
-		
+
 		
 		<th>Default</th>
 		
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr>
             
                 <td class="name"><code>sources</code></td>
             
-            
+
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="module-ol_source_GeoTIFF.html#~SourceInfo">module:ol/source/GeoTIFF~SourceInfo</a>></span>
+<span class="param-type">Array<<a href="module-ol_source_GeoTIFF.html#~SourceInfo">SourceInfo</a>></span>
 
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
                 </td>
             
-            
+
             <td class="description last"><p>List of information about GeoTIFF sources.
 Multiple sources can be combined when their resolution sets are equal after applying a scale.
 The list of sources defines a mapping between input bands as they are read from each GeoTIFF and
@@ -1172,49 +1115,49 @@ sources, one with 3 bands and <a href="module-ol_source_GeoTIFF.html#~SourceInfo
 another with 1 band, the resulting data tiles will have 5 bands: 3 from the first source, 1 alpha
 band from the first source, and 1 band from the second source.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>sourceOptions</code></td>
             
-            
+
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_source_GeoTIFF.html#~GeoTIFFSourceOptions">module:ol/source/GeoTIFF~GeoTIFFSourceOptions</a></span>
+<span class="param-type"><a href="module-ol_source_GeoTIFF.html#~GeoTIFFSourceOptions">GeoTIFFSourceOptions</a></span>
 
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
                 </td>
             
-            
+
             <td class="description last"><p>Additional options to be passed to <a href="https://geotiffjs.github.io/geotiff.js/module-geotiff.html">geotiff.js</a>'s <code>fromUrl</code> or <code>fromUrls</code> methods.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>convertToRGB</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1223,17 +1166,17 @@ band from the first source, and 1 band from the second source.</p></td>
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
@@ -1241,19 +1184,19 @@ band from the first source, and 1 band from the second source.</p></td>
                 
                 </td>
             
-            
+
             <td class="description last"><p>By default, bands from the sources are read as-is. When
 reading GeoTIFFs with the purpose of displaying them as RGB images, setting this to <code>true</code> will
 convert other color spaces (YCbCr, CMYK) to RGB.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>normalize</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1262,17 +1205,17 @@ convert other color spaces (YCbCr, CMYK) to RGB.</p></td>
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
@@ -1280,20 +1223,20 @@ convert other color spaces (YCbCr, CMYK) to RGB.</p></td>
                 
                 </td>
             
-            
+
             <td class="description last"><p>By default, the source data is normalized to values between
 0 and 1 with scaling factors based on the raster statistics or <code>min</code> and <code>max</code> properties of each source.
 If instead you want to work with the raw values in a style expression, set this to <code>false</code>.  Setting this option
 to <code>false</code> will make it so any <code>min</code> and <code>max</code> properties on sources are ignored.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>opaque</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1302,17 +1245,17 @@ to <code>false</code> will make it so any <code>min</code> and <code>max</code> 
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
@@ -1320,17 +1263,17 @@ to <code>false</code> will make it so any <code>min</code> and <code>max</code> 
                 
                 </td>
             
-            
+
             <td class="description last"><p>Whether the layer is opaque.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>transition</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1339,17 +1282,17 @@ to <code>false</code> will make it so any <code>min</code> and <code>max</code> 
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
@@ -1357,18 +1300,18 @@ to <code>false</code> will make it so any <code>min</code> and <code>max</code> 
                 
                 </td>
             
-            
+
             <td class="description last"><p>Duration of the opacity transition for rendering.
 To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>wrapX</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1377,17 +1320,17 @@ To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
@@ -1395,17 +1338,17 @@ To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
                 
                 </td>
             
-            
+
             <td class="description last"><p>Render tiles beyond the tile grid extent.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>interpolate</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1414,17 +1357,17 @@ To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
@@ -1432,11 +1375,11 @@ To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
                 
                 </td>
             
-            
+
             <td class="description last"><p>Use interpolated values when resampling.  By default,
 the linear interpolation is used to resample the data.  If false, nearest neighbor is used.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table></dl>
@@ -1499,29 +1442,29 @@ the linear interpolation is used to resample the data.  If false, nearest neighb
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		
 		<th>Argument</th>
 		
-		
+
 		
 		<th>Default</th>
 		
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr>
             
                 <td class="name"><code>url</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1530,33 +1473,33 @@ the linear interpolation is used to resample the data.  If false, nearest neighb
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
                 </td>
             
-            
+
             <td class="description last"><p>URL for the source GeoTIFF.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>overviews</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1565,33 +1508,33 @@ the linear interpolation is used to resample the data.  If false, nearest neighb
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
                 </td>
             
-            
+
             <td class="description last"><p>List of any overview URLs, only applies if the url parameter is given.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>blob</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1600,33 +1543,33 @@ the linear interpolation is used to resample the data.  If false, nearest neighb
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
                 </td>
             
-            
+
             <td class="description last"><p>Blob containing the source GeoTIFF. <code>blob</code> and <code>url</code> are mutually exclusive.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>min</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1635,17 +1578,17 @@ the linear interpolation is used to resample the data.  If false, nearest neighb
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
@@ -1653,20 +1596,20 @@ the linear interpolation is used to resample the data.  If false, nearest neighb
                 
                 </td>
             
-            
+
             <td class="description last"><p>The minimum source data value.  Rendered values are scaled from 0 to 1 based on
 the configured min and max.  If not provided and raster statistics are available, those will be used instead.
 If neither are available, the minimum for the data type will be used.  To disable this behavior, set
 the <code>normalize</code> option to <code>false</code> in the constructor.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>max</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1675,36 +1618,36 @@ the <code>normalize</code> option to <code>false</code> in the constructor.</p><
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
                 </td>
             
-            
+
             <td class="description last"><p>The maximum source data value.  Rendered values are scaled from 0 to 1 based on
 the configured min and max.  If not provided and raster statistics are available, those will be used instead.
 If neither are available, the maximum for the data type will be used.  To disable this behavior, set
 the <code>normalize</code> option to <code>false</code> in the constructor.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>nodata</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1713,36 +1656,36 @@ the <code>normalize</code> option to <code>false</code> in the constructor.</p><
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
                 </td>
             
-            
+
             <td class="description last"><p>Values to discard (overriding any nodata values in the metadata).
 When provided, an additional alpha band will be added to the data.  Often the GeoTIFF metadata
 will include information about nodata values, so you should only need to set this property if
 you find that it is not already extracted from the metadata.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr>
             
                 <td class="name"><code>bands</code></td>
             
-            
+
             <td class="type">
             
                 
@@ -1751,28 +1694,28 @@ you find that it is not already extracted from the metadata.</p></td>
 
             
             </td>
-            
+
             
                 <td class="attributes">
                 
                     &lt;optional><br>
                 
-                    
+
                 
                 </td>
             
-            
+
             
                 <td class="default">
                 
                 </td>
             
-            
+
             <td class="description last"><p>Band numbers to be read from (where the first band is <code>1</code>). If not provided, all bands will
 be read. For example, if a GeoTIFF has blue (1), green (2), red (3), and near-infrared (4) bands, and you only need the
 near-infrared band, configure <code>bands: [4]</code>.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table></dl>

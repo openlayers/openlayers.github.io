@@ -5,7 +5,7 @@
 /***/ (function(__unused_webpack___webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) {
 
 /* harmony import */ var _src_ol_layer_Image_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6291);
-/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1376);
+/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4686);
 /* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(4354);
 /* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7486);
 /* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4703);
@@ -154,14 +154,10 @@ const controlIds = ['hue', 'chroma', 'lightness'];
 controlIds.forEach(function (id) {
   const control = document.getElementById(id);
   const output = document.getElementById(id + 'Out');
-
-  const listener = function () {
+  control.addEventListener('input', function () {
     output.innerText = control.value;
     raster.changed();
-  };
-
-  control.addEventListener('input', listener);
-  control.addEventListener('change', listener);
+  });
   output.innerText = control.value;
   controls[id] = control;
 });

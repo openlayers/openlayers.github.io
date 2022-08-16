@@ -2,82 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script>
-    var gaProperty = 'UA-2577926-1';
-    // Disable tracking if the opt-out cookie exists.
-    var disableStr = 'ga-disable-' + gaProperty;
-    if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-    }
-    function gaOptout() {
-      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = true;
-    }
-    function gaOptoutRevoke() {
-      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = false;
-    }
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
-    </script>
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function() {
-      window.cookieconsent.initialise({
-        'palette': {
-          'popup': {
-            'background': '#eaf7f7',
-            'text': '#5c7291'
-          },
-          'button': {
-            'background': '#56cbdb',
-            'text': '#ffffff'
-          }
-        },
-        'theme': 'edgeless',
-        'type': 'opt-out',
-        'onInitialise': function (status) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onStatusChange': function(status, chosenBefore) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onRevokeChoice': function() {
-          gaOptoutRevoke()
-        }
-      })
-    });
-    </script>
     <title>OpenLayers v7.0.0-dev API - Class: Map</title>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/bootstrap.bundle.min.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
-    <link type="text/css" rel="stylesheet" href="styles/site.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
   </head>
   <body>
     <div class="container-fluid">
       <header class="navbar navbar-expand-sm navbar-dark mb-3 py-0 fixed-top" role="navigation">
-        <a class="navbar-brand" href="https://openlayers.org/"><img src="logo-70x70.png" alt="">&nbsp;OpenLayers</a>
+        <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -89,14 +32,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="docdropdown">
-              <a class="dropdown-item" href="/en/latest/doc/">Docs</a>
+              <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
                 <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
@@ -104,7 +47,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
               <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
@@ -135,7 +78,6 @@
             <li data-name="changed"><a href="module-ol_Map-Map.html#changed">changed</a>
             <li data-name="dispatchevent"><a href="module-ol_Map-Map.html#dispatchEvent">dispatchEvent</a>
             <li data-name="foreachfeatureatpixel"><a href="module-ol_Map-Map.html#forEachFeatureAtPixel">forEachFeatureAtPixel</a>
-            <li data-name="foreachlayeratpixel"><a href="module-ol_Map-Map.html#forEachLayerAtPixel">forEachLayerAtPixel</a>
             <li data-name="get"><a href="module-ol_Map-Map.html#get">get</a>
             <li data-name="getalllayers"><a href="module-ol_Map-Map.html#getAllLayers">getAllLayers</a>
             <li data-name="getcontrols"><a href="module-ol_Map-Map.html#getControls">getControls</a>
@@ -243,34 +185,34 @@ import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 
-var map = new Map({
+const map = new Map({
   view: new View({
     center: [0, 0],
-    zoom: 1
+    zoom: 1,
   }),
   layers: [
     new TileLayer({
-      source: new OSM()
-    })
+      source: new OSM(),
+    }),
   ],
-  target: 'map'
-});</code></pre><p>The above snippet creates a map using a <a href="module-ol_layer_Tile-TileLayer.html"><code>module:ol/layer/Tile~TileLayer</code></a> to
-display <a href="module-ol_source_OSM-OSM.html"><code>module:ol/source/OSM~OSM</code></a> OSM data and render it to a DOM
+  target: 'map',
+});</code></pre><p>The above snippet creates a map using a <a href="module-ol_layer_Tile-TileLayer.html"><code>TileLayer</code></a> to
+display <a href="module-ol_source_OSM-OSM.html"><code>OSM</code></a> OSM data and render it to a DOM
 element with the id <code>map</code>.</p>
 <p>The constructor places a viewport container (with CSS class name
 <code>ol-viewport</code>) in the target element (see <code>getViewport()</code>), and then two
 further elements within the viewport: one with CSS class name
 <code>ol-overlaycontainer-stopevent</code> for controls and some overlays, and one with
 CSS class name <code>ol-overlaycontainer</code> for other overlays (see the <code>stopEvent</code>
-option of <a href="module-ol_Overlay-Overlay.html"><code>module:ol/Overlay~Overlay</code></a> for the difference). The map
+option of <a href="module-ol_Overlay-Overlay.html"><code>Overlay</code></a> for the difference). The map
 itself is placed in a further element within the viewport.</p>
-<p>Layers are stored as a <a href="module-ol_Collection-Collection.html"><code>module:ol/Collection~Collection</code></a> in
+<p>Layers are stored as a <a href="module-ol_Collection-Collection.html"><code>Collection</code></a> in
 layerGroups. A top-level group is provided by the library. This is what is
 accessed by <code>getLayerGroup</code> and <code>setLayerGroup</code>. Layers entered in the
 options are added to this group, and <code>addLayer</code> and <code>removeLayer</code> change the
 layer collection in the group. <code>getLayers</code> is a convenience function for
-<code>getLayerGroup().getLayers()</code>. Note that <a href="module-ol_layer_Group-LayerGroup.html"><code>module:ol/layer/Group~LayerGroup</code></a>
-is a subclass of <a href="module-ol_layer_Base-BaseLayer.html"><code>module:ol/layer/Base~BaseLayer</code></a>, so layers entered in the
+<code>getLayerGroup().getLayers()</code>. Note that <a href="module-ol_layer_Group-LayerGroup.html"><code>LayerGroup</code></a>
+is a subclass of <a href="module-ol_layer_Base-BaseLayer.html"><code>BaseLayer</code></a>, so layers entered in the
 options or added with <code>addLayer</code> can be groups, which can contain further
 groups, and so on.</p></div>
     
@@ -290,7 +232,7 @@ groups, and so on.</p></div>
         <div class="anchor" id="Map">
         </div>
         <h4 class="name">
-            new Map<span class="signature">(options)</span>
+            new Map<span class="signature">(<span class="optional">options</span>)</span>
             
             
 
@@ -298,7 +240,7 @@ groups, and so on.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L57">line 57</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L235">line 235</a>
         </div>
         
     </div>
@@ -325,21 +267,21 @@ groups, and so on.</p></div>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -353,29 +295,29 @@ groups, and so on.</p></div>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>controls</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Collection-Collection.html">module:ol/Collection~Collection</a>.&lt;<a href="module-ol_control_Control-Control.html">module:ol/control/Control~Control</a>></span>
+<span class="param-type"><a href="module-ol_Collection-Collection.html">Collection</a><<a href="module-ol_control_Control-Control.html">Control</a>></span>
 |
 
-<span class="param-type">Array.&lt;<a href="module-ol_control_Control-Control.html">module:ol/control/Control~Control</a>></span>
+<span class="param-type">Array<<a href="module-ol_control_Control-Control.html">Control</a>></span>
 
  | undefined
                 
@@ -387,16 +329,16 @@ groups, and so on.</p></div>
             <td  class="description last">
                 
                 <p>Controls initially added to the map. If not specified,
-<a href="module-ol_control.html#.defaults"><code>module:ol/control.defaults</code></a> is used.</p></td>
+<a href="module-ol_control_defaults.html#.defaults"><code>defaults</code></a> is used.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>pixelRatio</code></td>
             
-            
+
             
             <td class="type">
             
@@ -417,22 +359,22 @@ groups, and so on.</p></div>
                 <p>The ratio between
 physical pixels and device-independent pixels (dips) on the device.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>interactions</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Collection-Collection.html">module:ol/Collection~Collection</a>.&lt;<a href="module-ol_interaction_Interaction-Interaction.html">module:ol/interaction/Interaction~Interaction</a>></span>
+<span class="param-type"><a href="module-ol_Collection-Collection.html">Collection</a><<a href="module-ol_interaction_Interaction-Interaction.html">Interaction</a>></span>
 |
 
-<span class="param-type">Array.&lt;<a href="module-ol_interaction_Interaction-Interaction.html">module:ol/interaction/Interaction~Interaction</a>></span>
+<span class="param-type">Array<<a href="module-ol_interaction_Interaction-Interaction.html">Interaction</a>></span>
 
  | undefined
                 
@@ -444,16 +386,16 @@ physical pixels and device-independent pixels (dips) on the device.</p></td>
             <td  class="description last">
                 
                 <p>Interactions that are initially added to the map. If not specified,
-<a href="module-ol_interaction.html#.defaults"><code>module:ol/interaction.defaults</code></a> is used.</p></td>
+<a href="module-ol_interaction_defaults.html#.defaults"><code>defaults</code></a> is used.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>keyboardEventTarget</code></td>
             
-            
+
             
             <td class="type">
             
@@ -484,25 +426,25 @@ map target (i.e. the user-provided div for the map). If this is not
 <code>document</code>, the target element needs to be focused for key events to be
 emitted, requiring that the target element has a <code>tabindex</code> attribute.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>layers</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="module-ol_layer_Base-BaseLayer.html">module:ol/layer/Base~BaseLayer</a>></span>
+<span class="param-type">Array<<a href="module-ol_layer_Base-BaseLayer.html">BaseLayer</a>></span>
 |
 
-<span class="param-type"><a href="module-ol_Collection-Collection.html">module:ol/Collection~Collection</a>.&lt;<a href="module-ol_layer_Base-BaseLayer.html">module:ol/layer/Base~BaseLayer</a>></span>
+<span class="param-type"><a href="module-ol_Collection-Collection.html">Collection</a><<a href="module-ol_layer_Base-BaseLayer.html">BaseLayer</a>></span>
 |
 
-<span class="param-type"><a href="module-ol_layer_Group-LayerGroup.html">module:ol/layer/Group~LayerGroup</a></span>
+<span class="param-type"><a href="module-ol_layer_Group-LayerGroup.html">LayerGroup</a></span>
 
  | undefined
                 
@@ -518,14 +460,14 @@ that layers are rendered in the order supplied, so if you want, for example,
 a vector layer to appear on top of a tile layer, it must come after the tile
 layer.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>maxTilesLoading</code></td>
             
-            
+
             
             <td class="type">
             
@@ -546,14 +488,14 @@ layer.</p></td>
                 <p>Maximum number tiles to load
 simultaneously.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>moveTolerance</code></td>
             
-            
+
             
             <td class="type">
             
@@ -575,22 +517,22 @@ simultaneously.</p></td>
 cursor must move to be detected as a map move event instead of a click.
 Increasing this value can make it easier to click on the map.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>overlays</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Collection-Collection.html">module:ol/Collection~Collection</a>.&lt;<a href="module-ol_Overlay-Overlay.html">module:ol/Overlay~Overlay</a>></span>
+<span class="param-type"><a href="module-ol_Collection-Collection.html">Collection</a><<a href="module-ol_Overlay-Overlay.html">Overlay</a>></span>
 |
 
-<span class="param-type">Array.&lt;<a href="module-ol_Overlay-Overlay.html">module:ol/Overlay~Overlay</a>></span>
+<span class="param-type">Array<<a href="module-ol_Overlay-Overlay.html">Overlay</a>></span>
 
  | undefined
                 
@@ -603,14 +545,14 @@ Increasing this value can make it easier to click on the map.</p></td>
                 
                 <p>Overlays initially added to the map. By default, no overlays are added.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>target</code></td>
             
-            
+
             
             <td class="type">
             
@@ -631,25 +573,25 @@ Increasing this value can make it easier to click on the map.</p></td>
                 
                 <p>The container for the map, either the
 element itself or the <code>id</code> of the element. If not specified at construction
-time, <a href="module-ol_Map-Map.html#setTarget"><code>module:ol/Map~Map#setTarget</code></a> must be called for the map to be
+time, <a href="module-ol_Map-Map.html#setTarget"><code>setTarget</code></a> must be called for the map to be
 rendered. If passed by element, the container can be in a secondary document.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>view</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_View-View.html">module:ol/View~View</a></span>
+<span class="param-type"><a href="module-ol_View-View.html">View</a></span>
 |
 
-<span class="param-type">Promise.&lt;<a href="module-ol_View.html#~ViewOptions">module:ol/View~ViewOptions</a>></span>
+<span class="param-type">Promise<<a href="module-ol_View.html#~ViewOptions">ViewOptions</a>></span>
 
  | undefined
                 
@@ -662,15 +604,15 @@ rendered. If passed by element, the container can be in a secondary document.</p
                 
                 <p>The map's view.  No layer sources will be
 fetched unless this is specified at construction time or through
-<a href="module-ol_Map-Map.html#setView"><code>module:ol/Map~Map#setView</code></a>.</p></td>
+<a href="module-ol_Map-Map.html#setView"><code>setView</code></a>.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -709,7 +651,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code><a href="module-ol_events_Event-BaseEvent.html#event:change">change</a></code>
             
-              (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
             
             
 
@@ -721,7 +663,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code>change:layerGroup</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -731,7 +673,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code>change:size</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -741,7 +683,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code>change:target</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -751,7 +693,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code>change:view</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -761,7 +703,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code><a href="module-ol_MapBrowserEvent-MapBrowserEvent.html#event:click">click</a></code>
             
-              (<a href="module-ol_MapBrowserEvent-MapBrowserEvent.html">module:ol/MapBrowserEvent~MapBrowserEvent</a>)
+              (<a href="module-ol_MapBrowserEvent-MapBrowserEvent.html">MapBrowserEvent</a>)
             
             
 
@@ -773,7 +715,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code><a href="module-ol_MapBrowserEvent-MapBrowserEvent.html#event:dblclick">dblclick</a></code>
             
-              (<a href="module-ol_MapBrowserEvent-MapBrowserEvent.html">module:ol/MapBrowserEvent~MapBrowserEvent</a>)
+              (<a href="module-ol_MapBrowserEvent-MapBrowserEvent.html">MapBrowserEvent</a>)
             
             
 
@@ -785,7 +727,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a></code>
             
-              (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
             
             
 
@@ -797,7 +739,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code><a href="module-ol_MapEvent-MapEvent.html#event:loadend">loadend</a></code>
             
-              (<a href="module-ol_MapEvent-MapEvent.html">module:ol/MapEvent~MapEvent</a>)
+              (<a href="module-ol_MapEvent-MapEvent.html">MapEvent</a>)
             
             
 
@@ -809,7 +751,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code><a href="module-ol_MapEvent-MapEvent.html#event:loadstart">loadstart</a></code>
             
-              (<a href="module-ol_MapEvent-MapEvent.html">module:ol/MapEvent~MapEvent</a>)
+              (<a href="module-ol_MapEvent-MapEvent.html">MapEvent</a>)
             
             
 
@@ -821,7 +763,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code><a href="module-ol_MapEvent-MapEvent.html#event:moveend">moveend</a></code>
             
-              (<a href="module-ol_MapEvent-MapEvent.html">module:ol/MapEvent~MapEvent</a>)
+              (<a href="module-ol_MapEvent-MapEvent.html">MapEvent</a>)
             
             
 
@@ -833,7 +775,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code><a href="module-ol_MapEvent-MapEvent.html#event:movestart">movestart</a></code>
             
-              (<a href="module-ol_MapEvent-MapEvent.html">module:ol/MapEvent~MapEvent</a>)
+              (<a href="module-ol_MapEvent-MapEvent.html">MapEvent</a>)
             
             
 
@@ -845,7 +787,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code><a href="module-ol_MapBrowserEvent-MapBrowserEvent.html#event:pointerdrag">pointerdrag</a></code>
             
-              (<a href="module-ol_MapBrowserEvent-MapBrowserEvent.html">module:ol/MapBrowserEvent~MapBrowserEvent</a>)
+              (<a href="module-ol_MapBrowserEvent-MapBrowserEvent.html">MapBrowserEvent</a>)
             
             
 
@@ -857,7 +799,7 @@ fetched unless this is specified at construction time or through
         <li class="">
             <code><a href="module-ol_MapBrowserEvent-MapBrowserEvent.html#event:pointermove">pointermove</a></code>
             
-              (<a href="module-ol_MapBrowserEvent-MapBrowserEvent.html">module:ol/MapBrowserEvent~MapBrowserEvent</a>)
+              (<a href="module-ol_MapBrowserEvent-MapBrowserEvent.html">MapBrowserEvent</a>)
             
             
 
@@ -870,7 +812,7 @@ triggered when the map is panned, so is not the same as mousemove.
         <li class="">
             <code><a href="module-ol_render_Event-RenderEvent.html#event:postcompose">postcompose</a></code>
             
-              (<a href="module-ol_render_Event-RenderEvent.html">module:ol/render/Event~RenderEvent</a>)
+              (<a href="module-ol_render_Event-RenderEvent.html">RenderEvent</a>)
             
             
 
@@ -884,7 +826,7 @@ WebGL layers currently dispatch this event.
         <li class="">
             <code><a href="module-ol_MapEvent-MapEvent.html#event:postrender">postrender</a></code>
             
-              (<a href="module-ol_MapEvent-MapEvent.html">module:ol/MapEvent~MapEvent</a>)
+              (<a href="module-ol_MapEvent-MapEvent.html">MapEvent</a>)
             
             
 
@@ -896,7 +838,7 @@ WebGL layers currently dispatch this event.
         <li class="">
             <code><a href="module-ol_render_Event-RenderEvent.html#event:precompose">precompose</a></code>
             
-              (<a href="module-ol_render_Event-RenderEvent.html">module:ol/render/Event~RenderEvent</a>)
+              (<a href="module-ol_render_Event-RenderEvent.html">RenderEvent</a>)
             
             
 
@@ -910,7 +852,7 @@ WebGL layers currently dispatch this event.
         <li class="">
             <code><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a></code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -922,7 +864,7 @@ WebGL layers currently dispatch this event.
         <li class="">
             <code><a href="module-ol_render_Event-RenderEvent.html#event:rendercomplete">rendercomplete</a></code>
             
-              (<a href="module-ol_render_Event-RenderEvent.html">module:ol/render/Event~RenderEvent</a>)
+              (<a href="module-ol_render_Event-RenderEvent.html">RenderEvent</a>)
             
             
 
@@ -936,7 +878,7 @@ The event object will not have a context set.
         <li class="">
             <code><a href="module-ol_MapBrowserEvent-MapBrowserEvent.html#event:singleclick">singleclick</a></code>
             
-              (<a href="module-ol_MapBrowserEvent-MapBrowserEvent.html">module:ol/MapBrowserEvent~MapBrowserEvent</a>)
+              (<a href="module-ol_MapBrowserEvent-MapBrowserEvent.html">MapBrowserEvent</a>)
             
             
 
@@ -969,7 +911,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
         <h3 class="subsection-title">Extends</h3>
 
         <ul>
-            <li><a href="module-ol_PluggableMap-PluggableMap.html">module:ol/PluggableMap~PluggableMap</a></li>
+            <li><a href="module-ol_Object-BaseObject.html">BaseObject</a></li>
         </ul>
     
 
@@ -991,7 +933,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
     <th>Name</th>
     <th>Type</th>
     <th>Settable</th>
-    <th><a href="module-ol_Object.ObjectEvent.html">ol/Object.ObjectEvent</a> type</th>
+    <th><a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a> type</th>
     <th class="last">Description</th>
   </tr>
   </thead>
@@ -1004,7 +946,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
       <td class="type">
       
       
-<span class="param-type"><a href="module-ol_layer_Group-LayerGroup.html">module:ol/layer/Group~LayerGroup</a></span>
+<span class="param-type"><a href="module-ol_layer_Group-LayerGroup.html">LayerGroup</a></span>
 
 
       
@@ -1020,7 +962,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
       <td class="type">
       
       
-<span class="param-type"><a href="module-ol_size.html#~Size">module:ol/size~Size</a></span>
+<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 |
 
 <span class="param-type">undefined</span>
@@ -1062,7 +1004,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
       <td class="type">
       
       
-<span class="param-type"><a href="module-ol_View-View.html">module:ol/View~View</a></span>
+<span class="param-type"><a href="module-ol_View-View.html">View</a></span>
 
 
       
@@ -1088,21 +1030,19 @@ event is delayed by 250 ms to ensure that it is not a double click.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="addControl">
         </div>
         <h4 class="name">
             addControl<span class="signature">(control)</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#addControl">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L544">line 544</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L581">line 581</a>
         </div>
         
     </div>
@@ -1133,26 +1073,26 @@ event is delayed by 250 ms to ensure that it is not a double click.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>control</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_control_Control-Control.html">module:ol/control/Control~Control</a></span>
+<span class="param-type"><a href="module-ol_control_Control-Control.html">Control</a></span>
 
 
                 
@@ -1165,7 +1105,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
                 
                 <p>Control.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1216,21 +1156,19 @@ event is delayed by 250 ms to ensure that it is not a double click.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="addInteraction">
         </div>
         <h4 class="name">
             addInteraction<span class="signature">(interaction)</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#addInteraction">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L557">line 557</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L594">line 594</a>
         </div>
         
     </div>
@@ -1245,7 +1183,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
     <div class="description">
         <p>Add the given interaction to the map. If you want to add an interaction
 at another point of the collection use <code>getInteractions()</code> and the methods
-available on <a href="module-ol_Collection-Collection.html"><code>module:ol/Collection~Collection</code></a>. This can be used to
+available on <a href="module-ol_Collection-Collection.html"><code>Collection</code></a>. This can be used to
 stop the event propagation from the handleEvent function. The interactions
 get to handle the events in the reverse order of this collection.</p>
     </div>
@@ -1265,26 +1203,26 @@ get to handle the events in the reverse order of this collection.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>interaction</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_interaction_Interaction-Interaction.html">module:ol/interaction/Interaction~Interaction</a></span>
+<span class="param-type"><a href="module-ol_interaction_Interaction-Interaction.html">Interaction</a></span>
 
 
                 
@@ -1297,7 +1235,7 @@ get to handle the events in the reverse order of this collection.</p>
                 
                 <p>Interaction to add.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1348,21 +1286,19 @@ get to handle the events in the reverse order of this collection.</p>
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="addLayer">
         </div>
         <h4 class="name">
             addLayer<span class="signature">(layer)</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#addLayer">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L568">line 568</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L605">line 605</a>
         </div>
         
     </div>
@@ -1377,7 +1313,7 @@ get to handle the events in the reverse order of this collection.</p>
     <div class="description">
         <p>Adds the given layer to the top of this map. If you want to add a layer
 elsewhere in the stack, use <code>getLayers()</code> and the methods available on
-<a href="module-ol_Collection-Collection.html"><code>module:ol/Collection~Collection</code></a>.</p>
+<a href="module-ol_Collection-Collection.html"><code>Collection</code></a>.</p>
     </div>
     
 
@@ -1395,26 +1331,26 @@ elsewhere in the stack, use <code>getLayers()</code> and the methods available o
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>layer</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_layer_Base-BaseLayer.html">module:ol/layer/Base~BaseLayer</a></span>
+<span class="param-type"><a href="module-ol_layer_Base-BaseLayer.html">BaseLayer</a></span>
 
 
                 
@@ -1427,7 +1363,7 @@ elsewhere in the stack, use <code>getLayers()</code> and the methods available o
                 
                 <p>Layer.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1478,21 +1414,19 @@ elsewhere in the stack, use <code>getLayers()</code> and the methods available o
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="addOverlay">
         </div>
         <h4 class="name">
             addOverlay<span class="signature">(overlay)</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#addOverlay">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L586">line 586</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L623">line 623</a>
         </div>
         
     </div>
@@ -1523,26 +1457,26 @@ elsewhere in the stack, use <code>getLayers()</code> and the methods available o
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>overlay</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Overlay-Overlay.html">module:ol/Overlay~Overlay</a></span>
+<span class="param-type"><a href="module-ol_Overlay-Overlay.html">Overlay</a></span>
 
 
                 
@@ -1555,7 +1489,7 @@ elsewhere in the stack, use <code>getLayers()</code> and the methods available o
                 
                 <p>Overlay.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1693,7 +1627,7 @@ elsewhere in the stack, use <code>getLayers()</code> and the methods available o
         <div class="anchor" id="dispatchEvent">
         </div>
         <h4 class="name">
-            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean|undefined}</span>
+            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean | undefined}</span>
             
                 <span class="inherited"><a href="module-ol_events_Target-Target.html#dispatchEvent">inherited</a></span>
             
@@ -1736,26 +1670,26 @@ Object with a <code>type</code> property.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>event</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a></span>
+<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a></span>
 |
 
 <span class="param-type">string</span>
@@ -1771,7 +1705,7 @@ Object with a <code>type</code> property.</p>
                 
                 <p>Event object.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1832,21 +1766,19 @@ Object with a <code>type</code> property.</p>
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="forEachFeatureAtPixel">
         </div>
         <h4 class="name">
-            forEachFeatureAtPixel<span class="signature">(pixel, callback, <span class="optional">opt_options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{T|undefined}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#forEachFeatureAtPixel">inherited</a></span>
+            forEachFeatureAtPixel<span class="signature">(pixel, callback, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{T | undefined}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L633">line 633</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L670">line 670</a>
         </div>
         
     </div>
@@ -1861,7 +1793,7 @@ Object with a <code>type</code> property.</p>
     <div class="description">
         <p>Detect features that intersect a pixel on the viewport, and execute a
 callback with each intersecting feature. Layers included in the detection can
-be configured through the <code>layerFilter</code> option in <code>opt_options</code>.</p>
+be configured through the <code>layerFilter</code> option in <code>options</code>.</p>
     </div>
     
 
@@ -1879,26 +1811,26 @@ be configured through the <code>layerFilter</code> option in <code>opt_options</
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>pixel</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_pixel.html#~Pixel">module:ol/pixel~Pixel</a></span>
+<span class="param-type"><a href="module-ol_pixel.html#~Pixel">Pixel</a></span>
 
 
                 
@@ -1911,14 +1843,14 @@ be configured through the <code>layerFilter</code> option in <code>opt_options</
                 
                 <p>Pixel.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>callback</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1942,14 +1874,14 @@ be configured through the <code>layerFilter</code> option in <code>opt_options</
     unmanaged layers. To stop detection, callback functions can return a
     truthy value.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -1963,21 +1895,21 @@ be configured through the <code>layerFilter</code> option in <code>opt_options</
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>layerFilter</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2002,14 +1934,14 @@ function. The filter function will receive one argument, the
 Only layers which are visible and for which this function returns <code>true</code>
 will be tested for features. By default, all visible layers will be tested.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>hitTolerance</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2030,14 +1962,14 @@ will be tested for features. By default, all visible layers will be tested.</p><
                 <p>Hit-detection tolerance in css pixels. Pixels
 inside the radius around the given position will be checked for features.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>checkWrapped</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2055,16 +1987,16 @@ inside the radius around the given position will be checked for features.</p></t
 
             <td  class="description last">
                 
-                <p>Check-Wrapped Will check for for wrapped geometries inside the range of
+                <p>Check-Wrapped Will check for wrapped geometries inside the range of
   +/- 1 world width. Works only if a projection is used that can be wrapped.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2079,306 +2011,6 @@ inside the radius around the given position will be checked for features.</p></t
     
     
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-    
-
-
-<h5>Returns:</h5>
-Callback result, i.e. the return value of last
-callback execution, or the first truthy callback return value.
-<br />
-
-    
-
-    
-</dd>
-
-        
-            
-            
-<dt class="">
-    
-    <div class="nameContainer inherited">
-        <div class="anchor" id="forEachLayerAtPixel">
-        </div>
-        <h4 class="name">
-            forEachLayerAtPixel<span class="signature">(pixel, callback, <span class="optional">opt_options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{T|undefined}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#forEachLayerAtPixel">inherited</a></span>
-            
-            
-
-        </h4>
-        
-        <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L724">line 724</a>
-        </div>
-        
-    </div>
-    
-    
-</dt>
-<dd class="">
-
-
-
-    
-    <div class="description">
-        <p>Please the <code>layer.getData()</code> method for <a href="module-ol_layer_Tile-TileLayer.html#getData"><code>tile layers</code></a> or
-<a href="module-ol_layer_Image-ImageLayer.html#getData"><code>image layers</code></a> instead of using this method.</p>
-<p>Detect layers that have a color value at a pixel on the viewport, and
-execute a callback with each matching layer. Layers included in the
-detection can be configured through <code>opt_layerFilter</code>.</p>
-<p>Note: In maps with more than one layer, this method will typically return pixel data
-representing the composed image of all layers visible at the given pixel – because layers
-will generally share the same rendering context.  To force layers to render separately, and
-to get pixel data representing only one layer at a time, you can assign each layer a unique
-<code>className</code> in its constructor.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>pixel</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_pixel.html#~Pixel">module:ol/pixel~Pixel</a></span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>Pixel.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>callback</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>Layer callback. This callback will receive two arguments: first is the
-    <a href="module-ol_layer_Layer-Layer.html"><code>layer</code></a>, second argument is an array representing
-    [R, G, B, A] pixel values (0 - 255) and will be <code>null</code> for layer types
-    that do not currently support this argument. To stop detection, callback
-    functions can return a truthy value.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            
-
-            <td colspan=2 class="description last">
-                
-                <p>Configuration options.</p>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>layerFilter</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">undefined</span>
-|
-
-<span class="param-type">function</span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>Layer filter
-function. The filter function will receive one argument, the
-<a href="module-ol_layer_Layer-Layer.html"><code>layer-candidate</code></a> and it should return a boolean value.
-Only layers which are visible and for which this function returns <code>true</code>
-will be tested for features. By default, all visible layers will be tested.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>hitTolerance</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-                
-                    (defaults to 0)
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>Hit-detection tolerance in css pixels. Pixels
-inside the radius around the given position will be checked for features.</p></td>
-        </tr>
-	
-	
-	
-        <tr class="">
-            
-                <td class="name"><code>checkWrapped</code></td>
-            
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-                
-                    (defaults to true)
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>Check-Wrapped Will check for for wrapped geometries inside the range of
-  +/- 1 world width. Works only if a projection is used that can be wrapped.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-        <dt class="important tag-deprecated">Deprecated</dt><dd class="yes-def tag-deprecated"><ul class="dummy"><li>Yes</li></ul></dd>
     
     
     
@@ -2470,21 +2102,21 @@ callback execution, or the first truthy callback return value.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2502,7 +2134,7 @@ callback execution, or the first truthy callback return value.
                 
                 <p>Key name.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2562,21 +2194,19 @@ Value.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getAllLayers">
         </div>
         <h4 class="name">
-            getAllLayers<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;<a href="module-ol_layer_Layer-Layer.html">module:ol/layer/Layer~Layer</a>>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getAllLayers">inherited</a></span>
+            getAllLayers<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array<<a href="module-ol_layer_Layer-Layer.html">Layer</a>>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L681">line 681</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L718">line 718</a>
         </div>
         
     </div>
@@ -2654,21 +2284,19 @@ Layers.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getControls">
         </div>
         <h4 class="name">
-            getControls<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Collection-Collection.html">module:ol/Collection~Collection</a>.&lt;<a href="module-ol_control_Control-Control.html">module:ol/control/Control~Control</a>>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getControls">inherited</a></span>
+            getControls<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Collection-Collection.html">Collection</a><<a href="module-ol_control_Control-Control.html">Control</a>>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L880">line 880</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L872">line 872</a>
         </div>
         
     </div>
@@ -2747,21 +2375,19 @@ Controls.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getCoordinateFromPixel">
         </div>
         <h4 class="name">
-            getCoordinateFromPixel<span class="signature">(pixel)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getCoordinateFromPixel">inherited</a></span>
+            getCoordinateFromPixel<span class="signature">(pixel)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L849">line 849</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L841">line 841</a>
         </div>
         
     </div>
@@ -2793,26 +2419,26 @@ user projection.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>pixel</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_pixel.html#~Pixel">module:ol/pixel~Pixel</a></span>
+<span class="param-type"><a href="module-ol_pixel.html#~Pixel">Pixel</a></span>
 
 
                 
@@ -2825,7 +2451,7 @@ user projection.</p>
                 
                 <p>Pixel position in the map viewport.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2885,21 +2511,19 @@ The coordinate for the pixel position.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getEventCoordinate">
         </div>
         <h4 class="name">
-            getEventCoordinate<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getEventCoordinate">inherited</a></span>
+            getEventCoordinate<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L776">line 776</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L768">line 768</a>
         </div>
         
     </div>
@@ -2930,21 +2554,21 @@ The coordinate for the pixel position.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>event</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2962,7 +2586,7 @@ The coordinate for the pixel position.
                 
                 <p>Event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3022,21 +2646,19 @@ Coordinate.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getEventPixel">
         </div>
         <h4 class="name">
-            getEventPixel<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_pixel.html#~Pixel">module:ol/pixel~Pixel</a>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getEventPixel">inherited</a></span>
+            getEventPixel<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_pixel.html#~Pixel">Pixel</a>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L795">line 795</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L787">line 787</a>
         </div>
         
     </div>
@@ -3067,21 +2689,21 @@ Coordinate.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>event</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3099,7 +2721,7 @@ Coordinate.
                 
                 <p>Event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3159,21 +2781,19 @@ Pixel.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getFeaturesAtPixel">
         </div>
         <h4 class="name">
-            getFeaturesAtPixel<span class="signature">(pixel, <span class="optional">opt_options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;<a href="module-ol_Feature.html#~FeatureLike">module:ol/Feature~FeatureLike</a>>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getFeaturesAtPixel">inherited</a></span>
+            getFeaturesAtPixel<span class="signature">(pixel, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array<<a href="module-ol_Feature.html#~FeatureLike">FeatureLike</a>>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L664">line 664</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L701">line 701</a>
         </div>
         
     </div>
@@ -3204,26 +2824,26 @@ Pixel.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>pixel</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_pixel.html#~Pixel">module:ol/pixel~Pixel</a></span>
+<span class="param-type"><a href="module-ol_pixel.html#~Pixel">Pixel</a></span>
 
 
                 
@@ -3236,14 +2856,14 @@ Pixel.
                 
                 <p>Pixel.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -3257,21 +2877,21 @@ Pixel.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>layerFilter</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3296,14 +2916,14 @@ function. The filter function will receive one argument, the
 Only layers which are visible and for which this function returns <code>true</code>
 will be tested for features. By default, all visible layers will be tested.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>hitTolerance</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3324,14 +2944,14 @@ will be tested for features. By default, all visible layers will be tested.</p><
                 <p>Hit-detection tolerance in css pixels. Pixels
 inside the radius around the given position will be checked for features.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>checkWrapped</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3349,16 +2969,16 @@ inside the radius around the given position will be checked for features.</p></t
 
             <td  class="description last">
                 
-                <p>Check-Wrapped Will check for for wrapped geometries inside the range of
+                <p>Check-Wrapped Will check for wrapped geometries inside the range of
   +/- 1 world width. Works only if a projection is used that can be wrapped.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3419,21 +3039,19 @@ an empty array if none were found.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getInteractions">
         </div>
         <h4 class="name">
-            getInteractions<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Collection-Collection.html">module:ol/Collection~Collection</a>.&lt;<a href="module-ol_interaction_Interaction-Interaction.html">module:ol/interaction/Interaction~Interaction</a>>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getInteractions">inherited</a></span>
+            getInteractions<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Collection-Collection.html">Collection</a><<a href="module-ol_interaction_Interaction-Interaction.html">Interaction</a>>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L915">line 915</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L907">line 907</a>
         </div>
         
     </div>
@@ -3605,21 +3223,19 @@ List of property names.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getLayerGroup">
         </div>
         <h4 class="name">
-            getLayerGroup<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_layer_Group-LayerGroup.html">module:ol/layer/Group~LayerGroup</a>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getLayerGroup">inherited</a></span>
+            getLayerGroup<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_layer_Group-LayerGroup.html">LayerGroup</a>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L925">line 925</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L917">line 917</a>
         </div>
         
     </div>
@@ -3697,21 +3313,19 @@ A layer group containing the layers in this map.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getLayers">
         </div>
         <h4 class="name">
-            getLayers<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Collection-Collection.html">module:ol/Collection~Collection</a>.&lt;<a href="module-ol_layer_Base-BaseLayer.html">module:ol/layer/Base~BaseLayer</a>>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getLayers">inherited</a></span>
+            getLayers<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Collection-Collection.html">Collection</a><<a href="module-ol_layer_Base-BaseLayer.html">BaseLayer</a>>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L951">line 951</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L943">line 943</a>
         </div>
         
     </div>
@@ -3789,21 +3403,19 @@ Layers.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getOverlayById">
         </div>
         <h4 class="name">
-            getOverlayById<span class="signature">(id)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Overlay-Overlay.html">module:ol/Overlay~Overlay</a>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getOverlayById">inherited</a></span>
+            getOverlayById<span class="signature">(id)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Overlay-Overlay.html">Overlay</a>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L902">line 902</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L894">line 894</a>
         </div>
         
     </div>
@@ -3836,21 +3448,21 @@ Note that the index treats string and numeric identifiers as the same. So
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>id</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3871,7 +3483,7 @@ Note that the index treats string and numeric identifiers as the same. So
                 
                 <p>Overlay identifier.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3931,21 +3543,19 @@ Overlay.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getOverlays">
         </div>
         <h4 class="name">
-            getOverlays<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Collection-Collection.html">module:ol/Collection~Collection</a>.&lt;<a href="module-ol_Overlay-Overlay.html">module:ol/Overlay~Overlay</a>>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getOverlays">inherited</a></span>
+            getOverlays<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Collection-Collection.html">Collection</a><<a href="module-ol_Overlay-Overlay.html">Overlay</a>>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L890">line 890</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L882">line 882</a>
         </div>
         
     </div>
@@ -4024,21 +3634,19 @@ Overlays.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getPixelFromCoordinate">
         </div>
         <h4 class="name">
-            getPixelFromCoordinate<span class="signature">(coordinate)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_pixel.html#~Pixel">module:ol/pixel~Pixel</a>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getPixelFromCoordinate">inherited</a></span>
+            getPixelFromCoordinate<span class="signature">(coordinate)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_pixel.html#~Pixel">Pixel</a>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L987">line 987</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L977">line 977</a>
         </div>
         
     </div>
@@ -4070,26 +3678,26 @@ projection and returns the corresponding pixel.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>coordinate</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
 
                 
@@ -4102,7 +3710,7 @@ projection and returns the corresponding pixel.</p>
                 
                 <p>A map coordinate.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4347,21 +3955,19 @@ Revision.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getSize">
         </div>
         <h4 class="name">
-            getSize<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_size.html#~Size">module:ol/size~Size</a>|undefined}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getSize">inherited</a></span>
+            getSize<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_size.html#~Size">Size</a> | undefined}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1027">line 1027</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1017">line 1017</a>
         </div>
         
     </div>
@@ -4439,21 +4045,19 @@ The size in pixels of the map in the DOM.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getTarget">
         </div>
         <h4 class="name">
-            getTarget<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{HTMLElement|string|undefined}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getTarget">inherited</a></span>
+            getTarget<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{HTMLElement | string | undefined}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L818">line 818</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L810">line 810</a>
         </div>
         
     </div>
@@ -4534,21 +4138,19 @@ The Element or id of the Element that the
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getTargetElement">
         </div>
         <h4 class="name">
             getTargetElement<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{HTMLElement}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getTargetElement">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L831">line 831</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L823">line 823</a>
         </div>
         
     </div>
@@ -4628,21 +4230,19 @@ The element that the map is rendered in.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getView">
         </div>
         <h4 class="name">
-            getView<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_View-View.html">module:ol/View~View</a>}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getView">inherited</a></span>
+            getView<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_View-View.html">View</a>}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1040">line 1040</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1030">line 1030</a>
         </div>
         
     </div>
@@ -4721,21 +4321,19 @@ The view that controls this map.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="getViewport">
         </div>
         <h4 class="name">
             getViewport<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{HTMLElement}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#getViewport">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1049">line 1049</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1039">line 1039</a>
         </div>
         
     </div>
@@ -4813,21 +4411,19 @@ Viewport.
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="hasFeatureAtPixel">
         </div>
         <h4 class="name">
-            hasFeatureAtPixel<span class="signature">(pixel, <span class="optional">opt_options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#hasFeatureAtPixel">inherited</a></span>
+            hasFeatureAtPixel<span class="signature">(pixel, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L749">line 749</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L741">line 741</a>
         </div>
         
     </div>
@@ -4841,7 +4437,7 @@ Viewport.
     
     <div class="description">
         <p>Detect if features intersect a pixel on the viewport. Layers included in the
-detection can be configured through <code>opt_layerFilter</code>.</p>
+detection can be configured through the <code>layerFilter</code> option.</p>
     </div>
     
 
@@ -4859,26 +4455,26 @@ detection can be configured through <code>opt_layerFilter</code>.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>pixel</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_pixel.html#~Pixel">module:ol/pixel~Pixel</a></span>
+<span class="param-type"><a href="module-ol_pixel.html#~Pixel">Pixel</a></span>
 
 
                 
@@ -4891,14 +4487,14 @@ detection can be configured through <code>opt_layerFilter</code>.</p>
                 
                 <p>Pixel.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -4912,21 +4508,21 @@ detection can be configured through <code>opt_layerFilter</code>.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>layerFilter</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4951,14 +4547,14 @@ function. The filter function will receive one argument, the
 Only layers which are visible and for which this function returns <code>true</code>
 will be tested for features. By default, all visible layers will be tested.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>hitTolerance</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4979,14 +4575,14 @@ will be tested for features. By default, all visible layers will be tested.</p><
                 <p>Hit-detection tolerance in css pixels. Pixels
 inside the radius around the given position will be checked for features.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>checkWrapped</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5004,16 +4600,16 @@ inside the radius around the given position will be checked for features.</p></t
 
             <td  class="description last">
                 
-                <p>Check-Wrapped Will check for for wrapped geometries inside the range of
+                <p>Check-Wrapped Will check for wrapped geometries inside the range of
   +/- 1 world width. Works only if a projection is used that can be wrapped.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5077,7 +4673,7 @@ Is there a feature at the given pixel?
         <div class="anchor" id="on">
         </div>
         <h4 class="name">
-            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>|Array.&lt;<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>>}</span>
+            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array<<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_Observable-Observable.html#on">inherited</a></span>
             
@@ -5118,21 +4714,21 @@ Is there a feature at the given pixel?
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5153,14 +4749,14 @@ Is there a feature at the given pixel?
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5178,7 +4774,7 @@ Is there a feature at the given pixel?
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5244,7 +4840,7 @@ Unique key for the listener. If
         <div class="anchor" id="once">
         </div>
         <h4 class="name">
-            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>|Array.&lt;<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>>}</span>
+            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array<<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_Observable-Observable.html#once">inherited</a></span>
             
@@ -5285,21 +4881,21 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5320,14 +4916,14 @@ Unique key for the listener. If
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5345,7 +4941,7 @@ Unique key for the listener. If
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5407,21 +5003,19 @@ Unique key for the listener. If
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="removeControl">
         </div>
         <h4 class="name">
-            removeControl<span class="signature">(control)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_control_Control-Control.html">module:ol/control/Control~Control</a>|undefined}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#removeControl">inherited</a></span>
+            removeControl<span class="signature">(control)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_control_Control-Control.html">Control</a> | undefined}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1449">line 1449</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1447">line 1447</a>
         </div>
         
     </div>
@@ -5452,26 +5046,26 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>control</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_control_Control-Control.html">module:ol/control/Control~Control</a></span>
+<span class="param-type"><a href="module-ol_control_Control-Control.html">Control</a></span>
 
 
                 
@@ -5484,7 +5078,7 @@ Unique key for the listener. If
                 
                 <p>Control.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5545,21 +5139,19 @@ The removed control (or undefined
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="removeInteraction">
         </div>
         <h4 class="name">
-            removeInteraction<span class="signature">(interaction)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_interaction_Interaction-Interaction.html">module:ol/interaction/Interaction~Interaction</a>|undefined}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#removeInteraction">inherited</a></span>
+            removeInteraction<span class="signature">(interaction)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_interaction_Interaction-Interaction.html">Interaction</a> | undefined}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1460">line 1460</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1458">line 1458</a>
         </div>
         
     </div>
@@ -5590,26 +5182,26 @@ The removed control (or undefined
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>interaction</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_interaction_Interaction-Interaction.html">module:ol/interaction/Interaction~Interaction</a></span>
+<span class="param-type"><a href="module-ol_interaction_Interaction-Interaction.html">Interaction</a></span>
 
 
                 
@@ -5622,7 +5214,7 @@ The removed control (or undefined
                 
                 <p>Interaction to remove.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5683,21 +5275,19 @@ The removed interaction (or
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="removeLayer">
         </div>
         <h4 class="name">
-            removeLayer<span class="signature">(layer)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_layer_Base-BaseLayer.html">module:ol/layer/Base~BaseLayer</a>|undefined}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#removeLayer">inherited</a></span>
+            removeLayer<span class="signature">(layer)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_layer_Base-BaseLayer.html">BaseLayer</a> | undefined}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1471">line 1471</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1469">line 1469</a>
         </div>
         
     </div>
@@ -5728,26 +5318,26 @@ The removed interaction (or
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>layer</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_layer_Base-BaseLayer.html">module:ol/layer/Base~BaseLayer</a></span>
+<span class="param-type"><a href="module-ol_layer_Base-BaseLayer.html">BaseLayer</a></span>
 
 
                 
@@ -5760,7 +5350,7 @@ The removed interaction (or
                 
                 <p>Layer.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5821,21 +5411,19 @@ The removed layer (or undefined if the
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="removeOverlay">
         </div>
         <h4 class="name">
-            removeOverlay<span class="signature">(overlay)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Overlay-Overlay.html">module:ol/Overlay~Overlay</a>|undefined}</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#removeOverlay">inherited</a></span>
+            removeOverlay<span class="signature">(overlay)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Overlay-Overlay.html">Overlay</a> | undefined}</span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1491">line 1491</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1489">line 1489</a>
         </div>
         
     </div>
@@ -5866,26 +5454,26 @@ The removed layer (or undefined if the
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>overlay</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Overlay-Overlay.html">module:ol/Overlay~Overlay</a></span>
+<span class="param-type"><a href="module-ol_Overlay-Overlay.html">Overlay</a></span>
 
 
                 
@@ -5898,7 +5486,7 @@ The removed layer (or undefined if the
                 
                 <p>Overlay.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5959,21 +5547,19 @@ The removed overlay (or undefined
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="render">
         </div>
         <h4 class="name">
             render<span class="signature">()</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#render">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1436">line 1436</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1434">line 1434</a>
         </div>
         
     </div>
@@ -6042,21 +5628,19 @@ The removed overlay (or undefined
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="renderSync">
         </div>
         <h4 class="name">
             renderSync<span class="signature">()</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#renderSync">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1412">line 1412</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1410">line 1410</a>
         </div>
         
     </div>
@@ -6129,7 +5713,7 @@ The removed overlay (or undefined
         <div class="anchor" id="set">
         </div>
         <h4 class="name">
-            set<span class="signature">(key, value, <span class="optional">opt_silent</span>)</span>
+            set<span class="signature">(key, value, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#set">inherited</a></span>
             
@@ -6170,21 +5754,21 @@ The removed overlay (or undefined
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -6202,14 +5786,14 @@ The removed overlay (or undefined
                 
                 <p>Key name.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>value</code></td>
             
-            
+
             
             <td class="type">
             
@@ -6227,14 +5811,14 @@ The removed overlay (or undefined
                 
                 <p>Value.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -6252,7 +5836,7 @@ The removed overlay (or undefined
                 
                 <p>Update without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -6303,21 +5887,19 @@ The removed overlay (or undefined
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="setLayerGroup">
         </div>
         <h4 class="name">
             setLayerGroup<span class="signature">(layerGroup)</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#setLayerGroup">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1616">line 1616</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1612">line 1612</a>
         </div>
         
     </div>
@@ -6348,26 +5930,26 @@ The removed overlay (or undefined
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>layerGroup</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_layer_Group-LayerGroup.html">module:ol/layer/Group~LayerGroup</a></span>
+<span class="param-type"><a href="module-ol_layer_Group-LayerGroup.html">LayerGroup</a></span>
 
 
                 
@@ -6380,7 +5962,7 @@ The removed overlay (or undefined
                 
                 <p>A layer group containing the layers in this map.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -6431,21 +6013,19 @@ The removed overlay (or undefined
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="setLayers">
         </div>
         <h4 class="name">
             setLayers<span class="signature">(layers)</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#setLayers">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L934">line 934</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L926">line 926</a>
         </div>
         
     </div>
@@ -6476,29 +6056,29 @@ The removed overlay (or undefined
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>layers</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="module-ol_layer_Base-BaseLayer.html">module:ol/layer/Base~BaseLayer</a>></span>
+<span class="param-type">Array<<a href="module-ol_layer_Base-BaseLayer.html">BaseLayer</a>></span>
 |
 
-<span class="param-type"><a href="module-ol_Collection-Collection.html">module:ol/Collection~Collection</a>.&lt;<a href="module-ol_layer_Base-BaseLayer.html">module:ol/layer/Base~BaseLayer</a>></span>
+<span class="param-type"><a href="module-ol_Collection-Collection.html">Collection</a><<a href="module-ol_layer_Base-BaseLayer.html">BaseLayer</a>></span>
 
 
                 
@@ -6511,7 +6091,7 @@ The removed overlay (or undefined
                 
                 <p>The layers to be added to the map.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -6566,7 +6146,7 @@ The removed overlay (or undefined
         <div class="anchor" id="setProperties">
         </div>
         <h4 class="name">
-            setProperties<span class="signature">(values, <span class="optional">opt_silent</span>)</span>
+            setProperties<span class="signature">(values, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#setProperties">inherited</a></span>
             
@@ -6608,21 +6188,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>values</code></td>
             
-            
+
             
             <td class="type">
             
@@ -6640,14 +6220,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Values.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -6665,7 +6245,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Update without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -6716,21 +6296,19 @@ properties and adds new ones (it does not remove any existing properties).</p>
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="setSize">
         </div>
         <h4 class="name">
             setSize<span class="signature">(size)</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#setSize">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1630">line 1630</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1626">line 1626</a>
         </div>
         
     </div>
@@ -6761,26 +6339,26 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>size</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_size.html#~Size">module:ol/size~Size</a></span>
+<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 |
 
 <span class="param-type">undefined</span>
@@ -6796,7 +6374,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>The size in pixels of the map in the DOM.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -6847,21 +6425,19 @@ properties and adds new ones (it does not remove any existing properties).</p>
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="setTarget">
         </div>
         <h4 class="name">
             setTarget<span class="signature">(<span class="optional">target</span>)</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#setTarget">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1641">line 1641</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1637">line 1637</a>
         </div>
         
     </div>
@@ -6892,21 +6468,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>target</code></td>
             
-            
+
             
             <td class="type">
             
@@ -6928,7 +6504,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 <p>The Element or id of the Element
     that the map is rendered in.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -6979,21 +6555,19 @@ properties and adds new ones (it does not remove any existing properties).</p>
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="setView">
         </div>
         <h4 class="name">
             setView<span class="signature">(view)</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#setView">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1654">line 1654</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1650">line 1650</a>
         </div>
         
     </div>
@@ -7024,29 +6598,29 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>view</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_View-View.html">module:ol/View~View</a></span>
+<span class="param-type"><a href="module-ol_View-View.html">View</a></span>
 |
 
-<span class="param-type">Promise.&lt;<a href="module-ol_View.html#~ViewOptions">module:ol/View~ViewOptions</a>></span>
+<span class="param-type">Promise<<a href="module-ol_View.html#~ViewOptions">ViewOptions</a>></span>
 
 
                 
@@ -7062,7 +6636,7 @@ It is also possible to pass a promise that resolves to options for constructing 
 alternative allows view properties to be resolved by sources or other components that load
 view-related metadata.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -7158,21 +6732,21 @@ view-related metadata.</p></td>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -7193,14 +6767,14 @@ view-related metadata.</p></td>
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -7218,7 +6792,7 @@ view-related metadata.</p></td>
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -7273,7 +6847,7 @@ view-related metadata.</p></td>
         <div class="anchor" id="unset">
         </div>
         <h4 class="name">
-            unset<span class="signature">(key, <span class="optional">opt_silent</span>)</span>
+            unset<span class="signature">(key, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#unset">inherited</a></span>
             
@@ -7314,21 +6888,21 @@ view-related metadata.</p></td>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -7346,14 +6920,14 @@ view-related metadata.</p></td>
                 
                 <p>Key name.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -7371,7 +6945,7 @@ view-related metadata.</p></td>
                 
                 <p>Unset without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -7422,21 +6996,19 @@ view-related metadata.</p></td>
             
 <dt class="">
     
-    <div class="nameContainer inherited">
+    <div class="nameContainer">
         <div class="anchor" id="updateSize">
         </div>
         <h4 class="name">
             updateSize<span class="signature">()</span>
-            
-                <span class="inherited"><a href="module-ol_PluggableMap-PluggableMap.html#updateSize">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js">PluggableMap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/PluggableMap.js#L1672">line 1672</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1668">line 1668</a>
         </div>
         
     </div>

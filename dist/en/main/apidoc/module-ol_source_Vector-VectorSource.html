@@ -2,82 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script>
-    var gaProperty = 'UA-2577926-1';
-    // Disable tracking if the opt-out cookie exists.
-    var disableStr = 'ga-disable-' + gaProperty;
-    if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-    }
-    function gaOptout() {
-      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = true;
-    }
-    function gaOptoutRevoke() {
-      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = false;
-    }
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
-    </script>
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function() {
-      window.cookieconsent.initialise({
-        'palette': {
-          'popup': {
-            'background': '#eaf7f7',
-            'text': '#5c7291'
-          },
-          'button': {
-            'background': '#56cbdb',
-            'text': '#ffffff'
-          }
-        },
-        'theme': 'edgeless',
-        'type': 'opt-out',
-        'onInitialise': function (status) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onStatusChange': function(status, chosenBefore) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onRevokeChoice': function() {
-          gaOptoutRevoke()
-        }
-      })
-    });
-    </script>
     <title>OpenLayers v7.0.0-dev API - Class: VectorSource</title>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/bootstrap.bundle.min.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
-    <link type="text/css" rel="stylesheet" href="styles/site.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
   </head>
   <body>
     <div class="container-fluid">
       <header class="navbar navbar-expand-sm navbar-dark mb-3 py-0 fixed-top" role="navigation">
-        <a class="navbar-brand" href="https://openlayers.org/"><img src="logo-70x70.png" alt="">&nbsp;OpenLayers</a>
+        <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -89,14 +32,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="docdropdown">
-              <a class="dropdown-item" href="/en/latest/doc/">Docs</a>
+              <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
                 <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
@@ -104,7 +47,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
               <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
@@ -217,7 +160,7 @@
       </div>
     
       <div class="class-description col-lg-7 align-self-center pl-0"><p>Provides a source of features for vector layers. Vector features provided
-by this source are suitable for editing. See <a href="module-ol_source_VectorTile-VectorTile.html"><code>module:ol/source/VectorTile~VectorTile</code></a> for
+by this source are suitable for editing. See <a href="module-ol_source_VectorTile-VectorTile.html"><code>VectorTile</code></a> for
 vector data that is optimized for rendering.</p></div>
     
     </div>
@@ -236,7 +179,7 @@ vector data that is optimized for rendering.</p></div>
         <div class="anchor" id="VectorSource">
         </div>
         <h4 class="name">
-            new VectorSource<span class="signature">(<span class="optional">opt_options</span>)</span>
+            new VectorSource<span class="signature">(<span class="optional">options</span>)</span>
             
             
 
@@ -244,7 +187,7 @@ vector data that is optimized for rendering.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L174">line 174</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L175">line 175</a>
         </div>
         
     </div>
@@ -271,21 +214,21 @@ vector data that is optimized for rendering.</p></div>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -299,26 +242,26 @@ vector data that is optimized for rendering.</p></div>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>attributions</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">module:ol/source/Source~AttributionLike</a></span>
+<span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">AttributionLike</a></span>
 
  | undefined
                 
@@ -331,22 +274,22 @@ vector data that is optimized for rendering.</p></div>
                 
                 <p>Attributions.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>features</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>></span>
+<span class="param-type">Array<<a href="module-ol_Feature-Feature.html">Feature</a><Geometry>></span>
 |
 
-<span class="param-type"><a href="module-ol_Collection-Collection.html">module:ol/Collection~Collection</a>.&lt;<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>></span>
+<span class="param-type"><a href="module-ol_Collection-Collection.html">Collection</a><<a href="module-ol_Feature-Feature.html">Feature</a><Geometry>></span>
 
  | undefined
                 
@@ -357,22 +300,22 @@ vector data that is optimized for rendering.</p></div>
 
             <td  class="description last">
                 
-                <p>Features. If provided as <a href="module-ol_Collection-Collection.html"><code>module:ol/Collection~Collection</code></a>, the features in the source
+                <p>Features. If provided as <a href="module-ol_Collection-Collection.html"><code>Collection</code></a>, the features in the source
 and the collection will stay in sync.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>format</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_format_Feature-FeatureFormat.html">module:ol/format/Feature~FeatureFormat</a></span>
+<span class="param-type"><a href="module-ol_format_Feature-FeatureFormat.html">FeatureFormat</a></span>
 
  | undefined
                 
@@ -386,19 +329,19 @@ and the collection will stay in sync.</p></td>
                 <p>The feature format used by the XHR
 feature loader when <code>url</code> is set. Required if <code>url</code> is set, otherwise ignored.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>loader</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_featureloader.html#~FeatureLoader">module:ol/featureloader~FeatureLoader</a></span>
+<span class="param-type"><a href="module-ol_featureloader.html#~FeatureLoader">FeatureLoader</a></span>
 
  | undefined
                 
@@ -418,24 +361,24 @@ will only fire if the <code>success</code> and <code>failure</code> callbacks ar
 import {GeoJSON} from 'ol/format';
 import {bbox} from 'ol/loadingstrategy';
 
-var vectorSource = new Vector({
+const vectorSource = new Vector({
   format: new GeoJSON(),
   loader: function(extent, resolution, projection, success, failure) {
-     var proj = projection.getCode();
-     var url = 'https://ahocevar.com/geoserver/wfs?service=WFS&' +
+     const proj = projection.getCode();
+     const url = 'https://ahocevar.com/geoserver/wfs?service=WFS&' +
          'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
          'outputFormat=application/json&srsname=' + proj + '&' +
          'bbox=' + extent.join(',') + ',' + proj;
-     var xhr = new XMLHttpRequest();
+     const xhr = new XMLHttpRequest();
      xhr.open('GET', url);
-     var onError = function() {
+     const onError = function() {
        vectorSource.removeLoadedExtent(extent);
        failure();
      }
      xhr.onerror = onError;
      xhr.onload = function() {
        if (xhr.status == 200) {
-         var features = vectorSource.getFormat().readFeatures(xhr.responseText);
+         const features = vectorSource.getFormat().readFeatures(xhr.responseText);
          vectorSource.addFeatures(features);
          success(features);
        } else {
@@ -444,17 +387,17 @@ var vectorSource = new Vector({
      }
      xhr.send();
    },
-   strategy: bbox
+   strategy: bbox,
  });</code></pre></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>overlaps</code></td>
             
-            
+
             
             <td class="type">
             
@@ -477,19 +420,19 @@ Setting this to <code>false</code> (e.g. for sources with polygons that represen
 boundaries or TopoJSON sources) allows the renderer to optimise fill and
 stroke operations.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>strategy</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_source_Vector.html#~LoadingStrategy">module:ol/source/Vector~LoadingStrategy</a></span>
+<span class="param-type"><a href="module-ol_source_Vector.html#~LoadingStrategy">LoadingStrategy</a></span>
 
  | undefined
                 
@@ -501,17 +444,17 @@ stroke operations.</p></td>
             <td  class="description last">
                 
                 <p>The loading strategy to use.
-By default an <a href="module-ol_loadingstrategy.html#.all"><code>module:ol/loadingstrategy.all</code></a>
+By default an <a href="module-ol_loadingstrategy.html#.all"><code>all</code></a>
 strategy is used, a one-off strategy which loads all features at once.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>url</code></td>
             
-            
+
             
             <td class="type">
             
@@ -519,7 +462,7 @@ strategy is used, a one-off strategy which loads all features at once.</p></td>
 <span class="param-type">string</span>
 |
 
-<span class="param-type"><a href="module-ol_featureloader.html#~FeatureUrlFunction">module:ol/featureloader~FeatureUrlFunction</a></span>
+<span class="param-type"><a href="module-ol_featureloader.html#~FeatureUrlFunction">FeatureUrlFunction</a></span>
 
  | undefined
                 
@@ -531,9 +474,9 @@ strategy is used, a one-off strategy which loads all features at once.</p></td>
             <td  class="description last">
                 
                 <p>Setting this option instructs the source to load features using an XHR loader
-(see <a href="module-ol_featureloader.html#.xhr"><code>module:ol/featureloader.xhr</code></a>). Use a <code>string</code> and an
-<a href="module-ol_loadingstrategy.html#.all"><code>module:ol/loadingstrategy.all</code></a> for a one-off download of all features from
-the given URL. Use a <a href="module-ol_featureloader.html#~FeatureUrlFunction"><code>module:ol/featureloader~FeatureUrlFunction</code></a> to generate the url with
+(see <a href="module-ol_featureloader.html#.xhr"><code>xhr</code></a>). Use a <code>string</code> and an
+<a href="module-ol_loadingstrategy.html#.all"><code>all</code></a> for a one-off download of all features from
+the given URL. Use a <a href="module-ol_featureloader.html#~FeatureUrlFunction"><code>FeatureUrlFunction</code></a> to generate the url with
 other loading strategies.
 Requires <code>format</code> to be set as well.
 When default XHR feature loader is provided, the features will
@@ -545,14 +488,14 @@ dataProjection constructor option on the format.
 Note that if a source contains non-feature data, such as a GeoJSON geometry
 or a KML NetworkLink, these will be ignored. Use a custom loader to load these.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>useSpatialIndex</code></td>
             
-            
+
             
             <td class="type">
             
@@ -574,23 +517,23 @@ or a KML NetworkLink, these will be ignored. Use a custom loader to load these.<
 added frequently, and the total number of features is low, setting this to
 <code>false</code> may improve performance.</p>
 <p>Note that
-<a href="module-ol_source_Vector-VectorSource.html#getFeaturesInExtent"><code>module:ol/source/Vector~VectorSource#getFeaturesInExtent</code></a>,
-<a href="module-ol_source_Vector-VectorSource.html#getClosestFeatureToCoordinate"><code>module:ol/source/Vector~VectorSource#getClosestFeatureToCoordinate</code></a> and
-<a href="module-ol_source_Vector-VectorSource.html#getExtent"><code>module:ol/source/Vector~VectorSource#getExtent</code></a> cannot be used when <code>useSpatialIndex</code> is
-set to <code>false</code>, and <a href="module-ol_source_Vector-VectorSource.html#forEachFeatureInExtent"><code>module:ol/source/Vector~VectorSource#forEachFeatureInExtent</code></a> will loop
+<a href="module-ol_source_Vector-VectorSource.html#getFeaturesInExtent"><code>getFeaturesInExtent</code></a>,
+<a href="module-ol_source_Vector-VectorSource.html#getClosestFeatureToCoordinate"><code>getClosestFeatureToCoordinate</code></a> and
+<a href="module-ol_source_Vector-VectorSource.html#getExtent"><code>getExtent</code></a> cannot be used when <code>useSpatialIndex</code> is
+set to <code>false</code>, and <a href="module-ol_source_Vector-VectorSource.html#forEachFeatureInExtent"><code>forEachFeatureInExtent</code></a> will loop
 through all features.</p>
 <p>When set to <code>false</code>, the features will be maintained in an
-<a href="module-ol_Collection-Collection.html"><code>module:ol/Collection~Collection</code></a>, which can be retrieved through
-<a href="module-ol_source_Vector-VectorSource.html#getFeaturesCollection"><code>module:ol/source/Vector~VectorSource#getFeaturesCollection</code></a>.</p></td>
+<a href="module-ol_Collection-Collection.html"><code>Collection</code></a>, which can be retrieved through
+<a href="module-ol_source_Vector-VectorSource.html#getFeaturesCollection"><code>getFeaturesCollection</code></a>.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>wrapX</code></td>
             
-            
+
             
             <td class="type">
             
@@ -612,13 +555,13 @@ through all features.</p>
 -180° and 180° meridians to work properly, this should be set to <code>false</code>. The
 resulting geometry coordinates will then exceed the world bounds.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -657,7 +600,7 @@ resulting geometry coordinates will then exceed the world bounds.</p></td>
         <li class="">
             <code><a href="module-ol_source_Vector.VectorSourceEvent.html#event:addfeature">addfeature</a></code>
             
-              (<a href="module-ol_source_Vector.VectorSourceEvent.html">module:ol/source/Vector.VectorSourceEvent</a>)
+              (<a href="module-ol_source_Vector.VectorSourceEvent.html">VectorSourceEvent</a>)
             
             
 
@@ -669,7 +612,7 @@ resulting geometry coordinates will then exceed the world bounds.</p></td>
         <li class="">
             <code><a href="module-ol_events_Event-BaseEvent.html#event:change">change</a></code>
             
-              (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
             
             
 
@@ -681,7 +624,7 @@ resulting geometry coordinates will then exceed the world bounds.</p></td>
         <li class="">
             <code><a href="module-ol_source_Vector.VectorSourceEvent.html#event:changefeature">changefeature</a></code>
             
-              (<a href="module-ol_source_Vector.VectorSourceEvent.html">module:ol/source/Vector.VectorSourceEvent</a>)
+              (<a href="module-ol_source_Vector.VectorSourceEvent.html">VectorSourceEvent</a>)
             
             
 
@@ -693,7 +636,7 @@ resulting geometry coordinates will then exceed the world bounds.</p></td>
         <li class="">
             <code><a href="module-ol_source_Vector.VectorSourceEvent.html#event:clear">clear</a></code>
             
-              (<a href="module-ol_source_Vector.VectorSourceEvent.html">module:ol/source/Vector.VectorSourceEvent</a>)
+              (<a href="module-ol_source_Vector.VectorSourceEvent.html">VectorSourceEvent</a>)
             
             
 
@@ -705,7 +648,7 @@ resulting geometry coordinates will then exceed the world bounds.</p></td>
         <li class="">
             <code><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a></code>
             
-              (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
             
             
 
@@ -717,7 +660,7 @@ resulting geometry coordinates will then exceed the world bounds.</p></td>
         <li class="">
             <code><a href="module-ol_source_Vector.VectorSourceEvent.html#event:featuresloadend">featuresloadend</a></code>
             
-              (<a href="module-ol_source_Vector.VectorSourceEvent.html">module:ol/source/Vector.VectorSourceEvent</a>)
+              (<a href="module-ol_source_Vector.VectorSourceEvent.html">VectorSourceEvent</a>)
             
             
 
@@ -729,7 +672,7 @@ resulting geometry coordinates will then exceed the world bounds.</p></td>
         <li class="">
             <code><a href="module-ol_source_Vector.VectorSourceEvent.html#event:featuresloaderror">featuresloaderror</a></code>
             
-              (<a href="module-ol_source_Vector.VectorSourceEvent.html">module:ol/source/Vector.VectorSourceEvent</a>)
+              (<a href="module-ol_source_Vector.VectorSourceEvent.html">VectorSourceEvent</a>)
             
             
 
@@ -741,7 +684,7 @@ resulting geometry coordinates will then exceed the world bounds.</p></td>
         <li class="">
             <code><a href="module-ol_source_Vector.VectorSourceEvent.html#event:featuresloadstart">featuresloadstart</a></code>
             
-              (<a href="module-ol_source_Vector.VectorSourceEvent.html">module:ol/source/Vector.VectorSourceEvent</a>)
+              (<a href="module-ol_source_Vector.VectorSourceEvent.html">VectorSourceEvent</a>)
             
             
 
@@ -753,7 +696,7 @@ resulting geometry coordinates will then exceed the world bounds.</p></td>
         <li class="">
             <code><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a></code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -765,7 +708,7 @@ resulting geometry coordinates will then exceed the world bounds.</p></td>
         <li class="">
             <code><a href="module-ol_source_Vector.VectorSourceEvent.html#event:removefeature">removefeature</a></code>
             
-              (<a href="module-ol_source_Vector.VectorSourceEvent.html">module:ol/source/Vector.VectorSourceEvent</a>)
+              (<a href="module-ol_source_Vector.VectorSourceEvent.html">VectorSourceEvent</a>)
             
             
 
@@ -795,7 +738,7 @@ See <a href="module-ol_source_Vector-VectorSource.html#clear"><code>source.clear
     
         <h3 class="subsection-title">Subclasses</h3>
         <ul>
-          <li><a href="module-ol_source_Cluster-Cluster.html">module:ol/source/Cluster~Cluster</a>
+          <li><a href="module-ol_source_Cluster-Cluster.html">Cluster</a>
             
           </li>
         </ul>
@@ -805,7 +748,7 @@ See <a href="module-ol_source_Vector-VectorSource.html#clear"><code>source.clear
         <h3 class="subsection-title">Extends</h3>
 
         <ul>
-            <li><a href="module-ol_source_Source-Source.html">module:ol/source/Source~Source</a></li>
+            <li><a href="module-ol_source_Source-Source.html">Source</a></li>
         </ul>
     
 
@@ -841,7 +784,7 @@ See <a href="module-ol_source_Vector-VectorSource.html#clear"><code>source.clear
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L335">line 335</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L333">line 333</a>
         </div>
         
     </div>
@@ -859,7 +802,7 @@ at once, call <a href="module-ol_source_Vector-VectorSource.html#addFeatures"><c
 instead. A feature will not be added to the source if feature with
 the same id is already there. The reason for this behavior is to avoid
 feature duplication when using bbox or tile loading strategies.
-Note: this also applies if an <a href="module-ol_Collection-Collection.html"><code>module:ol/Collection~Collection</code></a> is used for features,
+Note: this also applies if an <a href="module-ol_Collection-Collection.html"><code>Collection</code></a> is used for features,
 meaning that if a feature with a duplicate id is added in the collection, it will
 be removed from it right away.</p>
     </div>
@@ -879,26 +822,26 @@ be removed from it right away.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>feature</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>.&lt;Geometry></span>
+<span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a><Geometry></span>
 
 
                 
@@ -911,7 +854,7 @@ be removed from it right away.</p>
                 
                 <p>Feature to add.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -974,7 +917,7 @@ be removed from it right away.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L418">line 418</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L416">line 416</a>
         </div>
         
     </div>
@@ -1005,26 +948,26 @@ be removed from it right away.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>features</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>.&lt;Geometry>></span>
+<span class="param-type">Array<<a href="module-ol_Feature-Feature.html">Feature</a><Geometry>></span>
 
 
                 
@@ -1037,7 +980,7 @@ be removed from it right away.</p>
                 
                 <p>Features to add.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1175,7 +1118,7 @@ be removed from it right away.</p>
         <div class="anchor" id="clear">
         </div>
         <h4 class="name">
-            clear<span class="signature">(<span class="optional">opt_fast</span>)</span>
+            clear<span class="signature">(<span class="optional">fast</span>)</span>
             
             
 
@@ -1183,7 +1126,7 @@ be removed from it right away.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L542">line 542</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L532">line 532</a>
         </div>
         
     </div>
@@ -1214,21 +1157,21 @@ be removed from it right away.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>fast</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1246,7 +1189,7 @@ be removed from it right away.</p>
                 
                 <p>Skip dispatching of <a href="module-ol_source_Vector.VectorSourceEvent.html#event:removefeature"><code>removefeature</code></a> events.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1301,7 +1244,7 @@ be removed from it right away.</p>
         <div class="anchor" id="dispatchEvent">
         </div>
         <h4 class="name">
-            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean|undefined}</span>
+            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean | undefined}</span>
             
                 <span class="inherited"><a href="module-ol_events_Target-Target.html#dispatchEvent">inherited</a></span>
             
@@ -1344,26 +1287,26 @@ Object with a <code>type</code> property.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>event</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a></span>
+<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a></span>
 |
 
 <span class="param-type">string</span>
@@ -1379,7 +1322,7 @@ Object with a <code>type</code> property.</p>
                 
                 <p>Event object.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1444,7 +1387,7 @@ Object with a <code>type</code> property.</p>
         <div class="anchor" id="forEachFeature">
         </div>
         <h4 class="name">
-            forEachFeature<span class="signature">(callback)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{T|undefined}</span>
+            forEachFeature<span class="signature">(callback)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{T | undefined}</span>
             
             
 
@@ -1452,7 +1395,7 @@ Object with a <code>type</code> property.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L590">line 590</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L580">line 580</a>
         </div>
         
     </div>
@@ -1486,21 +1429,21 @@ Note: this function only iterate through the feature that have a defined geometr
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>callback</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1519,7 +1462,7 @@ Note: this function only iterate through the feature that have a defined geometr
                 <p>Called with each feature
     on the source.  Return a truthy value to stop iteration.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1583,7 +1526,7 @@ The return value from the last call to the callback.
         <div class="anchor" id="forEachFeatureInExtent">
         </div>
         <h4 class="name">
-            forEachFeatureInExtent<span class="signature">(extent, callback)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{T|undefined}</span>
+            forEachFeatureInExtent<span class="signature">(extent, callback)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{T | undefined}</span>
             
             
 
@@ -1591,7 +1534,7 @@ The return value from the last call to the callback.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L641">line 641</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L631">line 631</a>
         </div>
         
     </div>
@@ -1629,26 +1572,26 @@ features, equivalent to <a href="module-ol_source_Vector-VectorSource.html#forEa
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>extent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
 
                 
@@ -1661,14 +1604,14 @@ features, equivalent to <a href="module-ol_source_Vector-VectorSource.html#forEa
                 
                 <p>Extent.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>callback</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1687,7 +1630,7 @@ features, equivalent to <a href="module-ol_source_Vector-VectorSource.html#forEa
                 <p>Called with each feature
     whose bounding box intersects the provided extent.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1751,7 +1694,7 @@ The return value from the last call to the callback.
         <div class="anchor" id="forEachFeatureIntersectingExtent">
         </div>
         <h4 class="name">
-            forEachFeatureIntersectingExtent<span class="signature">(extent, callback)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{T|undefined}</span>
+            forEachFeatureIntersectingExtent<span class="signature">(extent, callback)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{T | undefined}</span>
             
             
 
@@ -1759,7 +1702,7 @@ The return value from the last call to the callback.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L664">line 664</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L654">line 654</a>
         </div>
         
     </div>
@@ -1794,26 +1737,26 @@ value, iteration will stop and the function will return the same value.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>extent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
 
                 
@@ -1826,14 +1769,14 @@ value, iteration will stop and the function will return the same value.</p>
                 
                 <p>Extent.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>callback</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1852,7 +1795,7 @@ value, iteration will stop and the function will return the same value.</p>
                 <p>Called with each feature
     whose geometry intersects the provided extent.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1957,21 +1900,21 @@ The return value from the last call to the callback.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1989,7 +1932,7 @@ The return value from the last call to the callback.
                 
                 <p>Key name.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2053,7 +1996,7 @@ Value.
         <div class="anchor" id="getAttributions">
         </div>
         <h4 class="name">
-            getAttributions<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_source_Source.html#~Attribution">module:ol/source/Source~Attribution</a>}</span>
+            getAttributions<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_source_Source.html#~Attribution">Attribution</a>}</span>
             
                 <span class="inherited"><a href="module-ol_source_Source-Source.html#getAttributions">inherited</a></span>
             
@@ -2233,7 +2176,7 @@ Attributions are collapsible.
         <div class="anchor" id="getClosestFeatureToCoordinate">
         </div>
         <h4 class="name">
-            getClosestFeatureToCoordinate<span class="signature">(coordinate, <span class="optional">opt_filter</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>.&lt;Geometry>}</span>
+            getClosestFeatureToCoordinate<span class="signature">(coordinate, <span class="optional">filter</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Feature-Feature.html">Feature</a><Geometry>}</span>
             
             
 
@@ -2241,7 +2184,7 @@ Attributions are collapsible.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L776">line 776</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L765">line 765</a>
         </div>
         
     </div>
@@ -2274,26 +2217,26 @@ Attributions are collapsible.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>coordinate</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
 
                 
@@ -2306,14 +2249,14 @@ Attributions are collapsible.
                 
                 <p>Coordinate.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>filter</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2333,7 +2276,7 @@ Attributions are collapsible.
     The filter function will receive one argument, the <a href="module-ol_Feature-Feature.html"><code>feature</code></a>
     and it should return a boolean value. By default, no filtering is made.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2397,7 +2340,7 @@ Closest feature.
         <div class="anchor" id="getExtent">
         </div>
         <h4 class="name">
-            getExtent<span class="signature">(<span class="optional">opt_extent</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a>}</span>
+            getExtent<span class="signature">(<span class="optional">extent</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_extent.html#~Extent">Extent</a>}</span>
             
             
 
@@ -2405,7 +2348,7 @@ Closest feature.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L834">line 834</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L823">line 823</a>
         </div>
         
     </div>
@@ -2438,26 +2381,26 @@ Closest feature.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>extent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
  | undefined
                 
@@ -2471,7 +2414,7 @@ Closest feature.
                 <p>Destination extent. If provided, no new extent
     will be created. Instead, that extent's coordinates will be overwritten.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2535,7 +2478,7 @@ Extent.
         <div class="anchor" id="getFeatureById">
         </div>
         <h4 class="name">
-            getFeatureById<span class="signature">(id)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>.&lt;Geometry>|null}</span>
+            getFeatureById<span class="signature">(id)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Feature-Feature.html">Feature</a><Geometry> | null}</span>
             
             
 
@@ -2543,7 +2486,7 @@ Extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L847">line 847</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L836">line 836</a>
         </div>
         
     </div>
@@ -2576,21 +2519,21 @@ Note that the index treats string and numeric identifiers as the same.  So
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>id</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2611,7 +2554,7 @@ Note that the index treats string and numeric identifiers as the same.  So
                 
                 <p>Feature identifier.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2675,7 +2618,7 @@ The feature (or <code>null</code> if not found).
         <div class="anchor" id="getFeatures">
         </div>
         <h4 class="name">
-            getFeatures<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>.&lt;Geometry>>}</span>
+            getFeatures<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array<<a href="module-ol_Feature-Feature.html">Feature</a><Geometry>>}</span>
             
             
 
@@ -2683,7 +2626,7 @@ The feature (or <code>null</code> if not found).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L700">line 700</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L690">line 690</a>
         </div>
         
     </div>
@@ -2766,7 +2709,7 @@ Features.
         <div class="anchor" id="getFeaturesAtCoordinate">
         </div>
         <h4 class="name">
-            getFeaturesAtCoordinate<span class="signature">(coordinate)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>.&lt;Geometry>>}</span>
+            getFeaturesAtCoordinate<span class="signature">(coordinate)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array<<a href="module-ol_Feature-Feature.html">Feature</a><Geometry>>}</span>
             
             
 
@@ -2774,7 +2717,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L721">line 721</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L711">line 711</a>
         </div>
         
     </div>
@@ -2805,26 +2748,26 @@ Features.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>coordinate</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
 
                 
@@ -2837,7 +2780,7 @@ Features.
                 
                 <p>Coordinate.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2901,7 +2844,7 @@ Features.
         <div class="anchor" id="getFeaturesCollection">
         </div>
         <h4 class="name">
-            getFeaturesCollection<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Collection-Collection.html">module:ol/Collection~Collection</a>.&lt;<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>.&lt;Geometry>>|null}</span>
+            getFeaturesCollection<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Collection-Collection.html">Collection</a><<a href="module-ol_Feature-Feature.html">Feature</a><Geometry>> | null}</span>
             
             
 
@@ -2909,7 +2852,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L690">line 690</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L680">line 680</a>
         </div>
         
     </div>
@@ -2924,7 +2867,7 @@ Features.
     <div class="description">
         <p>Get the features collection associated with this source. Will be <code>null</code>
 unless the source was configured with <code>useSpatialIndex</code> set to <code>false</code>, or
-with an <a href="module-ol_Collection-Collection.html"><code>module:ol/Collection~Collection</code></a> as <code>features</code>.</p>
+with an <a href="module-ol_Collection-Collection.html"><code>Collection</code></a> as <code>features</code>.</p>
     </div>
     
 
@@ -2993,7 +2936,7 @@ The collection of features.
         <div class="anchor" id="getFeaturesInExtent">
         </div>
         <h4 class="name">
-            getFeaturesInExtent<span class="signature">(extent, <span class="optional">opt_projection</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>.&lt;Geometry>>}</span>
+            getFeaturesInExtent<span class="signature">(extent, <span class="optional">projection</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array<<a href="module-ol_Feature-Feature.html">Feature</a><Geometry>>}</span>
             
             
 
@@ -3001,7 +2944,7 @@ The collection of features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L743">line 743</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L733">line 733</a>
         </div>
         
     </div>
@@ -3036,26 +2979,26 @@ features.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>extent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
 
                 
@@ -3068,19 +3011,19 @@ features.</p>
                 
                 <p>Extent.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>projection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj_Projection-Projection.html">module:ol/proj/Projection~Projection</a></span>
+<span class="param-type"><a href="module-ol_proj_Projection-Projection.html">Projection</a></span>
 
  | undefined
                 
@@ -3094,7 +3037,7 @@ features.</p>
                 <p>Include features
 where <code>extent</code> exceeds the x-axis bounds of <code>projection</code> and wraps around the world.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3158,7 +3101,7 @@ Features.
         <div class="anchor" id="getFormat">
         </div>
         <h4 class="name">
-            getFormat<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_format_Feature-FeatureFormat.html">module:ol/format/Feature~FeatureFormat</a>|undefined}</span>
+            getFormat<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_format_Feature-FeatureFormat.html">FeatureFormat</a> | undefined}</span>
             
             
 
@@ -3166,7 +3109,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L869">line 869</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L858">line 858</a>
         </div>
         
     </div>
@@ -3340,7 +3283,7 @@ List of property names.
         <div class="anchor" id="getProjection">
         </div>
         <h4 class="name">
-            getProjection<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_proj_Projection-Projection.html">module:ol/proj/Projection~Projection</a>|null}</span>
+            getProjection<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_proj_Projection-Projection.html">Projection</a> | null}</span>
             
                 <span class="inherited"><a href="module-ol_source_Source-Source.html#getProjection">inherited</a></span>
             
@@ -3617,7 +3560,7 @@ Revision.
         <div class="anchor" id="getState">
         </div>
         <h4 class="name">
-            getState<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_source_Source.html#~State">module:ol/source/Source~State</a>}</span>
+            getState<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_source_Source.html#~State">State</a>}</span>
             
                 <span class="inherited"><a href="module-ol_source_Source-Source.html#getState">inherited</a></span>
             
@@ -3640,7 +3583,7 @@ Revision.
 
     
     <div class="description">
-        <p>Get the state of the source, see <a href="module-ol_source_Source.html#~State"><code>module:ol/source/Source~State</code></a> for possible states.</p>
+        <p>Get the state of the source, see <a href="module-ol_source_Source.html#~State"><code>State</code></a> for possible states.</p>
     </div>
     
 
@@ -3709,7 +3652,7 @@ State.
         <div class="anchor" id="getUrl">
         </div>
         <h4 class="name">
-            getUrl<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string|<a href="module-ol_featureloader.html#~FeatureUrlFunction">module:ol/featureloader~FeatureUrlFunction</a>|undefined}</span>
+            getUrl<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string | <a href="module-ol_featureloader.html#~FeatureUrlFunction">FeatureUrlFunction</a> | undefined}</span>
             
             
 
@@ -3717,7 +3660,7 @@ State.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L886">line 886</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L875">line 875</a>
         </div>
         
     </div>
@@ -3807,7 +3750,7 @@ The url.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L943">line 943</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L932">line 932</a>
         </div>
         
     </div>
@@ -3838,26 +3781,26 @@ The url.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>feature</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>.&lt;Geometry></span>
+<span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a><Geometry></span>
 
 
                 
@@ -3870,7 +3813,7 @@ The url.
                 
                 <p>Feature.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3934,7 +3877,7 @@ Has feature.
         <div class="anchor" id="on">
         </div>
         <h4 class="name">
-            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>|Array.&lt;<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>>}</span>
+            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array<<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_Observable-Observable.html#on">inherited</a></span>
             
@@ -3975,21 +3918,21 @@ Has feature.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4010,14 +3953,14 @@ Has feature.
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4035,7 +3978,7 @@ Has feature.
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4101,7 +4044,7 @@ Unique key for the listener. If
         <div class="anchor" id="once">
         </div>
         <h4 class="name">
-            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>|Array.&lt;<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>>}</span>
+            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array<<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_Observable-Observable.html#once">inherited</a></span>
             
@@ -4142,21 +4085,21 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4177,14 +4120,14 @@ Unique key for the listener. If
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4202,7 +4145,7 @@ Unique key for the listener. If
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4359,7 +4302,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1053">line 1053</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1042">line 1042</a>
         </div>
         
     </div>
@@ -4392,26 +4335,26 @@ instead.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>feature</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>.&lt;Geometry></span>
+<span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a><Geometry></span>
 
 
                 
@@ -4424,7 +4367,7 @@ instead.</p>
                 
                 <p>Feature to remove.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4487,7 +4430,7 @@ instead.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1032">line 1032</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1021">line 1021</a>
         </div>
         
     </div>
@@ -4518,26 +4461,26 @@ instead.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>extent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
 
                 
@@ -4550,7 +4493,7 @@ instead.</p>
                 
                 <p>Extent.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4605,7 +4548,7 @@ instead.</p>
         <div class="anchor" id="set">
         </div>
         <h4 class="name">
-            set<span class="signature">(key, value, <span class="optional">opt_silent</span>)</span>
+            set<span class="signature">(key, value, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#set">inherited</a></span>
             
@@ -4646,21 +4589,21 @@ instead.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4678,14 +4621,14 @@ instead.</p>
                 
                 <p>Key name.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>value</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4703,14 +4646,14 @@ instead.</p>
                 
                 <p>Value.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4728,7 +4671,7 @@ instead.</p>
                 
                 <p>Update without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4824,26 +4767,26 @@ instead.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>attributions</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">module:ol/source/Source~AttributionLike</a></span>
+<span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">AttributionLike</a></span>
 |
 
 <span class="param-type">undefined</span>
@@ -4858,10 +4801,10 @@ instead.</p>
             <td  class="description last">
                 
                 <p>Attributions.
-    Can be passed as <code>string</code>, <code>Array&lt;string&gt;</code>, <a href="module-ol_source_Source.html#~Attribution"><code>module:ol/source/Source~Attribution</code></a>,
+    Can be passed as <code>string</code>, <code>Array&lt;string&gt;</code>, <a href="module-ol_source_Source.html#~Attribution"><code>Attribution</code></a>,
     or <code>undefined</code>.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4924,7 +4867,7 @@ instead.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1122">line 1122</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1111">line 1111</a>
         </div>
         
     </div>
@@ -4956,26 +4899,26 @@ new loader.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>loader</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_featureloader.html#~FeatureLoader">module:ol/featureloader~FeatureLoader</a></span>
+<span class="param-type"><a href="module-ol_featureloader.html#~FeatureLoader">FeatureLoader</a></span>
 
 
                 
@@ -4988,7 +4931,7 @@ new loader.</p>
                 
                 <p>The loader to set.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5043,7 +4986,7 @@ new loader.</p>
         <div class="anchor" id="setProperties">
         </div>
         <h4 class="name">
-            setProperties<span class="signature">(values, <span class="optional">opt_silent</span>)</span>
+            setProperties<span class="signature">(values, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#setProperties">inherited</a></span>
             
@@ -5085,21 +5028,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>values</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5117,14 +5060,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Values.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5142,7 +5085,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Update without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5205,7 +5148,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1131">line 1131</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1120">line 1120</a>
         </div>
         
     </div>
@@ -5236,21 +5179,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>url</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5258,7 +5201,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
 <span class="param-type">string</span>
 |
 
-<span class="param-type"><a href="module-ol_featureloader.html#~FeatureUrlFunction">module:ol/featureloader~FeatureUrlFunction</a></span>
+<span class="param-type"><a href="module-ol_featureloader.html#~FeatureUrlFunction">FeatureUrlFunction</a></span>
 
 
                 
@@ -5271,7 +5214,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Url.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5367,21 +5310,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5402,14 +5345,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5427,7 +5370,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5482,7 +5425,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         <div class="anchor" id="unset">
         </div>
         <h4 class="name">
-            unset<span class="signature">(key, <span class="optional">opt_silent</span>)</span>
+            unset<span class="signature">(key, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#unset">inherited</a></span>
             
@@ -5523,21 +5466,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5555,14 +5498,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Key name.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5580,7 +5523,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Unset without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>

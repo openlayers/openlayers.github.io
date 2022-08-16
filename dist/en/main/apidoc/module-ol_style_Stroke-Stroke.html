@@ -2,82 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script>
-    var gaProperty = 'UA-2577926-1';
-    // Disable tracking if the opt-out cookie exists.
-    var disableStr = 'ga-disable-' + gaProperty;
-    if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-    }
-    function gaOptout() {
-      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = true;
-    }
-    function gaOptoutRevoke() {
-      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = false;
-    }
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
-    </script>
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function() {
-      window.cookieconsent.initialise({
-        'palette': {
-          'popup': {
-            'background': '#eaf7f7',
-            'text': '#5c7291'
-          },
-          'button': {
-            'background': '#56cbdb',
-            'text': '#ffffff'
-          }
-        },
-        'theme': 'edgeless',
-        'type': 'opt-out',
-        'onInitialise': function (status) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onStatusChange': function(status, chosenBefore) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onRevokeChoice': function() {
-          gaOptoutRevoke()
-        }
-      })
-    });
-    </script>
     <title>OpenLayers v7.0.0-dev API - Class: Stroke</title>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/bootstrap.bundle.min.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
-    <link type="text/css" rel="stylesheet" href="styles/site.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
   </head>
   <body>
     <div class="container-fluid">
       <header class="navbar navbar-expand-sm navbar-dark mb-3 py-0 fixed-top" role="navigation">
-        <a class="navbar-brand" href="https://openlayers.org/"><img src="logo-70x70.png" alt="">&nbsp;OpenLayers</a>
+        <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -89,14 +32,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="docdropdown">
-              <a class="dropdown-item" href="/en/latest/doc/">Docs</a>
+              <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
                 <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
@@ -104,7 +47,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
               <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
@@ -199,7 +142,7 @@ the options; they will not return the default.</p></div>
         <div class="anchor" id="Stroke">
         </div>
         <h4 class="name">
-            new Stroke<span class="signature">(<span class="optional">opt_options</span>)</span>
+            new Stroke<span class="signature">(<span class="optional">options</span>)</span>
             
             
 
@@ -207,7 +150,7 @@ the options; they will not return the default.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L28">line 28</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L26">line 26</a>
         </div>
         
     </div>
@@ -234,21 +177,21 @@ the options; they will not return the default.</p></div>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -262,29 +205,29 @@ the options; they will not return the default.</p></div>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>color</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">module:ol/color~Color</a></span>
+<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
 |
 
-<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">module:ol/colorlike~ColorLike</a></span>
+<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 
  | undefined
                 
@@ -296,17 +239,17 @@ the options; they will not return the default.</p></div>
             <td  class="description last">
                 
                 <p>A color, gradient or pattern.
-See <a href="module-ol_color.html#~Color"><code>module:ol/color~Color</code></a> and <a href="module-ol_colorlike.html#~ColorLike"><code>module:ol/colorlike~ColorLike</code></a> for possible formats.
+See <a href="module-ol_color.html#~Color"><code>Color</code></a> and <a href="module-ol_colorlike.html#~ColorLike"><code>ColorLike</code></a> for possible formats.
 Default null; if null, the Canvas/renderer default black will be used.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>lineCap</code></td>
             
-            
+
             
             <td class="type">
             
@@ -326,14 +269,14 @@ Default null; if null, the Canvas/renderer default black will be used.</p></td>
                 
                 <p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>lineJoin</code></td>
             
-            
+
             
             <td class="type">
             
@@ -353,14 +296,14 @@ Default null; if null, the Canvas/renderer default black will be used.</p></td>
                 
                 <p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>lineDash</code></td>
             
-            
+
             
             <td class="type">
             
@@ -376,18 +319,16 @@ Default null; if null, the Canvas/renderer default black will be used.</p></td>
 
             <td  class="description last">
                 
-                <p>Line dash pattern. Default is <code>null</code> (no dash).
-Please note that Internet Explorer 10 and lower do not support the <code>setLineDash</code> method on
-the <code>CanvasRenderingContext2D</code> and therefore this option will have no visual effect in these browsers.</p></td>
+                <p>Line dash pattern. Default is <code>null</code> (no dash).</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>lineDashOffset</code></td>
             
-            
+
             
             <td class="type">
             
@@ -407,14 +348,14 @@ the <code>CanvasRenderingContext2D</code> and therefore this option will have no
                 
                 <p>Line dash offset.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>miterLimit</code></td>
             
-            
+
             
             <td class="type">
             
@@ -434,14 +375,14 @@ the <code>CanvasRenderingContext2D</code> and therefore this option will have no
                 
                 <p>Miter limit.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>width</code></td>
             
-            
+
             
             <td class="type">
             
@@ -459,13 +400,13 @@ the <code>CanvasRenderingContext2D</code> and therefore this option will have no
                 
                 <p>Width.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -543,7 +484,7 @@ the <code>CanvasRenderingContext2D</code> and therefore this option will have no
         <div class="anchor" id="clone">
         </div>
         <h4 class="name">
-            clone<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_style_Stroke-Stroke.html">module:ol/style/Stroke~Stroke</a>}</span>
+            clone<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_style_Stroke-Stroke.html">Stroke</a>}</span>
             
             
 
@@ -551,7 +492,7 @@ the <code>CanvasRenderingContext2D</code> and therefore this option will have no
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L83">line 83</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L81">line 81</a>
         </div>
         
     </div>
@@ -633,7 +574,7 @@ The cloned style.
         <div class="anchor" id="getColor">
         </div>
         <h4 class="name">
-            getColor<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_color.html#~Color">module:ol/color~Color</a>|<a href="module-ol_colorlike.html#~ColorLike">module:ol/colorlike~ColorLike</a>}</span>
+            getColor<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_color.html#~Color">Color</a> | <a href="module-ol_colorlike.html#~ColorLike">ColorLike</a>}</span>
             
             
 
@@ -641,7 +582,7 @@ The cloned style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L101">line 101</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L99">line 99</a>
         </div>
         
     </div>
@@ -723,7 +664,7 @@ Color.
         <div class="anchor" id="getLineCap">
         </div>
         <h4 class="name">
-            getLineCap<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{CanvasLineCap|undefined}</span>
+            getLineCap<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{CanvasLineCap | undefined}</span>
             
             
 
@@ -731,7 +672,7 @@ Color.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L110">line 110</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L108">line 108</a>
         </div>
         
     </div>
@@ -813,7 +754,7 @@ Line cap.
         <div class="anchor" id="getLineDash">
         </div>
         <h4 class="name">
-            getLineDash<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;number>}</span>
+            getLineDash<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;number> | null}</span>
             
             
 
@@ -821,7 +762,7 @@ Line cap.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L119">line 119</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L117">line 117</a>
         </div>
         
     </div>
@@ -903,7 +844,7 @@ Line dash.
         <div class="anchor" id="getLineDashOffset">
         </div>
         <h4 class="name">
-            getLineDashOffset<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number|undefined}</span>
+            getLineDashOffset<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number | undefined}</span>
             
             
 
@@ -911,7 +852,7 @@ Line dash.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L128">line 128</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L126">line 126</a>
         </div>
         
     </div>
@@ -993,7 +934,7 @@ Line dash offset.
         <div class="anchor" id="getLineJoin">
         </div>
         <h4 class="name">
-            getLineJoin<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{CanvasLineJoin|undefined}</span>
+            getLineJoin<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{CanvasLineJoin | undefined}</span>
             
             
 
@@ -1001,7 +942,7 @@ Line dash offset.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L137">line 137</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L135">line 135</a>
         </div>
         
     </div>
@@ -1083,7 +1024,7 @@ Line join.
         <div class="anchor" id="getMiterLimit">
         </div>
         <h4 class="name">
-            getMiterLimit<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number|undefined}</span>
+            getMiterLimit<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number | undefined}</span>
             
             
 
@@ -1091,7 +1032,7 @@ Line join.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L146">line 146</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L144">line 144</a>
         </div>
         
     </div>
@@ -1173,7 +1114,7 @@ Miter limit.
         <div class="anchor" id="getWidth">
         </div>
         <h4 class="name">
-            getWidth<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number|undefined}</span>
+            getWidth<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number | undefined}</span>
             
             
 
@@ -1181,7 +1122,7 @@ Miter limit.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L155">line 155</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L153">line 153</a>
         </div>
         
     </div>
@@ -1271,7 +1212,7 @@ Width.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L165">line 165</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L163">line 163</a>
         </div>
         
     </div>
@@ -1302,29 +1243,29 @@ Width.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>color</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">module:ol/color~Color</a></span>
+<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
 |
 
-<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">module:ol/colorlike~ColorLike</a></span>
+<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 
 
                 
@@ -1337,7 +1278,7 @@ Width.
                 
                 <p>Color.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1400,7 +1341,7 @@ Width.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L175">line 175</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L173">line 173</a>
         </div>
         
     </div>
@@ -1431,21 +1372,21 @@ Width.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>lineCap</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1466,7 +1407,7 @@ Width.
                 
                 <p>Line cap.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1529,7 +1470,7 @@ Width.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L191">line 191</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L183">line 183</a>
         </div>
         
     </div>
@@ -1543,9 +1484,6 @@ Width.
     
     <div class="description">
         <p>Set the line dash.</p>
-<p>Please note that Internet Explorer 10 and lower <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setLineDash#Browser_compatibility">do not support</a> the
-<code>setLineDash</code> method on the <code>CanvasRenderingContext2D</code> and therefore this
-property will have no visual effect in these browsers.</p>
     </div>
     
 
@@ -1563,26 +1501,29 @@ property will have no visual effect in these browsers.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>lineDash</code></td>
             
-            
+
             
             <td class="type">
             
                 
 <span class="param-type">Array.&lt;number></span>
+|
+
+<span class="param-type">null</span>
 
 
                 
@@ -1595,7 +1536,7 @@ property will have no visual effect in these browsers.</p>
                 
                 <p>Line dash.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1658,7 +1599,7 @@ property will have no visual effect in these browsers.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L201">line 201</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L193">line 193</a>
         </div>
         
     </div>
@@ -1689,21 +1630,21 @@ property will have no visual effect in these browsers.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>lineDashOffset</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1724,7 +1665,7 @@ property will have no visual effect in these browsers.</p>
                 
                 <p>Line dash offset.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1787,7 +1728,7 @@ property will have no visual effect in these browsers.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L211">line 211</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L203">line 203</a>
         </div>
         
     </div>
@@ -1818,21 +1759,21 @@ property will have no visual effect in these browsers.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>lineJoin</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1853,7 +1794,7 @@ property will have no visual effect in these browsers.</p>
                 
                 <p>Line join.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1916,7 +1857,7 @@ property will have no visual effect in these browsers.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L221">line 221</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L213">line 213</a>
         </div>
         
     </div>
@@ -1947,21 +1888,21 @@ property will have no visual effect in these browsers.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>miterLimit</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1982,7 +1923,7 @@ property will have no visual effect in these browsers.</p>
                 
                 <p>Miter limit.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2045,7 +1986,7 @@ property will have no visual effect in these browsers.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js">style/Stroke.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L231">line 231</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Stroke.js#L223">line 223</a>
         </div>
         
     </div>
@@ -2076,21 +2017,21 @@ property will have no visual effect in these browsers.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>width</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2111,7 +2052,7 @@ property will have no visual effect in these browsers.</p>
                 
                 <p>Width.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>

@@ -2,82 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script>
-    var gaProperty = 'UA-2577926-1';
-    // Disable tracking if the opt-out cookie exists.
-    var disableStr = 'ga-disable-' + gaProperty;
-    if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-    }
-    function gaOptout() {
-      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = true;
-    }
-    function gaOptoutRevoke() {
-      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = false;
-    }
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
-    </script>
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function() {
-      window.cookieconsent.initialise({
-        'palette': {
-          'popup': {
-            'background': '#eaf7f7',
-            'text': '#5c7291'
-          },
-          'button': {
-            'background': '#56cbdb',
-            'text': '#ffffff'
-          }
-        },
-        'theme': 'edgeless',
-        'type': 'opt-out',
-        'onInitialise': function (status) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onStatusChange': function(status, chosenBefore) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onRevokeChoice': function() {
-          gaOptoutRevoke()
-        }
-      })
-    });
-    </script>
     <title>OpenLayers v7.0.0-dev API - Class: Geometry</title>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/bootstrap.bundle.min.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
-    <link type="text/css" rel="stylesheet" href="styles/site.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
   </head>
   <body>
     <div class="container-fluid">
       <header class="navbar navbar-expand-sm navbar-dark mb-3 py-0 fixed-top" role="navigation">
-        <a class="navbar-brand" href="https://openlayers.org/"><img src="logo-70x70.png" alt="">&nbsp;OpenLayers</a>
+        <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -89,14 +32,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="docdropdown">
-              <a class="dropdown-item" href="/en/latest/doc/">Docs</a>
+              <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
                 <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
@@ -104,7 +47,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
               <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
@@ -221,7 +164,7 @@ generic <code>change</code> event on your geometry instance.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js">geom/Geometry.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L51">line 51</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L50">line 50</a>
         </div>
         
     </div>
@@ -274,7 +217,7 @@ generic <code>change</code> event on your geometry instance.</p></div>
         <li class="">
             <code><a href="module-ol_events_Event-BaseEvent.html#event:change">change</a></code>
             
-              (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
             
             
 
@@ -286,7 +229,7 @@ generic <code>change</code> event on your geometry instance.</p></div>
         <li class="">
             <code><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a></code>
             
-              (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
             
             
 
@@ -298,7 +241,7 @@ generic <code>change</code> event on your geometry instance.</p></div>
         <li class="">
             <code><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a></code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -327,11 +270,11 @@ generic <code>change</code> event on your geometry instance.</p></div>
     
         <h3 class="subsection-title">Subclasses</h3>
         <ul>
-          <li><a href="module-ol_geom_GeometryCollection-GeometryCollection.html">module:ol/geom/GeometryCollection~GeometryCollection</a>
+          <li><a href="module-ol_geom_GeometryCollection-GeometryCollection.html">GeometryCollection</a>
             
           </li>
         
-          <li><a href="module-ol_geom_SimpleGeometry-SimpleGeometry.html">module:ol/geom/SimpleGeometry~SimpleGeometry</a>
+          <li><a href="module-ol_geom_SimpleGeometry-SimpleGeometry.html">SimpleGeometry</a>
             
           </li>
         </ul>
@@ -341,7 +284,7 @@ generic <code>change</code> event on your geometry instance.</p></div>
         <h3 class="subsection-title">Extends</h3>
 
         <ul>
-            <li><a href="module-ol_Object-BaseObject.html">module:ol/Object~BaseObject</a></li>
+            <li><a href="module-ol_Object-BaseObject.html">BaseObject</a></li>
         </ul>
     
 
@@ -452,7 +395,7 @@ generic <code>change</code> event on your geometry instance.</p></div>
         <div class="anchor" id="dispatchEvent">
         </div>
         <h4 class="name">
-            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean|undefined}</span>
+            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean | undefined}</span>
             
                 <span class="inherited"><a href="module-ol_events_Target-Target.html#dispatchEvent">inherited</a></span>
             
@@ -495,26 +438,26 @@ Object with a <code>type</code> property.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>event</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a></span>
+<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a></span>
 |
 
 <span class="param-type">string</span>
@@ -530,7 +473,7 @@ Object with a <code>type</code> property.</p>
                 
                 <p>Event object.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -636,21 +579,21 @@ Object with a <code>type</code> property.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -668,7 +611,7 @@ Object with a <code>type</code> property.</p>
                 
                 <p>Key name.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -732,7 +675,7 @@ Value.
         <div class="anchor" id="getClosestPoint">
         </div>
         <h4 class="name">
-            getClosestPoint<span class="signature">(point, <span class="optional">opt_closestPoint</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a>}</span>
+            getClosestPoint<span class="signature">(point, <span class="optional">closestPoint</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>}</span>
             
             
 
@@ -740,7 +683,7 @@ Value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js">geom/Geometry.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L155">line 155</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L154">line 154</a>
         </div>
         
     </div>
@@ -772,26 +715,26 @@ Value.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>point</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
 
                 
@@ -804,19 +747,19 @@ Value.
                 
                 <p>Point.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>closestPoint</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
  | undefined
                 
@@ -829,7 +772,7 @@ Value.
                 
                 <p>Closest point.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -893,7 +836,7 @@ Closest point.
         <div class="anchor" id="getExtent">
         </div>
         <h4 class="name">
-            getExtent<span class="signature">(<span class="optional">opt_extent</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a>}</span>
+            getExtent<span class="signature">(<span class="optional">extent</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_extent.html#~Extent">Extent</a>}</span>
             
             
 
@@ -901,7 +844,7 @@ Closest point.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js">geom/Geometry.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L188">line 188</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L187">line 187</a>
         </div>
         
     </div>
@@ -932,26 +875,26 @@ Closest point.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>extent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
  | undefined
                 
@@ -964,7 +907,7 @@ Closest point.
                 
                 <p>Extent.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1313,7 +1256,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js">geom/Geometry.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L168">line 168</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L167">line 167</a>
         </div>
         
     </div>
@@ -1345,26 +1288,26 @@ coordinate is on the boundary of the geometry, returns false.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>coordinate</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
 
                 
@@ -1377,7 +1320,7 @@ coordinate is on the boundary of the geometry, returns false.</p>
                 
                 <p>Coordinate.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1441,7 +1384,7 @@ Contains coordinate.
         <div class="anchor" id="on">
         </div>
         <h4 class="name">
-            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>|Array.&lt;<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>>}</span>
+            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array<<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_Observable-Observable.html#on">inherited</a></span>
             
@@ -1482,21 +1425,21 @@ Contains coordinate.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1517,14 +1460,14 @@ Contains coordinate.
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1542,7 +1485,7 @@ Contains coordinate.
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1608,7 +1551,7 @@ Unique key for the listener. If
         <div class="anchor" id="once">
         </div>
         <h4 class="name">
-            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>|Array.&lt;<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>>}</span>
+            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array<<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_Observable-Observable.html#once">inherited</a></span>
             
@@ -1649,21 +1592,21 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1684,14 +1627,14 @@ Unique key for the listener. If
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1709,7 +1652,7 @@ Unique key for the listener. If
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1783,7 +1726,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js">geom/Geometry.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L207">line 207</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L206">line 206</a>
         </div>
         
     </div>
@@ -1815,21 +1758,21 @@ coordinates in place.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>angle</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1847,19 +1790,19 @@ coordinates in place.</p>
                 
                 <p>Rotation angle in radians.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>anchor</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
 
                 
@@ -1872,7 +1815,7 @@ coordinates in place.</p>
                 
                 <p>The rotation center.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1927,7 +1870,7 @@ coordinates in place.</p>
         <div class="anchor" id="scale">
         </div>
         <h4 class="name">
-            scale<span class="signature">(sx, <span class="optional">opt_sy</span>, <span class="optional">opt_anchor</span>)</span>
+            scale<span class="signature">(sx, <span class="optional">sy</span>, <span class="optional">anchor</span>)</span>
             
             
 
@@ -1935,7 +1878,7 @@ coordinates in place.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js">geom/Geometry.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L221">line 221</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L220">line 220</a>
         </div>
         
     </div>
@@ -1967,21 +1910,21 @@ coordinates in place.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>sx</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1999,14 +1942,14 @@ coordinates in place.</p>
                 
                 <p>The scaling factor in the x-direction.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>sy</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2024,19 +1967,19 @@ coordinates in place.</p>
                 
                 <p>The scaling factor in the y-direction (defaults to sx).</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>anchor</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
  | undefined
                 
@@ -2050,7 +1993,7 @@ coordinates in place.</p>
                 <p>The scale origin (defaults to the center
     of the geometry extent).</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2105,7 +2048,7 @@ coordinates in place.</p>
         <div class="anchor" id="set">
         </div>
         <h4 class="name">
-            set<span class="signature">(key, value, <span class="optional">opt_silent</span>)</span>
+            set<span class="signature">(key, value, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#set">inherited</a></span>
             
@@ -2146,21 +2089,21 @@ coordinates in place.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2178,14 +2121,14 @@ coordinates in place.</p>
                 
                 <p>Key name.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>value</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2203,14 +2146,14 @@ coordinates in place.</p>
                 
                 <p>Value.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2228,7 +2171,7 @@ coordinates in place.</p>
                 
                 <p>Update without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2283,7 +2226,7 @@ coordinates in place.</p>
         <div class="anchor" id="setProperties">
         </div>
         <h4 class="name">
-            setProperties<span class="signature">(values, <span class="optional">opt_silent</span>)</span>
+            setProperties<span class="signature">(values, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#setProperties">inherited</a></span>
             
@@ -2325,21 +2268,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>values</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2357,14 +2300,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Values.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2382,7 +2325,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Update without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2437,7 +2380,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         <div class="anchor" id="simplify">
         </div>
         <h4 class="name">
-            simplify<span class="signature">(tolerance)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_geom_Geometry-Geometry.html">module:ol/geom/Geometry~Geometry</a>}</span>
+            simplify<span class="signature">(tolerance)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_geom_Geometry-Geometry.html">Geometry</a>}</span>
             
             
 
@@ -2445,7 +2388,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js">geom/Geometry.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L234">line 234</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L233">line 233</a>
         </div>
         
     </div>
@@ -2479,21 +2422,21 @@ simplification is used to preserve topology.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>tolerance</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2511,7 +2454,7 @@ simplification is used to preserve topology.</p>
                 
                 <p>The tolerance distance for simplification.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2575,7 +2518,7 @@ A new, simplified version of the original geometry.
         <div class="anchor" id="transform">
         </div>
         <h4 class="name">
-            transform<span class="signature">(source, destination)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_geom_Geometry-Geometry.html">module:ol/geom/Geometry~Geometry</a>}</span>
+            transform<span class="signature">(source, destination)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_geom_Geometry-Geometry.html">Geometry</a>}</span>
             
             
 
@@ -2583,7 +2526,7 @@ A new, simplified version of the original geometry.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js">geom/Geometry.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L309">line 309</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L308">line 308</a>
         </div>
         
     </div>
@@ -2618,26 +2561,26 @@ then use this function on the clone.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>source</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
 
                 
@@ -2649,21 +2592,21 @@ then use this function on the clone.</p>
             <td  class="description last">
                 
                 <p>The current projection.  Can be a
-    string identifier or a <a href="module-ol_proj_Projection-Projection.html"><code>module:ol/proj/Projection~Projection</code></a> object.</p></td>
+    string identifier or a <a href="module-ol_proj_Projection-Projection.html"><code>Projection</code></a> object.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>destination</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
 
                 
@@ -2675,9 +2618,9 @@ then use this function on the clone.</p>
             <td  class="description last">
                 
                 <p>The desired projection.  Can be a
-    string identifier or a <a href="module-ol_proj_Projection-Projection.html"><code>module:ol/proj/Projection~Projection</code></a> object.</p></td>
+    string identifier or a <a href="module-ol_proj_Projection-Projection.html"><code>Projection</code></a> object.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2750,7 +2693,7 @@ This geometry.  Note that original geometry is
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js">geom/Geometry.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L290">line 290</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/Geometry.js#L289">line 289</a>
         </div>
         
     </div>
@@ -2782,21 +2725,21 @@ instead you want a new geometry, first <code>clone()</code> this geometry.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>deltaX</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2814,14 +2757,14 @@ instead you want a new geometry, first <code>clone()</code> this geometry.</p>
                 
                 <p>Delta X.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>deltaY</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2839,7 +2782,7 @@ instead you want a new geometry, first <code>clone()</code> this geometry.</p>
                 
                 <p>Delta Y.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2935,21 +2878,21 @@ instead you want a new geometry, first <code>clone()</code> this geometry.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2970,14 +2913,14 @@ instead you want a new geometry, first <code>clone()</code> this geometry.</p>
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2995,7 +2938,7 @@ instead you want a new geometry, first <code>clone()</code> this geometry.</p>
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3050,7 +2993,7 @@ instead you want a new geometry, first <code>clone()</code> this geometry.</p>
         <div class="anchor" id="unset">
         </div>
         <h4 class="name">
-            unset<span class="signature">(key, <span class="optional">opt_silent</span>)</span>
+            unset<span class="signature">(key, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#unset">inherited</a></span>
             
@@ -3091,21 +3034,21 @@ instead you want a new geometry, first <code>clone()</code> this geometry.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3123,14 +3066,14 @@ instead you want a new geometry, first <code>clone()</code> this geometry.</p>
                 
                 <p>Key name.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3148,7 +3091,7 @@ instead you want a new geometry, first <code>clone()</code> this geometry.</p>
                 
                 <p>Unset without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>

@@ -2,82 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script>
-    var gaProperty = 'UA-2577926-1';
-    // Disable tracking if the opt-out cookie exists.
-    var disableStr = 'ga-disable-' + gaProperty;
-    if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-    }
-    function gaOptout() {
-      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = true;
-    }
-    function gaOptoutRevoke() {
-      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = false;
-    }
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
-    </script>
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function() {
-      window.cookieconsent.initialise({
-        'palette': {
-          'popup': {
-            'background': '#eaf7f7',
-            'text': '#5c7291'
-          },
-          'button': {
-            'background': '#56cbdb',
-            'text': '#ffffff'
-          }
-        },
-        'theme': 'edgeless',
-        'type': 'opt-out',
-        'onInitialise': function (status) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onStatusChange': function(status, chosenBefore) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onRevokeChoice': function() {
-          gaOptoutRevoke()
-        }
-      })
-    });
-    </script>
     <title>OpenLayers v7.0.0-dev API - Class: VectorTileLayer</title>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/bootstrap.bundle.min.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
-    <link type="text/css" rel="stylesheet" href="styles/site.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
   </head>
   <body>
     <div class="container-fluid">
       <header class="navbar navbar-expand-sm navbar-dark mb-3 py-0 fixed-top" role="navigation">
-        <a class="navbar-brand" href="https://openlayers.org/"><img src="logo-70x70.png" alt="">&nbsp;OpenLayers</a>
+        <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -89,14 +32,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="docdropdown">
-              <a class="dropdown-item" href="/en/latest/doc/">Docs</a>
+              <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
                 <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
@@ -104,7 +47,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
               <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
@@ -246,7 +189,7 @@ options means that <code>title</code> is observable, and has get/set accessors.<
         <div class="anchor" id="VectorTileLayer">
         </div>
         <h4 class="name">
-            new VectorTileLayer<span class="signature">(<span class="optional">opt_options</span>)</span>
+            new VectorTileLayer<span class="signature">(<span class="optional">options</span>)</span>
             
             
 
@@ -254,7 +197,7 @@ options means that <code>title</code> is observable, and has get/set accessors.<
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L98">line 98</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L100">line 100</a>
         </div>
         
     </div>
@@ -281,21 +224,21 @@ options means that <code>title</code> is observable, and has get/set accessors.<
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -309,21 +252,21 @@ options means that <code>title</code> is observable, and has get/set accessors.<
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>className</code></td>
             
-            
+
             
             <td class="type">
             
@@ -343,14 +286,14 @@ options means that <code>title</code> is observable, and has get/set accessors.<
                 
                 <p>A CSS class name to set to the layer element.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>opacity</code></td>
             
-            
+
             
             <td class="type">
             
@@ -370,14 +313,14 @@ options means that <code>title</code> is observable, and has get/set accessors.<
                 
                 <p>Opacity (0, 1).</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>visible</code></td>
             
-            
+
             
             <td class="type">
             
@@ -397,19 +340,19 @@ options means that <code>title</code> is observable, and has get/set accessors.<
                 
                 <p>Visibility.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>extent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
  | undefined
                 
@@ -423,14 +366,14 @@ options means that <code>title</code> is observable, and has get/set accessors.<
                 <p>The bounding extent for layer rendering.  The layer will not be
 rendered outside of this extent.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>zIndex</code></td>
             
-            
+
             
             <td class="type">
             
@@ -451,14 +394,14 @@ will be ordered, first by Z-index and then by position. When <code>undefined</co
 for layers that are added to the map's <code>layers</code> collection, or <code>Infinity</code> when the layer's <code>setMap()</code>
 method was used.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>minResolution</code></td>
             
-            
+
             
             <td class="type">
             
@@ -477,14 +420,14 @@ method was used.</p></td>
                 <p>The minimum resolution (inclusive) at which this layer will be
 visible.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>maxResolution</code></td>
             
-            
+
             
             <td class="type">
             
@@ -503,14 +446,14 @@ visible.</p></td>
                 <p>The maximum resolution (exclusive) below which this layer will
 be visible.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>minZoom</code></td>
             
-            
+
             
             <td class="type">
             
@@ -529,14 +472,14 @@ be visible.</p></td>
                 <p>The minimum view zoom level (exclusive) above which this layer will be
 visible.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>maxZoom</code></td>
             
-            
+
             
             <td class="type">
             
@@ -555,19 +498,19 @@ visible.</p></td>
                 <p>The maximum view zoom level (inclusive) at which this layer will
 be visible.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>renderOrder</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_render.html#~OrderFunction">module:ol/render~OrderFunction</a></span>
+<span class="param-type"><a href="module-ol_render.html#~OrderFunction">OrderFunction</a></span>
 
  | undefined
                 
@@ -582,14 +525,14 @@ be visible.</p></td>
 features before rendering. By default features are drawn in the order that they are created. Use
 <code>null</code> to avoid the sort, but get an undefined draw order.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>renderBuffer</code></td>
             
-            
+
             
             <td class="type">
             
@@ -613,22 +556,19 @@ Recommended value: Vector tiles are usually generated with a buffer, so this val
 the largest possible buffer of the used tiles. It should be at least the size of the largest
 point symbol or line width.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>renderMode</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_layer_VectorTileRenderType.html">module:ol/layer/VectorTileRenderType</a></span>
-|
-
-<span class="param-type">string</span>
+<span class="param-type"><a href="module-ol_layer_VectorTile.html#~VectorTileRenderType">VectorTileRenderType</a></span>
 
 
                 
@@ -651,19 +591,19 @@ tile layers with only a few rendered features (e.g. for highlighting a subset of
 another layer with the same source).</li>
 </ul></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>source</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_source_VectorTile-VectorTile.html">module:ol/source/VectorTile~VectorTile</a></span>
+<span class="param-type"><a href="module-ol_source_VectorTile-VectorTile.html">VectorTile</a></span>
 
  | undefined
                 
@@ -676,19 +616,19 @@ another layer with the same source).</li>
                 
                 <p>Source.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>map</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_PluggableMap-PluggableMap.html">module:ol/PluggableMap~PluggableMap</a></span>
+<span class="param-type"><a href="module-ol_Map-Map.html">Map</a></span>
 
  | undefined
                 
@@ -702,16 +642,16 @@ another layer with the same source).</li>
                 <p>Sets the layer as overlay on a map. The map will not manage
 this layer in its layers collection, and the layer will be rendered on top. This is useful for
 temporary layers. The standard way to add a layer to a map and have it managed by the map is to
-use <a href="module-ol_PluggableMap-PluggableMap.html#addLayer"><code>map.addLayer()</code></a>.</p></td>
+use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>declutter</code></td>
             
-            
+
             
             <td class="type">
             
@@ -739,19 +679,19 @@ the fill and stroke styles of all of those layers regardless of z-index.  To opt
 behavior and place declutterd features with their own layer configure the layer with a <code>className</code>
 other than <code>ol-layer</code>.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>style</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_style_Style.html#~StyleLike">module:ol/style/Style~StyleLike</a></span>
+<span class="param-type"><a href="module-ol_style_Style.html#~StyleLike">StyleLike</a></span>
 |
 
 <span class="param-type">null</span>
@@ -766,22 +706,22 @@ other than <code>ol-layer</code>.</p></td>
             <td  class="description last">
                 
                 <p>Layer style. When set to <code>null</code>, only
-features that have their own style will be rendered. See <a href="module-ol_style_Style-Style.html"><code>module:ol/style/Style~Style</code></a> for the default style
+features that have their own style will be rendered. See <a href="module-ol_style_Style-Style.html"><code>Style</code></a> for the default style
 which will be used if this is not set.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>background</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_layer_Base.html#~BackgroundColor">module:ol/layer/Base~BackgroundColor</a></span>
+<span class="param-type"><a href="module-ol_layer_Base.html#~BackgroundColor">BackgroundColor</a></span>
 |
 
 <span class="param-type">false</span>
@@ -798,14 +738,14 @@ which will be used if this is not set.</p></td>
                 <p>Background color for the layer. If not specified, no
 background will be rendered.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>updateWhileAnimating</code></td>
             
-            
+
             
             <td class="type">
             
@@ -828,14 +768,14 @@ recreated during animations. This means that no vectors will be shown clipped, b
 will have a performance impact for large amounts of vector data. When set to <code>false</code>, batches
 will be recreated when no animation is active.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>updateWhileInteracting</code></td>
             
-            
+
             
             <td class="type">
             
@@ -856,14 +796,14 @@ will be recreated when no animation is active.</p></td>
                 <p>When set to <code>true</code>, feature batches will be
 recreated during interactions. See also <code>updateWhileAnimating</code>.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>preload</code></td>
             
-            
+
             
             <td class="type">
             
@@ -884,14 +824,14 @@ recreated during interactions. See also <code>updateWhileAnimating</code>.</p></
                 <p>Preload. Load low-resolution tiles up to <code>preload</code> levels. <code>0</code>
 means no preloading.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>useInterimTilesOnError</code></td>
             
-            
+
             
             <td class="type">
             
@@ -911,14 +851,14 @@ means no preloading.</p></td>
                 
                 <p>Use interim tiles on error.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>properties</code></td>
             
-            
+
             
             <td class="type">
             
@@ -936,13 +876,13 @@ means no preloading.</p></td>
                 
                 <p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -981,7 +921,7 @@ means no preloading.</p></td>
         <li class="">
             <code><a href="module-ol_events_Event-BaseEvent.html#event:change">change</a></code>
             
-              (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
             
             
 
@@ -993,7 +933,7 @@ means no preloading.</p></td>
         <li class="">
             <code>change:extent</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -1003,7 +943,7 @@ means no preloading.</p></td>
         <li class="">
             <code>change:maxResolution</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -1013,7 +953,7 @@ means no preloading.</p></td>
         <li class="">
             <code>change:maxZoom</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -1023,7 +963,7 @@ means no preloading.</p></td>
         <li class="">
             <code>change:minResolution</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -1033,7 +973,7 @@ means no preloading.</p></td>
         <li class="">
             <code>change:minZoom</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -1043,7 +983,7 @@ means no preloading.</p></td>
         <li class="">
             <code>change:opacity</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -1053,7 +993,7 @@ means no preloading.</p></td>
         <li class="">
             <code>change:preload</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -1063,7 +1003,7 @@ means no preloading.</p></td>
         <li class="">
             <code>change:source</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -1073,7 +1013,7 @@ means no preloading.</p></td>
         <li class="">
             <code>change:useInterimTilesOnError</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -1083,7 +1023,7 @@ means no preloading.</p></td>
         <li class="">
             <code>change:visible</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -1093,7 +1033,7 @@ means no preloading.</p></td>
         <li class="">
             <code>change:zIndex</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -1103,7 +1043,7 @@ means no preloading.</p></td>
         <li class="">
             <code><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a></code>
             
-              (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
             
             
 
@@ -1115,7 +1055,7 @@ means no preloading.</p></td>
         <li class="">
             <code><a href="module-ol_render_Event-RenderEvent.html#event:postrender">postrender</a></code>
             
-              (<a href="module-ol_render_Event-RenderEvent.html">module:ol/render/Event~RenderEvent</a>)
+              (<a href="module-ol_render_Event-RenderEvent.html">RenderEvent</a>)
             
             
 
@@ -1127,7 +1067,7 @@ means no preloading.</p></td>
         <li class="">
             <code><a href="module-ol_render_Event-RenderEvent.html#event:prerender">prerender</a></code>
             
-              (<a href="module-ol_render_Event-RenderEvent.html">module:ol/render/Event~RenderEvent</a>)
+              (<a href="module-ol_render_Event-RenderEvent.html">RenderEvent</a>)
             
             
 
@@ -1139,7 +1079,7 @@ means no preloading.</p></td>
         <li class="">
             <code><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a></code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -1168,7 +1108,7 @@ means no preloading.</p></td>
     
         <h3 class="subsection-title">Subclasses</h3>
         <ul>
-          <li><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html">module:ol/layer/MapboxVector~MapboxVectorLayer</a>
+          <li><a href="module-ol_layer_MapboxVector-MapboxVectorLayer.html">MapboxVectorLayer</a>
             
           </li>
         </ul>
@@ -1178,7 +1118,7 @@ means no preloading.</p></td>
         <h3 class="subsection-title">Extends</h3>
 
         <ul>
-            <li><a href="module-ol_layer_BaseVector-BaseVectorLayer.html">module:ol/layer/BaseVector~BaseVectorLayer</a></li>
+            <li><a href="module-ol_layer_BaseVector-BaseVectorLayer.html">BaseVectorLayer</a></li>
         </ul>
     
 
@@ -1200,7 +1140,7 @@ means no preloading.</p></td>
     <th>Name</th>
     <th>Type</th>
     <th>Settable</th>
-    <th><a href="module-ol_Object.ObjectEvent.html">ol/Object.ObjectEvent</a> type</th>
+    <th><a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a> type</th>
     <th class="last">Description</th>
   </tr>
   </thead>
@@ -1213,7 +1153,7 @@ means no preloading.</p></td>
       <td class="type">
       
       
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 |
 
 <span class="param-type">undefined</span>
@@ -1492,7 +1432,7 @@ means no preloading.</p></td>
         <div class="anchor" id="dispatchEvent">
         </div>
         <h4 class="name">
-            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean|undefined}</span>
+            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean | undefined}</span>
             
                 <span class="inherited"><a href="module-ol_events_Target-Target.html#dispatchEvent">inherited</a></span>
             
@@ -1535,26 +1475,26 @@ Object with a <code>type</code> property.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>event</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a></span>
+<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a></span>
 |
 
 <span class="param-type">string</span>
@@ -1570,7 +1510,7 @@ Object with a <code>type</code> property.</p>
                 
                 <p>Event object.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1676,21 +1616,21 @@ Object with a <code>type</code> property.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1708,7 +1648,7 @@ Object with a <code>type</code> property.</p>
                 
                 <p>Key name.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1772,7 +1712,7 @@ Value.
         <div class="anchor" id="getBackground">
         </div>
         <h4 class="name">
-            getBackground<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_layer_Base.html#~BackgroundColor">module:ol/layer/Base~BackgroundColor</a>}</span>
+            getBackground<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_layer_Base.html#~BackgroundColor">BackgroundColor</a>}</span>
             
             
 
@@ -1780,7 +1720,7 @@ Value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L161">line 161</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L154">line 154</a>
         </div>
         
     </div>
@@ -1858,7 +1798,7 @@ Background color.
         <div class="anchor" id="getExtent">
         </div>
         <h4 class="name">
-            getExtent<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a>|undefined}</span>
+            getExtent<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_extent.html#~Extent">Extent</a> | undefined}</span>
             
                 <span class="inherited"><a href="module-ol_layer_Base-BaseLayer.html#getExtent">inherited</a></span>
             
@@ -1868,7 +1808,7 @@ Background color.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L205">line 205</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L204">line 204</a>
         </div>
         
     </div>
@@ -1951,7 +1891,7 @@ The layer extent.
         <div class="anchor" id="getFeatures">
         </div>
         <h4 class="name">
-            getFeatures<span class="signature">(pixel)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Promise.&lt;Array.&lt;<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>>>}</span>
+            getFeatures<span class="signature">(pixel)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Promise<Array<<a href="module-ol_Feature-Feature.html">Feature</a>>>}</span>
             
             
 
@@ -1959,7 +1899,7 @@ The layer extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L189">line 189</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L182">line 182</a>
         </div>
         
     </div>
@@ -1976,8 +1916,8 @@ The layer extent.
 that resolves with an array of features. The array will either contain the topmost feature
 when a hit was detected, or it will be empty.</p>
 <p>The hit detection algorithm used for this method is optimized for performance, but is less
-accurate than the one used in <a href="module-ol_PluggableMap-PluggableMap.html#getFeaturesAtPixel"><code>map.getFeaturesAtPixel()</code></a>: Text
-is not considered, and icons are only represented by their bounding box instead of the exact
+accurate than the one used in <a href="module-ol_Map-Map.html#getFeaturesAtPixel"><code>map.getFeaturesAtPixel()</code></a>.
+Text is not considered, and icons are only represented by their bounding box instead of the exact
 image.</p>
     </div>
     
@@ -1996,26 +1936,26 @@ image.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>pixel</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_pixel.html#~Pixel">module:ol/pixel~Pixel</a></span>
+<span class="param-type"><a href="module-ol_pixel.html#~Pixel">Pixel</a></span>
 
 
                 
@@ -2028,7 +1968,7 @@ image.</p>
                 
                 <p>Pixel.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2194,7 +2134,7 @@ List of property names.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L217">line 217</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L216">line 216</a>
         </div>
         
     </div>
@@ -2286,7 +2226,7 @@ The maximum resolution of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L247">line 247</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L246">line 246</a>
         </div>
         
     </div>
@@ -2378,7 +2318,7 @@ The maximum zoom level of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L227">line 227</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L226">line 226</a>
         </div>
         
     </div>
@@ -2470,7 +2410,7 @@ The minimum resolution of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L237">line 237</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L236">line 236</a>
         </div>
         
     </div>
@@ -2562,7 +2502,7 @@ The minimum zoom level of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L257">line 257</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L256">line 256</a>
         </div>
         
     </div>
@@ -2652,7 +2592,7 @@ The opacity of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L206">line 206</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L199">line 199</a>
         </div>
         
     </div>
@@ -2919,7 +2859,7 @@ Revision.
         <div class="anchor" id="getSource">
         </div>
         <h4 class="name">
-            getSource<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{SourceType|null}</span>
+            getSource<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{SourceType | null}</span>
             
                 <span class="inherited"><a href="module-ol_layer_Layer-Layer.html#getSource">inherited</a></span>
             
@@ -2929,7 +2869,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L199">line 199</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L193">line 193</a>
         </div>
         
     </div>
@@ -3011,7 +2951,7 @@ The layer source (or <code>null</code> if not yet set).
         <div class="anchor" id="getStyle">
         </div>
         <h4 class="name">
-            getStyle<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_style_Style.html#~StyleLike">module:ol/style/Style~StyleLike</a>|null|undefined}</span>
+            getStyle<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_style_Style.html#~StyleLike">StyleLike</a> | null | undefined}</span>
             
                 <span class="inherited"><a href="module-ol_layer_BaseVector-BaseVectorLayer.html#getStyle">inherited</a></span>
             
@@ -3104,7 +3044,7 @@ Layer style.
         <div class="anchor" id="getStyleFunction">
         </div>
         <h4 class="name">
-            getStyleFunction<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_style_Style.html#~StyleFunction">module:ol/style/Style~StyleFunction</a>|undefined}</span>
+            getStyleFunction<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_style_Style.html#~StyleFunction">StyleFunction</a> | undefined}</span>
             
                 <span class="inherited"><a href="module-ol_layer_BaseVector-BaseVectorLayer.html#getStyleFunction">inherited</a></span>
             
@@ -3204,7 +3144,7 @@ Layer style function.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L216">line 216</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L209">line 209</a>
         </div>
         
     </div>
@@ -3296,7 +3236,7 @@ Use interim tiles on error.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L275">line 275</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L274">line 274</a>
         </div>
         
     </div>
@@ -3388,7 +3328,7 @@ The visibility of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L286">line 286</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L285">line 285</a>
         </div>
         
     </div>
@@ -3471,7 +3411,7 @@ The Z-index of the layer.
         <div class="anchor" id="on">
         </div>
         <h4 class="name">
-            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>|Array.&lt;<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>>}</span>
+            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array<<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_Observable-Observable.html#on">inherited</a></span>
             
@@ -3512,21 +3452,21 @@ The Z-index of the layer.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3547,14 +3487,14 @@ The Z-index of the layer.
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3572,7 +3512,7 @@ The Z-index of the layer.
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3638,7 +3578,7 @@ Unique key for the listener. If
         <div class="anchor" id="once">
         </div>
         <h4 class="name">
-            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>|Array.&lt;<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>>}</span>
+            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array<<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_Observable-Observable.html#once">inherited</a></span>
             
@@ -3679,21 +3619,21 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3714,14 +3654,14 @@ Unique key for the listener. If
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3739,7 +3679,7 @@ Unique key for the listener. If
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3805,7 +3745,7 @@ Unique key for the listener. If
         <div class="anchor" id="set">
         </div>
         <h4 class="name">
-            set<span class="signature">(key, value, <span class="optional">opt_silent</span>)</span>
+            set<span class="signature">(key, value, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#set">inherited</a></span>
             
@@ -3846,21 +3786,21 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3878,14 +3818,14 @@ Unique key for the listener. If
                 
                 <p>Key name.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>value</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3903,14 +3843,14 @@ Unique key for the listener. If
                 
                 <p>Value.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3928,7 +3868,7 @@ Unique key for the listener. If
                 
                 <p>Update without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3991,7 +3931,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L168">line 168</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L161">line 161</a>
         </div>
         
     </div>
@@ -4018,26 +3958,26 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>background</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_layer_Base.html#~BackgroundColor">module:ol/layer/Base~BackgroundColor</a></span>
+<span class="param-type"><a href="module-ol_layer_Base.html#~BackgroundColor">BackgroundColor</a></span>
 
 
                 
@@ -4050,7 +3990,7 @@ Unique key for the listener. If
                 
                 <p>Background color.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4115,7 +4055,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L306">line 306</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L305">line 305</a>
         </div>
         
     </div>
@@ -4147,26 +4087,26 @@ will be visible at all extents.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>extent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 |
 
 <span class="param-type">undefined</span>
@@ -4182,7 +4122,7 @@ will be visible at all extents.</p>
                 
                 <p>The extent of the layer.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4247,7 +4187,7 @@ will be visible at all extents.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L323">line 323</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L316">line 316</a>
         </div>
         
     </div>
@@ -4261,12 +4201,11 @@ will be visible at all extents.</p>
     
     <div class="description">
         <p>Sets the layer to be rendered on top of other layers on a map. The map will
-not manage this layer in its layers collection, and the callback in
-<a href="module-ol_Map-Map.html#forEachLayerAtPixel"><code>module:ol/Map~Map#forEachLayerAtPixel</code></a> will receive <code>null</code> as layer. This
+not manage this layer in its layers collection. This
 is useful for temporary layers. To remove an unmanaged layer from the map,
 use <code>#setMap(null)</code>.</p>
 <p>To add the layer to a map and have it managed by the map, use
-<a href="module-ol_Map-Map.html#addLayer"><code>module:ol/Map~Map#addLayer</code></a> instead.</p>
+<a href="module-ol_Map-Map.html#addLayer"><code>addLayer</code></a> instead.</p>
     </div>
     
 
@@ -4284,26 +4223,26 @@ use <code>#setMap(null)</code>.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>map</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_PluggableMap-PluggableMap.html">module:ol/PluggableMap~PluggableMap</a></span>
+<span class="param-type"><a href="module-ol_Map-Map.html">Map</a></span>
 |
 
 <span class="param-type">null</span>
@@ -4319,7 +4258,7 @@ use <code>#setMap(null)</code>.</p>
                 
                 <p>Map.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4384,7 +4323,7 @@ use <code>#setMap(null)</code>.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L316">line 316</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L315">line 315</a>
         </div>
         
     </div>
@@ -4415,21 +4354,21 @@ use <code>#setMap(null)</code>.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>maxResolution</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4447,7 +4386,7 @@ use <code>#setMap(null)</code>.</p>
                 
                 <p>The maximum resolution of the layer.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4512,7 +4451,7 @@ use <code>#setMap(null)</code>.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L338">line 338</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L337">line 337</a>
         </div>
         
     </div>
@@ -4545,21 +4484,21 @@ view zoom level, which may be different from a tile source zoom level.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>maxZoom</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4577,7 +4516,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
                 
                 <p>The maximum zoom of the layer.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4642,7 +4581,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L326">line 326</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L325">line 325</a>
         </div>
         
     </div>
@@ -4673,21 +4612,21 @@ view zoom level, which may be different from a tile source zoom level.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>minResolution</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4705,7 +4644,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
                 
                 <p>The minimum resolution of the layer.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4770,7 +4709,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L350">line 350</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L349">line 349</a>
         </div>
         
     </div>
@@ -4803,21 +4742,21 @@ view zoom level, which may be different from a tile source zoom level.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>minZoom</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4835,7 +4774,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
                 
                 <p>The minimum zoom of the layer.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -4900,7 +4839,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L360">line 360</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L359">line 359</a>
         </div>
         
     </div>
@@ -4931,21 +4870,21 @@ view zoom level, which may be different from a tile source zoom level.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>opacity</code></td>
             
-            
+
             
             <td class="type">
             
@@ -4963,7 +4902,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
                 
                 <p>The opacity of the layer.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5026,7 +4965,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L228">line 228</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L221">line 221</a>
         </div>
         
     </div>
@@ -5057,21 +4996,21 @@ view zoom level, which may be different from a tile source zoom level.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>preload</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5089,7 +5028,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
                 
                 <p>The level to preload tiles up to.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5144,7 +5083,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         <div class="anchor" id="setProperties">
         </div>
         <h4 class="name">
-            setProperties<span class="signature">(values, <span class="optional">opt_silent</span>)</span>
+            setProperties<span class="signature">(values, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#setProperties">inherited</a></span>
             
@@ -5186,21 +5125,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>values</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5218,14 +5157,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Values.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5243,7 +5182,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Update without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5308,7 +5247,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L366">line 366</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L359">line 359</a>
         </div>
         
     </div>
@@ -5339,21 +5278,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>source</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5374,7 +5313,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>The layer source.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5429,7 +5368,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         <div class="anchor" id="setStyle">
         </div>
         <h4 class="name">
-            setStyle<span class="signature">(<span class="optional">opt_style</span>)</span>
+            setStyle<span class="signature">(<span class="optional">style</span>)</span>
             
                 <span class="inherited"><a href="module-ol_layer_BaseVector-BaseVectorLayer.html#setStyle">inherited</a></span>
             
@@ -5439,7 +5378,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L257">line 257</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L262">line 262</a>
         </div>
         
     </div>
@@ -5457,7 +5396,10 @@ of styles, or a function that takes a feature and resolution and returns
 an array of styles. If set to <code>null</code>, the layer has no style (a <code>null</code> style),
 so only features that have their own styles will be rendered in the layer. Call
 <code>setStyle()</code> without arguments to reset to the default style. See
-<a href="module-ol_style_Style-Style.html"><code>module:ol/style/Style~Style</code></a> for information on the default style.</p>
+<a href="module-ol_style_Style-Style.html"><code>the ol/style/Style module</code></a> for information on the default style.</p>
+<p>If your layer has a static style, you can use &quot;flat&quot; style object literals instead of
+using the <code>Style</code> and symbolizer constructors (<code>Fill</code>, <code>Stroke</code>, etc.).  See the documentation
+for the <a href="module-ol_style_flat.html#~FlatStyle"><code>flat style types</code></a> to see what properties are supported.</p>
     </div>
     
 
@@ -5475,26 +5417,29 @@ so only features that have their own styles will be rendered in the layer. Call
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>style</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_style_Style.html#~StyleLike">module:ol/style/Style~StyleLike</a></span>
+<span class="param-type"><a href="module-ol_style_Style.html#~StyleLike">StyleLike</a></span>
+|
+
+<span class="param-type"><a href="module-ol_style_flat.html#~FlatStyleLike">FlatStyleLike</a></span>
 |
 
 <span class="param-type">null</span>
@@ -5510,7 +5455,7 @@ so only features that have their own styles will be rendered in the layer. Call
                 
                 <p>Layer style.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5573,7 +5518,7 @@ so only features that have their own styles will be rendered in the layer. Call
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L238">line 238</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L231">line 231</a>
         </div>
         
     </div>
@@ -5604,21 +5549,21 @@ so only features that have their own styles will be rendered in the layer. Call
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>useInterimTilesOnError</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5636,7 +5581,7 @@ so only features that have their own styles will be rendered in the layer. Call
                 
                 <p>Use interim tiles on error.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5701,7 +5646,7 @@ so only features that have their own styles will be rendered in the layer. Call
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L371">line 371</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L370">line 370</a>
         </div>
         
     </div>
@@ -5732,21 +5677,21 @@ so only features that have their own styles will be rendered in the layer. Call
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>visible</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5764,7 +5709,7 @@ so only features that have their own styles will be rendered in the layer. Call
                 
                 <p>The visibility of the layer.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5829,7 +5774,7 @@ so only features that have their own styles will be rendered in the layer. Call
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L382">line 382</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L381">line 381</a>
         </div>
         
     </div>
@@ -5861,21 +5806,21 @@ The default Z-index is 0.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>zindex</code></td>
             
-            
+
             
             <td class="type">
             
@@ -5893,7 +5838,7 @@ The default Z-index is 0.</p>
                 
                 <p>The z-index of the layer.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -5989,21 +5934,21 @@ The default Z-index is 0.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -6024,14 +5969,14 @@ The default Z-index is 0.</p>
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -6049,7 +5994,7 @@ The default Z-index is 0.</p>
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -6104,7 +6049,7 @@ The default Z-index is 0.</p>
         <div class="anchor" id="unset">
         </div>
         <h4 class="name">
-            unset<span class="signature">(key, <span class="optional">opt_silent</span>)</span>
+            unset<span class="signature">(key, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#unset">inherited</a></span>
             
@@ -6145,21 +6090,21 @@ The default Z-index is 0.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -6177,14 +6122,14 @@ The default Z-index is 0.</p>
                 
                 <p>Key name.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -6202,7 +6147,7 @@ The default Z-index is 0.</p>
                 
                 <p>Unset without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>

@@ -2,82 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script>
-    var gaProperty = 'UA-2577926-1';
-    // Disable tracking if the opt-out cookie exists.
-    var disableStr = 'ga-disable-' + gaProperty;
-    if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-    }
-    function gaOptout() {
-      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = true;
-    }
-    function gaOptoutRevoke() {
-      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = false;
-    }
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
-    </script>
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function() {
-      window.cookieconsent.initialise({
-        'palette': {
-          'popup': {
-            'background': '#eaf7f7',
-            'text': '#5c7291'
-          },
-          'button': {
-            'background': '#56cbdb',
-            'text': '#ffffff'
-          }
-        },
-        'theme': 'edgeless',
-        'type': 'opt-out',
-        'onInitialise': function (status) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onStatusChange': function(status, chosenBefore) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onRevokeChoice': function() {
-          gaOptoutRevoke()
-        }
-      })
-    });
-    </script>
     <title>OpenLayers v7.0.0-dev API - Class: UrlTile</title>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/bootstrap.bundle.min.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
-    <link type="text/css" rel="stylesheet" href="styles/site.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
   </head>
   <body>
     <div class="container-fluid">
       <header class="navbar navbar-expand-sm navbar-dark mb-3 py-0 fixed-top" role="navigation">
-        <a class="navbar-brand" href="https://openlayers.org/"><img src="logo-70x70.png" alt="">&nbsp;OpenLayers</a>
+        <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -89,14 +32,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="docdropdown">
-              <a class="dropdown-item" href="/en/latest/doc/">Docs</a>
+              <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
                 <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
@@ -104,7 +47,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
               <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
@@ -256,7 +199,7 @@
         <li class="">
             <code><a href="module-ol_events_Event-BaseEvent.html#event:change">change</a></code>
             
-              (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
             
             
 
@@ -268,7 +211,7 @@
         <li class="">
             <code><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a></code>
             
-              (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
             
             
 
@@ -280,7 +223,7 @@
         <li class="">
             <code><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a></code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -292,7 +235,7 @@
         <li class="">
             <code><a href="module-ol_source_Tile.TileSourceEvent.html#event:tileloadend">tileloadend</a></code>
             
-              (<a href="module-ol_source_Tile.TileSourceEvent.html">module:ol/source/Tile.TileSourceEvent</a>)
+              (<a href="module-ol_source_Tile.TileSourceEvent.html">TileSourceEvent</a>)
             
             
 
@@ -305,13 +248,13 @@ or when loading was aborted because the tile is no longer needed.
         <li class="">
             <code><a href="module-ol_source_Tile.TileSourceEvent.html#event:tileloaderror">tileloaderror</a></code>
             
-              (<a href="module-ol_source_Tile.TileSourceEvent.html">module:ol/source/Tile.TileSourceEvent</a>)
+              (<a href="module-ol_source_Tile.TileSourceEvent.html">TileSourceEvent</a>)
             
             
 
              -
             Triggered if tile loading results in an error. Note that this is not the
-right place to re-fetch tiles. See <a href="module-ol_ImageTile-ImageTile.html#load"><code>module:ol/ImageTile~ImageTile#load</code></a>
+right place to re-fetch tiles. See <a href="module-ol_ImageTile-ImageTile.html#load"><code>load</code></a>
 for details.
             
         </li>
@@ -319,7 +262,7 @@ for details.
         <li class="">
             <code><a href="module-ol_source_Tile.TileSourceEvent.html#event:tileloadstart">tileloadstart</a></code>
             
-              (<a href="module-ol_source_Tile.TileSourceEvent.html">module:ol/source/Tile.TileSourceEvent</a>)
+              (<a href="module-ol_source_Tile.TileSourceEvent.html">TileSourceEvent</a>)
             
             
 
@@ -348,11 +291,11 @@ for details.
     
         <h3 class="subsection-title">Subclasses</h3>
         <ul>
-          <li><a href="module-ol_source_TileImage-TileImage.html">module:ol/source/TileImage~TileImage</a>
+          <li><a href="module-ol_source_TileImage-TileImage.html">TileImage</a>
             
           </li>
         
-          <li><a href="module-ol_source_VectorTile-VectorTile.html">module:ol/source/VectorTile~VectorTile</a>
+          <li><a href="module-ol_source_VectorTile-VectorTile.html">VectorTile</a>
             
           </li>
         </ul>
@@ -362,7 +305,7 @@ for details.
         <h3 class="subsection-title">Extends</h3>
 
         <ul>
-            <li><a href="module-ol_source_Tile-TileSource.html">module:ol/source/Tile~TileSource</a></li>
+            <li><a href="module-ol_source_Tile-TileSource.html">TileSource</a></li>
         </ul>
     
 
@@ -483,7 +426,7 @@ for details.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Tile.js">source/Tile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Tile.js#L343">line 343</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Tile.js#L342">line 342</a>
         </div>
         
     </div>
@@ -556,7 +499,7 @@ for details.
         <div class="anchor" id="dispatchEvent">
         </div>
         <h4 class="name">
-            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean|undefined}</span>
+            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean | undefined}</span>
             
                 <span class="inherited"><a href="module-ol_events_Target-Target.html#dispatchEvent">inherited</a></span>
             
@@ -599,26 +542,26 @@ Object with a <code>type</code> property.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>event</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a></span>
+<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a></span>
 |
 
 <span class="param-type">string</span>
@@ -634,7 +577,7 @@ Object with a <code>type</code> property.</p>
                 
                 <p>Event object.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -740,21 +683,21 @@ Object with a <code>type</code> property.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -772,7 +715,7 @@ Object with a <code>type</code> property.</p>
                 
                 <p>Key name.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -836,7 +779,7 @@ Value.
         <div class="anchor" id="getAttributions">
         </div>
         <h4 class="name">
-            getAttributions<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_source_Source.html#~Attribution">module:ol/source/Source~Attribution</a>}</span>
+            getAttributions<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_source_Source.html#~Attribution">Attribution</a>}</span>
             
                 <span class="inherited"><a href="module-ol_source_Source-Source.html#getAttributions">inherited</a></span>
             
@@ -1108,7 +1051,7 @@ List of property names.
         <div class="anchor" id="getProjection">
         </div>
         <h4 class="name">
-            getProjection<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_proj_Projection-Projection.html">module:ol/proj/Projection~Projection</a>|null}</span>
+            getProjection<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_proj_Projection-Projection.html">Projection</a> | null}</span>
             
                 <span class="inherited"><a href="module-ol_source_Source-Source.html#getProjection">inherited</a></span>
             
@@ -1385,7 +1328,7 @@ Revision.
         <div class="anchor" id="getState">
         </div>
         <h4 class="name">
-            getState<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_source_Source.html#~State">module:ol/source/Source~State</a>}</span>
+            getState<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_source_Source.html#~State">State</a>}</span>
             
                 <span class="inherited"><a href="module-ol_source_Source-Source.html#getState">inherited</a></span>
             
@@ -1408,7 +1351,7 @@ Revision.
 
     
     <div class="description">
-        <p>Get the state of the source, see <a href="module-ol_source_Source.html#~State"><code>module:ol/source/Source~State</code></a> for possible states.</p>
+        <p>Get the state of the source, see <a href="module-ol_source_Source.html#~State"><code>State</code></a> for possible states.</p>
     </div>
     
 
@@ -1477,7 +1420,7 @@ State.
         <div class="anchor" id="getTileGrid">
         </div>
         <h4 class="name">
-            getTileGrid<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_tilegrid_TileGrid-TileGrid.html">module:ol/tilegrid/TileGrid~TileGrid</a>|null}</span>
+            getTileGrid<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_tilegrid_TileGrid-TileGrid.html">TileGrid</a> | null}</span>
             
                 <span class="inherited"><a href="module-ol_source_Tile-TileSource.html#getTileGrid">inherited</a></span>
             
@@ -1569,7 +1512,7 @@ Tile grid.
         <div class="anchor" id="getTileLoadFunction">
         </div>
         <h4 class="name">
-            getTileLoadFunction<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Tile.html#~LoadFunction">module:ol/Tile~LoadFunction</a>}</span>
+            getTileLoadFunction<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Tile.html#~LoadFunction">LoadFunction</a>}</span>
             
             
 
@@ -1659,7 +1602,7 @@ TileLoadFunction
         <div class="anchor" id="getTileUrlFunction">
         </div>
         <h4 class="name">
-            getTileUrlFunction<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Tile.html#~UrlFunction">module:ol/Tile~UrlFunction</a>}</span>
+            getTileUrlFunction<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Tile.html#~UrlFunction">UrlFunction</a>}</span>
             
             
 
@@ -1749,7 +1692,7 @@ TileUrlFunction
         <div class="anchor" id="getUrls">
         </div>
         <h4 class="name">
-            getUrls<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{!Array.&lt;string>|null}</span>
+            getUrls<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{!Array.&lt;string> | null}</span>
             
             
 
@@ -1841,7 +1784,7 @@ URLs.
         <div class="anchor" id="on">
         </div>
         <h4 class="name">
-            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>|Array.&lt;<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>>}</span>
+            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array<<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_Observable-Observable.html#on">inherited</a></span>
             
@@ -1882,21 +1825,21 @@ URLs.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1917,14 +1860,14 @@ URLs.
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1942,7 +1885,7 @@ URLs.
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2008,7 +1951,7 @@ Unique key for the listener. If
         <div class="anchor" id="once">
         </div>
         <h4 class="name">
-            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>|Array.&lt;<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>>}</span>
+            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array<<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_Observable-Observable.html#once">inherited</a></span>
             
@@ -2049,21 +1992,21 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2084,14 +2027,14 @@ Unique key for the listener. If
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2109,7 +2052,7 @@ Unique key for the listener. If
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2258,7 +2201,7 @@ Unique key for the listener. If
         <div class="anchor" id="set">
         </div>
         <h4 class="name">
-            set<span class="signature">(key, value, <span class="optional">opt_silent</span>)</span>
+            set<span class="signature">(key, value, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#set">inherited</a></span>
             
@@ -2299,21 +2242,21 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2331,14 +2274,14 @@ Unique key for the listener. If
                 
                 <p>Key name.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>value</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2356,14 +2299,14 @@ Unique key for the listener. If
                 
                 <p>Value.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2381,7 +2324,7 @@ Unique key for the listener. If
                 
                 <p>Update without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2477,26 +2420,26 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>attributions</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">module:ol/source/Source~AttributionLike</a></span>
+<span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">AttributionLike</a></span>
 |
 
 <span class="param-type">undefined</span>
@@ -2511,10 +2454,10 @@ Unique key for the listener. If
             <td  class="description last">
                 
                 <p>Attributions.
-    Can be passed as <code>string</code>, <code>Array&lt;string&gt;</code>, <a href="module-ol_source_Source.html#~Attribution"><code>module:ol/source/Source~Attribution</code></a>,
+    Can be passed as <code>string</code>, <code>Array&lt;string&gt;</code>, <a href="module-ol_source_Source.html#~Attribution"><code>Attribution</code></a>,
     or <code>undefined</code>.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2569,7 +2512,7 @@ Unique key for the listener. If
         <div class="anchor" id="setProperties">
         </div>
         <h4 class="name">
-            setProperties<span class="signature">(values, <span class="optional">opt_silent</span>)</span>
+            setProperties<span class="signature">(values, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#setProperties">inherited</a></span>
             
@@ -2611,21 +2554,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>values</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2643,14 +2586,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Values.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2668,7 +2611,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Update without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2762,26 +2705,26 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>tileLoadFunction</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Tile.html#~LoadFunction">module:ol/Tile~LoadFunction</a></span>
+<span class="param-type"><a href="module-ol_Tile.html#~LoadFunction">LoadFunction</a></span>
 
 
                 
@@ -2794,7 +2737,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Tile load function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2888,26 +2831,26 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>tileUrlFunction</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Tile.html#~UrlFunction">module:ol/Tile~UrlFunction</a></span>
+<span class="param-type"><a href="module-ol_Tile.html#~UrlFunction">UrlFunction</a></span>
 
 
                 
@@ -2920,14 +2863,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Tile URL function.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2945,7 +2888,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Optional new tile key for the source.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3039,21 +2982,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>url</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3071,7 +3014,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>URL.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3165,21 +3108,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>urls</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3197,7 +3140,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>URLs.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3293,21 +3236,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3328,14 +3271,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3353,7 +3296,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3408,7 +3351,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         <div class="anchor" id="unset">
         </div>
         <h4 class="name">
-            unset<span class="signature">(key, <span class="optional">opt_silent</span>)</span>
+            unset<span class="signature">(key, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#unset">inherited</a></span>
             
@@ -3449,21 +3392,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3481,14 +3424,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Key name.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3506,7 +3449,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Unset without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>

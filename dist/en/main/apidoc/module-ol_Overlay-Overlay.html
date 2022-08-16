@@ -2,82 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script>
-    var gaProperty = 'UA-2577926-1';
-    // Disable tracking if the opt-out cookie exists.
-    var disableStr = 'ga-disable-' + gaProperty;
-    if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-    }
-    function gaOptout() {
-      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = true;
-    }
-    function gaOptoutRevoke() {
-      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = false;
-    }
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
-    </script>
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function() {
-      window.cookieconsent.initialise({
-        'palette': {
-          'popup': {
-            'background': '#eaf7f7',
-            'text': '#5c7291'
-          },
-          'button': {
-            'background': '#56cbdb',
-            'text': '#ffffff'
-          }
-        },
-        'theme': 'edgeless',
-        'type': 'opt-out',
-        'onInitialise': function (status) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onStatusChange': function(status, chosenBefore) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onRevokeChoice': function() {
-          gaOptoutRevoke()
-        }
-      })
-    });
-    </script>
     <title>OpenLayers v7.0.0-dev API - Class: Overlay</title>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/bootstrap.bundle.min.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
-    <link type="text/css" rel="stylesheet" href="styles/site.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
   </head>
   <body>
     <div class="container-fluid">
       <header class="navbar navbar-expand-sm navbar-dark mb-3 py-0 fixed-top" role="navigation">
-        <a class="navbar-brand" href="https://openlayers.org/"><img src="logo-70x70.png" alt="">&nbsp;OpenLayers</a>
+        <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -89,14 +32,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="docdropdown">
-              <a class="dropdown-item" href="/en/latest/doc/">Docs</a>
+              <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
                 <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
@@ -104,7 +47,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
               <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
@@ -201,15 +144,16 @@
       </div>
     
       <div class="class-description col-lg-7 align-self-center pl-0"><p>An element to be displayed over the map and attached to a single map
-location.  Like <a href="module-ol_control_Control-Control.html"><code>module:ol/control/Control~Control</code></a>, Overlays are
+location.  Like <a href="module-ol_control_Control-Control.html"><code>Control</code></a>, Overlays are
 visible widgets. Unlike Controls, they are not in a fixed position on the
 screen, but are tied to a geographical coordinate, so panning the map will
 move an Overlay but not a Control.</p>
 <p>Example:</p>
 <pre class="prettyprint source"><code>import Overlay from 'ol/Overlay';
 
-var popup = new Overlay({
-  element: document.getElementById('popup')
+// ...
+const popup = new Overlay({
+  element: document.getElementById('popup'),
 });
 popup.setPosition(coordinate);
 map.addOverlay(popup);</code></pre></div>
@@ -238,7 +182,7 @@ map.addOverlay(popup);</code></pre></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L111">line 111</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L112">line 112</a>
         </div>
         
     </div>
@@ -265,21 +209,21 @@ map.addOverlay(popup);</code></pre></div>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -293,21 +237,21 @@ map.addOverlay(popup);</code></pre></div>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>id</code></td>
             
-            
+
             
             <td class="type">
             
@@ -327,16 +271,16 @@ map.addOverlay(popup);</code></pre></div>
             <td  class="description last">
                 
                 <p>Set the overlay id. The overlay id can be used
-with the <a href="module-ol_Map-Map.html#getOverlayById"><code>module:ol/Map~Map#getOverlayById</code></a> method.</p></td>
+with the <a href="module-ol_Map-Map.html#getOverlayById"><code>getOverlayById</code></a> method.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>element</code></td>
             
-            
+
             
             <td class="type">
             
@@ -354,14 +298,14 @@ with the <a href="module-ol_Map-Map.html#getOverlayById"><code>module:ol/Map~Map
                 
                 <p>The overlay element.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>offset</code></td>
             
-            
+
             
             <td class="type">
             
@@ -385,19 +329,19 @@ array is the horizontal offset. A positive value shifts the overlay right.
 The second element in the array is the vertical offset. A positive value
 shifts the overlay down.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>position</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
  | undefined
                 
@@ -411,19 +355,19 @@ shifts the overlay down.</p></td>
                 <p>The overlay position
 in map projection.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>positioning</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Overlay.html#~Positioning">module:ol/Overlay~Positioning</a></span>
+<span class="param-type"><a href="module-ol_Overlay.html#~Positioning">Positioning</a></span>
 
 
                 
@@ -442,14 +386,14 @@ Possible values are <code>'bottom-left'</code>, <code>'bottom-center'</code>, <c
 <code>'center-left'</code>, <code>'center-center'</code>, <code>'center-right'</code>, <code>'top-left'</code>,
 <code>'top-center'</code>, and <code>'top-right'</code>.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>stopEvent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -473,14 +417,14 @@ container as that of the controls (CSS class name
 <code>ol-overlaycontainer-stopevent</code>); if <code>false</code> it is placed in the container
 with CSS class name specified by the <code>className</code> property.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>insertFirst</code></td>
             
-            
+
             
             <td class="type">
             
@@ -504,19 +448,19 @@ container as that of the controls (see the <code>stopEvent</code> option) you wi
 probably set <code>insertFirst</code> to <code>true</code> so the overlay is displayed below the
 controls.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>autoPan</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Overlay.html#~PanIntoViewOptions">module:ol/Overlay~PanIntoViewOptions</a></span>
+<span class="param-type"><a href="module-ol_Overlay.html#~PanIntoViewOptions">PanIntoViewOptions</a></span>
 |
 
 <span class="param-type">boolean</span>
@@ -535,14 +479,14 @@ controls.</p></td>
                 <p>Pan the map when calling
 <code>setPosition</code>, so that the overlay is entirely visible in the current viewport.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>className</code></td>
             
-            
+
             
             <td class="type">
             
@@ -563,13 +507,13 @@ controls.</p></td>
                 <p>CSS class
 name.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -608,7 +552,7 @@ name.</p></td>
         <li class="">
             <code><a href="module-ol_events_Event-BaseEvent.html#event:change">change</a></code>
             
-              (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
             
             
 
@@ -620,7 +564,7 @@ name.</p></td>
         <li class="">
             <code>change:element</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -630,7 +574,7 @@ name.</p></td>
         <li class="">
             <code>change:map</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -640,7 +584,7 @@ name.</p></td>
         <li class="">
             <code>change:offset</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -650,7 +594,7 @@ name.</p></td>
         <li class="">
             <code>change:position</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -660,7 +604,7 @@ name.</p></td>
         <li class="">
             <code>change:positioning</code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -670,7 +614,7 @@ name.</p></td>
         <li class="">
             <code><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a></code>
             
-              (<a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a>)
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
             
             
 
@@ -682,7 +626,7 @@ name.</p></td>
         <li class="">
             <code><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a></code>
             
-              (<a href="module-ol_Object.ObjectEvent.html">module:ol/Object.ObjectEvent</a>)
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
             
             
 
@@ -714,7 +658,7 @@ name.</p></td>
         <h3 class="subsection-title">Extends</h3>
 
         <ul>
-            <li><a href="module-ol_Object-BaseObject.html">module:ol/Object~BaseObject</a></li>
+            <li><a href="module-ol_Object-BaseObject.html">BaseObject</a></li>
         </ul>
     
 
@@ -736,7 +680,7 @@ name.</p></td>
     <th>Name</th>
     <th>Type</th>
     <th>Settable</th>
-    <th><a href="module-ol_Object.ObjectEvent.html">ol/Object.ObjectEvent</a> type</th>
+    <th><a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a> type</th>
     <th class="last">Description</th>
   </tr>
   </thead>
@@ -768,7 +712,7 @@ name.</p></td>
       <td class="type">
       
       
-<span class="param-type"><a href="module-ol_PluggableMap-PluggableMap.html">module:ol/PluggableMap~PluggableMap</a></span>
+<span class="param-type"><a href="module-ol_Map-Map.html">Map</a></span>
 |
 
 <span class="param-type">null</span>
@@ -804,7 +748,7 @@ overlay is part of.</p></td>
       <td class="type">
       
       
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 |
 
 <span class="param-type">undefined</span>
@@ -824,7 +768,7 @@ overlay is part of.</p></td>
       <td class="type">
       
       
-<span class="param-type"><a href="module-ol_Overlay.html#~Positioning">module:ol/Overlay~Positioning</a></span>
+<span class="param-type"><a href="module-ol_Overlay.html#~Positioning">Positioning</a></span>
 
 
       
@@ -938,7 +882,7 @@ overlay is part of.</p></td>
         <div class="anchor" id="dispatchEvent">
         </div>
         <h4 class="name">
-            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean|undefined}</span>
+            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean | undefined}</span>
             
                 <span class="inherited"><a href="module-ol_events_Target-Target.html#dispatchEvent">inherited</a></span>
             
@@ -981,26 +925,26 @@ Object with a <code>type</code> property.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>event</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">module:ol/events/Event~BaseEvent</a></span>
+<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a></span>
 |
 
 <span class="param-type">string</span>
@@ -1016,7 +960,7 @@ Object with a <code>type</code> property.</p>
                 
                 <p>Event object.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1122,21 +1066,21 @@ Object with a <code>type</code> property.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1154,7 +1098,7 @@ Object with a <code>type</code> property.</p>
                 
                 <p>Key name.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1218,7 +1162,7 @@ Value.
         <div class="anchor" id="getElement">
         </div>
         <h4 class="name">
-            getElement<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{HTMLElement|undefined}</span>
+            getElement<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{HTMLElement | undefined}</span>
             
             
 
@@ -1226,7 +1170,7 @@ Value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L217">line 217</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L218">line 218</a>
         </div>
         
     </div>
@@ -1308,7 +1252,7 @@ The Element containing the overlay.
         <div class="anchor" id="getId">
         </div>
         <h4 class="name">
-            getId<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number|string|undefined}</span>
+            getId<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number | string | undefined}</span>
             
             
 
@@ -1316,7 +1260,7 @@ The Element containing the overlay.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L226">line 226</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L227">line 227</a>
         </div>
         
     </div>
@@ -1490,7 +1434,7 @@ List of property names.
         <div class="anchor" id="getMap">
         </div>
         <h4 class="name">
-            getMap<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_PluggableMap-PluggableMap.html">module:ol/PluggableMap~PluggableMap</a>|null}</span>
+            getMap<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Map-Map.html">Map</a> | null}</span>
             
             
 
@@ -1498,7 +1442,7 @@ List of property names.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L237">line 237</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L238">line 238</a>
         </div>
         
     </div>
@@ -1589,7 +1533,7 @@ overlay is part of.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L249">line 249</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L250">line 250</a>
         </div>
         
     </div>
@@ -1671,7 +1615,7 @@ The offset.
         <div class="anchor" id="getPosition">
         </div>
         <h4 class="name">
-            getPosition<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a>|undefined}</span>
+            getPosition<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a> | undefined}</span>
             
             
 
@@ -1679,7 +1623,7 @@ The offset.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L260">line 260</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L261">line 261</a>
         </div>
         
     </div>
@@ -1762,7 +1706,7 @@ The spatial point that the overlay is
         <div class="anchor" id="getPositioning">
         </div>
         <h4 class="name">
-            getPositioning<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Overlay.html#~Positioning">module:ol/Overlay~Positioning</a>}</span>
+            getPositioning<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Overlay.html#~Positioning">Positioning</a>}</span>
             
             
 
@@ -1770,7 +1714,7 @@ The spatial point that the overlay is
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L273">line 273</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L274">line 274</a>
         </div>
         
     </div>
@@ -2038,7 +1982,7 @@ Revision.
         <div class="anchor" id="on">
         </div>
         <h4 class="name">
-            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>|Array.&lt;<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>>}</span>
+            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array<<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_Observable-Observable.html#on">inherited</a></span>
             
@@ -2079,21 +2023,21 @@ Revision.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2114,14 +2058,14 @@ Revision.
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2139,7 +2083,7 @@ Revision.
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2205,7 +2149,7 @@ Unique key for the listener. If
         <div class="anchor" id="once">
         </div>
         <h4 class="name">
-            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>|Array.&lt;<a href="module-ol_events.html#~EventsKey">module:ol/events~EventsKey</a>>}</span>
+            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array<<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_Observable-Observable.html#once">inherited</a></span>
             
@@ -2246,21 +2190,21 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2281,14 +2225,14 @@ Unique key for the listener. If
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2306,7 +2250,7 @@ Unique key for the listener. If
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2372,7 +2316,7 @@ Unique key for the listener. If
         <div class="anchor" id="panIntoView">
         </div>
         <h4 class="name">
-            panIntoView<span class="signature">(<span class="optional">opt_panIntoViewOptions</span>)</span>
+            panIntoView<span class="signature">(<span class="optional">panIntoViewOptions</span>)</span>
             
             
 
@@ -2380,7 +2324,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L407">line 407</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L408">line 408</a>
         </div>
         
     </div>
@@ -2412,21 +2356,21 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>panIntoViewOptions</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -2440,26 +2384,26 @@ Unique key for the listener. If
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>animation</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Overlay.html#~PanOptions">module:ol/Overlay~PanOptions</a></span>
+<span class="param-type"><a href="module-ol_Overlay.html#~PanOptions">PanOptions</a></span>
 
 
                 
@@ -2474,14 +2418,14 @@ Unique key for the listener. If
                 
                 <p>The animation parameters for the pan</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>margin</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2502,13 +2446,13 @@ Unique key for the listener. If
                 <p>The margin (in pixels) between the
 overlay and the borders of the map when panning into view.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2563,7 +2507,7 @@ overlay and the borders of the map when panning into view.</p></td>
         <div class="anchor" id="set">
         </div>
         <h4 class="name">
-            set<span class="signature">(key, value, <span class="optional">opt_silent</span>)</span>
+            set<span class="signature">(key, value, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#set">inherited</a></span>
             
@@ -2604,21 +2548,21 @@ overlay and the borders of the map when panning into view.</p></td>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2636,14 +2580,14 @@ overlay and the borders of the map when panning into view.</p></td>
                 
                 <p>Key name.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>value</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2661,14 +2605,14 @@ overlay and the borders of the map when panning into view.</p></td>
                 
                 <p>Value.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2686,7 +2630,7 @@ overlay and the borders of the map when panning into view.</p></td>
                 
                 <p>Update without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2749,7 +2693,7 @@ overlay and the borders of the map when panning into view.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L353">line 353</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L354">line 354</a>
         </div>
         
     </div>
@@ -2780,21 +2724,21 @@ overlay and the borders of the map when panning into view.</p></td>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>element</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2815,7 +2759,7 @@ overlay and the borders of the map when panning into view.</p></td>
                 
                 <p>The Element containing the overlay.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -2878,7 +2822,7 @@ overlay and the borders of the map when panning into view.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L364">line 364</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L365">line 365</a>
         </div>
         
     </div>
@@ -2909,26 +2853,26 @@ overlay and the borders of the map when panning into view.</p></td>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>map</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_PluggableMap-PluggableMap.html">module:ol/PluggableMap~PluggableMap</a></span>
+<span class="param-type"><a href="module-ol_Map-Map.html">Map</a></span>
 |
 
 <span class="param-type">null</span>
@@ -2945,7 +2889,7 @@ overlay and the borders of the map when panning into view.</p></td>
                 <p>The map that the
 overlay is part of. Pass <code>null</code> to just remove the overlay from the current map.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3008,7 +2952,7 @@ overlay is part of. Pass <code>null</code> to just remove the overlay from the c
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L374">line 374</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L375">line 375</a>
         </div>
         
     </div>
@@ -3039,21 +2983,21 @@ overlay is part of. Pass <code>null</code> to just remove the overlay from the c
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>offset</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3071,7 +3015,7 @@ overlay is part of. Pass <code>null</code> to just remove the overlay from the c
                 
                 <p>Offset.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3134,7 +3078,7 @@ overlay is part of. Pass <code>null</code> to just remove the overlay from the c
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L386">line 386</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L387">line 387</a>
         </div>
         
     </div>
@@ -3166,26 +3110,26 @@ overlay is hidden.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>position</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">module:ol/coordinate~Coordinate</a></span>
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 |
 
 <span class="param-type">undefined</span>
@@ -3202,7 +3146,7 @@ overlay is hidden.</p>
                 <p>The spatial point that the overlay
     is anchored at.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3265,7 +3209,7 @@ overlay is hidden.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js">Overlay.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L489">line 489</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Overlay.js#L490">line 490</a>
         </div>
         
     </div>
@@ -3296,26 +3240,26 @@ overlay is hidden.</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>positioning</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Overlay.html#~Positioning">module:ol/Overlay~Positioning</a></span>
+<span class="param-type"><a href="module-ol_Overlay.html#~Positioning">Positioning</a></span>
 
 
                 
@@ -3329,7 +3273,7 @@ overlay is hidden.</p>
                 <p>how the overlay is
     positioned relative to its point on the map.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3384,7 +3328,7 @@ overlay is hidden.</p>
         <div class="anchor" id="setProperties">
         </div>
         <h4 class="name">
-            setProperties<span class="signature">(values, <span class="optional">opt_silent</span>)</span>
+            setProperties<span class="signature">(values, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#setProperties">inherited</a></span>
             
@@ -3426,21 +3370,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>values</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3458,14 +3402,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Values.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3483,7 +3427,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Update without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3579,21 +3523,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>type</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3614,14 +3558,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>The event type or array of event types.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>listener</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3639,7 +3583,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>The listener function.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -3694,7 +3638,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         <div class="anchor" id="unset">
         </div>
         <h4 class="name">
-            unset<span class="signature">(key, <span class="optional">opt_silent</span>)</span>
+            unset<span class="signature">(key, <span class="optional">silent</span>)</span>
             
                 <span class="inherited"><a href="module-ol_Object-BaseObject.html#unset">inherited</a></span>
             
@@ -3735,21 +3679,21 @@ properties and adds new ones (it does not remove any existing properties).</p>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>key</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3767,14 +3711,14 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Key name.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>silent</code></td>
             
-            
+
             
             <td class="type">
             
@@ -3792,7 +3736,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
                 
                 <p>Unset without triggering an event.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>

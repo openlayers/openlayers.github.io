@@ -2,82 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script>
-    var gaProperty = 'UA-2577926-1';
-    // Disable tracking if the opt-out cookie exists.
-    var disableStr = 'ga-disable-' + gaProperty;
-    if (document.cookie.indexOf(disableStr + '=true') > -1) {
-      window[disableStr] = true;
-    }
-    function gaOptout() {
-      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = true;
-    }
-    function gaOptoutRevoke() {
-      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
-      window[disableStr] = false;
-    }
-    </script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
-    </script>
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
-    <script>
-    window.addEventListener("load", function() {
-      window.cookieconsent.initialise({
-        'palette': {
-          'popup': {
-            'background': '#eaf7f7',
-            'text': '#5c7291'
-          },
-          'button': {
-            'background': '#56cbdb',
-            'text': '#ffffff'
-          }
-        },
-        'theme': 'edgeless',
-        'type': 'opt-out',
-        'onInitialise': function (status) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onStatusChange': function(status, chosenBefore) {
-          if (!this.hasConsented()) {
-            gaOptout()
-          }
-        },
-        'onRevokeChoice': function() {
-          gaOptoutRevoke()
-        }
-      })
-    });
-    </script>
     <title>OpenLayers v7.0.0-dev API - Class: Polyline</title>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/bootstrap.bundle.min.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
-    <link type="text/css" rel="stylesheet" href="styles/site.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
   </head>
   <body>
     <div class="container-fluid">
       <header class="navbar navbar-expand-sm navbar-dark mb-3 py-0 fixed-top" role="navigation">
-        <a class="navbar-brand" href="https://openlayers.org/"><img src="logo-70x70.png" alt="">&nbsp;OpenLayers</a>
+        <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -89,14 +32,14 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="docdropdown">
-              <a class="dropdown-item" href="/en/latest/doc/">Docs</a>
+              <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="../doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="../doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="../doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
                 <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fa fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
@@ -104,7 +47,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fa fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
               <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
             </div>
            </li>
@@ -175,7 +118,7 @@ Polyline Algorithm Format.</p>
 <p>When reading features, the coordinates are assumed to be in two dimensions
 and in [latitude, longitude] order.</p>
 <p>As Polyline sources contain a single feature,
-<a href="module-ol_format_Polyline-Polyline.html#readFeatures"><code>module:ol/format/Polyline~Polyline#readFeatures</code></a> will return the
+<a href="module-ol_format_Polyline-Polyline.html#readFeatures"><code>readFeatures</code></a> will return the
 feature in an array.</p></div>
     
     </div>
@@ -194,7 +137,7 @@ feature in an array.</p></div>
         <div class="anchor" id="Polyline">
         </div>
         <h4 class="name">
-            new Polyline<span class="signature">(<span class="optional">opt_options</span>)</span>
+            new Polyline<span class="signature">(<span class="optional">options</span>)</span>
             
             
 
@@ -229,21 +172,21 @@ feature in an array.</p></div>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -257,21 +200,21 @@ feature in an array.</p></div>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>factor</code></td>
             
-            
+
             
             <td class="type">
             
@@ -291,19 +234,19 @@ feature in an array.</p></div>
                 
                 <p>The factor by which the coordinates values will be scaled.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>geometryLayout</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_geom_Geometry.html#~GeometryLayout">module:ol/geom/Geometry~GeometryLayout</a></span>
+<span class="param-type"><a href="module-ol_geom_Geometry.html#~GeometryLayout">GeometryLayout</a></span>
 
 
                 
@@ -319,13 +262,13 @@ feature in an array.</p></div>
                 <p>Layout of the
 feature geometries created by the format reader.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -381,7 +324,7 @@ feature geometries created by the format reader.</p></td>
         <h3 class="subsection-title">Extends</h3>
 
         <ul>
-            <li><a href="module-ol_format_TextFeature-TextFeature.html">module:ol/format/TextFeature~TextFeature</a></li>
+            <li><a href="module-ol_format_TextFeature-TextFeature.html">TextFeature</a></li>
         </ul>
     
 
@@ -409,7 +352,7 @@ feature geometries created by the format reader.</p></td>
         <div class="anchor" id="readFeature">
         </div>
         <h4 class="name">
-            readFeature<span class="signature">(source, <span class="optional">opt_options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>}</span>
+            readFeature<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Feature-Feature.html">Feature</a>}</span>
             
                 <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#readFeature">inherited</a></span>
             
@@ -450,21 +393,21 @@ feature geometries created by the format reader.</p></td>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>source</code></td>
             
-            
+
             
             <td class="type">
             
@@ -491,14 +434,14 @@ feature geometries created by the format reader.</p></td>
                 
                 <p>Source.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -512,26 +455,26 @@ feature geometries created by the format reader.</p></td>
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>dataProjection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
  | undefined
                 
@@ -548,19 +491,19 @@ the <code>dataProjection</code> of the format is assigned (where set). If the pr
 can not be derived from the data and if no <code>dataProjection</code> is set for a format,
 the features will not be reprojected.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>extent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
  | undefined
                 
@@ -576,19 +519,19 @@ This is only required when reading data with tile pixels as geometry units. When
 a <code>dataProjection</code> with <code>TILE_PIXELS</code> as <code>units</code> and the tile's pixel extent as <code>extent</code> needs to be
 provided.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>featureProjection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
  | undefined
                 
@@ -603,13 +546,13 @@ provided.</p></td>
 created by the format reader. If not provided, features will be returned in the
 <code>dataProjection</code>.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -673,7 +616,7 @@ Feature.
         <div class="anchor" id="readFeatures">
         </div>
         <h4 class="name">
-            readFeatures<span class="signature">(source, <span class="optional">opt_options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>>}</span>
+            readFeatures<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array<<a href="module-ol_Feature-Feature.html">Feature</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#readFeatures">inherited</a></span>
             
@@ -714,21 +657,21 @@ Feature.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>source</code></td>
             
-            
+
             
             <td class="type">
             
@@ -755,14 +698,14 @@ Feature.
                 
                 <p>Source.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -776,26 +719,26 @@ Feature.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>dataProjection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
  | undefined
                 
@@ -812,19 +755,19 @@ the <code>dataProjection</code> of the format is assigned (where set). If the pr
 can not be derived from the data and if no <code>dataProjection</code> is set for a format,
 the features will not be reprojected.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>extent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
  | undefined
                 
@@ -840,19 +783,19 @@ This is only required when reading data with tile pixels as geometry units. When
 a <code>dataProjection</code> with <code>TILE_PIXELS</code> as <code>units</code> and the tile's pixel extent as <code>extent</code> needs to be
 provided.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>featureProjection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
  | undefined
                 
@@ -867,13 +810,13 @@ provided.</p></td>
 created by the format reader. If not provided, features will be returned in the
 <code>dataProjection</code>.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -937,7 +880,7 @@ Features.
         <div class="anchor" id="readGeometry">
         </div>
         <h4 class="name">
-            readGeometry<span class="signature">(source, <span class="optional">opt_options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_geom_Geometry-Geometry.html">module:ol/geom/Geometry~Geometry</a>}</span>
+            readGeometry<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_geom_Geometry-Geometry.html">Geometry</a>}</span>
             
                 <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#readGeometry">inherited</a></span>
             
@@ -978,21 +921,21 @@ Features.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>source</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1019,14 +962,14 @@ Features.
                 
                 <p>Source.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -1040,26 +983,26 @@ Features.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>dataProjection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
  | undefined
                 
@@ -1076,19 +1019,19 @@ the <code>dataProjection</code> of the format is assigned (where set). If the pr
 can not be derived from the data and if no <code>dataProjection</code> is set for a format,
 the features will not be reprojected.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>extent</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_extent.html#~Extent">module:ol/extent~Extent</a></span>
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
  | undefined
                 
@@ -1104,19 +1047,19 @@ This is only required when reading data with tile pixels as geometry units. When
 a <code>dataProjection</code> with <code>TILE_PIXELS</code> as <code>units</code> and the tile's pixel extent as <code>extent</code> needs to be
 provided.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>featureProjection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
  | undefined
                 
@@ -1131,13 +1074,13 @@ provided.</p></td>
 created by the format reader. If not provided, features will be returned in the
 <code>dataProjection</code>.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1201,7 +1144,7 @@ Geometry.
         <div class="anchor" id="readProjection">
         </div>
         <h4 class="name">
-            readProjection<span class="signature">(source)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_proj_Projection-Projection.html">module:ol/proj/Projection~Projection</a>|undefined}</span>
+            readProjection<span class="signature">(source)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_proj_Projection-Projection.html">Projection</a> | undefined}</span>
             
                 <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#readProjection">inherited</a></span>
             
@@ -1242,21 +1185,21 @@ Geometry.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>source</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1283,7 +1226,7 @@ Geometry.
                 
                 <p>Source.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1347,7 +1290,7 @@ Projection.
         <div class="anchor" id="writeFeature">
         </div>
         <h4 class="name">
-            writeFeature<span class="signature">(feature, <span class="optional">opt_options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
+            writeFeature<span class="signature">(feature, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
             
                 <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#writeFeature">inherited</a></span>
             
@@ -1388,26 +1331,26 @@ Projection.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>feature</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a></span>
+<span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a></span>
 
 
                 
@@ -1420,14 +1363,14 @@ Projection.
                 
                 <p>Feature.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -1441,26 +1384,26 @@ Projection.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>dataProjection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
  | undefined
                 
@@ -1476,19 +1419,19 @@ If not provided, the <code>dataProjection</code> of the format is assigned (wher
 If no <code>dataProjection</code> is set for a format, the features will be returned
 in the <code>featureProjection</code>.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>featureProjection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
  | undefined
                 
@@ -1503,14 +1446,14 @@ in the <code>featureProjection</code>.</p></td>
 that will be serialized by the format writer. If not provided, geometries are assumed
 to be in the <code>dataProjection</code> if that is set; in other words, they are not transformed.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>rightHanded</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1535,14 +1478,14 @@ exterior and counter-clockwise for interior rings).  Note that not all
 formats support this.  The GeoJSON format does use this property when writing
 geometries.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>decimals</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1565,13 +1508,13 @@ Set a number here to round coordinates. Can also be used to ensure that
 coordinates read in can be written back out with the same number of decimals.
 Default is no rounding.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1635,7 +1578,7 @@ Encoded feature.
         <div class="anchor" id="writeFeatures">
         </div>
         <h4 class="name">
-            writeFeatures<span class="signature">(features, <span class="optional">opt_options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
+            writeFeatures<span class="signature">(features, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
             
                 <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#writeFeatures">inherited</a></span>
             
@@ -1676,26 +1619,26 @@ Encoded feature.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>features</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="module-ol_Feature-Feature.html">module:ol/Feature~Feature</a>></span>
+<span class="param-type">Array<<a href="module-ol_Feature-Feature.html">Feature</a>></span>
 
 
                 
@@ -1708,14 +1651,14 @@ Encoded feature.
                 
                 <p>Features.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -1729,26 +1672,26 @@ Encoded feature.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>dataProjection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
  | undefined
                 
@@ -1764,19 +1707,19 @@ If not provided, the <code>dataProjection</code> of the format is assigned (wher
 If no <code>dataProjection</code> is set for a format, the features will be returned
 in the <code>featureProjection</code>.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>featureProjection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
  | undefined
                 
@@ -1791,14 +1734,14 @@ in the <code>featureProjection</code>.</p></td>
 that will be serialized by the format writer. If not provided, geometries are assumed
 to be in the <code>dataProjection</code> if that is set; in other words, they are not transformed.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>rightHanded</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1823,14 +1766,14 @@ exterior and counter-clockwise for interior rings).  Note that not all
 formats support this.  The GeoJSON format does use this property when writing
 geometries.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>decimals</code></td>
             
-            
+
             
             <td class="type">
             
@@ -1853,13 +1796,13 @@ Set a number here to round coordinates. Can also be used to ensure that
 coordinates read in can be written back out with the same number of decimals.
 Default is no rounding.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
@@ -1923,7 +1866,7 @@ Encoded features.
         <div class="anchor" id="writeGeometry">
         </div>
         <h4 class="name">
-            writeGeometry<span class="signature">(geometry, <span class="optional">opt_options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
+            writeGeometry<span class="signature">(geometry, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
             
                 <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#writeGeometry">inherited</a></span>
             
@@ -1964,26 +1907,26 @@ Encoded features.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>geometry</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_geom_Geometry-Geometry.html">module:ol/geom/Geometry~Geometry</a></span>
+<span class="param-type"><a href="module-ol_geom_Geometry-Geometry.html">Geometry</a></span>
 
 
                 
@@ -1996,14 +1939,14 @@ Encoded features.
                 
                 <p>Geometry.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>options</code></td>
             
-            
+
             
 
             <td colspan=2 class="description last">
@@ -2017,26 +1960,26 @@ Encoded features.
 		
 		<th>Name</th>
 		
-		
+
 		<th>Type</th>
-		
+
 		<th class="last">Description</th>
 	</tr>
 	</thead>
-	
+
 	<tbody>
 	
-	
+
         <tr class="">
             
                 <td class="name"><code>dataProjection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
  | undefined
                 
@@ -2052,19 +1995,19 @@ If not provided, the <code>dataProjection</code> of the format is assigned (wher
 If no <code>dataProjection</code> is set for a format, the features will be returned
 in the <code>featureProjection</code>.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>featureProjection</code></td>
             
-            
+
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">module:ol/proj~ProjectionLike</a></span>
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
  | undefined
                 
@@ -2079,14 +2022,14 @@ in the <code>featureProjection</code>.</p></td>
 that will be serialized by the format writer. If not provided, geometries are assumed
 to be in the <code>dataProjection</code> if that is set; in other words, they are not transformed.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>rightHanded</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2111,14 +2054,14 @@ exterior and counter-clockwise for interior rings).  Note that not all
 formats support this.  The GeoJSON format does use this property when writing
 geometries.</p></td>
         </tr>
+
 	
-	
-	
+
         <tr class="">
             
                 <td class="name"><code>decimals</code></td>
             
-            
+
             
             <td class="type">
             
@@ -2141,13 +2084,13 @@ Set a number here to round coordinates. Can also be used to ensure that
 coordinates read in can be written back out with the same number of decimals.
 Default is no rounding.</p></td>
         </tr>
-	
+
 	
 	</tbody>
 </table>
             </td>
         </tr>
-	
+
 	
 	</tbody>
 </table>

@@ -4,7 +4,7 @@
 /***/ 9447:
 /***/ (function(__unused_webpack___webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) {
 
-/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(1376);
+/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4686);
 /* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7486);
 /* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(4354);
 /* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1998);
@@ -145,14 +145,10 @@ function updateControlValue() {
 }
 
 updateControlValue();
-
-const listener = function () {
+thresholdControl.addEventListener('input', function () {
   updateControlValue();
   raster.changed();
-};
-
-thresholdControl.addEventListener('input', listener);
-thresholdControl.addEventListener('change', listener);
+});
 
 /***/ })
 
