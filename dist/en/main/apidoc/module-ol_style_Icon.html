@@ -597,13 +597,13 @@ to provide the size of the image, with the <code>imgSize</code> option.</p></td>
 
         <tr>
             
-                <td class="name"><code>offset</code></td>
+                <td class="name"><code>imgSize</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
 
             
@@ -622,13 +622,11 @@ to provide the size of the image, with the <code>imgSize</code> option.</p></td>
             
                 <td class="default">
                 
-                    [0, 0]
-                
                 </td>
             
 
-            <td class="description last"><p>Offset, which, together with the size and the offset origin, define the
-sub-rectangle to use from the original icon image.</p></td>
+            <td class="description last"><p>Image size in pixels. Only required if <code>img</code> is set and <code>src</code> is not.
+The provided <code>imgSize</code> needs to match the actual size of the image.</p></td>
         </tr>
 
 	
@@ -660,50 +658,13 @@ sub-rectangle to use from the original icon image.</p></td>
             
                 <td class="default">
                 
-                    [0,0]
+                    [0, 0]
                 
                 </td>
             
 
-            <td class="description last"><p>Displacement of the icon.</p></td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>offsetOrigin</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_style_Icon.html#~IconOrigin">IconOrigin</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'top-left'
-                
-                </td>
-            
-
-            <td class="description last"><p>Origin of the offset: <code>bottom-left</code>, <code>bottom-right</code>,
-<code>top-left</code> or <code>top-right</code>.</p></td>
+            <td class="description last"><p>Displacement of the icon in pixels.
+Positive values will shift the icon right and up.</p></td>
         </tr>
 
 	
@@ -861,6 +822,82 @@ sub-rectangle to use from the original icon image.</p></td>
 
         <tr>
             
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    [0, 0]
+                
+                </td>
+            
+
+            <td class="description last"><p>Offset which, together with <code>size</code> and <code>offsetOrigin</code>, defines the
+sub-rectangle to use from the original (sprite) image.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>offsetOrigin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_Icon.html#~IconOrigin">IconOrigin</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    'top-left'
+                
+                </td>
+            
+
+            <td class="description last"><p>Origin of the offset: <code>bottom-left</code>, <code>bottom-right</code>,
+<code>top-left</code> or <code>top-right</code>.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
                 <td class="name"><code>size</code></td>
             
 
@@ -889,44 +926,8 @@ sub-rectangle to use from the original icon image.</p></td>
                 </td>
             
 
-            <td class="description last"><p>Icon size in pixel. Can be used together with <code>offset</code> to define the
-sub-rectangle to use from the origin (sprite) icon image.</p></td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>imgSize</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Image size in pixels. Only required if <code>img</code> is set and <code>src</code> is not.
-The provided <code>imgSize</code> needs to match the actual size of the image.</p></td>
+            <td class="description last"><p>Icon size in pixels. Used together with <code>offset</code> to define the
+sub-rectangle to use from the original (sprite) image.</p></td>
         </tr>
 
 	
@@ -1005,7 +1006,7 @@ The provided <code>imgSize</code> needs to match the actual size of the image.</
                 </td>
             
 
-            <td class="description last"><p>Declutter mode</p></td>
+            <td class="description last"><p>Declutter mode.</p></td>
         </tr>
 
 	
