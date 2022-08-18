@@ -1,2 +1,2 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6494],{1628:function(n,t,e){const u=new(e(9912).Z);fetch("data/WMTSCapabilities.xml").then((function(n){return n.text()})).then((function(n){const t=u.read(n);document.getElementById("log").innerText=JSON.stringify(t,null,2)}))}},function(n){var t=function(t){return n(n.s=t)};t(9877),t(1628)}]);
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6494],{7202:function(n,t,e){const c=new(e(3120).Z);fetch("data/WMTSCapabilities.xml").then((function(n){return n.text()})).then((function(n){const t=c.read(n);document.getElementById("log").innerText=JSON.stringify(t,null,2)}))}},function(n){var t;t=7202,n(n.s=t)}]);
 //# sourceMappingURL=wmts-capabilities.js.map
