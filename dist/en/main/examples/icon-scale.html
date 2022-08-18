@@ -633,8 +633,9 @@ function updateStyle() {
     .setTextBaseline(textBaselines[parseFloat(controls[&#x27;textBaseline&#x27;].value)]);
 
   iconStyle.getText().setOffsetX(parseFloat(controls[&#x27;textOffsetX&#x27;].value));
-
   iconStyle.getText().setOffsetY(parseFloat(controls[&#x27;textOffsetY&#x27;].value));
+
+  iconFeature.changed();
 }
 updateStyle();
 
