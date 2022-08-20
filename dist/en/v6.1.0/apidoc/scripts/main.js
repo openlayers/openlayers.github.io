@@ -102,11 +102,12 @@ $(function () {
   var currentVersion = document.getElementById('package-version').innerHTML;
 
   // warn about outdated version
-  var packageUrl = 'https://raw.githubusercontent.com/openlayers/openlayers.github.io/build/package.json';
-  fetch(packageUrl).then(function(response) {
+  const currentVersion = document.getElementById('package-version').innerHTML;
+  const releaseUrl = 'https://api.github.com/repos/openlayers/openlayers/releases/latest';
+  fetch(releaseUrl).then(function(response) {
     return response.json();
   }).then(function(json) {
-    var latestVersion = json.version;
+    const latestVersion = json.name.replace(/^v/, '');
     document.getElementById('latest-version').innerHTML = latestVersion;
     var url = window.location.href;
     var branchSearch = url.match(/\/([^\/]*)\/apidoc\//);
