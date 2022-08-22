@@ -2,61 +2,62 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>OpenLayers - Welcome</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <title>OpenLayers - Welcome</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/toolbar/prism-toolbar.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
-    <link rel="stylesheet"  type="text/css" href="https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700" crossorigin="anonymous">
-    <link rel="stylesheet"  type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" crossorigin="anonymous">
-    <link rel="stylesheet"  type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
-    <link rel="stylesheet"  type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
-    <link rel="stylesheet"  type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
-    <link rel="stylesheet"  type="text/css" href="/theme/ol.css">
-    <link rel="stylesheet"  type="text/css" href="/theme/site.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400italic,700" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
     <link rel="icon" type="image/svg+xml" href="/theme/img/logo-light.svg" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href="/theme/img/logo-dark.svg" media="(prefers-color-scheme: dark)" />
-      <link rel="stylesheet" href="./theme/index.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="./theme/index.css">
   </head>
   <body>
-    <header class="navbar navbar-expand-md navbar-dark mb-3 py-0 fixed-top" role="navigation">
-      <a href='/' class='navbar-brand'><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
+    <header class="navbar navbar-expand-md navbar-dark mb-3 px-3 py-0 fixed-top" role="navigation">
+      <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <!-- menu items that get hidden below 768px width -->
       <nav class="collapse navbar-collapse" id="olmenu">
-        <ul class="nav navbar-nav ml-auto">
+        <ul class="nav navbar-nav ms-auto">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
-            <div class="dropdown-menu dropdown-menu-right mb-3" aria-labelledby="docdropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
+            <div class="dropdown-menu dropdown-menu-end mb-3" aria-labelledby="docdropdown">
               <a class="dropdown-item" href="/doc/">Docs</a>
               <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw mr-2 fa-lg"></i>Quick Start</a>
-                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw mr-2 fa-lg"></i>FAQ</a>
-                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw mr-2 fa-lg"></i>Tutorials</a>
-                <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw mr-2 fa-lg"></i>Workshop</a>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw me-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw me-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw me-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw me-2 fa-lg"></i>Workshop</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw mr-2"></i>Ask a Question</a>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw me-2"></i>Ask a Question</a>
             </div>
           </li>
           <li class="nav-item"><a class="nav-link" href="/en/latest/examples/">Examples</a></li>
-          <li class="nav-item"><a class="nav-link" href="/en/latest/apidoc/"><i class="fa fa-sitemap mr-1"></i>API</a></li>
+          <li class="nav-item"><a class="nav-link" href="/en/latest/apidoc/"><i class="fa fa-sitemap me-1"></i>API</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
-            <div class="dropdown-menu dropdown-menu-right mb-3" aria-labelledby="codedropdown">
-              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw mr-2 fa-lg"></i>Repository</a>
-              <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw mr-2 fa-lg"></i>Download</a>
+            <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
+            <div class="dropdown-menu dropdown-menu-end mb-3" aria-labelledby="codedropdown">
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw me-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw me-2 fa-lg"></i>Download</a>
             </div>
-           </li>
+          </li>
         </ul>
       </nav>
     </header>
-      <div id='map'></div>
+
+    <div id='map'></div>
 <div class='container'>
-  <blockquote id='tagline' class='text-right plain'>
+  <blockquote id='tagline' class='text-end plain'>
     <p>A high-performance, feature-packed library for all your mapping needs.</p>
   </blockquote>
   <div class='row' id='news'>
@@ -150,7 +151,7 @@
         <li>Latest v3: <a href="https://github.com/openlayers/openlayers/releases/tag/v3.20.1">v3.20.1</a>, released 2016-12-12 &mdash; <a href="/en/v3.20.1/doc/">docs</a>, <a href="/en/v3.20.1/apidoc/">API</a> &amp;  <a href="/en/v3.20.1/examples/">examples</a></li>
         <li>Latest v2: v2.13.1, released 2013-07-09 &mdash; you'll find everything you need on the <a href="./two">2.x page</a></li>
       </ul>
-      <p>Please consider upgrading to benefit of the latest features and bug fixes. Get best performance and usability for free by using recent versions of OpenLayers</p>
+      <p>Please consider upgrading to benefit from the latest features and bug fixes. Get better performance and usability for free by using recent versions of OpenLayers.</p>
     </div>
   </div>
   <div class='row'>
@@ -176,12 +177,12 @@
 </div>
 <script src="./main.js"></script>
     <footer>
-      Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.  All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>. Thanks to our <a href='https://opencollective.com/openlayers'>sponsors</a>.
+      Code licensed under the <a href='http://www.tldrlegal.com/license/bsd-2-clause-license-(freebsd)'>2-Clause BSD</a>.
+      All documentation <a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0</a>.
+      Thanks to our <a href='https://opencollective.com/openlayers'>sponsors</a>.
       <br>
-      <a href="https://www.netlify.com">
-        This site is powered by Netlify.
-      </a>
+      <a href="https://www.netlify.com">This site is powered by Netlify.</a>
     </footer>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
