@@ -351,15 +351,22 @@ searchButton.onclick &#x3D; function (event) {
 /**
  * Handle checkbox change events.
  */
-renderEdgesCheckbox.onchange &#x3D; function () {
+function onReprojectionChange() {
   osmSource.setRenderReprojectionEdges(renderEdgesCheckbox.checked);
-};
-showTilesCheckbox.onchange &#x3D; function () {
-  debugLayer.setVisible(showTilesCheckbox.checked);
-};
-showGraticuleCheckbox.onchange &#x3D; function () {
+}
+function onGraticuleChange() {
   graticule.setVisible(showGraticuleCheckbox.checked);
-};
+}
+function onTilesChange() {
+  debugLayer.setVisible(showTilesCheckbox.checked);
+}
+showGraticuleCheckbox.addEventListener(&#x27;change&#x27;, onGraticuleChange);
+renderEdgesCheckbox.addEventListener(&#x27;change&#x27;, onReprojectionChange);
+showTilesCheckbox.addEventListener(&#x27;change&#x27;, onTilesChange);
+
+onReprojectionChange();
+onGraticuleChange();
+onTilesChange();
 </code></pre>
       </div>
 

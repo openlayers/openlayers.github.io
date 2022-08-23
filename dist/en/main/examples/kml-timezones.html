@@ -334,10 +334,12 @@ const tooltip &#x3D; new bootstrap.Tooltip(info, {
 });
 
 let currentFeature;
-const displayFeatureInfo &#x3D; function (pixel) {
-  const feature &#x3D; map.forEachFeatureAtPixel(pixel, function (feature) {
-    return feature;
-  });
+const displayFeatureInfo &#x3D; function (pixel, target) {
+  const feature &#x3D; target.closest(&#x27;.ol-control&#x27;)
+    ? undefined
+    : map.forEachFeatureAtPixel(pixel, function (feature) {
+        return feature;
+      });
   if (feature) {
     info.style.left &#x3D; pixel[0] + &#x27;px&#x27;;
     info.style.top &#x3D; pixel[1] + &#x27;px&#x27;;
@@ -362,11 +364,16 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
     return;
   }
   const pixel &#x3D; map.getEventPixel(evt.originalEvent);
-  displayFeatureInfo(pixel);
+  displayFeatureInfo(pixel, evt.originalEvent.target);
 });
 
 map.on(&#x27;click&#x27;, function (evt) {
-  displayFeatureInfo(evt.pixel);
+  displayFeatureInfo(evt.pixel, evt.originalEvent.target);
+});
+
+map.getTargetElement().addEventListener(&#x27;pointerleave&#x27;, function () {
+  tooltip.hide();
+  currentFeature &#x3D; undefined;
 });
 </code></pre>
       </div>
