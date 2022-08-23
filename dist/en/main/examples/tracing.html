@@ -104,21 +104,6 @@
             </span>
             <span class="badge-group">
               <a
-                href="./index.html?q=snap" class="badge badge-info">snap</a
-              ><a
-                class="badge badge-info tag-modal-toggle"
-                data-bs-toggle="modal"
-                data-bs-target="#tag-example-list"
-                data-title="snap"
-                data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./snap.html&quot;&gt;Snap Interaction&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./tracing.html&quot;&gt;Tracing around a polygon&lt;/a&gt;
-                  &lt;/ul&gt;"
-                tabindex="0"
-                >2</a>
-            </span>
-            <span class="badge-group">
-              <a
                 href="./index.html?q=vector" class="badge badge-info">vector</a
               ><a
                 class="badge badge-info tag-modal-toggle"
@@ -203,6 +188,21 @@
             </span>
             <span class="badge-group">
               <a
+                href="./index.html?q=snap" class="badge badge-info">snap</a
+              ><a
+                class="badge badge-info tag-modal-toggle"
+                data-bs-toggle="modal"
+                data-bs-target="#tag-example-list"
+                data-title="snap"
+                data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./snap.html&quot;&gt;Snap Interaction&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./tracing.html&quot;&gt;Tracing around a polygon&lt;/a&gt;
+                  &lt;/ul&gt;"
+                tabindex="0"
+                >2</a>
+            </span>
+            <span class="badge-group">
+              <a
                 href="./index.html?q=topology" class="badge badge-info">topology</a
               ><a
                 class="badge badge-info tag-modal-toggle"
@@ -248,8 +248,8 @@
 
       <div class="row-fluid">
         <div class="span12">
-          <p id="shortdesc">Example of setting up a draw interaction to easily snap to an existing feature.</p>
-          <div id="docs"><p>This example showcases how the draw interaction API can be set up to make snapping along an existing geometry easier while preserving topology, which is sometimes called &quot;tracing&quot;. When the user clicks on two different points on the Idaho state border, the part of the border comprised between these two points is added to the currently drawn feature. This leverages the <code>appendCoordinates</code> method of the <code>ol/interaction/Draw</code> interaction.</p>
+          <p id="shortdesc">Using the draw interaction to trace around features.</p>
+          <div id="docs"><p>The draw interaction has a <code>trace</code> option to enable tracing around existing features.  This example uses the <code>traceSource</code> option to trace features from one source and add them to another source.  The first click on an edge of the Idaho feature will start tracing.  The second click on the edge will stop tracing.</p>
 </div>
         </div>
       </div>
@@ -268,101 +268,6 @@ import Style from &#x27;ol/style/Style&#x27;;
 import View from &#x27;ol/View&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-
-// math utilities
-
-// coordinates; will return the length of the [a, b] segment
-function length(a, b) {
-  return Math.sqrt(
-    (b[0] - a[0]) * (b[0] - a[0]) + (b[1] - a[1]) * (b[1] - a[1])
-  );
-}
-
-// coordinates; will return true if c is on the [a, b] segment
-function isOnSegment(c, a, b) {
-  const lengthAc &#x3D; length(a, c);
-  const lengthAb &#x3D; length(a, b);
-  const dot &#x3D;
-    ((c[0] - a[0]) * (b[0] - a[0]) + (c[1] - a[1]) * (b[1] - a[1])) / lengthAb;
-  return Math.abs(lengthAc - dot) &lt; 1e-6 &amp;&amp; lengthAc &lt; lengthAb;
-}
-
-// modulo for negative values, eg: mod(-1, 4) returns 3
-function mod(a, b) {
-  return ((a % b) + b) % b;
-}
-
-// returns a coordinates array which contains the segments of the feature&#x27;s
-// outer ring between the start and end points
-// Note: this assumes the base feature is a single polygon
-function getPartialRingCoords(feature, startPoint, endPoint) {
-  let polygon &#x3D; feature.getGeometry();
-  if (polygon.getType() &#x3D;&#x3D;&#x3D; &#x27;MultiPolygon&#x27;) {
-    polygon &#x3D; polygon.getPolygon(0);
-  }
-  const ringCoords &#x3D; polygon.getLinearRing().getCoordinates();
-
-  let i,
-    pointA,
-    pointB,
-    startSegmentIndex &#x3D; -1;
-  for (i &#x3D; 0; i &lt; ringCoords.length; i++) {
-    pointA &#x3D; ringCoords[i];
-    pointB &#x3D; ringCoords[mod(i + 1, ringCoords.length)];
-
-    // check if this is the start segment dot product
-    if (isOnSegment(startPoint, pointA, pointB)) {
-      startSegmentIndex &#x3D; i;
-      break;
-    }
-  }
-
-  const cwCoordinates &#x3D; [];
-  let cwLength &#x3D; 0;
-  const ccwCoordinates &#x3D; [];
-  let ccwLength &#x3D; 0;
-
-  // build clockwise coordinates
-  for (i &#x3D; 0; i &lt; ringCoords.length; i++) {
-    pointA &#x3D;
-      i &#x3D;&#x3D;&#x3D; 0
-        ? startPoint
-        : ringCoords[mod(i + startSegmentIndex, ringCoords.length)];
-    pointB &#x3D; ringCoords[mod(i + startSegmentIndex + 1, ringCoords.length)];
-    cwCoordinates.push(pointA);
-
-    if (isOnSegment(endPoint, pointA, pointB)) {
-      cwCoordinates.push(endPoint);
-      cwLength +&#x3D; length(pointA, endPoint);
-      break;
-    } else {
-      cwLength +&#x3D; length(pointA, pointB);
-    }
-  }
-
-  // build counter-clockwise coordinates
-  for (i &#x3D; 0; i &lt; ringCoords.length; i++) {
-    pointA &#x3D; ringCoords[mod(startSegmentIndex - i, ringCoords.length)];
-    pointB &#x3D;
-      i &#x3D;&#x3D;&#x3D; 0
-        ? startPoint
-        : ringCoords[mod(startSegmentIndex - i + 1, ringCoords.length)];
-    ccwCoordinates.push(pointB);
-
-    if (isOnSegment(endPoint, pointA, pointB)) {
-      ccwCoordinates.push(endPoint);
-      ccwLength +&#x3D; length(endPoint, pointB);
-      break;
-    } else {
-      ccwLength +&#x3D; length(pointA, pointB);
-    }
-  }
-
-  // keep the shortest path
-  return ccwLength &lt; cwLength ? ccwCoordinates : cwCoordinates;
-}
-
-// layers definition
 
 const raster &#x3D; new TileLayer({
   source: new OSM(),
@@ -415,86 +320,7 @@ const map &#x3D; new Map({
   }),
 });
 
-let drawInteraction, tracingFeature, startPoint, endPoint;
-let drawing &#x3D; false;
-
-const getFeatureOptions &#x3D; {
-  hitTolerance: 10,
-  layerFilter: (layer) &#x3D;&gt; {
-    return layer &#x3D;&#x3D;&#x3D; baseVector;
-  },
-};
-
-// the click event is used to start/end tracing around a feature
-map.on(&#x27;click&#x27;, (event) &#x3D;&gt; {
-  if (!drawing) {
-    return;
-  }
-
-  let hit &#x3D; false;
-  map.forEachFeatureAtPixel(
-    event.pixel,
-    (feature) &#x3D;&gt; {
-      if (tracingFeature &amp;&amp; feature !&#x3D;&#x3D; tracingFeature) {
-        return;
-      }
-
-      hit &#x3D; true;
-      const coord &#x3D; map.getCoordinateFromPixel(event.pixel);
-
-      // second click on the tracing feature: append the ring coordinates
-      if (feature &#x3D;&#x3D;&#x3D; tracingFeature) {
-        endPoint &#x3D; tracingFeature.getGeometry().getClosestPoint(coord);
-        const appendCoords &#x3D; getPartialRingCoords(
-          tracingFeature,
-          startPoint,
-          endPoint
-        );
-        drawInteraction.removeLastPoint();
-        drawInteraction.appendCoordinates(appendCoords);
-        tracingFeature &#x3D; null;
-      }
-
-      // start tracing on the feature ring
-      tracingFeature &#x3D; feature;
-      startPoint &#x3D; tracingFeature.getGeometry().getClosestPoint(coord);
-    },
-    getFeatureOptions
-  );
-
-  if (!hit) {
-    // clear current tracing feature &amp; preview
-    previewLine.getGeometry().setCoordinates([]);
-    tracingFeature &#x3D; null;
-  }
-});
-
-// the pointermove event is used to show a preview of the result of the tracing
-map.on(&#x27;pointermove&#x27;, (event) &#x3D;&gt; {
-  if (tracingFeature &amp;&amp; drawing) {
-    let coord &#x3D; null;
-    map.forEachFeatureAtPixel(
-      event.pixel,
-      (feature) &#x3D;&gt; {
-        if (tracingFeature &#x3D;&#x3D;&#x3D; feature) {
-          coord &#x3D; map.getCoordinateFromPixel(event.pixel);
-        }
-      },
-      getFeatureOptions
-    );
-
-    let previewCoords &#x3D; [];
-    if (coord) {
-      endPoint &#x3D; tracingFeature.getGeometry().getClosestPoint(coord);
-      previewCoords &#x3D; getPartialRingCoords(
-        tracingFeature,
-        startPoint,
-        endPoint
-      );
-    }
-    previewLine.getGeometry().setCoordinates(previewCoords);
-  }
-});
+let drawInteraction;
 
 const snapInteraction &#x3D; new Snap({
   source: baseVector.getSource(),
@@ -506,16 +332,10 @@ function addInteraction() {
   const value &#x3D; typeSelect.value;
   if (value !&#x3D;&#x3D; &#x27;None&#x27;) {
     drawInteraction &#x3D; new Draw({
-      source: drawVector.getSource(),
       type: value,
-    });
-    drawInteraction.on(&#x27;drawstart&#x27;, () &#x3D;&gt; {
-      drawing &#x3D; true;
-    });
-    drawInteraction.on(&#x27;drawend&#x27;, () &#x3D;&gt; {
-      drawing &#x3D; false;
-      previewLine.getGeometry().setCoordinates([]);
-      tracingFeature &#x3D; null;
+      source: drawVector.getSource(),
+      trace: true,
+      traceSource: baseVector.getSource(),
     });
     map.addInteraction(drawInteraction);
     map.addInteraction(snapInteraction);

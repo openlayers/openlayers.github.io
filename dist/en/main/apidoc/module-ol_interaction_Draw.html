@@ -76,8 +76,12 @@
             <li data-name="mode"><a href="module-ol_interaction_Draw.html#~Mode">Mode</a>
             <li data-name="options"><a href="module-ol_interaction_Draw.html#~Options">Options</a>
             <li data-name="pointcoordtype"><a href="module-ol_interaction_Draw.html#~PointCoordType">PointCoordType</a>
+            <li data-name="pointsegmentrelationship"><a href="module-ol_interaction_Draw.html#~PointSegmentRelationship">PointSegmentRelationship</a>
             <li data-name="polycoordtype"><a href="module-ol_interaction_Draw.html#~PolyCoordType">PolyCoordType</a>
             <li data-name="sketchcoordtype"><a href="module-ol_interaction_Draw.html#~SketchCoordType">SketchCoordType</a>
+            <li data-name="tracestate"><a href="module-ol_interaction_Draw.html#~TraceState">TraceState</a>
+            <li data-name="tracetarget"><a href="module-ol_interaction_Draw.html#~TraceTarget">TraceTarget</a>
+            <li data-name="tracetargetupdateinfo"><a href="module-ol_interaction_Draw.html#~TraceTargetUpdateInfo">TraceTargetUpdateInfo</a>
         </ul>
     </div>
     <div class="member-list" data-type="methods">
@@ -203,7 +207,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1232">line 1232</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1895">line 1895</a>
         </div>
         
     </div>
@@ -298,7 +302,7 @@ Function that draws a box-shaped polygon.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1191">line 1191</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1854">line 1854</a>
         </div>
         
     </div>
@@ -472,7 +476,7 @@ Function that draws a polygon.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L109">line 109</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L142">line 142</a>
         </div>
         
     </div>
@@ -1286,6 +1290,84 @@ Shift key activates freehand drawing.</p></td>
 
         <tr>
             
+                <td class="name"><code>trace</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type"><a href="module-ol_events_condition.html#~Condition">Condition</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Trace a portion of another geometry.
+Ignored when in freehand mode.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>traceSource</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Source for features to trace.  If tracing is active and a <code>traceSource</code> is
+not provided, the interaction's <code>source</code> will be used.  Tracing requires that the interaction is configured with
+either a <code>traceSource</code> or a <code>source</code>.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
                 <td class="name"><code>wrapX</code></td>
             
 
@@ -1443,6 +1525,126 @@ feature geometries created by the draw interaction.</p></td>
                 
 <dt class="">
     <div class="nameContainer">
+        <div class="anchor" id="~PointSegmentRelationship">
+        </div>
+        <h4 class="name">
+            PointSegmentRelationship<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>along</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The closest point expressed as a fraction along the segment length.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>squaredDistance</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The squared distance of the point to the segment.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
         <div class="anchor" id="~PolyCoordType">
         </div>
         <h4 class="name">
@@ -1512,6 +1714,492 @@ feature geometries created by the draw interaction.</p></td>
 
     
 <dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~TraceState">
+        </div>
+        <h4 class="name">
+            TraceState<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+		<th>Argument</th>
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>active</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Tracing active.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>startPx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_pixel.html#~Pixel">Pixel</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The initially clicked pixel location.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>targets</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array<<a href="module-ol_interaction_Draw.html#~TraceTarget">TraceTarget</a>></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Targets available for tracing.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>targetIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The index of the currently traced target.  A value of -1 indicates
+that no trace target is active.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~TraceTarget">
+        </div>
+        <h4 class="name">
+            TraceTarget<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>coordinates</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array<<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Target coordinates.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>ring</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The target coordinates are a linear ring.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>startIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The index of first traced coordinate.  A fractional index represents an
+edge intersection.  Index values for rings will wrap (may be negative or larger than coordinates length).</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>endIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The index of last traced coordinate.  Details from startIndex also apply here.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~TraceTargetUpdateInfo">
+        </div>
+        <h4 class="name">
+            TraceTargetUpdateInfo<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new target index.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>endIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new segment end index.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
     
         
     
