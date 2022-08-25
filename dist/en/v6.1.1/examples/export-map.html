@@ -250,11 +250,11 @@ document.getElementById(&#x27;export-png&#x27;).addEventListener(&#x27;click&#x2
     <script src="common.js"></script><script src="export-map.js"></script>
   </body>
   <script>
-  var releaseUrl = 'https://api.github.com/repos/openlayers/openlayers/releases/latest';
+  var releaseUrl = 'https://cdn.jsdelivr.net/npm/ol/package.json';
   fetch(releaseUrl).then(function(response) {
     return response.json();
   }).then(function(json) {
-    var latestVersion = json.name.replace(/^v/, '');
+    var latestVersion = json.version;
     document.getElementById('latest-version').innerHTML = latestVersion;
     var url = window.location.href;
     var branchSearch = url.match(/\/([^\/]*)\/examples\//);

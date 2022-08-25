@@ -374,11 +374,11 @@ swipe.addEventListener(
         modal.find('.modal-body').html(content);
       });
 
-      var releaseUrl = 'https://api.github.com/repos/openlayers/openlayers/releases/latest';
+      var releaseUrl = 'https://cdn.jsdelivr.net/npm/ol/package.json';
       fetch(releaseUrl).then(function(response) {
         return response.json();
       }).then(function(json) {
-        var latestVersion = json.name.replace(/^v/, '');
+        var latestVersion = json.version;
         document.getElementById('latest-version').innerHTML = latestVersion;
         var url = window.location.href;
         var branchSearch = url.match(/\/([^\/]*)\/examples\//);
