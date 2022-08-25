@@ -249,7 +249,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Using the draw interaction to trace around features.</p>
-          <div id="docs"><p>The draw interaction has a <code>trace</code> option to enable tracing around existing features.  This example uses the <code>traceSource</code> option to trace features from one source and add them to another source.  The first click on an edge of the Idaho feature will start tracing.  The second click on the edge will stop tracing.</p>
+          <div id="docs"><p>The draw interaction has a <code>trace</code> option to enable tracing around existing features.  This example uses the <code>traceSource</code> option to trace features from one source and add them to another source.  The first click on an edge of the target feature will start tracing.  The second click on the edge will stop tracing.</p>
 </div>
         </div>
       </div>
@@ -257,66 +257,51 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Draw from &#x27;ol/interaction/Draw&#x27;;
-import Feature from &#x27;ol/Feature&#x27;;
-import Fill from &#x27;ol/style/Fill&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON&#x27;;
-import LineString from &#x27;ol/geom/LineString&#x27;;
 import Map from &#x27;ol/Map&#x27;;
 import Snap from &#x27;ol/interaction/Snap&#x27;;
-import Stroke from &#x27;ol/style/Stroke&#x27;;
-import Style from &#x27;ol/style/Style&#x27;;
+import TileLayer from &#x27;ol/layer/WebGLTile&#x27;;
+import VectorLayer from &#x27;ol/layer/Vector&#x27;;
+import VectorSource from &#x27;ol/source/Vector&#x27;;
 import View from &#x27;ol/View&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import XYZ from &#x27;ol/source/XYZ&#x27;;
 
 const raster &#x3D; new TileLayer({
-  source: new OSM(),
+  source: new XYZ({
+    url: &#x27;https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key&#x3D;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;,
+    maxZoom: 20,
+  }),
 });
 
 // features in this layer will be snapped to
 const baseVector &#x3D; new VectorLayer({
   source: new VectorSource({
     format: new GeoJSON(),
-    url: &quot;https://ahocevar.com/geoserver/wfs?service&#x3D;wfs&amp;request&#x3D;getfeature&amp;typename&#x3D;topp:states&amp;cql_filter&#x3D;STATE_NAME&#x3D;&#x27;Idaho&#x27;&amp;outputformat&#x3D;application/json&quot;,
+    url: &#x27;data/geojson/fire.json&#x27;,
   }),
+  style: {
+    &#x27;fill-color&#x27;: &#x27;rgba(255, 0, 0, 0.3)&#x27;,
+    &#x27;stroke-color&#x27;: &#x27;rgba(255, 0, 0, 0.9)&#x27;,
+    &#x27;stroke-width&#x27;: 0.5,
+  },
 });
 
 // this is were the drawn features go
 const drawVector &#x3D; new VectorLayer({
   source: new VectorSource(),
-  style: new Style({
-    stroke: new Stroke({
-      color: &#x27;rgba(100, 255, 0, 1)&#x27;,
-      width: 2,
-    }),
-    fill: new Fill({
-      color: &#x27;rgba(100, 255, 0, 0.3)&#x27;,
-    }),
-  }),
-});
-
-// this line only appears when we&#x27;re tracing a feature outer ring
-const previewLine &#x3D; new Feature({
-  geometry: new LineString([]),
-});
-const previewVector &#x3D; new VectorLayer({
-  source: new VectorSource({
-    features: [previewLine],
-  }),
-  style: new Style({
-    stroke: new Stroke({
-      color: &#x27;rgba(255, 0, 0, 1)&#x27;,
-      width: 2,
-    }),
-  }),
+  style: {
+    &#x27;stroke-color&#x27;: &#x27;rgba(100, 255, 0, 1)&#x27;,
+    &#x27;stroke-width&#x27;: 2,
+    &#x27;fill-color&#x27;: &#x27;rgba(100, 255, 0, 0.3)&#x27;,
+  },
 });
 
 const map &#x3D; new Map({
-  layers: [raster, baseVector, drawVector, previewVector],
+  layers: [raster, baseVector, drawVector],
   target: &#x27;map&#x27;,
   view: new View({
-    center: [-12986427, 5678422],
-    zoom: 5,
+    center: [-13378949, 5943751],
+    zoom: 11,
   }),
 });
 
@@ -336,6 +321,13 @@ function addInteraction() {
       source: drawVector.getSource(),
       trace: true,
       traceSource: baseVector.getSource(),
+      style: {
+        &#x27;stroke-color&#x27;: &#x27;rgba(255, 255, 100, 0.5)&#x27;,
+        &#x27;stroke-width&#x27;: 1.5,
+        &#x27;fill-color&#x27;: &#x27;rgba(255, 255, 100, 0.25)&#x27;,
+        &#x27;circle-radius&#x27;: 6,
+        &#x27;circle-fill-color&#x27;: &#x27;rgba(255, 255, 100, 0.5)&#x27;,
+      },
     });
     map.addInteraction(drawInteraction);
     map.addInteraction(snapInteraction);
