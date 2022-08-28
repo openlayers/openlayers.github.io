@@ -1161,7 +1161,13 @@ band from the first source, and 1 band from the second source.</p></td>
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type">true</span>
+|
+
+<span class="param-type">false</span>
+|
+
+<span class="param-type">'auto'</span>
 
 
             
@@ -1187,7 +1193,8 @@ band from the first source, and 1 band from the second source.</p></td>
 
             <td class="description last"><p>By default, bands from the sources are read as-is. When
 reading GeoTIFFs with the purpose of displaying them as RGB images, setting this to <code>true</code> will
-convert other color spaces (YCbCr, CMYK) to RGB.</p></td>
+convert other color spaces (YCbCr, CMYK) to RGB.  Setting the option to <code>'auto'</code> will make it so CMYK, YCbCr,
+CIELab, and ICCLab images will automatically be converted to RGB.</p></td>
         </tr>
 
 	

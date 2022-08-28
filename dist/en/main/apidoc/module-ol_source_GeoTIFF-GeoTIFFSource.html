@@ -164,7 +164,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/GeoTIFF.js">source/GeoTIFF.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/GeoTIFF.js#L343">line 343</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/GeoTIFF.js#L370">line 370</a>
         </div>
         
     </div>
@@ -267,7 +267,13 @@ band from the first source, and 1 band from the second source.</p></td>
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type">true</span>
+|
+
+<span class="param-type">false</span>
+|
+
+<span class="param-type">'auto'</span>
 
 
                 
@@ -282,7 +288,8 @@ band from the first source, and 1 band from the second source.</p></td>
                 
                 <p>By default, bands from the sources are read as-is. When
 reading GeoTIFFs with the purpose of displaying them as RGB images, setting this to <code>true</code> will
-convert other color spaces (YCbCr, CMYK) to RGB.</p></td>
+convert other color spaces (YCbCr, CMYK) to RGB.  Setting the option to <code>'auto'</code> will make it so CMYK, YCbCr,
+CIELab, and ICCLab images will automatically be converted to RGB.</p></td>
         </tr>
 
 	
@@ -1773,7 +1780,7 @@ Tile grid.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/GeoTIFF.js">source/GeoTIFF.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/GeoTIFF.js#L924">line 924</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/GeoTIFF.js#L956">line 956</a>
         </div>
         
     </div>
