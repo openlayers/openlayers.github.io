@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[133],{362:function(e,n,w){"use strict";w.r(n);var a=w(3),o=w(9),r=w(5),s=w(2);new a.a({layers:[new r.a({source:new o.b})],target:"map",view:new s.a({center:[0,0],zoom:2})})}},[[362,0]]]);
+//# sourceMappingURL=simple.js.map

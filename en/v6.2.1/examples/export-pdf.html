@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <script>
+    var gaProperty = 'UA-2577926-1';
+    // Disable tracking if the opt-out cookie exists.
+    var disableStr = 'ga-disable-' + gaProperty;
+    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+      window[disableStr] = true;
+    }
+    function gaOptout() {
+      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = true;
+    }
+    function gaOptoutRevoke() {
+      document.cookie = disableStr + '=false; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+      window[disableStr] = false;
+    }
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-2577926-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-2577926-1', { 'anonymize_ip': true });
+    </script>
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script src="https://unpkg.com/lz-string@1.4.4/libs/lz-string.min.js"></script>
+    <script>
+    window.addEventListener("load", function() {
+      window.cookieconsent.initialise({
+        'palette': {
+          'popup': {
+            'background': '#eaf7f7',
+            'text': '#5c7291'
+          },
+          'button': {
+            'background': '#56cbdb',
+            'text': '#ffffff'
+          }
+        },
+        'theme': 'edgeless',
+        'type': 'opt-out',
+        'onInitialise': function (status) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onStatusChange': function(status, chosenBefore) {
+          if (!this.hasConsented()) {
+            gaOptout()
+          }
+        },
+        'onRevokeChoice': function() {
+          gaOptoutRevoke()
+        }
+      })
+    });
+    </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="./resources/prism/prism.css" type="text/css">
+    <link rel="stylesheet" href="./css/ol.css" type="text/css">
+    <link rel="stylesheet" href="./resources/layout.css" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <link rel="stylesheet" href="export-pdf.css">
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+    <title>Export PDF example</title>
+  </head>
+  <body>
+
+    <header class="navbar" role="navigation">
+      <div class="container">
+        <div class="display-table pull-left" id="navbar-logo-container">
+          <a class="navbar-brand" href="./"><img src="./resources/logo-70x70.png">&nbsp;OpenLayers</a>
+        </div>
+        <!-- menu items that get hidden below 768px width -->
+        <nav class='collapse navbar-collapse navbar-responsive-collapse'>
+          <ul class="nav navbar-nav pull-right">
+            <li><a href="../doc">Docs</a></li>
+            <li><a class="active" href="index.html">Examples</a></li>
+            <li><a href="../apidoc">API</a></li>
+            <li><a href="https://github.com/openlayers/openlayers">Code</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container-fluid">
+
+      <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="latest-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses OpenLayers v<span>6.2.1</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+      </div>
+
+      <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+        <button id="experimental-dismiss" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        This example uses features that are not part of the stable API and subject to change between releases.  Consult the <a href="https://openlayers.org/en/latest/apidoc/">API documentation</a>
+        to see what is supported in the latest release.
+      </div>
+
+      <div class="row-fluid">
+        <a class="codepen-button pull-right"><i class="fa fa-codepen"></i> Edit</a>
+        <div class="span12">
+          <h4 id="title">
+            Export PDF example
+          </h4>
+          <p class="tags">
+              <a href="./index.html?q=export" class="label label-primary">export</a>
+              <a href="./index.html?q=pdf" class="label label-primary">pdf</a>
+              <a href="./index.html?q=openstreetmap" class="label label-primary">openstreetmap</a>
+          </p>
+          <div class="row-fluid">
+  <div class="span12">
+    <div id="map" class="map"></div>
+  </div>
+</div>
+<form class="form">
+  <label>Page size </label>
+  <select id="format">
+    <option value="a0">A0 (slow)</option>
+    <option value="a1">A1</option>
+    <option value="a2">A2</option>
+    <option value="a3">A3</option>
+    <option value="a4" selected>A4</option>
+    <option value="a5">A5 (fast)</option>
+  </select>
+  <label>Resolution </label>
+  <select id="resolution">
+    <option value="72">72 dpi (fast)</option>
+    <option value="150">150 dpi</option>
+    <option value="300">300 dpi (slow)</option>
+  </select>
+</form>
+<button id="export-pdf">Export PDF</button>
+
+        </div>
+        <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+          <input id="codesandbox-params" type="hidden" name="parameters">
+        </form>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span12">
+          <p id="shortdesc">Example of exporting a map as a PDF.</p>
+          <div id="docs"><p>Example of exporting a map as a PDF using the <a href="https://github.com/MrRio/jsPDF" target="_blank">jsPDF</a> library.</p>
+</div>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-html-button" data-clipboard-target="#example-html-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.html</legend><code id="example-html-source" class="language-markup">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;Export PDF example&lt;/title&gt;
+    &lt;!-- The line below is only needed for old environments like Internet Explorer and Android 4.x --&gt;
+    &lt;script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"&gt;&lt;/script&gt;
+    &lt;script src&#x3D;&quot;https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js&quot;&gt;&lt;/script&gt;
+    &lt;style&gt;
+      .map {
+        width: 100%;
+        height:400px;
+      }
+      .map {
+        max-width: 566px;
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class&#x3D;&quot;row-fluid&quot;&gt;
+      &lt;div class&#x3D;&quot;span12&quot;&gt;
+        &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;form class&#x3D;&quot;form&quot;&gt;
+      &lt;label&gt;Page size &lt;/label&gt;
+      &lt;select id&#x3D;&quot;format&quot;&gt;
+        &lt;option value&#x3D;&quot;a0&quot;&gt;A0 (slow)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;a1&quot;&gt;A1&lt;/option&gt;
+        &lt;option value&#x3D;&quot;a2&quot;&gt;A2&lt;/option&gt;
+        &lt;option value&#x3D;&quot;a3&quot;&gt;A3&lt;/option&gt;
+        &lt;option value&#x3D;&quot;a4&quot; selected&gt;A4&lt;/option&gt;
+        &lt;option value&#x3D;&quot;a5&quot;&gt;A5 (fast)&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;label&gt;Resolution &lt;/label&gt;
+      &lt;select id&#x3D;&quot;resolution&quot;&gt;
+        &lt;option value&#x3D;&quot;72&quot;&gt;72 dpi (fast)&lt;/option&gt;
+        &lt;option value&#x3D;&quot;150&quot;&gt;150 dpi&lt;/option&gt;
+        &lt;option value&#x3D;&quot;300&quot;&gt;300 dpi (slow)&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/form&gt;
+    &lt;button id&#x3D;&quot;export-pdf&quot;&gt;Export PDF&lt;/button&gt;
+    &lt;script src="index.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-js-button" data-clipboard-target="#example-js-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>index.js</legend><code id="example-js-source" class="language-js">import 'ol/ol.css';
+import Map from &#x27;ol/Map&#x27;;
+import View from &#x27;ol/View&#x27;;
+import WKT from &#x27;ol/format/WKT&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source&#x27;;
+
+var raster &#x3D; new TileLayer({
+  source: new OSM()
+});
+
+var format &#x3D; new WKT();
+var feature &#x3D; format.readFeature(
+  &#x27;POLYGON((10.689697265625 -25.0927734375, 34.595947265625 &#x27; +
+        &#x27;-20.1708984375, 38.814697265625 -35.6396484375, 13.502197265625 &#x27; +
+        &#x27;-39.1552734375, 10.689697265625 -25.0927734375))&#x27;);
+feature.getGeometry().transform(&#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
+
+var vector &#x3D; new VectorLayer({
+  source: new VectorSource({
+    features: [feature]
+  }),
+  opacity: 0.5
+});
+
+
+var map &#x3D; new Map({
+  layers: [raster, vector],
+  target: &#x27;map&#x27;,
+  view: new View({
+    center: [0, 0],
+    zoom: 2
+  })
+});
+
+
+var dims &#x3D; {
+  a0: [1189, 841],
+  a1: [841, 594],
+  a2: [594, 420],
+  a3: [420, 297],
+  a4: [297, 210],
+  a5: [210, 148]
+};
+
+
+var exportButton &#x3D; document.getElementById(&#x27;export-pdf&#x27;);
+
+exportButton.addEventListener(&#x27;click&#x27;, function() {
+
+  exportButton.disabled &#x3D; true;
+  document.body.style.cursor &#x3D; &#x27;progress&#x27;;
+
+  var format &#x3D; document.getElementById(&#x27;format&#x27;).value;
+  var resolution &#x3D; document.getElementById(&#x27;resolution&#x27;).value;
+  var dim &#x3D; dims[format];
+  var width &#x3D; Math.round(dim[0] * resolution / 25.4);
+  var height &#x3D; Math.round(dim[1] * resolution / 25.4);
+  var size &#x3D; map.getSize();
+  var viewResolution &#x3D; map.getView().getResolution();
+
+  map.once(&#x27;rendercomplete&#x27;, function() {
+    var mapCanvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+    mapCanvas.width &#x3D; width;
+    mapCanvas.height &#x3D; height;
+    var mapContext &#x3D; mapCanvas.getContext(&#x27;2d&#x27;);
+    Array.prototype.forEach.call(document.querySelectorAll(&#x27;.ol-layer canvas&#x27;), function(canvas) {
+      if (canvas.width &gt; 0) {
+        var opacity &#x3D; canvas.parentNode.style.opacity;
+        mapContext.globalAlpha &#x3D; opacity &#x3D;&#x3D;&#x3D; &#x27;&#x27; ? 1 : Number(opacity);
+        var transform &#x3D; canvas.style.transform;
+        // Get the transform parameters from the style&#x27;s transform matrix
+        var matrix &#x3D; transform.match(/^matrix\(([^\(]*)\)$/)[1].split(&#x27;,&#x27;).map(Number);
+        // Apply the transform to the export map context
+        CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
+        mapContext.drawImage(canvas, 0, 0);
+      }
+    });
+    var pdf &#x3D; new jsPDF(&#x27;landscape&#x27;, undefined, format);
+    pdf.addImage(mapCanvas.toDataURL(&#x27;image/jpeg&#x27;), &#x27;JPEG&#x27;, 0, 0, dim[0], dim[1]);
+    pdf.save(&#x27;map.pdf&#x27;);
+    // Reset original map size
+    map.setSize(size);
+    map.getView().setResolution(viewResolution);
+    exportButton.disabled &#x3D; false;
+    document.body.style.cursor &#x3D; &#x27;auto&#x27;;
+  });
+
+  // Set print size
+  var printSize &#x3D; [width, height];
+  map.setSize(printSize);
+  var scaling &#x3D; Math.min(width / size[0], height / size[1]);
+  map.getView().setResolution(viewResolution / scaling);
+
+}, false);
+</code></pre>
+      </div>
+      <div class="row-fluid">
+        <div class="source-controls">
+          <a class="copy-button" id="copy-pkg-button" data-clipboard-target="#example-pkg-source"><i class="fa fa-clipboard"></i> Copy</a>
+        </div>
+        <pre><legend>package.json</legend><code id="example-pkg-source" class="language-js">{
+  &quot;name&quot;: &quot;export-pdf&quot;,
+  &quot;dependencies&quot;: {
+    &quot;ol&quot;: &quot;6.2.1&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;parcel&quot;: &quot;1.11.0&quot;
+  },
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;parcel index.html&quot;,
+    &quot;build&quot;: &quot;parcel build --experimental-scope-hoisting --public-url . index.html&quot;
+  }
+}</code></pre>
+      </div>
+    </div>
+
+    <script src="./resources/common.js"></script>
+    <script src="./resources/prism/prism.min.js"></script>
+    <script src="common.js"></script><script src="export-pdf.js"></script>
+  </body>
+  <script>
+  var releaseUrl = 'https://api.github.com/repos/openlayers/openlayers/releases/latest';
+  fetch(releaseUrl).then(function(response) {
+    return response.json();
+  }).then(function(json) {
+    var latestVersion = json.name.replace(/^v/, '');
+    document.getElementById('latest-version').innerHTML = latestVersion;
+    var url = window.location.href;
+    var branchSearch = url.match(/\/([^\/]*)\/examples\//);
+    var cookieText = 'dismissed=-' + latestVersion + '-';
+    var dismissed = document.cookie.indexOf(cookieText) != -1;
+    if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '6.2.1' != latestVersion) {
+      var link = url.replace(branchSearch[0], '/latest/examples/');
+      fetch(link, {method: 'head'}).then(function(response) {
+        var a = document.getElementById('latest-link');
+        a.href = response.status == 200 ? link : '../../latest/examples/';
+      });
+      var latestCheck = document.getElementById('latest-check');
+      latestCheck.style.display = '';
+      document.getElementById('latest-dismiss').onclick = function() {
+        latestCheck.style.display = 'none';
+        document.cookie = cookieText;
+      }
+    }
+
+    var experimentalNotice = document.getElementById('experimental-notice');
+    if (window.experimental) {
+      experimentalNotice.style.display = 'block';
+      document.getElementById('experimental-dismiss').onclick = function() {
+        experimentalNotice.style.display = 'none';
+      }
+    }
+
+  });
+  </script>
+</html>

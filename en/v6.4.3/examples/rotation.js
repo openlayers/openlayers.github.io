@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[123],{352:function(e,n,a){"use strict";a.r(n);var w=a(3),o=a(9),t=a(5),r=a(2);new w.a({layers:[new t.a({source:new o.b})],target:"map",view:new r.a({center:[142e5,413e4],rotation:Math.PI/6,zoom:10})})}},[[352,0]]]);
+//# sourceMappingURL=rotation.js.map
