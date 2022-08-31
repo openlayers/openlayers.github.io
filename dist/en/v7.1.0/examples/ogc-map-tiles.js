@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9192],{8899:function(e,a,c){var n=c(1055),r=c(2703),s=c(2893),t=c(824);new n.Z({target:"map",layers:[new s.Z({source:new r.Z({url:"https://maps.ecere.com/ogcapi/collections/blueMarble/map/tiles/WebMercatorQuad"})})],view:new t.ZP({center:[0,0],zoom:1})})}},function(e){var a;a=8899,e(e.s=a)}]);
+//# sourceMappingURL=ogc-map-tiles.js.map
