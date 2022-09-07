@@ -113,7 +113,7 @@ export type Options = {
  */
 declare class DataTileSource extends TileSource {
     /**
-     * @param {Options} options Image tile options.
+     * @param {Options} options DataTile source options.
      */
     constructor(options: Options);
     /**
@@ -150,6 +150,16 @@ declare class DataTileSource extends TileSource {
      */
     bandCount: number;
     /**
+     * @private
+     * @type {!Object<string, import("../tilegrid/TileGrid.js").default>}
+     */
+    private tileGridForProjection_;
+    /**
+     * @private
+     * @type {!Object<string, import("../TileCache.js").default>}
+     */
+    private tileCacheForProjection_;
+    /**
      * Set the source tile sizes.  The length of the array is expected to match the number of
      * levels in the tile grid.
      * @protected
@@ -173,11 +183,33 @@ declare class DataTileSource extends TileSource {
      * @param {number} z Tile coordinate z.
      * @param {number} x Tile coordinate x.
      * @param {number} y Tile coordinate y.
+     * @param {import("../proj/Projection.js").default} targetProjection The output projection.
+     * @param {import("../proj/Projection.js").default} sourceProjection The input projection.
+     * @return {!DataTile} Tile.
+     */
+    getReprojTile_(z: number, x: number, y: number, targetProjection: import("../proj/Projection.js").default, sourceProjection: import("../proj/Projection.js").default): DataTile;
+    /**
+     * @param {number} z Tile coordinate z.
+     * @param {number} x Tile coordinate x.
+     * @param {number} y Tile coordinate y.
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
      * @return {!DataTile} Tile.
      */
     getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): DataTile;
+    /**
+     * Sets the tile grid to use when reprojecting the tiles to the given
+     * projection instead of the default tile grid for the projection.
+     *
+     * This can be useful when the default tile grid cannot be created
+     * (e.g. projection has no extent defined) or
+     * for optimization reasons (custom tile size, resolutions, ...).
+     *
+     * @param {import("../proj.js").ProjectionLike} projection Projection.
+     * @param {import("../tilegrid/TileGrid.js").default} tilegrid Tile grid to use for the projection.
+     * @api
+     */
+    setTileGridForProjection(projection: import("../proj.js").ProjectionLike, tilegrid: import("../tilegrid/TileGrid.js").default): void;
 }
 import TileSource from "./Tile.js";
 import DataTile from "../DataTile.js";

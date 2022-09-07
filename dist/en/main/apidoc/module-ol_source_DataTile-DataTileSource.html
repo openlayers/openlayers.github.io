@@ -89,6 +89,7 @@
             <li data-name="set"><a href="module-ol_source_DataTile-DataTileSource.html#set">set</a>
             <li data-name="setattributions"><a href="module-ol_source_DataTile-DataTileSource.html#setAttributions">setAttributions</a>
             <li data-name="setproperties"><a href="module-ol_source_DataTile-DataTileSource.html#setProperties">setProperties</a>
+            <li data-name="settilegridforprojection"><a href="module-ol_source_DataTile-DataTileSource.html#setTileGridForProjection">setTileGridForProjection</a>
             <li data-name="un"><a href="module-ol_source_DataTile-DataTileSource.html#un">un</a>
             <li data-name="unset"><a href="module-ol_source_DataTile-DataTileSource.html#unset">unset</a>
         </ul>
@@ -163,7 +164,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/DataTile.js">source/DataTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/DataTile.js#L53">line 53</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/DataTile.js#L60">line 60</a>
         </div>
         
     </div>
@@ -2799,6 +2800,161 @@ properties and adds new ones (it does not remove any existing properties).</p>
             <td  class="description last">
                 
                 <p>Update without triggering an event.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="setTileGridForProjection">
+        </div>
+        <h4 class="name">
+            setTileGridForProjection<span class="signature">(projection, tilegrid)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/DataTile.js">source/DataTile.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/DataTile.js#L351">line 351</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Sets the tile grid to use when reprojecting the tiles to the given
+projection instead of the default tile grid for the projection.</p>
+<p>This can be useful when the default tile grid cannot be created
+(e.g. projection has no extent defined) or
+for optimization reasons (custom tile size, resolutions, ...).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>projection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>tilegrid</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_tilegrid_TileGrid-TileGrid.html">TileGrid</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Tile grid to use for the projection.</p></td>
         </tr>
 
 	
