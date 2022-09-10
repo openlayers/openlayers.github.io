@@ -444,10 +444,9 @@ function clusterStyle(feature) {
         }),
       }),
     ];
-  } else {
-    const originalFeature &#x3D; feature.get(&#x27;features&#x27;)[0];
-    return clusterMemberStyle(originalFeature);
   }
+  const originalFeature &#x3D; feature.get(&#x27;features&#x27;)[0];
+  return clusterMemberStyle(originalFeature);
 }
 
 const vectorSource &#x3D; new VectorSource({
