@@ -8,10 +8,11 @@
 export function inView(layerState: State, viewState: import("../View.js").State): boolean;
 export default Layer;
 export type RenderFunction = (arg0: import("../Map.js").FrameState) => HTMLElement;
+export type LayerEventType = 'sourceready' | 'change:source';
 /**
  * *
  */
-export type LayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | 'change:source', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | 'change:source' | import("../render/EventType").LayerRenderEventTypes, Return>;
+export type LayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | LayerEventType, import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | LayerEventType | import("../render/EventType").LayerRenderEventTypes, Return>;
 export type Options<SourceType extends import("../source/Source.js").default = import("../source/Source.js").default> = {
     /**
      * A CSS class name to set to the layer element.
@@ -124,13 +125,16 @@ export type State = {
 /**
  * @typedef {function(import("../Map.js").FrameState):HTMLElement} RenderFunction
  */
+/**
+ * @typedef {'sourceready'|'change:source'} LayerEventType
+ */
 /***
  * @template Return
  * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
  *   import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes|
- *     'change:source', import("../Object").ObjectEvent, Return> &
+ *     LayerEventType, import("../Object").ObjectEvent, Return> &
  *   import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("./Base").BaseLayerObjectEventTypes|'change:source'|
+ *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("./Base").BaseLayerObjectEventTypes|LayerEventType|
  *     import("../render/EventType").LayerRenderEventTypes, Return>} LayerOnSignature
  */
 /**
@@ -190,9 +194,11 @@ export type State = {
  * [layer.setMap()]{@link module:ol/layer/Layer~Layer#setMap} instead.
  *
  * A generic `change` event is fired when the state of the source changes.
+ * A `sourceready` event is fired when the layer's source is ready.
  *
  * @fires import("../render/Event.js").RenderEvent#prerender
  * @fires import("../render/Event.js").RenderEvent#postrender
+ * @fires import("../events/Event.js").BaseEvent#sourceready
  *
  * @template {import("../source/Source.js").default} [SourceType=import("../source/Source.js").default]
  * @template {import("../renderer/Layer.js").default} [RendererType=import("../renderer/Layer.js").default]
@@ -235,6 +241,11 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      * @type {RendererType}
      */
     private renderer_;
+    /**
+     * @private
+     * @type {boolean}
+     */
+    private sourceReady_;
     /**
      * @protected
      * @type {boolean}

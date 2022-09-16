@@ -121,6 +121,7 @@
             <li data-name="postrender"><a href="module-ol_render_Event-RenderEvent.html#event:postrender">postrender</a>
             <li data-name="prerender"><a href="module-ol_render_Event-RenderEvent.html#event:prerender">prerender</a>
             <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
+            <li data-name="sourceready">sourceready
         </ul>
     </div>
               <li class="loading">Loading …
@@ -166,7 +167,8 @@ displayed, irrespective of the source of that data.</p>
 Components like <a href="module-ol_interaction_Draw-Draw.html"><code>Draw</code></a> use unmanaged layers
 internally. These unmanaged layers are associated with the map using
 <a href="module-ol_layer_Layer-Layer.html#setMap"><code>layer.setMap()</code></a> instead.</p>
-<p>A generic <code>change</code> event is fired when the state of the source changes.</p></div>
+<p>A generic <code>change</code> event is fired when the state of the source changes.
+A <code>sourceready</code> event is fired when the layer's source is ready.</p></div>
     
     </div>
 </header>
@@ -192,7 +194,7 @@ internally. These unmanaged layers are associated with the map using
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L92">line 92</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L98">line 98</a>
         </div>
         
     </div>
@@ -754,6 +756,16 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
 
              -
             Triggered when a property is changed.
+            
+        </li>
+    
+        <li class="">
+            <code>sourceready</code>
+            
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
+            
+            
+
             
         </li>
     </ul>
@@ -2195,7 +2207,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L193">line 193</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L205">line 205</a>
         </div>
         
     </div>
@@ -3114,7 +3126,7 @@ will be visible at all extents.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L316">line 316</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L340">line 340</a>
         </div>
         
     </div>
@@ -4046,7 +4058,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L359">line 359</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L383">line 383</a>
         </div>
         
     </div>

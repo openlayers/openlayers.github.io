@@ -2,7 +2,7 @@ export default BaseTileLayer;
 /**
  * *
  */
-export type BaseTileLayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | 'change:source' | 'change:preload' | 'change:useInterimTilesOnError', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | 'change:source' | 'change:preload' | 'change:useInterimTilesOnError' | import("../render/EventType").LayerRenderEventTypes, Return>;
+export type BaseTileLayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | 'change:preload' | 'change:useInterimTilesOnError', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | 'change:preload' | 'change:useInterimTilesOnError' | import("../render/EventType").LayerRenderEventTypes, Return>;
 export type Options<TileSourceType extends import("../source/Tile.js").default> = {
     /**
      * A CSS class name to set to the layer element.
@@ -79,10 +79,10 @@ export type Options<TileSourceType extends import("../source/Tile.js").default> 
  * @template Return
  * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
  *   import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes|
- *     'change:source'|'change:preload'|'change:useInterimTilesOnError', import("../Object").ObjectEvent, Return> &
+ *     import("./Layer.js").LayerEventType|'change:preload'|'change:useInterimTilesOnError', import("../Object").ObjectEvent, Return> &
  *   import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> &
  *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("./Base").BaseLayerObjectEventTypes|
- *   'change:source'|'change:preload'|'change:useInterimTilesOnError'|import("../render/EventType").LayerRenderEventTypes, Return>} BaseTileLayerOnSignature
+ *   import("./Layer.js").LayerEventType|'change:preload'|'change:useInterimTilesOnError'|import("../render/EventType").LayerRenderEventTypes, Return>} BaseTileLayerOnSignature
  */
 /**
  * @template {import("../source/Tile.js").default} TileSourceType
