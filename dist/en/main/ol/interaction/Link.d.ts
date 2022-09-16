@@ -1,9 +1,15 @@
 export default Link;
+export type Params = 'x' | 'y' | 'z' | 'r' | 'l';
 export type Options = {
     /**
      * Animate view transitions.
      */
     animate?: boolean | import("../View.js").AnimationOptions | undefined;
+    /**
+     * Properties to track. Default is to track
+     * `x` (center x), `y` (center y), `z` (zoom), `r` (rotation) and `l` (layers).
+     */
+    params?: Params[] | undefined;
     /**
      * Replace the current URL without creating the new entry in browser history.
      * By default, changes in the map state result in a new entry being added to the browser history.
@@ -16,9 +22,12 @@ export type Options = {
      */
     prefix?: string | undefined;
 };
+/** @typedef {'x'|'y'|'z'|'r'|'l'} Params */
 /**
  * @typedef {Object} Options
  * @property {boolean|import('../View.js').AnimationOptions} [animate=true] Animate view transitions.
+ * @property {Array<Params>} [params=['x', 'y', 'z', 'r', 'l']] Properties to track. Default is to track
+ * `x` (center x), `y` (center y), `z` (zoom), `r` (rotation) and `l` (layers).
  * @property {boolean} [replace=false] Replace the current URL without creating the new entry in browser history.
  * By default, changes in the map state result in a new entry being added to the browser history.
  * @property {string} [prefix=''] By default, the URL will be updated with search parameters x, y, z, and r.  To
@@ -41,6 +50,11 @@ declare class Link extends Interaction {
      * @private
      */
     private animationOptions_;
+    /**
+     * @type {Object<Params, boolean>}
+     * @private
+     */
+    private params_;
     /**
      * @private
      * @type {boolean}
