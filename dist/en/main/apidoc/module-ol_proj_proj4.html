@@ -71,7 +71,9 @@
     <div class="member-list" data-type="methods">
         <span class="subtitle">Methods</span>
         <ul>
+            <li data-name="fromepsgcode"><a href="module-ol_proj_proj4.html#.fromEPSGCode">fromEPSGCode</a>
             <li data-name="register"><a href="module-ol_proj_proj4.html#.register">register</a>
+            <li data-name="setepsglookup"><a href="module-ol_proj_proj4.html#.setEPSGLookup">setEPSGLookup</a>
         </ul>
     </div>
               <li class="loading">Loading …
@@ -169,6 +171,153 @@
 <dt class="">
     
     <div class="nameContainer">
+        <div class="anchor" id=".fromEPSGCode">
+        </div>
+        <h4 class="name">
+            fromEPSGCode<span class="signature">(code)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Promise<<a href="module-ol_proj_Projection-Projection.html">Projection</a>>}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js">proj/proj4.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L139">line 139</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+    
+    <pre class="prettyprint source"><code>import {fromEPSGCode} from 'ol/proj/proj4';</code></pre>
+
+
+    
+    <div class="description">
+        <p>Get a projection from an EPSG code.  This function fetches the projection
+definition from the epsg.io website, registers this definition for use with
+proj4, and returns a configured projection.  You must call import proj4 and
+call <a href="module-ol_proj_proj4.html#.register"><code>register</code></a> before using this function.</p>
+<p>If the projection definition is already registered with proj4, it will not
+be fetched again (so it is ok to call this function multiple times with the
+same code).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>code</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The EPSG code (e.g. 4326 or 'EPSG:4326').</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The projection.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
         <div class="anchor" id=".register">
         </div>
         <h4 class="name">
@@ -180,7 +329,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js">proj/proj4.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L25">line 25</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L44">line 44</a>
         </div>
         
     </div>
@@ -237,7 +386,7 @@ modified by this function.</p>
             <td class="type">
             
                 
-<span class="param-type">?</span>
+<span class="param-type">module:proj4</span>
 
 
                 
@@ -249,6 +398,138 @@ modified by this function.</p>
             <td  class="description last">
                 
                 <p>Proj4.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id=".setEPSGLookup">
+        </div>
+        <h4 class="name">
+            setEPSGLookup<span class="signature">(func)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js">proj/proj4.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L112">line 112</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+    
+    <pre class="prettyprint source"><code>import {setEPSGLookup} from 'ol/proj/proj4';</code></pre>
+
+
+    
+    <div class="description">
+        <p>Set the lookup function for getting proj4 definitions given an EPSG code.
+By default, the <a href="module-ol_proj_proj4.html#.fromEPSGCode"><code>fromEPSGCode</code></a> function uses the
+epsg.io website for proj4 definitions.  This can be changed by providing a
+different lookup function.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>func</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The lookup function.</p></td>
         </tr>
 
 	
