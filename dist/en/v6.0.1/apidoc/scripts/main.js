@@ -62,8 +62,6 @@ $(function () {
     $(window).on('resize', _onResize);
     _onResize();
 
-    var currentVersion = document.getElementById('package-version').innerHTML;
-
   // warn about outdated version
   const currentVersion = document.getElementById('package-version').innerHTML;
   const releaseUrl = 'https://cdn.jsdelivr.net/npm/ol/package.json';
