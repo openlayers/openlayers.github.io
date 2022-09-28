@@ -283,7 +283,7 @@ import {
 import {Cluster, Vector as VectorSource, XYZ} from &#x27;ol/source&#x27;;
 import {LineString, Point, Polygon} from &#x27;ol/geom&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer&#x27;;
-import {createEmpty, extend, getWidth} from &#x27;ol/extent&#x27;;
+import {createEmpty, extend, getHeight, getWidth} from &#x27;ol/extent&#x27;;
 import {fromLonLat} from &#x27;ol/proj&#x27;;
 
 const circleDistanceMultiplier &#x3D; 1;
@@ -531,7 +531,7 @@ map.on(&#x27;click&#x27;, (event) &#x3D;&gt; {
         const resolution &#x3D; map.getView().getResolution();
         if (
           view.getZoom() &#x3D;&#x3D;&#x3D; view.getMaxZoom() ||
-          (getWidth(extent) &lt; resolution &amp;&amp; getWidth(extent) &lt; resolution)
+          (getWidth(extent) &lt; resolution &amp;&amp; getHeight(extent) &lt; resolution)
         ) {
           // Show an expanded view of the cluster members.
           clickFeature &#x3D; features[0];
