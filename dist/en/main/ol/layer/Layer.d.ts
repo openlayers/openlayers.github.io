@@ -281,10 +281,10 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
     private handleSourcePropertyChange_;
     /**
      * @param {import("../pixel").Pixel} pixel Pixel.
-     * @return {Promise<Array<import("../Feature").default>>} Promise that resolves with
+     * @return {Promise<Array<import("../Feature").FeatureLike>>} Promise that resolves with
      * an array of features.
      */
-    getFeatures(pixel: import("../pixel").Pixel): Promise<Array<import("../Feature").default>>;
+    getFeatures(pixel: import("../pixel").Pixel): Promise<Array<import("../Feature").FeatureLike>>;
     /**
      * @param {import("../pixel").Pixel} pixel Pixel.
      * @return {Uint8ClampedArray|Uint8Array|Float32Array|DataView|null} Pixel data.

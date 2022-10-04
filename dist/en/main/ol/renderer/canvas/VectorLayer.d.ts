@@ -16,9 +16,9 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
      */
     animatingOrInteracting_: boolean;
     /**
-     * @type {ImageData}
+     * @type {ImageData|null}
      */
-    hitDetectionImageData_: ImageData;
+    hitDetectionImageData_: ImageData | null;
     /**
      * @type {Array<import("../../Feature.js").default>}
      */
@@ -101,6 +101,13 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      */
     renderDeclutter(frameState: import("../../Map.js").FrameState): void;
+    /**
+     * Asynchronous layer level hit detection.
+     * @param {import("../../pixel.js").Pixel} pixel Pixel.
+     * @return {Promise<Array<import("../../Feature").default>>} Promise
+     * that resolves with an array of features.
+     */
+    getFeatures(pixel: import("../../pixel.js").Pixel): Promise<Array<import("../../Feature").default>>;
     /**
      * Handle changes in image style state.
      * @param {import("../../events/Event.js").default} event Image style change event.
