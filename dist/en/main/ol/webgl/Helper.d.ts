@@ -122,6 +122,10 @@ export type UniformInternalDescription = {
      */
     value?: UniformValue | undefined;
     /**
+     * The previous value.
+     */
+    prevValue?: UniformValue | undefined;
+    /**
      * Texture
      */
     texture?: WebGLTexture | undefined;

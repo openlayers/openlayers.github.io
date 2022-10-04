@@ -32,7 +32,7 @@ export type UniformInternalDescription = {
     /**
      * Location
      */
-    location: number;
+    location: WebGLUniformLocation;
     /**
      * Texture
      */
@@ -50,7 +50,7 @@ export type UniformInternalDescription = {
 /**
  * @typedef {Object} UniformInternalDescription
  * @property {import("./Helper").UniformValue} value Value
- * @property {number} location Location
+ * @property {WebGLUniformLocation} location Location
  * @property {WebGLTexture} [texture] Texture
  * @private
  */

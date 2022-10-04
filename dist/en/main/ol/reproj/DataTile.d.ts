@@ -67,7 +67,7 @@ declare class ReprojDataTile extends DataTile {
     private wrappedTileCoord_;
     /**
      * @private
-     * @type {!Array<import("../Tile.js").default>}
+     * @type {!Array<DataTile>}
      */
     private sourceTiles_;
     /**
