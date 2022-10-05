@@ -1,7 +1,7 @@
 export default ReprojTile;
-export type FunctionType = (arg0: number, arg1: number, arg2: number, arg3: number) => (ReprojTile | import("../ImageTile.js").default);
+export type FunctionType = (arg0: number, arg1: number, arg2: number, arg3: number) => (import("../ImageTile.js").default);
 /**
- * @typedef {function(number, number, number, number) : (ReprojTile|import("../ImageTile.js").default)} FunctionType
+ * @typedef {function(number, number, number, number) : (import("../ImageTile.js").default)} FunctionType
  */
 /**
  * @classdesc
@@ -63,7 +63,7 @@ declare class ReprojTile extends Tile {
     private wrappedTileCoord_;
     /**
      * @private
-     * @type {!Array<ReprojTile|import("../ImageTile.js").default>}
+     * @type {!Array<import("../ImageTile.js").default>}
      */
     private sourceTiles_;
     /**

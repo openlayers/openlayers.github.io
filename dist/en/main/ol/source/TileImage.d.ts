@@ -221,10 +221,10 @@ declare class TileImage extends UrlTile {
      * @param {number} y Tile coordinate y.
      * @param {number} pixelRatio Pixel ratio.
      * @param {!import("../proj/Projection.js").default} projection Projection.
-     * @return {!(ImageTile|ReprojTile)} Tile.
+     * @return {!ImageTile} Tile.
      * @protected
      */
-    protected getTileInternal(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): (ImageTile | ReprojTile);
+    protected getTileInternal(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): ImageTile;
     /**
      * Sets whether to render reprojection edges or not (usually for debugging).
      * @param {boolean} render Render the edges.
