@@ -3,7 +3,7 @@
  * {@link module:ol/render/Feature~RenderFeature} and an
  * {@link module:ol/layer/Layer~Layer} and returns `true` if the feature may be
  * translated or `false` otherwise.
- * @typedef {function(import("../Feature.js").FeatureLike, import("../layer/Layer.js").default<import("../source/Source").default>):boolean} FilterFunction
+ * @typedef {function(Feature, import("../layer/Layer.js").default<import("../source/Source").default>):boolean} FilterFunction
  */
 /**
  * @typedef {Object} Options
@@ -11,7 +11,7 @@
  * takes an {@link module:ol/MapBrowserEvent~MapBrowserEvent} and returns a
  * boolean to indicate whether that event should be handled.
  * Default is {@link module:ol/events/condition.always}.
- * @property {Collection<import("../Feature.js").default>} [features] Features contained in this collection will be able to be translated together.
+ * @property {Collection<Feature>} [features] Features contained in this collection will be able to be translated together.
  * @property {Array<import("../layer/Layer.js").default>|function(import("../layer/Layer.js").default<import("../source/Source").default>): boolean} [layers] A list of layers from which features should be
  * translated. Alternatively, a filter function can be provided. The
  * function will be called for each layer in the map and should return
@@ -33,18 +33,18 @@
 export class TranslateEvent extends Event {
     /**
      * @param {TranslateEventType} type Type.
-     * @param {Collection<import("../Feature.js").default>} features The features translated.
+     * @param {Collection<Feature>} features The features translated.
      * @param {import("../coordinate.js").Coordinate} coordinate The event coordinate.
      * @param {import("../coordinate.js").Coordinate} startCoordinate The original coordinates before.translation started
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Map browser event.
      */
-    constructor(type: TranslateEventType, features: Collection<import("../Feature.js").default>, coordinate: import("../coordinate.js").Coordinate, startCoordinate: import("../coordinate.js").Coordinate, mapBrowserEvent: import("../MapBrowserEvent.js").default<any>);
+    constructor(type: TranslateEventType, features: Collection<Feature>, coordinate: import("../coordinate.js").Coordinate, startCoordinate: import("../coordinate.js").Coordinate, mapBrowserEvent: import("../MapBrowserEvent.js").default<any>);
     /**
      * The features being translated.
-     * @type {Collection<import("../Feature.js").default>}
+     * @type {Collection<Feature>}
      * @api
      */
-    features: Collection<import("../Feature.js").default>;
+    features: Collection<Feature>;
     /**
      * The coordinate of the drag event.
      * @const
@@ -73,7 +73,7 @@ export default Translate;
  * {@link module :ol/layer/Layer~Layer} and returns `true` if the feature may be
  * translated or `false` otherwise.
  */
-export type FilterFunction = (arg0: import("../Feature.js").FeatureLike, arg1: import("../layer/Layer.js").default<import("../source/Source").default>) => boolean;
+export type FilterFunction = (arg0: Feature, arg1: import("../layer/Layer.js").default<import("../source/Source").default>) => boolean;
 export type Options = {
     /**
      * A function that
@@ -85,7 +85,7 @@ export type Options = {
     /**
      * Features contained in this collection will be able to be translated together.
      */
-    features?: Collection<import("../Feature.js").default<import("../geom/Geometry.js").default>> | undefined;
+    features?: Collection<Feature<import("../geom/Geometry.js").default>> | undefined;
     /**
      * A list of layers from which features should be
      * translated. Alternatively, a filter function can be provided. The
@@ -114,6 +114,7 @@ export type Options = {
 export type TranslateOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | 'change:active', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<'translateend' | 'translatestart' | 'translating', TranslateEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | 'change:active' | 'translateend' | 'translatestart' | 'translating', Return>;
 import Event from "../events/Event.js";
 import Collection from "../Collection.js";
+import Feature from "../Feature.js";
 type TranslateEventType = string;
 declare namespace TranslateEventType {
     const TRANSLATESTART: string;
@@ -169,7 +170,7 @@ declare class Translate extends PointerInteraction {
      */
     private startCoordinate_;
     /**
-     * @type {Collection<import("../Feature.js").default>|null}
+     * @type {Collection<Feature>|null}
      * @private
      */
     private features_;
@@ -194,7 +195,7 @@ declare class Translate extends PointerInteraction {
      */
     private condition_;
     /**
-     * @type {import("../Feature.js").default}
+     * @type {Feature}
      * @private
      */
     private lastFeature_;
@@ -203,7 +204,7 @@ declare class Translate extends PointerInteraction {
      * features.
      * @param {import("../pixel.js").Pixel} pixel Pixel coordinate to test for intersection.
      * @param {import("../Map.js").default} map Map to test the intersection on.
-     * @return {import("../Feature.js").default} Returns the feature found at the specified pixel
+     * @return {Feature} Returns the feature found at the specified pixel
      * coordinates.
      * @private
      */
