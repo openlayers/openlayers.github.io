@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} SegmentData
  * @property {Array<number>} [depth] Depth.
- * @property {import("../Feature").FeatureLike} feature Feature.
+ * @property {Feature} feature Feature.
  * @property {import("../geom/SimpleGeometry.js").default} geometry Geometry.
  * @property {number} [index] Index.
  * @property {Array<Array<number>>} segment Segment.
@@ -57,18 +57,18 @@
 export class ModifyEvent extends Event {
     /**
      * @param {ModifyEventType} type Type.
-     * @param {Collection<import("../Feature").FeatureLike>} features
+     * @param {Collection<Feature>} features
      * The features modified.
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent
      * Associated {@link module:ol/MapBrowserEvent~MapBrowserEvent}.
      */
-    constructor(type: ModifyEventType, features: Collection<import("../Feature").FeatureLike>, mapBrowserEvent: import("../MapBrowserEvent.js").default<any>);
+    constructor(type: ModifyEventType, features: Collection<Feature>, mapBrowserEvent: import("../MapBrowserEvent.js").default<any>);
     /**
      * The features being modified.
-     * @type {Collection<import("../Feature").FeatureLike>}
+     * @type {Collection<Feature>}
      * @api
      */
-    features: Collection<import("../Feature").FeatureLike>;
+    features: Collection<Feature>;
     /**
      * Associated {@link module:ol/MapBrowserEvent~MapBrowserEvent}.
      * @type {import("../MapBrowserEvent.js").default}
@@ -85,7 +85,7 @@ export type SegmentData = {
     /**
      * Feature.
      */
-    feature: import("../Feature").FeatureLike;
+    feature: Feature;
     /**
      * Geometry.
      */
@@ -178,6 +178,7 @@ export type Options = {
 export type ModifyOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | 'change:active', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<'modifyend' | 'modifystart', ModifyEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | 'change:active' | 'modifyend' | 'modifystart', Return>;
 import Event from "../events/Event.js";
 import Collection from "../Collection.js";
+import Feature from "../Feature.js";
 type ModifyEventType = string;
 declare namespace ModifyEventType {
     const MODIFYSTART: string;
@@ -278,7 +279,7 @@ declare class Modify extends PointerInteraction {
      */
     private ignoreNextSingleClick_;
     /**
-     * @type {Collection<import("../Feature").FeatureLike>}
+     * @type {Collection<Feature>}
      * @private
      */
     private featuresBeingModified_;
@@ -332,7 +333,7 @@ declare class Modify extends PointerInteraction {
      */
     hitDetection_: boolean | import("../layer/BaseVector").default<any, any>;
     /**
-     * @type {Collection<import("../Feature.js").FeatureLike>}
+     * @type {Collection<Feature>}
      * @private
      */
     private features_;
@@ -465,7 +466,7 @@ declare class Modify extends PointerInteraction {
     private writeGeometryCollectionGeometry_;
     /**
      * @param {import("../coordinate.js").Coordinate} coordinates Coordinates.
-     * @param {Array<import("../Feature").FeatureLike>} features The features being modified.
+     * @param {Array<Feature>} features The features being modified.
      * @param {Array<import("../geom/SimpleGeometry.js").default>} geometries The geometries being modified.
      * @return {Feature} Vertex feature.
      * @private
@@ -517,7 +518,6 @@ declare class Modify extends PointerInteraction {
     private updateSegmentIndices_;
 }
 import VectorSource from "../source/Vector.js";
-import Feature from "../Feature.js";
 import PointerInteraction from "./Pointer.js";
 import VectorLayer from "../layer/Vector.js";
 //# sourceMappingURL=Modify.d.ts.map
