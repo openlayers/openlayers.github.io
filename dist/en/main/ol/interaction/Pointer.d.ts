@@ -1,8 +1,11 @@
 /**
  * @param {Array<PointerEvent>} pointerEvents List of events.
- * @return {import("../pixel.js").Pixel} Centroid pixel.
+ * @return {{clientX: number, clientY: number}} Centroid pixel.
  */
-export function centroid(pointerEvents: Array<PointerEvent>): import("../pixel.js").Pixel;
+export function centroid(pointerEvents: Array<PointerEvent>): {
+    clientX: number;
+    clientY: number;
+};
 export default PointerInteraction;
 export type Options = {
     /**

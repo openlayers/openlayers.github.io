@@ -202,6 +202,7 @@ export type MapOptions = {
      * element itself or the `id` of the element. If not specified at construction
      * time, {@link module :ol/Map~Map#setTarget} must be called for the map to be
      * rendered. If passed by element, the container can be in a secondary document.
+     * **Note:** CSS `transform` support for the target element is limited to `scale`.
      */
     target?: string | HTMLElement | undefined;
     /**
@@ -527,11 +528,14 @@ declare class Map extends BaseObject {
     getEventCoordinateInternal(event: MouseEvent): import("./coordinate.js").Coordinate;
     /**
      * Returns the map pixel position for a browser event relative to the viewport.
-     * @param {UIEvent} event Event.
+     * @param {UIEvent|{clientX: number, clientY: number}} event Event.
      * @return {import("./pixel.js").Pixel} Pixel.
      * @api
      */
-    getEventPixel(event: UIEvent): import("./pixel.js").Pixel;
+    getEventPixel(event: UIEvent | {
+        clientX: number;
+        clientY: number;
+    }): import("./pixel.js").Pixel;
     /**
      * Get the target in which this map is rendered.
      * Note that this returns what is entered as an option or in setTarget:
