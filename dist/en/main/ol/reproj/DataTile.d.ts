@@ -1,7 +1,76 @@
 export default ReprojDataTile;
-export type FunctionType = (arg0: number, arg1: number, arg2: number, arg3: number) => import("../DataTile.js").default;
+export type TileGetter = (arg0: number, arg1: number, arg2: number, arg3: number) => import("../DataTile.js").default;
+export type Options = {
+    /**
+     * Source projection.
+     */
+    sourceProj: import("../proj/Projection.js").default;
+    /**
+     * Source tile grid.
+     */
+    sourceTileGrid: import("../tilegrid/TileGrid.js").default;
+    /**
+     * Target projection.
+     */
+    targetProj: import("../proj/Projection.js").default;
+    /**
+     * Target tile grid.
+     */
+    targetTileGrid: import("../tilegrid/TileGrid.js").default;
+    /**
+     * Coordinate of the tile.
+     */
+    tileCoord: import("../tilecoord.js").TileCoord;
+    /**
+     * Coordinate of the tile wrapped in X.
+     */
+    wrappedTileCoord?: import("../tilecoord.js").TileCoord | undefined;
+    /**
+     * Pixel ratio.
+     */
+    pixelRatio: number;
+    /**
+     * Gutter of the source tiles.
+     */
+    gutter: number;
+    /**
+     * Function returning source tiles (z, x, y, pixelRatio).
+     */
+    getTileFunction: TileGetter;
+    /**
+     * Use interpolated values when resampling.  By default,
+     * the nearest neighbor is used when resampling.
+     */
+    interpolate?: boolean | undefined;
+    /**
+     * Acceptable reprojection error (in px).
+     */
+    errorThreshold?: number | undefined;
+    /**
+     * A duration for tile opacity
+     * transitions in milliseconds. A duration of 0 disables the opacity transition.
+     */
+    transition?: number | undefined;
+};
 /**
- * @typedef {function(number, number, number, number) : import("../DataTile.js").default} FunctionType
+ * @typedef {function(number, number, number, number) : import("../DataTile.js").default} TileGetter
+ */
+/**
+ * @typedef {Object} Options
+ * @property {import("../proj/Projection.js").default} sourceProj Source projection.
+ * @property {import("../tilegrid/TileGrid.js").default} sourceTileGrid Source tile grid.
+ * @property {import("../proj/Projection.js").default} targetProj Target projection.
+ * @property {import("../tilegrid/TileGrid.js").default} targetTileGrid Target tile grid.
+ * @property {import("../tilecoord.js").TileCoord} tileCoord Coordinate of the tile.
+ * @property {import("../tilecoord.js").TileCoord} [wrappedTileCoord] Coordinate of the tile wrapped in X.
+ * @property {number} pixelRatio Pixel ratio.
+ * @property {number} gutter Gutter of the source tiles.
+ * @property {TileGetter} getTileFunction Function returning source tiles (z, x, y, pixelRatio).
+ * @property {boolean} [interpolate=false] Use interpolated values when resampling.  By default,
+ * the nearest neighbor is used when resampling.
+ * @property {number} [errorThreshold] Acceptable reprojection error (in px).
+ * @property {number} [transition=250] A duration for tile opacity
+ * transitions in milliseconds. A duration of 0 disables the opacity transition.
  */
 /**
  * @classdesc
@@ -11,20 +80,9 @@ export type FunctionType = (arg0: number, arg1: number, arg2: number, arg3: numb
  */
 declare class ReprojDataTile extends DataTile {
     /**
-     * @param {import("../proj/Projection.js").default} sourceProj Source projection.
-     * @param {import("../tilegrid/TileGrid.js").default} sourceTileGrid Source tile grid.
-     * @param {import("../proj/Projection.js").default} targetProj Target projection.
-     * @param {import("../tilegrid/TileGrid.js").default} targetTileGrid Target tile grid.
-     * @param {import("../tilecoord.js").TileCoord} tileCoord Coordinate of the tile.
-     * @param {import("../tilecoord.js").TileCoord} wrappedTileCoord Coordinate of the tile wrapped in X.
-     * @param {number} pixelRatio Pixel ratio.
-     * @param {number} gutter Gutter of the source tiles.
-     * @param {FunctionType} getTileFunction
-     *     Function returning source tiles (z, x, y, pixelRatio).
-     * @param {boolean} interpolate Use linear interpolation when resampling.
-     * @param {number} [errorThreshold] Acceptable reprojection error (in px).
+     * @param {Options} options Tile options.
      */
-    constructor(sourceProj: import("../proj/Projection.js").default, sourceTileGrid: import("../tilegrid/TileGrid.js").default, targetProj: import("../proj/Projection.js").default, targetTileGrid: import("../tilegrid/TileGrid.js").default, tileCoord: import("../tilecoord.js").TileCoord, wrappedTileCoord: import("../tilecoord.js").TileCoord, pixelRatio: number, gutter: number, getTileFunction: FunctionType, interpolate: boolean, errorThreshold?: number | undefined);
+    constructor(options: Options);
     /**
      * @private
      * @type {number}

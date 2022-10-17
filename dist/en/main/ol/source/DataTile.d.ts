@@ -183,11 +183,11 @@ declare class DataTileSource extends TileSource {
      * @param {number} z Tile coordinate z.
      * @param {number} x Tile coordinate x.
      * @param {number} y Tile coordinate y.
-     * @param {import("../proj/Projection.js").default} targetProjection The output projection.
-     * @param {import("../proj/Projection.js").default} sourceProjection The input projection.
+     * @param {import("../proj/Projection.js").default} targetProj The output projection.
+     * @param {import("../proj/Projection.js").default} sourceProj The input projection.
      * @return {!DataTile} Tile.
      */
-    getReprojTile_(z: number, x: number, y: number, targetProjection: import("../proj/Projection.js").default, sourceProjection: import("../proj/Projection.js").default): DataTile;
+    getReprojTile_(z: number, x: number, y: number, targetProj: import("../proj/Projection.js").default, sourceProj: import("../proj/Projection.js").default): DataTile;
     /**
      * @param {number} z Tile coordinate z.
      * @param {number} x Tile coordinate x.
