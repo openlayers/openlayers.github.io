@@ -35,6 +35,11 @@ export type Options = {
      * placeholder.
      */
     placeholder?: string | undefined;
+    /**
+     * Wrap the world horizontally on the projection's antimeridian, if it
+     * is a global projection.
+     */
+    wrapX?: boolean | undefined;
 };
 /***
  * @template Return
@@ -59,6 +64,8 @@ export type Options = {
  * initially and the last position is retained when the mouse leaves the viewport.
  * When a string is provided (e.g. `'no position'` or `''` for an empty string) it is used as a
  * placeholder.
+ * @property {boolean} [wrapX=true] Wrap the world horizontally on the projection's antimeridian, if it
+ * is a global projection.
  */
 /**
  * @classdesc
@@ -114,6 +121,11 @@ declare class MousePosition extends Control {
      * @type {?import("../proj.js").TransformFunction}
      */
     private transform_;
+    /**
+     * @private
+     * @type {boolean}
+     */
+    private wrapX_;
     /**
      * @private
      */
