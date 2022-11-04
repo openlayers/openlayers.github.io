@@ -181,11 +181,8 @@ function elevation(xOffset, yOffset) {
   return [
     &#x27;+&#x27;,
     [&#x27;*&#x27;, 256, [&#x27;band&#x27;, 1, xOffset, yOffset]],
-    [
-      &#x27;+&#x27;,
-      [&#x27;*&#x27;, 2 * 256, [&#x27;band&#x27;, 2, xOffset, yOffset]],
-      [&#x27;*&#x27;, 3 * 256, [&#x27;band&#x27;, 3, xOffset, yOffset]],
-    ],
+    [&#x27;*&#x27;, 2 * 256, [&#x27;band&#x27;, 2, xOffset, yOffset]],
+    [&#x27;*&#x27;, 3 * 256, [&#x27;band&#x27;, 3, xOffset, yOffset]],
   ];
 }
 
