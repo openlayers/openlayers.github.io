@@ -334,7 +334,8 @@ returns <a href="module-ol_DataTile.html#~Data"><code>data</code></a> for a tile
             
 
             <td class="description last"><p>Data loader.  Called with z, x, and y tile coordinates.
-Returns <a href="module-ol_DataTile.html#~Data"><code>data</code></a> for a tile or a promise for the same.</p></td>
+Returns <a href="module-ol_DataTile.html#~Data"><code>data</code></a> for a tile or a promise for the same.
+For loaders that generate images, the promise should not resolve until the image is loaded.</p></td>
         </tr>
 
 	

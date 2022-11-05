@@ -8,6 +8,7 @@ export type Options = {
     /**
      * Data loader.  Called with z, x, and y tile coordinates.
      * Returns {@link import ("../DataTile.js").Data data} for a tile or a promise for the same.
+     * For loaders that generate images, the promise should not resolve until the image is loaded.
      */
     loader?: Loader | undefined;
     /**
@@ -84,6 +85,7 @@ export type Options = {
  * @typedef {Object} Options
  * @property {Loader} [loader] Data loader.  Called with z, x, and y tile coordinates.
  * Returns {@link import("../DataTile.js").Data data} for a tile or a promise for the same.
+ * For loaders that generate images, the promise should not resolve until the image is loaded.
  * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
  * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
  * @property {number} [maxZoom=42] Optional max zoom level. Not used if `tileGrid` is provided.

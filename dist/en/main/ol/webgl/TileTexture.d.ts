@@ -72,12 +72,29 @@ declare class TileTexture extends EventTarget {
     loaded: boolean | undefined;
     uploadTile_(): void;
     /**
+     * @param {import("../DataTile.js").ImageLike} image The image.
+     * @param {number} renderCol The column index (in rendered tile space).
+     * @param {number} renderRow The row index (in rendered tile space).
+     * @return {Uint8ClampedArray|null} The data.
+     * @private
+     */
+    private getImagePixelData_;
+    /**
+     * @param {import("../DataTile.js").ArrayLike} data The data.
+     * @param {import("../size.js").Size} sourceSize The size.
+     * @param {number} renderCol The column index (in rendered tile space).
+     * @param {number} renderRow The row index (in rendered tile space).
+     * @return {import("../DataTile.js").ArrayLike|null} The data.
+     * @private
+     */
+    private getArrayPixelData_;
+    /**
      * Get data for a pixel.  If the tile is not loaded, null is returned.
      * @param {number} renderCol The column index (in rendered tile space).
      * @param {number} renderRow The row index (in rendered tile space).
-     * @return {import("../DataTile.js").Data|null} The data.
+     * @return {import("../DataTile.js").ArrayLike|null} The data.
      */
-    getPixelData(renderCol: number, renderRow: number): import("../DataTile.js").Data | null;
+    getPixelData(renderCol: number, renderRow: number): import("../DataTile.js").ArrayLike | null;
 }
 import ImageTile from "../ImageTile.js";
 import ReprojTile from "../reproj/Tile.js";

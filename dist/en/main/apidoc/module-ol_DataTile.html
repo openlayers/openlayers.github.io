@@ -71,7 +71,9 @@
     <div class="member-list" data-type="typedefs">
         <span class="subtitle">Typedefs</span>
         <ul>
+            <li data-name="arraylike"><a href="module-ol_DataTile.html#~ArrayLike">ArrayLike</a>
             <li data-name="data"><a href="module-ol_DataTile.html#~Data">Data</a>
+            <li data-name="imagelike"><a href="module-ol_DataTile.html#~ImageLike">ImageLike</a>
             <li data-name="options"><a href="module-ol_DataTile.html#~Options">Options</a>
         </ul>
     </div>
@@ -177,10 +179,56 @@
                 
 <dt class="">
     <div class="nameContainer">
+        <div class="anchor" id="~ArrayLike">
+        </div>
+        <h4 class="name">
+            ArrayLike<span class="type-signature type uint8array">{Uint8Array}</span> <span class="type-signature type uint8clampedarray">{Uint8ClampedArray}</span> <span class="type-signature type float32array">{Float32Array}</span> <span class="type-signature type dataview">{DataView}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
         <div class="anchor" id="~Data">
         </div>
         <h4 class="name">
-            Data<span class="type-signature type uint8array">{Uint8Array}</span> <span class="type-signature type uint8clampedarray">{Uint8ClampedArray}</span> <span class="type-signature type float32array">{Float32Array}</span> <span class="type-signature type dataview">{DataView}</span> 
+            Data<span class="type-signature type module:ol/datatile~arraylike">{<a href="module-ol_DataTile.html#~ArrayLike">ArrayLike</a>}</span> <span class="type-signature type module:ol/datatile~imagelike">{<a href="module-ol_DataTile.html#~ImageLike">ImageLike</a>}</span> 
             
 
         </h4>
@@ -190,9 +238,54 @@
 <dd class="">
     
     <div class="description">
-        <p>Data that can be used with a DataTile.  For increased browser compatibility, use
-Uint8Array instead of Uint8ClampedArray where possible.</p>
+        <p>Data that can be used with a DataTile.</p>
     </div>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~ImageLike">
+        </div>
+        <h4 class="name">
+            ImageLike<span class="type-signature type htmlimageelement">{HTMLImageElement}</span> <span class="type-signature type htmlcanvaselement">{HTMLCanvasElement}</span> <span class="type-signature type htmlvideoelement">{HTMLVideoElement}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
     
 
     
@@ -334,7 +427,8 @@ Uint8Array instead of Uint8ClampedArray where possible.</p>
                 </td>
             
 
-            <td class="description last"><p>Data loader.</p></td>
+            <td class="description last"><p>Data loader.  For loaders that generate images,
+the promise should not resolve until the image is loaded.</p></td>
         </tr>
 
 	
