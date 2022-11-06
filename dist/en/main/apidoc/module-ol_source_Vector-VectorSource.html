@@ -151,7 +151,7 @@
     
       
       
-        <pre class="prettyprint source"><code>import VectorSource from '<a href="module-ol_source_Vector.html">ol/source/Vector</a>';</code></pre>
+        <pre class="prettyprint source"><code>import VectorSource from '<a href="module-ol_source_Vector.html">ol/source/Vector</a>.js';</code></pre>
       
     
     <div class="row p-3 ">
@@ -329,9 +329,9 @@ If this is not set and <code>url</code> is set, the source will create and use a
 feature loader. The <code>'featuresloadend'</code> and <code>'featuresloaderror'</code> events
 will only fire if the <code>success</code> and <code>failure</code> callbacks are used.</p>
 <p>Example:</p>
-<pre class="prettyprint source lang-js"><code>import {Vector} from 'ol/source';
-import {GeoJSON} from 'ol/format';
-import {bbox} from 'ol/loadingstrategy';
+<pre class="prettyprint source lang-js"><code>import Vector from 'ol/source/Vector.js';
+import GeoJSON from 'ol/format/GeoJSON.js';
+import {bbox} from 'ol/loadingstrategy.js';
 
 const vectorSource = new Vector({
   format: new GeoJSON(),

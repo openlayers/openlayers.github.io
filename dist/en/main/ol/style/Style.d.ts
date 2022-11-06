@@ -132,7 +132,7 @@ export type Options = {
  *
  * If no style is defined, the following default style is used:
  * ```js
- *  import {Circle, Fill, Stroke, Style} from 'ol/style';
+ *  import {Circle, Fill, Stroke, Style} from 'ol/style.js';
  *
  *  const fill = new Fill({
  *    color: 'rgba(255,255,255,0.4)',
@@ -156,7 +156,7 @@ export type Options = {
  *
  * A separate editing style has the following defaults:
  * ```js
- *  import {Circle, Fill, Stroke, Style} from 'ol/style';
+ *  import {Circle, Fill, Stroke, Style} from 'ol/style.js';
  *
  *  const styles = {};
  *  const white = [255, 255, 255, 1];

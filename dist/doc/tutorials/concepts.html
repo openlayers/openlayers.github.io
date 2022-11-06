@@ -73,13 +73,13 @@
 <pre><code class="language-xml">&lt;div id=&quot;map&quot; style=&quot;width: 100%, height: 400px&quot;&gt;&lt;/div&gt;
 </code></pre>
 <p>The script below constructs a map that is rendered in the <code>&lt;div&gt;</code> above, using the <code>map</code> id of the element as a selector.</p>
-<pre><code class="language-js">import Map from &#39;ol/Map&#39;;
+<pre><code class="language-js">import Map from &#39;ol/Map.js&#39;;
 
 const map = new Map({target: &#39;map&#39;});
 </code></pre>
 <h2 id="view">View</h2>
 <p>The map is not responsible for things like center, zoom level and projection of the map. Instead, these are properties of a <code>ol/View</code> instance.</p>
-<pre><code class="language-js">import View from &#39;ol/View&#39;;
+<pre><code class="language-js">import View from &#39;ol/View.js&#39;;
 
 map.setView(new View({
   center: [0, 0],
@@ -90,7 +90,7 @@ map.setView(new View({
 <p>The <code>zoom</code> option is a convenient way to specify the map resolution. The available zoom levels are determined by <code>maxZoom</code> (default: 28), <code>zoomFactor</code> (default: 2) and <code>maxResolution</code> (default is calculated in such a way that the projection&#39;s validity extent fits in a 256x256 pixel tile). Starting at zoom level 0 with a resolution of <code>maxResolution</code> units per pixel, subsequent zoom levels are calculated by dividing the previous zoom level&#39;s resolution by <code>zoomFactor</code>, until zoom level <code>maxZoom</code> is reached.</p>
 <h2 id="source">Source</h2>
 <p>To get remote data for a layer, OpenLayers uses <code>ol/source/Source</code> subclasses. These are available for free and commercial map tile services like OpenStreetMap or Bing, for OGC sources like WMS or WMTS, and for vector data in formats like GeoJSON or KML.</p>
-<pre><code class="language-js">import OSM from &#39;ol/source/OSM&#39;;
+<pre><code class="language-js">import OSM from &#39;ol/source/OSM.js&#39;;
 
 const source = OSM();
 </code></pre>
@@ -102,7 +102,7 @@ const source = OSM();
 <li><code>ol/layer/Vector</code> - Renders vector data client-side.</li>
 <li><code>ol/layer/VectorTile</code> - Renders data that is provided as vector tiles.</li>
 </ul>
-<pre><code class="language-js">import TileLayer from &#39;ol/layer/Tile&#39;;
+<pre><code class="language-js">import TileLayer from &#39;ol/layer/Tile.js&#39;;
 
 // ...
 const layer = new TileLayer({source: source});
@@ -110,10 +110,10 @@ map.addLayer(layer);
 </code></pre>
 <h2 id="putting-it-all-together">Putting it all together</h2>
 <p>The above snippets can be combined into a single script that renders a map with a single tile layer:</p>
-<pre><code class="language-js">import Map from &#39;ol/Map&#39;;
-import View from &#39;ol/View&#39;;
-import OSM from &#39;ol/source/OSM&#39;;
-import TileLayer from &#39;ol/layer/Tile&#39;;
+<pre><code class="language-js">import Map from &#39;ol/Map.js&#39;;
+import View from &#39;ol/View.js&#39;;
+import OSM from &#39;ol/source/OSM.js&#39;;
+import TileLayer from &#39;ol/layer/Tile.js&#39;;
 
 new Map({
   layers: [

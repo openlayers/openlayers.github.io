@@ -77,17 +77,17 @@
 <p>The library is intended for use on both desktop/laptop and mobile devices, and supports pointer and touch interactions.</p>
 <h2 id="module-and-naming-conventions">Module and Naming Conventions</h2>
 <p>OpenLayers modules with CamelCase names provide classes as default exports, and may contain additional constants or functions as named exports:</p>
-<pre><code class="language-js">import Map from &#39;ol/Map&#39;;
-import View from &#39;ol/View&#39;;
+<pre><code class="language-js">import Map from &#39;ol/Map.js&#39;;
+import View from &#39;ol/View.js&#39;;
 </code></pre>
 <p>Class hierarchies grouped by their parent are provided in a subfolder of the package, e.g. <code>layer/</code>.</p>
 <p>For convenience, these are also available as named exports, e.g.</p>
 <pre><code class="language-js">import {Map, View} from &#39;ol&#39;;
-import {Tile, Vector} from &#39;ol/layer&#39;;
+import {Tile, Vector} from &#39;ol/layer.js&#39;;
 </code></pre>
 <p>In addition to these re-exported classes, modules with lowercase names also provide constants or functions as named exports:</p>
 <pre><code class="language-js">import {getUid} from &#39;ol&#39;;
-import {fromLonLat} from &#39;ol/proj&#39;;
+import {fromLonLat} from &#39;ol/proj.js&#39;;
 </code></pre>
 
     </div>

@@ -103,21 +103,22 @@ npm start
 <h2 id="the-script">The script</h2>
 <p>Open the <code>main.js</code> file in a text editor.  It should look something like this:</p>
 <pre><code class="language-js">import &#39;./style.css&#39;;
-import {Map, View} from &#39;ol&#39;;
-import TileLayer from &#39;ol/layer/Tile&#39;;
-import OSM from &#39;ol/source/OSM&#39;;
+import Map from &#39;ol/Map.js&#39;;
+import OSM from &#39;ol/source/OSM.js&#39;;
+import TileLayer from &#39;ol/layer/Tile.js&#39;;
+import View from &#39;ol/View.js&#39;;
 
 const map = new Map({
   target: &#39;map&#39;,
   layers: [
     new TileLayer({
-      source: new OSM()
-    })
+      source: new OSM(),
+    }),
   ],
   view: new View({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 </code></pre>
 <p>OpenLayers is packaged as a collection of <a href="https://hacks.mozilla.org/2018/03/es-modules-a-cartoon-deep-dive/">ES modules</a>.  The <code>import</code> lines are used to pull in the modules that your application needs.  Take a look through the <a href="/en/latest/examples/">examples</a> and <a href="/en/latest/apidoc/">API docs</a> to understand which modules you might want to use.</p>

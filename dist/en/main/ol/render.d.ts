@@ -31,9 +31,9 @@
  * The units for geometry coordinates are css pixels relative to the top left
  * corner of the canvas element.
  * ```js
- * import {toContext} from 'ol/render';
- * import Fill from 'ol/style/Fill';
- * import Polygon from 'ol/geom/Polygon';
+ * import {toContext} from 'ol/render.js';
+ * import Fill from 'ol/style/Fill.js';
+ * import Polygon from 'ol/geom/Polygon.js';
  *
  * const canvas = document.createElement('canvas');
  * const render = toContext(

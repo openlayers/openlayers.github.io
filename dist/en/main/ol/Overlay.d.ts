@@ -112,7 +112,7 @@ export type OverlayOnSignature<Return> = import("./Observable").OnSignature<impo
  *
  * Example:
  *
- *     import Overlay from 'ol/Overlay';
+ *     import Overlay from 'ol/Overlay.js';
  *
  *     // ...
  *     const popup = new Overlay({

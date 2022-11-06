@@ -217,10 +217,10 @@ export type MapOptions = {
  * The map is the core component of OpenLayers. For a map to render, a view,
  * one or more layers, and a target container are needed:
  *
- *     import Map from 'ol/Map';
- *     import View from 'ol/View';
- *     import TileLayer from 'ol/layer/Tile';
- *     import OSM from 'ol/source/OSM';
+ *     import Map from 'ol/Map.js';
+ *     import View from 'ol/View.js';
+ *     import TileLayer from 'ol/layer/Tile.js';
+ *     import OSM from 'ol/source/OSM.js';
  *
  *     const map = new Map({
  *       view: new View({

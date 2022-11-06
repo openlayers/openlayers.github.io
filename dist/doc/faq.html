@@ -104,8 +104,8 @@ OpenStreetMap or Bing tiles.</p>
 OpenLayers to something more appropriate for your region or your specific data.</p>
 <p>The projection of your map can be set through the <code>view</code>-property. Here are some
 examples:</p>
-<pre><code class="language-javascript">import Map from &#39;ol/Map&#39;;
-import View from &#39;ol/View&#39;;
+<pre><code class="language-javascript">import Map from &#39;ol/Map.js&#39;;
+import View from &#39;ol/View.js&#39;;
 
 // OpenLayers comes with support for the World Geodetic System 1984, EPSG:4326:
 const map = new Map({
@@ -116,11 +116,11 @@ const map = new Map({
   // other properties for your map like layers etc.
 });
 </code></pre>
-<pre><code class="language-javascript">import Map from &#39;ol/Map&#39;;
-import View from &#39;ol/View&#39;;
+<pre><code class="language-javascript">import Map from &#39;ol/Map.js&#39;;
+import View from &#39;ol/View.js&#39;;
 import proj4 from &#39;proj4&#39;;
-import {register} from &#39;ol/proj/proj4&#39;;
-import {get as getProjection} from &#39;ol/proj&#39;;
+import {register} from &#39;ol/proj/proj4.js&#39;;
+import {get as getProjection} from &#39;ol/proj.js&#39;;
 
 // To use other projections, you have to register the projection in OpenLayers.
 // This can easily be done with [http://proj4js.org/](proj4)
@@ -154,10 +154,10 @@ the wrong (a non-matching) projection.</p>
 <p>As the default projection in OpenLayers is Web Mercator (see above), the
 coordinates for the center have to be provided in that projection. Chances are
 that your map looks like this:</p>
-<pre><code class="language-javascript">import Map from &#39;ol/Map&#39;;
-import View from &#39;ol/View&#39;;
-import TileLayer from &#39;ol/layer/Tile&#39;;
-import OSM from &#39;ol/source/OSM&#39;;
+<pre><code class="language-javascript">import Map from &#39;ol/Map.js&#39;;
+import View from &#39;ol/View.js&#39;;
+import TileLayer from &#39;ol/layer/Tile.js&#39;;
+import OSM from &#39;ol/source/OSM.js&#39;;
 
 const washingtonLonLat = [-77.036667, 38.895];
 const map = new Map({
@@ -179,11 +179,11 @@ center shall be some meters (~77m and ~39m respectively) away from <code>[0, 0]<
 the Web Mercator projection the coordinate is right in the gulf of guinea.</p>
 <p>The solution is easy: Provide the coordinates projected into Web Mercator.
 OpenLayers has some helpful utility methods to assist you:</p>
-<pre><code class="language-javascript">import Map from &#39;ol/Map&#39;;
-import View from &#39;ol/View&#39;;
-import TileLayer from &#39;ol/layer/Tile&#39;;
-import OSM from &#39;ol/source/OSM&#39;;
-import {fromLonLat} from &#39;ol/proj&#39;;
+<pre><code class="language-javascript">import Map from &#39;ol/Map.js&#39;;
+import View from &#39;ol/View.js&#39;;
+import TileLayer from &#39;ol/layer/Tile.js&#39;;
+import OSM from &#39;ol/source/OSM.js&#39;;
+import {fromLonLat} from &#39;ol/proj.js&#39;;
 
 const washingtonLonLat = [-77.036667, 38.895];
 const washingtonWebMercator = fromLonLat(washingtonLonLat);
@@ -204,7 +204,7 @@ const map = new Map({
 <p>The method <code>fromLonLat()</code> is available from version 3.5 onwards.</p>
 <p>If you told OpenLayers about a custom projection (see above), you can use the
 following method to transform a coordinate from WGS84 to your projection:</p>
-<pre><code class="language-javascript">import {transform} from &#39;ol/proj&#39;;
+<pre><code class="language-javascript">import {transform} from &#39;ol/proj.js&#39;;
 // assuming that OpenLayers knows about EPSG:21781, see above
 const swissCoord = transform([8.23, 46.86], &#39;EPSG:4326&#39;, &#39;EPSG:21781&#39;);
 </code></pre>
@@ -235,11 +235,11 @@ which effectively tells you the coordinates are:</p>
 </code></pre>
 <p>So the next step would be to put the decimal coordinates into an array and use
 it as center:</p>
-<pre><code class="language-javascript">import Map from &#39;ol/Map&#39;;
-import View from &#39;ol/View&#39;;
-import TileLayer from &#39;ol/layer/Tile&#39;;
-import OSM from &#39;ol/source/OSM&#39;;
-import {fromLonLat} from &#39;ol/proj&#39;;
+<pre><code class="language-javascript">import Map from &#39;ol/Map.js&#39;;
+import View from &#39;ol/View.js&#39;;
+import TileLayer from &#39;ol/layer/Tile.js&#39;;
+import OSM from &#39;ol/source/OSM.js&#39;;
+import {fromLonLat} from &#39;ol/proj.js&#39;;
 
 const schladming = [47.394167, 13.689167]; // caution partner, read on...
 // since we are using OSM, we have to transform the coordinates...
@@ -266,11 +266,11 @@ Don&#39;t worry if you get it wrong at first, many OpenLayers developers have to
 think twice about whether to put the longitude or the latitude first when they
 e.g. try to change the map center.</p>
 <p>Ok, then let&#39;s flip the coordinates:</p>
-<pre><code class="language-javascript">import Map from &#39;ol/Map&#39;;
-import View from &#39;ol/View&#39;;
-import TileLayer from &#39;ol/layer/Tile&#39;;
-import OSM from &#39;ol/source/OSM&#39;;
-import {fromLonLat} from &#39;ol/proj&#39;;
+<pre><code class="language-javascript">import Map from &#39;ol/Map.js&#39;;
+import View from &#39;ol/View.js&#39;;
+import TileLayer from &#39;ol/layer/Tile.js&#39;;
+import OSM from &#39;ol/source/OSM.js&#39;;
+import {fromLonLat} from &#39;ol/proj.js&#39;;
 
 const schladming = [13.689167, 47.394167]; // longitude first, then latitude
 // since we are using OSM, we have to transform the coordinates...
@@ -299,8 +299,8 @@ first, and then latitude.</p>
 <h2 id="why-arent-there-any-features-in-my-source">Why aren&#39;t there any features in my source?</h2>
 <p>Suppose you want to load a KML file and display the contained features on the
 map. Code like the following could be used:</p>
-<pre><code class="language-javascript">import VectorLayer from &#39;ol/layer/Vector&#39;;
-import KMLSource from &#39;ol/source/KML&#39;;
+<pre><code class="language-javascript">import VectorLayer from &#39;ol/layer/Vector.js&#39;;
+import KMLSource from &#39;ol/source/KML.js&#39;;
 
 const vector = new VectorLayer({
   source: new KMLSource({
@@ -311,8 +311,8 @@ const vector = new VectorLayer({
 </code></pre>
 <p>You may ask yourself how many features are in that KML, and try something like
 the following:</p>
-<pre><code class="language-javascript">import VectorLayer from &#39;ol/layer/Vector&#39;;
-import KMLSource from &#39;ol/source/KML&#39;;
+<pre><code class="language-javascript">import VectorLayer from &#39;ol/layer/Vector.js&#39;;
+import KMLSource from &#39;ol/source/KML.js&#39;;
 
 const vector = new VectorLayer({
   source: new KMLSource({
@@ -353,7 +353,7 @@ it sometimes does not work for large icons or labels? The <em>hit detection</em>
 checks features that are within a certain distance of the given position. For large
 icons, the actual geometry of a feature might be too far away and is not considered.</p>
 <p>In this case, set the <code>renderBuffer</code> property of <code>VectorLayer</code> (the default value is 100px):</p>
-<pre><code class="language-javascript">import VectorLayer from &#39;ol/layer/Vector&#39;;
+<pre><code class="language-javascript">import VectorLayer from &#39;ol/layer/Vector.js&#39;;
 
 const vectorLayer = new VectorLayer({
   ...
@@ -366,7 +366,7 @@ const vectorLayer = new VectorLayer({
 to CSS styles or manually resizing the map. When that happens, any interaction will become inaccurate: the map would zoom in and out, and end up not being centered on the pointer. This makes it hard to do certain interactions, e.g. selecting the desired feature.</p>
 <p>There is currently no built-in way to react to element&#39;s size changes, as <a href="https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver">Resize Observer API</a> is only implemented in Chrome.</p>
 <p>There is however an easy to use <a href="https://github.com/que-etc/resize-observer-polyfill">polyfill</a>:</p>
-<pre><code class="language-javascript">import Map from &#39;ol/Map&#39;;
+<pre><code class="language-javascript">import Map from &#39;ol/Map.js&#39;;
 import ResizeObserver from &#39;resize-observer-polyfill&#39;;
 
 const mapElement = document.querySelector(&#39;#map&#39;)

@@ -213,7 +213,7 @@
         <p>Add <code>delta</code> to <code>coordinate</code>. <code>coordinate</code> is modified in place and returned
 by the function.</p>
 <p>Example:</p>
-<pre class="prettyprint source"><code>import {add} from 'ol/coordinate';
+<pre class="prettyprint source"><code>import {add} from 'ol/coordinate.js';
 
 const coord = [7.85, 47.983333];
 add(coord, [-2, 4]);
@@ -385,13 +385,13 @@ the given delta.
 used to format
 a {Coordinate} to a string.</p>
 <p>Example without specifying the fractional digits:</p>
-<pre class="prettyprint source"><code>import {createStringXY} from 'ol/coordinate';
+<pre class="prettyprint source"><code>import {createStringXY} from 'ol/coordinate.js';
 
 const coord = [7.85, 47.983333];
 const stringifyFunc = createStringXY();
 const out = stringifyFunc(coord);
 // out is now '8, 48'</code></pre><p>Example with explicitly specifying 2 fractional digits:</p>
-<pre class="prettyprint source"><code>import {createStringXY} from 'ol/coordinate';
+<pre class="prettyprint source"><code>import {createStringXY} from 'ol/coordinate.js';
 
 const coord = [7.85, 47.983333];
 const stringifyFunc = createStringXY(2);
@@ -539,13 +539,13 @@ Coordinate format.
 using the given string template. The strings <code>{x}</code> and <code>{y}</code> in the template
 will be replaced with the first and second coordinate values respectively.</p>
 <p>Example without specifying the fractional digits:</p>
-<pre class="prettyprint source"><code>import {format} from 'ol/coordinate';
+<pre class="prettyprint source"><code>import {format} from 'ol/coordinate.js';
 
 const coord = [7.85, 47.983333];
 const template = 'Coordinate is ({x}|{y}).';
 const out = format(coord, template);
 // out is now 'Coordinate is (8|48).'</code></pre><p>Example explicitly specifying the fractional digits:</p>
-<pre class="prettyprint source"><code>import {format} from 'ol/coordinate';
+<pre class="prettyprint source"><code>import {format} from 'ol/coordinate.js';
 
 const coord = [7.85, 47.983333];
 const template = 'Coordinate is ({x}|{y}).';
@@ -743,7 +743,7 @@ Formatted coordinate.
         <p>Rotate <code>coordinate</code> by <code>angle</code>. <code>coordinate</code> is modified in place and
 returned by the function.</p>
 <p>Example:</p>
-<pre class="prettyprint source"><code>import {rotate} from 'ol/coordinate';
+<pre class="prettyprint source"><code>import {rotate} from 'ol/coordinate.js';
 
 const coord = [7.85, 47.983333];
 const rotateRadians = Math.PI / 2; // 90 degrees
@@ -914,12 +914,12 @@ Coordinate.
         <p>Format a geographic coordinate with the hemisphere, degrees, minutes, and
 seconds.</p>
 <p>Example without specifying fractional digits:</p>
-<pre class="prettyprint source"><code>import {toStringHDMS} from 'ol/coordinate';
+<pre class="prettyprint source"><code>import {toStringHDMS} from 'ol/coordinate.js';
 
 const coord = [7.85, 47.983333];
 const out = toStringHDMS(coord);
 // out is now '47° 58′ 60″ N 7° 50′ 60″ E'</code></pre><p>Example explicitly specifying 1 fractional digit:</p>
-<pre class="prettyprint source"><code>import {toStringHDMS} from 'ol/coordinate';
+<pre class="prettyprint source"><code>import {toStringHDMS} from 'ol/coordinate.js';
 
 const coord = [7.85, 47.983333];
 const out = toStringHDMS(coord, 1);
@@ -1089,12 +1089,12 @@ Hemisphere, degrees, minutes and seconds.
     <div class="description">
         <p>Format a coordinate as a comma delimited string.</p>
 <p>Example without specifying fractional digits:</p>
-<pre class="prettyprint source"><code>import {toStringXY} from 'ol/coordinate';
+<pre class="prettyprint source"><code>import {toStringXY} from 'ol/coordinate.js';
 
 const coord = [7.85, 47.983333];
 const out = toStringXY(coord);
 // out is now '8, 48'</code></pre><p>Example explicitly specifying 1 fractional digit:</p>
-<pre class="prettyprint source"><code>import {toStringXY} from 'ol/coordinate';
+<pre class="prettyprint source"><code>import {toStringXY} from 'ol/coordinate.js';
 
 const coord = [7.85, 47.983333];
 const out = toStringXY(coord, 1);
