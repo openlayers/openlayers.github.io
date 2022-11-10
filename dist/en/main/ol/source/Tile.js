@@ -232,17 +232,13 @@ class TileSource extends Source {
   }
 
   /**
-   * @param {import("../proj/Projection").default} [projection] Projection.
    * @return {Array<number>|null} Resolutions.
    */
-  getResolutions(projection) {
-    const tileGrid = projection
-      ? this.getTileGridForProjection(projection)
-      : this.tileGrid;
-    if (!tileGrid) {
+  getResolutions() {
+    if (!this.tileGrid) {
       return null;
     }
-    return tileGrid.getResolutions();
+    return this.tileGrid.getResolutions();
   }
 
   /**

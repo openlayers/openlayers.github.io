@@ -2,6 +2,7 @@
  * @module ol/source/Source
  */
 import BaseObject from '../Object.js';
+import {abstract} from '../util.js';
 import {get as getProjection} from '../proj.js';
 
 /**
@@ -151,11 +152,11 @@ class Source extends BaseObject {
   }
 
   /**
-   * @param {import("../proj/Projection").default} [projection] Projection.
+   * @abstract
    * @return {Array<number>|null} Resolutions.
    */
-  getResolutions(projection) {
-    return null;
+  getResolutions() {
+    return abstract();
   }
 
   /**

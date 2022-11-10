@@ -158,10 +158,10 @@ declare class Source extends BaseObject {
      */
     getProjection(): import("../proj/Projection.js").default | null;
     /**
-     * @param {import("../proj/Projection").default} [projection] Projection.
+     * @abstract
      * @return {Array<number>|null} Resolutions.
      */
-    getResolutions(projection?: import("../proj/Projection.js").default | undefined): Array<number> | null;
+    getResolutions(): Array<number> | null;
     /**
      * @return {Promise<import("../View.js").ViewOptions>} A promise for view-related properties.
      */

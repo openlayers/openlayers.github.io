@@ -121,14 +121,6 @@ declare class ImageSource extends Source {
      */
     private reprojectedRevision_;
     /**
-     * @return {Array<number>|null} Resolutions.
-     */
-    getResolutions(): Array<number> | null;
-    /**
-     * @param {Array<number>|null} resolutions Resolutions.
-     */
-    setResolutions(resolutions: Array<number> | null): void;
-    /**
      * @protected
      * @param {number} resolution Resolution.
      * @return {number} Resolution.
