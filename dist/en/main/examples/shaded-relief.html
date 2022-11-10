@@ -291,6 +291,7 @@ function shade(inputs, data) {
 const elevation &#x3D; new XYZ({
   url: &#x27;https://{a-d}.tiles.mapbox.com/v3/aj.sf-dem/{z}/{x}/{y}.png&#x27;,
   crossOrigin: &#x27;anonymous&#x27;,
+  maxZoom: 13,
 });
 
 const raster &#x3D; new Raster({
@@ -314,7 +315,6 @@ const map &#x3D; new Map({
     extent: [-13675026, 4439648, -13580856, 4580292],
     center: [-13615645, 4497969],
     minZoom: 10,
-    maxZoom: 16,
     zoom: 13,
   }),
 });
