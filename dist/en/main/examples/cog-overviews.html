@@ -87,6 +87,22 @@
                 tabindex="0"
                 >11</a>
             </span>
+            <span class="badge-group">
+              <a
+                href="./index.html?q=overview" class="badge badge-info">overview</a
+              ><a
+                class="badge badge-info tag-modal-toggle"
+                data-bs-toggle="modal"
+                data-bs-target="#tag-example-list"
+                data-title="overview"
+                data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./overviewmap-custom.html&quot;&gt;Custom Overview Map&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-overviews.html&quot;&gt;GeoTIFF with Overviews&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./overviewmap.html&quot;&gt;Overview Map Control&lt;/a&gt;
+                  &lt;/ul&gt;"
+                tabindex="0"
+                >3</a>
+            </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -112,7 +128,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Rendering a GeoTIFF with external overviews as a layer.</p>
-          <div id="docs"><p>In some cases, a GeoTIFF may have external overviews.  This example uses the <code>overviews</code> property to provide URLs for the external overviews.  The example composes a false color composite using shortwave infrared (B6), near infrared (B5), and visible green (B3) bands from a Landsat 8 image.</p>
+          <div id="docs"><p>In some cases, a GeoTIFF may have external overviews.  This example uses the <code>overviews</code> property to provide URL for a file containing external overviews.</p>
 </div>
         </div>
       </div>
@@ -123,35 +139,11 @@
 import Map from &#x27;ol/Map.js&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
 
-// scale values in this range to 0 - 1
-const min &#x3D; 10000;
-const max &#x3D; 15000;
-
-const base &#x3D;
-  &#x27;https://landsat-pds.s3.amazonaws.com/c1/L8/139/045/LC08_L1TP_139045_20170304_20170316_01_T1/LC08_L1TP_139045_20170304_20170316_01_T1&#x27;;
-
 const source &#x3D; new GeoTIFF({
   sources: [
     {
-      url: &#x60;${base}_B6.TIF&#x60;,
-      overviews: [&#x60;${base}_B6.TIF.ovr&#x60;],
-      min: min,
-      max: max,
-      nodata: 0,
-    },
-    {
-      url: &#x60;${base}_B5.TIF&#x60;,
-      overviews: [&#x60;${base}_B5.TIF.ovr&#x60;],
-      min: min,
-      max: max,
-      nodata: 0,
-    },
-    {
-      url: &#x60;${base}_B3.TIF&#x60;,
-      overviews: [&#x60;${base}_B3.TIF.ovr&#x60;],
-      min: min,
-      max: max,
-      nodata: 0,
+      url: &#x27;https://openlayers.org/data/raster/no-overviews.tif&#x27;,
+      overviews: [&#x27;https://openlayers.org/data/raster/no-overviews.tif.ovr&#x27;],
     },
   ],
 });
@@ -160,9 +152,6 @@ const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   layers: [
     new TileLayer({
-      style: {
-        saturation: -0.3,
-      },
       source: source,
     }),
   ],
