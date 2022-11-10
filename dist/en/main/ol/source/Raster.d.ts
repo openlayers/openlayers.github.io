@@ -242,6 +242,12 @@ export type Options = {
      * be called with an array of ImageData objects from input sources.
      */
     operationType?: RasterOperationType | undefined;
+    /**
+     * Resolutions. If specified, raster operations will only
+     * be run at the given resolutions.  By default, the resolutions of the first source with resolutions
+     * specified will be used, if any. Set to `null` to use any view resolution instead.
+     */
+    resolutions?: number[] | null | undefined;
 };
 /**
  * *
@@ -267,6 +273,9 @@ import Event from "../events/Event.js";
  * `'pixel'` operations are assumed, and operations will be called with an
  * array of pixels from input sources.  If set to `'image'`, operations will
  * be called with an array of ImageData objects from input sources.
+ * @property {Array<number>|null} [resolutions] Resolutions. If specified, raster operations will only
+ * be run at the given resolutions.  By default, the resolutions of the first source with resolutions
+ * specified will be used, if any. Set to `null` to use any view resolution instead.
  */
 /***
  * @template Return
@@ -323,6 +332,8 @@ declare class RasterSource extends ImageSource {
      * @type {Array<import("../layer/Layer.js").default>}
      */
     private layers_;
+    /** @type {boolean} */
+    useResolutions_: boolean;
     /**
      * @private
      * @type {import("../TileQueue.js").default}
@@ -395,6 +406,11 @@ declare class RasterSource extends ImageSource {
      * @private
      */
     private onWorkerComplete_;
+    /**
+     * @param {import("../proj/Projection").default} [projection] Projection.
+     * @return {Array<number>|null} Resolutions.
+     */
+    getResolutions(projection?: import("../proj/Projection.js").default | undefined): Array<number> | null;
 }
 import ImageSource from "./Image.js";
 //# sourceMappingURL=Raster.d.ts.map
