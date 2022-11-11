@@ -5,18 +5,16 @@ export function disableCoordinateWarning(disable?: boolean | undefined): void;
 /**
  * @param {Array<number>} input Input coordinate array.
  * @param {Array<number>} [output] Output array of coordinate values.
- * @param {number} [dimension] Dimension.
  * @return {Array<number>} Output coordinate array (new array, same coordinate
  *     values).
  */
-export function cloneTransform(input: Array<number>, output?: number[] | undefined, dimension?: number | undefined): Array<number>;
+export function cloneTransform(input: Array<number>, output?: number[] | undefined): Array<number>;
 /**
  * @param {Array<number>} input Input coordinate array.
  * @param {Array<number>} [output] Output array of coordinate values.
- * @param {number} [dimension] Dimension.
  * @return {Array<number>} Input coordinate array (same array as input).
  */
-export function identityTransform(input: Array<number>, output?: number[] | undefined, dimension?: number | undefined): Array<number>;
+export function identityTransform(input: Array<number>, output?: number[] | undefined): Array<number>;
 /**
  * Add a Projection object to the list of supported projections that can be
  * looked up by their code.
