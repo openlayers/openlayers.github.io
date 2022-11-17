@@ -12,13 +12,13 @@
  */
 export function binarySearch(haystack: Array<any>, needle: any, comparator?: Function | undefined): number;
 /**
- * Compare function for array sort that is safe for numbers.
+ * Compare function sorting arrays in ascending order.  Safe to use for numeric values.
  * @param {*} a The first object to be compared.
  * @param {*} b The second object to be compared.
  * @return {number} A negative number, zero, or a positive number as the first
  *     argument is less than, equal to, or greater than the second.
  */
-export function numberSafeCompareFunction(a: any, b: any): number;
+export function ascending(a: any, b: any): number;
 /**
  * {@link module:ol/tilegrid/TileGrid~TileGrid#getZForResolution} can use a function
  * of this type to determine which nearest resolution to use.
