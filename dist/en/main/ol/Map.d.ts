@@ -394,6 +394,15 @@ declare class Map extends BaseObject {
      */
     private targetChangeHandlerKeys_;
     /**
+     * @private
+     * @type {HTMLElement|null}
+     */
+    private targetElement_;
+    /**
+     * @type {ResizeObserver}
+     */
+    resizeObserver_: ResizeObserver;
+    /**
      * @type {Collection<import("./control/Control.js").default>}
      * @protected
      */
