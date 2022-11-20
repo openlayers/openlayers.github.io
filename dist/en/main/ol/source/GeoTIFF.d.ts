@@ -296,6 +296,16 @@ declare class GeoTIFFSource extends DataTile {
      */
     getError(): Error;
     /**
+     * Determine the projection of the images in this GeoTIFF.
+     * The default implementation looks at the ProjectedCSTypeGeoKey and the GeographicTypeGeoKey
+     * of each image in turn.
+     * You can override this method in a subclass to support more projections.
+     *
+     * @param {Array<Array<GeoTIFFImage>>} sources Each source is a list of images
+     * from a single GeoTIFF.
+     */
+    determineProjection(sources: Array<Array<GeoTIFFImage>>): void;
+    /**
      * Configure the tile grid based on images within the source GeoTIFFs.  Each GeoTIFF
      * must have the same internal tiled structure.
      * @param {Array<Array<GeoTIFFImage>>} sources Each source is a list of images
