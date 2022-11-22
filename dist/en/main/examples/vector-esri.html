@@ -291,7 +291,7 @@
             </div>
           </div>
           <div id="map" class="map"></div>
-<div id="info">&nbsp;</div>
+<div id="info">&nbsp;<br>&nbsp;</div>
 
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
@@ -321,53 +321,43 @@ import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 import {tile as tileStrategy} from &#x27;ol/loadingstrategy.js&#x27;;
 
 const serviceUrl &#x3D;
-  &#x27;https://sampleserver3.arcgisonline.com/ArcGIS/rest/services/&#x27; +
-  &#x27;Petroleum/KSFields/FeatureServer/&#x27;;
+  &#x27;https://services-eu1.arcgis.com/NPIbx47lsIiu2pqz/ArcGIS/rest/services/&#x27; +
+  &#x27;Neptune_Coastline_Campaign_Open_Data_Land_Use_2014/FeatureServer/&#x27;;
 const layer &#x3D; &#x27;0&#x27;;
 
-const esrijsonFormat &#x3D; new EsriJSON();
-
-const styleCache &#x3D; {
-  &#x27;ABANDONED&#x27;: new Style({
-    fill: new Fill({
-      color: &#x27;rgba(225, 225, 225, 255)&#x27;,
-    }),
-    stroke: new Stroke({
-      color: &#x27;rgba(0, 0, 0, 255)&#x27;,
-      width: 0.4,
-    }),
-  }),
-  &#x27;GAS&#x27;: new Style({
-    fill: new Fill({
-      color: &#x27;rgba(255, 0, 0, 255)&#x27;,
-    }),
-    stroke: new Stroke({
-      color: &#x27;rgba(110, 110, 110, 255)&#x27;,
-      width: 0.4,
-    }),
-  }),
-  &#x27;OIL&#x27;: new Style({
-    fill: new Fill({
-      color: &#x27;rgba(56, 168, 0, 255)&#x27;,
-    }),
-    stroke: new Stroke({
-      color: &#x27;rgba(110, 110, 110, 255)&#x27;,
-      width: 0,
-    }),
-  }),
-  &#x27;OILGAS&#x27;: new Style({
-    fill: new Fill({
-      color: &#x27;rgba(168, 112, 0, 255)&#x27;,
-    }),
-    stroke: new Stroke({
-      color: &#x27;rgba(110, 110, 110, 255)&#x27;,
-      width: 0.4,
-    }),
-  }),
+const fillColors &#x3D; {
+  &#x27;Lost To Sea Since 1965&#x27;: [0, 0, 0, 1],
+  &#x27;Urban/Built-up&#x27;: [104, 104, 104, 1],
+  &#x27;Shacks&#x27;: [115, 76, 0, 1],
+  &#x27;Industry&#x27;: [230, 0, 0, 1],
+  &#x27;Wasteland&#x27;: [230, 0, 0, 1],
+  &#x27;Caravans&#x27;: [0, 112, 255, 0.5],
+  &#x27;Defence&#x27;: [230, 152, 0, 0.5],
+  &#x27;Transport&#x27;: [230, 152, 0, 1],
+  &#x27;Open Countryside&#x27;: [255, 255, 115, 1],
+  &#x27;Woodland&#x27;: [38, 115, 0, 1],
+  &#x27;Managed Recreation/Sport&#x27;: [85, 255, 0, 1],
+  &#x27;Amenity Water&#x27;: [0, 112, 255, 1],
+  &#x27;Inland Water&#x27;: [0, 38, 115, 1],
 };
 
+const style &#x3D; new Style({
+  fill: new Fill(),
+  stroke: new Stroke({
+    color: [0, 0, 0, 1],
+    width: 0.5,
+  }),
+});
+
 const vectorSource &#x3D; new VectorSource({
-  loader: function (extent, resolution, projection, success, failure) {
+  format: new EsriJSON(),
+  url: function (extent, resolution, projection) {
+    // ArcGIS Server only wants the numeric portion of the projection ID.
+    const srid &#x3D; projection
+      .getCode()
+      .split(/:(?&#x3D;\d+$)/)
+      .pop();
+
     const url &#x3D;
       serviceUrl +
       layer +
@@ -382,46 +372,38 @@ const vectorSource &#x3D; new VectorSource({
           extent[2] +
           &#x27;,&quot;ymax&quot;:&#x27; +
           extent[3] +
-          &#x27;,&quot;spatialReference&quot;:{&quot;wkid&quot;:102100}}&#x27;
+          &#x27;,&quot;spatialReference&quot;:{&quot;wkid&quot;:&#x27; +
+          srid +
+          &#x27;}}&#x27;
       ) +
-      &#x27;&amp;geometryType&#x3D;esriGeometryEnvelope&amp;inSR&#x3D;102100&amp;outFields&#x3D;*&#x27; +
-      &#x27;&amp;outSR&#x3D;102100&#x27;;
-    $.ajax({
-      url: url,
-      dataType: &#x27;jsonp&#x27;,
-      success: function (response) {
-        if (response.error) {
-          alert(
-            response.error.message + &#x27;\n&#x27; + response.error.details.join(&#x27;\n&#x27;)
-          );
-          failure();
-        } else {
-          // dataProjection will be read from document
-          const features &#x3D; esrijsonFormat.readFeatures(response, {
-            featureProjection: projection,
-          });
-          if (features.length &gt; 0) {
-            vectorSource.addFeatures(features);
-          }
-          success(features);
-        }
-      },
-      error: failure,
-    });
+      &#x27;&amp;geometryType&#x3D;esriGeometryEnvelope&amp;inSR&#x3D;&#x27; +
+      srid +
+      &#x27;&amp;outFields&#x3D;*&#x27; +
+      &#x27;&amp;outSR&#x3D;&#x27; +
+      srid;
+
+    return url;
   },
   strategy: tileStrategy(
     createXYZ({
       tileSize: 512,
     })
   ),
+  attributions:
+    &#x27;University of Leicester (commissioned by the &#x27; +
+    &#x27;&lt;a href&#x3D;&quot;https://www.arcgis.com/home/item.html?id&#x3D;&#x27; +
+    &#x27;d5f05b1dc3dd4d76906c421bc1727805&quot;&gt;National Trust&lt;/a&gt;)&#x27;,
 });
 
 const vector &#x3D; new VectorLayer({
   source: vectorSource,
   style: function (feature) {
-    const classify &#x3D; feature.get(&#x27;activeprod&#x27;);
-    return styleCache[classify];
+    const classify &#x3D; feature.get(&#x27;LU_2014&#x27;);
+    const color &#x3D; fillColors[classify] || [0, 0, 0, 0];
+    style.getFill().setColor(color);
+    return style;
   },
+  opacity: 0.7,
 });
 
 const raster &#x3D; new TileLayer({
@@ -439,39 +421,33 @@ const map &#x3D; new Map({
   layers: [raster, vector],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
-    center: fromLonLat([-97.6114, 38.8403]),
-    zoom: 7,
+    center: fromLonLat([1.72, 52.4]),
+    zoom: 14,
   }),
 });
 
 const displayFeatureInfo &#x3D; function (pixel) {
-  const features &#x3D; [];
-  map.forEachFeatureAtPixel(pixel, function (feature) {
-    features.push(feature);
+  const feature &#x3D; map.forEachFeatureAtPixel(pixel, function (feature) {
+    return feature;
   });
-  if (features.length &gt; 0) {
-    const info &#x3D; [];
-    let i, ii;
-    for (i &#x3D; 0, ii &#x3D; features.length; i &lt; ii; ++i) {
-      info.push(features[i].get(&#x27;field_name&#x27;));
-    }
-    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; info.join(&#x27;, &#x27;) || &#x27;(unknown)&#x27;;
+  if (feature) {
+    const info &#x3D;
+      &#x27;2014 Land Use: &#x27; +
+      feature.get(&#x27;LU_2014&#x27;) +
+      &#x27;&lt;br&gt;1965 Land Use: &#x27; +
+      feature.get(&#x27;LU_1965&#x27;);
+    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; info;
     map.getTarget().style.cursor &#x3D; &#x27;pointer&#x27;;
   } else {
-    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
+    document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; &#x27;&amp;nbsp;&lt;br&gt;&amp;nbsp;&#x27;;
     map.getTarget().style.cursor &#x3D; &#x27;&#x27;;
   }
 };
 
-map.on(&#x27;pointermove&#x27;, function (evt) {
+map.on([&#x27;click&#x27;, &#x27;pointermove&#x27;], function (evt) {
   if (evt.dragging) {
     return;
   }
-  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
-  displayFeatureInfo(pixel);
-});
-
-map.on(&#x27;click&#x27;, function (evt) {
   displayFeatureInfo(evt.pixel);
 });
 </code></pre>
@@ -494,10 +470,9 @@ map.on(&#x27;click&#x27;, function (evt) {
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div id&#x3D;&quot;info&quot;&gt;&amp;nbsp;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;info&quot;&gt;&amp;nbsp;&lt;br&gt;&amp;nbsp;&lt;/div&gt;
     &lt;!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer --&gt;
     &lt;script src="https://cdn.jsdelivr.net/npm/elm-pep@1.0.6/dist/elm-pep.js"&gt;&lt;/script&gt;
-    &lt;script src="https://code.jquery.com/jquery-3.6.0.min.js"&gt;&lt;/script&gt;
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -523,7 +498,6 @@ map.on(&#x27;click&#x27;, function (evt) {
 
     <script src="https://cdn.jsdelivr.net/npm/elm-pep@1.0.6/dist/elm-pep.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="common.js"></script>
     <script src="vector-esri.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js"></script>
