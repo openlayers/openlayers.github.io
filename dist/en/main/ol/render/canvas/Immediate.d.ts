@@ -43,6 +43,11 @@ declare class CanvasImmediateRenderer extends VectorContext {
      * @private
      * @type {number}
      */
+    private transformRotation_;
+    /**
+     * @private
+     * @type {number}
+     */
     private viewRotation_;
     /**
      * @private
