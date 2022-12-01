@@ -101,6 +101,7 @@ export type Options = {
  * Vector tile sets may come in a variety of formats (e.g. GeoJSON, MVT).  The `format` option is used to determine
  * which of the advertised media types is used.  If you need to force the use of a particular media type, you can
  * provide the `mediaType` option.
+ * @api
  */
 declare class OGCVectorTile extends VectorTile {
     /**

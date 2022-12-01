@@ -55,11 +55,6 @@
         This example uses OpenLayers v<span>7.1.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
-      <div id="experimental-notice" class="alert alert-warning alert-dismissible" role="alert">
-        <button id="experimental-dismiss" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        This example uses features that are not part of the stable API and subject to change between releases.  Consult the <a href="/en/latest/apidoc/">API documentation</a>
-        to see what is supported in the latest release.
-      </div>
 
       <div class="row-fluid">
         <a href="#" id="codepen-button" class="btn btn-link float-end">
@@ -109,7 +104,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Rendering map tiles from an OGC API – Tiles service.</p>
-          <div id="docs"><p>The <a href="https://ogcapi.ogc.org/tiles/">OGC API – Tiles</a> specification describes how a service can provide map tiles.  Because the specification has not yet been finalized, the <code>OGCMapTile</code> source is not yet part of the stable API.</p>
+          <div id="docs"><p>The <a href="https://ogcapi.ogc.org/tiles/">OGC API – Tiles</a> specification describes how a service can provide map tiles.</p>
 </div>
         </div>
       </div>
@@ -126,7 +121,7 @@ const map &#x3D; new Map({
   layers: [
     new TileLayer({
       source: new OGCMapTile({
-        url: &#x27;https://maps.ecere.com/ogcapi/collections/blueMarble/map/tiles/WorldCRS84Quad&#x27;,
+        url: &#x27;https://maps.gnosis.earth/ogcapi/collections/blueMarble/map/tiles/WorldCRS84Quad&#x27;,
       }),
     }),
   ],
