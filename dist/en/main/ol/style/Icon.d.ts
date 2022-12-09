@@ -61,6 +61,14 @@ export type Options = {
      */
     opacity?: number | undefined;
     /**
+     * The width of the icon in pixels. This can't be used together with `scale`.
+     */
+    width?: number | undefined;
+    /**
+     * The height of the icon in pixels. This can't be used together with `scale`.
+     */
+    height?: number | undefined;
+    /**
      * Scale.
      */
     scale?: number | import("../size.js").Size | undefined;
@@ -128,6 +136,8 @@ export type Options = {
  * @property {Array<number>} [displacement=[0, 0]] Displacement of the icon in pixels.
  * Positive values will shift the icon right and up.
  * @property {number} [opacity=1] Opacity of the icon.
+ * @property {number} [width] The width of the icon in pixels. This can't be used together with `scale`.
+ * @property {number} [height] The height of the icon in pixels. This can't be used together with `scale`.
  * @property {number|import("../size.js").Size} [scale=1] Scale.
  * @property {boolean} [rotateWithView=false] Whether to rotate the icon with the view.
  * @property {number} [rotation=0] Rotation in radians (positive rotation clockwise).
@@ -216,11 +226,28 @@ declare class Icon extends ImageStyle {
      */
     private size_;
     /**
+     * @type {number|undefined}
+     */
+    width_: number | undefined;
+    /**
+     * @type {number|undefined}
+     */
+    height_: number | undefined;
+    /**
      * Clones the style. The underlying Image/HTMLCanvasElement is not cloned.
      * @return {Icon} The cloned style.
      * @api
      */
     clone(): Icon;
+    /**
+     * Set the scale of the Icon by calculating it from given width and height and the
+     * width and height of the image.
+     *
+     * @private
+     * @param {number} width The width.
+     * @param {number} height The height.
+     */
+    private updateScaleFromWidthAndHeight;
     /**
      * Set the anchor point. The anchor determines the center point for the
      * symbolizer.
@@ -252,6 +279,30 @@ declare class Icon extends ImageStyle {
      * @api
      */
     getSrc(): string | undefined;
+    /**
+     * Get the width of the icon (in pixels).
+     * @return {number} Icon width (in pixels).
+     * @api
+     */
+    getWidth(): number;
+    /**
+     * Get the height of the icon (in pixels).
+     * @return {number} Icon height (in pixels).
+     * @api
+     */
+    getHeight(): number;
+    /**
+     * Set the width of the icon in pixels.
+     *
+     * @param {number} width The width to set.
+     */
+    setWidth(width: number): void;
+    /**
+     * Set the height of the icon in pixels.
+     *
+     * @param {number} height The height to set.
+     */
+    setHeight(height: number): void;
 }
 import ImageStyle from "./Image.js";
 //# sourceMappingURL=Icon.d.ts.map
