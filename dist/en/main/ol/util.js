@@ -33,4 +33,4 @@ export function getUid(obj) {
  * OpenLayers version.
  * @type {string}
  */
-export const VERSION = '7.1.1-dev';
+export const VERSION = '7.2.1-dev';
