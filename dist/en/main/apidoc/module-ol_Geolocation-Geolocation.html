@@ -112,6 +112,7 @@
             <li data-name="change:speed">change:speed
             <li data-name="change:tracking">change:tracking
             <li data-name="change:trackingoptions">change:trackingOptions
+            <li data-name="error"><a href="module-ol_Geolocation.GeolocationError.html#event:error">error</a>
             <li data-name="error"><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a>
             <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
         </ul>
@@ -152,8 +153,8 @@
       <div class="class-description col-lg-7 align-self-center ps-0"><p>Helper class for providing HTML5 Geolocation capabilities.
 The <a href="https://www.w3.org/TR/geolocation-API/">Geolocation API</a>
 is used to locate a user's position.</p>
-<p>To get notified of position changes, register a listener for the generic
-<code>change</code> event on your instance of <a href="module-ol_Geolocation-Geolocation.html"><code>Geolocation</code></a>.</p>
+<p>To get notified of position changes and errors, register listeners for the generic
+<code>change</code> event and the <code>error</code> event on your instance of <a href="module-ol_Geolocation-Geolocation.html"><code>Geolocation</code></a>.</p>
 <p>Example:</p>
 <pre class="prettyprint source"><code>const geolocation = new Geolocation({
   // take the projection to use from the map's view
@@ -161,7 +162,11 @@ is used to locate a user's position.</p>
 });
 // listen to changes in position
 geolocation.on('change', function(evt) {
-  window.console.log(geolocation.getPosition());
+  console.log(geolocation.getPosition());
+});
+// listen to error
+geolocation.on('error', function(evt) {
+  window.console.log(evt.message);
 });</code></pre></div>
     
     </div>
@@ -188,7 +193,7 @@ geolocation.on('change', function(evt) {
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L102">line 102</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L120">line 120</a>
         </div>
         
     </div>
@@ -447,6 +452,18 @@ is reported in.</p></td>
             
             
 
+            
+        </li>
+    
+        <li class="">
+            <code><a href="module-ol_Geolocation.GeolocationError.html#event:error">error</a></code>
+            
+              (<a href="module-ol_Geolocation.GeolocationError.html">GeolocationError</a>)
+            
+            
+
+             -
+            Triggered when a GeolocationPositionError occurs.
             
         </li>
     
@@ -1109,7 +1126,7 @@ Value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L250">line 250</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L268">line 268</a>
         </div>
         
     </div>
@@ -1200,7 +1217,7 @@ The accuracy of the position measurement in
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L260">line 260</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L278">line 278</a>
         </div>
         
     </div>
@@ -1290,7 +1307,7 @@ A geometry of the position accuracy.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L273">line 273</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L291">line 291</a>
         </div>
         
     </div>
@@ -1381,7 +1398,7 @@ The altitude of the position in meters above mean
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L284">line 284</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L302">line 302</a>
         </div>
         
     </div>
@@ -1472,7 +1489,7 @@ The accuracy of the altitude measurement in
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L298">line 298</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L316">line 316</a>
         </div>
         
     </div>
@@ -1656,7 +1673,7 @@ List of property names.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L309">line 309</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L327">line 327</a>
         </div>
         
     </div>
@@ -1747,7 +1764,7 @@ The current position of the device reported
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L322">line 322</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L340">line 340</a>
         </div>
         
     </div>
@@ -2023,7 +2040,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L335">line 335</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L353">line 353</a>
         </div>
         
     </div>
@@ -2114,7 +2131,7 @@ The instantaneous speed of the device in meters
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L345">line 345</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L363">line 363</a>
         </div>
         
     </div>
@@ -2204,7 +2221,7 @@ The device location is being tracked.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L358">line 358</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L376">line 376</a>
         </div>
         
     </div>
@@ -2809,7 +2826,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L371">line 371</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L389">line 389</a>
         </div>
         
     </div>
@@ -3090,7 +3107,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L381">line 381</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L399">line 399</a>
         </div>
         
     </div>
@@ -3216,7 +3233,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js">Geolocation.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L394">line 394</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Geolocation.js#L412">line 412</a>
         </div>
         
     </div>

@@ -1,3 +1,25 @@
+/**
+ * @classdesc
+ * Events emitted on [GeolocationPositionError](https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError).
+ */
+export class GeolocationError extends BaseEvent {
+    /**
+     * @param {GeolocationPositionError} error error object.
+     */
+    constructor(error: GeolocationPositionError);
+    /**
+     * Code of the underlying `GeolocationPositionError`.
+     * @type {number}
+     * @api
+     */
+    code: number;
+    /**
+     * Message of the underlying `GeolocationPositionError`.
+     * @type {string}
+     * @api
+     */
+    message: string;
+}
 export default Geolocation;
 export type Options = {
     /**
@@ -20,7 +42,8 @@ export type GeolocationObjectEventTypes = import("./ObjectEventType").Types | 'c
 /**
  * *
  */
-export type GeolocationOnSignature<Return> = import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return> & import("./Observable").OnSignature<GeolocationObjectEventTypes, import("./Object").ObjectEvent, Return> & import("./Observable").OnSignature<'error', GeolocationError, Return> & import("./Observable").CombinedOnSignature<import("./Observable").EventTypes | GeolocationObjectEventTypes | 'error', Return>;
+export type GeolocationOnSignature<Return> = import("./Observable").OnSignature<'change', import("./events/Event.js").default, Return> & import("./Observable").OnSignature<GeolocationObjectEventTypes, import("./Object").ObjectEvent, Return> & import("./Observable").OnSignature<'error', GeolocationError, Return> & import("./Observable").CombinedOnSignature<import("./Observable").EventTypes | GeolocationObjectEventTypes, Return>;
+import BaseEvent from "./events/Event.js";
 /**
  * @typedef {Object} Options
  * @property {boolean} [tracking=false] Start Tracking right after
@@ -37,11 +60,10 @@ export type GeolocationOnSignature<Return> = import("./Observable").OnSignature<
  */
 /***
  * @template Return
- * @typedef {import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return> &
+ * @typedef {import("./Observable").OnSignature<'change', import("./events/Event.js").default, Return> &
  *   import("./Observable").OnSignature<GeolocationObjectEventTypes, import("./Object").ObjectEvent, Return> &
  *   import("./Observable").OnSignature<'error', GeolocationError, Return> &
- *   import("./Observable").CombinedOnSignature<import("./Observable").EventTypes|GeolocationObjectEventTypes|
- *     'error', Return>} GeolocationOnSignature
+ *   import("./Observable").CombinedOnSignature<import("./Observable").EventTypes|GeolocationObjectEventTypes, Return>} GeolocationOnSignature
  */
 /**
  * @classdesc
@@ -49,8 +71,8 @@ export type GeolocationOnSignature<Return> = import("./Observable").OnSignature<
  * The [Geolocation API](https://www.w3.org/TR/geolocation-API/)
  * is used to locate a user's position.
  *
- * To get notified of position changes, register a listener for the generic
- * `change` event on your instance of {@link module:ol/Geolocation~Geolocation}.
+ * To get notified of position changes and errors, register listeners for the generic
+ * `change` event and the `error` event on your instance of {@link module:ol/Geolocation~Geolocation}.
  *
  * Example:
  *
@@ -60,10 +82,14 @@ export type GeolocationOnSignature<Return> = import("./Observable").OnSignature<
  *     });
  *     // listen to changes in position
  *     geolocation.on('change', function(evt) {
- *       window.console.log(geolocation.getPosition());
+ *       console.log(geolocation.getPosition());
+ *     });
+ *     // listen to error
+ *     geolocation.on('error', function(evt) {
+ *       window.console.log(evt.message);
  *     });
  *
- * @fires module:ol/events/Event~BaseEvent#event:error
+ * @fires GeolocationError
  * @api
  */
 declare class Geolocation extends BaseObject {
@@ -224,24 +250,5 @@ declare class Geolocation extends BaseObject {
      */
     setTrackingOptions(options: PositionOptions): void;
 }
-/**
- * @classdesc
- * Events emitted on Geolocation error.
- */
-declare class GeolocationError extends BaseEvent {
-    /**
-     * @param {GeolocationPositionError} error error object.
-     */
-    constructor(error: GeolocationPositionError);
-    /**
-     * @type {number}
-     */
-    code: number;
-    /**
-     * @type {string}
-     */
-    message: string;
-}
 import BaseObject from "./Object.js";
-import BaseEvent from "./events/Event.js";
 //# sourceMappingURL=Geolocation.d.ts.map
