@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6642],{3446:function(e,t,n){var s=n(4805),a=n(1055),r=n(1733),o=n(4711),c=n(824),u=n(6692),w=n(6929),i=n(3778),Z=n(1625);const f=new r.Z({background:"white",source:new o.Z({url:"https://openlayers.org/data/vector/us-states.json",format:new s.Z})}),p=new u.Z,h=new w.Z({features:p.getFeatures()});new a.Z({interactions:(0,i.c)().extend([p,h]),layers:[f],target:"map",view:new c.ZP({center:(0,Z.mi)([-100,38.5]),zoom:4})})}},function(e){var t;t=3446,e(e.s=t)}]);
+//# sourceMappingURL=translate-features.js.map

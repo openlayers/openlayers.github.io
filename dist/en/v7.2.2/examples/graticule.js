@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1047],{6995:function(e,n,w){var a=w(4654),r=w(1055),s=w(5117),t=w(2776),o=w(2893),c=w(824),i=w(1625);new r.Z({layers:[new o.Z({source:new s.Z({wrapX:!1})}),new a.Z({strokeStyle:new t.Z({color:"rgba(255,120,0,0.9)",width:2,lineDash:[.5,4]}),showLabels:!0,wrapX:!1})],target:"map",view:new c.ZP({center:(0,i.mi)([4.8,47.75]),zoom:5})})}},function(e){var n;n=6995,e(e.s=n)}]);
+//# sourceMappingURL=graticule.js.map
