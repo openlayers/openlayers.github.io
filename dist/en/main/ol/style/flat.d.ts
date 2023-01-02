@@ -47,6 +47,8 @@
  * @property {boolean} [text-overflow=false] For polygon labels or when `placement` is set to `'line'`, allow text to exceed
  * the width of the polygon at the label position or the length of the path that it follows.
  * @property {import("./Text.js").TextPlacement} [text-placement='point'] Text placement.
+ * @property {number} [text-repeat] Repeat interval in pixels. When set, the text will be repeated at this interval. Only available when
+ * `text-placement` is set to `'line'`. Overrides `text-align`.
  * @property {number|import("../size.js").Size} [text-scale] Scale.
  * @property {boolean} [text-rotate-with-view=false] Whether to rotate the text with the view.
  * @property {number} [text-rotation=0] Rotation in radians (positive rotation clockwise).
@@ -259,6 +261,11 @@ export type FlatText = {
      * Text placement.
      */
     "text-placement"?: import("./Text.js").TextPlacement | undefined;
+    /**
+     * Repeat interval in pixels. When set, the text will be repeated at this interval. Only available when
+     * `text-placement` is set to `'line'`. Overrides `text-align`.
+     */
+    "text-repeat"?: number | undefined;
     /**
      * Scale.
      */

@@ -36,6 +36,11 @@ export type Options = {
      */
     placement?: TextPlacement | undefined;
     /**
+     * Repeat interval in pixels. When set, the text will be repeated at this interval. Only available
+     * when `placement` is set to `'line'`. Overrides 'textAlign'.
+     */
+    repeat?: number | undefined;
+    /**
      * Scale.
      */
     scale?: number | import("../size.js").Size | undefined;
@@ -108,6 +113,8 @@ export type Options = {
  * @property {boolean} [overflow=false] For polygon labels or when `placement` is set to `'line'`, allow text to exceed
  * the width of the polygon at the label position or the length of the path that it follows.
  * @property {TextPlacement} [placement='point'] Text placement.
+ * @property {number} [repeat] Repeat interval in pixels. When set, the text will be repeated at this interval. Only available
+ * when `placement` is set to `'line'`. Overrides 'textAlign'.
  * @property {number|import("../size.js").Size} [scale] Scale.
  * @property {boolean} [rotateWithView=false] Whether to rotate the text with the view.
  * @property {number} [rotation=0] Rotation in radians (positive rotation clockwise).
@@ -184,6 +191,11 @@ declare class Text {
      * @type {TextJustify|undefined}
      */
     private justify_;
+    /**
+     * @private
+     * @type {number|undefined}
+     */
+    private repeat_;
     /**
      * @private
      * @type {CanvasTextBaseline|undefined}
@@ -269,6 +281,12 @@ declare class Text {
      * @api
      */
     getPlacement(): TextPlacement;
+    /**
+     * Get the repeat interval of the text.
+     * @return {number|undefined} Repeat interval in pixels.
+     * @api
+     */
+    getRepeat(): number | undefined;
     /**
      * Get the x-offset for the text.
      * @return {number} Horizontal text offset.
@@ -400,6 +418,12 @@ declare class Text {
      * @api
      */
     setPlacement(placement: TextPlacement): void;
+    /**
+     * Set the repeat interval of the text.
+     * @param {number|undefined} [repeat] Repeat interval in pixels.
+     * @api
+     */
+    setRepeat(repeat?: number | undefined): void;
     /**
      * Set whether to rotate the text with the view.
      *
