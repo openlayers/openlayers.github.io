@@ -90,6 +90,11 @@ declare class ImageMapGuide extends ImageSource {
     constructor(options: Options);
     /**
      * @private
+     * @type {CanvasRenderingContext2D}
+     */
+    private context_;
+    /**
+     * @private
      * @type {?string}
      */
     private crossOrigin_;

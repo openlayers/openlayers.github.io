@@ -46,8 +46,11 @@ declare class ImageWrapper extends ImageBase {
      * @param {string} src Image source URI.
      * @param {?string} crossOrigin Cross origin.
      * @param {LoadFunction} imageLoadFunction Image load function.
+     * @param {CanvasRenderingContext2D} [context] Canvas context. When provided, the image will be
+     *    drawn into the context's canvas, and `getImage()` will return the canvas once the image
+     *    has finished loading.
      */
-    constructor(extent: import("./extent.js").Extent, resolution: number | undefined, pixelRatio: number, src: string, crossOrigin: string | null, imageLoadFunction: LoadFunction);
+    constructor(extent: import("./extent.js").Extent, resolution: number | undefined, pixelRatio: number, src: string, crossOrigin: string | null, imageLoadFunction: LoadFunction, context?: CanvasRenderingContext2D | undefined);
     /**
      * @private
      * @type {string}
@@ -58,6 +61,11 @@ declare class ImageWrapper extends ImageBase {
      * @type {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement}
      */
     private image_;
+    /**
+     * @private
+     * @type {CanvasRenderingContext2D}
+     */
+    private context_;
     /**
      * @private
      * @type {?function():void}

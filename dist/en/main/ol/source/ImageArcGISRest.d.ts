@@ -105,6 +105,11 @@ declare class ImageArcGISRest extends ImageSource {
     constructor(options?: Options | undefined);
     /**
      * @private
+     * @type {CanvasRenderingContext2D}
+     */
+    private context_;
+    /**
+     * @private
      * @type {?string}
      */
     private crossOrigin_;
