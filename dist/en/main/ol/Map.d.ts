@@ -210,7 +210,7 @@ export type MapOptions = {
      * fetched unless this is specified at construction time or through
      * {@link module :ol/Map~Map#setView}.
      */
-    view?: Promise<import("./View.js").ViewOptions> | View | undefined;
+    view?: View | Promise<import("./View.js").ViewOptions> | undefined;
 };
 /**
  * @classdesc

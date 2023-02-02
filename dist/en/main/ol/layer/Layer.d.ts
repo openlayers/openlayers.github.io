@@ -291,6 +291,21 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      */
     getData(pixel: import("../pixel").Pixel): Uint8ClampedArray | Uint8Array | Float32Array | DataView | null;
     /**
+     * The layer is visible in the given view, i.e. within its min/max resolution or zoom and
+     * extent, and `getVisible()` is `true`.
+     * @param {View|import("../View.js").ViewStateAndExtent} view View or {@link import("../Map.js").FrameState}.
+     * @return {boolean} The layer is visible in the current view.
+     * @api
+     */
+    isVisible(view: View | import("../View.js").ViewStateAndExtent): boolean;
+    /**
+     * Get the attributions of the source of this layer for the given view.
+     * @param {View|import("../View.js").ViewStateAndExtent} view View or  {@link import("../Map.js").FrameState}.
+     * @return {Array<string>} Attributions for this layer at the given view.
+     * @api
+     */
+    getAttributions(view: View | import("../View.js").ViewStateAndExtent): Array<string>;
+    /**
      * Called when a layer is not visible during a map render.
      */
     unrender(): void;
@@ -340,4 +355,5 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
     protected createRenderer(): RendererType;
 }
 import BaseLayer from "./Base.js";
+import View from "../View.js";
 //# sourceMappingURL=Layer.d.ts.map

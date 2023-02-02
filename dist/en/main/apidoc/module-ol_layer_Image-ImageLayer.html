@@ -74,6 +74,7 @@
             <li data-name="changed"><a href="module-ol_layer_Image-ImageLayer.html#changed">changed</a>
             <li data-name="dispatchevent"><a href="module-ol_layer_Image-ImageLayer.html#dispatchEvent">dispatchEvent</a>
             <li data-name="get"><a href="module-ol_layer_Image-ImageLayer.html#get">get</a>
+            <li data-name="getattributions"><a href="module-ol_layer_Image-ImageLayer.html#getAttributions">getAttributions</a>
             <li data-name="getdata"><a href="module-ol_layer_Image-ImageLayer.html#getData">getData</a>
             <li data-name="getextent"><a href="module-ol_layer_Image-ImageLayer.html#getExtent">getExtent</a>
             <li data-name="getkeys"><a href="module-ol_layer_Image-ImageLayer.html#getKeys">getKeys</a>
@@ -87,6 +88,7 @@
             <li data-name="getsource"><a href="module-ol_layer_Image-ImageLayer.html#getSource">getSource</a>
             <li data-name="getvisible"><a href="module-ol_layer_Image-ImageLayer.html#getVisible">getVisible</a>
             <li data-name="getzindex"><a href="module-ol_layer_Image-ImageLayer.html#getZIndex">getZIndex</a>
+            <li data-name="isvisible"><a href="module-ol_layer_Image-ImageLayer.html#isVisible">isVisible</a>
             <li data-name="on"><a href="module-ol_layer_Image-ImageLayer.html#on">on</a>
             <li data-name="once"><a href="module-ol_layer_Image-ImageLayer.html#once">once</a>
             <li data-name="set"><a href="module-ol_layer_Image-ImageLayer.html#set">set</a>
@@ -1316,6 +1318,146 @@ Value.
             
 <dt class="">
     
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getAttributions">
+        </div>
+        <h4 class="name">
+            getAttributions<span class="signature">(view)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;string>}</span>
+            
+                <span class="inherited"><a href="module-ol_layer_Layer-Layer.html#getAttributions">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L319">line 319</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the attributions of the source of this layer for the given view.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>view</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_View-View.html">View</a></span>
+|
+
+<span class="param-type"><a href="module-ol_View.html#~ViewStateAndExtent">ViewStateAndExtent</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>View or  <a href="module-ol_Map.html#~FrameState"><code>FrameState</code></a>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Attributions for this layer at the given view.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
     <div class="nameContainer">
         <div class="anchor" id="getData">
         </div>
@@ -2301,7 +2443,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L205">line 205</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L207">line 207</a>
         </div>
         
     </div>
@@ -2552,6 +2694,147 @@ rendering. The default Z-index is 0.</p>
 
 <h5>Returns:</h5>
 The Z-index of the layer.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="isVisible">
+        </div>
+        <h4 class="name">
+            isVisible<span class="signature">(view)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
+            
+                <span class="inherited"><a href="module-ol_layer_Layer-Layer.html#isVisible">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L295">line 295</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>The layer is visible in the given view, i.e. within its min/max resolution or zoom and
+extent, and <code>getVisible()</code> is <code>true</code>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>view</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_View-View.html">View</a></span>
+|
+
+<span class="param-type"><a href="module-ol_View.html#~ViewStateAndExtent">ViewStateAndExtent</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>View or <a href="module-ol_Map.html#~FrameState"><code>FrameState</code></a>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The layer is visible in the current view.
 <br />
 
     
@@ -3222,7 +3505,7 @@ will be visible at all extents.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L340">line 340</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L394">line 394</a>
         </div>
         
     </div>
@@ -4156,7 +4439,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L383">line 383</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L437">line 437</a>
         </div>
         
     </div>

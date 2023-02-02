@@ -4,10 +4,10 @@ export default Source;
  */
 export type State = 'undefined' | 'loading' | 'ready' | 'error';
 /**
- * A function that takes a {@link module :ol/Map~FrameState} and returns a string or
+ * A function that takes a {@link import ("../View.js").ViewStateAndExtent} and returns a string or
  * an array of strings representing source attributions.
  */
-export type Attribution = (arg0: import("../Map.js").FrameState) => (string | Array<string>);
+export type Attribution = (arg0: import("../View.js").ViewStateAndExtent) => (string | Array<string>);
 /**
  * A type that can be used to provide attribution information for data sources.
  *
@@ -49,10 +49,10 @@ export type Options = {
  * State of the source, one of 'undefined', 'loading', 'ready' or 'error'.
  */
 /**
- * A function that takes a {@link module:ol/Map~FrameState} and returns a string or
+ * A function that takes a {@link import("../View.js").ViewStateAndExtent} and returns a string or
  * an array of strings representing source attributions.
  *
- * @typedef {function(import("../Map.js").FrameState): (string|Array<string>)} Attribution
+ * @typedef {function(import("../View.js").ViewStateAndExtent): (string|Array<string>)} Attribution
  */
 /**
  * A type that can be used to provide attribution information for data sources.
