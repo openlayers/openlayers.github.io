@@ -42,7 +42,7 @@ export type GeolocationObjectEventTypes = import("./ObjectEventType").Types | 'c
 /**
  * *
  */
-export type GeolocationOnSignature<Return> = import("./Observable").OnSignature<'change', import("./events/Event.js").default, Return> & import("./Observable").OnSignature<GeolocationObjectEventTypes, import("./Object").ObjectEvent, Return> & import("./Observable").OnSignature<'error', GeolocationError, Return> & import("./Observable").CombinedOnSignature<import("./Observable").EventTypes | GeolocationObjectEventTypes, Return>;
+export type GeolocationOnSignature<Return> = import("./Observable").OnSignature<GeolocationObjectEventTypes, import("./Object").ObjectEvent, Return> & import("./Observable").OnSignature<'error', GeolocationError, Return> & import("./Observable").CombinedOnSignature<import("./Observable").EventTypes | GeolocationObjectEventTypes, Return> & import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return>;
 import BaseEvent from "./events/Event.js";
 /**
  * @typedef {Object} Options
@@ -60,10 +60,10 @@ import BaseEvent from "./events/Event.js";
  */
 /***
  * @template Return
- * @typedef {import("./Observable").OnSignature<'change', import("./events/Event.js").default, Return> &
- *   import("./Observable").OnSignature<GeolocationObjectEventTypes, import("./Object").ObjectEvent, Return> &
+ * @typedef {import("./Observable").OnSignature<GeolocationObjectEventTypes, import("./Object").ObjectEvent, Return> &
  *   import("./Observable").OnSignature<'error', GeolocationError, Return> &
- *   import("./Observable").CombinedOnSignature<import("./Observable").EventTypes|GeolocationObjectEventTypes, Return>} GeolocationOnSignature
+ *   import("./Observable").CombinedOnSignature<import("./Observable").EventTypes|GeolocationObjectEventTypes, Return> &
+ *   import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return>} GeolocationOnSignature
  */
 /**
  * @classdesc
