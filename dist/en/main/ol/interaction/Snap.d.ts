@@ -141,16 +141,6 @@ declare class Snap extends PointerInteraction {
      */
     addFeature(feature: import("../Feature.js").default, register?: boolean | undefined): void;
     /**
-     * @param {import("../Feature.js").default} feature Feature.
-     * @private
-     */
-    private forEachFeatureAdd_;
-    /**
-     * @param {import("../Feature.js").default} feature Feature.
-     * @private
-     */
-    private forEachFeatureRemove_;
-    /**
      * @return {import("../Collection.js").default<import("../Feature.js").default>|Array<import("../Feature.js").default>} Features.
      * @private
      */
