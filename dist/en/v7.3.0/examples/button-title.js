@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[346],{1804:function(e,o,t){var n=t(1055),r=t(5117),a=t(2893),c=t(824);new n.Z({layers:[new a.Z({source:new r.Z})],target:"map",view:new c.ZP({center:[-873e4,593e4],rotation:Math.PI/5,zoom:8})});document.querySelectorAll(".ol-zoom-in, .ol-zoom-out, .ol-rotate-reset").forEach((function(e){new bootstrap.Tooltip(e,{container:"#map"})}))}},function(e){var o;o=1804,e(e.s=o)}]);
+//# sourceMappingURL=button-title.js.map
