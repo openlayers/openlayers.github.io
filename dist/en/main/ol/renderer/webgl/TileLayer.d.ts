@@ -1,3 +1,12 @@
+/**
+ * @typedef {Object} TileTextureLookup
+ * @property {Set<string>} tileIds The set of tile ids in the lookup.
+ * @property {Object<number, Set<TileTexture>>} texturesByZ Tile textures by zoom level.
+ */
+/**
+ * @return {TileTextureLookup} A new tile texture lookup.
+ */
+export function newTileTextureLookup(): TileTextureLookup;
 export namespace Uniforms {
     const TILE_TEXTURE_ARRAY: string;
     const TILE_TRANSFORM: string;
@@ -16,6 +25,18 @@ export namespace Attributes {
     const TEXTURE_COORD: string;
 }
 export default WebGLTileLayerRenderer;
+export type TileTextureLookup = {
+    /**
+     * The set of tile ids in the lookup.
+     */
+    tileIds: Set<string>;
+    /**
+     * Tile textures by zoom level.
+     */
+    texturesByZ: {
+        [x: number]: Set<TileTexture>;
+    };
+};
 export type Options = {
     /**
      * Vertex shader source.
@@ -162,12 +183,10 @@ declare class WebGLTileLayerRenderer extends WebGLLayerRenderer<import("../../la
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @param {import("../../extent.js").Extent} extent The extent to be rendered.
      * @param {number} initialZ The zoom level.
-     * @param {Object<number, Array<TileTexture>>} tileTexturesByZ The zoom level.
+     * @param {TileTextureLookup} tileTextureLookup The zoom level.
      * @param {number} preload Number of additional levels to load.
      */
-    enqueueTiles(frameState: import("../../Map.js").FrameState, extent: import("../../extent.js").Extent, initialZ: number, tileTexturesByZ: {
-        [x: number]: Array<TileTexture>;
-    }, preload: number): void;
+    enqueueTiles(frameState: import("../../Map.js").FrameState, extent: import("../../extent.js").Extent, initialZ: number, tileTextureLookup: TileTextureLookup, preload: number): void;
     /**
      * Render the layer.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
@@ -185,7 +204,7 @@ declare class WebGLTileLayerRenderer extends WebGLLayerRenderer<import("../../la
      * @param {import("../../tilegrid/TileGrid.js").default} tileGrid The tile grid.
      * @param {import("../../tilecoord.js").TileCoord} tileCoord The target tile coordinate.
      * @param {number} altZ The alternate zoom level.
-     * @param {Object<number, Array<import("../../webgl/TileTexture.js").default>>} tileTexturesByZ Lookup of
+     * @param {TileTextureLookup} tileTextureLookup Lookup of
      * tile textures by zoom level.
      * @return {boolean} The tile coordinate is covered by loaded tiles at the alternate zoom level.
      * @private
@@ -193,6 +212,6 @@ declare class WebGLTileLayerRenderer extends WebGLLayerRenderer<import("../../la
     private findAltTiles_;
     clearCache(): void;
 }
-import WebGLLayerRenderer from "./Layer.js";
 import TileTexture from "../../webgl/TileTexture.js";
+import WebGLLayerRenderer from "./Layer.js";
 //# sourceMappingURL=TileLayer.d.ts.map
