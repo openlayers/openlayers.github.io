@@ -223,14 +223,6 @@ declare class TileGrid {
      */
     getTileRangeForTileCoordAndZ(tileCoord: import("../tilecoord.js").TileCoord, z: number, tempTileRange?: TileRange | undefined): import("../TileRange.js").default | null;
     /**
-     * Get the extent for a tile range.
-     * @param {number} z Integer zoom level.
-     * @param {import("../TileRange.js").default} tileRange Tile range.
-     * @param {import("../extent.js").Extent} [tempExtent] Temporary import("../extent.js").Extent object.
-     * @return {import("../extent.js").Extent} Extent.
-     */
-    getTileRangeExtent(z: number, tileRange: import("../TileRange.js").default, tempExtent?: import("../extent.js").Extent | undefined): import("../extent.js").Extent;
-    /**
      * Get a tile range for the given extent and integer zoom level.
      * @param {import("../extent.js").Extent} extent Extent.
      * @param {number} z Integer zoom level.
