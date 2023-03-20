@@ -257,9 +257,9 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      * @param {?import("../Map.js").FrameState} frameState Frame state.
      * @param {HTMLElement} target Target which the renderer may (but need not) use
      * for rendering its content.
-     * @return {HTMLElement} The rendered element.
+     * @return {HTMLElement|null} The rendered element.
      */
-    render(frameState: import("../Map.js").FrameState | null, target: HTMLElement): HTMLElement;
+    render(frameState: import("../Map.js").FrameState | null, target: HTMLElement): HTMLElement | null;
     /**
      * Get the layer source.
      * @return {SourceType|null} The layer source (or `null` if not yet set).

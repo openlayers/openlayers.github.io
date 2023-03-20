@@ -220,6 +220,13 @@ declare class WebGLTileLayer extends BaseTileLayer<SourceType, WebGLTileLayerRen
      */
     renderSources(frameState: import("../Map").FrameState, sources: Array<SourceType>): HTMLElement;
     /**
+     * @param {?import("../Map.js").FrameState} frameState Frame state.
+     * @param {HTMLElement} target Target which the renderer may (but need not) use
+     * for rendering its content.
+     * @return {HTMLElement} The rendered element.
+     */
+    render(frameState: import("../Map.js").FrameState | null, target: HTMLElement): HTMLElement;
+    /**
      * Update the layer style.  The `updateStyleVariables` function is a more efficient
      * way to update layer rendering.  In cases where the whole style needs to be updated,
      * this method may be called instead.  Note that calling this method will also replace
