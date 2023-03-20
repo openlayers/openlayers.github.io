@@ -56,5 +56,5 @@ declare class ImageCanvas extends ImageBase {
      */
     getImage(): HTMLCanvasElement;
 }
-import ImageBase from "./ImageBase.js";
+import ImageBase from './ImageBase.js';
 //# sourceMappingURL=ImageCanvas.d.ts.map

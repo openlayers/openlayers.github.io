@@ -135,8 +135,8 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      */
     renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
 }
-import WebGLLayerRenderer from "./Layer.js";
-import PolygonBatchRenderer from "../../render/webgl/PolygonBatchRenderer.js";
-import PointBatchRenderer from "../../render/webgl/PointBatchRenderer.js";
-import LineStringBatchRenderer from "../../render/webgl/LineStringBatchRenderer.js";
+import WebGLLayerRenderer from './Layer.js';
+import PolygonBatchRenderer from '../../render/webgl/PolygonBatchRenderer.js';
+import PointBatchRenderer from '../../render/webgl/PointBatchRenderer.js';
+import LineStringBatchRenderer from '../../render/webgl/LineStringBatchRenderer.js';
 //# sourceMappingURL=VectorLayer.d.ts.map

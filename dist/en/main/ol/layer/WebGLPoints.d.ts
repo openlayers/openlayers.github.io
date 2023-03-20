@@ -158,6 +158,6 @@ declare class WebGLPointsLayer<VectorSourceType extends import("../source/Vector
         [x: string]: number;
     }): void;
 }
-import WebGLPointsLayerRenderer from "../renderer/webgl/PointsLayer.js";
-import Layer from "./Layer.js";
+import WebGLPointsLayerRenderer from '../renderer/webgl/PointsLayer.js';
+import Layer from './Layer.js';
 //# sourceMappingURL=WebGLPoints.d.ts.map

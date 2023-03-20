@@ -129,5 +129,5 @@ declare class IconImage extends EventTarget {
      */
     private unlistenImage_;
 }
-import EventTarget from "../events/Target.js";
+import EventTarget from '../events/Target.js';
 //# sourceMappingURL=IconImage.d.ts.map

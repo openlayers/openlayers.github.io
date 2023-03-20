@@ -163,6 +163,6 @@ declare class VectorImageLayer<VectorSourceType extends import("../source/Vector
     getImageRatio(): number;
     createRenderer(): any;
 }
-import CanvasVectorImageLayerRenderer from "../renderer/canvas/VectorImageLayer.js";
-import BaseVectorLayer from "./BaseVector.js";
+import CanvasVectorImageLayerRenderer from '../renderer/canvas/VectorImageLayer.js';
+import BaseVectorLayer from './BaseVector.js';
 //# sourceMappingURL=VectorImage.d.ts.map

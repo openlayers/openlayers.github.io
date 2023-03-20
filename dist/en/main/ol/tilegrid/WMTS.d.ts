@@ -124,5 +124,5 @@ declare class WMTSTileGrid extends TileGrid {
      */
     getMatrixIds(): Array<string>;
 }
-import TileGrid from "./TileGrid.js";
+import TileGrid from './TileGrid.js';
 //# sourceMappingURL=WMTS.d.ts.map

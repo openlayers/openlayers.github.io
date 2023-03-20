@@ -209,5 +209,5 @@ declare class ImageArcGISRest extends ImageSource {
      */
     updateParams(params: any): void;
 }
-import ImageSource from "./Image.js";
+import ImageSource from './Image.js';
 //# sourceMappingURL=ImageArcGISRest.d.ts.map

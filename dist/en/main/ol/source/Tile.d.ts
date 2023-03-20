@@ -76,7 +76,7 @@ export type Options = {
      */
     interpolate?: boolean | undefined;
 };
-import Event from "../events/Event.js";
+import Event from '../events/Event.js';
 /***
  * @template Return
  * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
@@ -284,5 +284,5 @@ declare class TileSource extends Source {
      */
     useTile(z: number, x: number, y: number, projection: import("../proj/Projection.js").default): void;
 }
-import Source from "./Source.js";
+import Source from './Source.js';
 //# sourceMappingURL=Tile.d.ts.map

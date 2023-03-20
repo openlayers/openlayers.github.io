@@ -15,9 +15,9 @@ export namespace BufferUsage {
     export { DYNAMIC_DRAW };
 }
 export default WebGLArrayBuffer;
-import { STATIC_DRAW } from "../webgl.js";
-import { STREAM_DRAW } from "../webgl.js";
-import { DYNAMIC_DRAW } from "../webgl.js";
+import { STATIC_DRAW } from '../webgl.js';
+import { STREAM_DRAW } from '../webgl.js';
+import { DYNAMIC_DRAW } from '../webgl.js';
 /**
  * @classdesc
  * Object used to store an array of data as well as usage information for that data.

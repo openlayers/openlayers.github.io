@@ -50,5 +50,5 @@ declare class DragRotate extends PointerInteraction {
      */
     private duration_;
 }
-import PointerInteraction from "./Pointer.js";
+import PointerInteraction from './Pointer.js';
 //# sourceMappingURL=DragRotate.d.ts.map

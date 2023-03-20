@@ -179,5 +179,5 @@ declare class MousePosition extends Control {
      */
     private updateHTML_;
 }
-import Control from "./Control.js";
+import Control from './Control.js';
 //# sourceMappingURL=MousePosition.d.ts.map

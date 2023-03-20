@@ -14,5 +14,5 @@ declare class CanvasPolygonBuilder extends CanvasBuilder {
      */
     private setFillStrokeStyles_;
 }
-import CanvasBuilder from "./Builder.js";
+import CanvasBuilder from './Builder.js';
 //# sourceMappingURL=PolygonBuilder.d.ts.map

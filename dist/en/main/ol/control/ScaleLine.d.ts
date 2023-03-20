@@ -231,5 +231,5 @@ declare class ScaleLine extends Control {
      */
     getScaleForResolution(): number;
 }
-import Control from "./Control.js";
+import Control from './Control.js';
 //# sourceMappingURL=ScaleLine.d.ts.map

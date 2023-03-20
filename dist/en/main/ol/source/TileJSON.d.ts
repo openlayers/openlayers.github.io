@@ -213,5 +213,5 @@ declare class TileJSON extends TileImage {
      */
     protected handleTileJSONError(): void;
 }
-import TileImage from "./TileImage.js";
+import TileImage from './TileImage.js';
 //# sourceMappingURL=TileJSON.d.ts.map

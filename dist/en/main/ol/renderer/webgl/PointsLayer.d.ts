@@ -322,6 +322,6 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
      */
     renderHitDetection(frameState: import("../../Map.js").FrameState, startWorld: number, endWorld: number, worldWidth: number): void;
 }
-import WebGLLayerRenderer from "./Layer.js";
-import WebGLArrayBuffer from "../../webgl/Buffer.js";
+import WebGLLayerRenderer from './Layer.js';
+import WebGLArrayBuffer from '../../webgl/Buffer.js';
 //# sourceMappingURL=PointsLayer.d.ts.map

@@ -329,5 +329,5 @@ declare class GeoTIFFSource extends DataTile {
      */
     private composeTile_;
 }
-import DataTile from "./DataTile.js";
+import DataTile from './DataTile.js';
 //# sourceMappingURL=GeoTIFF.d.ts.map

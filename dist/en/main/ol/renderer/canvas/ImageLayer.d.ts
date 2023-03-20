@@ -24,5 +24,5 @@ declare class CanvasImageLayerRenderer extends CanvasLayerRenderer<any> {
      */
     getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray;
 }
-import CanvasLayerRenderer from "./Layer.js";
+import CanvasLayerRenderer from './Layer.js';
 //# sourceMappingURL=ImageLayer.d.ts.map

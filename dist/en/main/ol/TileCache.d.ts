@@ -12,5 +12,5 @@ declare class TileCache extends LRUCache<any> {
      */
     pruneExceptNewestZ(): void;
 }
-import LRUCache from "./structs/LRUCache.js";
+import LRUCache from './structs/LRUCache.js';
 //# sourceMappingURL=TileCache.d.ts.map

@@ -90,6 +90,6 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
      */
     private renderTileImage_;
 }
-import CanvasTileLayerRenderer from "./TileLayer.js";
-import CanvasBuilderGroup from "../../render/canvas/BuilderGroup.js";
+import CanvasTileLayerRenderer from './TileLayer.js';
+import CanvasBuilderGroup from '../../render/canvas/BuilderGroup.js';
 //# sourceMappingURL=VectorTileLayer.d.ts.map

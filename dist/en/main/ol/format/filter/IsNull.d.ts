@@ -10,5 +10,5 @@ declare class IsNull extends Comparison {
      */
     constructor(propertyName: string);
 }
-import Comparison from "./Comparison.js";
+import Comparison from './Comparison.js';
 //# sourceMappingURL=IsNull.d.ts.map

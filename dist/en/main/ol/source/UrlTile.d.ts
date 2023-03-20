@@ -188,5 +188,5 @@ declare class UrlTile extends TileSource {
      */
     useTile(z: number, x: number, y: number): void;
 }
-import TileSource from "./Tile.js";
+import TileSource from './Tile.js';
 //# sourceMappingURL=UrlTile.d.ts.map

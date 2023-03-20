@@ -100,5 +100,5 @@ declare class MapRenderer extends Disposable {
      */
     protected scheduleExpireIconCache(frameState: import("../Map.js").FrameState): void;
 }
-import Disposable from "../Disposable.js";
+import Disposable from '../Disposable.js';
 //# sourceMappingURL=Map.d.ts.map

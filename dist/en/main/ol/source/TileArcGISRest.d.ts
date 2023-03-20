@@ -195,5 +195,5 @@ declare class TileArcGISRest extends TileImage {
      */
     updateParams(params: any): void;
 }
-import TileImage from "./TileImage.js";
+import TileImage from './TileImage.js';
 //# sourceMappingURL=TileArcGISRest.d.ts.map

@@ -27,5 +27,5 @@ declare class Bbox extends Filter {
      */
     srsName: string | undefined;
 }
-import Filter from "./Filter.js";
+import Filter from './Filter.js';
 //# sourceMappingURL=Bbox.d.ts.map

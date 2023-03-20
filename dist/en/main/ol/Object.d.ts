@@ -28,7 +28,7 @@ export default BaseObject;
  * *
  */
 export type ObjectOnSignature<Return> = import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return> & import("./Observable").OnSignature<import("./ObjectEventType").Types, ObjectEvent, Return> & import("./Observable").CombinedOnSignature<import("./Observable").EventTypes | import("./ObjectEventType").Types, Return>;
-import Event from "./events/Event.js";
+import Event from './events/Event.js';
 /***
  * @template Return
  * @typedef {import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return> &
@@ -174,5 +174,5 @@ declare class BaseObject extends Observable {
      */
     unset(key: string, silent?: boolean | undefined): void;
 }
-import Observable from "./Observable.js";
+import Observable from './Observable.js';
 //# sourceMappingURL=Object.d.ts.map

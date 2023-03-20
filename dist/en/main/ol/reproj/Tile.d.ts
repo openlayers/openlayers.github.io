@@ -95,5 +95,5 @@ declare class ReprojTile extends Tile {
      */
     private unlistenSources_;
 }
-import Tile from "../Tile.js";
+import Tile from '../Tile.js';
 //# sourceMappingURL=Tile.d.ts.map

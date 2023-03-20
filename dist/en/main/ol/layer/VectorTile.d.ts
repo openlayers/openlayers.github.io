@@ -279,6 +279,6 @@ declare class VectorTileLayer extends BaseVectorLayer<import("../source/VectorTi
      */
     setUseInterimTilesOnError(useInterimTilesOnError: boolean): void;
 }
-import CanvasVectorTileLayerRenderer from "../renderer/canvas/VectorTileLayer.js";
-import BaseVectorLayer from "./BaseVector.js";
+import CanvasVectorTileLayerRenderer from '../renderer/canvas/VectorTileLayer.js';
+import BaseVectorLayer from './BaseVector.js';
 //# sourceMappingURL=VectorTile.d.ts.map

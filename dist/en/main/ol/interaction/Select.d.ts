@@ -182,7 +182,7 @@ export type Options = {
  * *
  */
 export type SelectOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | 'change:active', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<'select', SelectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | 'change:active' | 'select', Return>;
-import Event from "../events/Event.js";
+import Event from '../events/Event.js';
 type SelectEventType = string;
 declare namespace SelectEventType {
     const SELECT: string;
@@ -354,8 +354,8 @@ declare class Select extends Interaction {
      */
     private removeFeatureLayerAssociation_;
 }
-import Feature from "../Feature.js";
-import Collection from "../Collection.js";
-import Interaction from "./Interaction.js";
-import VectorLayer from "../layer/Vector.js";
+import Feature from '../Feature.js';
+import Collection from '../Collection.js';
+import Interaction from './Interaction.js';
+import VectorLayer from '../layer/Vector.js';
 //# sourceMappingURL=Select.d.ts.map

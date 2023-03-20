@@ -61,5 +61,5 @@ declare class ImageBase extends EventTarget {
      */
     load(): void;
 }
-import EventTarget from "./events/Target.js";
+import EventTarget from './events/Target.js';
 //# sourceMappingURL=ImageBase.d.ts.map

@@ -244,6 +244,6 @@ declare class WebGLTileLayer extends BaseTileLayer<SourceType, WebGLTileLayerRen
         [x: string]: number;
     }): void;
 }
-import WebGLTileLayerRenderer from "../renderer/webgl/TileLayer.js";
-import BaseTileLayer from "./BaseTile.js";
+import WebGLTileLayerRenderer from '../renderer/webgl/TileLayer.js';
+import BaseTileLayer from './BaseTile.js';
 //# sourceMappingURL=WebGLTile.d.ts.map

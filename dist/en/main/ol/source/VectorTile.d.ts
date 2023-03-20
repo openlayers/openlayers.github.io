@@ -270,8 +270,8 @@ declare class VectorTile extends UrlTile {
      */
     getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): VectorRenderTile;
 }
-import Tile from "../VectorTile.js";
-import TileGrid from "../tilegrid/TileGrid.js";
-import UrlTile from "./UrlTile.js";
-import VectorRenderTile from "../VectorRenderTile.js";
+import Tile from '../VectorTile.js';
+import TileGrid from '../tilegrid/TileGrid.js';
+import UrlTile from './UrlTile.js';
+import VectorRenderTile from '../VectorRenderTile.js';
 //# sourceMappingURL=VectorTile.d.ts.map

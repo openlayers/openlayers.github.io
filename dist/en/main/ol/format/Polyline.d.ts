@@ -157,6 +157,6 @@ declare class Polyline extends TextFeature {
      */
     protected writeGeometryText(geometry: LineString, options?: import("./Feature.js").WriteOptions | undefined): string;
 }
-import TextFeature from "./TextFeature.js";
-import LineString from "../geom/LineString.js";
+import TextFeature from './TextFeature.js';
+import LineString from '../geom/LineString.js';
 //# sourceMappingURL=Polyline.d.ts.map

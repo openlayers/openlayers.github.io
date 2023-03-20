@@ -24,5 +24,5 @@ declare class Point extends SimpleGeometry {
      */
     getCoordinates(): import("../coordinate.js").Coordinate;
 }
-import SimpleGeometry from "./SimpleGeometry.js";
+import SimpleGeometry from './SimpleGeometry.js';
 //# sourceMappingURL=Point.d.ts.map

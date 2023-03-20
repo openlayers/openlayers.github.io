@@ -55,5 +55,5 @@ declare class LinearRing extends SimpleGeometry {
      */
     setCoordinates(coordinates: Array<import("../coordinate.js").Coordinate>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
 }
-import SimpleGeometry from "./SimpleGeometry.js";
+import SimpleGeometry from './SimpleGeometry.js';
 //# sourceMappingURL=LinearRing.d.ts.map

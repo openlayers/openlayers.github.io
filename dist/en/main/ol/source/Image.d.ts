@@ -61,7 +61,7 @@ export type Options = {
      */
     state?: import("./Source.js").State | undefined;
 };
-import Event from "../events/Event.js";
+import Event from '../events/Event.js';
 /***
  * @template Return
  * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
@@ -159,5 +159,5 @@ declare class ImageSource extends Source {
      */
     protected handleImageChange(event: import("../events/Event.js").default): void;
 }
-import Source from "./Source.js";
+import Source from './Source.js';
 //# sourceMappingURL=Image.d.ts.map

@@ -69,5 +69,5 @@ declare class KeyboardPan extends Interaction {
      */
     private pixelDelta_;
 }
-import Interaction from "./Interaction.js";
+import Interaction from './Interaction.js';
 //# sourceMappingURL=KeyboardPan.d.ts.map

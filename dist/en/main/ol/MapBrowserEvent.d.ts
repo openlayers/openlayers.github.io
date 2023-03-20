@@ -60,5 +60,5 @@ declare class MapBrowserEvent<EVENT extends UIEvent> extends MapEvent {
      */
     get coordinate(): import("./coordinate.js").Coordinate;
 }
-import MapEvent from "./MapEvent.js";
+import MapEvent from './MapEvent.js';
 //# sourceMappingURL=MapBrowserEvent.d.ts.map

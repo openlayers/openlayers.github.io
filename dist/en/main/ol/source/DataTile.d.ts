@@ -213,6 +213,6 @@ declare class DataTileSource extends TileSource {
      */
     setTileGridForProjection(projection: import("../proj.js").ProjectionLike, tilegrid: import("../tilegrid/TileGrid.js").default): void;
 }
-import TileSource from "./Tile.js";
-import DataTile from "../DataTile.js";
+import TileSource from './Tile.js';
+import DataTile from '../DataTile.js';
 //# sourceMappingURL=DataTile.d.ts.map

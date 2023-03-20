@@ -12,5 +12,5 @@ declare class WMTSCapabilities extends XML {
      */
     private owsParser_;
 }
-import XML from "./XML.js";
+import XML from './XML.js';
 //# sourceMappingURL=WMTSCapabilities.d.ts.map

@@ -61,5 +61,5 @@ declare class Circle extends SimpleGeometry {
      */
     setRadius(radius: number): void;
 }
-import SimpleGeometry from "./SimpleGeometry.js";
+import SimpleGeometry from './SimpleGeometry.js';
 //# sourceMappingURL=Circle.d.ts.map

@@ -302,5 +302,5 @@ declare class MixedGeometryBatch {
     removeFeature(feature: import("../../Feature").default): void;
     clear(): void;
 }
-import WebGLArrayBuffer from "../../webgl/Buffer.js";
+import WebGLArrayBuffer from '../../webgl/Buffer.js';
 //# sourceMappingURL=MixedGeometryBatch.d.ts.map

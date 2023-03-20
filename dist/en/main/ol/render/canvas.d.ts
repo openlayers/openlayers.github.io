@@ -395,5 +395,5 @@ export type SerializableInstructions = {
 export type DeclutterImageWithText = {
     [x: number]: import("./canvas/Executor.js").ReplayImageOrLabelArgs;
 };
-import BaseObject from "../Object.js";
+import BaseObject from '../Object.js';
 //# sourceMappingURL=canvas.d.ts.map

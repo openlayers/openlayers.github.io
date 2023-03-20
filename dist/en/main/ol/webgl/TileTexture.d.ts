@@ -96,8 +96,8 @@ declare class TileTexture extends EventTarget {
      */
     getPixelData(renderCol: number, renderRow: number): import("../DataTile.js").ArrayLike | null;
 }
-import ImageTile from "../ImageTile.js";
-import ReprojTile from "../reproj/Tile.js";
-import EventTarget from "../events/Target.js";
-import WebGLArrayBuffer from "./Buffer.js";
+import ImageTile from '../ImageTile.js';
+import ReprojTile from '../reproj/Tile.js';
+import EventTarget from '../events/Target.js';
+import WebGLArrayBuffer from './Buffer.js';
 //# sourceMappingURL=TileTexture.d.ts.map

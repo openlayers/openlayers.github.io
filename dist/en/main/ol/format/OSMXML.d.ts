@@ -12,5 +12,5 @@ declare class OSMXML extends XMLFeature {
      */
     dataProjection: import("../proj/Projection.js").default;
 }
-import XMLFeature from "./XMLFeature.js";
+import XMLFeature from './XMLFeature.js';
 //# sourceMappingURL=OSMXML.d.ts.map

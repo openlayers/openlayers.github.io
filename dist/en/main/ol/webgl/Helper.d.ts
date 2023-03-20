@@ -140,10 +140,10 @@ export type CanvasCacheItem = {
      */
     users: number;
 };
-import { UNSIGNED_BYTE } from "../webgl.js";
-import { UNSIGNED_SHORT } from "../webgl.js";
-import { UNSIGNED_INT } from "../webgl.js";
-import { FLOAT } from "../webgl.js";
+import { UNSIGNED_BYTE } from '../webgl.js';
+import { UNSIGNED_SHORT } from '../webgl.js';
+import { UNSIGNED_INT } from '../webgl.js';
+import { FLOAT } from '../webgl.js';
 /**
  * @classdesc
  * This class is intended to provide low-level functions related to WebGL rendering, so that accessing
@@ -549,5 +549,5 @@ declare class WebGLHelper extends Disposable {
      */
     createTexture(size: Array<number>, data?: HTMLCanvasElement | HTMLImageElement | ImageData | undefined, texture?: WebGLTexture | undefined): WebGLTexture;
 }
-import Disposable from "../Disposable.js";
+import Disposable from '../Disposable.js';
 //# sourceMappingURL=Helper.d.ts.map

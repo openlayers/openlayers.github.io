@@ -43,7 +43,7 @@ export type GeolocationObjectEventTypes = import("./ObjectEventType").Types | 'c
  * *
  */
 export type GeolocationOnSignature<Return> = import("./Observable").OnSignature<GeolocationObjectEventTypes, import("./Object").ObjectEvent, Return> & import("./Observable").OnSignature<'error', GeolocationError, Return> & import("./Observable").CombinedOnSignature<import("./Observable").EventTypes | GeolocationObjectEventTypes, Return> & import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return>;
-import BaseEvent from "./events/Event.js";
+import BaseEvent from './events/Event.js';
 /**
  * @typedef {Object} Options
  * @property {boolean} [tracking=false] Start Tracking right after
@@ -250,5 +250,5 @@ declare class Geolocation extends BaseObject {
      */
     setTrackingOptions(options: PositionOptions): void;
 }
-import BaseObject from "./Object.js";
+import BaseObject from './Object.js';
 //# sourceMappingURL=Geolocation.d.ts.map

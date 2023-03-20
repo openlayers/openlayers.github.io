@@ -23,5 +23,5 @@ declare class ComparisonBinary extends Comparison {
      */
     matchCase: boolean | undefined;
 }
-import Comparison from "./Comparison.js";
+import Comparison from './Comparison.js';
 //# sourceMappingURL=ComparisonBinary.d.ts.map

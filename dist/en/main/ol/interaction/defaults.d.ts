@@ -97,5 +97,5 @@ export type DefaultsOptions = {
      */
     zoomDuration?: number | undefined;
 };
-import Collection from "../Collection.js";
+import Collection from '../Collection.js';
 //# sourceMappingURL=defaults.d.ts.map

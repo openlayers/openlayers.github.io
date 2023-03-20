@@ -117,5 +117,5 @@ declare class VectorRenderTile extends Tile {
      */
     getReplayState(layer: import("./layer/Layer.js").default): ReplayState;
 }
-import Tile from "./Tile.js";
+import Tile from './Tile.js';
 //# sourceMappingURL=VectorRenderTile.d.ts.map

@@ -25,5 +25,5 @@ declare class CompositeMapRenderer extends MapRenderer {
      */
     private renderedVisible_;
 }
-import MapRenderer from "./Map.js";
+import MapRenderer from './Map.js';
 //# sourceMappingURL=Composite.d.ts.map

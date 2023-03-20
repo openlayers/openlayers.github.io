@@ -843,10 +843,10 @@ declare class Map extends BaseObject {
      */
     private updateViewportSize_;
 }
-import TileQueue from "./TileQueue.js";
-import Collection from "./Collection.js";
-import MapBrowserEvent from "./MapBrowserEvent.js";
-import LayerGroup from "./layer/Group.js";
-import View from "./View.js";
-import BaseObject from "./Object.js";
+import TileQueue from './TileQueue.js';
+import Collection from './Collection.js';
+import MapBrowserEvent from './MapBrowserEvent.js';
+import LayerGroup from './layer/Group.js';
+import View from './View.js';
+import BaseObject from './Object.js';
 //# sourceMappingURL=Map.d.ts.map

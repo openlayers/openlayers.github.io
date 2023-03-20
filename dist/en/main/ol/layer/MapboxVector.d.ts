@@ -268,5 +268,5 @@ declare class MapboxVectorLayer extends VectorTileLayer {
     constructor(options: Options);
     accessToken: string | undefined;
 }
-import VectorTileLayer from "../layer/VectorTile.js";
+import VectorTileLayer from '../layer/VectorTile.js';
 //# sourceMappingURL=MapboxVector.d.ts.map

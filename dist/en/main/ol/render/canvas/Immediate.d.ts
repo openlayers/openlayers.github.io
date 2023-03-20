@@ -327,5 +327,5 @@ declare class CanvasImmediateRenderer extends VectorContext {
      */
     setTextStyle(textStyle: import("../../style/Text.js").default): void;
 }
-import VectorContext from "../VectorContext.js";
+import VectorContext from '../VectorContext.js';
 //# sourceMappingURL=Immediate.d.ts.map

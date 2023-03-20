@@ -66,5 +66,5 @@ declare class ImageTile extends Tile {
      */
     private unlistenImage_;
 }
-import Tile from "./Tile.js";
+import Tile from './Tile.js';
 //# sourceMappingURL=ImageTile.d.ts.map

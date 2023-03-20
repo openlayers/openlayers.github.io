@@ -20,6 +20,6 @@ declare class VectorLayer<VectorSourceType extends import("../source/Vector.js")
      */
     constructor(options?: import("./BaseVector.js").Options<VectorSourceType> | undefined);
 }
-import CanvasVectorLayerRenderer from "../renderer/canvas/VectorLayer.js";
-import BaseVectorLayer from "./BaseVector.js";
+import CanvasVectorLayerRenderer from '../renderer/canvas/VectorLayer.js';
+import BaseVectorLayer from './BaseVector.js';
 //# sourceMappingURL=Vector.d.ts.map

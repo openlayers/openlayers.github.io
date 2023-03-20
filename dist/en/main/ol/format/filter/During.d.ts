@@ -20,5 +20,5 @@ declare class During extends Comparison {
      */
     end: string;
 }
-import Comparison from "./Comparison.js";
+import Comparison from './Comparison.js';
 //# sourceMappingURL=During.d.ts.map

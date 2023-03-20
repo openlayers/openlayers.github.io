@@ -30,5 +30,5 @@ declare class RenderEvent extends Event {
      */
     context: CanvasRenderingContext2D | WebGLRenderingContext | undefined;
 }
-import Event from "../events/Event.js";
+import Event from '../events/Event.js';
 //# sourceMappingURL=Event.d.ts.map

@@ -108,5 +108,5 @@ declare class OSM extends XYZ {
      */
     constructor(options?: Options | undefined);
 }
-import XYZ from "./XYZ.js";
+import XYZ from './XYZ.js';
 //# sourceMappingURL=OSM.d.ts.map

@@ -209,7 +209,7 @@ declare class Cluster extends VectorSource<import("../geom/Geometry.js").default
      */
     protected createCluster(features: Array<Feature>, extent: import("../extent.js").Extent): Feature;
 }
-import Feature from "../Feature.js";
-import Point from "../geom/Point.js";
-import VectorSource from "./Vector.js";
+import Feature from '../Feature.js';
+import Point from '../geom/Point.js';
+import VectorSource from './Vector.js';
 //# sourceMappingURL=Cluster.d.ts.map

@@ -90,5 +90,5 @@ declare class Stamen extends XYZ {
      */
     constructor(options: Options);
 }
-import XYZ from "./XYZ.js";
+import XYZ from './XYZ.js';
 //# sourceMappingURL=Stamen.d.ts.map

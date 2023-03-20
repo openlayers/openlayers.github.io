@@ -99,5 +99,5 @@ declare class ImageWrapper extends ImageBase {
      */
     private unlistenImage_;
 }
-import ImageBase from "./ImageBase.js";
+import ImageBase from './ImageBase.js';
 //# sourceMappingURL=Image.d.ts.map

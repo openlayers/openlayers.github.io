@@ -11,5 +11,5 @@ declare class LessThanOrEqualTo extends ComparisonBinary {
      */
     constructor(propertyName: string, expression: number);
 }
-import ComparisonBinary from "./ComparisonBinary.js";
+import ComparisonBinary from './ComparisonBinary.js';
 //# sourceMappingURL=LessThanOrEqualTo.d.ts.map

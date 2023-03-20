@@ -252,5 +252,5 @@ declare class BingMaps extends TileImage {
      */
     handleImageryMetadataResponse(response: BingMapsImageryMetadataResponse): void;
 }
-import TileImage from "./TileImage.js";
+import TileImage from './TileImage.js';
 //# sourceMappingURL=BingMaps.d.ts.map

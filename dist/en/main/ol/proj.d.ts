@@ -315,7 +315,7 @@ export type ProjectionLike = Projection | string | undefined;
  * returns the output array.
  */
 export type TransformFunction = (arg0: Array<number>, arg1: Array<number> | undefined, arg2: number | undefined) => Array<number>;
-import Projection from "./proj/Projection.js";
-import { METERS_PER_UNIT } from "./proj/Units.js";
+import Projection from './proj/Projection.js';
+import { METERS_PER_UNIT } from './proj/Units.js';
 export { METERS_PER_UNIT, Projection };
 //# sourceMappingURL=proj.d.ts.map

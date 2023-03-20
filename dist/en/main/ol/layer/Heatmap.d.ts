@@ -145,6 +145,6 @@ declare class Heatmap extends BaseVector<import("../source/Vector.js").default<i
     createRenderer(): any;
     renderDeclutter(): void;
 }
-import WebGLPointsLayerRenderer from "../renderer/webgl/PointsLayer.js";
-import BaseVector from "./BaseVector.js";
+import WebGLPointsLayerRenderer from '../renderer/webgl/PointsLayer.js';
+import BaseVector from './BaseVector.js';
 //# sourceMappingURL=Heatmap.d.ts.map

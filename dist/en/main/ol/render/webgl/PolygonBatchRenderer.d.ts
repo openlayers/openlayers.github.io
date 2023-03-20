@@ -21,5 +21,5 @@ declare class PolygonBatchRenderer extends AbstractBatchRenderer {
      */
     override generateRenderInstructions(batch: import("./MixedGeometryBatch.js").PolygonGeometryBatch): void;
 }
-import AbstractBatchRenderer from "./BatchRenderer.js";
+import AbstractBatchRenderer from './BatchRenderer.js';
 //# sourceMappingURL=PolygonBatchRenderer.d.ts.map

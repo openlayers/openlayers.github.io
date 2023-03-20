@@ -101,10 +101,10 @@ export type Options = {
      */
     iconUrlFunction?: IconUrlFunction | undefined;
 };
-import Fill from "../style/Fill.js";
-import Stroke from "../style/Stroke.js";
-import Text from "../style/Text.js";
-import Style from "../style/Style.js";
+import Fill from '../style/Fill.js';
+import Stroke from '../style/Stroke.js';
+import Text from '../style/Text.js';
+import Style from '../style/Style.js';
 /**
  * @typedef {Object} Options
  * @property {boolean} [extractStyles=true] Extract styles from the KML.
@@ -253,5 +253,5 @@ declare class KML extends XMLFeature {
      */
     readRegionFromNode(node: Element): Array<any>;
 }
-import XMLFeature from "./XMLFeature.js";
+import XMLFeature from './XMLFeature.js';
 //# sourceMappingURL=KML.d.ts.map

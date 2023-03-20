@@ -142,5 +142,5 @@ declare class PointerInteraction extends Interaction {
      */
     private updateTrackedPointers_;
 }
-import Interaction from "./Interaction.js";
+import Interaction from './Interaction.js';
 //# sourceMappingURL=Pointer.d.ts.map

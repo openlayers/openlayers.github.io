@@ -136,5 +136,5 @@ declare class MapBrowserEventHandler extends Target {
      */
     private isMoving_;
 }
-import Target from "./events/Target.js";
+import Target from './events/Target.js';
 //# sourceMappingURL=MapBrowserEventHandler.d.ts.map

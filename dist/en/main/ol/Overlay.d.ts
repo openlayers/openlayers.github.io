@@ -335,5 +335,5 @@ declare class Overlay extends BaseObject {
      */
     getOptions(): Options;
 }
-import BaseObject from "./Object.js";
+import BaseObject from './Object.js';
 //# sourceMappingURL=Overlay.d.ts.map

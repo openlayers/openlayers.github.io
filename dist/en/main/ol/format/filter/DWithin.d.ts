@@ -26,5 +26,5 @@ declare class DWithin extends Spatial {
      */
     public unit: string;
 }
-import Spatial from "./Spatial.js";
+import Spatial from './Spatial.js';
 //# sourceMappingURL=DWithin.d.ts.map

@@ -51,5 +51,5 @@ declare class RenderBox extends Disposable {
      */
     getGeometry(): import("../geom/Polygon.js").default;
 }
-import Disposable from "../Disposable.js";
+import Disposable from '../Disposable.js';
 //# sourceMappingURL=Box.d.ts.map

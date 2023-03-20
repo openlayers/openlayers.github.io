@@ -194,5 +194,5 @@ declare class Attribution extends Control {
      */
     getCollapsed(): boolean;
 }
-import Control from "./Control.js";
+import Control from './Control.js';
 //# sourceMappingURL=Attribution.d.ts.map

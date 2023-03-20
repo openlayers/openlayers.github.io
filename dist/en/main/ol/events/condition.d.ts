@@ -48,6 +48,6 @@ export function primaryAction(mapBrowserEvent: import("../MapBrowserEvent.js").d
  * `{boolean}`. If the condition is met, true should be returned.
  */
 export type Condition = (this: unknown, arg1: import("../MapBrowserEvent.js").default<any>) => boolean;
-import { TRUE } from "../functions.js";
-import { FALSE } from "../functions.js";
+import { TRUE } from '../functions.js';
+import { FALSE } from '../functions.js';
 //# sourceMappingURL=condition.d.ts.map

@@ -304,5 +304,5 @@ declare class Icon extends ImageStyle {
      */
     setHeight(height: number): void;
 }
-import ImageStyle from "./Image.js";
+import ImageStyle from './Image.js';
 //# sourceMappingURL=Icon.d.ts.map

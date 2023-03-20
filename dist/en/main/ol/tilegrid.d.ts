@@ -81,5 +81,5 @@ export type XYZOptions = {
      */
     tileSize?: number | import("./size.js").Size | undefined;
 };
-import TileGrid from "./tilegrid/TileGrid.js";
+import TileGrid from './tilegrid/TileGrid.js';
 //# sourceMappingURL=tilegrid.d.ts.map

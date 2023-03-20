@@ -117,5 +117,5 @@ declare class Interaction extends BaseObject {
      */
     setMap(map: import("../Map.js").default | null): void;
 }
-import BaseObject from "../Object.js";
+import BaseObject from '../Object.js';
 //# sourceMappingURL=Interaction.d.ts.map

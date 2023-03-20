@@ -354,6 +354,6 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      */
     protected createRenderer(): RendererType;
 }
-import BaseLayer from "./Base.js";
-import View from "../View.js";
+import BaseLayer from './Base.js';
+import View from '../View.js';
 //# sourceMappingURL=Layer.d.ts.map

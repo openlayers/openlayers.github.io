@@ -11,5 +11,5 @@ declare class WMSCapabilities extends XML {
      */
     version: string | undefined;
 }
-import XML from "./XML.js";
+import XML from './XML.js';
 //# sourceMappingURL=WMSCapabilities.d.ts.map

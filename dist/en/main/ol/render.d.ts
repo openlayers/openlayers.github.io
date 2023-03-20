@@ -115,5 +115,5 @@ export type ToContextOptions = {
      */
     pixelRatio?: number | undefined;
 };
-import CanvasImmediateRenderer from "./render/canvas/Immediate.js";
+import CanvasImmediateRenderer from './render/canvas/Immediate.js';
 //# sourceMappingURL=render.d.ts.map

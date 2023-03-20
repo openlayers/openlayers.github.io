@@ -110,5 +110,5 @@ declare class Control extends BaseObject {
      */
     setTarget(target: HTMLElement | string): void;
 }
-import BaseObject from "../Object.js";
+import BaseObject from '../Object.js';
 //# sourceMappingURL=Control.d.ts.map

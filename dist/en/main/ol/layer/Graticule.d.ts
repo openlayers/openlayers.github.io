@@ -583,10 +583,10 @@ declare class Graticule extends VectorLayer<VectorSource<import("../geom/Geometr
      */
     private updateProjectionInfo_;
 }
-import Point from "../geom/Point.js";
-import Stroke from "../style/Stroke.js";
-import Text from "../style/Text.js";
-import VectorSource from "../source/Vector.js";
-import VectorLayer from "./Vector.js";
-import LineString from "../geom/LineString.js";
+import Point from '../geom/Point.js';
+import Stroke from '../style/Stroke.js';
+import Text from '../style/Text.js';
+import VectorSource from '../source/Vector.js';
+import VectorLayer from './Vector.js';
+import LineString from '../geom/LineString.js';
 //# sourceMappingURL=Graticule.d.ts.map

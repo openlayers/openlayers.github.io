@@ -10,5 +10,5 @@ declare class Or extends LogicalNary {
      */
     constructor(...args: import("./Filter.js").default[]);
 }
-import LogicalNary from "./LogicalNary.js";
+import LogicalNary from './LogicalNary.js';
 //# sourceMappingURL=Or.d.ts.map

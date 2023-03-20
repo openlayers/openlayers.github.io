@@ -102,7 +102,7 @@ export type Options = {
      */
     zDirection?: number | import("../array.js").NearestDirectionFunction | undefined;
 };
-import ImageTile from "../ImageTile.js";
+import ImageTile from '../ImageTile.js';
 /**
  * @typedef {Object} Options
  * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
@@ -153,5 +153,5 @@ declare class Zoomify extends TileImage {
      */
     constructor(options: Options);
 }
-import TileImage from "./TileImage.js";
+import TileImage from './TileImage.js';
 //# sourceMappingURL=Zoomify.d.ts.map

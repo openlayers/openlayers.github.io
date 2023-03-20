@@ -82,5 +82,5 @@ declare class CanvasImageBuilder extends CanvasBuilder {
      */
     setImageStyle(imageStyle: import("../../style/Image.js").default, sharedData?: any): void;
 }
-import CanvasBuilder from "./Builder.js";
+import CanvasBuilder from './Builder.js';
 //# sourceMappingURL=ImageBuilder.d.ts.map

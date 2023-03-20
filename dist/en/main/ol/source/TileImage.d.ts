@@ -245,8 +245,8 @@ declare class TileImage extends UrlTile {
      */
     setTileGridForProjection(projection: import("../proj.js").ProjectionLike, tilegrid: import("../tilegrid/TileGrid.js").default): void;
 }
-import ImageTile from "../ImageTile.js";
-import UrlTile from "./UrlTile.js";
-import TileCache from "../TileCache.js";
-import ReprojTile from "../reproj/Tile.js";
+import ImageTile from '../ImageTile.js';
+import UrlTile from './UrlTile.js';
+import TileCache from '../TileCache.js';
+import ReprojTile from '../reproj/Tile.js';
 //# sourceMappingURL=TileImage.d.ts.map

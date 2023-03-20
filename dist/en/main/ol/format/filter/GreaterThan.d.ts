@@ -11,5 +11,5 @@ declare class GreaterThan extends ComparisonBinary {
      */
     constructor(propertyName: string, expression: number);
 }
-import ComparisonBinary from "./ComparisonBinary.js";
+import ComparisonBinary from './ComparisonBinary.js';
 //# sourceMappingURL=GreaterThan.d.ts.map

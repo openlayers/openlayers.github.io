@@ -62,5 +62,5 @@ declare class ZoomToExtent extends Control {
      */
     protected handleZoomToExtent(): void;
 }
-import Control from "./Control.js";
+import Control from './Control.js';
 //# sourceMappingURL=ZoomToExtent.d.ts.map

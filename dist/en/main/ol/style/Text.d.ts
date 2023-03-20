@@ -509,5 +509,5 @@ declare class Text {
      */
     setPadding(padding: Array<number> | null): void;
 }
-import Fill from "./Fill.js";
+import Fill from './Fill.js';
 //# sourceMappingURL=Text.d.ts.map

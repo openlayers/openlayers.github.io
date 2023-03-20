@@ -345,5 +345,5 @@ declare class TileGrid {
      */
     private calculateTileRanges_;
 }
-import TileRange from "../TileRange.js";
+import TileRange from '../TileRange.js';
 //# sourceMappingURL=TileGrid.d.ts.map

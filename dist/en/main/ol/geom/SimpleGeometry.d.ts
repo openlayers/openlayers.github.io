@@ -97,5 +97,5 @@ declare class SimpleGeometry extends Geometry {
      */
     protected setLayout(layout: import("./Geometry.js").GeometryLayout | undefined, coordinates: Array<any>, nesting: number): void;
 }
-import Geometry from "./Geometry.js";
+import Geometry from './Geometry.js';
 //# sourceMappingURL=SimpleGeometry.d.ts.map

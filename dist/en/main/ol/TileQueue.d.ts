@@ -55,5 +55,5 @@ declare class TileQueue extends PriorityQueue<any> {
      */
     loadMoreTiles(maxTotalLoading: number, maxNewLoads: number): void;
 }
-import PriorityQueue from "./structs/PriorityQueue.js";
+import PriorityQueue from './structs/PriorityQueue.js';
 //# sourceMappingURL=TileQueue.d.ts.map

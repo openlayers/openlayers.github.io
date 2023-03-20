@@ -29,5 +29,5 @@ declare class Spatial extends Filter {
      */
     srsName: string | undefined;
 }
-import Filter from "./Filter.js";
+import Filter from './Filter.js';
 //# sourceMappingURL=Spatial.d.ts.map

@@ -6,5 +6,5 @@ export default GML32;
  */
 declare class GML32 extends GML3 {
 }
-import GML3 from "./GML3.js";
+import GML3 from './GML3.js';
 //# sourceMappingURL=GML32.d.ts.map

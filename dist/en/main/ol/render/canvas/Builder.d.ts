@@ -158,5 +158,5 @@ declare class CanvasBuilder extends VectorContext {
      */
     protected getBufferedMaxExtent(): import("../../extent.js").Extent;
 }
-import VectorContext from "../VectorContext.js";
+import VectorContext from '../VectorContext.js';
 //# sourceMappingURL=Builder.d.ts.map

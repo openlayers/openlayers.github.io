@@ -56,5 +56,5 @@ export type DefaultsOptions = {
      */
     zoomOptions?: import("./Zoom.js").Options | undefined;
 };
-import Collection from "../Collection.js";
+import Collection from '../Collection.js';
 //# sourceMappingURL=defaults.d.ts.map

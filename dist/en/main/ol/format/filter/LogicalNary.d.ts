@@ -17,5 +17,5 @@ declare class LogicalNary extends Filter {
      */
     conditions: Array<import("./Filter.js").default>;
 }
-import Filter from "./Filter.js";
+import Filter from './Filter.js';
 //# sourceMappingURL=LogicalNary.d.ts.map

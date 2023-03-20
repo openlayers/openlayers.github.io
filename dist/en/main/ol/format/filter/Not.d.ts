@@ -14,5 +14,5 @@ declare class Not extends Filter {
      */
     condition: import("./Filter.js").default;
 }
-import Filter from "./Filter.js";
+import Filter from './Filter.js';
 //# sourceMappingURL=Not.d.ts.map

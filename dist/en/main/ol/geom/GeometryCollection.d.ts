@@ -68,5 +68,5 @@ declare class GeometryCollection extends Geometry {
      */
     setGeometriesArray(geometries: Array<Geometry>): void;
 }
-import Geometry from "./Geometry.js";
+import Geometry from './Geometry.js';
 //# sourceMappingURL=GeometryCollection.d.ts.map

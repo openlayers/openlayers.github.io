@@ -120,6 +120,6 @@ declare class MVT extends FeatureFormat {
      */
     setLayers(layers: Array<string>): void;
 }
-import FeatureFormat from "./Feature.js";
-import Projection from "../proj/Projection.js";
+import FeatureFormat from './Feature.js';
+import Projection from '../proj/Projection.js';
 //# sourceMappingURL=MVT.d.ts.map

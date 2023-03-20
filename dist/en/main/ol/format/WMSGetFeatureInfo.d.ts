@@ -48,5 +48,5 @@ declare class WMSGetFeatureInfo extends XMLFeature {
      */
     private readFeatures_;
 }
-import XMLFeature from "./XMLFeature.js";
+import XMLFeature from './XMLFeature.js';
 //# sourceMappingURL=WMSGetFeatureInfo.d.ts.map

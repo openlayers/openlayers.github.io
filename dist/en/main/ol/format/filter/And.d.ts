@@ -11,5 +11,5 @@ declare class And extends LogicalNary {
      */
     constructor(...args: import("./Filter.js").default[]);
 }
-import LogicalNary from "./LogicalNary.js";
+import LogicalNary from './LogicalNary.js';
 //# sourceMappingURL=And.d.ts.map

@@ -122,5 +122,5 @@ declare class GeoJSON extends JSONFeature {
      */
     writeGeometryObject(geometry: import("../geom/Geometry.js").default, options?: import("./Feature.js").WriteOptions | undefined): GeoJSONGeometry | GeoJSONGeometryCollection;
 }
-import JSONFeature from "./JSONFeature.js";
+import JSONFeature from './JSONFeature.js';
 //# sourceMappingURL=GeoJSON.d.ts.map

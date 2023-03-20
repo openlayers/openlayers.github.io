@@ -49,5 +49,5 @@ export function getEPSGLookup(): (arg0: number) => Promise<string>;
  * @api
  */
 export function fromEPSGCode(code: number | string): Promise<Projection>;
-import Projection from "./Projection.js";
+import Projection from './Projection.js';
 //# sourceMappingURL=proj4.d.ts.map

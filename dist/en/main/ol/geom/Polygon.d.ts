@@ -182,7 +182,7 @@ declare class Polygon extends SimpleGeometry {
      */
     setCoordinates(coordinates: Array<Array<import("../coordinate.js").Coordinate>>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
 }
-import SimpleGeometry from "./SimpleGeometry.js";
-import LinearRing from "./LinearRing.js";
-import Point from "./Point.js";
+import SimpleGeometry from './SimpleGeometry.js';
+import LinearRing from './LinearRing.js';
+import Point from './Point.js';
 //# sourceMappingURL=Polygon.d.ts.map

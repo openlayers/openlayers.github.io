@@ -18,6 +18,6 @@ declare class ImageLayer<ImageSourceType extends import("../source/Image.js").de
     constructor(options?: import("./BaseImage.js").Options<ImageSourceType> | undefined);
     createRenderer(): any;
 }
-import CanvasImageLayerRenderer from "../renderer/canvas/ImageLayer.js";
-import BaseImageLayer from "./BaseImage.js";
+import CanvasImageLayerRenderer from '../renderer/canvas/ImageLayer.js';
+import BaseImageLayer from './BaseImage.js';
 //# sourceMappingURL=Image.d.ts.map

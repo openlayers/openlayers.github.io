@@ -234,5 +234,5 @@ declare class GML2 extends GMLBase {
         };
     };
 }
-import GMLBase from "./GMLBase.js";
+import GMLBase from './GMLBase.js';
 //# sourceMappingURL=GML2.d.ts.map

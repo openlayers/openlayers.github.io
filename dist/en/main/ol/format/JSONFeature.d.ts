@@ -116,5 +116,5 @@ declare class JSONFeature extends FeatureFormat {
      */
     writeGeometryObject(geometry: import("../geom/Geometry.js").default, options?: import("./Feature.js").WriteOptions | undefined): any;
 }
-import FeatureFormat from "./Feature.js";
+import FeatureFormat from './Feature.js';
 //# sourceMappingURL=JSONFeature.d.ts.map

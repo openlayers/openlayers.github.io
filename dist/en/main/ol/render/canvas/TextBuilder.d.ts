@@ -114,5 +114,5 @@ declare class CanvasTextBuilder extends CanvasBuilder {
      */
     setTextStyle(textStyle: import("../../style/Text.js").default, sharedData?: any): void;
 }
-import CanvasBuilder from "./Builder.js";
+import CanvasBuilder from './Builder.js';
 //# sourceMappingURL=TextBuilder.d.ts.map

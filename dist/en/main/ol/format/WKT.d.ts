@@ -47,5 +47,5 @@ declare class WKT extends TextFeature {
      */
     private parse_;
 }
-import TextFeature from "./TextFeature.js";
+import TextFeature from './TextFeature.js';
 //# sourceMappingURL=WKT.d.ts.map

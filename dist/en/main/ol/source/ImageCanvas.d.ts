@@ -122,5 +122,5 @@ declare class ImageCanvasSource extends ImageSource {
      */
     getImageInternal(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../ImageCanvas.js").default;
 }
-import ImageSource from "./Image.js";
+import ImageSource from './Image.js';
 //# sourceMappingURL=ImageCanvas.d.ts.map

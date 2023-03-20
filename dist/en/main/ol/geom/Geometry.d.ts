@@ -201,5 +201,5 @@ declare class Geometry extends BaseObject {
      */
     transform(source: import("../proj.js").ProjectionLike, destination: import("../proj.js").ProjectionLike): Geometry;
 }
-import BaseObject from "../Object.js";
+import BaseObject from '../Object.js';
 //# sourceMappingURL=Geometry.d.ts.map

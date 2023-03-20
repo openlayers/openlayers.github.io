@@ -239,5 +239,5 @@ declare class Tile extends EventTarget {
      */
     endTransition(id: string): void;
 }
-import EventTarget from "./events/Target.js";
+import EventTarget from './events/Target.js';
 //# sourceMappingURL=Tile.d.ts.map

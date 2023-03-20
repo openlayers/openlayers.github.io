@@ -36,7 +36,7 @@ export type Options = {
      */
     unique?: boolean | undefined;
 };
-import Event from "./events/Event.js";
+import Event from './events/Event.js';
 /***
  * @template T
  * @template Return
@@ -190,5 +190,5 @@ declare class Collection<T> extends BaseObject {
      */
     private assertUnique_;
 }
-import BaseObject from "./Object.js";
+import BaseObject from './Object.js';
 //# sourceMappingURL=Collection.d.ts.map

@@ -63,7 +63,7 @@ export type Options = {
  * *
  */
 export type DragBoxOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | 'change:active', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<'boxcancel' | 'boxdrag' | 'boxend' | 'boxstart', DragBoxEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | 'change:active' | 'boxcancel' | 'boxdrag' | 'boxend', Return>;
-import Event from "../events/Event.js";
+import Event from '../events/Event.js';
 /***
  * @template Return
  * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
@@ -149,5 +149,5 @@ declare class DragBox extends PointerInteraction {
      */
     getGeometry(): import("../geom/Polygon.js").default;
 }
-import PointerInteraction from "./Pointer.js";
+import PointerInteraction from './Pointer.js';
 //# sourceMappingURL=DragBox.d.ts.map

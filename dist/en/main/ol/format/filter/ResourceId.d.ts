@@ -10,5 +10,5 @@ declare class ResourceId extends Filter {
      */
     rid: string;
 }
-import Filter from "./Filter.js";
+import Filter from './Filter.js';
 //# sourceMappingURL=ResourceId.d.ts.map

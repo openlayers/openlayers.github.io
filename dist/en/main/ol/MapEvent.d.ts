@@ -24,5 +24,5 @@ declare class MapEvent extends Event {
      */
     frameState: import("./Map.js").FrameState | null;
 }
-import Event from "./events/Event.js";
+import Event from './events/Event.js';
 //# sourceMappingURL=MapEvent.d.ts.map

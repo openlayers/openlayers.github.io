@@ -170,5 +170,5 @@ declare class ZoomSlider extends Control {
      */
     private getPositionForResolution_;
 }
-import Control from "./Control.js";
+import Control from './Control.js';
 //# sourceMappingURL=ZoomSlider.d.ts.map

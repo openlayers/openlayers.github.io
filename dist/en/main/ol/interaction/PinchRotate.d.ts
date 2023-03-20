@@ -58,5 +58,5 @@ declare class PinchRotate extends PointerInteraction {
      */
     private duration_;
 }
-import PointerInteraction from "./Pointer.js";
+import PointerInteraction from './Pointer.js';
 //# sourceMappingURL=PinchRotate.d.ts.map

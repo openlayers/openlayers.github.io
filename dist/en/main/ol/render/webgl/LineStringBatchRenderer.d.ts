@@ -23,5 +23,5 @@ declare class LineStringBatchRenderer extends AbstractBatchRenderer {
      */
     override generateRenderInstructions(batch: import("./MixedGeometryBatch.js").LineStringGeometryBatch): void;
 }
-import AbstractBatchRenderer from "./BatchRenderer.js";
+import AbstractBatchRenderer from './BatchRenderer.js';
 //# sourceMappingURL=LineStringBatchRenderer.d.ts.map

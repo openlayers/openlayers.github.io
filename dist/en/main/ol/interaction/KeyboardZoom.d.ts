@@ -59,5 +59,5 @@ declare class KeyboardZoom extends Interaction {
      */
     private duration_;
 }
-import Interaction from "./Interaction.js";
+import Interaction from './Interaction.js';
 //# sourceMappingURL=KeyboardZoom.d.ts.map

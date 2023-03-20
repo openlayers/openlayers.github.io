@@ -92,5 +92,5 @@ declare class Observable extends EventTarget {
      */
     protected unInternal(type: string | Array<string>, listener: (arg0: (Event | import("./events/Event").default)) => unknown): void;
 }
-import EventTarget from "./events/Target.js";
+import EventTarget from './events/Target.js';
 //# sourceMappingURL=Observable.d.ts.map

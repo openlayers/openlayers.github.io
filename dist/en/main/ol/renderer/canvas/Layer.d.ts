@@ -117,5 +117,5 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      */
     protected getRenderTransform(center: import("../../coordinate.js").Coordinate, resolution: number, rotation: number, pixelRatio: number, width: number, height: number, offsetX: number): import("../../transform.js").Transform;
 }
-import LayerRenderer from "../Layer.js";
+import LayerRenderer from '../Layer.js';
 //# sourceMappingURL=Layer.d.ts.map

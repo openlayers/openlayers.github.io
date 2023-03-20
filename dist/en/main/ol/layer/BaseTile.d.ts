@@ -173,5 +173,5 @@ declare class BaseTileLayer<TileSourceType extends import("../source/Tile.js").d
      */
     setUseInterimTilesOnError(useInterimTilesOnError: boolean): void;
 }
-import Layer from "./Layer.js";
+import Layer from './Layer.js';
 //# sourceMappingURL=BaseTile.d.ts.map

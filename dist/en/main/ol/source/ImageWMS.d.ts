@@ -247,5 +247,5 @@ declare class ImageWMS extends ImageSource {
      */
     private updateV13_;
 }
-import ImageSource from "./Image.js";
+import ImageSource from './Image.js';
 //# sourceMappingURL=ImageWMS.d.ts.map

@@ -85,5 +85,5 @@ declare class VectorTile extends Tile {
      */
     setLoader(loader: import("./featureloader.js").FeatureLoader): void;
 }
-import Tile from "./Tile.js";
+import Tile from './Tile.js';
 //# sourceMappingURL=VectorTile.d.ts.map

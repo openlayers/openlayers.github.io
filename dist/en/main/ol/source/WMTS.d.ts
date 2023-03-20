@@ -299,5 +299,5 @@ declare class WMTS extends TileImage {
      */
     createFromWMTSTemplate(template: string): import("../Tile.js").UrlFunction;
 }
-import TileImage from "./TileImage.js";
+import TileImage from './TileImage.js';
 //# sourceMappingURL=WMTS.d.ts.map

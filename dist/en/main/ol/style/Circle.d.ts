@@ -74,5 +74,5 @@ declare class CircleStyle extends RegularShape {
      */
     setRadius(radius: number): void;
 }
-import RegularShape from "./RegularShape.js";
+import RegularShape from './RegularShape.js';
 //# sourceMappingURL=Circle.d.ts.map

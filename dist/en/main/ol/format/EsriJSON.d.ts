@@ -88,5 +88,5 @@ declare class EsriJSON extends JSONFeature {
      */
     writeFeaturesObject(features: Array<import("../Feature.js").default>, options?: import("./Feature.js").WriteOptions | undefined): EsriJSONFeatureSet;
 }
-import JSONFeature from "./JSONFeature.js";
+import JSONFeature from './JSONFeature.js';
 //# sourceMappingURL=EsriJSON.d.ts.map

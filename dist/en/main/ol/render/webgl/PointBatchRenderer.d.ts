@@ -22,5 +22,5 @@ declare class PointBatchRenderer extends AbstractBatchRenderer {
      */
     override generateRenderInstructions(batch: import("./MixedGeometryBatch.js").PointGeometryBatch): void;
 }
-import AbstractBatchRenderer from "./BatchRenderer.js";
+import AbstractBatchRenderer from './BatchRenderer.js';
 //# sourceMappingURL=PointBatchRenderer.d.ts.map

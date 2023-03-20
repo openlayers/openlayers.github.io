@@ -101,5 +101,5 @@ declare class WKB extends FeatureFormat {
      */
     readProjection(source: string | ArrayBuffer | ArrayBufferView): import("../proj/Projection.js").default | undefined;
 }
-import FeatureFormat from "./Feature.js";
+import FeatureFormat from './Feature.js';
 //# sourceMappingURL=WKB.d.ts.map

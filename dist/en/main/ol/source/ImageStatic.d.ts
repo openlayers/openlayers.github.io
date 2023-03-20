@@ -105,5 +105,5 @@ declare class Static extends ImageSource {
      */
     getUrl(): string;
 }
-import ImageSource from "./Image.js";
+import ImageSource from './Image.js';
 //# sourceMappingURL=ImageStatic.d.ts.map

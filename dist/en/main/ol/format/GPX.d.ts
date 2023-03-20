@@ -70,6 +70,6 @@ declare class GPX extends XMLFeature {
      */
     private handleReadExtensions_;
 }
-import Feature from "../Feature.js";
-import XMLFeature from "./XMLFeature.js";
+import Feature from '../Feature.js';
+import XMLFeature from './XMLFeature.js';
 //# sourceMappingURL=GPX.d.ts.map

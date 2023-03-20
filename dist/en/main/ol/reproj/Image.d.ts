@@ -87,5 +87,5 @@ declare class ReprojImage extends ImageBase {
      */
     private unlistenSource_;
 }
-import ImageBase from "../ImageBase.js";
+import ImageBase from '../ImageBase.js';
 //# sourceMappingURL=Image.d.ts.map

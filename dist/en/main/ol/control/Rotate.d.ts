@@ -101,5 +101,5 @@ declare class Rotate extends Control {
      */
     private resetNorth_;
 }
-import Control from "./Control.js";
+import Control from './Control.js';
 //# sourceMappingURL=Rotate.d.ts.map

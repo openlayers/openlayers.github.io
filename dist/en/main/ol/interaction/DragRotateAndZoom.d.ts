@@ -62,5 +62,5 @@ declare class DragRotateAndZoom extends PointerInteraction {
      */
     private duration_;
 }
-import PointerInteraction from "./Pointer.js";
+import PointerInteraction from './Pointer.js';
 //# sourceMappingURL=DragRotateAndZoom.d.ts.map

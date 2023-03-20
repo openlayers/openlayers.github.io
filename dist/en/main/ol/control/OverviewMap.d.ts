@@ -247,7 +247,7 @@ declare class OverviewMap extends Control {
      */
     getOverviewMap(): import("../Map.js").default;
 }
-import Collection from "../Collection.js";
-import View from "../View.js";
-import Control from "./Control.js";
+import Collection from '../Collection.js';
+import View from '../View.js';
+import Control from './Control.js';
 //# sourceMappingURL=OverviewMap.d.ts.map

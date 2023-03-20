@@ -109,5 +109,5 @@ declare class IIIF extends TileImage {
      */
     constructor(options?: Options | undefined);
 }
-import TileImage from "./TileImage.js";
+import TileImage from './TileImage.js';
 //# sourceMappingURL=IIIF.d.ts.map

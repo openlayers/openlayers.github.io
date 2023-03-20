@@ -45,5 +45,5 @@ declare class CanvasVectorImageLayerRenderer extends CanvasImageLayerRenderer {
      */
     renderDeclutter(): void;
 }
-import CanvasImageLayerRenderer from "./ImageLayer.js";
+import CanvasImageLayerRenderer from './ImageLayer.js';
 //# sourceMappingURL=VectorImageLayer.d.ts.map

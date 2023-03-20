@@ -112,9 +112,9 @@ export type Options = {
  * *
  */
 export type TranslateOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | 'change:active', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<'translateend' | 'translatestart' | 'translating', TranslateEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | 'change:active' | 'translateend' | 'translatestart' | 'translating', Return>;
-import Event from "../events/Event.js";
-import Collection from "../Collection.js";
-import Feature from "../Feature.js";
+import Event from '../events/Event.js';
+import Collection from '../Collection.js';
+import Feature from '../Feature.js';
 type TranslateEventType = string;
 declare namespace TranslateEventType {
     const TRANSLATESTART: string;
@@ -239,5 +239,5 @@ declare class Translate extends PointerInteraction {
      */
     private updateState_;
 }
-import PointerInteraction from "./Pointer.js";
+import PointerInteraction from './Pointer.js';
 //# sourceMappingURL=Translate.d.ts.map

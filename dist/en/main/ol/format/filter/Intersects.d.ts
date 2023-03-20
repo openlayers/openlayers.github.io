@@ -14,5 +14,5 @@ declare class Intersects extends Spatial {
      */
     constructor(geometryName: string, geometry: import("../../geom/Geometry.js").default, srsName?: string | undefined);
 }
-import Spatial from "./Spatial.js";
+import Spatial from './Spatial.js';
 //# sourceMappingURL=Intersects.d.ts.map

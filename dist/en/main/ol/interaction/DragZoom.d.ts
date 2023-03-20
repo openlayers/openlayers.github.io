@@ -65,5 +65,5 @@ declare class DragZoom extends DragBox {
      */
     private out_;
 }
-import DragBox from "./DragBox.js";
+import DragBox from './DragBox.js';
 //# sourceMappingURL=DragZoom.d.ts.map

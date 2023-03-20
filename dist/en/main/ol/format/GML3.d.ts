@@ -417,9 +417,9 @@ declare class GML3 extends GMLBase {
         };
     };
 }
-import GMLBase from "./GMLBase.js";
-import MultiLineString from "../geom/MultiLineString.js";
-import MultiPolygon from "../geom/MultiPolygon.js";
-import Polygon from "../geom/Polygon.js";
-import LineString from "../geom/LineString.js";
+import GMLBase from './GMLBase.js';
+import MultiLineString from '../geom/MultiLineString.js';
+import MultiPolygon from '../geom/MultiPolygon.js';
+import Polygon from '../geom/Polygon.js';
+import LineString from '../geom/LineString.js';
 //# sourceMappingURL=GML3.d.ts.map

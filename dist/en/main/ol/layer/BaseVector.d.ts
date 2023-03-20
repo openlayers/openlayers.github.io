@@ -222,5 +222,5 @@ declare class BaseVectorLayer<VectorSourceType extends import("../source/Vector.
      */
     setStyle(style?: import("../style/Style.js").StyleLike | import("../style/flat.js").FlatStyleLike | null | undefined): void;
 }
-import Layer from "./Layer.js";
+import Layer from './Layer.js';
 //# sourceMappingURL=BaseVector.d.ts.map

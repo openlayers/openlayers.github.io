@@ -90,5 +90,5 @@ declare class Zoom extends Control {
      */
     private zoomByDelta_;
 }
-import Control from "./Control.js";
+import Control from './Control.js';
 //# sourceMappingURL=Zoom.d.ts.map

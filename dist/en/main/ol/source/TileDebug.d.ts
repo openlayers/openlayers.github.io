@@ -49,5 +49,5 @@ declare class TileDebug extends XYZ {
      */
     constructor(options?: Options | undefined);
 }
-import XYZ from "./XYZ.js";
+import XYZ from './XYZ.js';
 //# sourceMappingURL=TileDebug.d.ts.map

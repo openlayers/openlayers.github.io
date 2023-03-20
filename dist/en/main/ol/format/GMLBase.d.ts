@@ -338,13 +338,13 @@ declare class GMLBase extends XMLFeature {
         };
     };
 }
-import XMLFeature from "./XMLFeature.js";
-import Feature from "../Feature.js";
-import Point from "../geom/Point.js";
-import MultiPoint from "../geom/MultiPoint.js";
-import MultiLineString from "../geom/MultiLineString.js";
-import MultiPolygon from "../geom/MultiPolygon.js";
-import LineString from "../geom/LineString.js";
-import LinearRing from "../geom/LinearRing.js";
-import Polygon from "../geom/Polygon.js";
+import XMLFeature from './XMLFeature.js';
+import Feature from '../Feature.js';
+import Point from '../geom/Point.js';
+import MultiPoint from '../geom/MultiPoint.js';
+import MultiLineString from '../geom/MultiLineString.js';
+import MultiPolygon from '../geom/MultiPolygon.js';
+import LineString from '../geom/LineString.js';
+import LinearRing from '../geom/LinearRing.js';
+import Polygon from '../geom/Polygon.js';
 //# sourceMappingURL=GMLBase.d.ts.map

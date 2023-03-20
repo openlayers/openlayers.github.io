@@ -253,8 +253,8 @@ export type Options = {
  * *
  */
 export type RasterSourceOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("./Image.js").ImageSourceEventTypes, import("./Image.js").ImageSourceEvent, Return> & import("../Observable").OnSignature<RasterSourceEventTypes, RasterSourceEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | RasterSourceEventTypes, Return>;
-import Disposable from "../Disposable.js";
-import Event from "../events/Event.js";
+import Disposable from '../Disposable.js';
+import Event from '../events/Event.js';
 /**
  * @typedef {Object} Options
  * @property {Array<import("./Source.js").default|import("../layer/Layer.js").default>} sources Input
@@ -412,5 +412,5 @@ declare class RasterSource extends ImageSource {
      */
     getResolutions(projection?: import("../proj/Projection.js").default | undefined): Array<number> | null;
 }
-import ImageSource from "./Image.js";
+import ImageSource from './Image.js';
 //# sourceMappingURL=Raster.d.ts.map

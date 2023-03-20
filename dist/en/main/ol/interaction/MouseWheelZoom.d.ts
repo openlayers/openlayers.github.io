@@ -162,5 +162,5 @@ declare class MouseWheelZoom extends Interaction {
      */
     setMouseAnchor(useAnchor: boolean): void;
 }
-import Interaction from "./Interaction.js";
+import Interaction from './Interaction.js';
 //# sourceMappingURL=MouseWheelZoom.d.ts.map

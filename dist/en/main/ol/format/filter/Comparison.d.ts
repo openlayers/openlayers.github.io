@@ -17,5 +17,5 @@ declare class Comparison extends Filter {
      */
     propertyName: string;
 }
-import Filter from "./Filter.js";
+import Filter from './Filter.js';
 //# sourceMappingURL=Comparison.d.ts.map

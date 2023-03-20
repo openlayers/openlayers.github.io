@@ -63,5 +63,5 @@ declare class DragPan extends PointerInteraction {
      */
     private noKinetic_;
 }
-import PointerInteraction from "./Pointer.js";
+import PointerInteraction from './Pointer.js';
 //# sourceMappingURL=DragPan.d.ts.map

@@ -110,5 +110,5 @@ declare class DataTile extends Tile {
      */
     getError(): Error;
 }
-import Tile from "./Tile.js";
+import Tile from './Tile.js';
 //# sourceMappingURL=DataTile.d.ts.map

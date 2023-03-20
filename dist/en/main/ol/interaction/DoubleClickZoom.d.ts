@@ -35,5 +35,5 @@ declare class DoubleClickZoom extends Interaction {
      */
     private duration_;
 }
-import Interaction from "./Interaction.js";
+import Interaction from './Interaction.js';
 //# sourceMappingURL=DoubleClickZoom.d.ts.map

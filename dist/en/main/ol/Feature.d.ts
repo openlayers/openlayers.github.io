@@ -221,5 +221,5 @@ declare class Feature<Geometry extends import("./geom/Geometry.js").default = im
      */
     setGeometryName(name: string): void;
 }
-import BaseObject from "./Object.js";
+import BaseObject from './Object.js';
 //# sourceMappingURL=Feature.d.ts.map

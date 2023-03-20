@@ -155,7 +155,7 @@ export type Options<Geometry extends import("../geom/Geometry.js").default = imp
      */
     wrapX?: boolean | undefined;
 };
-import Event from "../events/Event.js";
+import Event from '../events/Event.js';
 /***
  * @template Return
  * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
@@ -630,6 +630,6 @@ declare class VectorSource<Geometry extends import("../geom/Geometry.js").defaul
      */
     setUrl(url: string | import("../featureloader.js").FeatureUrlFunction): void;
 }
-import Collection from "../Collection.js";
-import Source from "./Source.js";
+import Collection from '../Collection.js';
+import Source from './Source.js';
 //# sourceMappingURL=Vector.d.ts.map

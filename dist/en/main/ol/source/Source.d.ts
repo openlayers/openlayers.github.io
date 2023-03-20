@@ -199,5 +199,5 @@ declare class Source extends BaseObject {
      */
     setState(state: import("./Source.js").State): void;
 }
-import BaseObject from "../Object.js";
+import BaseObject from '../Object.js';
 //# sourceMappingURL=Source.d.ts.map

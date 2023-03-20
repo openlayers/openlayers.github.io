@@ -152,5 +152,5 @@ declare class ReprojDataTile extends DataTile {
      */
     private unlistenSources_;
 }
-import DataTile from "../DataTile.js";
+import DataTile from '../DataTile.js';
 //# sourceMappingURL=DataTile.d.ts.map

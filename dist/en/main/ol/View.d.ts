@@ -1066,5 +1066,5 @@ declare class View extends BaseObject {
      */
     getConstrainedResolution(targetResolution: number | undefined, direction?: number | undefined): number | undefined;
 }
-import BaseObject from "./Object.js";
+import BaseObject from './Object.js';
 //# sourceMappingURL=View.d.ts.map

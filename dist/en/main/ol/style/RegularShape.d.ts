@@ -288,5 +288,5 @@ declare class RegularShape extends ImageStyle {
      */
     private drawHitDetectionCanvas_;
 }
-import ImageStyle from "./Image.js";
+import ImageStyle from './Image.js';
 //# sourceMappingURL=RegularShape.d.ts.map

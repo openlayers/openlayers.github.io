@@ -12,5 +12,5 @@ declare class EqualTo extends ComparisonBinary {
      */
     constructor(propertyName: string, expression: (string | number), matchCase?: boolean | undefined);
 }
-import ComparisonBinary from "./ComparisonBinary.js";
+import ComparisonBinary from './ComparisonBinary.js';
 //# sourceMappingURL=EqualTo.d.ts.map

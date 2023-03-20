@@ -51,6 +51,6 @@ declare class MultiPoint extends SimpleGeometry {
      */
     setCoordinates(coordinates: Array<import("../coordinate.js").Coordinate>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
 }
-import SimpleGeometry from "./SimpleGeometry.js";
-import Point from "./Point.js";
+import SimpleGeometry from './SimpleGeometry.js';
+import Point from './Point.js';
 //# sourceMappingURL=MultiPoint.d.ts.map

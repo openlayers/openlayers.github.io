@@ -114,5 +114,5 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
      */
     protected renderIfReadyAndVisible(): void;
 }
-import Observable from "../Observable.js";
+import Observable from '../Observable.js';
 //# sourceMappingURL=Layer.d.ts.map

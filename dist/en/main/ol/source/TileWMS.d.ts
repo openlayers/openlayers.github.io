@@ -273,5 +273,5 @@ declare class TileWMS extends TileImage {
      */
     private updateV13_;
 }
-import TileImage from "./TileImage.js";
+import TileImage from './TileImage.js';
 //# sourceMappingURL=TileWMS.d.ts.map

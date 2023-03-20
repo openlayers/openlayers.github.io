@@ -10,5 +10,5 @@ declare class CanvasLineStringBuilder extends CanvasBuilder {
      */
     private drawFlatCoordinates_;
 }
-import CanvasBuilder from "./Builder.js";
+import CanvasBuilder from './Builder.js';
 //# sourceMappingURL=LineStringBuilder.d.ts.map

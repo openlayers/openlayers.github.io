@@ -140,7 +140,7 @@ export type Options = {
      */
     zDirection?: number | import("../array.js").NearestDirectionFunction | undefined;
 };
-import Tile from "../Tile.js";
+import Tile from '../Tile.js';
 /**
  * @typedef {Object} Options
  * @property {boolean} [preemptive=true]
@@ -244,5 +244,5 @@ declare class UTFGrid extends TileSource {
      */
     useTile(z: number, x: number, y: number): void;
 }
-import TileSource from "./Tile.js";
+import TileSource from './Tile.js';
 //# sourceMappingURL=UTFGrid.d.ts.map

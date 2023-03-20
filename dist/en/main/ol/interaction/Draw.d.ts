@@ -243,8 +243,8 @@ export type PointSegmentRelationship = {
  * *
  */
 export type DrawOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | 'change:active', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<'drawabort' | 'drawend' | 'drawstart', DrawEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | 'change:active' | 'drawabort' | 'drawend' | 'drawstart', Return>;
-import Event from "../events/Event.js";
-import Feature from "../Feature.js";
+import Event from '../events/Event.js';
+import Feature from '../Feature.js';
 type DrawEventType = string;
 declare namespace DrawEventType {
     const DRAWSTART: string;
@@ -628,8 +628,8 @@ declare class Draw extends PointerInteraction {
      */
     private updateState_;
 }
-import VectorSource from "../source/Vector.js";
-import PointerInteraction from "./Pointer.js";
-import VectorLayer from "../layer/Vector.js";
-import LineString from "../geom/LineString.js";
+import VectorSource from '../source/Vector.js';
+import PointerInteraction from './Pointer.js';
+import VectorLayer from '../layer/Vector.js';
+import LineString from '../geom/LineString.js';
 //# sourceMappingURL=Draw.d.ts.map

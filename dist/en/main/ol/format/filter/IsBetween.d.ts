@@ -20,5 +20,5 @@ declare class IsBetween extends Comparison {
      */
     upperBoundary: number;
 }
-import Comparison from "./Comparison.js";
+import Comparison from './Comparison.js';
 //# sourceMappingURL=IsBetween.d.ts.map

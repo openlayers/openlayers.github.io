@@ -115,5 +115,5 @@ declare class OGCMapTile extends TileImage {
      */
     private handleError_;
 }
-import TileImage from "./TileImage.js";
+import TileImage from './TileImage.js';
 //# sourceMappingURL=OGCMapTile.d.ts.map

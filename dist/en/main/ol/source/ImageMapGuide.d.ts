@@ -193,5 +193,5 @@ declare class ImageMapGuide extends ImageSource {
      */
     setImageLoadFunction(imageLoadFunction: import("../Image.js").LoadFunction): void;
 }
-import ImageSource from "./Image.js";
+import ImageSource from './Image.js';
 //# sourceMappingURL=ImageMapGuide.d.ts.map

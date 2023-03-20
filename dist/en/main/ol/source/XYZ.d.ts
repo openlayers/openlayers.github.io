@@ -185,5 +185,5 @@ declare class XYZ extends TileImage {
      */
     private gutter_;
 }
-import TileImage from "./TileImage.js";
+import TileImage from './TileImage.js';
 //# sourceMappingURL=XYZ.d.ts.map

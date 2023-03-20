@@ -187,5 +187,5 @@ declare class FullScreen extends Control {
      */
     private handleMapTargetChange_;
 }
-import Control from "./Control.js";
+import Control from './Control.js';
 //# sourceMappingURL=FullScreen.d.ts.map

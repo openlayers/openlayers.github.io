@@ -212,6 +212,6 @@ declare class WebGLTileLayerRenderer extends WebGLLayerRenderer<import("../../la
     private findAltTiles_;
     clearCache(): void;
 }
-import TileTexture from "../../webgl/TileTexture.js";
-import WebGLLayerRenderer from "./Layer.js";
+import TileTexture from '../../webgl/TileTexture.js';
+import WebGLLayerRenderer from './Layer.js';
 //# sourceMappingURL=TileLayer.d.ts.map

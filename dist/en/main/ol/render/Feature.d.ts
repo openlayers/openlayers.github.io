@@ -177,11 +177,11 @@ declare class RenderFeature {
      */
     getFlatCoordinates: () => Array<number>;
 }
-import { Point } from "../geom.js";
-import { MultiPoint } from "../geom.js";
-import { LineString } from "../geom.js";
-import { MultiLineString } from "../geom.js";
-import { Polygon } from "../geom.js";
-import { MultiPolygon } from "../geom.js";
-import Feature from "../Feature.js";
+import { Point } from '../geom.js';
+import { MultiPoint } from '../geom.js';
+import { LineString } from '../geom.js';
+import { MultiLineString } from '../geom.js';
+import { Polygon } from '../geom.js';
+import { MultiPolygon } from '../geom.js';
+import Feature from '../Feature.js';
 //# sourceMappingURL=Feature.d.ts.map

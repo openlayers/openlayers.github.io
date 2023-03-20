@@ -41,5 +41,5 @@ declare class PinchZoom extends PointerInteraction {
      */
     private lastScaleDelta_;
 }
-import PointerInteraction from "./Pointer.js";
+import PointerInteraction from './Pointer.js';
 //# sourceMappingURL=PinchZoom.d.ts.map

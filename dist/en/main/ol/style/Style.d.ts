@@ -387,6 +387,6 @@ declare class Style {
      */
     setZIndex(zIndex: number | undefined): void;
 }
-import Fill from "./Fill.js";
-import Stroke from "./Stroke.js";
+import Fill from './Fill.js';
+import Stroke from './Stroke.js';
 //# sourceMappingURL=Style.d.ts.map

@@ -79,5 +79,5 @@ declare class Target extends Disposable {
      */
     removeEventListener(type: string, listener: import("../events.js").Listener): void;
 }
-import Disposable from "../Disposable.js";
+import Disposable from '../Disposable.js';
 //# sourceMappingURL=Target.d.ts.map

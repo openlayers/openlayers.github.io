@@ -124,5 +124,5 @@ declare class Link extends Interaction {
      */
     private updateUrl_;
 }
-import Interaction from "./Interaction.js";
+import Interaction from './Interaction.js';
 //# sourceMappingURL=Link.d.ts.map

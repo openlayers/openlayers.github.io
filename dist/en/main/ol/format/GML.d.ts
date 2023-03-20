@@ -10,5 +10,5 @@ export default GML;
  * @api
  */
 declare const GML: typeof GML3;
-import GML3 from "./GML3.js";
+import GML3 from './GML3.js';
 //# sourceMappingURL=GML.d.ts.map

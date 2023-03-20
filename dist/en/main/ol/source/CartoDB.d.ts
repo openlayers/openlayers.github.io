@@ -180,5 +180,5 @@ declare class CartoDB extends XYZ {
      */
     private applyTemplate_;
 }
-import XYZ from "./XYZ.js";
+import XYZ from './XYZ.js';
 //# sourceMappingURL=CartoDB.d.ts.map

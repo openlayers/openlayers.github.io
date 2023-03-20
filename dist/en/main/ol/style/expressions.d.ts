@@ -243,5 +243,5 @@ export type Operator = {
      */
     toGlsl: (arg0: ParsingContext, arg1: Array<ExpressionValue>, arg2: ValueTypes | undefined) => string;
 };
-import PaletteTexture from "../webgl/PaletteTexture.js";
+import PaletteTexture from '../webgl/PaletteTexture.js';
 //# sourceMappingURL=expressions.d.ts.map

@@ -40,5 +40,5 @@ declare class IGC extends TextFeature {
      */
     private altitudeMode_;
 }
-import TextFeature from "./TextFeature.js";
+import TextFeature from './TextFeature.js';
 //# sourceMappingURL=IGC.d.ts.map

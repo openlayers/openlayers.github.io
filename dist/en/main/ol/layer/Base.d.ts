@@ -308,5 +308,5 @@ declare class BaseLayer extends BaseObject {
      */
     setZIndex(zindex: number): void;
 }
-import BaseObject from "../Object.js";
+import BaseObject from '../Object.js';
 //# sourceMappingURL=Base.d.ts.map

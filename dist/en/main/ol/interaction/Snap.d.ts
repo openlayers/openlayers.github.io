@@ -236,5 +236,5 @@ declare class Snap extends PointerInteraction {
      */
     private segmentPolygonGeometry_;
 }
-import PointerInteraction from "./Pointer.js";
+import PointerInteraction from './Pointer.js';
 //# sourceMappingURL=Snap.d.ts.map

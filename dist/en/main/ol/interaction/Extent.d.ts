@@ -54,7 +54,7 @@ export type Options = {
  * *
  */
 export type ExtentOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | 'change:active', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<'extentchanged', ExtentEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | 'change:active' | 'extentchanged', Return>;
-import Event from "../events/Event.js";
+import Event from '../events/Event.js';
 /***
  * @template Return
  * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
@@ -197,5 +197,5 @@ declare class Extent extends PointerInteraction {
      */
     setExtent(extent: import("../extent.js").Extent): void;
 }
-import PointerInteraction from "./Pointer.js";
+import PointerInteraction from './Pointer.js';
 //# sourceMappingURL=Extent.d.ts.map

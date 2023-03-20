@@ -119,5 +119,5 @@ declare class OGCVectorTile extends VectorTile {
      */
     private handleError_;
 }
-import VectorTile_1 from "./VectorTile.js";
+import VectorTile_1 from './VectorTile.js';
 //# sourceMappingURL=OGCVectorTile.d.ts.map

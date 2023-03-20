@@ -125,7 +125,7 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
      */
     renderFeature(feature: import("../../Feature.js").default, squaredTolerance: number, styles: import("../../style/Style.js").default | Array<import("../../style/Style.js").default>, builderGroup: import("../../render/canvas/BuilderGroup.js").default, transform?: import("../../proj.js").TransformFunction | undefined, declutterBuilderGroup?: CanvasBuilderGroup | undefined): boolean;
 }
-import CanvasLayerRenderer from "./Layer.js";
-import ExecutorGroup from "../../render/canvas/ExecutorGroup.js";
-import CanvasBuilderGroup from "../../render/canvas/BuilderGroup.js";
+import CanvasLayerRenderer from './Layer.js';
+import ExecutorGroup from '../../render/canvas/ExecutorGroup.js';
+import CanvasBuilderGroup from '../../render/canvas/BuilderGroup.js';
 //# sourceMappingURL=VectorLayer.d.ts.map

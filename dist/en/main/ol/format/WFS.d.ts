@@ -309,6 +309,6 @@ declare class WFS extends XMLFeature {
      */
     writeTransaction(inserts: Array<import("../Feature.js").default>, updates: Array<import("../Feature.js").default>, deletes: Array<import("../Feature.js").default>, options: WriteTransactionOptions): Node;
 }
-import GMLBase from "./GMLBase.js";
-import XMLFeature from "./XMLFeature.js";
+import GMLBase from './GMLBase.js';
+import XMLFeature from './XMLFeature.js';
 //# sourceMappingURL=WFS.d.ts.map

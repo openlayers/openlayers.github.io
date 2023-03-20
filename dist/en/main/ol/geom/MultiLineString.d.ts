@@ -105,6 +105,6 @@ declare class MultiLineString extends SimpleGeometry {
      */
     setCoordinates(coordinates: Array<Array<import("../coordinate.js").Coordinate>>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
 }
-import SimpleGeometry from "./SimpleGeometry.js";
-import LineString from "./LineString.js";
+import SimpleGeometry from './SimpleGeometry.js';
+import LineString from './LineString.js';
 //# sourceMappingURL=MultiLineString.d.ts.map
