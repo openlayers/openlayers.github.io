@@ -1,42 +1,24 @@
-/**
- * @typedef {Object} TileTextureLookup
- * @property {Set<string>} tileIds The set of tile ids in the lookup.
- * @property {Object<number, Set<TileTexture>>} texturesByZ Tile textures by zoom level.
- */
-/**
- * @return {TileTextureLookup} A new tile texture lookup.
- */
-export function newTileTextureLookup(): TileTextureLookup;
-export namespace Uniforms {
-    const TILE_TEXTURE_ARRAY: string;
-    const TILE_TRANSFORM: string;
-    const TRANSITION_ALPHA: string;
-    const DEPTH: string;
-    const TEXTURE_PIXEL_WIDTH: string;
-    const TEXTURE_PIXEL_HEIGHT: string;
-    const TEXTURE_RESOLUTION: string;
-    const TEXTURE_ORIGIN_X: string;
-    const TEXTURE_ORIGIN_Y: string;
-    const RENDER_EXTENT: string;
-    const RESOLUTION: string;
-    const ZOOM: string;
-}
+export const Uniforms: {
+    TILE_TEXTURE_ARRAY: string;
+    TEXTURE_PIXEL_WIDTH: string;
+    TEXTURE_PIXEL_HEIGHT: string;
+    TEXTURE_RESOLUTION: string;
+    TEXTURE_ORIGIN_X: string;
+    TEXTURE_ORIGIN_Y: string;
+    TILE_TRANSFORM: string;
+    TRANSITION_ALPHA: string;
+    DEPTH: string;
+    RENDER_EXTENT: string;
+    RESOLUTION: string;
+    ZOOM: string;
+    GLOBAL_ALPHA: string;
+    PROJECTION_MATRIX: string;
+    SCREEN_TO_WORLD_MATRIX: string;
+};
 export namespace Attributes {
     const TEXTURE_COORD: string;
 }
 export default WebGLTileLayerRenderer;
-export type TileTextureLookup = {
-    /**
-     * The set of tile ids in the lookup.
-     */
-    tileIds: Set<string>;
-    /**
-     * Tile textures by zoom level.
-     */
-    texturesByZ: {
-        [x: number]: Set<TileTexture>;
-    };
-};
 export type Options = {
     /**
      * Vertex shader source.
@@ -63,6 +45,8 @@ export type Options = {
     cacheSize?: number | undefined;
 };
 export type LayerType = import("../../layer/WebGLTile.js").default;
+export type TileTextureType = import("../../webgl/TileTexture.js").TileType;
+export type TileTextureRepresentation = import("../../webgl/TileTexture.js").default;
 /**
  * @typedef {Object} Options
  * @property {string} vertexShader Vertex shader source.
@@ -76,48 +60,23 @@ export type LayerType = import("../../layer/WebGLTile.js").default;
  * @typedef {import("../../layer/WebGLTile.js").default} LayerType
  */
 /**
+ * @typedef {import("../../webgl/TileTexture.js").TileType} TileTextureType
+ */
+/**
+ * @typedef {import("../../webgl/TileTexture.js").default} TileTextureRepresentation
+ */
+/**
  * @classdesc
  * WebGL renderer for tile layers.
- * @extends {WebGLLayerRenderer<LayerType>}
+ * @extends {WebGLBaseTileLayerRenderer<LayerType, TileTextureType, TileTextureRepresentation>}
  * @api
  */
-declare class WebGLTileLayerRenderer extends WebGLLayerRenderer<import("../../layer/WebGLTile.js").default> {
+declare class WebGLTileLayerRenderer extends WebGLBaseTileLayerRenderer<import("../../layer/WebGLTile.js").default, import("../../webgl/TileTexture.js").TileType, TileTexture> {
     /**
      * @param {LayerType} tileLayer Tile layer.
      * @param {Options} options Options.
      */
     constructor(tileLayer: LayerType, options: Options);
-    /**
-     * The last call to `renderFrame` was completed with all tiles loaded
-     * @type {boolean}
-     */
-    renderComplete: boolean;
-    /**
-     * This transform converts texture coordinates to screen coordinates.
-     * @type {import("../../transform.js").Transform}
-     * @private
-     */
-    private tileTransform_;
-    /**
-     * @type {Array<number>}
-     * @private
-     */
-    private tempMat4_;
-    /**
-     * @type {import("../../TileRange.js").default}
-     * @private
-     */
-    private tempTileRange_;
-    /**
-     * @type {import("../../tilecoord.js").TileCoord}
-     * @private
-     */
-    private tempTileCoord_;
-    /**
-     * @type {import("../../size.js").Size}
-     * @private
-     */
-    private tempSize_;
     /**
      * @type {WebGLProgram}
      * @private
@@ -150,68 +109,23 @@ declare class WebGLTileLayerRenderer extends WebGLLayerRenderer<import("../../la
      */
     private indices_;
     /**
-     * @type {import("../../structs/LRUCache.js").default<import("../../webgl/TileTexture.js").default>}
-     * @private
-     */
-    private tileTextureCache_;
-    /**
      * @type {Array<import("../../webgl/PaletteTexture.js").default>}
      * @private
      */
     private paletteTextures_;
     /**
-     * @private
-     * @type {import("../../Map.js").FrameState|null}
-     */
-    private frameState_;
-    /**
-     * @private
-     * @type {import("../../proj/Projection.js").default}
-     */
-    private projection_;
-    /**
      * @param {Options} options Options.
      */
     reset(options: Options): void;
-    /**
-     * @param {import("../../webgl/TileTexture").TileType} tile Tile.
-     * @return {boolean} Tile is drawable.
-     * @private
-     */
-    private isDrawableTile_;
-    /**
-     * @param {import("../../Map.js").FrameState} frameState Frame state.
-     * @param {import("../../extent.js").Extent} extent The extent to be rendered.
-     * @param {number} initialZ The zoom level.
-     * @param {TileTextureLookup} tileTextureLookup The zoom level.
-     * @param {number} preload Number of additional levels to load.
-     */
-    enqueueTiles(frameState: import("../../Map.js").FrameState, extent: import("../../extent.js").Extent, initialZ: number, tileTextureLookup: TileTextureLookup, preload: number): void;
-    /**
-     * Render the layer.
-     * @param {import("../../Map.js").FrameState} frameState Frame state.
-     * @return {HTMLElement} The rendered element.
-     */
-    renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
+    createTileRepresentation(options: any): TileTexture;
+    beforeTilesRender(frameState: any, tilesWithAlpha: any): void;
+    renderTile(tileTexture: any, tileTransform: any, frameState: any, renderExtent: any, tileResolution: any, tileSize: any, tileOrigin: any, tileExtent: any, depth: any, gutter: any, alpha: any): void;
     /**
      * @param {import("../../pixel.js").Pixel} pixel Pixel.
      * @return {Uint8ClampedArray|Uint8Array|Float32Array|DataView} Data at the pixel location.
      */
     getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray | Uint8Array | Float32Array | DataView;
-    /**
-     * Look for tiles covering the provided tile coordinate at an alternate
-     * zoom level.  Loaded tiles will be added to the provided tile texture lookup.
-     * @param {import("../../tilegrid/TileGrid.js").default} tileGrid The tile grid.
-     * @param {import("../../tilecoord.js").TileCoord} tileCoord The target tile coordinate.
-     * @param {number} altZ The alternate zoom level.
-     * @param {TileTextureLookup} tileTextureLookup Lookup of
-     * tile textures by zoom level.
-     * @return {boolean} The tile coordinate is covered by loaded tiles at the alternate zoom level.
-     * @private
-     */
-    private findAltTiles_;
-    clearCache(): void;
 }
 import TileTexture from '../../webgl/TileTexture.js';
-import WebGLLayerRenderer from './Layer.js';
+import WebGLBaseTileLayerRenderer from './TileLayerBase.js';
 //# sourceMappingURL=TileLayer.d.ts.map
