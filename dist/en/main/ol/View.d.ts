@@ -361,7 +361,7 @@ export type State = {
 /**
  * Like {@link import ("./Map.js").FrameState}, but just `viewState` and `extent`.
  */
-export type ViewStateAndExtent = {
+export type ViewStateLayerStateExtent = {
     /**
      * View state.
      */
@@ -370,6 +370,10 @@ export type ViewStateAndExtent = {
      * Extent.
      */
     extent: import("./extent.js").Extent;
+    /**
+     * Layer states.
+     */
+    layerStatesArray?: import("./layer/Layer.js").State[] | undefined;
 };
 export type ViewObjectEventTypes = import("./ObjectEventType").Types | 'change:center' | 'change:resolution' | 'change:rotation';
 /**
@@ -835,9 +839,9 @@ declare class View extends BaseObject {
      */
     getState(): State;
     /**
-     * @return {ViewStateAndExtent} Like `FrameState`, but just `viewState` and `extent`.
+     * @return {ViewStateLayerStateExtent} Like `FrameState`, but just `viewState` and `extent`.
      */
-    getViewStateAndExtent(): ViewStateAndExtent;
+    getViewStateAndExtent(): ViewStateLayerStateExtent;
     /**
      * Get the current zoom level. This method may return non-integer zoom levels
      * if the view does not constrain the resolution, or if an interaction or

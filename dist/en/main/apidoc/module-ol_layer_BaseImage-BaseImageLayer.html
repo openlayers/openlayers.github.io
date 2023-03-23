@@ -926,7 +926,7 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
       </td>
       <td class="setter">yes</td>
       <td class="event"><code>change:visible</code></td>
-      <td class="description last"><p>The visibility of the layer.</p></td>
+      <td class="description last"><p>The value of the <code>visible</code> property of the layer.</p></td>
     </tr>
     
 
@@ -1328,7 +1328,7 @@ Value.
         <div class="anchor" id="getAttributions">
         </div>
         <h4 class="name">
-            getAttributions<span class="signature">(view)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;string>}</span>
+            getAttributions<span class="signature">(<span class="optional">view</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;string>}</span>
             
                 <span class="inherited"><a href="module-ol_layer_Layer-Layer.html#getAttributions">inherited</a></span>
             
@@ -1338,7 +1338,7 @@ Value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L319">line 319</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L338">line 338</a>
         </div>
         
     </div>
@@ -1391,9 +1391,9 @@ Value.
 <span class="param-type"><a href="module-ol_View-View.html">View</a></span>
 |
 
-<span class="param-type"><a href="module-ol_View.html#~ViewStateAndExtent">ViewStateAndExtent</a></span>
+<span class="param-type"><a href="module-ol_View.html#~ViewStateLayerStateExtent">ViewStateLayerStateExtent</a></span>
 
-
+ | undefined
                 
             
             </td>
@@ -1402,7 +1402,8 @@ Value.
 
             <td  class="description last">
                 
-                <p>View or  <a href="module-ol_Map.html#~FrameState"><code>FrameState</code></a>.</p></td>
+                <p>View or <a href="module-ol_Map.html#~FrameState"><code>FrameState</code></a>.
+Only required when the layer is not added to a map.</p></td>
         </tr>
 
 	
@@ -2400,7 +2401,7 @@ The layer source (or <code>null</code> if not yet set).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L274">line 274</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L275">line 275</a>
         </div>
         
     </div>
@@ -2413,7 +2414,8 @@ The layer source (or <code>null</code> if not yet set).
 
     
     <div class="description">
-        <p>Return the visibility of the layer (<code>true</code> or <code>false</code>).</p>
+        <p>Return the value of this layer's <code>visible</code> property. To find out whether the layer
+is visible on a map, use <code>isVisible()</code> instead.</p>
     </div>
     
 
@@ -2465,7 +2467,7 @@ The layer source (or <code>null</code> if not yet set).
 
 
 <h5>Returns:</h5>
-The visibility of the layer.
+The value of the <code>visible</code> property of the layer.
 <br />
 
     
@@ -2492,7 +2494,7 @@ The visibility of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L285">line 285</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L286">line 286</a>
         </div>
         
     </div>
@@ -2575,7 +2577,7 @@ The Z-index of the layer.
         <div class="anchor" id="isVisible">
         </div>
         <h4 class="name">
-            isVisible<span class="signature">(view)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
+            isVisible<span class="signature">(<span class="optional">view</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
             
                 <span class="inherited"><a href="module-ol_layer_Layer-Layer.html#isVisible">inherited</a></span>
             
@@ -2585,7 +2587,7 @@ The Z-index of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L295">line 295</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L297">line 297</a>
         </div>
         
     </div>
@@ -2598,8 +2600,9 @@ The Z-index of the layer.
 
     
     <div class="description">
-        <p>The layer is visible in the given view, i.e. within its min/max resolution or zoom and
-extent, and <code>getVisible()</code> is <code>true</code>.</p>
+        <p>The layer is visible on the map view, i.e. within its min/max resolution or zoom and
+extent, not set to <code>visible: false</code>, and not inside a layer group that is set
+to <code>visible: false</code>.</p>
     </div>
     
 
@@ -2639,9 +2642,9 @@ extent, and <code>getVisible()</code> is <code>true</code>.</p>
 <span class="param-type"><a href="module-ol_View-View.html">View</a></span>
 |
 
-<span class="param-type"><a href="module-ol_View.html#~ViewStateAndExtent">ViewStateAndExtent</a></span>
+<span class="param-type"><a href="module-ol_View.html#~ViewStateLayerStateExtent">ViewStateLayerStateExtent</a></span>
 
-
+ | undefined
                 
             
             </td>
@@ -2650,7 +2653,8 @@ extent, and <code>getVisible()</code> is <code>true</code>.</p>
 
             <td  class="description last">
                 
-                <p>View or <a href="module-ol_Map.html#~FrameState"><code>FrameState</code></a>.</p></td>
+                <p>View or <a href="module-ol_Map.html#~FrameState"><code>FrameState</code></a>.
+Only required when the layer is not added to a map.</p></td>
         </tr>
 
 	
@@ -2699,7 +2703,7 @@ extent, and <code>getVisible()</code> is <code>true</code>.</p>
 
 
 <h5>Returns:</h5>
-The layer is visible in the current view.
+The layer is visible in the map view.
 <br />
 
     
@@ -3238,7 +3242,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L305">line 305</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L306">line 306</a>
         </div>
         
     </div>
@@ -3370,7 +3374,7 @@ will be visible at all extents.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L395">line 395</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L414">line 414</a>
         </div>
         
     </div>
@@ -3506,7 +3510,7 @@ use <code>#setMap(null)</code>.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L315">line 315</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L316">line 316</a>
         </div>
         
     </div>
@@ -3634,7 +3638,7 @@ use <code>#setMap(null)</code>.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L337">line 337</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L338">line 338</a>
         </div>
         
     </div>
@@ -3764,7 +3768,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L325">line 325</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L326">line 326</a>
         </div>
         
     </div>
@@ -3892,7 +3896,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L349">line 349</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L350">line 350</a>
         </div>
         
     </div>
@@ -4022,7 +4026,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L359">line 359</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L360">line 360</a>
         </div>
         
     </div>
@@ -4304,7 +4308,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L438">line 438</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L457">line 457</a>
         </div>
         
     </div>
@@ -4435,7 +4439,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L370">line 370</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L371">line 371</a>
         </div>
         
     </div>
@@ -4563,7 +4567,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L381">line 381</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L382">line 382</a>
         </div>
         
     </div>

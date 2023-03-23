@@ -291,20 +291,23 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      */
     getData(pixel: import("../pixel").Pixel): Uint8ClampedArray | Uint8Array | Float32Array | DataView | null;
     /**
-     * The layer is visible in the given view, i.e. within its min/max resolution or zoom and
-     * extent, and `getVisible()` is `true`.
-     * @param {View|import("../View.js").ViewStateAndExtent} view View or {@link import("../Map.js").FrameState}.
-     * @return {boolean} The layer is visible in the current view.
+     * The layer is visible on the map view, i.e. within its min/max resolution or zoom and
+     * extent, not set to `visible: false`, and not inside a layer group that is set
+     * to `visible: false`.
+     * @param {View|import("../View.js").ViewStateLayerStateExtent} [view] View or {@link import("../Map.js").FrameState}.
+     * Only required when the layer is not added to a map.
+     * @return {boolean} The layer is visible in the map view.
      * @api
      */
-    isVisible(view: View | import("../View.js").ViewStateAndExtent): boolean;
+    isVisible(view?: View | import("../View.js").ViewStateLayerStateExtent | undefined): boolean;
     /**
      * Get the attributions of the source of this layer for the given view.
-     * @param {View|import("../View.js").ViewStateAndExtent} view View or  {@link import("../Map.js").FrameState}.
+     * @param {View|import("../View.js").ViewStateLayerStateExtent} [view] View or {@link import("../Map.js").FrameState}.
+     * Only required when the layer is not added to a map.
      * @return {Array<string>} Attributions for this layer at the given view.
      * @api
      */
-    getAttributions(view: View | import("../View.js").ViewStateAndExtent): Array<string>;
+    getAttributions(view?: View | import("../View.js").ViewStateLayerStateExtent | undefined): Array<string>;
     /**
      * Called when a layer is not visible during a map render.
      */
