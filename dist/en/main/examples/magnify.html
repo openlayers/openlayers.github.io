@@ -197,11 +197,11 @@ const map &#x3D; new Map({
 
 let radius &#x3D; 75;
 document.addEventListener(&#x27;keydown&#x27;, function (evt) {
-  if (evt.which &#x3D;&#x3D;&#x3D; 38) {
+  if (evt.key &#x3D;&#x3D;&#x3D; &#x27;ArrowUp&#x27;) {
     radius &#x3D; Math.min(radius + 5, 150);
     map.render();
     evt.preventDefault();
-  } else if (evt.which &#x3D;&#x3D;&#x3D; 40) {
+  } else if (evt.key &#x3D;&#x3D;&#x3D; &#x27;ArrowDown&#x27;) {
     radius &#x3D; Math.max(radius - 5, 25);
     map.render();
     evt.preventDefault();
