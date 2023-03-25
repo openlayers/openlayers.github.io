@@ -339,24 +339,53 @@ image.addEventListener(&#x27;load&#x27;, () &#x3D;&gt; {
 });
 
 widthInput.addEventListener(&#x27;input&#x27;, (event) &#x3D;&gt; {
-  iconStyle.getImage().setWidth(event.target.value);
-  iconFeature.changed();
+  const currentIcon &#x3D; iconStyle.getImage();
+  iconStyle.setImage(
+    new Icon({
+      src: &#x27;data/icon.png&#x27;,
+      width: event.target.value,
+      height: currentIcon.getHeight(),
+    })
+  );
+  iconFeature.setStyle(iconStyle);
   scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale());
 });
 heightInput.addEventListener(&#x27;input&#x27;, (event) &#x3D;&gt; {
-  iconStyle.getImage().setHeight(event.target.value);
-  iconFeature.changed();
+  const currentIcon &#x3D; iconStyle.getImage();
+  iconStyle.setImage(
+    new Icon({
+      src: &#x27;data/icon.png&#x27;,
+      height: event.target.value,
+      width: currentIcon.getWidth(),
+    })
+  );
+  iconFeature.setStyle(iconStyle);
   scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale());
 });
 clearWidthButton.addEventListener(&#x27;click&#x27;, () &#x3D;&gt; {
   widthInput.value &#x3D; undefined;
-  iconStyle.getImage().setWidth(undefined);
+  const currentIcon &#x3D; iconStyle.getImage();
+  iconStyle.setImage(
+    new Icon({
+      src: &#x27;data/icon.png&#x27;,
+      height: currentIcon.getHeight(),
+    })
+  );
+  iconFeature.setStyle(iconStyle);
   scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale());
   iconFeature.changed();
 });
 clearHeightButton.addEventListener(&#x27;click&#x27;, () &#x3D;&gt; {
   heightInput.value &#x3D; undefined;
-  iconStyle.getImage().setHeight(undefined);
+  const currentIcon &#x3D; iconStyle.getImage();
+  iconStyle.setImage(
+    new Icon({
+      src: &#x27;data/icon.png&#x27;,
+      width: currentIcon.getWidth(),
+    })
+  );
+  iconFeature.setStyle(iconStyle);
+
   scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale());
   iconFeature.changed();
 });
