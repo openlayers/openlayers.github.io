@@ -264,7 +264,7 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
      * @type {number}
      * @private
      */
-    private generateBuffersRun_;
+    private lastSentId;
     /**
      * @private
      */
