@@ -172,6 +172,7 @@ import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import {DragBox, Select} from &#x27;ol/interaction.js&#x27;;
 import {Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
+import {getWidth} from &#x27;ol/extent.js&#x27;;
 import {platformModifierKeyOnly} from &#x27;ol/events/condition.js&#x27;;
 
 const vectorSource &#x3D; new VectorSource({
@@ -235,39 +236,57 @@ const dragBox &#x3D; new DragBox({
 map.addInteraction(dragBox);
 
 dragBox.on(&#x27;boxend&#x27;, function () {
-  const extent &#x3D; dragBox.getGeometry().getExtent();
-  const boxFeatures &#x3D; vectorSource
-    .getFeaturesInExtent(extent)
-    .filter((feature) &#x3D;&gt; feature.getGeometry().intersectsExtent(extent));
+  const boxExtent &#x3D; dragBox.getGeometry().getExtent();
 
-  // features that intersect the box geometry are added to the
-  // collection of selected features
+  // if the extent crosses the antimeridian process each world separately
+  const worldExtent &#x3D; map.getView().getProjection().getExtent();
+  const worldWidth &#x3D; getWidth(worldExtent);
+  const startWorld &#x3D; Math.floor((boxExtent[0] - worldExtent[0]) / worldWidth);
+  const endWorld &#x3D; Math.floor((boxExtent[2] - worldExtent[0]) / worldWidth);
 
-  // if the view is not obliquely rotated the box geometry and
-  // its extent are equalivalent so intersecting features can
-  // be added directly to the collection
-  const rotation &#x3D; map.getView().getRotation();
-  const oblique &#x3D; rotation % (Math.PI / 2) !&#x3D;&#x3D; 0;
+  for (let world &#x3D; startWorld; world &lt;&#x3D; endWorld; ++world) {
+    const left &#x3D; Math.max(boxExtent[0] - world * worldWidth, worldExtent[0]);
+    const right &#x3D; Math.min(boxExtent[2] - world * worldWidth, worldExtent[2]);
+    const extent &#x3D; [left, boxExtent[1], right, boxExtent[3]];
 
-  // when the view is obliquely rotated the box extent will
-  // exceed its geometry so both the box and the candidate
-  // feature geometries are rotated around a common anchor
-  // to confirm that, with the box geometry aligned with its
-  // extent, the geometries intersect
-  if (oblique) {
-    const anchor &#x3D; [0, 0];
-    const geometry &#x3D; dragBox.getGeometry().clone();
-    geometry.rotate(-rotation, anchor);
-    const extent &#x3D; geometry.getExtent();
-    boxFeatures.forEach(function (feature) {
-      const geometry &#x3D; feature.getGeometry().clone();
+    const boxFeatures &#x3D; vectorSource
+      .getFeaturesInExtent(extent)
+      .filter(
+        (feature) &#x3D;&gt;
+          !selectedFeatures.getArray().includes(feature) &amp;&amp;
+          feature.getGeometry().intersectsExtent(extent)
+      );
+
+    // features that intersect the box geometry are added to the
+    // collection of selected features
+
+    // if the view is not obliquely rotated the box geometry and
+    // its extent are equalivalent so intersecting features can
+    // be added directly to the collection
+    const rotation &#x3D; map.getView().getRotation();
+    const oblique &#x3D; rotation % (Math.PI / 2) !&#x3D;&#x3D; 0;
+
+    // when the view is obliquely rotated the box extent will
+    // exceed its geometry so both the box and the candidate
+    // feature geometries are rotated around a common anchor
+    // to confirm that, with the box geometry aligned with its
+    // extent, the geometries intersect
+    if (oblique) {
+      const anchor &#x3D; [0, 0];
+      const geometry &#x3D; dragBox.getGeometry().clone();
+      geometry.translate(-world * worldWidth, 0);
       geometry.rotate(-rotation, anchor);
-      if (geometry.intersectsExtent(extent)) {
-        selectedFeatures.push(feature);
-      }
-    });
-  } else {
-    selectedFeatures.extend(boxFeatures);
+      const extent &#x3D; geometry.getExtent();
+      boxFeatures.forEach(function (feature) {
+        const geometry &#x3D; feature.getGeometry().clone();
+        geometry.rotate(-rotation, anchor);
+        if (geometry.intersectsExtent(extent)) {
+          selectedFeatures.push(feature);
+        }
+      });
+    } else {
+      selectedFeatures.extend(boxFeatures);
+    }
   }
 });
 
@@ -279,7 +298,7 @@ dragBox.on(&#x27;boxstart&#x27;, function () {
 const infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
 
 selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function () {
-  const names &#x3D; selectedFeatures.getArray().map(function (feature) {
+  const names &#x3D; selectedFeatures.getArray().map((feature) &#x3D;&gt; {
     return feature.get(&#x27;ECO_NAME&#x27;);
   });
   if (names.length &gt; 0) {
