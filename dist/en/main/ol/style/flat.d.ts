@@ -112,6 +112,10 @@
  * `top-left` or `top-right`.
  * @property {number} [icon-opacity=1] Opacity of the icon.
  * @property {number|import("../size.js").Size} [icon-scale=1] Scale.
+ * @property {number} [icon-width] Width of the icon. If not specified, the actual image width will be used. Cannot be combined
+ * with `scale`.
+ * @property {number} [icon-height] Height of the icon. If not specified, the actual image height will be used. Cannot be combined
+ * with `scale`.
  * @property {number} [icon-rotation=0] Rotation in radians (positive rotation clockwise).
  * @property {boolean} [icon-rotate-with-view=false] Whether to rotate the icon with the view.
  * @property {import("../size.js").Size} [icon-size] Icon size in pixel. Can be used together with `icon-offset` to define the
@@ -440,6 +444,16 @@ export type FlatIcon = {
      * Scale.
      */
     "icon-scale"?: number | import("../size.js").Size | undefined;
+    /**
+     * Width of the icon. If not specified, the actual image width will be used. Cannot be combined
+     * with `scale`.
+     */
+    "icon-width"?: number | undefined;
+    /**
+     * Height of the icon. If not specified, the actual image height will be used. Cannot be combined
+     * with `scale`.
+     */
+    "icon-height"?: number | undefined;
     /**
      * Rotation in radians (positive rotation clockwise).
      */

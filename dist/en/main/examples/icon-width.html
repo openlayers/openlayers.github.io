@@ -306,11 +306,10 @@
         <pre><code id="example-js-source" class="language-js">import Feature from &#x27;ol/Feature.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import Point from &#x27;ol/geom/Point.js&#x27;;
-import TileJSON from &#x27;ol/source/TileJSON.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import {Icon, Style} from &#x27;ol/style.js&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+import {Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
 
 const widthInput &#x3D; document.getElementById(&#x27;width-input&#x27;);
 const heightInput &#x3D; document.getElementById(&#x27;height-input&#x27;);
@@ -327,43 +326,35 @@ const iconFeature &#x3D; new Feature({
 const iconStyle &#x3D; new Style({
   image: new Icon({
     src: &#x27;data/icon.png&#x27;,
-    width: widthInput.value,
-    height: heightInput.value,
+    width: Number(widthInput.value),
+    height: Number(heightInput.value),
   }),
 });
 iconFeature.setStyle(iconStyle);
-
-const image &#x3D; iconStyle.getImage().getImage();
-image.addEventListener(&#x27;load&#x27;, () &#x3D;&gt; {
-  scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale());
-});
 
 widthInput.addEventListener(&#x27;input&#x27;, (event) &#x3D;&gt; {
   const currentIcon &#x3D; iconStyle.getImage();
   iconStyle.setImage(
     new Icon({
       src: &#x27;data/icon.png&#x27;,
-      width: event.target.value,
+      width: Number(event.target.value),
       height: currentIcon.getHeight(),
     })
   );
   iconFeature.setStyle(iconStyle);
-  scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale());
 });
 heightInput.addEventListener(&#x27;input&#x27;, (event) &#x3D;&gt; {
   const currentIcon &#x3D; iconStyle.getImage();
   iconStyle.setImage(
     new Icon({
       src: &#x27;data/icon.png&#x27;,
-      height: event.target.value,
+      height: Number(event.target.value),
       width: currentIcon.getWidth(),
     })
   );
   iconFeature.setStyle(iconStyle);
-  scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale());
 });
 clearWidthButton.addEventListener(&#x27;click&#x27;, () &#x3D;&gt; {
-  widthInput.value &#x3D; undefined;
   const currentIcon &#x3D; iconStyle.getImage();
   iconStyle.setImage(
     new Icon({
@@ -372,11 +363,11 @@ clearWidthButton.addEventListener(&#x27;click&#x27;, () &#x3D;&gt; {
     })
   );
   iconFeature.setStyle(iconStyle);
+  widthInput.value &#x3D; Math.round(iconStyle.getImage().getWidth());
   scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale());
-  iconFeature.changed();
+  iconFeature.setStyle(iconStyle);
 });
 clearHeightButton.addEventListener(&#x27;click&#x27;, () &#x3D;&gt; {
-  heightInput.value &#x3D; undefined;
   const currentIcon &#x3D; iconStyle.getImage();
   iconStyle.setImage(
     new Icon({
@@ -385,9 +376,8 @@ clearHeightButton.addEventListener(&#x27;click&#x27;, () &#x3D;&gt; {
     })
   );
   iconFeature.setStyle(iconStyle);
-
-  scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale());
-  iconFeature.changed();
+  heightInput.value &#x3D; Math.round(iconStyle.getImage().getHeight());
+  iconFeature.setStyle(iconStyle);
 });
 
 const vectorSource &#x3D; new VectorSource({
@@ -398,21 +388,18 @@ const vectorLayer &#x3D; new VectorLayer({
   source: vectorSource,
 });
 
-const rasterLayer &#x3D; new TileLayer({
-  source: new TileJSON({
-    url: &#x27;https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json?secure&#x3D;1&#x27;,
-    crossOrigin: &#x27;&#x27;,
-  }),
-});
-
-new Map({
-  layers: [rasterLayer, vectorLayer],
-  target: document.getElementById(&#x27;map&#x27;),
+const map &#x3D; new Map({
+  layers: [vectorLayer],
+  target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
     zoom: 3,
   }),
 });
+map.on(
+  &#x27;rendercomplete&#x27;,
+  () &#x3D;&gt; (scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale()))
+);
 
 function formatScale(scale) {
   return Array.isArray(scale)
