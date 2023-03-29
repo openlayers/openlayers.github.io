@@ -478,8 +478,8 @@ declare class WebGLHelper extends Disposable {
      */
     getAttributeLocation(name: string): number;
     /**
-     * Modifies the given transform to apply the rotation/translation/scaling of the given frame state.
-     * The resulting transform can be used to convert world space coordinates to view coordinates.
+     * Sets the given transform to apply the rotation/translation/scaling of the given frame state.
+     * The resulting transform can be used to convert world space coordinates to view coordinates in the [-1, 1] range.
      * @param {import("../Map.js").FrameState} frameState Frame state.
      * @param {import("../transform").Transform} transform Transform to update.
      * @return {import("../transform").Transform} The updated transform object.

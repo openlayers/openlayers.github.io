@@ -1,3 +1,15 @@
+export const Uniforms: {
+    RENDER_EXTENT: string;
+    GLOBAL_ALPHA: string;
+    PROJECTION_MATRIX: string;
+    OFFSET_SCALE_MATRIX: string;
+    OFFSET_ROTATION_MATRIX: string;
+    TIME: string;
+    ZOOM: string;
+    RESOLUTION: string;
+    SIZE_PX: string;
+    PIXEL_RATIO: string;
+};
 export default WebGLVectorLayerRenderer;
 /**
  * A callback computing
@@ -88,6 +100,11 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @private
      */
     private currentTransform_;
+    /**
+     * @type {import("../../transform.js").Transform}
+     * @private
+     */
+    private currentFrameStateTransform_;
     fillVertexShader_: string;
     fillFragmentShader_: string;
     fillAttributes_: import("../../render/webgl/BatchRenderer").CustomAttribute[];

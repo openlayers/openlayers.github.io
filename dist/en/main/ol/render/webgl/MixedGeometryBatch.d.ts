@@ -1,4 +1,7 @@
 export default MixedGeometryBatch;
+export type RenderFeature = import("../../render/Feature").default;
+export type Feature = import("../../Feature").default;
+export type GeometryType = import("../../geom/Geometry.js").Type;
 /**
  * Object that holds a reference to a feature as well as the raw coordinates of its various geometries
  */
@@ -6,7 +9,7 @@ export type GeometryBatchItem = {
     /**
      * Feature
      */
-    feature: import("../../Feature").default;
+    feature: Feature | RenderFeature;
     /**
      * Array of flat coordinates arrays, one for each geometry related to the feature
      */
@@ -58,10 +61,6 @@ export type PolygonGeometryBatch = {
      */
     renderInstructionsTransform: import("../../transform.js").Transform;
     /**
-     * Converts world space coordinates to screen space; applies to the webgl vertices buffer
-     */
-    verticesBufferTransform: import("../../transform.js").Transform;
-    /**
      * Screen space to world space; applies to the webgl vertices buffer
      */
     invertVerticesBufferTransform: import("../../transform.js").Transform;
@@ -107,10 +106,6 @@ export type LineStringGeometryBatch = {
      */
     renderInstructionsTransform: import("../../transform.js").Transform;
     /**
-     * Converts world space coordinates to screen space; applies to the webgl vertices buffer
-     */
-    verticesBufferTransform: import("../../transform.js").Transform;
-    /**
      * Screen space to world space; applies to the webgl vertices buffer
      */
     invertVerticesBufferTransform: import("../../transform.js").Transform;
@@ -152,17 +147,22 @@ export type PointGeometryBatch = {
      */
     renderInstructionsTransform: import("../../transform.js").Transform;
     /**
-     * Converts world space coordinates to screen space; applies to the webgl vertices buffer
-     */
-    verticesBufferTransform: import("../../transform.js").Transform;
-    /**
      * Screen space to world space; applies to the webgl vertices buffer
      */
     invertVerticesBufferTransform: import("../../transform.js").Transform;
 };
 /**
+ * @typedef {import("../../render/Feature").default} RenderFeature
+ */
+/**
+ * @typedef {import("../../Feature").default} Feature
+ */
+/**
+ * @typedef {import("../../geom/Geometry.js").Type} GeometryType
+ */
+/**
  * @typedef {Object} GeometryBatchItem Object that holds a reference to a feature as well as the raw coordinates of its various geometries
- * @property {import("../../Feature").default} feature Feature
+ * @property {Feature|RenderFeature} feature Feature
  * @property {Array<Array<number>>} flatCoordss Array of flat coordinates arrays, one for each geometry related to the feature
  * @property {number} [verticesCount] Only defined for linestring and polygon batches
  * @property {number} [ringsCount] Only defined for polygon batches
@@ -181,7 +181,6 @@ export type PointGeometryBatch = {
  * @property {WebGLArrayBuffer} verticesBuffer Vertices WebGL buffer
  * @property {WebGLArrayBuffer} indicesBuffer Indices WebGL buffer
  * @property {import("../../transform.js").Transform} renderInstructionsTransform Converts world space coordinates to screen space; applies to the rendering instructions
- * @property {import("../../transform.js").Transform} verticesBufferTransform Converts world space coordinates to screen space; applies to the webgl vertices buffer
  * @property {import("../../transform.js").Transform} invertVerticesBufferTransform Screen space to world space; applies to the webgl vertices buffer
  * @property {number} verticesCount Amount of vertices from geometries in the batch.
  * @property {number} ringsCount How many outer and inner rings in this batch.
@@ -196,7 +195,6 @@ export type PointGeometryBatch = {
  * @property {WebGLArrayBuffer} verticesBuffer Vertices WebGL buffer
  * @property {WebGLArrayBuffer} indicesBuffer Indices WebGL buffer
  * @property {import("../../transform.js").Transform} renderInstructionsTransform Converts world space coordinates to screen space; applies to the rendering instructions
- * @property {import("../../transform.js").Transform} verticesBufferTransform Converts world space coordinates to screen space; applies to the webgl vertices buffer
  * @property {import("../../transform.js").Transform} invertVerticesBufferTransform Screen space to world space; applies to the webgl vertices buffer
  * @property {number} verticesCount Amount of vertices from geometries in the batch.
  */
@@ -210,7 +208,6 @@ export type PointGeometryBatch = {
  * @property {WebGLArrayBuffer} verticesBuffer Vertices WebGL buffer
  * @property {WebGLArrayBuffer} indicesBuffer Indices WebGL buffer
  * @property {import("../../transform.js").Transform} renderInstructionsTransform Converts world space coordinates to screen space; applies to the rendering instructions
- * @property {import("../../transform.js").Transform} verticesBufferTransform Converts world space coordinates to screen space; applies to the webgl vertices buffer
  * @property {import("../../transform.js").Transform} invertVerticesBufferTransform Screen space to world space; applies to the webgl vertices buffer
  */
 /**
@@ -246,60 +243,51 @@ declare class MixedGeometryBatch {
      */
     lineStringBatch: LineStringGeometryBatch;
     /**
-     * @param {Array<import("../../Feature").default>} features Array of features to add to the batch
+     * @param {Array<Feature|RenderFeature>} features Array of features to add to the batch
      */
-    addFeatures(features: Array<import("../../Feature").default>): void;
+    addFeatures(features: Array<Feature | RenderFeature>): void;
     /**
-     * @param {import("../../Feature").default} feature Feature to add to the batch
+     * @param {Feature|RenderFeature} feature Feature to add to the batch
      */
-    addFeature(feature: import("../../Feature").default): void;
+    addFeature(feature: Feature | RenderFeature): void;
     /**
-     * @param {import("../../Feature").default} feature Feature
-     * @return {GeometryBatchItem} Batch item added (or existing one)
-     * @private
-     */
-    private addFeatureEntryInPointBatch_;
-    /**
-     * @param {import("../../Feature").default} feature Feature
-     * @return {GeometryBatchItem} Batch item added (or existing one)
-     * @private
-     */
-    private addFeatureEntryInLineStringBatch_;
-    /**
-     * @param {import("../../Feature").default} feature Feature
-     * @return {GeometryBatchItem} Batch item added (or existing one)
-     * @private
-     */
-    private addFeatureEntryInPolygonBatch_;
-    /**
-     * @param {import("../../Feature").default} feature Feature
+     * @param {Feature|RenderFeature} feature Feature
      * @private
      */
     private clearFeatureEntryInPointBatch_;
     /**
-     * @param {import("../../Feature").default} feature Feature
+     * @param {Feature|RenderFeature} feature Feature
      * @private
      */
     private clearFeatureEntryInLineStringBatch_;
     /**
-     * @param {import("../../Feature").default} feature Feature
+     * @param {Feature|RenderFeature} feature Feature
      * @private
      */
     private clearFeatureEntryInPolygonBatch_;
     /**
-     * @param {import("../../geom").Geometry} geometry Geometry
-     * @param {import("../../Feature").default} feature Feature
+     * @param {import("../../geom").Geometry|RenderFeature} geometry Geometry
+     * @param {Feature|RenderFeature} feature Feature
      * @private
      */
     private addGeometry_;
     /**
-     * @param {import("../../Feature").default} feature Feature
+     * @param {GeometryType} type Geometry type
+     * @param {Array<number>} flatCoords Flat coordinates
+     * @param {Array<number> | Array<Array<number>> | null} ends Coordinate ends
+     * @param {Feature|RenderFeature} feature Feature
+     * @param {string} featureUid Feature uid
+     * @private
      */
-    changeFeature(feature: import("../../Feature").default): void;
+    private addCoordinates_;
     /**
-     * @param {import("../../Feature").default} feature Feature
+     * @param {Feature|RenderFeature} feature Feature
      */
-    removeFeature(feature: import("../../Feature").default): void;
+    changeFeature(feature: Feature | RenderFeature): void;
+    /**
+     * @param {Feature|RenderFeature} feature Feature
+     */
+    removeFeature(feature: Feature | RenderFeature): void;
     clear(): void;
 }
 import WebGLArrayBuffer from '../../webgl/Buffer.js';

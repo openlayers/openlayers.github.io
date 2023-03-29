@@ -12,7 +12,7 @@ export type CustomAttribute = {
      * This callback computes the numerical value of the
      * attribute for a given feature.
      */
-    callback: (arg0: import("../../Feature").default) => number;
+    callback: (arg0: import("../../Feature").FeatureLike) => number;
 };
 /**
  * @classdesc Abstract class for batch renderers.
@@ -55,23 +55,26 @@ declare class AbstractBatchRenderer {
      */
     protected customAttributes: Array<CustomAttribute>;
     /**
-     * Rebuild rendering instructions and webgl buffers based on the provided frame state
-     * Note: this is a costly operation.
+     * Rebuild rendering instructions and generate webgl buffers from them
      * @param {import("./MixedGeometryBatch.js").GeometryBatch} batch Geometry batch
-     * @param {import("../../Map").FrameState} frameState Frame state.
+     * @param {import("../../transform.js").Transform} currentTransform Transform
      * @param {import("../../geom/Geometry.js").Type} geometryType Geometry type
      * @param {function(): void} callback Function called once the render buffers are updated
      */
-    rebuild(batch: import("./MixedGeometryBatch.js").GeometryBatch, frameState: import("../../Map").FrameState, geometryType: import("../../geom/Geometry.js").Type, callback: () => void): void;
+    rebuild(batch: import("./MixedGeometryBatch.js").GeometryBatch, currentTransform: import("../../transform.js").Transform, geometryType: import("../../geom/Geometry.js").Type, callback: () => void): void;
     /**
      * Render the geometries in the batch. This will also update the current transform used for rendering according to
      * the invert transform of the webgl buffers
      * @param {import("./MixedGeometryBatch.js").GeometryBatch} batch Geometry batch
-     * @param {import("../../transform.js").Transform} currentTransform Transform
-     * @param {import("../../Map.js").FrameState} frameState Frame state.
-     * @param {number} offsetX X offset
      */
-    render(batch: import("./MixedGeometryBatch.js").GeometryBatch, currentTransform: import("../../transform.js").Transform, frameState: import("../../Map.js").FrameState, offsetX: number): void;
+    render(batch: import("./MixedGeometryBatch.js").GeometryBatch): void;
+    /**
+     * Render the geometries in the batch. This will also update the current transform used for rendering according to
+     * the invert transform of the webgl buffers
+     * @param {import("./MixedGeometryBatch.js").GeometryBatch} batch Geometry batch
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     */
+    preRender(batch: import("./MixedGeometryBatch.js").GeometryBatch, frameState: import("../../Map.js").FrameState): void;
     /**
      * Rebuild rendering instructions based on the provided frame state
      * This is specific to the geometry type and has to be implemented by subclasses.
