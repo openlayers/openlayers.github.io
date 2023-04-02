@@ -48,6 +48,10 @@ export type Options = {
      * The tile representation cache size.
      */
     cacheSize?: number | undefined;
+    /**
+     * Post-processes definitions.
+     */
+    postProcesses?: import("./Layer.js").PostProcessesOptions[] | undefined;
 };
 export type BaseLayerType = import("../../layer/BaseTile.js").default<any, any>;
 /**
@@ -55,6 +59,7 @@ export type BaseLayerType = import("../../layer/BaseTile.js").default<any, any>;
  * @property {Object<string, import("../../webgl/Helper").UniformValue>} [uniforms] Additional uniforms
  * made available to shaders.
  * @property {number} [cacheSize=512] The tile representation cache size.
+ * @property {Array<import('./Layer.js').PostProcessesOptions>} [postProcesses] Post-processes definitions.
  */
 /**
  * @typedef {import("../../layer/BaseTile.js").default} BaseLayerType
