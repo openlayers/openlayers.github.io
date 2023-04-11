@@ -136,7 +136,7 @@ declare class WebGLPointsLayer<VectorSourceType extends import("../source/Vector
     constructor(options: Options<VectorSourceType>);
     /**
      * @private
-     * @type {import('../webgl/ShaderBuilder.js').StyleParseResult}
+     * @type {import('../webgl/styleparser.js').StyleParseResult}
      */
     private parseResult_;
     /**

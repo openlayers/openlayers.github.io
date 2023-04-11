@@ -7,7 +7,7 @@ export const Uniforms: {
     TIME: string;
     ZOOM: string;
     RESOLUTION: string;
-    SIZE_PX: string;
+    VIEWPORT_SIZE_PX: string;
     PIXEL_RATIO: string;
 };
 export default WebGLVectorLayerRenderer;

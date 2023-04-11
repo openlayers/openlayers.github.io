@@ -24,7 +24,7 @@ export namespace DefaultUniform {
     const TIME: string;
     const ZOOM: string;
     const RESOLUTION: string;
-    const SIZE_PX: string;
+    const VIEWPORT_SIZE_PX: string;
     const PIXEL_RATIO: string;
 }
 /**

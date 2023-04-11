@@ -1,22 +1,4 @@
 /**
- * @typedef {Object} StyleParseResult
- * @property {ShaderBuilder} builder Shader builder pre-configured according to a given style
- * @property {Object<string,import("./Helper").UniformValue>} uniforms Uniform definitions.
- * @property {Array<import("../renderer/webgl/PointsLayer").CustomAttribute>} attributes Attribute descriptions.
- */
-/**
- * Parses a {@link import("../style/literal").LiteralStyle} object and returns a {@link ShaderBuilder}
- * object that has been configured according to the given style, as well as `attributes` and `uniforms`
- * arrays to be fed to the `WebGLPointsRenderer` class.
- *
- * Also returns `uniforms` and `attributes` properties as expected by the
- * {@link module:ol/renderer/webgl/PointsLayer~WebGLPointsLayerRenderer}.
- *
- * @param {import("../style/literal").LiteralStyle} style Literal style.
- * @return {StyleParseResult} Result containing shader params, attributes and uniforms.
- */
-export function parseLiteralStyle(style: import("../style/literal").LiteralStyle): StyleParseResult;
-/**
  * @typedef {Object} VaryingDescription
  * @property {string} name Varying name, as will be declared in the header.
  * @property {string} type Varying type, either `float`, `vec2`, `vec4`...
@@ -33,7 +15,7 @@ export function parseLiteralStyle(style: import("../style/literal").LiteralStyle
  *   .addVarying('v_width', 'float', 'a_width')
  *   .addUniform('u_time')
  *   .setColorExpression('...')
- *   .setSizeExpression('...')
+ *   .setSymbolSizeExpression('...')
  *   .outputSymbolFragmentShader();
  * ```
  */
@@ -60,22 +42,22 @@ export class ShaderBuilder {
      * @type {string}
      * @private
      */
-    private sizeExpression;
+    private symbolSizeExpression;
     /**
      * @type {string}
      * @private
      */
-    private rotationExpression;
+    private symbolRotationExpression;
     /**
      * @type {string}
      * @private
      */
-    private offsetExpression;
+    private symbolOffsetExpression;
     /**
      * @type {string}
      * @private
      */
-    private colorExpression;
+    private symbolColorExpression;
     /**
      * @type {string}
      * @private
@@ -90,7 +72,22 @@ export class ShaderBuilder {
      * @type {boolean}
      * @private
      */
-    private rotateWithView;
+    private symbolRotateWithView;
+    /**
+     * @type {string}
+     * @private
+     */
+    private strokeWidthExpression;
+    /**
+     * @type {string}
+     * @private
+     */
+    private strokeColorExpression;
+    /**
+     * @type {string}
+     * @private
+     */
+    private fillColorExpression;
     /**
      * Adds a uniform accessible in both fragment and vertex shaders.
      * The given name should include a type, such as `sampler2D u_texture`.
@@ -121,7 +118,7 @@ export class ShaderBuilder {
      * @param {string} expression Size expression
      * @return {ShaderBuilder} the builder object
      */
-    setSizeExpression(expression: string): ShaderBuilder;
+    setSymbolSizeExpression(expression: string): ShaderBuilder;
     /**
      * Sets an expression to compute the rotation of the shape.
      * This expression can use all the uniforms and attributes available
@@ -129,7 +126,7 @@ export class ShaderBuilder {
      * @param {string} expression Size expression
      * @return {ShaderBuilder} the builder object
      */
-    setRotationExpression(expression: string): ShaderBuilder;
+    setSymbolRotationExpression(expression: string): ShaderBuilder;
     /**
      * Sets an expression to compute the offset of the symbol from the point center.
      * This expression can use all the uniforms and attributes available
@@ -146,7 +143,7 @@ export class ShaderBuilder {
      * @param {string} expression Color expression
      * @return {ShaderBuilder} the builder object
      */
-    setColorExpression(expression: string): ShaderBuilder;
+    setSymbolColorExpression(expression: string): ShaderBuilder;
     /**
      * Sets an expression to compute the texture coordinates of the vertices.
      * This expression can use all the uniforms and attributes available
@@ -173,28 +170,14 @@ export class ShaderBuilder {
      */
     setSymbolRotateWithView(rotateWithView: boolean): ShaderBuilder;
     /**
-     * @return {string} Previously set size expression
+     * @param {string} expression Stroke width expression, returning value in pixels
+     * @return {ShaderBuilder} the builder object
      */
-    getSizeExpression(): string;
+    setStrokeWidthExpression(expression: string): ShaderBuilder;
+    setStrokeColorExpression(expression: any): ShaderBuilder;
+    setFillColorExpression(expression: any): ShaderBuilder;
     /**
-     * @return {string} Previously set symbol offset expression
-     */
-    getOffsetExpression(): string;
-    /**
-     * @return {string} Previously set color expression
-     */
-    getColorExpression(): string;
-    /**
-     * @return {string} Previously set texture coordinate expression
-     */
-    getTextureCoordinateExpression(): string;
-    /**
-     * @return {string} Previously set fragment discard expression
-     */
-    getFragmentDiscardExpression(): string;
-    /**
-     * Generates a symbol vertex shader from the builder parameters,
-     * intended to be used on point geometries.
+     * Generates a symbol vertex shader from the builder parameters
      *
      * Four uniforms are hardcoded in all shaders: `u_projectionMatrix`, `u_offsetScaleMatrix`,
      * `u_offsetRotateMatrix`, `u_time`.
@@ -211,8 +194,7 @@ export class ShaderBuilder {
      */
     getSymbolVertexShader(forHitDetection?: boolean | undefined): string;
     /**
-     * Generates a symbol fragment shader from the builder parameters,
-     * intended to be used on point geometries.
+     * Generates a symbol fragment shader from the builder parameters
      *
      * Expects the following varyings to be transmitted by the vertex shader:
      * `vec2 v_quadCoord`, `vec2 v_texCoord`
@@ -222,23 +204,39 @@ export class ShaderBuilder {
      * @return {string} The full shader as a string.
      */
     getSymbolFragmentShader(forHitDetection?: boolean | undefined): string;
+    /**
+     * Generates a stroke vertex shader from the builder parameters
+     *
+     * @param {boolean} [forHitDetection] If true, the shader will be modified to include hit detection variables
+     * (namely, hit color with encoded feature id).
+     * @return {string} The full shader as a string.
+     */
+    getStrokeVertexShader(forHitDetection?: boolean | undefined): string;
+    /**
+     * Generates a stroke fragment shader from the builder parameters
+     *
+     * @param {boolean} [forHitDetection] If true, the shader will be modified to include hit detection variables
+     * (namely, hit color with encoded feature id).
+     * @return {string} The full shader as a string.
+     */
+    getStrokeFragmentShader(forHitDetection?: boolean | undefined): string;
+    /**
+     * Generates a fill vertex shader from the builder parameters
+     *
+     * @param {boolean} [forHitDetection] If true, the shader will be modified to include hit detection variables
+     * (namely, hit color with encoded feature id).
+     * @return {string} The full shader as a string.
+     */
+    getFillVertexShader(forHitDetection?: boolean | undefined): string;
+    /**
+     * Generates a fill fragment shader from the builder parameters
+     *
+     * @param {boolean} [forHitDetection] If true, the shader will be modified to include hit detection variables
+     * (namely, hit color with encoded feature id).
+     * @return {string} The full shader as a string.
+     */
+    getFillFragmentShader(forHitDetection?: boolean | undefined): string;
 }
-export type StyleParseResult = {
-    /**
-     * Shader builder pre-configured according to a given style
-     */
-    builder: ShaderBuilder;
-    /**
-     * Uniform definitions.
-     */
-    uniforms: {
-        [x: string]: import("./Helper").UniformValue;
-    };
-    /**
-     * Attribute descriptions.
-     */
-    attributes: Array<import("../renderer/webgl/PointsLayer").CustomAttribute>;
-};
 export type VaryingDescription = {
     /**
      * Varying name, as will be declared in the header.
