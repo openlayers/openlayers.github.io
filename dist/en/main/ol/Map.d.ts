@@ -29,7 +29,7 @@ export type FrameState = {
      */
     declutterTree: any;
     /**
-     * Extent.
+     * Extent (in view projection coordinates).
      */
     extent: null | import("./extent.js").Extent;
     /**

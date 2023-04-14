@@ -680,7 +680,7 @@ looked up by their code.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L564">line 564</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L565">line 565</a>
         </div>
         
     </div>
@@ -1623,7 +1623,7 @@ Transform function.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L575">line 575</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L574">line 574</a>
         </div>
         
     </div>
@@ -1639,9 +1639,7 @@ Transform function.
 
     
     <div class="description">
-        <p>Get the projection for coordinates supplied from and returned by API methods.
-Note that this method is not yet a part of the stable API.  Support for user
-projections is not yet complete and should be considered experimental.</p>
+        <p>Get the projection for coordinates supplied from and returned by API methods.</p>
     </div>
     
 
@@ -1718,7 +1716,7 @@ The user projection (or null if not set).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js">proj.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L556">line 556</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj.js#L557">line 557</a>
         </div>
         
     </div>
@@ -1735,7 +1733,8 @@ The user projection (or null if not set).
     
     <div class="description">
         <p>Set the projection for coordinates supplied from and returned by API methods.
-This includes all API methods except for those interacting with tile grids.</p>
+This includes all API methods except for those interacting with tile grids,
+plus <a href="module-ol_Map.html#~FrameState"><code>FrameState</code></a> and <a href="module-ol_View.html#~State"><code>State</code></a>.</p>
     </div>
     
 
@@ -2436,8 +2435,9 @@ The transformed extent.
 
     
     <div class="description">
-        <p>Use geographic coordinates (WGS-84 datum) in API methods.  This includes all API
-methods except for those interacting with tile grids.</p>
+        <p>Use geographic coordinates (WGS-84 datum) in API methods.
+This includes all API methods except for those interacting with tile grids,
+plus <a href="module-ol_Map.html#~FrameState"><code>FrameState</code></a> and <a href="module-ol_View.html#~State"><code>State</code></a>.</p>
     </div>
     
 

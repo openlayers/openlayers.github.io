@@ -326,7 +326,7 @@ export type AnimationOptions = {
 };
 export type State = {
     /**
-     * Center.
+     * Center (in view projection coordinates).
      */
     center: import("./coordinate.js").Coordinate;
     /**
@@ -367,7 +367,7 @@ export type ViewStateLayerStateExtent = {
      */
     viewState: State;
     /**
-     * Extent.
+     * Extent (in user projection coordinates).
      */
     extent: import("./extent.js").Extent;
     /**
