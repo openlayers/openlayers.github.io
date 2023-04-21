@@ -26,7 +26,7 @@ export type WebGLWorkerGenerateBuffersMessage = {
     /**
      * Amount of custom attributes count in the polygon render instructions.
      */
-    customAttributesCount?: number | undefined;
+    customAttributesSize?: number | undefined;
     /**
      * Vertices array raw binary buffer (sent by the worker).
      */

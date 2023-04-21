@@ -18,7 +18,7 @@ export type BaseProps = {
      * Note: **this object is meant to be mutated**: changes to the values will immediately be visible on the rendered features
      */
     variables?: {
-        [x: string]: number;
+        [x: string]: string | number | boolean | number[];
     } | undefined;
     /**
      * Symbol representation.

@@ -4,14 +4,14 @@
  * @param {number} elementIndex Index from which render instructions will be read.
  * @param {Float32Array} vertexBuffer Buffer in the form of a typed array.
  * @param {Uint32Array} indexBuffer Buffer in the form of a typed array.
- * @param {number} customAttributesCount Amount of custom attributes for each element.
+ * @param {number} customAttributesSize Amount of custom attributes for each element.
  * @param {BufferPositions} [bufferPositions] Buffer write positions; if not specified, positions will be set at 0.
  * @return {BufferPositions} New buffer positions where to write next
  * @property {number} vertexPosition New position in the vertex buffer where future writes should start.
  * @property {number} indexPosition New position in the index buffer where future writes should start.
  * @private
  */
-export function writePointFeatureToBuffers(instructions: Float32Array, elementIndex: number, vertexBuffer: Float32Array, indexBuffer: Uint32Array, customAttributesCount: number, bufferPositions?: BufferPositions | undefined): BufferPositions;
+export function writePointFeatureToBuffers(instructions: Float32Array, elementIndex: number, vertexBuffer: Float32Array, indexBuffer: Uint32Array, customAttributesSize: number, bufferPositions?: BufferPositions | undefined): BufferPositions;
 /**
  * Pushes a single quad to form a line segment; also includes a computation for the join angles with previous and next
  * segment, in order to be able to offset the vertices correctly in the shader
@@ -34,11 +34,11 @@ export function writeLineSegmentToBuffers(instructions: Float32Array, segmentSta
  * @param {number} polygonStartIndex Index of the polygon start point from which render instructions will be read.
  * @param {Array<number>} vertexArray Array containing vertices.
  * @param {Array<number>} indexArray Array containing indices.
- * @param {number} customAttributesCount Amount of custom attributes for each element.
+ * @param {number} customAttributesSize Amount of custom attributes for each element.
  * @return {number} Next polygon instructions index
  * @private
  */
-export function writePolygonTrianglesToBuffers(instructions: Float32Array, polygonStartIndex: number, vertexArray: Array<number>, indexArray: Array<number>, customAttributesCount: number): number;
+export function writePolygonTrianglesToBuffers(instructions: Float32Array, polygonStartIndex: number, vertexArray: Array<number>, indexArray: Array<number>, customAttributesSize: number): number;
 /**
  * Returns a texture of 1x1 pixel, white
  * @private

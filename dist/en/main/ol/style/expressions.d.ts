@@ -12,15 +12,21 @@ export function getValueType(value: ExpressionValue): ValueTypes | number;
  */
 export function isTypeUnique(valueType: ValueTypes | number): boolean;
 /**
+ * @typedef {Object} ParsingContextExternal
+ * @property {string} name Name, unprefixed
+ * @property {ValueTypes} type One of the value types constants
+ */
+/**
  * Context available during the parsing of an expression.
  * @typedef {Object} ParsingContext
  * @property {boolean} [inFragmentShader] If false, means the expression output should be made for a vertex shader
- * @property {Array<string>} variables List of variables used in the expression; contains **unprefixed names**
- * @property {Array<string>} attributes List of attributes used in the expression; contains **unprefixed names**
+ * @property {Array<ParsingContextExternal>} variables External variables used in the expression
+ * @property {Array<ParsingContextExternal>} attributes External attributes used in the expression
  * @property {Object<string, number>} stringLiteralsMap This object maps all encountered string values to a number
  * @property {Object<string, string>} functions Lookup of functions used by the style.
  * @property {number} [bandCount] Number of bands per pixel.
  * @property {Array<PaletteTexture>} [paletteTextures] List of palettes used by the style.
+ * @property {import("../style/literal").LiteralStyle} style The style being parsed
  */
 /**
  * Will return the number as a float with a dot separator, which is required by GLSL.
@@ -62,10 +68,11 @@ export function stringToGlsl(context: ParsingContext, string: string): string;
  * will be read and modified during the parsing operation.
  * @param {ParsingContext} context Parsing context
  * @param {ExpressionValue} value Value
- * @param {ValueTypes|number} [typeHint] Hint for the expected final type (can be several types combined)
+ * @param {ValueTypes|number} [expectedType] Expected final type (can be several types combined)
+ * If omitted, defaults to ValueTypes.NUMBER
  * @return {string} GLSL-compatible output
  */
-export function expressionToGlsl(context: ParsingContext, value: ExpressionValue, typeHint?: number | undefined): string;
+export function expressionToGlsl(context: ParsingContext, value: ExpressionValue, expectedType?: number | undefined): string;
 /**
  * Get the uniform name given a variable name.
  * @param {string} variableName The variable name.
@@ -92,8 +99,9 @@ export namespace ValueTypes {
  * Note: both methods can process arguments recursively.
  * @typedef {Object} Operator
  * @property {function(Array<ExpressionValue>): ValueTypes|number} getReturnType Returns one or several types
- * @property {function(ParsingContext, Array<ExpressionValue>, ValueTypes=): string} toGlsl Returns a GLSL-compatible string
- * Note: takes in an optional type hint as 3rd parameter
+ * @property {function(ParsingContext, Array<ExpressionValue>, ValueTypes): string} toGlsl Returns a GLSL-compatible string
+ * given a parsing context, an array of arguments and an expected type.
+ * Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTypes.STRING or ValueTypes.ANY for instance
  */
 /**
  * Operator declarations
@@ -103,6 +111,16 @@ export const Operators: {
     [x: string]: Operator;
 };
 export const PALETTE_TEXTURE_ARRAY: "u_paletteTextures";
+export type ParsingContextExternal = {
+    /**
+     * Name, unprefixed
+     */
+    name: string;
+    /**
+     * One of the value types constants
+     */
+    type: ValueTypes;
+};
 /**
  * Context available during the parsing of an expression.
  */
@@ -112,13 +130,13 @@ export type ParsingContext = {
      */
     inFragmentShader?: boolean | undefined;
     /**
-     * List of variables used in the expression; contains **unprefixed names**
+     * External variables used in the expression
      */
-    variables: Array<string>;
+    variables: Array<ParsingContextExternal>;
     /**
-     * List of attributes used in the expression; contains **unprefixed names**
+     * External attributes used in the expression
      */
-    attributes: Array<string>;
+    attributes: Array<ParsingContextExternal>;
     /**
      * This object maps all encountered string values to a number
      */
@@ -139,6 +157,10 @@ export type ParsingContext = {
      * List of palettes used by the style.
      */
     paletteTextures?: PaletteTexture[] | undefined;
+    /**
+     * The style being parsed
+     */
+    style: import("../style/literal").LiteralStyle;
 };
 /**
  * Base type used for literal style parameters; can be a number literal or the output of an operator,
@@ -154,15 +176,16 @@ export type ParsingContext = {
  *     of bands, depending on the underlying data source and
  *     {@link import ("../source/GeoTIFF.js").Options configuration}. `xOffset` and `yOffset` are optional
  *     and allow specifying pixel offsets for x and y. This is used for sampling data from neighboring pixels.
- *   * `['get', 'attributeName']` fetches a feature attribute (it will be prefixed by `a_` in the shader)
- *     Note: those will be taken from the attributes provided to the renderer
+ *   * `['get', 'attributeName', typeHint]` fetches a feature property value, similar to `feature.get('attributeName')`
+ *     A type hint can optionally be specified, in case the resulting expression contains a type ambiguity which
+ *     will make it invalid. Type hints can be one of: 'string', 'color', 'number', 'boolean', 'number[]'
  *   * `['resolution']` returns the current resolution
  *   * `['time']` returns the time in seconds since the creation of the layer
- *   * `['var', 'varName']` fetches a value from the style variables, or 0 if undefined
+ *   * `['var', 'varName']` fetches a value from the style variables; will throw an error if that variable is undefined
  *   * `['zoom']` returns the current zoom level
  *
  * * Math operators:
- *   * `['*', value1, value2]` multiplies `value1` by `value2`
+ *   * `['*', value1, value2]` multiplies `value1` by `value2` (either numbers or colors)
  *   * `['/', value1, value2]` divides `value1` by `value2`
  *   * `['+', value1, value2]` adds `value1` and `value2`
  *   * `['-', value1, value2]` subtracts `value2` from `value1`
@@ -223,6 +246,7 @@ export type ParsingContext = {
  * Literal values can be of the following types:
  * * `boolean`
  * * `number`
+ * * `number[]` (number arrays can only have a length of 2, 3 or 4)
  * * `string`
  * * {@link module :ol/color~Color}
  */
@@ -239,9 +263,10 @@ export type Operator = {
     getReturnType: (arg0: Array<ExpressionValue>) => ValueTypes | number;
     /**
      * Returns a GLSL-compatible string
-     * Note: takes in an optional type hint as 3rd parameter
+     * given a parsing context, an array of arguments and an expected type.
+     * Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTypes.STRING or ValueTypes.ANY for instance
      */
-    toGlsl: (arg0: ParsingContext, arg1: Array<ExpressionValue>, arg2: ValueTypes | undefined) => string;
+    toGlsl: (arg0: ParsingContext, arg1: Array<ExpressionValue>, arg2: ValueTypes) => string;
 };
 import PaletteTexture from '../webgl/PaletteTexture.js';
 //# sourceMappingURL=expressions.d.ts.map

@@ -89,6 +89,16 @@ export class ShaderBuilder {
      */
     private fillColorExpression;
     /**
+     * @type {Array<string>}
+     * @private
+     */
+    private vertexShaderFunctions;
+    /**
+     * @type {Array<string>}
+     * @private
+     */
+    private fragmentShaderFunctions;
+    /**
      * Adds a uniform accessible in both fragment and vertex shaders.
      * The given name should include a type, such as `sampler2D u_texture`.
      * @param {string} name Uniform name
@@ -176,6 +186,8 @@ export class ShaderBuilder {
     setStrokeWidthExpression(expression: string): ShaderBuilder;
     setStrokeColorExpression(expression: any): ShaderBuilder;
     setFillColorExpression(expression: any): ShaderBuilder;
+    addVertexShaderFunction(code: any): void;
+    addFragmentShaderFunction(code: any): void;
     /**
      * Generates a symbol vertex shader from the builder parameters
      *

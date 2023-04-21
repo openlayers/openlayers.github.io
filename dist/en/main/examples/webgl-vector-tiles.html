@@ -280,7 +280,7 @@ import View from &#x27;ol/View.js&#x27;;
 import WebGLVectorTileLayerRenderer from &#x27;ol/renderer/webgl/VectorTileLayer.js&#x27;;
 import {Fill, Icon, Stroke, Style, Text} from &#x27;ol/style.js&#x27;;
 import {asArray} from &#x27;ol/color.js&#x27;;
-import {packColor} from &#x27;ol/renderer/webgl/shaders.js&#x27;;
+import {packColor} from &#x27;ol/webgl/styleparser.js&#x27;;
 
 const key &#x3D;
   &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
@@ -295,7 +295,6 @@ class WebGLVectorTileLayer extends VectorTile {
             const color &#x3D; asArray(style?.getFill()?.getColor() || &#x27;#eee&#x27;);
             return packColor(color);
           },
-          opacity: () &#x3D;&gt; 1,
         },
       },
       stroke: {
@@ -309,7 +308,6 @@ class WebGLVectorTileLayer extends VectorTile {
             const style &#x3D; this.getStyle()(feature, 1)[0];
             return style?.getStroke()?.getWidth() || 0;
           },
-          opacity: () &#x3D;&gt; 1,
         },
       },
       point: {

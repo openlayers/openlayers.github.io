@@ -1,14 +1,6 @@
-/** @typedef {'color'|'opacity'|'width'} DefaultAttributes */
-/**
- * Packs red/green/blue channels of a color into a single float value; alpha is ignored.
- * This is how the color is expected to be computed.
- * @param {import("../../color.js").Color|string} color Color as array of numbers or string
- * @return {number} Float value containing the color
- */
-export function packColor(color: import("../../color.js").Color | string): number;
 /**
  * Default polygon vertex shader.
- * Relies on the color and opacity attributes.
+ * Relies on the color attribute.
  * @type {string}
  */
 export const FILL_VERTEX_SHADER: string;
@@ -19,7 +11,7 @@ export const FILL_VERTEX_SHADER: string;
 export const FILL_FRAGMENT_SHADER: string;
 /**
  * Default linestring vertex shader.
- * Relies on color, opacity and width attributes.
+ * Relies on color and width attributes.
  * @type {string}
  */
 export const STROKE_VERTEX_SHADER: string;
@@ -30,7 +22,7 @@ export const STROKE_VERTEX_SHADER: string;
 export const STROKE_FRAGMENT_SHADER: string;
 /**
  * Default point vertex shader.
- * Relies on color and opacity attributes.
+ * Relies on color attribute.
  * @type {string}
  */
 export const POINT_VERTEX_SHADER: string;
@@ -39,5 +31,5 @@ export const POINT_VERTEX_SHADER: string;
  * @type {string}
  */
 export const POINT_FRAGMENT_SHADER: string;
-export type DefaultAttributes = 'color' | 'opacity' | 'width';
+export type DefaultAttributes = 'color' | 'width';
 //# sourceMappingURL=shaders.d.ts.map

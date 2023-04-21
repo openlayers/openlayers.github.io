@@ -16,27 +16,33 @@ export default WebGLVectorLayerRenderer;
  * the value of a custom attribute (different for each feature) to be passed on to the GPU.
  * Properties are available as 2nd arg for quicker access.
  */
-export type CustomAttributeCallback = (arg0: import("../../Feature").default, arg1: {
-    [x: string]: any;
-}) => number;
+export type AttributeCallback = (arg0: import("../../Feature").default) => number | Array<number>;
 /**
- * An object containing both shaders (vertex and fragment) as well as the required attributes
+ * An object containing custom shaders (vertex and fragment); uses attributes and uniforms
+ * provided to the renderer
  */
-export type ShaderProgram = {
+export type CustomShaderProgram = {
     /**
-     * Vertex shader source (using the default one if unspecified).
+     * Vertex shader source.
      */
-    vertexShader?: string | undefined;
+    vertexShader: string;
     /**
-     * Fragment shader source (using the default one if unspecified).
+     * Fragment shader source.
      */
-    fragmentShader?: string | undefined;
+    fragmentShader: string;
+};
+/**
+ * An object containing attribute callbacks for the default shaders
+ */
+export type DefaultShaderProgram = {
     /**
-     * Custom attributes made available in the vertex shader.
-     * Keys are the names of the attributes which are then accessible in the vertex shader using the `a_` prefix, e.g.: `a_opacity`.
-     * Default shaders rely on the attributes in {@link module :ol/render/webgl/shaders~DefaultAttributes}.
+     * Color value, encoded in a [number, number] array (use the {@link module :ol/webgl/styleparser~packColor} function)
      */
-    attributes: any;
+    color?: AttributeCallback | undefined;
+    /**
+     * Stroke width value
+     */
+    width?: AttributeCallback | undefined;
 };
 export type Options = {
     /**
@@ -44,17 +50,17 @@ export type Options = {
      */
     className?: string | undefined;
     /**
-     * Attributes and shaders for filling polygons.
+     * Shaders for filling polygons.
      */
-    fill?: ShaderProgram | undefined;
+    fill?: CustomShaderProgram | DefaultShaderProgram | undefined;
     /**
-     * Attributes and shaders for line strings and polygon strokes.
+     * Shaders for line strings and polygon strokes.
      */
-    stroke?: ShaderProgram | undefined;
+    stroke?: CustomShaderProgram | DefaultShaderProgram | undefined;
     /**
-     * Attributes and shaders for points.
+     * Shaders for points.
      */
-    point?: ShaderProgram | undefined;
+    point?: CustomShaderProgram | DefaultShaderProgram | undefined;
     /**
      * Uniform definitions.
      */
@@ -62,10 +68,40 @@ export type Options = {
         [x: string]: import("../../webgl/Helper.js").UniformValue;
     } | undefined;
     /**
+     * Attribute definitions.
+     */
+    attributes?: import("../../render/webgl/BatchRenderer.js").CustomAttribute[] | undefined;
+    /**
      * Post-processes definitions
      */
     postProcesses?: import("./Layer.js").PostProcessesOptions[] | undefined;
 };
+/**
+ * @typedef {function(import("../../Feature").default):number|Array<number>} AttributeCallback A callback computing
+ * the value of a custom attribute (different for each feature) to be passed on to the GPU.
+ * Properties are available as 2nd arg for quicker access.
+ */
+/**
+ * @typedef {Object} CustomShaderProgram An object containing custom shaders (vertex and fragment); uses attributes and uniforms
+ * provided to the renderer
+ * @property {string} vertexShader Vertex shader source.
+ * @property {string} fragmentShader Fragment shader source.
+ */
+/**
+ * @typedef {Object} DefaultShaderProgram An object containing attribute callbacks for the default shaders
+ * @property {AttributeCallback} [color] Color value, encoded in a [number, number] array (use the {@link module:ol/webgl/styleparser~packColor} function)
+ * @property {AttributeCallback} [width] Stroke width value
+ */
+/**
+ * @typedef {Object} Options
+ * @property {string} [className='ol-layer'] A CSS class name to set to the canvas element.
+ * @property {CustomShaderProgram|DefaultShaderProgram} [fill] Shaders for filling polygons.
+ * @property {CustomShaderProgram|DefaultShaderProgram} [stroke] Shaders for line strings and polygon strokes.
+ * @property {CustomShaderProgram|DefaultShaderProgram} [point] Shaders for points.
+ * @property {Object<string,import("../../webgl/Helper").UniformValue>} [uniforms] Uniform definitions.
+ * @property {Array<import("../../render/webgl/BatchRenderer.js").CustomAttribute>} [attributes] Attribute definitions.
+ * @property {Array<import("./Layer").PostProcessesOptions>} [postProcesses] Post-processes definitions
+ */
 /**
  * @classdesc
  * Experimental WebGL vector renderer. Supports polygons, lines and points:
@@ -100,32 +136,92 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @private
      */
     private currentTransform_;
+    tmpTransform_: number[];
+    tmpMat4_: number[];
     /**
      * @type {import("../../transform.js").Transform}
      * @private
      */
     private currentFrameStateTransform_;
-    fillVertexShader_: string;
-    fillFragmentShader_: string;
-    fillAttributes_: import("../../render/webgl/BatchRenderer").CustomAttribute[];
-    strokeVertexShader_: string;
-    strokeFragmentShader_: string;
-    strokeAttributes_: import("../../render/webgl/BatchRenderer").CustomAttribute[];
-    pointVertexShader_: string;
-    pointFragmentShader_: string;
-    pointAttributes_: import("../../render/webgl/BatchRenderer").CustomAttribute[];
     /**
      * @private
      */
     private worker_;
     /**
+     * @type {PolygonBatchRenderer}
+     * @private
+     */
+    private polygonRenderer_;
+    /**
+     * @type {PointBatchRenderer}
+     * @private
+     */
+    private pointRenderer_;
+    /**
+     * @type {LineStringBatchRenderer}
+     * @private
+     */
+    private lineStringRenderer_;
+    /**
+     * @type {string}
+     * @private
+     */
+    private fillVertexShader_;
+    /**
+     * @type {string}
+     * @private
+     */
+    private fillFragmentShader_;
+    /**
+     * @type {string}
+     * @private
+     */
+    private strokeVertexShader_;
+    /**
+     * @type {string}
+     * @private
+     */
+    private strokeFragmentShader_;
+    /**
+     * @type {string}
+     * @private
+     */
+    private pointVertexShader_;
+    /**
+     * @type {string}
+     * @private
+     */
+    private pointFragmentShader_;
+    /**
+     * @type {Array<import('../../render/webgl/BatchRenderer.js').CustomAttribute>}
+     * @private
+     */
+    private fillAttributes_;
+    /**
+     * @type {Array<import('../../render/webgl/BatchRenderer.js').CustomAttribute>}
+     * @private
+     */
+    private strokeAttributes_;
+    /**
+     * @type {Array<import('../../render/webgl/BatchRenderer.js').CustomAttribute>}
+     * @private
+     */
+    private pointAttributes_;
+    /**
      * @private
      */
     private batch_;
     sourceListenKeys_: import("../../events.js").EventsKey[];
-    polygonRenderer_: PolygonBatchRenderer | undefined;
-    pointRenderer_: PointBatchRenderer | undefined;
-    lineStringRenderer_: LineStringBatchRenderer | undefined;
+    /**
+     * @param {Options} options Options.
+     * @private
+     */
+    private applyOptions_;
+    /**
+     * @private
+     */
+    private createRenderers_;
+    reset(options: any): void;
     /**
      * @param {import("../../source/Vector.js").VectorSourceEvent} event Event.
      * @private
@@ -146,6 +242,11 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      */
     private handleSourceFeatureClear_;
     /**
+     * @param {import("../../transform.js").Transform} batchInvertTransform Inverse of the transformation in which geometries are expressed
+     * @private
+     */
+    private applyUniforms_;
+    /**
      * Render the layer.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @return {HTMLElement} The rendered element.
@@ -153,7 +254,4 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
     renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
 }
 import WebGLLayerRenderer from './Layer.js';
-import PolygonBatchRenderer from '../../render/webgl/PolygonBatchRenderer.js';
-import PointBatchRenderer from '../../render/webgl/PointBatchRenderer.js';
-import LineStringBatchRenderer from '../../render/webgl/LineStringBatchRenderer.js';
 //# sourceMappingURL=VectorLayer.d.ts.map

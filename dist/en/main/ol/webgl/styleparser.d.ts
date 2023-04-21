@@ -5,6 +5,12 @@
  */
 export function getSymbolOpacityGlslFunction(type: import('../style/literal.js').SymbolType, sizeExpressionGlsl: string): string;
 /**
+ * Packs all components of a color into a two-floats array
+ * @param {import("../color.js").Color|string} color Color as array of numbers or string
+ * @return {Array<number>} Vec2 array containing the color in compressed form
+ */
+export function packColor(color: import("../color.js").Color | string): Array<number>;
+/**
  * @typedef {Object} StyleParseResult
  * @property {ShaderBuilder} builder Shader builder pre-configured according to a given style
  * @property {boolean} hasSymbol Has a symbol style defined

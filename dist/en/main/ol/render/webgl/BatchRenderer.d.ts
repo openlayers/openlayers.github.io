@@ -9,10 +9,15 @@ export type CustomAttribute = {
      */
     name: string;
     /**
+     * Amount of numerical values composing the attribute, either 1, 2, 3 or 4; in case size is > 1, the return value
+     * of the callback should be an array; if unspecified, assumed to be a single float value
+     */
+    size?: number | undefined;
+    /**
      * This callback computes the numerical value of the
      * attribute for a given feature.
      */
-    callback: (arg0: import("../../Feature").FeatureLike) => number;
+    callback: (arg0: import("../../Feature").FeatureLike) => number | Array<number>;
 };
 /**
  * @classdesc Abstract class for batch renderers.
@@ -55,6 +60,12 @@ declare class AbstractBatchRenderer {
      */
     protected customAttributes: Array<CustomAttribute>;
     /**
+     * Amount of numerical values taken by the custom attributes
+     * @type {number}
+     * @protected
+     */
+    protected customAttributesSize: number;
+    /**
      * Rebuild rendering instructions and generate webgl buffers from them
      * @param {import("./MixedGeometryBatch.js").GeometryBatch} batch Geometry batch
      * @param {import("../../transform.js").Transform} currentTransform Transform
@@ -91,5 +102,13 @@ declare class AbstractBatchRenderer {
      * @private
      */
     private generateBuffers_;
+    /**
+     * @protected
+     * @param {import("./MixedGeometryBatch.js").GeometryBatch} batch Geometry batch
+     * @param {import("./MixedGeometryBatch.js").GeometryBatchItem} batchEntry Batch item
+     * @param {number} currentIndex Current index
+     * @return {number} The amount of values pushed
+     */
+    protected pushCustomAttributesInRenderInstructions(batch: import("./MixedGeometryBatch.js").GeometryBatch, batchEntry: import("./MixedGeometryBatch.js").GeometryBatchItem, currentIndex: number): number;
 }
 //# sourceMappingURL=BatchRenderer.d.ts.map

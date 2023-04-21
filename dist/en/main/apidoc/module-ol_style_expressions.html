@@ -80,6 +80,7 @@
             <li data-name="expressionvalue"><a href="module-ol_style_expressions.html#~ExpressionValue">ExpressionValue</a>
             <li data-name="operator"><a href="module-ol_style_expressions.html#~Operator">Operator</a>
             <li data-name="parsingcontext"><a href="module-ol_style_expressions.html#~ParsingContext">ParsingContext</a>
+            <li data-name="parsingcontextexternal"><a href="module-ol_style_expressions.html#~ParsingContextExternal">ParsingContextExternal</a>
         </ul>
     </div>
               <li class="loading">Loading …
@@ -260,17 +261,18 @@ green, blue and alpha. <a href="module-ol_source_DataTile-DataTileSource.html"><
 of bands, depending on the underlying data source and
 <a href="module-ol_source_GeoTIFF.html#~Options"><code>configuration</code></a>. <code>xOffset</code> and <code>yOffset</code> are optional
 and allow specifying pixel offsets for x and y. This is used for sampling data from neighboring pixels.</li>
-<li><code>['get', 'attributeName']</code> fetches a feature attribute (it will be prefixed by <code>a_</code> in the shader)
-Note: those will be taken from the attributes provided to the renderer</li>
+<li><code>['get', 'attributeName', typeHint]</code> fetches a feature property value, similar to <code>feature.get('attributeName')</code>
+A type hint can optionally be specified, in case the resulting expression contains a type ambiguity which
+will make it invalid. Type hints can be one of: 'string', 'color', 'number', 'boolean', 'number[]'</li>
 <li><code>['resolution']</code> returns the current resolution</li>
 <li><code>['time']</code> returns the time in seconds since the creation of the layer</li>
-<li><code>['var', 'varName']</code> fetches a value from the style variables, or 0 if undefined</li>
+<li><code>['var', 'varName']</code> fetches a value from the style variables; will throw an error if that variable is undefined</li>
 <li><code>['zoom']</code> returns the current zoom level</li>
 </ul>
 </li>
 <li><p>Math operators:</p>
 <ul>
-<li><code>['*', value1, value2]</code> multiplies <code>value1</code> by <code>value2</code></li>
+<li><code>['*', value1, value2]</code> multiplies <code>value1</code> by <code>value2</code> (either numbers or colors)</li>
 <li><code>['/', value1, value2]</code> divides <code>value1</code> by <code>value2</code></li>
 <li><code>['+', value1, value2]</code> adds <code>value1</code> and <code>value2</code></li>
 <li><code>['-', value1, value2]</code> subtracts <code>value2</code> from <code>value1</code></li>
@@ -340,6 +342,7 @@ Literal values can be of the following types:</p>
 <ul>
 <li><code>boolean</code></li>
 <li><code>number</code></li>
+<li><code>number[]</code> (number arrays can only have a length of 2, 3 or 4)</li>
 <li><code>string</code></li>
 <li><a href="module-ol_color.html#~Color"><code>Color</code></a></li>
 </ul>
@@ -468,7 +471,8 @@ Note: both methods can process arguments recursively.</p>
             
 
             <td class="description last"><p>Returns a GLSL-compatible string
-Note: takes in an optional type hint as 3rd parameter</p></td>
+given a parsing context, an array of arguments and an expected type.
+Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTypes.STRING or ValueTypes.ANY for instance</p></td>
         </tr>
 
 	
@@ -592,7 +596,7 @@ Note: takes in an optional type hint as 3rd parameter</p></td>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array<<a href="module-ol_style_expressions.html#~ParsingContextExternal">ParsingContextExternal</a>></span>
 
 
             
@@ -608,7 +612,7 @@ Note: takes in an optional type hint as 3rd parameter</p></td>
 
             
 
-            <td class="description last"><p>List of variables used in the expression; contains <strong>unprefixed names</strong></p></td>
+            <td class="description last"><p>External variables used in the expression</p></td>
         </tr>
 
 	
@@ -621,7 +625,7 @@ Note: takes in an optional type hint as 3rd parameter</p></td>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">Array<<a href="module-ol_style_expressions.html#~ParsingContextExternal">ParsingContextExternal</a>></span>
 
 
             
@@ -637,7 +641,7 @@ Note: takes in an optional type hint as 3rd parameter</p></td>
 
             
 
-            <td class="description last"><p>List of attributes used in the expression; contains <strong>unprefixed names</strong></p></td>
+            <td class="description last"><p>External attributes used in the expression</p></td>
         </tr>
 
 	
@@ -758,6 +762,155 @@ Note: takes in an optional type hint as 3rd parameter</p></td>
             
 
             <td class="description last"><p>List of palettes used by the style.</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>style</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_literal.html#~LiteralStyle">LiteralStyle</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The style being parsed</p></td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~ParsingContextExternal">
+        </div>
+        <h4 class="name">
+            ParsingContextExternal<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		
+
+		
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Name, unprefixed</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">ValueTypes</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>One of the value types constants</p></td>
         </tr>
 
 	

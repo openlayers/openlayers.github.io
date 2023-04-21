@@ -140,7 +140,7 @@ declare class WebGLPointsLayer<VectorSourceType extends import("../source/Vector
      */
     private parseResult_;
     /**
-     * @type {Object<string, (string|number)>}
+     * @type {Object<string, (string|number|Array<number>|boolean)>}
      * @private
      */
     private styleVariables_;

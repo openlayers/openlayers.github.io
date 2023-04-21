@@ -194,80 +194,13 @@ Choose a predefined style from the list below or edit it as JSON manually.
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Using a WebGL-optimized layer to render a large quantities of points</p>
-          <div id="docs"><p>This example shows how to use a <code>WebGLPointsLayer</code> to show a large amount of points on the map. The layer is given a style in JSON format which allows a certain level of customization of the final reprensentation.
-The following operators can be used:</p>
-<ul>
-<li><p>Reading operators:</p>
-<ul>
-<li><code>[&#39;get&#39;, &#39;attributeName&#39;]</code> fetches a feature attribute (it will be prefixed by <code>a_</code> in the shader)
-Note: those will be taken from the attributes provided to the renderer</li>
-<li><code>[&#39;var&#39;, &#39;varName&#39;]</code> fetches a value from the style variables, or 0 if undefined</li>
-<li><code>[&#39;time&#39;]</code> returns the time in seconds since the creation of the layer</li>
-<li><code>[&#39;zoom&#39;]</code> returns the current zoom level</li>
-<li><code>[&#39;resolution&#39;]</code> returns the current resolution</li>
-</ul>
-</li>
-<li><p>Math operators:</p>
-<ul>
-<li><code>[&#39;*&#39;, value1, value2]</code> multiplies <code>value1</code> by <code>value2</code></li>
-<li><code>[&#39;/&#39;, value1, value2]</code> divides <code>value1</code> by <code>value2</code></li>
-<li><code>[&#39;+&#39;, value1, value2]</code> adds <code>value1</code> and <code>value2</code></li>
-<li><code>[&#39;-&#39;, value1, value2]</code> subtracts <code>value2</code> from <code>value1</code></li>
-<li><code>[&#39;clamp&#39;, value, low, high]</code> clamps <code>value</code> between <code>low</code> and <code>high</code></li>
-<li><code>[&#39;%&#39;, value1, value2]</code> returns the result of <code>value1 % value2</code> (modulo)</li>
-<li><code>[&#39;^&#39;, value1, value2]</code> returns the value of <code>value1</code> raised to the <code>value2</code> power</li>
-</ul>
-</li>
-<li><p>Transform operators:</p>
-<ul>
-<li><code>[&#39;case&#39;, condition1, output1, ...conditionN, outputN, fallback]</code> selects the first output whose corresponding
-condition evaluates to <code>true</code>. If no match is found, returns the <code>fallback</code> value.
-All conditions should be <code>boolean</code>, output and fallback can be any kind.</li>
-<li><code>[&#39;match&#39;, input, match1, output1, ...matchN, outputN, fallback]</code> compares the <code>input</code> value against all
-provided <code>matchX</code> values, returning the output associated with the first valid match. If no match is found,
-returns the <code>fallback</code> value.
-<code>input</code> and <code>matchX</code> values must all be of the same type, and can be <code>number</code> or <code>string</code>. <code>outputX</code> and
-<code>fallback</code> values must be of the same type, and can be of any kind.</li>
-<li><code>[&#39;interpolate&#39;, interpolation, input, stop1, output1, ...stopN, outputN]</code> returns a value by interpolating between
-pairs of inputs and outputs; <code>interpolation</code> can either be <code>[&#39;linear&#39;]</code> or <code>[&#39;exponential&#39;, base]</code> where <code>base</code> is
-the rate of increase from stop A to stop B (i.e. power to which the interpolation ratio is raised); a value
-of 1 is equivalent to <code>[&#39;linear&#39;]</code>.
-<code>input</code> and <code>stopX</code> values must all be of type <code>number</code>. <code>outputX</code> values can be <code>number</code> or <code>color</code> values.
-Note: <code>input</code> will be clamped between <code>stop1</code> and <code>stopN</code>, meaning that all output values will be comprised
-between <code>output1</code> and <code>outputN</code>.</li>
-</ul>
-</li>
-<li><p>Logical operators:</p>
-<ul>
-<li><code>[&#39;&lt;&#39;, value1, value2]</code> returns <code>true</code> if <code>value1</code> is strictly lower than <code>value2</code>, or <code>false</code> otherwise.</li>
-<li><code>[&#39;&lt;=&#39;, value1, value2]</code> returns <code>true</code> if <code>value1</code> is lower than or equals <code>value2</code>, or <code>false</code> otherwise.</li>
-<li><code>[&#39;&gt;&#39;, value1, value2]</code> returns <code>true</code> if <code>value1</code> is strictly greater than <code>value2</code>, or <code>false</code> otherwise.</li>
-<li><code>[&#39;&gt;=&#39;, value1, value2]</code> returns <code>true</code> if <code>value1</code> is greater than or equals <code>value2</code>, or <code>false</code> otherwise.</li>
-<li><code>[&#39;==&#39;, value1, value2]</code> returns <code>true</code> if <code>value1</code> equals <code>value2</code>, or <code>false</code> otherwise.</li>
-<li><code>[&#39;!=&#39;, value1, value2]</code> returns <code>true</code> if <code>value1</code> does not equal <code>value2</code>, or <code>false</code> otherwise.</li>
-<li><code>[&#39;!&#39;, value1]</code> returns <code>false</code> if <code>value1</code> is <code>true</code> or greater than <code>0</code>, or <code>true</code> otherwise.</li>
-<li><code>[&#39;between&#39;, value1, value2, value3]</code> returns <code>true</code> if <code>value1</code> is contained between <code>value2</code> and <code>value3</code>
-(inclusively), or <code>false</code> otherwise.</li>
-</ul>
-</li>
-<li><p>Conversion operators:</p>
-<ul>
-<li><code>[&#39;array&#39;, value1, ...valueN]</code> creates a numerical array from <code>number</code> values; please note that the amount of
-values can currently only be 2, 3 or 4.</li>
-<li><code>[&#39;color&#39;, red, green, blue, alpha]</code> creates a <code>color</code> value from <code>number</code> values; the <code>alpha</code> parameter is
-optional; if not specified, it will be set to 1.
-Note: <code>red</code>, <code>green</code> and <code>blue</code> components must be values between 0 and 255; <code>alpha</code> between 0 and 1.
- Values can either be literals or another operator, as they will be evaluated recursively.
- Literal values can be of the following types:</li>
-</ul>
-</li>
-<li><p><code>boolean</code></p>
-</li>
-<li><p><code>number</code></p>
-</li>
-<li><p><code>string</code></p>
-</li>
-</ul>
+          <div id="docs"><p>
+  This example shows how to use a `WebGLPointsLayer` to show a large amount of points on the map.
+  The layer is given a style in JSON format which allows a certain level of customization of the final representation.
+</p>
+<p>
+  Consult the <a href="/en/latest/apidoc/module-ol_style_expressions.html#~ExpressionValue">documentation on expressions</a> to know which operators to use and how.
+</p>
 </div>
         </div>
       </div>
