@@ -25,79 +25,79 @@ export class ShaderBuilder {
      * @type {Array<string>}
      * @private
      */
-    private uniforms;
+    private uniforms_;
     /**
      * Attributes; these will be declared in the header (should include the type).
      * @type {Array<string>}
      * @private
      */
-    private attributes;
+    private attributes_;
     /**
      * Varyings with a name, a type and an expression.
      * @type {Array<VaryingDescription>}
      * @private
      */
-    private varyings;
+    private varyings_;
     /**
      * @type {string}
      * @private
      */
-    private symbolSizeExpression;
+    private symbolSizeExpression_;
     /**
      * @type {string}
      * @private
      */
-    private symbolRotationExpression;
+    private symbolRotationExpression_;
     /**
      * @type {string}
      * @private
      */
-    private symbolOffsetExpression;
+    private symbolOffsetExpression_;
     /**
      * @type {string}
      * @private
      */
-    private symbolColorExpression;
+    private symbolColorExpression_;
     /**
      * @type {string}
      * @private
      */
-    private texCoordExpression;
+    private texCoordExpression_;
     /**
      * @type {string}
      * @private
      */
-    private discardExpression;
+    private discardExpression_;
     /**
      * @type {boolean}
      * @private
      */
-    private symbolRotateWithView;
+    private symbolRotateWithView_;
     /**
      * @type {string}
      * @private
      */
-    private strokeWidthExpression;
+    private strokeWidthExpression_;
     /**
      * @type {string}
      * @private
      */
-    private strokeColorExpression;
+    private strokeColorExpression_;
     /**
      * @type {string}
      * @private
      */
-    private fillColorExpression;
+    private fillColorExpression_;
     /**
      * @type {Array<string>}
      * @private
      */
-    private vertexShaderFunctions;
+    private vertexShaderFunctions_;
     /**
      * @type {Array<string>}
      * @private
      */
-    private fragmentShaderFunctions;
+    private fragmentShaderFunctions_;
     /**
      * Adds a uniform accessible in both fragment and vertex shaders.
      * The given name should include a type, such as `sampler2D u_texture`.

@@ -63,8 +63,9 @@ declare class BaseTileRepresentation<TileType extends import("../Tile.js").defau
     setTile(tile: TileType): void;
     /**
      * @abstract
+     * @protected
      */
-    uploadTile_(): void;
+    protected uploadTile(): void;
     setReady(): void;
 }
 import EventTarget from '../events/Target.js';
