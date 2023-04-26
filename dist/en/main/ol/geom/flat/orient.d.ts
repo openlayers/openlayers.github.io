@@ -70,7 +70,7 @@ export function orientLinearRingsArray(flatCoordinates: Array<number>, offset: n
  * @param {Array<number>} flatCoordinates Flat coordinates
  * @param {Array<number>} ends Linear ring end indexes
  * @return {Array<Array<number>>} Two dimensional endss array that can
- * be used to contruct a MultiPolygon
+ * be used to construct a MultiPolygon
  */
 export function inflateEnds(flatCoordinates: Array<number>, ends: Array<number>): Array<Array<number>>;
 //# sourceMappingURL=orient.d.ts.map

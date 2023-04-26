@@ -293,8 +293,8 @@ export function fromUserResolution(resolution: number, destProjection: Projectio
  * clamped to the validity range.
  * @param {Projection} sourceProj Source projection.
  * @param {Projection} destProj Destination projection.
- * @param {function(import("./coordinate.js").Coordinate): import("./coordinate.js").Coordinate} transform Transform function (source to destiation).
- * @return {function(import("./coordinate.js").Coordinate): import("./coordinate.js").Coordinate} Safe transform function (source to destiation).
+ * @param {function(import("./coordinate.js").Coordinate): import("./coordinate.js").Coordinate} transform Transform function (source to destination).
+ * @return {function(import("./coordinate.js").Coordinate): import("./coordinate.js").Coordinate} Safe transform function (source to destination).
  */
 export function createSafeCoordinateTransform(sourceProj: Projection, destProj: Projection, transform: (arg0: import("./coordinate.js").Coordinate) => import("./coordinate.js").Coordinate): (arg0: import("./coordinate.js").Coordinate) => import("./coordinate.js").Coordinate;
 /**

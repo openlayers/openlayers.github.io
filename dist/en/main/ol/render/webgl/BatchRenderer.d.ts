@@ -95,7 +95,7 @@ declare class AbstractBatchRenderer {
     protected generateRenderInstructions(batch: import("./MixedGeometryBatch.js").GeometryBatch): void;
     /**
      * Rebuild internal webgl buffers for rendering based on the current rendering instructions;
-     * This is asynchronous: webgl buffers wil _not_ be updated right away
+     * This is asynchronous: webgl buffers will _not_ be updated right away
      * @param {import("./MixedGeometryBatch.js").GeometryBatch} batch Geometry batch
      * @param {import("../../geom/Geometry.js").Type} geometryType Geometry type
      * @param {function(): void} callback Function called once the render buffers are updated
