@@ -5629,7 +5629,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L262">line 262</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L268">line 268</a>
         </div>
         
     </div>
@@ -5648,9 +5648,13 @@ an array of styles. If set to <code>null</code>, the layer has no style (a <code
 so only features that have their own styles will be rendered in the layer. Call
 <code>setStyle()</code> without arguments to reset to the default style. See
 <a href="module-ol_style_Style-Style.html"><code>the ol/style/Style module</code></a> for information on the default style.</p>
-<p>If your layer has a static style, you can use &quot;flat&quot; style object literals instead of
-using the <code>Style</code> and symbolizer constructors (<code>Fill</code>, <code>Stroke</code>, etc.).  See the documentation
-for the <a href="module-ol_style_flat.html#~FlatStyle"><code>flat style types</code></a> to see what properties are supported.</p>
+<p>If your layer has a static style, you can use <a href="module-ol_style_flat.html#~FlatStyle"><code>flat style</code></a> object
+literals instead of using the <code>Style</code> and symbolizer constructors (<code>Fill</code>, <code>Stroke</code>, etc.):</p>
+<pre class="prettyprint source lang-js"><code>vectorLayer.setStyle({
+  &quot;fill-color&quot;: &quot;yellow&quot;,
+  &quot;stroke-color&quot;: &quot;black&quot;,
+  &quot;stroke-width&quot;: 4
+})</code></pre>
     </div>
     
 
