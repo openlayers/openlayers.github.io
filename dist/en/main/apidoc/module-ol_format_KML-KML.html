@@ -71,6 +71,8 @@
     <div class="member-list" data-type="methods">
         <span class="subtitle">Methods</span>
         <ul>
+            <li data-name="readcamera"><a href="module-ol_format_KML-KML.html#readCamera">readCamera</a>
+            <li data-name="readcamerafromnode"><a href="module-ol_format_KML-KML.html#readCameraFromNode">readCameraFromNode</a>
             <li data-name="readfeature"><a href="module-ol_format_KML-KML.html#readFeature">readFeature</a>
             <li data-name="readfeatures"><a href="module-ol_format_KML-KML.html#readFeatures">readFeatures</a>
             <li data-name="readname"><a href="module-ol_format_KML-KML.html#readName">readName</a>
@@ -146,7 +148,7 @@ all of the same type.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js">format/KML.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L424">line 424</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L439">line 439</a>
         </div>
         
     </div>
@@ -420,6 +422,278 @@ Might be used to change an icon path or to substitute a data url obtained from a
         <h3 class="subsection-title">Methods</h3>
 
         <dl>
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="readCamera">
+        </div>
+        <h4 class="name">
+            readCamera<span class="signature">(source)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array<<a href="module-ol_format_KML.html#~KMLCamera">KMLCamera</a>>}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js">format/KML.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L915">line 915</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Read the cameras of the KML.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>source</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">Element</span>
+|
+
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Source.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Cameras.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="readCameraFromNode">
+        </div>
+        <h4 class="name">
+            readCameraFromNode<span class="signature">(node)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array<<a href="module-ol_format_KML.html#~KMLCamera">KMLCamera</a>>}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js">format/KML.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L950">line 950</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>node</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Element</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Node.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Cameras.
+<br />
+
+    
+
+    
+</dd>
+
+        
             
             
 <dt class="">
@@ -964,7 +1238,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js">format/KML.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L692">line 692</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L707">line 707</a>
         </div>
         
     </div>
@@ -1105,7 +1379,7 @@ Name.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js">format/KML.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L757">line 757</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L772">line 772</a>
         </div>
         
     </div>
@@ -1392,7 +1666,7 @@ Projection.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js">format/KML.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L827">line 827</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L842">line 842</a>
         </div>
         
     </div>
@@ -1533,7 +1807,7 @@ Regions.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js">format/KML.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L862">line 862</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L877">line 877</a>
         </div>
         
     </div>
@@ -1952,7 +2226,7 @@ Result.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js">format/KML.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L891">line 891</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/KML.js#L982">line 982</a>
         </div>
         
     </div>
