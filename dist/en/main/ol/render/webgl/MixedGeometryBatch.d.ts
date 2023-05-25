@@ -44,27 +44,6 @@ export type PolygonGeometryBatch = {
      */
     geometriesCount: number;
     /**
-     * Render instructions for polygons are structured like so:
-     * [ numberOfRings, numberOfVerticesInRing0, ..., numberOfVerticesInRingN, x0, y0, customAttr0, ..., xN, yN, customAttrN, numberOfRings,... ]
-     */
-    renderInstructions: Float32Array;
-    /**
-     * Vertices WebGL buffer
-     */
-    verticesBuffer: WebGLArrayBuffer;
-    /**
-     * Indices WebGL buffer
-     */
-    indicesBuffer: WebGLArrayBuffer;
-    /**
-     * Converts world space coordinates to screen space; applies to the rendering instructions
-     */
-    renderInstructionsTransform: import("../../transform.js").Transform;
-    /**
-     * Screen space to world space; applies to the webgl vertices buffer
-     */
-    invertVerticesBufferTransform: import("../../transform.js").Transform;
-    /**
      * Amount of vertices from geometries in the batch.
      */
     verticesCount: number;
@@ -89,27 +68,6 @@ export type LineStringGeometryBatch = {
      */
     geometriesCount: number;
     /**
-     * Render instructions for polygons are structured like so:
-     * [ numberOfRings, numberOfVerticesInRing0, ..., numberOfVerticesInRingN, x0, y0, customAttr0, ..., xN, yN, customAttrN, numberOfRings,... ]
-     */
-    renderInstructions: Float32Array;
-    /**
-     * Vertices WebGL buffer
-     */
-    verticesBuffer: WebGLArrayBuffer;
-    /**
-     * Indices WebGL buffer
-     */
-    indicesBuffer: WebGLArrayBuffer;
-    /**
-     * Converts world space coordinates to screen space; applies to the rendering instructions
-     */
-    renderInstructionsTransform: import("../../transform.js").Transform;
-    /**
-     * Screen space to world space; applies to the webgl vertices buffer
-     */
-    invertVerticesBufferTransform: import("../../transform.js").Transform;
-    /**
      * Amount of vertices from geometries in the batch.
      */
     verticesCount: number;
@@ -129,27 +87,6 @@ export type PointGeometryBatch = {
      * Amount of geometries in the batch.
      */
     geometriesCount: number;
-    /**
-     * Render instructions for polygons are structured like so:
-     * [ numberOfRings, numberOfVerticesInRing0, ..., numberOfVerticesInRingN, x0, y0, customAttr0, ..., xN, yN, customAttrN, numberOfRings,... ]
-     */
-    renderInstructions: Float32Array;
-    /**
-     * Vertices WebGL buffer
-     */
-    verticesBuffer: WebGLArrayBuffer;
-    /**
-     * Indices WebGL buffer
-     */
-    indicesBuffer: WebGLArrayBuffer;
-    /**
-     * Converts world space coordinates to screen space; applies to the rendering instructions
-     */
-    renderInstructionsTransform: import("../../transform.js").Transform;
-    /**
-     * Screen space to world space; applies to the webgl vertices buffer
-     */
-    invertVerticesBufferTransform: import("../../transform.js").Transform;
 };
 /**
  * @typedef {import("../../render/Feature").default} RenderFeature
@@ -176,12 +113,6 @@ export type PointGeometryBatch = {
  * @property {Object<string, GeometryBatchItem>} entries Dictionary of all entries in the batch with associated computed values.
  * One entry corresponds to one feature. Key is feature uid.
  * @property {number} geometriesCount Amount of geometries in the batch.
- * @property {Float32Array} renderInstructions Render instructions for polygons are structured like so:
- * [ numberOfRings, numberOfVerticesInRing0, ..., numberOfVerticesInRingN, x0, y0, customAttr0, ..., xN, yN, customAttrN, numberOfRings,... ]
- * @property {WebGLArrayBuffer} verticesBuffer Vertices WebGL buffer
- * @property {WebGLArrayBuffer} indicesBuffer Indices WebGL buffer
- * @property {import("../../transform.js").Transform} renderInstructionsTransform Converts world space coordinates to screen space; applies to the rendering instructions
- * @property {import("../../transform.js").Transform} invertVerticesBufferTransform Screen space to world space; applies to the webgl vertices buffer
  * @property {number} verticesCount Amount of vertices from geometries in the batch.
  * @property {number} ringsCount How many outer and inner rings in this batch.
  */
@@ -190,12 +121,6 @@ export type PointGeometryBatch = {
  * @property {Object<string, GeometryBatchItem>} entries Dictionary of all entries in the batch with associated computed values.
  * One entry corresponds to one feature. Key is feature uid.
  * @property {number} geometriesCount Amount of geometries in the batch.
- * @property {Float32Array} renderInstructions Render instructions for polygons are structured like so:
- * [ numberOfRings, numberOfVerticesInRing0, ..., numberOfVerticesInRingN, x0, y0, customAttr0, ..., xN, yN, customAttrN, numberOfRings,... ]
- * @property {WebGLArrayBuffer} verticesBuffer Vertices WebGL buffer
- * @property {WebGLArrayBuffer} indicesBuffer Indices WebGL buffer
- * @property {import("../../transform.js").Transform} renderInstructionsTransform Converts world space coordinates to screen space; applies to the rendering instructions
- * @property {import("../../transform.js").Transform} invertVerticesBufferTransform Screen space to world space; applies to the webgl vertices buffer
  * @property {number} verticesCount Amount of vertices from geometries in the batch.
  */
 /**
@@ -203,12 +128,6 @@ export type PointGeometryBatch = {
  * @property {Object<string, GeometryBatchItem>} entries Dictionary of all entries in the batch with associated computed values.
  * One entry corresponds to one feature. Key is feature uid.
  * @property {number} geometriesCount Amount of geometries in the batch.
- * @property {Float32Array} renderInstructions Render instructions for polygons are structured like so:
- * [ numberOfRings, numberOfVerticesInRing0, ..., numberOfVerticesInRingN, x0, y0, customAttr0, ..., xN, yN, customAttrN, numberOfRings,... ]
- * @property {WebGLArrayBuffer} verticesBuffer Vertices WebGL buffer
- * @property {WebGLArrayBuffer} indicesBuffer Indices WebGL buffer
- * @property {import("../../transform.js").Transform} renderInstructionsTransform Converts world space coordinates to screen space; applies to the rendering instructions
- * @property {import("../../transform.js").Transform} invertVerticesBufferTransform Screen space to world space; applies to the webgl vertices buffer
  */
 /**
  * @classdesc This class is used to group several geometries of various types together for faster rendering.
@@ -290,5 +209,4 @@ declare class MixedGeometryBatch {
     removeFeature(feature: Feature | RenderFeature): void;
     clear(): void;
 }
-import WebGLArrayBuffer from '../../webgl/Buffer.js';
 //# sourceMappingURL=MixedGeometryBatch.d.ts.map

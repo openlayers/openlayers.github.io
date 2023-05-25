@@ -59,19 +59,22 @@ declare class WebGLArrayBuffer {
     /**
      * Populates the buffer with an array of the given size (all values will be zeroes).
      * @param {number} size Array size
+     * @return {WebGLArrayBuffer} This
      */
-    ofSize(size: number): void;
+    ofSize(size: number): WebGLArrayBuffer;
     /**
      * Populates the buffer with an array of the given size.
      * @param {Array<number>} array Numerical array
+     * @return {WebGLArrayBuffer} This
      */
-    fromArray(array: Array<number>): void;
+    fromArray(array: Array<number>): WebGLArrayBuffer;
     /**
      * Populates the buffer with a raw binary array buffer.
      * @param {ArrayBuffer} buffer Raw binary buffer to populate the array with. Note that this buffer must have been
      * initialized for the same typed array class.
+     * @return {WebGLArrayBuffer} This
      */
-    fromArrayBuffer(buffer: ArrayBuffer): void;
+    fromArrayBuffer(buffer: ArrayBuffer): WebGLArrayBuffer;
     /**
      * @return {number} Buffer type.
      */

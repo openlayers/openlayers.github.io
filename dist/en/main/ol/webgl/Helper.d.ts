@@ -324,14 +324,14 @@ declare class WebGLHelper extends Disposable {
     private tmpMat4_;
     /**
      * @private
-     * @type {Object<string, WebGLUniformLocation>}
+     * @type {Object<string, Object<string, WebGLUniformLocation>>}
      */
-    private uniformLocations_;
+    private uniformLocationsByProgram_;
     /**
      * @private
-     * @type {Object<string, number>}
+     * @type {Object<string, Object<string, number>>}
      */
-    private attribLocations_;
+    private attribLocationsByProgram_;
     /**
      * Holds info about custom uniforms used in the post processing pass.
      * If the uniform is a texture, the WebGL Texture object will be stored here.

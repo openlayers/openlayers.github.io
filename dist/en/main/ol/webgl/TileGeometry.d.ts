@@ -9,29 +9,21 @@ export type TileType = import("../VectorRenderTile").default;
 declare class TileGeometry extends BaseTileRepresentation<import("../VectorRenderTile").default> {
     /**
      * @param {import("./BaseTileRepresentation.js").TileRepresentationOptions<TileType>} options The tile texture options.
-     * @param {import("../render/webgl/PolygonBatchRenderer.js").default} polygonRenderer Polygon renderer
-     * @param {import("../render/webgl/LineStringBatchRenderer.js").default} lineStringRenderer Linestring renderer
-     * @param {import("../render/webgl/PointBatchRenderer.js").default} pointRenderer Point renderer
+     * @param {Array<import("../render/webgl/VectorStyleRenderer.js").default>} styleRenderers Array of vector style renderers
      */
-    constructor(options: import("./BaseTileRepresentation.js").TileRepresentationOptions<TileType>, polygonRenderer: import("../render/webgl/PolygonBatchRenderer.js").default, lineStringRenderer: import("../render/webgl/LineStringBatchRenderer.js").default, pointRenderer: import("../render/webgl/PointBatchRenderer.js").default);
-    batch: MixedGeometryBatch;
+    constructor(options: import("./BaseTileRepresentation.js").TileRepresentationOptions<TileType>, styleRenderers: Array<import("../render/webgl/VectorStyleRenderer.js").default>);
     /**
      * @private
      */
-    private polygonRenderer_;
+    private batch_;
     /**
      * @private
      */
-    private lineStringRenderer_;
+    private styleRenderers_;
     /**
-     * @private
+     * @type {Array<import("../render/webgl/VectorStyleRenderer.js").WebGLBuffers>}
      */
-    private pointRenderer_;
-    /**
-     * @private
-     */
-    private renderInstructionsTransform_;
+    buffers: Array<import("../render/webgl/VectorStyleRenderer.js").WebGLBuffers>;
 }
 import BaseTileRepresentation from './BaseTileRepresentation.js';
-import MixedGeometryBatch from '../render/webgl/MixedGeometryBatch.js';
 //# sourceMappingURL=TileGeometry.d.ts.map

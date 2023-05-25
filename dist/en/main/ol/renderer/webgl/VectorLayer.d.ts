@@ -11,95 +11,28 @@ export const Uniforms: {
     PIXEL_RATIO: string;
 };
 export default WebGLVectorLayerRenderer;
-/**
- * A callback computing
- * the value of a custom attribute (different for each feature) to be passed on to the GPU.
- * Properties are available as 2nd arg for quicker access.
- */
-export type AttributeCallback = (arg0: import("../../Feature").default) => number | Array<number>;
-/**
- * An object containing custom shaders (vertex and fragment); uses attributes and uniforms
- * provided to the renderer
- */
-export type CustomShaderProgram = {
-    /**
-     * Vertex shader source.
-     */
-    vertexShader: string;
-    /**
-     * Fragment shader source.
-     */
-    fragmentShader: string;
-};
-/**
- * An object containing attribute callbacks for the default shaders
- */
-export type DefaultShaderProgram = {
-    /**
-     * Color value, encoded in a [number, number] array (use the {@link module :ol/webgl/styleparser~packColor} function)
-     */
-    color?: AttributeCallback | undefined;
-    /**
-     * Stroke width value
-     */
-    width?: AttributeCallback | undefined;
-};
+export type VectorStyle = import('../../render/webgl/VectorStyleRenderer.js').VectorStyle;
 export type Options = {
     /**
      * A CSS class name to set to the canvas element.
      */
     className?: string | undefined;
     /**
-     * Shaders for filling polygons.
+     * Vector style as literal style or shaders; can also accept an array of styles
      */
-    fill?: CustomShaderProgram | DefaultShaderProgram | undefined;
-    /**
-     * Shaders for line strings and polygon strokes.
-     */
-    stroke?: CustomShaderProgram | DefaultShaderProgram | undefined;
-    /**
-     * Shaders for points.
-     */
-    point?: CustomShaderProgram | DefaultShaderProgram | undefined;
-    /**
-     * Uniform definitions.
-     */
-    uniforms?: {
-        [x: string]: import("../../webgl/Helper.js").UniformValue;
-    } | undefined;
-    /**
-     * Attribute definitions.
-     */
-    attributes?: import("../../render/webgl/BatchRenderer.js").CustomAttribute[] | undefined;
+    style: VectorStyle | Array<VectorStyle>;
     /**
      * Post-processes definitions
      */
     postProcesses?: import("./Layer.js").PostProcessesOptions[] | undefined;
 };
 /**
- * @typedef {function(import("../../Feature").default):number|Array<number>} AttributeCallback A callback computing
- * the value of a custom attribute (different for each feature) to be passed on to the GPU.
- * Properties are available as 2nd arg for quicker access.
- */
-/**
- * @typedef {Object} CustomShaderProgram An object containing custom shaders (vertex and fragment); uses attributes and uniforms
- * provided to the renderer
- * @property {string} vertexShader Vertex shader source.
- * @property {string} fragmentShader Fragment shader source.
- */
-/**
- * @typedef {Object} DefaultShaderProgram An object containing attribute callbacks for the default shaders
- * @property {AttributeCallback} [color] Color value, encoded in a [number, number] array (use the {@link module:ol/webgl/styleparser~packColor} function)
- * @property {AttributeCallback} [width] Stroke width value
+ * @typedef {import('../../render/webgl/VectorStyleRenderer.js').VectorStyle} VectorStyle
  */
 /**
  * @typedef {Object} Options
  * @property {string} [className='ol-layer'] A CSS class name to set to the canvas element.
- * @property {CustomShaderProgram|DefaultShaderProgram} [fill] Shaders for filling polygons.
- * @property {CustomShaderProgram|DefaultShaderProgram} [stroke] Shaders for line strings and polygon strokes.
- * @property {CustomShaderProgram|DefaultShaderProgram} [point] Shaders for points.
- * @property {Object<string,import("../../webgl/Helper").UniformValue>} [uniforms] Uniform definitions.
- * @property {Array<import("../../render/webgl/BatchRenderer.js").CustomAttribute>} [attributes] Attribute definitions.
+ * @property {VectorStyle|Array<VectorStyle>} style Vector style as literal style or shaders; can also accept an array of styles
  * @property {Array<import("./Layer").PostProcessesOptions>} [postProcesses] Post-processes definitions
  */
 /**
@@ -144,69 +77,20 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      */
     private currentFrameStateTransform_;
     /**
+     * @type {Array<VectorStyle>}
      * @private
      */
-    private worker_;
+    private styles_;
     /**
-     * @type {PolygonBatchRenderer}
+     * @type {Array<VectorStyleRenderer>}
      * @private
      */
-    private polygonRenderer_;
+    private styleRenderers_;
     /**
-     * @type {PointBatchRenderer}
+     * @type {Array<import('../../render/webgl/VectorStyleRenderer.js').WebGLBuffers>}
      * @private
      */
-    private pointRenderer_;
-    /**
-     * @type {LineStringBatchRenderer}
-     * @private
-     */
-    private lineStringRenderer_;
-    /**
-     * @type {string}
-     * @private
-     */
-    private fillVertexShader_;
-    /**
-     * @type {string}
-     * @private
-     */
-    private fillFragmentShader_;
-    /**
-     * @type {string}
-     * @private
-     */
-    private strokeVertexShader_;
-    /**
-     * @type {string}
-     * @private
-     */
-    private strokeFragmentShader_;
-    /**
-     * @type {string}
-     * @private
-     */
-    private pointVertexShader_;
-    /**
-     * @type {string}
-     * @private
-     */
-    private pointFragmentShader_;
-    /**
-     * @type {Array<import('../../render/webgl/BatchRenderer.js').CustomAttribute>}
-     * @private
-     */
-    private fillAttributes_;
-    /**
-     * @type {Array<import('../../render/webgl/BatchRenderer.js').CustomAttribute>}
-     * @private
-     */
-    private strokeAttributes_;
-    /**
-     * @type {Array<import('../../render/webgl/BatchRenderer.js').CustomAttribute>}
-     * @private
-     */
-    private pointAttributes_;
+    private buffers_;
     /**
      * @private
      */

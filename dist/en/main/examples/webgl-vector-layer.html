@@ -245,7 +245,6 @@ import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import WebGLVectorLayerRenderer from &#x27;ol/renderer/webgl/VectorLayer.js&#x27;;
-import {parseLiteralStyle} from &#x27;ol/webgl/styleparser.js&#x27;;
 
 /** @type {import(&#x27;ol/style/literal.js&#x27;).LiteralStyle} */
 const style &#x3D; {
@@ -256,18 +255,8 @@ const style &#x3D; {
 
 class WebGLLayer extends Layer {
   createRenderer() {
-    const parseResult &#x3D; parseLiteralStyle(style);
     return new WebGLVectorLayerRenderer(this, {
-      fill: {
-        vertexShader: parseResult.builder.getFillVertexShader(),
-        fragmentShader: parseResult.builder.getFillFragmentShader(),
-      },
-      stroke: {
-        vertexShader: parseResult.builder.getStrokeVertexShader(),
-        fragmentShader: parseResult.builder.getStrokeFragmentShader(),
-      },
-      attributes: parseResult.attributes,
-      uniforms: parseResult.uniforms,
+      style,
     });
   }
 }

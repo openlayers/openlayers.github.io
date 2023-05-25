@@ -280,39 +280,62 @@ import View from &#x27;ol/View.js&#x27;;
 import WebGLVectorTileLayerRenderer from &#x27;ol/renderer/webgl/VectorTileLayer.js&#x27;;
 import {Fill, Icon, Stroke, Style, Text} from &#x27;ol/style.js&#x27;;
 import {asArray} from &#x27;ol/color.js&#x27;;
-import {packColor} from &#x27;ol/webgl/styleparser.js&#x27;;
+import {packColor, parseLiteralStyle} from &#x27;ol/webgl/styleparser.js&#x27;;
 
 const key &#x3D;
   &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
+const result &#x3D; parseLiteralStyle({
+  &#x27;fill-color&#x27;: [&#x27;get&#x27;, &#x27;fillColor&#x27;],
+  &#x27;stroke-color&#x27;: [&#x27;get&#x27;, &#x27;strokeColor&#x27;],
+  &#x27;stroke-width&#x27;: [&#x27;get&#x27;, &#x27;strokeWidth&#x27;],
+  symbol: {
+    symbolType: &#x27;circle&#x27;,
+    size: 8,
+    color: &#x27;#777&#x27;,
+  },
+});
+
 class WebGLVectorTileLayer extends VectorTile {
   createRenderer() {
     return new WebGLVectorTileLayerRenderer(this, {
-      fill: {
-        attributes: {
-          color: (feature) &#x3D;&gt; {
-            const style &#x3D; this.getStyle()(feature, 1)[0];
-            const color &#x3D; asArray(style?.getFill()?.getColor() || &#x27;#eee&#x27;);
-            return packColor(color);
-          },
+      style: {
+        fill: {
+          fragment: result.builder.getFillFragmentShader(),
+          vertex: result.builder.getFillVertexShader(),
         },
-      },
-      stroke: {
-        attributes: {
-          color: (feature) &#x3D;&gt; {
-            const style &#x3D; this.getStyle()(feature, 1)[0];
-            const color &#x3D; asArray(style?.getStroke()?.getColor() || &#x27;#eee&#x27;);
-            return packColor(color);
-          },
-          width: (feature) &#x3D;&gt; {
-            const style &#x3D; this.getStyle()(feature, 1)[0];
-            return style?.getStroke()?.getWidth() || 0;
-          },
+        stroke: {
+          fragment: result.builder.getStrokeFragmentShader(),
+          vertex: result.builder.getStrokeVertexShader(),
         },
-      },
-      point: {
+        symbol: {
+          fragment: result.builder.getSymbolFragmentShader(),
+          vertex: result.builder.getSymbolVertexShader(),
+        },
         attributes: {
-          color: () &#x3D;&gt; packColor(asArray(&#x27;#777&#x27;)),
+          fillColor: {
+            size: 2,
+            callback: (feature) &#x3D;&gt; {
+              const style &#x3D; this.getStyle()(feature, 1)[0];
+              const color &#x3D; asArray(style?.getFill()?.getColor() || &#x27;#eee&#x27;);
+              return packColor(color);
+            },
+          },
+          strokeColor: {
+            size: 2,
+            callback: (feature) &#x3D;&gt; {
+              const style &#x3D; this.getStyle()(feature, 1)[0];
+              const color &#x3D; asArray(style?.getStroke()?.getColor() || &#x27;#eee&#x27;);
+              return packColor(color);
+            },
+          },
+          strokeWidth: {
+            size: 1,
+            callback: (feature) &#x3D;&gt; {
+              const style &#x3D; this.getStyle()(feature, 1)[0];
+              return style?.getStroke()?.getWidth() || 0;
+            },
+          },
         },
       },
     });

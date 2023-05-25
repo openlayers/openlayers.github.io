@@ -16,8 +16,8 @@ export function packColor(color: import("../color.js").Color | string): Array<nu
  * @property {boolean} hasSymbol Has a symbol style defined
  * @property {boolean} hasStroke Has a stroke style defined
  * @property {boolean} hasFill Has a fill style defined
- * @property {Object<string,import("./Helper").UniformValue>} uniforms Uniform definitions.
- * @property {Array<import("../renderer/webgl/PointsLayer").CustomAttribute>} attributes Attribute descriptions.
+ * @property {import("../render/webgl/VectorStyleRenderer.js").UniformDefinitions} uniforms Uniform definitions
+ * @property {import("../render/webgl/VectorStyleRenderer.js").AttributeDefinitions} attributes Attribute definitions
  */
 /**
  * Parses a {@link import("../style/literal").LiteralStyle} object and returns a {@link ShaderBuilder}
@@ -49,15 +49,13 @@ export type StyleParseResult = {
      */
     hasFill: boolean;
     /**
-     * Uniform definitions.
+     * Uniform definitions
      */
-    uniforms: {
-        [x: string]: import("./Helper").UniformValue;
-    };
+    uniforms: import("../render/webgl/VectorStyleRenderer.js").UniformDefinitions;
     /**
-     * Attribute descriptions.
+     * Attribute definitions
      */
-    attributes: Array<import("../renderer/webgl/PointsLayer").CustomAttribute>;
+    attributes: import("../render/webgl/VectorStyleRenderer.js").AttributeDefinitions;
 };
 import { ShaderBuilder } from './ShaderBuilder.js';
 //# sourceMappingURL=styleparser.d.ts.map

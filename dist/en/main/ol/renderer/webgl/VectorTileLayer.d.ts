@@ -1,51 +1,10 @@
 export default WebGLVectorTileLayerRenderer;
-/**
- * A callback computing
- * the value of a custom attribute (different for each feature) to be passed on to the GPU.
- * Properties are available as 2nd arg for quicker access.
- */
-export type CustomAttributeCallback = (arg0: import("../../Feature").default, arg1: {
-    [x: string]: any;
-}) => number;
-/**
- * An object containing both shaders (vertex and fragment) as well as the required attributes
- */
-export type ShaderProgram = {
-    /**
-     * Vertex shader source (using the default one if unspecified).
-     */
-    vertexShader?: string | undefined;
-    /**
-     * Fragment shader source (using the default one if unspecified).
-     */
-    fragmentShader?: string | undefined;
-    /**
-     * Custom attributes made available in the vertex shader.
-     * Keys are the names of the attributes which are then accessible in the vertex shader using the `a_` prefix, e.g.: `a_opacity`.
-     * Default shaders rely on the attributes in {@link module :ol/render/webgl/shaders~DefaultAttributes}.
-     */
-    attributes: any;
-};
+export type VectorStyle = import('../../render/webgl/VectorStyleRenderer.js').VectorStyle;
 export type Options = {
     /**
-     * Attributes and shaders for filling polygons.
+     * Vector style as literal style or shaders; can also accept an array of styles
      */
-    fill?: ShaderProgram | undefined;
-    /**
-     * Attributes and shaders for line strings and polygon strokes.
-     */
-    stroke?: ShaderProgram | undefined;
-    /**
-     * Attributes and shaders for points.
-     */
-    point?: ShaderProgram | undefined;
-    /**
-     * Additional uniforms
-     * made available to shaders.
-     */
-    uniforms?: {
-        [x: string]: import("../../webgl/Helper").UniformValue;
-    } | undefined;
+    style: VectorStyle | Array<VectorStyle>;
     /**
      * The vector tile cache size.
      */
@@ -53,25 +12,11 @@ export type Options = {
 };
 export type LayerType = import("../../layer/BaseTile.js").default<any, any>;
 /**
- * @typedef {function(import("../../Feature").default, Object<string, *>):number} CustomAttributeCallback A callback computing
- * the value of a custom attribute (different for each feature) to be passed on to the GPU.
- * Properties are available as 2nd arg for quicker access.
- */
-/**
- * @typedef {Object} ShaderProgram An object containing both shaders (vertex and fragment) as well as the required attributes
- * @property {string} [vertexShader] Vertex shader source (using the default one if unspecified).
- * @property {string} [fragmentShader] Fragment shader source (using the default one if unspecified).
- * @property {Object<import("./shaders.js").DefaultAttributes,CustomAttributeCallback>} attributes Custom attributes made available in the vertex shader.
- * Keys are the names of the attributes which are then accessible in the vertex shader using the `a_` prefix, e.g.: `a_opacity`.
- * Default shaders rely on the attributes in {@link module:ol/render/webgl/shaders~DefaultAttributes}.
+ * @typedef {import('../../render/webgl/VectorStyleRenderer.js').VectorStyle} VectorStyle
  */
 /**
  * @typedef {Object} Options
- * @property {ShaderProgram} [fill] Attributes and shaders for filling polygons.
- * @property {ShaderProgram} [stroke] Attributes and shaders for line strings and polygon strokes.
- * @property {ShaderProgram} [point] Attributes and shaders for points.
- * @property {Object<string, import("../../webgl/Helper").UniformValue>} [uniforms] Additional uniforms
- * made available to shaders.
+ * @property {VectorStyle|Array<VectorStyle>} style Vector style as literal style or shaders; can also accept an array of styles
  * @property {number} [cacheSize=512] The vector tile cache size.
  */
 /**
@@ -89,24 +34,15 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      */
     constructor(tileLayer: import("../../layer/BaseTile.js").default<any, any>, options: Options);
     /**
+     * @type {Array<VectorStyle>}
      * @private
      */
-    private worker_;
+    private styles_;
     /**
-     * @type {PolygonBatchRenderer}
+     * @type {Array<VectorStyleRenderer>}
      * @private
      */
-    private polygonRenderer_;
-    /**
-     * @type {PointBatchRenderer}
-     * @private
-     */
-    private pointRenderer_;
-    /**
-     * @type {LineStringBatchRenderer}
-     * @private
-     */
-    private lineStringRenderer_;
+    private styleRenderers_;
     /**
      * This transform is updated on every frame and is the composition of:
      * - invert of the world->screen transform that was used when rebuilding buffers (see `this.renderTransform_`)
@@ -126,15 +62,6 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      * @private
      */
     private applyOptions_;
-    fillVertexShader_: string | undefined;
-    fillFragmentShader_: string | undefined;
-    fillAttributes_: import("../../render/webgl/BatchRenderer").CustomAttribute[] | undefined;
-    strokeVertexShader_: string | undefined;
-    strokeFragmentShader_: string | undefined;
-    strokeAttributes_: import("../../render/webgl/BatchRenderer").CustomAttribute[] | undefined;
-    pointVertexShader_: string | undefined;
-    pointFragmentShader_: string | undefined;
-    pointAttributes_: import("../../render/webgl/BatchRenderer").CustomAttribute[] | undefined;
     /**
      * @private
      */
