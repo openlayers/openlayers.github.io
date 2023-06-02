@@ -37,7 +37,7 @@
  * contain line breaks (`\n`). For rich text provide an array of text/font tuples. A tuple consists of the text to
  * render and the font to use (or `''` to use the text style's font). A line break has to be a separate tuple (i.e. `'\n', ''`).
  * **Example:** `['foo', 'bold 10px sans-serif', ' bar', 'italic 10px sans-serif', ' baz', '']` will yield "**foo** *bar* baz".
- * **Note:** Rich text is not supported for the immediate rendering API.
+ * **Note:** Rich text is not supported for `'text-placement': 'line'` or the immediate rendering API.
  * @property {string} [text-font] Font style as CSS `font` value, see:
  * https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font. Default is `'10px sans-serif'`
  * @property {number} [text-max-angle=Math.PI/4] When `text-placement` is set to `'line'`, allow a maximum angle between adjacent characters.
@@ -53,12 +53,12 @@
  * @property {boolean} [text-rotate-with-view=false] Whether to rotate the text with the view.
  * @property {number} [text-rotation=0] Rotation in radians (positive rotation clockwise).
  * @property {CanvasTextAlign} [text-align] Text alignment. Possible values: `'left'`, `'right'`, `'center'`, `'end'` or `'start'`.
- * Default is `'center'` for `text-placement: 'point'`. For `text-placement: 'line'`, the default is to let the renderer choose a
+ * Default is `'center'` for `'text-placement': 'point'`. For `'text-placement': 'line'`, the default is to let the renderer choose a
  * placement where `text-max-angle` is not exceeded.
  * @property {import('./Text.js').TextJustify} [text-justify] Text justification within the text box.
  * If not set, text is justified towards the `textAlign` anchor.
  * Otherwise, use options `'left'`, `'center'`, or `'right'` to justify the text within the text box.
- * **Note:** `text-justify` is ignored for immediate rendering and also for `text-placement: 'line'`.
+ * **Note:** `text-justify` is ignored for immediate rendering and also for `'text-placement': 'line'`.
  * @property {CanvasTextBaseline} [text-baseline='middle'] Text base line. Possible values: `'bottom'`, `'top'`, `'middle'`, `'alphabetic'`,
  * `'hanging'`, `'ideographic'`.
  * @property {Array<number>} [text-padding=[0, 0, 0, 0]] Padding in pixels around the text for decluttering and background. The order of
@@ -235,7 +235,7 @@ export type FlatText = {
      * contain line breaks (`\n`). For rich text provide an array of text/font tuples. A tuple consists of the text to
      * render and the font to use (or `''` to use the text style's font). A line break has to be a separate tuple (i.e. `'\n', ''`).
      * **Example:** `['foo', 'bold 10px sans-serif', ' bar', 'italic 10px sans-serif', ' baz', '']` will yield "**foo** *bar* baz".
-     * **Note:** Rich text is not supported for the immediate rendering API.
+     * **Note:** Rich text is not supported for `'text-placement': 'line'` or the immediate rendering API.
      */
     "text-value"?: string | string[] | undefined;
     /**
@@ -284,7 +284,7 @@ export type FlatText = {
     "text-rotation"?: number | undefined;
     /**
      * Text alignment. Possible values: `'left'`, `'right'`, `'center'`, `'end'` or `'start'`.
-     * Default is `'center'` for `text-placement: 'point'`. For `text-placement: 'line'`, the default is to let the renderer choose a
+     * Default is `'center'` for `'text-placement': 'point'`. For `'text-placement': 'line'`, the default is to let the renderer choose a
      * placement where `text-max-angle` is not exceeded.
      */
     "text-align"?: CanvasTextAlign | undefined;
@@ -292,7 +292,7 @@ export type FlatText = {
      * Text justification within the text box.
      * If not set, text is justified towards the `textAlign` anchor.
      * Otherwise, use options `'left'`, `'center'`, or `'right'` to justify the text within the text box.
-     * **Note:** `text-justify` is ignored for immediate rendering and also for `text-placement: 'line'`.
+     * **Note:** `text-justify` is ignored for immediate rendering and also for `'text-placement': 'line'`.
      */
     "text-justify"?: import("./Text.js").TextJustify | undefined;
     /**

@@ -3017,7 +3017,7 @@ can be called with an object literal that has fill, stroke, text, icon, regular 
 contain line breaks (<code>\n</code>). For rich text provide an array of text/font tuples. A tuple consists of the text to
 render and the font to use (or <code>''</code> to use the text style's font). A line break has to be a separate tuple (i.e. <code>'\n', ''</code>).
 <strong>Example:</strong> <code>['foo', 'bold 10px sans-serif', ' bar', 'italic 10px sans-serif', ' baz', '']</code> will yield &quot;<strong>foo</strong> <em>bar</em> baz&quot;.
-<strong>Note:</strong> Rich text is not supported for the immediate rendering API.</p></td>
+<strong>Note:</strong> Rich text is not supported for <code>'text-placement': 'line'</code> or the immediate rendering API.</p></td>
         </tr>
 
 	
@@ -3424,7 +3424,7 @@ the width of the polygon at the label position or the length of the path that it
             
 
             <td class="description last"><p>Text alignment. Possible values: <code>'left'</code>, <code>'right'</code>, <code>'center'</code>, <code>'end'</code> or <code>'start'</code>.
-Default is <code>'center'</code> for <code>text-placement: 'point'</code>. For <code>text-placement: 'line'</code>, the default is to let the renderer choose a
+Default is <code>'center'</code> for <code>'text-placement': 'point'</code>. For <code>'text-placement': 'line'</code>, the default is to let the renderer choose a
 placement where <code>text-max-angle</code> is not exceeded.</p></td>
         </tr>
 
@@ -3463,7 +3463,7 @@ placement where <code>text-max-angle</code> is not exceeded.</p></td>
             <td class="description last"><p>Text justification within the text box.
 If not set, text is justified towards the <code>textAlign</code> anchor.
 Otherwise, use options <code>'left'</code>, <code>'center'</code>, or <code>'right'</code> to justify the text within the text box.
-<strong>Note:</strong> <code>text-justify</code> is ignored for immediate rendering and also for <code>text-placement: 'line'</code>.</p></td>
+<strong>Note:</strong> <code>text-justify</code> is ignored for immediate rendering and also for <code>'text-placement': 'line'</code>.</p></td>
         </tr>
 
 	
