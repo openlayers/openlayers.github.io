@@ -7,9 +7,9 @@
 export function defaultImageLoadFunction(image: import("../Image.js").default, src: string): void;
 export type ImageSourceEventType = string;
 export namespace ImageSourceEventType {
-    const IMAGELOADSTART: string;
-    const IMAGELOADEND: string;
-    const IMAGELOADERROR: string;
+    let IMAGELOADSTART: string;
+    let IMAGELOADEND: string;
+    let IMAGELOADERROR: string;
 }
 /**
  * @typedef {'imageloadend'|'imageloaderror'|'imageloadstart'} ImageSourceEventTypes

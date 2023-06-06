@@ -161,7 +161,6 @@ declare class VectorImageLayer<VectorSourceType extends import("../source/Vector
      * @return {number} Ratio between rendered extent size and viewport extent size.
      */
     getImageRatio(): number;
-    createRenderer(): any;
 }
 import CanvasVectorImageLayerRenderer from '../renderer/canvas/VectorImageLayer.js';
 import BaseVectorLayer from './BaseVector.js';

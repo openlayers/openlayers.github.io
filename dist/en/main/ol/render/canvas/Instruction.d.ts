@@ -17,18 +17,18 @@ export const closePathInstruction: Array<Instruction>;
 export default Instruction;
 type Instruction = number;
 declare namespace Instruction {
-    const BEGIN_GEOMETRY: number;
-    const BEGIN_PATH: number;
-    const CIRCLE: number;
-    const CLOSE_PATH: number;
-    const CUSTOM: number;
-    const DRAW_CHARS: number;
-    const DRAW_IMAGE: number;
-    const END_GEOMETRY: number;
-    const FILL: number;
-    const MOVE_TO_LINE_TO: number;
-    const SET_FILL_STYLE: number;
-    const SET_STROKE_STYLE: number;
-    const STROKE: number;
+    let BEGIN_GEOMETRY: number;
+    let BEGIN_PATH: number;
+    let CIRCLE: number;
+    let CLOSE_PATH: number;
+    let CUSTOM: number;
+    let DRAW_CHARS: number;
+    let DRAW_IMAGE: number;
+    let END_GEOMETRY: number;
+    let FILL: number;
+    let MOVE_TO_LINE_TO: number;
+    let SET_FILL_STYLE: number;
+    let SET_STROKE_STYLE: number;
+    let STROKE: number;
 }
 //# sourceMappingURL=Instruction.d.ts.map

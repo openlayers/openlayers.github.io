@@ -117,9 +117,9 @@ import Collection from '../Collection.js';
 import Feature from '../Feature.js';
 type TranslateEventType = string;
 declare namespace TranslateEventType {
-    const TRANSLATESTART: string;
-    const TRANSLATING: string;
-    const TRANSLATEEND: string;
+    let TRANSLATESTART: string;
+    let TRANSLATING: string;
+    let TRANSLATEEND: string;
 }
 /***
  * @template Return

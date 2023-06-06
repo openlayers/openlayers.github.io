@@ -181,8 +181,8 @@ import Collection from '../Collection.js';
 import Feature from '../Feature.js';
 type ModifyEventType = string;
 declare namespace ModifyEventType {
-    const MODIFYSTART: string;
-    const MODIFYEND: string;
+    let MODIFYSTART: string;
+    let MODIFYEND: string;
 }
 /***
  * @template Return

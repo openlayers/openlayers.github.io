@@ -61,7 +61,7 @@ export type DragAndDropOnSignature<Return> = import("../Observable").OnSignature
 import Event from '../events/Event.js';
 type DragAndDropEventType = string;
 declare namespace DragAndDropEventType {
-    const ADD_FEATURES: string;
+    let ADD_FEATURES: string;
 }
 /***
  * @template Return

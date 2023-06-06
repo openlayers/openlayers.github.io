@@ -122,10 +122,6 @@ declare class Polyline extends TextFeature {
      */
     constructor(options?: Options | undefined);
     /**
-     * @type {import("../proj/Projection.js").default}
-     */
-    dataProjection: import("../proj/Projection.js").default;
-    /**
      * @private
      * @type {number}
      */

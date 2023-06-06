@@ -12,15 +12,15 @@
 export function newTileRepresentationLookup(): TileRepresentationLookup;
 export function getCacheKey(source: any, tileCoord: any): string;
 export namespace Uniforms {
-    const TILE_TRANSFORM: string;
-    const TRANSITION_ALPHA: string;
-    const DEPTH: string;
-    const RENDER_EXTENT: string;
-    const RESOLUTION: string;
-    const ZOOM: string;
-    const GLOBAL_ALPHA: string;
-    const PROJECTION_MATRIX: string;
-    const SCREEN_TO_WORLD_MATRIX: string;
+    let TILE_TRANSFORM: string;
+    let TRANSITION_ALPHA: string;
+    let DEPTH: string;
+    let RENDER_EXTENT: string;
+    let RESOLUTION: string;
+    let ZOOM: string;
+    let GLOBAL_ALPHA: string;
+    let PROJECTION_MATRIX: string;
+    let SCREEN_TO_WORLD_MATRIX: string;
 }
 export default WebGLBaseTileLayerRenderer;
 export type AbstractTileRepresentation = import("../../webgl/BaseTileRepresentation.js").default<import("../../Tile.js").default>;

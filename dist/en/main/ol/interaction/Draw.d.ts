@@ -247,9 +247,9 @@ import Event from '../events/Event.js';
 import Feature from '../Feature.js';
 type DrawEventType = string;
 declare namespace DrawEventType {
-    const DRAWSTART: string;
-    const DRAWEND: string;
-    const DRAWABORT: string;
+    let DRAWSTART: string;
+    let DRAWEND: string;
+    let DRAWABORT: string;
 }
 /***
  * @template Return

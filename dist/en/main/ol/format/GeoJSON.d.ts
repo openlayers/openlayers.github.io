@@ -68,14 +68,6 @@ declare class GeoJSON extends JSONFeature {
      */
     constructor(options?: Options | undefined);
     /**
-     * @type {import("../proj/Projection.js").default}
-     */
-    dataProjection: import("../proj/Projection.js").default;
-    /**
-     * @type {import("../proj/Projection.js").default}
-     */
-    defaultFeatureProjection: import("../proj/Projection.js").default;
-    /**
      * Name of the geometry attribute for features.
      * @type {string|undefined}
      * @private

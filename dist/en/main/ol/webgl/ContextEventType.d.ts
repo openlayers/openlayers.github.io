@@ -1,6 +1,6 @@
 declare namespace _default {
-    const LOST: string;
-    const RESTORED: string;
+    let LOST: string;
+    let RESTORED: string;
 }
 export default _default;
 //# sourceMappingURL=ContextEventType.d.ts.map

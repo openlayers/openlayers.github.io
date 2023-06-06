@@ -1,14 +1,14 @@
 declare namespace _default {
-    const OPACITY: string;
-    const VISIBLE: string;
-    const EXTENT: string;
-    const Z_INDEX: string;
-    const MAX_RESOLUTION: string;
-    const MIN_RESOLUTION: string;
-    const MAX_ZOOM: string;
-    const MIN_ZOOM: string;
-    const SOURCE: string;
-    const MAP: string;
+    let OPACITY: string;
+    let VISIBLE: string;
+    let EXTENT: string;
+    let Z_INDEX: string;
+    let MAX_RESOLUTION: string;
+    let MIN_RESOLUTION: string;
+    let MAX_ZOOM: string;
+    let MIN_ZOOM: string;
+    let SOURCE: string;
+    let MAP: string;
 }
 export default _default;
 //# sourceMappingURL=Property.d.ts.map

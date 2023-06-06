@@ -1,5 +1,5 @@
 declare namespace _default {
-    const PROPERTYCHANGE: string;
+    let PROPERTYCHANGE: string;
 }
 export default _default;
 export type Types = 'propertychange';

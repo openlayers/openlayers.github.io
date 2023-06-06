@@ -16,7 +16,6 @@ declare class ImageLayer<ImageSourceType extends import("../source/Image.js").de
      * @param {import("./BaseImage.js").Options<ImageSourceType>} [options] Layer options.
      */
     constructor(options?: import("./BaseImage.js").Options<ImageSourceType> | undefined);
-    createRenderer(): any;
 }
 import CanvasImageLayerRenderer from '../renderer/canvas/ImageLayer.js';
 import BaseImageLayer from './BaseImage.js';

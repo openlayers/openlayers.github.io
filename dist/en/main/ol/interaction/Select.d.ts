@@ -185,7 +185,7 @@ export type SelectOnSignature<Return> = import("../Observable").OnSignature<impo
 import Event from '../events/Event.js';
 type SelectEventType = string;
 declare namespace SelectEventType {
-    const SELECT: string;
+    let SELECT: string;
 }
 /***
  * @template Return

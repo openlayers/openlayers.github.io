@@ -1,8 +1,8 @@
 declare namespace _default {
-    const LAYERGROUP: string;
-    const SIZE: string;
-    const TARGET: string;
-    const VIEW: string;
+    let LAYERGROUP: string;
+    let SIZE: string;
+    let TARGET: string;
+    let VIEW: string;
 }
 export default _default;
 //# sourceMappingURL=MapProperty.d.ts.map

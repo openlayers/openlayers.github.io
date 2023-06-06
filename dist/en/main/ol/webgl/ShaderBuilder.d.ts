@@ -184,8 +184,8 @@ export class ShaderBuilder {
      * @return {ShaderBuilder} the builder object
      */
     setStrokeWidthExpression(expression: string): ShaderBuilder;
-    setStrokeColorExpression(expression: any): ShaderBuilder;
-    setFillColorExpression(expression: any): ShaderBuilder;
+    setStrokeColorExpression(expression: any): this;
+    setFillColorExpression(expression: any): this;
     addVertexShaderFunction(code: any): void;
     addFragmentShaderFunction(code: any): void;
     /**

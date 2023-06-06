@@ -4,11 +4,11 @@
  */
 export type Attributes = string;
 export namespace Attributes {
-    const POSITION: string;
-    const INDEX: string;
-    const SEGMENT_START: string;
-    const SEGMENT_END: string;
-    const PARAMETERS: string;
+    let POSITION: string;
+    let INDEX: string;
+    let SEGMENT_START: string;
+    let SEGMENT_END: string;
+    let PARAMETERS: string;
 }
 export default VectorStyleRenderer;
 /**

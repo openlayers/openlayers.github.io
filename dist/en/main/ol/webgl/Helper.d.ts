@@ -9,8 +9,8 @@ export function computeAttributesStride(attributes: Array<AttributeDescription>)
  */
 export type ShaderType = number;
 export namespace ShaderType {
-    const FRAGMENT_SHADER: number;
-    const VERTEX_SHADER: number;
+    let FRAGMENT_SHADER: number;
+    let VERTEX_SHADER: number;
 }
 /**
  * Names of uniforms made available to all shaders.
@@ -18,14 +18,14 @@ export namespace ShaderType {
  */
 export type DefaultUniform = string;
 export namespace DefaultUniform {
-    const PROJECTION_MATRIX: string;
-    const OFFSET_SCALE_MATRIX: string;
-    const OFFSET_ROTATION_MATRIX: string;
-    const TIME: string;
-    const ZOOM: string;
-    const RESOLUTION: string;
-    const VIEWPORT_SIZE_PX: string;
-    const PIXEL_RATIO: string;
+    let PROJECTION_MATRIX: string;
+    let OFFSET_SCALE_MATRIX: string;
+    let OFFSET_ROTATION_MATRIX: string;
+    let TIME: string;
+    let ZOOM: string;
+    let RESOLUTION: string;
+    let VIEWPORT_SIZE_PX: string;
+    let PIXEL_RATIO: string;
 }
 /**
  * Attribute types, either `UNSIGNED_BYTE`, `UNSIGNED_SHORT`, `UNSIGNED_INT` or `FLOAT`

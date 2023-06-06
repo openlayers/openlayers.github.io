@@ -1,16 +1,16 @@
 export type TEXT_ALIGN = number;
 export namespace TEXT_ALIGN {
-    const left: number;
-    const end: number;
-    const center: number;
-    const right: number;
-    const start: number;
-    const top: number;
-    const middle: number;
-    const hanging: number;
-    const alphabetic: number;
-    const ideographic: number;
-    const bottom: number;
+    let left: number;
+    let end: number;
+    let center: number;
+    let right: number;
+    let start: number;
+    let top: number;
+    let middle: number;
+    let hanging: number;
+    let alphabetic: number;
+    let ideographic: number;
+    let bottom: number;
 }
 export default CanvasTextBuilder;
 declare class CanvasTextBuilder extends CanvasBuilder {

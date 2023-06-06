@@ -85,13 +85,13 @@ export function uniformNameForVariable(variableName: string): string;
  */
 export type ValueTypes = number;
 export namespace ValueTypes {
-    const NUMBER: number;
-    const STRING: number;
-    const COLOR: number;
-    const BOOLEAN: number;
-    const NUMBER_ARRAY: number;
-    const ANY: number;
-    const NONE: number;
+    let NUMBER: number;
+    let STRING: number;
+    let COLOR: number;
+    let BOOLEAN: number;
+    let NUMBER_ARRAY: number;
+    let ANY: number;
+    let NONE: number;
 }
 /**
  * An operator declaration must contain two methods: `getReturnType` which returns a type based on

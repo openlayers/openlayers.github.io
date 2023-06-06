@@ -22,13 +22,13 @@ export type HitMatch<T> = {
     callback: import("./vector.js").FeatureCallback<T>;
 };
 /**
+ * @template T
  * @typedef HitMatch
  * @property {import("../Feature.js").FeatureLike} feature Feature.
  * @property {import("../layer/Layer.js").default} layer Layer.
  * @property {import("../geom/SimpleGeometry.js").default} geometry Geometry.
  * @property {number} distanceSq Squared distance.
  * @property {import("./vector.js").FeatureCallback<T>} callback Callback.
- * @template T
  */
 /**
  * @abstract

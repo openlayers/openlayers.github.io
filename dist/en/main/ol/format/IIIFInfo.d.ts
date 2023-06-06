@@ -3,9 +3,9 @@
  */
 export type Versions = string;
 export namespace Versions {
-    const VERSION1: string;
-    const VERSION2: string;
-    const VERSION3: string;
+    let VERSION1: string;
+    let VERSION2: string;
+    let VERSION3: string;
 }
 export default IIIFInfo;
 export type PreferredOptions = {

@@ -1,9 +1,9 @@
 declare namespace _default {
-    const IDLE: number;
-    const LOADING: number;
-    const LOADED: number;
-    const ERROR: number;
-    const EMPTY: number;
+    let IDLE: number;
+    let LOADING: number;
+    let LOADED: number;
+    let ERROR: number;
+    let EMPTY: number;
 }
 export default _default;
 //# sourceMappingURL=ImageState.d.ts.map

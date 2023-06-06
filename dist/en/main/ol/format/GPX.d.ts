@@ -56,10 +56,6 @@ declare class GPX extends XMLFeature {
      */
     constructor(options?: Options | undefined);
     /**
-     * @type {import("../proj/Projection.js").default}
-     */
-    dataProjection: import("../proj/Projection.js").default;
-    /**
      * @type {function(Feature, Node): void|undefined}
      * @private
      */

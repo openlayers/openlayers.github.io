@@ -1,11 +1,11 @@
 declare namespace _default {
-    const ADDFEATURE: string;
-    const CHANGEFEATURE: string;
-    const CLEAR: string;
-    const REMOVEFEATURE: string;
-    const FEATURESLOADSTART: string;
-    const FEATURESLOADEND: string;
-    const FEATURESLOADERROR: string;
+    let ADDFEATURE: string;
+    let CHANGEFEATURE: string;
+    let CLEAR: string;
+    let REMOVEFEATURE: string;
+    let FEATURESLOADSTART: string;
+    let FEATURESLOADEND: string;
+    let FEATURESLOADERROR: string;
 }
 export default _default;
 export type VectorSourceEventTypes = 'addfeature' | 'changefeature' | 'clear' | 'removefeature' | 'featuresloadstart' | 'featuresloadend' | 'featuresloaderror';

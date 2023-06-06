@@ -1,8 +1,8 @@
 declare namespace _default {
-    const LEFT: string;
-    const UP: string;
-    const RIGHT: string;
-    const DOWN: string;
+    let LEFT: string;
+    let UP: string;
+    let RIGHT: string;
+    let DOWN: string;
 }
 export default _default;
 //# sourceMappingURL=Key.d.ts.map

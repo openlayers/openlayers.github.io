@@ -1,7 +1,7 @@
 declare namespace _default {
-    const TILELOADSTART: string;
-    const TILELOADEND: string;
-    const TILELOADERROR: string;
+    let TILELOADSTART: string;
+    let TILELOADEND: string;
+    let TILELOADERROR: string;
 }
 export default _default;
 export type TileSourceEventTypes = 'tileloadstart' | 'tileloadend' | 'tileloaderror';

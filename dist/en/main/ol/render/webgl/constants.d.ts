@@ -1,8 +1,8 @@
 export type WebGLWorkerMessageType = string;
 export namespace WebGLWorkerMessageType {
-    const GENERATE_POLYGON_BUFFERS: string;
-    const GENERATE_POINT_BUFFERS: string;
-    const GENERATE_LINE_STRING_BUFFERS: string;
+    let GENERATE_POLYGON_BUFFERS: string;
+    let GENERATE_POINT_BUFFERS: string;
+    let GENERATE_LINE_STRING_BUFFERS: string;
 }
 /**
  * This message will trigger the generation of a vertex and an index buffer based on the given render instructions.

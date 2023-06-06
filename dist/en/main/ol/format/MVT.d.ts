@@ -50,10 +50,6 @@ declare class MVT extends FeatureFormat {
      */
     constructor(options?: Options | undefined);
     /**
-     * @type {Projection}
-     */
-    dataProjection: Projection;
-    /**
      * @private
      * @type {import("../Feature.js").FeatureClass}
      */
@@ -121,5 +117,4 @@ declare class MVT extends FeatureFormat {
     setLayers(layers: Array<string>): void;
 }
 import FeatureFormat from './Feature.js';
-import Projection from '../proj/Projection.js';
 //# sourceMappingURL=MVT.d.ts.map

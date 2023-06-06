@@ -1,9 +1,9 @@
 declare namespace _default {
-    const POSTRENDER: string;
-    const MOVESTART: string;
-    const MOVEEND: string;
-    const LOADSTART: string;
-    const LOADEND: string;
+    let POSTRENDER: string;
+    let MOVESTART: string;
+    let MOVEEND: string;
+    let LOADSTART: string;
+    let LOADEND: string;
 }
 export default _default;
 /**

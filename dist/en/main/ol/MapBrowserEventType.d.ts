@@ -1,16 +1,16 @@
 declare namespace _default {
-    const SINGLECLICK: string;
-    const CLICK: string;
-    const DBLCLICK: string;
-    const POINTERDRAG: string;
-    const POINTERMOVE: string;
-    const POINTERDOWN: string;
-    const POINTERUP: string;
-    const POINTEROVER: string;
-    const POINTEROUT: string;
-    const POINTERENTER: string;
-    const POINTERLEAVE: string;
-    const POINTERCANCEL: string;
+    let SINGLECLICK: string;
+    let CLICK: string;
+    let DBLCLICK: string;
+    let POINTERDRAG: string;
+    let POINTERMOVE: string;
+    let POINTERDOWN: string;
+    let POINTERUP: string;
+    let POINTEROVER: string;
+    let POINTEROUT: string;
+    let POINTERENTER: string;
+    let POINTERLEAVE: string;
+    let POINTERCANCEL: string;
 }
 export default _default;
 /**

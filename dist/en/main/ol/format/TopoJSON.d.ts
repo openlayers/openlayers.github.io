@@ -94,10 +94,6 @@ declare class TopoJSON extends JSONFeature {
      * @type {?Array<string>}
      */
     private layers_;
-    /**
-     * @type {import("../proj/Projection.js").default}
-     */
-    dataProjection: import("../proj/Projection.js").default;
 }
 import JSONFeature from './JSONFeature.js';
 //# sourceMappingURL=TopoJSON.d.ts.map

@@ -1,9 +1,9 @@
 export type SymbolType = string;
 export namespace SymbolType {
-    const CIRCLE: string;
-    const SQUARE: string;
-    const TRIANGLE: string;
-    const IMAGE: string;
+    let CIRCLE: string;
+    let SQUARE: string;
+    let TRIANGLE: string;
+    let IMAGE: string;
 }
 export type ExpressionValue = import("./expressions.js").ExpressionValue;
 export type ColorExpression = import("../color.js").Color | string | Array<ExpressionValue>;

@@ -1,9 +1,9 @@
 declare namespace _default {
-    const PRERENDER: string;
-    const POSTRENDER: string;
-    const PRECOMPOSE: string;
-    const POSTCOMPOSE: string;
-    const RENDERCOMPLETE: string;
+    let PRERENDER: string;
+    let POSTRENDER: string;
+    let PRECOMPOSE: string;
+    let POSTCOMPOSE: string;
+    let RENDERCOMPLETE: string;
 }
 export default _default;
 export type MapRenderEventTypes = 'postrender' | 'precompose' | 'postcompose' | 'rendercomplete';

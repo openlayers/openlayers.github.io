@@ -136,10 +136,6 @@ declare class KML extends XMLFeature {
      */
     constructor(options?: Options | undefined);
     /**
-     * @type {import("../proj/Projection.js").default}
-     */
-    dataProjection: import("../proj/Projection.js").default;
-    /**
      * @private
      * @type {Array<Style>}
      */
