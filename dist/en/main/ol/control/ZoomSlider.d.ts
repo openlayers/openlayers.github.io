@@ -13,6 +13,11 @@ export type Options = {
      * should be re-rendered. This is called in a `requestAnimationFrame` callback.
      */
     render?: ((arg0: import("../MapEvent.js").default) => void) | undefined;
+    /**
+     * Specify a target if you want the control to be
+     * rendered outside of the map's viewport.
+     */
+    target?: string | HTMLElement | undefined;
 };
 /**
  * @typedef {Object} Options
@@ -20,6 +25,8 @@ export type Options = {
  * @property {number} [duration=200] Animation duration in milliseconds.
  * @property {function(import("../MapEvent.js").default):void} [render] Function called when the control
  * should be re-rendered. This is called in a `requestAnimationFrame` callback.
+ * @property {HTMLElement|string} [target] Specify a target if you want the control to be
+ * rendered outside of the map's viewport.
  */
 /**
  * @classdesc
