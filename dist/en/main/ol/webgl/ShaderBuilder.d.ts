@@ -191,63 +191,49 @@ export class ShaderBuilder {
     /**
      * Generates a symbol vertex shader from the builder parameters
      *
-     * Four uniforms are hardcoded in all shaders: `u_projectionMatrix`, `u_offsetScaleMatrix`,
-     * `u_offsetRotateMatrix`, `u_time`.
+     * The following uniforms are hardcoded in all shaders: `u_projectionMatrix`, `u_offsetScaleMatrix`,
+     * `u_offsetRotateMatrix`, `u_time`, `u_zoom`, `u_resolution`, `u_hitDetection`.
      *
      * The following attributes are hardcoded and expected to be present in the vertex buffers:
-     * `vec2 a_position`, `float a_index` (being the index of the vertex in the quad, 0 to 3).
+     * `vec2 a_position`, `float a_index` (being the index of the vertex in the quad, 0 to 3), `vec4 a_hitColor`.
      *
      * The following varyings are hardcoded and gives the coordinate of the pixel both in the quad and on the texture:
-     * `vec2 v_quadCoord`, `vec2 v_texCoord`
+     * `vec2 v_quadCoord`, `vec2 v_texCoord`, `vec4 v_hitColor`.
      *
-     * @param {boolean} [forHitDetection] If true, the shader will be modified to include hit detection variables
-     * (namely, hit color with encoded feature id).
      * @return {string} The full shader as a string.
      */
-    getSymbolVertexShader(forHitDetection?: boolean | undefined): string;
+    getSymbolVertexShader(): string;
     /**
      * Generates a symbol fragment shader from the builder parameters
      *
      * Expects the following varyings to be transmitted by the vertex shader:
-     * `vec2 v_quadCoord`, `vec2 v_texCoord`
+     * `vec2 v_quadCoord`, `vec2 v_texCoord`, `vec4 v_hitColor`.
      *
-     * @param {boolean} [forHitDetection] If true, the shader will be modified to include hit detection variables
-     * (namely, hit color with encoded feature id).
      * @return {string} The full shader as a string.
      */
-    getSymbolFragmentShader(forHitDetection?: boolean | undefined): string;
+    getSymbolFragmentShader(): string;
     /**
      * Generates a stroke vertex shader from the builder parameters
-     *
-     * @param {boolean} [forHitDetection] If true, the shader will be modified to include hit detection variables
-     * (namely, hit color with encoded feature id).
      * @return {string} The full shader as a string.
      */
-    getStrokeVertexShader(forHitDetection?: boolean | undefined): string;
+    getStrokeVertexShader(): string;
     /**
      * Generates a stroke fragment shader from the builder parameters
      *
-     * @param {boolean} [forHitDetection] If true, the shader will be modified to include hit detection variables
-     * (namely, hit color with encoded feature id).
      * @return {string} The full shader as a string.
      */
-    getStrokeFragmentShader(forHitDetection?: boolean | undefined): string;
+    getStrokeFragmentShader(): string;
     /**
      * Generates a fill vertex shader from the builder parameters
      *
-     * @param {boolean} [forHitDetection] If true, the shader will be modified to include hit detection variables
-     * (namely, hit color with encoded feature id).
      * @return {string} The full shader as a string.
      */
-    getFillVertexShader(forHitDetection?: boolean | undefined): string;
+    getFillVertexShader(): string;
     /**
      * Generates a fill fragment shader from the builder parameters
-     *
-     * @param {boolean} [forHitDetection] If true, the shader will be modified to include hit detection variables
-     * (namely, hit color with encoded feature id).
      * @return {string} The full shader as a string.
      */
-    getFillFragmentShader(forHitDetection?: boolean | undefined): string;
+    getFillFragmentShader(): string;
 }
 export type VaryingDescription = {
     /**

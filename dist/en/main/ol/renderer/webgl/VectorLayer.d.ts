@@ -9,6 +9,7 @@ export const Uniforms: {
     RESOLUTION: string;
     VIEWPORT_SIZE_PX: string;
     PIXEL_RATIO: string;
+    HIT_DETECTION: string;
 };
 export default WebGLVectorLayerRenderer;
 export type VectorStyle = import('../../render/webgl/VectorStyleRenderer.js').VectorStyle;

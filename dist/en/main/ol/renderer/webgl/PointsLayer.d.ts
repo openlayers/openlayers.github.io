@@ -58,13 +58,9 @@ export type Options = {
      */
     fragmentShader: string;
     /**
-     * Vertex shader source for hit detection rendering.
+     * Whether shader is hit detection aware.
      */
-    hitVertexShader?: string | undefined;
-    /**
-     * Fragment shader source for hit detection rendering.
-     */
-    hitFragmentShader?: string | undefined;
+    hitDetectionEnabled?: boolean | undefined;
     /**
      * Uniform definitions for the post process steps
      * Please note that `u_texture` is reserved for the main texture slot and `u_opacity` is reserved for the layer opacity.
@@ -101,8 +97,7 @@ export type Options = {
  * Please note that these can only be numerical values.
  * @property {string} vertexShader Vertex shader source, mandatory.
  * @property {string} fragmentShader Fragment shader source, mandatory.
- * @property {string} [hitVertexShader] Vertex shader source for hit detection rendering.
- * @property {string} [hitFragmentShader] Fragment shader source for hit detection rendering.
+ * @property {boolean} [hitDetectionEnabled] Whether shader is hit detection aware.
  * @property {Object<string,import("../../webgl/Helper").UniformValue>} [uniforms] Uniform definitions for the post process steps
  * Please note that `u_texture` is reserved for the main texture slot and `u_opacity` is reserved for the layer opacity.
  * @property {Array<import("./Layer").PostProcessesOptions>} [postProcesses] Post-processes definitions
@@ -178,7 +173,6 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
     constructor(layer: import("../../layer/Layer.js").default, options: Options);
     sourceRevision_: number;
     verticesBuffer_: WebGLArrayBuffer;
-    hitVerticesBuffer_: WebGLArrayBuffer;
     indicesBuffer_: WebGLArrayBuffer;
     /**
      * @private
@@ -199,29 +193,11 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
      */
     private hitDetectionEnabled_;
     /**
-     * @private
-     */
-    private hitVertexShader_;
-    /**
-     * @private
-     */
-    private hitFragmentShader_;
-    /**
-     * @type {WebGLProgram}
-     * @private
-     */
-    private hitProgram_;
-    /**
      * A list of attributes used by the renderer. By default only the position and
      * index of the vertex (0 to 3) are required.
      * @type {Array<import('../../webgl/Helper.js').AttributeDescription>}
      */
     attributes: Array<import('../../webgl/Helper.js').AttributeDescription>;
-    /**
-     * A list of attributes used for hit detection.
-     * @type {Array<import('../../webgl/Helper.js').AttributeDescription>}
-     */
-    hitDetectionAttributes: Array<import('../../webgl/Helper.js').AttributeDescription>;
     customAttributes: CustomAttribute[];
     previousExtent_: import("../../extent.js").Extent;
     /**
@@ -248,12 +224,6 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
      * @private
      */
     private renderInstructions_;
-    /**
-     * These instructions are used for hit detection
-     * @type {Float32Array}
-     * @private
-     */
-    private hitRenderInstructions_;
     /**
      * @type {WebGLRenderTarget}
      * @private
@@ -308,19 +278,27 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
      */
     renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
     /**
+     * Compute world params
+     * @private
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @return {Array<number>} The world start, end and width.
+     */
+    private getWorldParameters_;
+    /**
      * Rebuild internal webgl buffers based on current view extent; costly, should not be called too much
      * @param {import("../../Map").FrameState} frameState Frame state.
      * @private
      */
     private rebuildBuffers_;
     /**
-     * Render the hit detection data to the corresponding render target
+     * Render the world, either to the main framebuffer or to the hit framebuffer
      * @param {import("../../Map.js").FrameState} frameState current frame state
+     * @param {boolean} forHitDetection whether the rendering is for hit detection
      * @param {number} startWorld the world to render in the first iteration
      * @param {number} endWorld the last world to render
      * @param {number} worldWidth the width of the worlds being rendered
      */
-    renderHitDetection(frameState: import("../../Map.js").FrameState, startWorld: number, endWorld: number, worldWidth: number): void;
+    renderWorlds(frameState: import("../../Map.js").FrameState, forHitDetection: boolean, startWorld: number, endWorld: number, worldWidth: number): void;
 }
 import WebGLLayerRenderer from './Layer.js';
 import WebGLArrayBuffer from '../../webgl/Buffer.js';

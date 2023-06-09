@@ -26,6 +26,7 @@ export namespace DefaultUniform {
     let RESOLUTION: string;
     let VIEWPORT_SIZE_PX: string;
     let PIXEL_RATIO: string;
+    let HIT_DETECTION: string;
 }
 /**
  * Attribute types, either `UNSIGNED_BYTE`, `UNSIGNED_SHORT`, `UNSIGNED_INT` or `FLOAT`
@@ -443,6 +444,11 @@ declare class WebGLHelper extends Disposable {
      * @param {import("../Map.js").FrameState} frameState Frame state.
      */
     applyFrameState(frameState: import("../Map.js").FrameState): void;
+    /**
+     * Sets the `u_hitDetection` uniform.
+     * @param {boolean} enabled Whether to enable the hit detection code path
+     */
+    applyHitDetectionUniform(enabled: boolean): void;
     /**
      * Sets the custom uniforms based on what was given in the constructor. This is called internally in `prepareDraw`.
      * @param {import("../Map.js").FrameState} frameState Frame state.
