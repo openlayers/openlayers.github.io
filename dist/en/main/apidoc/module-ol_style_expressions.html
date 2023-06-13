@@ -286,6 +286,7 @@ will make it invalid. Type hints can be one of: 'string', 'color', 'number', 'bo
 <li><code>['sin', value1]</code> returns the sine of <code>value1</code></li>
 <li><code>['cos', value1]</code> returns the cosine of <code>value1</code></li>
 <li><code>['atan', value1, value2]</code> returns <code>atan2(value1, value2)</code>. If <code>value2</code> is not provided, returns <code>atan(value1)</code></li>
+<li><code>['sqrt', value1]</code> returns the square root of <code>value1</code></li>
 </ul>
 </li>
 <li><p>Transform operators:</p>
@@ -320,6 +321,15 @@ between <code>output1</code> and <code>outputN</code>.</li>
 <li><code>['any', value1, value2, ...]</code> returns <code>true</code> if any of the inputs are <code>true</code>, <code>false</code> otherwise.</li>
 <li><code>['between', value1, value2, value3]</code> returns <code>true</code> if <code>value1</code> is contained between <code>value2</code> and <code>value3</code>
 (inclusively), or <code>false</code> otherwise.</li>
+<li><code>['in', needle, haystack]</code> returns <code>true</code> if <code>needle</code> is found in <code>haystack</code>, and
+<code>false</code> otherwise.
+This operator has the following limitations:<ul>
+<li><code>haystack</code> has to be an array of numbers or strings (searching for a substring in a string is not supported yet)</li>
+<li>Only literal arrays are supported as <code>haystack</code> for now; this means that <code>haystack</code> cannot be the result of an
+expression. If <code>haystack</code> is an array of strings, use the <code>literal</code> operator to disambiguate from an expression:
+<code>['literal', ['abc', 'def', 'ghi']]</code></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><p>Conversion operators:</p>

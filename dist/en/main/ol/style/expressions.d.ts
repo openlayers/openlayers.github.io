@@ -12,23 +12,6 @@ export function getValueType(value: ExpressionValue): ValueTypes | number;
  */
 export function isTypeUnique(valueType: ValueTypes | number): boolean;
 /**
- * @typedef {Object} ParsingContextExternal
- * @property {string} name Name, unprefixed
- * @property {ValueTypes} type One of the value types constants
- */
-/**
- * Context available during the parsing of an expression.
- * @typedef {Object} ParsingContext
- * @property {boolean} [inFragmentShader] If false, means the expression output should be made for a vertex shader
- * @property {Array<ParsingContextExternal>} variables External variables used in the expression
- * @property {Array<ParsingContextExternal>} attributes External attributes used in the expression
- * @property {Object<string, number>} stringLiteralsMap This object maps all encountered string values to a number
- * @property {Object<string, string>} functions Lookup of functions used by the style.
- * @property {number} [bandCount] Number of bands per pixel.
- * @property {Array<PaletteTexture>} [paletteTextures] List of palettes used by the style.
- * @property {import("../style/literal").LiteralStyle} style The style being parsed
- */
-/**
  * Will return the number as a float with a dot separator, which is required by GLSL.
  * @param {number} v Numerical value.
  * @return {string} The value as string.
@@ -199,6 +182,7 @@ export type ParsingContext = {
  *   * `['sin', value1]` returns the sine of `value1`
  *   * `['cos', value1]` returns the cosine of `value1`
  *   * `['atan', value1, value2]` returns `atan2(value1, value2)`. If `value2` is not provided, returns `atan(value1)`
+ *   * `['sqrt', value1]` returns the square root of `value1`
  *
  * * Transform operators:
  *   * `['case', condition1, output1, ...conditionN, outputN, fallback]` selects the first output whose corresponding
@@ -229,6 +213,13 @@ export type ParsingContext = {
  *   * `['any', value1, value2, ...]` returns `true` if any of the inputs are `true`, `false` otherwise.
  *   * `['between', value1, value2, value3]` returns `true` if `value1` is contained between `value2` and `value3`
  *     (inclusively), or `false` otherwise.
+ *   * `['in', needle, haystack]` returns `true` if `needle` is found in `haystack`, and
+ *     `false` otherwise.
+ *     This operator has the following limitations:
+ *     * `haystack` has to be an array of numbers or strings (searching for a substring in a string is not supported yet)
+ *     * Only literal arrays are supported as `haystack` for now; this means that `haystack` cannot be the result of an
+ *     expression. If `haystack` is an array of strings, use the `literal` operator to disambiguate from an expression:
+ *     `['literal', ['abc', 'def', 'ghi']]`
  *
  * * Conversion operators:
  *   * `['array', value1, ...valueN]` creates a numerical array from `number` values; please note that the amount of
