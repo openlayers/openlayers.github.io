@@ -264,6 +264,10 @@ and allow specifying pixel offsets for x and y. This is used for sampling data f
 <li><code>['get', 'attributeName', typeHint]</code> fetches a feature property value, similar to <code>feature.get('attributeName')</code>
 A type hint can optionally be specified, in case the resulting expression contains a type ambiguity which
 will make it invalid. Type hints can be one of: 'string', 'color', 'number', 'boolean', 'number[]'</li>
+<li><code>['geometry-type']</code> returns a feature's geometry type as string, either: 'LineString', 'Point' or 'Polygon'
+<code>Multi*</code> values are returned as their singular equivalent
+<code>Circle</code> geometries are returned as 'Polygon'
+<code>GeometryCollection</code> geometries are returned as the type of the first geometry found in the collection</li>
 <li><code>['resolution']</code> returns the current resolution</li>
 <li><code>['time']</code> returns the time in seconds since the creation of the layer</li>
 <li><code>['var', 'varName']</code> fetches a value from the style variables; will throw an error if that variable is undefined</li>
@@ -869,6 +873,8 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
 		<th>Type</th>
 
 		
+		<th>Argument</th>
+		
 
 		
 
@@ -894,6 +900,12 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
@@ -917,10 +929,48 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last"><p>One of the value types constants</p></td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Function used for computing the attribute value;
+  if undefined, <code>feature.get(attribute.name)</code> will be used</p></td>
         </tr>
 
 	

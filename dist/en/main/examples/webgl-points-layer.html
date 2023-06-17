@@ -222,7 +222,7 @@ const vectorSource &#x3D; new Vector({
 });
 
 const predefinedStyles &#x3D; {
-  &#x27;icons&#x27;: {
+  icons: {
     symbol: {
       symbolType: &#x27;image&#x27;,
       src: &#x27;data/icon.png&#x27;,
@@ -232,7 +232,7 @@ const predefinedStyles &#x3D; {
       offset: [0, 9],
     },
   },
-  &#x27;triangles&#x27;: {
+  triangles: {
     symbol: {
       symbolType: &#x27;triangle&#x27;,
       size: 18,
@@ -277,7 +277,7 @@ const predefinedStyles &#x3D; {
       opacity: 0.95,
     },
   },
-  &#x27;circles&#x27;: {
+  circles: {
     symbol: {
       symbolType: &#x27;circle&#x27;,
       size: [
@@ -306,7 +306,17 @@ const predefinedStyles &#x3D; {
   &#x27;circles-zoom&#x27;: {
     symbol: {
       symbolType: &#x27;circle&#x27;,
-      size: [&#x27;interpolate&#x27;, [&#x27;exponential&#x27;, 2.5], [&#x27;zoom&#x27;], 2, 1, 14, 32],
+      // by using an exponential interpolation with a base of 2 we can make it so that circles will have a fixed size
+      // in world coordinates between zoom level 5 and 15
+      size: [
+        &#x27;interpolate&#x27;,
+        [&#x27;exponential&#x27;, 2],
+        [&#x27;zoom&#x27;],
+        5,
+        3,
+        15,
+        3 * Math.pow(2, 10),
+      ],
       color: [&#x27;match&#x27;, [&#x27;get&#x27;, &#x27;hover&#x27;], 1, &#x27;#ff3f3f&#x27;, &#x27;#006688&#x27;],
       offset: [0, 0],
       opacity: 0.95,

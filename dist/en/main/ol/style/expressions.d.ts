@@ -103,6 +103,11 @@ export type ParsingContextExternal = {
      * One of the value types constants
      */
     type: ValueTypes;
+    /**
+     * Function used for computing the attribute value;
+     * if undefined, `feature.get(attribute.name)` will be used
+     */
+    callback?: ((arg0: import("../Feature.js").FeatureLike) => any) | undefined;
 };
 /**
  * Context available during the parsing of an expression.
@@ -162,6 +167,10 @@ export type ParsingContext = {
  *   * `['get', 'attributeName', typeHint]` fetches a feature property value, similar to `feature.get('attributeName')`
  *     A type hint can optionally be specified, in case the resulting expression contains a type ambiguity which
  *     will make it invalid. Type hints can be one of: 'string', 'color', 'number', 'boolean', 'number[]'
+ *   * `['geometry-type']` returns a feature's geometry type as string, either: 'LineString', 'Point' or 'Polygon'
+ *     `Multi*` values are returned as their singular equivalent
+ *     `Circle` geometries are returned as 'Polygon'
+ *     `GeometryCollection` geometries are returned as the type of the first geometry found in the collection
  *   * `['resolution']` returns the current resolution
  *   * `['time']` returns the time in seconds since the creation of the layer
  *   * `['var', 'varName']` fetches a value from the style variables; will throw an error if that variable is undefined
