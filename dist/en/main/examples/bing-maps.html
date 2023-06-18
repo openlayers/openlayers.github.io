@@ -124,7 +124,9 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of a Bing Maps layer.</p>
-          <div id="docs"><p>When the Bing Maps tile service doesn't have tiles for a given resolution and region it returns "placeholder" tiles indicating that. Zoom the map beyond level 19 to see the "placeholder" tiles. If you want OpenLayers to display stretched tiles in place of "placeholder" tiles beyond zoom level 19 then set <code>maxZoom</code> to <code>19</code> in the options passed to <code>ol/source/BingMaps</code>.</p>
+          <div id="docs"><p>When the Bing Maps tile service doesn't have tiles for a given resolution and region it returns "placeholder" tiles by default for `Aerial` and `OrdnanceSurvey' styles. If you want OpenLayers to display
+  stretched tiles in place of "placeholder" tiles at zoom levels where Bing Maps does not have tiles available then set
+  <code>placeholderTiles</code> to <code>false</code> in the options passed to <code>ol/source/BingMaps</code>.</p>
 </div>
         </div>
       </div>
@@ -153,9 +155,7 @@ for (i &#x3D; 0, ii &#x3D; styles.length; i &lt; ii; ++i) {
       source: new BingMaps({
         key: &#x27;Your Bing Maps Key from https://www.bingmapsportal.com/ here&#x27;,
         imagerySet: styles[i],
-        // use maxZoom 19 to see stretched tiles instead of the BingMaps
-        // &quot;no photos at this zoom level&quot; tiles
-        // maxZoom: 19
+        // placeholderTiles: false, // Optional. Prevents showing of BingMaps placeholder tiles
       }),
     })
   );
