@@ -71,6 +71,7 @@
     <div class="member-list" data-type="methods">
         <span class="subtitle">Methods</span>
         <ul>
+            <li data-name="epsglookupmaptiler"><a href="module-ol_proj_proj4.html#.epsgLookupMapTiler">epsgLookupMapTiler</a>
             <li data-name="fromepsgcode"><a href="module-ol_proj_proj4.html#.fromEPSGCode">fromEPSGCode</a>
             <li data-name="register"><a href="module-ol_proj_proj4.html#.register">register</a>
             <li data-name="setepsglookup"><a href="module-ol_proj_proj4.html#.setEPSGLookup">setEPSGLookup</a>
@@ -166,6 +167,147 @@
         <h3 class="subsection-title">Functions</h3>
 
         <dl>
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id=".epsgLookupMapTiler">
+        </div>
+        <h4 class="name">
+            epsgLookupMapTiler<span class="signature">(key)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{function}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js">proj/proj4.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L170">line 170</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+    
+    <pre class="prettyprint source"><code>import {epsgLookupMapTiler} from 'ol/proj/proj4';</code></pre>
+
+
+    
+    <div class="description">
+        <p>Generate an EPSG lookup function which uses the MapTiler Coordinates API to find projection
+definitions which do not require proj4 to be configured to handle <code>+nadgrids</code> parameters.
+Call <a href="module-ol_proj_proj4.html#.setEPSGLookup"><code>setEPSGLookup</code></a> use the function for lookups
+<code>setEPSGLookup(epsgLookupMapTiler('{YOUR_MAPTILER_API_KEY_HERE}'))</code>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>key</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>MapTiler API key.  Get your own API key at <a href="https://www.maptiler.com/cloud/">https://www.maptiler.com/cloud/</a>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The EPSG lookup function.
+<br />
+
+    
+
+    
+</dd>
+
+        
             
             
 <dt class="">

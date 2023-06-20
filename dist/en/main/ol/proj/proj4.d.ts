@@ -49,5 +49,16 @@ export function getEPSGLookup(): (arg0: number) => Promise<string>;
  * @api
  */
 export function fromEPSGCode(code: number | string): Promise<Projection>;
+/**
+ * Generate an EPSG lookup function which uses the MapTiler Coordinates API to find projection
+ * definitions which do not require proj4 to be configured to handle `+nadgrids` parameters.
+ * Call {@link module:ol/proj/proj4.setEPSGLookup} use the function for lookups
+ * `setEPSGLookup(epsgLookupMapTiler('{YOUR_MAPTILER_API_KEY_HERE}'))`.
+ *
+ * @param {string} key MapTiler API key.  Get your own API key at https://www.maptiler.com/cloud/.
+ * @return {function(number):Promise<string>} The EPSG lookup function.
+ * @api
+ */
+export function epsgLookupMapTiler(key: string): (arg0: number) => Promise<string>;
 import Projection from './Projection.js';
 //# sourceMappingURL=proj4.d.ts.map
