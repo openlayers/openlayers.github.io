@@ -39,6 +39,11 @@ export class ShaderBuilder {
      */
     private varyings_;
     /**
+     * @type {boolean}
+     * @private
+     */
+    private hasSymbol_;
+    /**
      * @type {string}
      * @private
      */
@@ -74,6 +79,11 @@ export class ShaderBuilder {
      */
     private symbolRotateWithView_;
     /**
+     * @type {boolean}
+     * @private
+     */
+    private hasStroke_;
+    /**
      * @type {string}
      * @private
      */
@@ -83,6 +93,11 @@ export class ShaderBuilder {
      * @private
      */
     private strokeColorExpression_;
+    /**
+     * @type {boolean}
+     * @private
+     */
+    private hasFill_;
     /**
      * @type {string}
      * @private
@@ -130,6 +145,10 @@ export class ShaderBuilder {
      */
     setSymbolSizeExpression(expression: string): ShaderBuilder;
     /**
+     * @return {string} The current symbol size expression
+     */
+    getSymbolSizeExpression(): string;
+    /**
      * Sets an expression to compute the rotation of the shape.
      * This expression can use all the uniforms and attributes available
      * in the vertex shader, and should evaluate to a `float` value in radians.
@@ -141,7 +160,6 @@ export class ShaderBuilder {
      * Sets an expression to compute the offset of the symbol from the point center.
      * This expression can use all the uniforms and attributes available
      * in the vertex shader, and should evaluate to a `vec2` value.
-     * Note: will only be used for point geometry shaders.
      * @param {string} expression Offset expression
      * @return {ShaderBuilder} the builder object
      */
@@ -154,6 +172,10 @@ export class ShaderBuilder {
      * @return {ShaderBuilder} the builder object
      */
     setSymbolColorExpression(expression: string): ShaderBuilder;
+    /**
+     * @return {string} The current symbol color expression
+     */
+    getSymbolColorExpression(): string;
     /**
      * Sets an expression to compute the texture coordinates of the vertices.
      * This expression can use all the uniforms and attributes available
@@ -184,8 +206,16 @@ export class ShaderBuilder {
      * @return {ShaderBuilder} the builder object
      */
     setStrokeWidthExpression(expression: string): ShaderBuilder;
-    setStrokeColorExpression(expression: any): this;
-    setFillColorExpression(expression: any): this;
+    /**
+     * @param {string} expression Stroke color expression, evaluate to `vec4`
+     * @return {ShaderBuilder} the builder object
+     */
+    setStrokeColorExpression(expression: string): ShaderBuilder;
+    /**
+     * @param {string} expression Fill color expression, evaluate to `vec4`
+     * @return {ShaderBuilder} the builder object
+     */
+    setFillColorExpression(expression: string): ShaderBuilder;
     addVertexShaderFunction(code: any): void;
     addFragmentShaderFunction(code: any): void;
     /**
@@ -200,40 +230,40 @@ export class ShaderBuilder {
      * The following varyings are hardcoded and gives the coordinate of the pixel both in the quad and on the texture:
      * `vec2 v_quadCoord`, `vec2 v_texCoord`, `vec4 v_hitColor`.
      *
-     * @return {string} The full shader as a string.
+     * @return {string|null} The full shader as a string; null if no size or color specified
      */
-    getSymbolVertexShader(): string;
+    getSymbolVertexShader(): string | null;
     /**
      * Generates a symbol fragment shader from the builder parameters
      *
      * Expects the following varyings to be transmitted by the vertex shader:
      * `vec2 v_quadCoord`, `vec2 v_texCoord`, `vec4 v_hitColor`.
      *
-     * @return {string} The full shader as a string.
+     * @return {string|null} The full shader as a string; null if no size or color specified
      */
-    getSymbolFragmentShader(): string;
+    getSymbolFragmentShader(): string | null;
     /**
      * Generates a stroke vertex shader from the builder parameters
-     * @return {string} The full shader as a string.
+     * @return {string|null} The full shader as a string; null if no size or color specified
      */
-    getStrokeVertexShader(): string;
+    getStrokeVertexShader(): string | null;
     /**
      * Generates a stroke fragment shader from the builder parameters
      *
-     * @return {string} The full shader as a string.
+     * @return {string|null} The full shader as a string; null if no size or color specified
      */
-    getStrokeFragmentShader(): string;
+    getStrokeFragmentShader(): string | null;
     /**
      * Generates a fill vertex shader from the builder parameters
      *
-     * @return {string} The full shader as a string.
+     * @return {string|null} The full shader as a string; null if no color specified
      */
-    getFillVertexShader(): string;
+    getFillVertexShader(): string | null;
     /**
      * Generates a fill fragment shader from the builder parameters
-     * @return {string} The full shader as a string.
+     * @return {string|null} The full shader as a string; null if no color specified
      */
-    getFillFragmentShader(): string;
+    getFillFragmentShader(): string | null;
 }
 export type VaryingDescription = {
     /**

@@ -175,6 +175,10 @@
  */
 export function toStyle(flatStyle: FlatStyle): import("./Style.js").default;
 /**
+ * @return {import('./flat.js').FlatStyle} The default flat style.
+ */
+export function createDefaultStyle(): import('./flat.js').FlatStyle;
+/**
  * For static styling, the [layer.setStyle()]{@link module :ol/layer/Vector~VectorLayer#setStyle} method
  * can be called with an object literal that has fill, stroke, text, icon, regular shape, and/or circle properties.
  */

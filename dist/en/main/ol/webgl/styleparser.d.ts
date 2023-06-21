@@ -13,9 +13,6 @@ export function packColor(color: import("../color.js").Color | string): Array<nu
 /**
  * @typedef {Object} StyleParseResult
  * @property {ShaderBuilder} builder Shader builder pre-configured according to a given style
- * @property {boolean} hasSymbol Has a symbol style defined
- * @property {boolean} hasStroke Has a stroke style defined
- * @property {boolean} hasFill Has a fill style defined
  * @property {import("../render/webgl/VectorStyleRenderer.js").UniformDefinitions} uniforms Uniform definitions
  * @property {import("../render/webgl/VectorStyleRenderer.js").AttributeDefinitions} attributes Attribute definitions
  */
@@ -36,18 +33,6 @@ export type StyleParseResult = {
      * Shader builder pre-configured according to a given style
      */
     builder: ShaderBuilder;
-    /**
-     * Has a symbol style defined
-     */
-    hasSymbol: boolean;
-    /**
-     * Has a stroke style defined
-     */
-    hasStroke: boolean;
-    /**
-     * Has a fill style defined
-     */
-    hasFill: boolean;
     /**
      * Uniform definitions
      */
