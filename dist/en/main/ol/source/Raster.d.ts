@@ -394,6 +394,7 @@ declare class RasterSource extends ImageSource {
     getImage(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../ImageCanvas.js").default;
     /**
      * Start processing source data.
+     * @return {Promise<void>} Promise resolving when the worker result is available.
      * @private
      */
     private processSources_;
