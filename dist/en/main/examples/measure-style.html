@@ -481,11 +481,12 @@ const modify &#x3D; new Modify({source: source, style: modifyStyle});
 let tipPoint;
 
 function styleFunction(feature, segments, drawType, tip) {
-  const styles &#x3D; [style];
+  const styles &#x3D; [];
   const geometry &#x3D; feature.getGeometry();
   const type &#x3D; geometry.getType();
   let point, label, line;
-  if (!drawType || drawType &#x3D;&#x3D;&#x3D; type) {
+  if (!drawType || drawType &#x3D;&#x3D;&#x3D; type || type &#x3D;&#x3D;&#x3D; &#x27;Point&#x27;) {
+    styles.push(style);
     if (type &#x3D;&#x3D;&#x3D; &#x27;Polygon&#x27;) {
       point &#x3D; geometry.getInteriorPoint();
       label &#x3D; formatArea(geometry);

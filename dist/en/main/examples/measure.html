@@ -402,30 +402,37 @@ const formatArea &#x3D; function (polygon) {
   return output;
 };
 
+const style &#x3D; new Style({
+  fill: new Fill({
+    color: &#x27;rgba(255, 255, 255, 0.2)&#x27;,
+  }),
+  stroke: new Stroke({
+    color: &#x27;rgba(0, 0, 0, 0.5)&#x27;,
+    lineDash: [10, 10],
+    width: 2,
+  }),
+  image: new CircleStyle({
+    radius: 5,
+    stroke: new Stroke({
+      color: &#x27;rgba(0, 0, 0, 0.7)&#x27;,
+    }),
+    fill: new Fill({
+      color: &#x27;rgba(255, 255, 255, 0.2)&#x27;,
+    }),
+  }),
+});
+
 function addInteraction() {
   const type &#x3D; typeSelect.value &#x3D;&#x3D; &#x27;area&#x27; ? &#x27;Polygon&#x27; : &#x27;LineString&#x27;;
   draw &#x3D; new Draw({
     source: source,
     type: type,
-    style: new Style({
-      fill: new Fill({
-        color: &#x27;rgba(255, 255, 255, 0.2)&#x27;,
-      }),
-      stroke: new Stroke({
-        color: &#x27;rgba(0, 0, 0, 0.5)&#x27;,
-        lineDash: [10, 10],
-        width: 2,
-      }),
-      image: new CircleStyle({
-        radius: 5,
-        stroke: new Stroke({
-          color: &#x27;rgba(0, 0, 0, 0.7)&#x27;,
-        }),
-        fill: new Fill({
-          color: &#x27;rgba(255, 255, 255, 0.2)&#x27;,
-        }),
-      }),
-    }),
+    style: function (feature) {
+      const geometryType &#x3D; feature.getGeometry().getType();
+      if (geometryType &#x3D;&#x3D;&#x3D; type || geometryType &#x3D;&#x3D;&#x3D; &#x27;Point&#x27;) {
+        return style;
+      }
+    },
   });
   map.addInteraction(draw);
 
