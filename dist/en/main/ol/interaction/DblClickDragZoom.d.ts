@@ -61,6 +61,11 @@ declare class DblClickDragZoom extends Interaction {
      */
     private handlingDoubleDownSequence_;
     /**
+     * @type {ReturnType<typeof setTimeout>}
+     * @private
+     */
+    private doubleTapTimeoutId_;
+    /**
      * @type {!Object<string, PointerEvent>}
      * @private
      */
@@ -98,13 +103,13 @@ declare class DblClickDragZoom extends Interaction {
     private updateTrackedPointers_;
     /**
      * Wait the second double finger tap.
+     * @private
      */
-    waitForDblTap(): void;
-    doubleTapTimeoutId_: NodeJS.Timeout | undefined;
+    private waitForDblTap_;
     /**
      * @private
      */
-    private endInteraction;
+    private endInteraction_;
 }
 import Interaction from './Interaction.js';
 //# sourceMappingURL=DblClickDragZoom.d.ts.map
