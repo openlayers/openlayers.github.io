@@ -12,7 +12,7 @@ declare class MapBrowserEventHandler extends Target {
      */
     private map_;
     /**
-     * @type {any}
+     * @type {ReturnType<typeof setTimeout>}
      * @private
      */
     private clickTimeoutId_;

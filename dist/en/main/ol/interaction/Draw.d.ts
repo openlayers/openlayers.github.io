@@ -295,7 +295,7 @@ declare class Draw extends PointerInteraction {
      */
     private downPx_;
     /**
-     * @type {?}
+     * @type {ReturnType<typeof setTimeout>}
      * @private
      */
     private downTimeout_;

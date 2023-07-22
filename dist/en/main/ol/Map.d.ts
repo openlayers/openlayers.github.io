@@ -305,7 +305,7 @@ declare class Map extends BaseObject {
     private pixelRatio_;
     /**
      * @private
-     * @type {*}
+     * @type {ReturnType<typeof setTimeout>}
      */
     private postRenderTimeoutHandle_;
     /**

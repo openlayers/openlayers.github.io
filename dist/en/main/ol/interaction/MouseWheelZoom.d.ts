@@ -121,7 +121,7 @@ declare class MouseWheelZoom extends Interaction {
     private startTime_;
     /**
      * @private
-     * @type {?}
+     * @type {ReturnType<typeof setTimeout>}
      */
     private timeoutId_;
     /**
@@ -132,13 +132,15 @@ declare class MouseWheelZoom extends Interaction {
     /**
      * Trackpad events separated by this delay will be considered separate
      * interactions.
+     * @private
      * @type {number}
      */
-    trackpadEventGap_: number;
+    private trackpadEventGap_;
     /**
-     * @type {?}
+     * @private
+     * @type {ReturnType<typeof setTimeout>}
      */
-    trackpadTimeoutId_: unknown;
+    private trackpadTimeoutId_;
     /**
      * The number of delta values per zoom level
      * @private
