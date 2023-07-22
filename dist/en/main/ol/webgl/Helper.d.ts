@@ -133,9 +133,9 @@ export type UniformInternalDescription = {
 };
 export type CanvasCacheItem = {
     /**
-     * Canvas element.
+     * The context of this canvas.
      */
-    canvas: HTMLCanvasElement;
+    context: WebGLRenderingContext;
     /**
      * The count of users of this canvas.
      */
@@ -283,11 +283,6 @@ declare class WebGLHelper extends Disposable {
      * @type {string}
      */
     private canvasCacheKey_;
-    /**
-     * @private
-     * @type {HTMLCanvasElement}
-     */
-    private canvas_;
     /**
      * @private
      * @type {WebGLRenderingContext}
