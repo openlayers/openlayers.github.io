@@ -175,7 +175,7 @@ and rotation of the map.</p>
 coordinate system of the center, and its units determine the units of the
 resolution (projection units per pixel). The default projection is
 Web Mercator (EPSG:3857).</p>
-<h3 id="the-view-states">The view states</h3>
+<h3>The view states</h3>
 <p>A View is determined by three states: <code>center</code>, <code>resolution</code>,
 and <code>rotation</code>. Each state has a corresponding getter and setter, e.g.
 <code>getCenter</code> and <code>setCenter</code> for the <code>center</code> state.</p>
@@ -183,7 +183,7 @@ and <code>rotation</code>. Each state has a corresponding getter and setter, e.g
 internally use the <code>resolution</code> state. Still, the <code>setZoom</code> and <code>getZoom</code>
 methods are available, as well as <code>getResolutionForZoom</code> and
 <code>getZoomForResolution</code> to switch from one system to the other.</p>
-<h3 id="the-constraints">The constraints</h3>
+<h3>The constraints</h3>
 <p><code>setCenter</code>, <code>setResolution</code> and <code>setRotation</code> can be used to change the
 states of the view, but any constraint defined in the constructor will
 be applied along the way.</p>
@@ -202,7 +202,7 @@ By default rotation is allowed and its value is snapped to zero when approaching
 horizontal.</p>
 <p>The <em>center constraint</em> is determined by the <code>extent</code> option. By
 default the view center is not constrained at all.</p>
-<h3 id="changing-the-view-state">Changing the view state</h3>
+<h3>Changing the view state</h3>
 <p>It is important to note that <code>setZoom</code>, <code>setResolution</code>, <code>setCenter</code> and
 <code>setRotation</code> are subject to the above mentioned constraints. As such, it
 may sometimes not be possible to know in advance the resulting state of the
@@ -213,7 +213,7 @@ should use <code>adjustCenter</code>, <code>adjustRotation</code>, <code>adjustZ
 rather than the corresponding setters. This will let view do its internal
 computations. Besides, the <code>adjust*</code> methods also take an <code>anchor</code>
 argument which allows specifying an origin for the transformation.</p>
-<h3 id="interacting-with-the-view">Interacting with the view</h3>
+<h3>Interacting with the view</h3>
 <p>View constraints are usually only applied when the view is <em>at rest</em>, meaning that
 no interaction or animation is ongoing. As such, if the user puts the view in a
 state that is not equivalent to a constrained one (e.g. rotating the view when
