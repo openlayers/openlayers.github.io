@@ -10,7 +10,7 @@ declare class Circle extends SimpleGeometry {
      * @param {!import("../coordinate.js").Coordinate} center Center.
      *     For internal use, flat coordinates in combination with `layout` and no
      *     `radius` are also accepted.
-     * @param {number} [radius] Radius.
+     * @param {number} [radius] Radius in units of the projection.
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      */
     constructor(center: import("../coordinate.js").Coordinate, radius?: number | undefined, layout?: import("./Geometry.js").GeometryLayout | undefined);
