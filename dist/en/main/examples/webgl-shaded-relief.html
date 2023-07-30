@@ -171,19 +171,25 @@ import {WebGLTile as TileLayer} from &#x27;ol/layer.js&#x27;;
 const variables &#x3D; {};
 
 // The method used to extract elevations from the DEM.
-// In this case the format used is
-// red + green * 2 + blue * 3
+// In this case the format used is Terrarium
+// red * 256 + green + blue / 256 - 32768
 //
 // Other frequently used methods include the Mapbox format
 // (red * 256 * 256 + green * 256 + blue) * 0.1 - 10000
-// and the Terrarium format
-// (red * 256 + green + blue / 256) - 32768
+//
 function elevation(xOffset, yOffset) {
+  const red &#x3D; [&#x27;band&#x27;, 1, xOffset, yOffset];
+  const green &#x3D; [&#x27;band&#x27;, 2, xOffset, yOffset];
+  const blue &#x3D; [&#x27;band&#x27;, 3, xOffset, yOffset];
+
+  // band math operates on normalized values from 0-1
+  // so we scale by 255
   return [
     &#x27;+&#x27;,
-    [&#x27;*&#x27;, 256, [&#x27;band&#x27;, 1, xOffset, yOffset]],
-    [&#x27;*&#x27;, 2 * 256, [&#x27;band&#x27;, 2, xOffset, yOffset]],
-    [&#x27;*&#x27;, 3 * 256, [&#x27;band&#x27;, 3, xOffset, yOffset]],
+    [&#x27;*&#x27;, 255 * 256, red],
+    [&#x27;*&#x27;, 255, green],
+    [&#x27;*&#x27;, 255 / 256, blue],
+    -32768,
   ];
 }
 
@@ -196,7 +202,7 @@ const dzdx &#x3D; [&#x27;/&#x27;, [&#x27;-&#x27;, z1x, z0x], dp];
 const z0y &#x3D; [&#x27;*&#x27;, [&#x27;var&#x27;, &#x27;vert&#x27;], elevation(0, -1)];
 const z1y &#x3D; [&#x27;*&#x27;, [&#x27;var&#x27;, &#x27;vert&#x27;], elevation(0, 1)];
 const dzdy &#x3D; [&#x27;/&#x27;, [&#x27;-&#x27;, z1y, z0y], dp];
-const slope &#x3D; [&#x27;atan&#x27;, [&#x27;^&#x27;, [&#x27;+&#x27;, [&#x27;^&#x27;, dzdx, 2], [&#x27;^&#x27;, dzdy, 2]], 0.5]];
+const slope &#x3D; [&#x27;atan&#x27;, [&#x27;sqrt&#x27;, [&#x27;+&#x27;, [&#x27;^&#x27;, dzdx, 2], [&#x27;^&#x27;, dzdy, 2]]]];
 const aspect &#x3D; [&#x27;clamp&#x27;, [&#x27;atan&#x27;, [&#x27;-&#x27;, 0, dzdx], dzdy], -Math.PI, Math.PI];
 const sunEl &#x3D; [&#x27;*&#x27;, Math.PI / 180, [&#x27;var&#x27;, &#x27;sunEl&#x27;]];
 const sunAz &#x3D; [&#x27;*&#x27;, Math.PI / 180, [&#x27;var&#x27;, &#x27;sunAz&#x27;]];
@@ -204,14 +210,17 @@ const sunAz &#x3D; [&#x27;*&#x27;, Math.PI / 180, [&#x27;var&#x27;, &#x27;sunAz&
 const cosIncidence &#x3D; [
   &#x27;+&#x27;,
   [&#x27;*&#x27;, [&#x27;sin&#x27;, sunEl], [&#x27;cos&#x27;, slope]],
-  [&#x27;*&#x27;, [&#x27;*&#x27;, [&#x27;cos&#x27;, sunEl], [&#x27;sin&#x27;, slope]], [&#x27;cos&#x27;, [&#x27;-&#x27;, sunAz, aspect]]],
+  [&#x27;*&#x27;, [&#x27;cos&#x27;, sunEl], [&#x27;sin&#x27;, slope], [&#x27;cos&#x27;, [&#x27;-&#x27;, sunAz, aspect]]],
 ];
 const scaled &#x3D; [&#x27;*&#x27;, 255, cosIncidence];
 
 const shadedRelief &#x3D; new TileLayer({
   opacity: 0.3,
   source: new XYZ({
-    url: &#x27;https://{a-d}.tiles.mapbox.com/v3/aj.sf-dem/{z}/{x}/{y}.png&#x27;,
+    url: &#x27;https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png&#x27;,
+    maxZoom: 15,
+    attributions:
+      &#x27;&lt;a href&#x3D;&quot;https://github.com/tilezen/joerd/blob/master/docs/attribution.md&quot; target&#x3D;&quot;_blank&quot;&gt;Data sources and attribution&lt;/a&gt;&#x27;,
   }),
   style: {
     variables: variables,
@@ -243,10 +252,7 @@ const map &#x3D; new Map({
     shadedRelief,
   ],
   view: new View({
-    extent: [-13675026, 4439648, -13580856, 4580292],
     center: [-13615645, 4497969],
-    minZoom: 10,
-    maxZoom: 16,
     zoom: 13,
   }),
 });
