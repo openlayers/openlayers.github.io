@@ -42,7 +42,7 @@ export type GeometryFunction = (arg0: import("../Feature.js").FeatureLike) => (i
  * 1. The pixel coordinates of the geometry in GeoJSON notation.
  * 2. The {@link module :ol/render~State} of the layer renderer.
  */
-export type RenderFunction = (arg0: (import("../coordinate.js").Coordinate | Array<import("../coordinate.js").Coordinate> | Array<Array<import("../coordinate.js").Coordinate>>), arg1: import("../render.js").State) => void;
+export type RenderFunction = (arg0: (import("../coordinate.js").Coordinate | Array<import("../coordinate.js").Coordinate> | Array<Array<import("../coordinate.js").Coordinate>> | Array<Array<Array<import("../coordinate.js").Coordinate>>>), arg1: import("../render.js").State) => void;
 export type Options = {
     /**
      * Feature property or geometry
@@ -106,7 +106,7 @@ export type Options = {
  * 1. The pixel coordinates of the geometry in GeoJSON notation.
  * 2. The {@link module:ol/render~State} of the layer renderer.
  *
- * @typedef {function((import("../coordinate.js").Coordinate|Array<import("../coordinate.js").Coordinate>|Array<Array<import("../coordinate.js").Coordinate>>),import("../render.js").State): void} RenderFunction
+ * @typedef {function((import("../coordinate.js").Coordinate|Array<import("../coordinate.js").Coordinate>|Array<Array<import("../coordinate.js").Coordinate>>|Array<Array<Array<import("../coordinate.js").Coordinate>>>),import("../render.js").State): void} RenderFunction
  */
 /**
  * @typedef {Object} Options
