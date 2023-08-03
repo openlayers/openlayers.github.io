@@ -164,7 +164,7 @@ See also <a href="module-ol_interaction_KeyboardPan-KeyboardPan.html"><code>Keyb
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/KeyboardZoom.js">interaction/KeyboardZoom.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/KeyboardZoom.js#L31">line 31</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/KeyboardZoom.js#L33">line 33</a>
         </div>
         
     </div>
@@ -250,8 +250,10 @@ See also <a href="module-ol_interaction_KeyboardPan-KeyboardPan.html"><code>Keyb
                 
                 <p>A function that
 takes an <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and returns a
-boolean to indicate whether that event should be handled. Default is
-<a href="module-ol_events_condition.html#.targetNotEditable"><code>targetNotEditable</code></a>.</p></td>
+boolean to indicate whether that event should be handled. The default condition is
+that <a href="module-ol_events_condition.html#.targetNotEditable"><code>targetNotEditable</code></a> is fulfilled and that
+the platform modifier key isn't pressed
+(!<a href="module-ol_events_condition.html#.platformModifierKey"><code>platformModifierKey</code></a>).</p></td>
         </tr>
 
 	

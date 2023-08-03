@@ -7,8 +7,10 @@ export type Options = {
     /**
      * A function that
      * takes an {@link module :ol/MapBrowserEvent~MapBrowserEvent} and returns a
-     * boolean to indicate whether that event should be handled. Default is
-     * {@link module :ol/events/condition.targetNotEditable}.
+     * boolean to indicate whether that event should be handled. The default condition is
+     * that {@link module :ol/events/condition.targetNotEditable} is fulfilled and that
+     * the platform modifier key isn't pressed
+     * (!{@link module :ol/events/condition.platformModifierKey}).
      */
     condition?: import("../events/condition.js").Condition | undefined;
     /**
@@ -21,8 +23,10 @@ export type Options = {
  * @property {number} [duration=100] Animation duration in milliseconds.
  * @property {import("../events/condition.js").Condition} [condition] A function that
  * takes an {@link module:ol/MapBrowserEvent~MapBrowserEvent} and returns a
- * boolean to indicate whether that event should be handled. Default is
- * {@link module:ol/events/condition.targetNotEditable}.
+ * boolean to indicate whether that event should be handled. The default condition is
+ * that {@link module:ol/events/condition.targetNotEditable} is fulfilled and that
+ * the platform modifier key isn't pressed
+ * (!{@link module:ol/events/condition.platformModifierKey}).
  * @property {number} [delta=1] The zoom level delta on each key press.
  */
 /**

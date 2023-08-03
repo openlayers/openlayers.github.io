@@ -37,6 +37,7 @@ export function singleClick(mapBrowserEvent: import("../MapBrowserEvent.js").def
 export function doubleClick(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): boolean;
 export function noModifierKeys(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): boolean;
 export function platformModifierKeyOnly(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): boolean;
+export function platformModifierKey(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): boolean;
 export function shiftKeyOnly(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): boolean;
 export function targetNotEditable(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): boolean;
 export function mouseOnly(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): boolean;
