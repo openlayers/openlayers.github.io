@@ -124,9 +124,9 @@ export function drawImageOrLabel(context: CanvasRenderingContext2D, transform: i
 export const defaultFont: string;
 /**
  * @const
- * @type {import("../colorlike.js").ColorLike}
+ * @type {string}
  */
-export const defaultFillStyle: import("../colorlike.js").ColorLike;
+export const defaultFillStyle: string;
 /**
  * @const
  * @type {CanvasLineCap}

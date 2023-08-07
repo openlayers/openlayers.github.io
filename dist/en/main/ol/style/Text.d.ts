@@ -79,9 +79,9 @@ export type Options = {
      */
     textBaseline?: CanvasTextBaseline | undefined;
     /**
-     * Fill style. If none is provided, we'll use a dark fill-style (#333).
+     * Fill style. If none is provided, we'll use a dark fill-style (#333). Specify `null` for no fill.
      */
-    fill?: Fill | undefined;
+    fill?: Fill | null | undefined;
     /**
      * Stroke style.
      */
@@ -132,7 +132,7 @@ export type Options = {
  * **Note:** `justify` is ignored for immediate rendering and also for `placement: 'line'`.
  * @property {CanvasTextBaseline} [textBaseline='middle'] Text base line. Possible values: `'bottom'`, `'top'`, `'middle'`, `'alphabetic'`,
  * `'hanging'`, `'ideographic'`.
- * @property {import("./Fill.js").default} [fill] Fill style. If none is provided, we'll use a dark fill-style (#333).
+ * @property {import("./Fill.js").default|null} [fill] Fill style. If none is provided, we'll use a dark fill-style (#333). Specify `null` for no fill.
  * @property {import("./Stroke.js").default} [stroke] Stroke style.
  * @property {import("./Fill.js").default} [backgroundFill] Fill style for the text background when `placement` is
  * `'point'`. Default is no fill.
