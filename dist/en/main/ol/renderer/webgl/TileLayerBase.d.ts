@@ -170,6 +170,7 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends import("../../layer/B
      * @protected
      */
     protected renderTile(tileRepresentation: TileRepresentation, tileTransform: import("../../transform.js").Transform, frameState: import("../../Map.js").FrameState, renderExtent: import("../../extent.js").Extent, tileResolution: number, tileSize: import("../../size.js").Size, tileOrigin: import("../../coordinate.js").Coordinate, tileExtent: import("../../extent.js").Extent, depth: number, gutter: number, alpha: number): void;
+    drawTile_(frameState: any, tileRepresentation: any, tileZ: any, gutter: any, extent: any, alphaLookup: any, tileGrid: any): void;
     /**
      * Render the layer.
      * @param {import("../../Map.js").FrameState} frameState Frame state.

@@ -113,6 +113,7 @@ declare class WebGLPostProcessingPass {
     renderTargetTexture_: WebGLTexture | null;
     renderTargetTextureSize_: number[] | null;
     frameBuffer_: WebGLFramebuffer | null;
+    depthBuffer_: WebGLRenderbuffer | null;
     renderTargetProgram_: WebGLProgram | null;
     renderTargetVerticesBuffer_: WebGLBuffer | null;
     renderTargetAttribLocation_: number;
@@ -153,6 +154,11 @@ declare class WebGLPostProcessingPass {
      * @api
      */
     getFrameBuffer(): WebGLFramebuffer;
+    /**
+     * @return {WebGLRenderbuffer} Depth buffer
+     * @api
+     */
+    getDepthBuffer(): WebGLRenderbuffer;
     /**
      * Sets the custom uniforms based on what was given in the constructor.
      * @param {import("../Map.js").FrameState} frameState Frame state.

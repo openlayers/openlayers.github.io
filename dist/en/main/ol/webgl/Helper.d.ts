@@ -394,8 +394,9 @@ declare class WebGLHelper extends Disposable {
      * subsequent draw calls.
      * @param {import("../Map.js").FrameState} frameState current frame state
      * @param {boolean} [disableAlphaBlend] If true, no alpha blending will happen.
+     * @param {boolean} [enableDepth] If true, enables depth testing.
      */
-    prepareDraw(frameState: import("../Map.js").FrameState, disableAlphaBlend?: boolean | undefined): void;
+    prepareDraw(frameState: import("../Map.js").FrameState, disableAlphaBlend?: boolean | undefined, enableDepth?: boolean | undefined): void;
     /**
      * Prepare a program to use a texture.
      * @param {WebGLTexture} texture The texture.
@@ -410,8 +411,9 @@ declare class WebGLHelper extends Disposable {
      * @param {import("../Map.js").FrameState} frameState current frame state
      * @param {import("./RenderTarget.js").default} renderTarget Render target to draw to
      * @param {boolean} [disableAlphaBlend] If true, no alpha blending will happen.
+     * @param {boolean} [enableDepth] If true, enables depth testing.
      */
-    prepareDrawToRenderTarget(frameState: import("../Map.js").FrameState, renderTarget: import("./RenderTarget.js").default, disableAlphaBlend?: boolean | undefined): void;
+    prepareDrawToRenderTarget(frameState: import("../Map.js").FrameState, renderTarget: import("./RenderTarget.js").default, disableAlphaBlend?: boolean | undefined, enableDepth?: boolean | undefined): void;
     /**
      * Execute a draw call based on the currently bound program, texture, buffers, attributes.
      * @param {number} start Start index.

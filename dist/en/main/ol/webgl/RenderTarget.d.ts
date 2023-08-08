@@ -27,6 +27,11 @@ declare class WebGLRenderTarget {
      */
     private framebuffer_;
     /**
+     * @private
+     * @type {WebGLRenderbuffer}
+     */
+    private depthbuffer_;
+    /**
      * @type {Array<number>}
      * @private
      */
@@ -86,6 +91,10 @@ declare class WebGLRenderTarget {
      * @return {WebGLFramebuffer} Frame buffer of the render target
      */
     getFramebuffer(): WebGLFramebuffer;
+    /**
+     * @return {WebGLRenderbuffer} Depth buffer of the render target
+     */
+    getDepthbuffer(): WebGLRenderbuffer;
     /**
      * @private
      */
