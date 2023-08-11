@@ -24,6 +24,10 @@ declare class CompositeMapRenderer extends MapRenderer {
      * @type {boolean}
      */
     private renderedVisible_;
+    /**
+     * @type {Array<import("../layer/BaseVector.js").default>}
+     */
+    declutterLayers_: Array<import("../layer/BaseVector.js").default<any, any>>;
 }
 import MapRenderer from './Map.js';
 //# sourceMappingURL=Composite.d.ts.map

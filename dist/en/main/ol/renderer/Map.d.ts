@@ -96,6 +96,10 @@ declare class MapRenderer extends Disposable {
     renderFrame(frameState: import("../Map.js").FrameState | null): void;
     /**
      * @param {import("../Map.js").FrameState} frameState Frame state.
+     */
+    flushDeclutterItems(frameState: import("../Map.js").FrameState): void;
+    /**
+     * @param {import("../Map.js").FrameState} frameState Frame state.
      * @protected
      */
     protected scheduleExpireIconCache(frameState: import("../Map.js").FrameState): void;
