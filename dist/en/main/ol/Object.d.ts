@@ -124,6 +124,13 @@ declare class BaseObject extends Observable {
         [x: string]: any;
     };
     /**
+     * Get an object of all property names and values.
+     * @return {Object<string, *>?} Object.
+     */
+    getPropertiesInternal(): {
+        [x: string]: any;
+    } | null;
+    /**
      * @return {boolean} The object has properties.
      */
     hasProperties(): boolean;
