@@ -111,7 +111,7 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
-import Stamen from &#x27;ol/source/Stamen.js&#x27;;
+import StadiaMaps from &#x27;ol/source/StadiaMaps.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import {Layer, Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
 import {fromLonLat, toLonLat} from &#x27;ol/proj.js&#x27;;
@@ -184,8 +184,8 @@ class CanvasLayer extends Layer {
 const map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new Stamen({
-        layer: &#x27;watercolor&#x27;,
+      source: new StadiaMaps({
+        layer: &#x27;stamen_watercolor&#x27;,
       }),
     }),
   ],

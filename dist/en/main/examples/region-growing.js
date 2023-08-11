@@ -1,16 +1,16 @@
 "use strict";
 (self["webpackChunk"] = self["webpackChunk"] || []).push([[9148],{
 
-/***/ 1805:
+/***/ 51805:
 /***/ (function(__unused_webpack___webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) {
 
 /* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(1055);
 /* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1940);
-/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(824);
-/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4469);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2893);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1802);
-/* harmony import */ var _src_ol_proj_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1625);
+/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(40824);
+/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(64469);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(72893);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11802);
+/* harmony import */ var _src_ol_proj_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(81625);
 
 
 
@@ -161,7 +161,7 @@ thresholdControl.addEventListener('input', function () {
 },
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ var __webpack_exec__ = function(moduleId) { return __webpack_require__(__webpack_require__.s = moduleId); }
-/******/ var __webpack_exports__ = (__webpack_exec__(1805));
+/******/ var __webpack_exports__ = (__webpack_exec__(51805));
 /******/ }
 ]);
 //# sourceMappingURL=region-growing.js.map

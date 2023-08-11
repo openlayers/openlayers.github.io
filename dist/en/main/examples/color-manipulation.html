@@ -172,7 +172,7 @@
         <pre><code id="example-js-source" class="language-js">import ImageLayer from &#x27;ol/layer/Image.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import {Raster as RasterSource, Stamen} from &#x27;ol/source.js&#x27;;
+import {Raster as RasterSource, StadiaMaps} from &#x27;ol/source.js&#x27;;
 
 /**
  * Color manipulation functions below are adapted from
@@ -272,8 +272,8 @@ function xyz2rgb(x) {
 
 const raster &#x3D; new RasterSource({
   sources: [
-    new Stamen({
-      layer: &#x27;watercolor&#x27;,
+    new StadiaMaps({
+      layer: &#x27;stamen_watercolor&#x27;,
     }),
   ],
   operation: function (pixels, data) {

@@ -256,7 +256,7 @@
         <pre><code id="example-js-source" class="language-js">import Feature from &#x27;ol/Feature.js&#x27;;
 import LineString from &#x27;ol/geom/LineString.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
-import Stamen from &#x27;ol/source/Stamen.js&#x27;;
+import StadiaMaps from &#x27;ol/source/StadiaMaps.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import {Stroke, Style} from &#x27;ol/style.js&#x27;;
@@ -265,8 +265,8 @@ import {getVectorContext} from &#x27;ol/render.js&#x27;;
 import {getWidth} from &#x27;ol/extent.js&#x27;;
 
 const tileLayer &#x3D; new TileLayer({
-  source: new Stamen({
-    layer: &#x27;toner&#x27;,
+  source: new StadiaMaps({
+    layer: &#x27;stamen_toner&#x27;,
   }),
 });
 

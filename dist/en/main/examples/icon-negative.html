@@ -301,7 +301,7 @@
 import Map from &#x27;ol/Map.js&#x27;;
 import Point from &#x27;ol/geom/Point.js&#x27;;
 import Select from &#x27;ol/interaction/Select.js&#x27;;
-import Stamen from &#x27;ol/source/Stamen.js&#x27;;
+import StadiaMaps from &#x27;ol/source/StadiaMaps.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import {Icon, Style} from &#x27;ol/style.js&#x27;;
@@ -325,7 +325,7 @@ iconFeature.set(&#x27;style&#x27;, createStyle(&#x27;data/icon.png&#x27;, undefi
 const map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new Stamen({layer: &#x27;watercolor&#x27;}),
+      source: new StadiaMaps({layer: &#x27;stamen_watercolor&#x27;}),
     }),
     new VectorLayer({
       style: function (feature) {

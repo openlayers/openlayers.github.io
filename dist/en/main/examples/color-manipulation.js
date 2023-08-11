@@ -1,14 +1,14 @@
 "use strict";
 (self["webpackChunk"] = self["webpackChunk"] || []).push([[1135],{
 
-/***/ 1894:
+/***/ 31894:
 /***/ (function(__unused_webpack___webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) {
 
-/* harmony import */ var _src_ol_layer_Image_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1802);
+/* harmony import */ var _src_ol_layer_Image_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(11802);
 /* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1055);
-/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(824);
+/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(40824);
 /* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1940);
-/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5277);
+/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(53061);
 
 
 
@@ -113,7 +113,7 @@ function xyz2rgb(x) {
 const raster = new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .ZP({
   sources: [
     new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z({
-      layer: 'watercolor',
+      layer: 'stamen_watercolor',
     }),
   ],
   operation: function (pixels, data) {
@@ -191,7 +191,7 @@ controlIds.forEach(function (id) {
 },
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ var __webpack_exec__ = function(moduleId) { return __webpack_require__(__webpack_require__.s = moduleId); }
-/******/ var __webpack_exports__ = (__webpack_exec__(1894));
+/******/ var __webpack_exports__ = (__webpack_exec__(31894));
 /******/ }
 ]);
 //# sourceMappingURL=color-manipulation.js.map

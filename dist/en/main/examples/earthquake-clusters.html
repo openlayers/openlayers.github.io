@@ -284,7 +284,7 @@ import {
   Style,
   Text,
 } from &#x27;ol/style.js&#x27;;
-import {Cluster, Stamen, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+import {Cluster, StadiaMaps, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {
   Select,
   defaults as defaultInteractions,
@@ -412,8 +412,8 @@ vector &#x3D; new VectorLayer({
 });
 
 const raster &#x3D; new TileLayer({
-  source: new Stamen({
-    layer: &#x27;toner&#x27;,
+  source: new StadiaMaps({
+    layer: &#x27;stamen_toner&#x27;,
   }),
 });
 

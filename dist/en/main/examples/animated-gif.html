@@ -279,7 +279,7 @@ import Map from &#x27;ol/Map.js&#x27;;
 import Point from &#x27;ol/geom/Point.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import {Icon, Style} from &#x27;ol/style.js&#x27;;
-import {Stamen, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+import {StadiaMaps, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
 
 const iconFeature &#x3D; new Feature({
@@ -295,8 +295,8 @@ const vectorLayer &#x3D; new VectorLayer({
 });
 
 const rasterLayer &#x3D; new TileLayer({
-  source: new Stamen({
-    layer: &#x27;toner&#x27;,
+  source: new StadiaMaps({
+    layer: &#x27;stamen_toner&#x27;,
   }),
 });
 

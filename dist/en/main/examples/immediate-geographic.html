@@ -126,7 +126,7 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import Stamen from &#x27;ol/source/Stamen.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import StadiaMaps from &#x27;ol/source/StadiaMaps.js&#x27;;
 import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import {Circle, Fill, Style} from &#x27;ol/style.js&#x27;;
 import {Map, View} from &#x27;ol/index.js&#x27;;
@@ -138,8 +138,8 @@ import {useGeographic} from &#x27;ol/proj.js&#x27;;
 useGeographic();
 
 const layer &#x3D; new TileLayer({
-  source: new Stamen({
-    layer: &#x27;toner&#x27;,
+  source: new StadiaMaps({
+    layer: &#x27;stamen_toner&#x27;,
   }),
 });
 

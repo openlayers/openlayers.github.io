@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>Stamen Tiles</title>
+    <title>Stadia Maps (Stamen Tile Layer Composition)</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
@@ -61,7 +61,7 @@
           <i class="fab fa-codepen fa-lg"></i> Edit
         </a>
         <div class="span12">
-          <h4 id="title">Stamen Tiles</h4>
+          <h4 id="title">Stadia Maps (Stamen Tile Layer Composition)</h4>
           <p class="tags">
             <span class="badge-group">
               <a
@@ -72,7 +72,7 @@
                 data-bs-target="#tag-example-list"
                 data-title="stamen"
                 data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./stamen.html&quot;&gt;Stamen Tiles&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./stamen.html&quot;&gt;Stadia Maps (Stamen Tile Layer Composition)&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
                 >1</a>
@@ -86,7 +86,7 @@
                 data-bs-target="#tag-example-list"
                 data-title="watercolor"
                 data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./stamen.html&quot;&gt;Stamen Tiles&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./stamen.html&quot;&gt;Stadia Maps (Stamen Tile Layer Composition)&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
                 >1</a>
@@ -100,7 +100,7 @@
                 data-bs-target="#tag-example-list"
                 data-title="terrain-labels"
                 data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./stamen.html&quot;&gt;Stamen Tiles&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./stamen.html&quot;&gt;Stadia Maps (Stamen Tile Layer Composition)&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
                 >1</a>
@@ -114,10 +114,25 @@
                 data-bs-target="#tag-example-list"
                 data-title="two-layers"
                 data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./stamen.html&quot;&gt;Stamen Tiles&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./stamen.html&quot;&gt;Stadia Maps (Stamen Tile Layer Composition)&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
                 >1</a>
+            </span>
+            <span class="badge-group">
+              <a
+                href="./index.html?q=stadia-maps" class="badge badge-info">stadia-maps</a
+              ><a
+                class="badge badge-info tag-modal-toggle"
+                data-bs-toggle="modal"
+                data-bs-target="#tag-example-list"
+                data-title="stadia-maps"
+                data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./stadia-maps.html&quot;&gt;Stadia Maps (Retina Tiles)&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./stamen.html&quot;&gt;Stadia Maps (Stamen Tile Layer Composition)&lt;/a&gt;
+                  &lt;/ul&gt;"
+                tabindex="0"
+                >2</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -143,8 +158,8 @@
 
       <div class="row-fluid">
         <div class="span12">
-          <p id="shortdesc">Example of a Stamen tile source.</p>
-          <div id="docs"><p>Two layers are composed: the watercolor base layer with the terrain labels.</p>
+          <p id="shortdesc">Example of composing layers with a Stadia Maps tile source.</p>
+          <div id="docs"><p>Two layer groups are composed: the watercolor base layer with the terrain labels from Stamen.</p>
 </div>
         </div>
       </div>
@@ -152,21 +167,25 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
-import Stamen from &#x27;ol/source/Stamen.js&#x27;;
+import StadiaMaps from &#x27;ol/source/StadiaMaps.js&#x27;;
 import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 
 const map &#x3D; new Map({
   layers: [
+    // NOTE: Layers from Stadia Maps do not require an API key for localhost development or most production
+    // web deployments. See https://docs.stadiamaps.com/authentication/ for details.
     new TileLayer({
-      source: new Stamen({
-        layer: &#x27;watercolor&#x27;,
+      source: new StadiaMaps({
+        layer: &#x27;stamen_watercolor&#x27;,
+        // apiKey: &#x27;OPTIONAL&#x27;
       }),
     }),
     new TileLayer({
-      source: new Stamen({
-        layer: &#x27;terrain-labels&#x27;,
+      source: new StadiaMaps({
+        layer: &#x27;stamen_terrain_labels&#x27;,
+        // apiKey: &#x27;OPTIONAL&#x27;
       }),
     }),
   ],
@@ -185,7 +204,7 @@ const map &#x3D; new Map({
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;Stamen Tiles&lt;/title&gt;
+    &lt;title&gt;Stadia Maps (Stamen Tile Layer Composition)&lt;/title&gt;
     &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
