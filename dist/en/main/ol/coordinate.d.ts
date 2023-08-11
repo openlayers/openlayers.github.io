@@ -1,5 +1,6 @@
 /**
- * An array of numbers representing an xy coordinate. Example: `[16, 48]`.
+ * An array of numbers representing an `xy`, `xyz` or `xyzm` coordinate.
+ * Example: `[16, 48]`.
  * @typedef {Array<number>} Coordinate
  * @api
  */
@@ -254,7 +255,8 @@ export function wrapX(coordinate: Coordinate, projection: import("./proj/Project
  */
 export function getWorldsAway(coordinate: Coordinate, projection: import("./proj/Projection.js").default, sourceExtentWidth?: number | undefined): number;
 /**
- * An array of numbers representing an xy coordinate. Example: `[16, 48]`.
+ * An array of numbers representing an `xy`, `xyz` or `xyzm` coordinate.
+ * Example: `[16, 48]`.
  */
 export type Coordinate = Array<number>;
 /**
