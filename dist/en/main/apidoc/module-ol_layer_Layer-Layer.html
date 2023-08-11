@@ -979,6 +979,9 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
       
       
 <span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
 
 
       
@@ -1705,7 +1708,7 @@ List of property names.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L216">line 216</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L217">line 217</a>
         </div>
         
     </div>
@@ -1718,7 +1721,8 @@ List of property names.
 
     
     <div class="description">
-        <p>Return the maximum resolution of the layer.</p>
+        <p>Return the maximum resolution of the layer. Returns Infinity if
+the layer has no maximum resolution set.</p>
     </div>
     
 
@@ -1797,7 +1801,7 @@ The maximum resolution of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L246">line 246</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L250">line 250</a>
         </div>
         
     </div>
@@ -1810,7 +1814,8 @@ The maximum resolution of the layer.
 
     
     <div class="description">
-        <p>Return the maximum zoom level of the layer.</p>
+        <p>Return the maximum zoom level of the layer. Returns Infinity if
+the layer has no maximum zoom set.</p>
     </div>
     
 
@@ -1889,7 +1894,7 @@ The maximum zoom level of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L226">line 226</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L228">line 228</a>
         </div>
         
     </div>
@@ -1902,7 +1907,8 @@ The maximum zoom level of the layer.
 
     
     <div class="description">
-        <p>Return the minimum resolution of the layer.</p>
+        <p>Return the minimum resolution of the layer. Returns 0 if
+the layer has no minimum resolution set.</p>
     </div>
     
 
@@ -1981,7 +1987,7 @@ The minimum resolution of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L236">line 236</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L239">line 239</a>
         </div>
         
     </div>
@@ -1994,7 +2000,8 @@ The minimum resolution of the layer.
 
     
     <div class="description">
-        <p>Return the minimum zoom level of the layer.</p>
+        <p>Return the minimum zoom level of the layer. Returns -Infinity if
+the layer has no minimum zoom set.</p>
     </div>
     
 
@@ -2073,7 +2080,7 @@ The minimum zoom level of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L256">line 256</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L260">line 260</a>
         </div>
         
     </div>
@@ -2440,7 +2447,7 @@ The layer source (or <code>null</code> if not yet set).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L275">line 275</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L279">line 279</a>
         </div>
         
     </div>
@@ -2523,7 +2530,7 @@ The value of the <code>visible</code> property of the layer.
         <div class="anchor" id="getZIndex">
         </div>
         <h4 class="name">
-            getZIndex<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number}</span>
+            getZIndex<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number | undefined}</span>
             
                 <span class="inherited"><a href="module-ol_layer_Base-BaseLayer.html#getZIndex">inherited</a></span>
             
@@ -2533,7 +2540,7 @@ The value of the <code>visible</code> property of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L286">line 286</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L290">line 290</a>
         </div>
         
     </div>
@@ -2547,7 +2554,7 @@ The value of the <code>visible</code> property of the layer.
     
     <div class="description">
         <p>Return the Z-index of the layer, which is used to order layers before
-rendering. The default Z-index is 0.</p>
+rendering. Returns undefined if the layer is unmanaged.</p>
     </div>
     
 
@@ -3279,7 +3286,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L306">line 306</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L310">line 310</a>
         </div>
         
     </div>
@@ -3545,7 +3552,7 @@ use <code>#setMap(null)</code>.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L316">line 316</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L320">line 320</a>
         </div>
         
     </div>
@@ -3673,7 +3680,7 @@ use <code>#setMap(null)</code>.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L338">line 338</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L342">line 342</a>
         </div>
         
     </div>
@@ -3803,7 +3810,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L326">line 326</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L330">line 330</a>
         </div>
         
     </div>
@@ -3931,7 +3938,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L350">line 350</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L354">line 354</a>
         </div>
         
     </div>
@@ -4061,7 +4068,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L360">line 360</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L364">line 364</a>
         </div>
         
     </div>
@@ -4472,7 +4479,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L371">line 371</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L375">line 375</a>
         </div>
         
     </div>
@@ -4600,7 +4607,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js">layer/Base.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L382">line 382</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Base.js#L386">line 386</a>
         </div>
         
     </div>
