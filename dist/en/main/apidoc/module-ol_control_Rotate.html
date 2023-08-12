@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -221,28 +213,16 @@
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'ol-rotate')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>CSS class name.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'ol-rotate'
-                
-                </td>
-            
-
-            <td class="description last"><p>CSS class name.</p></td>
+            </td>
         </tr>
 
 	
@@ -261,29 +241,17 @@
 <span class="param-type">HTMLElement</span>
 
 
+                
+                    (defaults to '⇧')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Text label to use for the rotate button.
+Instead of text, also an element (e.g. a <code>span</code> element) can be used.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    '⇧'
-                
-                </td>
-            
-
-            <td class="description last"><p>Text label to use for the rotate button.
-Instead of text, also an element (e.g. a <code>span</code> element) can be used.</p></td>
+            </td>
         </tr>
 
 	
@@ -299,28 +267,16 @@ Instead of text, also an element (e.g. a <code>span</code> element) can be used.
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'Reset rotation')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Text label to use for the rotate tip.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'Reset rotation'
-                
-                </td>
-            
-
-            <td class="description last"><p>Text label to use for the rotate tip.</p></td>
+            </td>
         </tr>
 
 	
@@ -336,28 +292,16 @@ Instead of text, also an element (e.g. a <code>span</code> element) can be used.
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'ol-compass')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>CSS class name for the compass.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'ol-compass'
-                
-                </td>
-            
-
-            <td class="description last"><p>CSS class name for the compass.</p></td>
+            </td>
         </tr>
 
 	
@@ -373,28 +317,16 @@ Instead of text, also an element (e.g. a <code>span</code> element) can be used.
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 250)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Animation duration in milliseconds.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    250
-                
-                </td>
-            
-
-            <td class="description last"><p>Animation duration in milliseconds.</p></td>
+            </td>
         </tr>
 
 	
@@ -410,28 +342,16 @@ Instead of text, also an element (e.g. a <code>span</code> element) can be used.
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Hide the control when rotation is 0.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Hide the control when rotation is 0.</p></td>
+            </td>
         </tr>
 
 	
@@ -446,28 +366,16 @@ Instead of text, also an element (e.g. a <code>span</code> element) can be used.
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Function called when the control should
+be re-rendered. This is called in a <code>requestAnimationFrame</code> callback.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Function called when the control should
-be re-rendered. This is called in a <code>requestAnimationFrame</code> callback.</p></td>
+            </td>
         </tr>
 
 	
@@ -482,28 +390,16 @@ be re-rendered. This is called in a <code>requestAnimationFrame</code> callback.
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Function called when the control is clicked.
+This will override the default <code>resetNorth</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Function called when the control is clicked.
-This will override the default <code>resetNorth</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -521,28 +417,16 @@ This will override the default <code>resetNorth</code>.</p></td>
 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Specify a target if you want the control to be
+rendered outside of the map's viewport.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Specify a target if you want the control to be
-rendered outside of the map's viewport.</p></td>
+            </td>
         </tr>
 
 	

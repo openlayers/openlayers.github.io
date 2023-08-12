@@ -198,14 +198,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -223,31 +215,19 @@
                 
 <span class="param-type"><a href="module-ol_events_condition.html#~Condition">Condition</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>A function that
+            <td class="description last">
+                <p>A function that
 takes an <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and returns a
 boolean to indicate whether that event will be considered to add or move a
 vertex to the sketch. Default is
-<a href="module-ol_events_condition.html#.primaryAction"><code>primaryAction</code></a>.</p></td>
+<a href="module-ol_events_condition.html#.primaryAction"><code>primaryAction</code></a>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -262,31 +242,19 @@ vertex to the sketch. Default is
                 
 <span class="param-type"><a href="module-ol_events_condition.html#~Condition">Condition</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>A function
+            <td class="description last">
+                <p>A function
 that takes an <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and returns a
 boolean to indicate whether that event should be handled. By default,
 <a href="module-ol_events_condition.html#.singleClick"><code>singleClick</code></a> with
-<a href="module-ol_events_condition.html#.altKeyOnly"><code>altKeyOnly</code></a> results in a vertex deletion.</p></td>
+<a href="module-ol_events_condition.html#.altKeyOnly"><code>altKeyOnly</code></a> results in a vertex deletion.</p>
+                
+            </td>
         </tr>
 
 	
@@ -301,30 +269,18 @@ boolean to indicate whether that event should be handled. By default,
                 
 <span class="param-type"><a href="module-ol_events_condition.html#~Condition">Condition</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>A
+            <td class="description last">
+                <p>A
 function that takes an <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and
 returns a boolean to indicate whether a new vertex should be added to the sketch
-features. Default is <a href="module-ol_events_condition.html#.always"><code>always</code></a>.</p></td>
+features. Default is <a href="module-ol_events_condition.html#.always"><code>always</code></a>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -340,29 +296,17 @@ features. Default is <a href="module-ol_events_condition.html#.always"><code>alw
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 10)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Pixel tolerance for considering the
+pointer close enough to a segment or vertex for editing.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    10
-                
-                </td>
-            
-
-            <td class="description last"><p>Pixel tolerance for considering the
-pointer close enough to a segment or vertex for editing.</p></td>
+            </td>
         </tr>
 
 	
@@ -380,34 +324,22 @@ pointer close enough to a segment or vertex for editing.</p></td>
 
 <span class="param-type"><a href="module-ol_style_flat.html#~FlatStyleLike">FlatStyleLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Style used for the modification point or vertex. For linestrings and polygons, this will
+            <td class="description last">
+                <p>Style used for the modification point or vertex. For linestrings and polygons, this will
 be the affected vertex, for circles a point along the circle, and for points the actual
 point. If not configured, the default edit style is used (see <a href="module-ol_style_Style-Style.html"><code>Style</code></a>).
 When using a style function, the point feature passed to the function will have a <code>features</code>
 property - an array whose entries are the features that are being modified, and a <code>geometries</code>
 property - an array whose entries are the geometries that are being modified. Both arrays are
 in the same order. The <code>geometries</code> are only useful when modifying geometry collections, where
-the geometry will be the particular geometry from the collection that is being modified.</p></td>
+the geometry will be the particular geometry from the collection that is being modified.</p>
+                
+            </td>
         </tr>
 
 	
@@ -422,29 +354,17 @@ the geometry will be the particular geometry from the collection that is being m
                 
 <span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The vector source with
+            <td class="description last">
+                <p>The vector source with
 features to modify.  If a vector source is not provided, a feature collection
-must be provided with the <code>features</code> option.</p></td>
+must be provided with the <code>features</code> option.</p>
+                
+            </td>
         </tr>
 
 	
@@ -462,30 +382,18 @@ must be provided with the <code>features</code> option.</p></td>
 
 <span class="param-type"><a href="module-ol_layer_BaseVector-BaseVectorLayer.html">BaseVectorLayer</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>When configured, point
+            <td class="description last">
+                <p>When configured, point
 features will be considered for modification based on their visual appearance, instead of being within
 the <code>pixelTolerance</code> from the pointer location. When a <a href="module-ol_layer_BaseVector-BaseVectorLayer.html"><code>BaseVectorLayer</code></a> is
-provided, only the rendered representation of the features on that layer will be considered.</p></td>
+provided, only the rendered representation of the features on that layer will be considered.</p>
+                
+            </td>
         </tr>
 
 	
@@ -500,28 +408,16 @@ provided, only the rendered representation of the features on that layer will be
                 
 <span class="param-type"><a href="module-ol_Collection-Collection.html">Collection</a>&lt;<a href="module-ol_Feature-Feature.html">Feature</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The features the interaction works on.  If a feature collection is not
+provided, a vector source must be provided with the <code>source</code> option.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The features the interaction works on.  If a feature collection is not
-provided, a vector source must be provided with the <code>source</code> option.</p></td>
+            </td>
         </tr>
 
 	
@@ -537,29 +433,17 @@ provided, a vector source must be provided with the <code>source</code> option.<
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Wrap the world horizontally on the sketch
+overlay.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Wrap the world horizontally on the sketch
-overlay.</p></td>
+            </td>
         </tr>
 
 	
@@ -575,29 +459,17 @@ overlay.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to !hitDetection)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The vertex, point or segment being modified snaps to the
+pointer coordinate when clicked within the <code>pixelTolerance</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    !hitDetection
-                
-                </td>
-            
-
-            <td class="description last"><p>The vertex, point or segment being modified snaps to the
-pointer coordinate when clicked within the <code>pixelTolerance</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -665,12 +537,6 @@ pointer coordinate when clicked within the <code>pixelTolerance</code>.</p></td>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -688,23 +554,15 @@ pointer coordinate when clicked within the <code>pixelTolerance</code>.</p></td>
                 
 <span class="param-type">Array.&lt;number></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Depth.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Depth.</p></td>
+            </td>
         </tr>
 
 	
@@ -720,20 +578,14 @@ pointer coordinate when clicked within the <code>pixelTolerance</code>.</p></td>
 <span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Feature.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Feature.</p></td>
+            </td>
         </tr>
 
 	
@@ -749,20 +601,14 @@ pointer coordinate when clicked within the <code>pixelTolerance</code>.</p></td>
 <span class="param-type"><a href="module-ol_geom_SimpleGeometry-SimpleGeometry.html">SimpleGeometry</a></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Geometry.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Geometry.</p></td>
+            </td>
         </tr>
 
 	
@@ -777,23 +623,15 @@ pointer coordinate when clicked within the <code>pixelTolerance</code>.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Index.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Index.</p></td>
+            </td>
         </tr>
 
 	
@@ -809,20 +647,14 @@ pointer coordinate when clicked within the <code>pixelTolerance</code>.</p></td>
 <span class="param-type">Array.&lt;Array.&lt;number>></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Segment.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Segment.</p></td>
+            </td>
         </tr>
 
 	
@@ -837,23 +669,15 @@ pointer coordinate when clicked within the <code>pixelTolerance</code>.</p></td>
                 
 <span class="param-type">Array&lt;<a href="module-ol_interaction_Modify.html#~SegmentData">SegmentData</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>FeatureSegments.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>FeatureSegments.</p></td>
+            </td>
         </tr>
 
 	

@@ -213,10 +213,6 @@ for each feature.</p>
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -235,14 +231,14 @@ for each feature.</p>
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Attribute name.</p></td>
+            <td class="description last">
+                <p>Attribute name.</p>
+                
+            </td>
         </tr>
 
 	
@@ -258,15 +254,15 @@ for each feature.</p>
 <span class="param-type">function</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>This callback computes the numerical value of the
-attribute for a given feature (properties are available as 2nd arg for quicker access).</p></td>
+            <td class="description last">
+                <p>This callback computes the numerical value of the
+attribute for a given feature (properties are available as 2nd arg for quicker access).</p>
+                
+            </td>
         </tr>
 
 	
@@ -339,10 +335,6 @@ rebuildBuffers by accessing these objects quicker.</p>
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -361,14 +353,14 @@ rebuildBuffers by accessing these objects quicker.</p>
 <span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Feature</p></td>
+            <td class="description last">
+                <p>Feature</p>
+                
+            </td>
         </tr>
 
 	
@@ -384,14 +376,14 @@ rebuildBuffers by accessing these objects quicker.</p>
 <span class="param-type">Object.&lt;string, *></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Feature properties</p></td>
+            <td class="description last">
+                <p>Feature properties</p>
+                
+            </td>
         </tr>
 
 	
@@ -407,14 +399,14 @@ rebuildBuffers by accessing these objects quicker.</p>
 <span class="param-type">Geometry</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Feature geometry</p></td>
+            <td class="description last">
+                <p>Feature geometry</p>
+                
+            </td>
         </tr>
 
 	
@@ -482,14 +474,6 @@ rebuildBuffers by accessing these objects quicker.</p>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -508,28 +492,16 @@ rebuildBuffers by accessing these objects quicker.</p>
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'ol-layer')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>A CSS class name to set to the canvas element.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'ol-layer'
-                
-                </td>
-            
-
-            <td class="description last"><p>A CSS class name to set to the canvas element.</p></td>
+            </td>
         </tr>
 
 	
@@ -544,33 +516,21 @@ rebuildBuffers by accessing these objects quicker.</p>
                 
 <span class="param-type">Array&lt;<a href="module-ol_renderer_webgl_PointsLayer.html#~CustomAttribute">CustomAttribute</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>These attributes will be read from the features in the source and then
+            <td class="description last">
+                <p>These attributes will be read from the features in the source and then
 passed to the GPU. The <code>name</code> property of each attribute will serve as its identifier:</p>
 <ul>
 <li>In the vertex shader as an <code>attribute</code> by prefixing it with <code>a_</code></li>
 <li>In the fragment shader as a <code>varying</code> by prefixing it with <code>v_</code>
 Please note that these can only be numerical values.</li>
-</ul></td>
+</ul>
+                
+            </td>
         </tr>
 
 	
@@ -586,24 +546,14 @@ Please note that these can only be numerical values.</li>
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Vertex shader source, mandatory.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Vertex shader source, mandatory.</p></td>
+            </td>
         </tr>
 
 	
@@ -619,24 +569,14 @@ Please note that these can only be numerical values.</li>
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Fragment shader source, mandatory.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Fragment shader source, mandatory.</p></td>
+            </td>
         </tr>
 
 	
@@ -651,27 +591,15 @@ Please note that these can only be numerical values.</li>
                 
 <span class="param-type">boolean</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Whether shader is hit detection aware.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether shader is hit detection aware.</p></td>
+            </td>
         </tr>
 
 	
@@ -686,28 +614,16 @@ Please note that these can only be numerical values.</li>
                 
 <span class="param-type">Object&lt;UniformValue></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Uniform definitions for the post process steps
+Please note that <code>u_texture</code> is reserved for the main texture slot and <code>u_opacity</code> is reserved for the layer opacity.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Uniform definitions for the post process steps
-Please note that <code>u_texture</code> is reserved for the main texture slot and <code>u_opacity</code> is reserved for the layer opacity.</p></td>
+            </td>
         </tr>
 
 	
@@ -722,27 +638,15 @@ Please note that <code>u_texture</code> is reserved for the main texture slot an
                 
 <span class="param-type">Array&lt;<a href="module-ol_renderer_webgl_Layer.html#~PostProcessesOptions">PostProcessesOptions</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Post-processes definitions</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Post-processes definitions</p></td>
+            </td>
         </tr>
 
 	

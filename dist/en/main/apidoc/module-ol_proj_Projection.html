@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -221,24 +213,14 @@
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The SRS identifier code, e.g. <code>EPSG:4326</code>.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The SRS identifier code, e.g. <code>EPSG:4326</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -253,28 +235,16 @@
                 
 <span class="param-type"><a href="module-ol_proj_Units.html#~Units">Units</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Units. Required unless a
+proj4 projection is defined for <code>code</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Units. Required unless a
-proj4 projection is defined for <code>code</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -289,27 +259,15 @@ proj4 projection is defined for <code>code</code>.</p></td>
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The validity extent for the SRS.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The validity extent for the SRS.</p></td>
+            </td>
         </tr>
 
 	
@@ -325,28 +283,16 @@ proj4 projection is defined for <code>code</code>.</p></td>
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'enu')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The axis orientation as specified in Proj4.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'enu'
-                
-                </td>
-            
-
-            <td class="description last"><p>The axis orientation as specified in Proj4.</p></td>
+            </td>
         </tr>
 
 	
@@ -362,28 +308,16 @@ proj4 projection is defined for <code>code</code>.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Whether the projection is valid for the whole globe.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether the projection is valid for the whole globe.</p></td>
+            </td>
         </tr>
 
 	
@@ -398,29 +332,17 @@ proj4 projection is defined for <code>code</code>.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The meters per unit for the SRS.
+            <td class="description last">
+                <p>The meters per unit for the SRS.
 If not provided, the <code>units</code> are used to get the meters per unit from the <code>METERS_PER_UNIT</code>
-lookup table.</p></td>
+lookup table.</p>
+                
+            </td>
         </tr>
 
 	
@@ -435,27 +357,15 @@ lookup table.</p></td>
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The world extent for the SRS.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The world extent for the SRS.</p></td>
+            </td>
         </tr>
 
 	
@@ -470,30 +380,18 @@ lookup table.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Function to determine resolution at a point. The function is called with a
+            <td class="description last">
+                <p>Function to determine resolution at a point. The function is called with a
 <code>number</code> view resolution and a <a href="module-ol_coordinate.html#~Coordinate"><code>Coordinate</code></a> as arguments, and returns
 the <code>number</code> resolution in projection units at the passed coordinate. If this is <code>undefined</code>,
-the default <a href="module-ol_proj.html#.getPointResolution"><code>getPointResolution</code></a> function will be used.</p></td>
+the default <a href="module-ol_proj.html#.getPointResolution"><code>getPointResolution</code></a> function will be used.</p>
+                
+            </td>
         </tr>
 
 	

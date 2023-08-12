@@ -209,14 +209,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -234,27 +226,15 @@
                 
 <span class="param-type"><a href="module-ol_layer_WebGLTile.html#~Style">Style</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Style to apply to the layer.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Style to apply to the layer.</p></td>
+            </td>
         </tr>
 
 	
@@ -270,28 +250,16 @@
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'ol-layer')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>A CSS class name to set to the layer element.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'ol-layer'
-                
-                </td>
-            
-
-            <td class="description last"><p>A CSS class name to set to the layer element.</p></td>
+            </td>
         </tr>
 
 	
@@ -307,28 +275,16 @@
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Opacity (0, 1).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Opacity (0, 1).</p></td>
+            </td>
         </tr>
 
 	
@@ -344,28 +300,16 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Visibility.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Visibility.</p></td>
+            </td>
         </tr>
 
 	
@@ -380,28 +324,16 @@
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The bounding extent for layer rendering.  The layer will not be
+rendered outside of this extent.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The bounding extent for layer rendering.  The layer will not be
-rendered outside of this extent.</p></td>
+            </td>
         </tr>
 
 	
@@ -416,30 +348,18 @@ rendered outside of this extent.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The z-index for layer rendering.  At rendering time, the layers
+            <td class="description last">
+                <p>The z-index for layer rendering.  At rendering time, the layers
 will be ordered, first by Z-index and then by position. When <code>undefined</code>, a <code>zIndex</code> of 0 is assumed
 for layers that are added to the map's <code>layers</code> collection, or <code>Infinity</code> when the layer's <code>setMap()</code>
-method was used.</p></td>
+method was used.</p>
+                
+            </td>
         </tr>
 
 	
@@ -454,28 +374,16 @@ method was used.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The minimum resolution (inclusive) at which this layer will be
+visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum resolution (inclusive) at which this layer will be
-visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -490,28 +398,16 @@ visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The maximum resolution (exclusive) below which this layer will
+be visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum resolution (exclusive) below which this layer will
-be visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -526,28 +422,16 @@ be visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The minimum view zoom level (exclusive) above which this layer will be
+visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum view zoom level (exclusive) above which this layer will be
-visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -562,28 +446,16 @@ visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The maximum view zoom level (inclusive) at which this layer will
+be visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum view zoom level (inclusive) at which this layer will
-be visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -599,29 +471,17 @@ be visible.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Preload. Load low-resolution tiles up to <code>preload</code> levels. <code>0</code>
+means no preloading.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Preload. Load low-resolution tiles up to <code>preload</code> levels. <code>0</code>
-means no preloading.</p></td>
+            </td>
         </tr>
 
 	
@@ -636,27 +496,15 @@ means no preloading.</p></td>
                 
 <span class="param-type"><a href="module-ol_layer_WebGLTile.html#~SourceType">SourceType</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Source for this layer.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Source for this layer.</p></td>
+            </td>
         </tr>
 
 	
@@ -674,31 +522,19 @@ means no preloading.</p></td>
 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Array
+            <td class="description last">
+                <p>Array
 of sources for this layer. Takes precedence over <code>source</code>. Can either be an array of sources, or a function that
 expects an extent and a resolution (in view projection units per pixel) and returns an array of sources. See
 <a href="module-ol_source.html#.sourcesFromTileGrid"><code>sourcesFromTileGrid</code></a> for a helper function to generate sources that are organized in a
-pyramid following the same pattern as a tile grid. <strong>Note:</strong> All sources must have the same band count and content.</p></td>
+pyramid following the same pattern as a tile grid. <strong>Note:</strong> All sources must have the same band count and content.</p>
+                
+            </td>
         </tr>
 
 	
@@ -713,30 +549,18 @@ pyramid following the same pattern as a tile grid. <strong>Note:</strong> All so
                 
 <span class="param-type"><a href="module-ol_Map-Map.html">Map</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Sets the layer as overlay on a map. The map will not manage
+            <td class="description last">
+                <p>Sets the layer as overlay on a map. The map will not manage
 this layer in its layers collection, and the layer will be rendered on top. This is useful for
 temporary layers. The standard way to add a layer to a map and have it managed by the map is to
-use <a href="module-ol_Map-Map.html#addLayer"><code>addLayer</code></a>.</p></td>
+use <a href="module-ol_Map-Map.html#addLayer"><code>addLayer</code></a>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -752,28 +576,16 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>addLayer</code></a>.</p></td
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Use interim tiles on error.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Use interim tiles on error.</p></td>
+            </td>
         </tr>
 
 	
@@ -789,29 +601,17 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>addLayer</code></a>.</p></td
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 512)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The internal texture cache size.  This needs to be large enough to render
+two zoom levels worth of tiles.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    512
-                
-                </td>
-            
-
-            <td class="description last"><p>The internal texture cache size.  This needs to be large enough to render
-two zoom levels worth of tiles.</p></td>
+            </td>
         </tr>
 
 	
@@ -879,10 +679,6 @@ two zoom levels worth of tiles.</p></td>
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -901,14 +697,14 @@ two zoom levels worth of tiles.</p></td>
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The vertex shader.</p></td>
+            <td class="description last">
+                <p>The vertex shader.</p>
+                
+            </td>
         </tr>
 
 	
@@ -924,14 +720,14 @@ two zoom levels worth of tiles.</p></td>
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The fragment shader.</p></td>
+            <td class="description last">
+                <p>The fragment shader.</p>
+                
+            </td>
         </tr>
 
 	
@@ -947,14 +743,14 @@ two zoom levels worth of tiles.</p></td>
 <span class="param-type">Object&lt;UniformValue></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Uniform definitions.</p></td>
+            <td class="description last">
+                <p>Uniform definitions.</p>
+                
+            </td>
         </tr>
 
 	
@@ -970,14 +766,14 @@ two zoom levels worth of tiles.</p></td>
 <span class="param-type">Array&lt;PaletteTexture></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Palette textures.</p></td>
+            <td class="description last">
+                <p>Palette textures.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1095,14 +891,6 @@ two zoom levels worth of tiles.</p></td>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -1120,30 +908,18 @@ two zoom levels worth of tiles.</p></td>
                 
 <span class="param-type">Object.&lt;string, (string|number)></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Style variables.  Each variable must hold a number or string.  These
+            <td class="description last">
+                <p>Style variables.  Each variable must hold a number or string.  These
 variables can be used in the <code>color</code>, <code>brightness</code>, <code>contrast</code>, <code>exposure</code>, <code>saturation</code> and <code>gamma</code>
 <a href="module-ol_style_expressions.html#~ExpressionValue"><code>expressions</code></a>, using the <code>['var', 'varName']</code> operator.
-To update style variables, use the <a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#updateStyleVariables"><code>updateStyleVariables</code></a> method.</p></td>
+To update style variables, use the <a href="module-ol_layer_WebGLTile-WebGLTileLayer.html#updateStyleVariables"><code>updateStyleVariables</code></a> method.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1158,27 +934,15 @@ To update style variables, use the <a href="module-ol_layer_WebGLTile-WebGLTileL
                 
 <span class="param-type"><a href="module-ol_style_expressions.html#~ExpressionValue">ExpressionValue</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>An expression applied to color values.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>An expression applied to color values.</p></td>
+            </td>
         </tr>
 
 	
@@ -1194,29 +958,17 @@ To update style variables, use the <a href="module-ol_layer_WebGLTile-WebGLTileL
 <span class="param-type"><a href="module-ol_style_expressions.html#~ExpressionValue">ExpressionValue</a></span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Value used to decrease or increase
+the layer brightness.  Values range from -1 to 1.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Value used to decrease or increase
-the layer brightness.  Values range from -1 to 1.</p></td>
+            </td>
         </tr>
 
 	
@@ -1232,29 +984,17 @@ the layer brightness.  Values range from -1 to 1.</p></td>
 <span class="param-type"><a href="module-ol_style_expressions.html#~ExpressionValue">ExpressionValue</a></span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Value used to decrease or increase
+the layer contrast.  Values range from -1 to 1.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Value used to decrease or increase
-the layer contrast.  Values range from -1 to 1.</p></td>
+            </td>
         </tr>
 
 	
@@ -1270,29 +1010,17 @@ the layer contrast.  Values range from -1 to 1.</p></td>
 <span class="param-type"><a href="module-ol_style_expressions.html#~ExpressionValue">ExpressionValue</a></span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Value used to decrease or increase
+the layer exposure.  Values range from -1 to 1.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Value used to decrease or increase
-the layer exposure.  Values range from -1 to 1.</p></td>
+            </td>
         </tr>
 
 	
@@ -1308,29 +1036,17 @@ the layer exposure.  Values range from -1 to 1.</p></td>
 <span class="param-type"><a href="module-ol_style_expressions.html#~ExpressionValue">ExpressionValue</a></span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Value used to decrease or increase
+the layer saturation.  Values range from -1 to 1.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Value used to decrease or increase
-the layer saturation.  Values range from -1 to 1.</p></td>
+            </td>
         </tr>
 
 	
@@ -1346,29 +1062,17 @@ the layer saturation.  Values range from -1 to 1.</p></td>
 <span class="param-type"><a href="module-ol_style_expressions.html#~ExpressionValue">ExpressionValue</a></span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Apply a gamma correction to the layer.
+Values range from 0 to infinity.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Apply a gamma correction to the layer.
-Values range from 0 to infinity.</p></td>
+            </td>
         </tr>
 
 	

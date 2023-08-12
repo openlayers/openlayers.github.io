@@ -207,14 +207,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -233,32 +225,20 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>If <code>true</code> the UTFGrid source loads the tiles based on their &quot;visibility&quot;.
+            <td class="description last">
+                <p>If <code>true</code> the UTFGrid source loads the tiles based on their &quot;visibility&quot;.
 This improves the speed of response, but increases traffic.
 Note that if set to <code>false</code> (lazy loading), you need to pass <code>true</code> as
 <code>request</code> to the <code>forDataAtCoordinateAndResolution</code> method otherwise no
-data will ever be loaded.</p></td>
+data will ever be loaded.</p>
+                
+            </td>
         </tr>
 
 	
@@ -274,29 +254,17 @@ data will ever be loaded.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Use JSONP with callback to load the TileJSON.
+Useful when the server does not support CORS..</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Use JSONP with callback to load the TileJSON.
-Useful when the server does not support CORS..</p></td>
+            </td>
         </tr>
 
 	
@@ -311,28 +279,16 @@ Useful when the server does not support CORS..</p></td>
                 
 <span class="param-type"><a href="module-ol_source_TileJSON.html#~Config">Config</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>TileJSON configuration for this source.
+If not provided, <code>url</code> must be configured.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>TileJSON configuration for this source.
-If not provided, <code>url</code> must be configured.</p></td>
+            </td>
         </tr>
 
 	
@@ -347,28 +303,16 @@ If not provided, <code>url</code> must be configured.</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>TileJSON endpoint that provides the configuration for this source.
+Request will be made through JSONP. If not provided, <code>tileJSON</code> must be configured.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>TileJSON endpoint that provides the configuration for this source.
-Request will be made through JSONP. If not provided, <code>tileJSON</code> must be configured.</p></td>
+            </td>
         </tr>
 
 	
@@ -387,29 +331,17 @@ Request will be made through JSONP. If not provided, <code>tileJSON</code> must 
 <span class="param-type"><a href="module-ol_array.html#~NearestDirectionFunction">NearestDirectionFunction</a></span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Choose whether to use tiles with a higher or lower zoom level when between integer
+zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResolution"><code>getZForResolution</code></a>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Choose whether to use tiles with a higher or lower zoom level when between integer
-zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResolution"><code>getZForResolution</code></a>.</p></td>
+            </td>
         </tr>
 
 	
@@ -477,12 +409,6 @@ zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResol
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -501,20 +427,14 @@ zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResol
 <span class="param-type">Array.&lt;string></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The grid.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The grid.</p></td>
+            </td>
         </tr>
 
 	
@@ -530,20 +450,14 @@ zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResol
 <span class="param-type">Array.&lt;string></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The keys.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The keys.</p></td>
+            </td>
         </tr>
 
 	
@@ -558,23 +472,15 @@ zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResol
                 
 <span class="param-type">Object.&lt;string, Object></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Optional data.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Optional data.</p></td>
+            </td>
         </tr>
 
 	

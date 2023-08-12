@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -223,34 +215,22 @@
 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Feature
+            <td class="description last">
+                <p>Feature
 namespace. If not defined will be derived from GML. If multiple
 feature types have been configured which come from different feature
 namespaces, this will be an object with the keys being the prefixes used
 in the entries of featureType array. The values of the object will be the
 feature namespaces themselves. So for instance there might be a featureType
 item <code>topp:states</code> in the <code>featureType</code> array and then there will be a key
-<code>topp</code> in the featureNS object with value <code>http://www.openplans.org/topp</code>.</p></td>
+<code>topp</code> in the featureNS object with value <code>http://www.openplans.org/topp</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -268,34 +248,22 @@ item <code>topp:states</code> in the <code>featureType</code> array and then the
 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Feature type(s) to parse.
+            <td class="description last">
+                <p>Feature type(s) to parse.
 If multiple feature types need to be configured
 which come from different feature namespaces, <code>featureNS</code> will be an object
 with the keys being the prefixes used in the entries of featureType array.
 The values of the object will be the feature namespaces themselves.
 So for instance there might be a featureType item <code>topp:states</code> and then
 there will be a key named <code>topp</code> in the featureNS object with value
-<code>http://www.openplans.org/topp</code>.</p></td>
+<code>http://www.openplans.org/topp</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -310,27 +278,15 @@ there will be a key named <code>topp</code> in the featureNS object with value
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>srsName to use when writing geometries.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>srsName to use when writing geometries.</p></td>
+            </td>
         </tr>
 
 	
@@ -346,29 +302,17 @@ there will be a key named <code>topp</code> in the featureNS object with value
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Write gml:Surface instead of gml:Polygon
+elements. This also affects the elements in multi-part geometries.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Write gml:Surface instead of gml:Polygon
-elements. This also affects the elements in multi-part geometries.</p></td>
+            </td>
         </tr>
 
 	
@@ -384,29 +328,17 @@ elements. This also affects the elements in multi-part geometries.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Write gml:Curve instead of gml:LineString
+elements. This also affects the elements in multi-part geometries.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Write gml:Curve instead of gml:LineString
-elements. This also affects the elements in multi-part geometries.</p></td>
+            </td>
         </tr>
 
 	
@@ -422,29 +354,17 @@ elements. This also affects the elements in multi-part geometries.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Write gml:MultiCurve instead of gml:MultiLineString.
+Since the latter is deprecated in GML 3.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Write gml:MultiCurve instead of gml:MultiLineString.
-Since the latter is deprecated in GML 3.</p></td>
+            </td>
         </tr>
 
 	
@@ -460,29 +380,17 @@ Since the latter is deprecated in GML 3.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Write gml:multiSurface instead of
+gml:MultiPolygon. Since the latter is deprecated in GML 3.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Write gml:multiSurface instead of
-gml:MultiPolygon. Since the latter is deprecated in GML 3.</p></td>
+            </td>
         </tr>
 
 	
@@ -497,28 +405,16 @@ gml:MultiPolygon. Since the latter is deprecated in GML 3.</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Optional schemaLocation to use when
+writing out the GML, this will override the default provided.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Optional schemaLocation to use when
-writing out the GML, this will override the default provided.</p></td>
+            </td>
         </tr>
 
 	
@@ -534,28 +430,16 @@ writing out the GML, this will override the default provided.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>If coordinates have a Z value.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>If coordinates have a Z value.</p></td>
+            </td>
         </tr>
 
 	

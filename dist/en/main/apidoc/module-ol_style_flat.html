@@ -120,6 +120,15 @@
 
     
         
+            <div class="description"><p>Vector layers can be styled with an object literal containing properties for
+stroke, fill, image, and text styles.  The types below can be composed into a single object.
+For example, a style with both stroke and fill properties could look like this:</p>
+<pre class="prettyprint source"><code>const style = {
+  'stroke-color': 'yellow',
+  'stroke-width': 1.5,
+  'fill-color': 'orange',
+};</code></pre></div>
+        
 
         
 <dl class="details">
@@ -210,14 +219,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -235,27 +236,15 @@
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Circle radius.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Circle radius.</p></td>
+            </td>
         </tr>
 
 	
@@ -273,27 +262,15 @@
 
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The fill color.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The fill color.</p></td>
+            </td>
         </tr>
 
 	
@@ -311,27 +288,15 @@
 
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The stroke color.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The stroke color.</p></td>
+            </td>
         </tr>
 
 	
@@ -346,27 +311,15 @@
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Stroke pixel width.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Stroke pixel width.</p></td>
+            </td>
         </tr>
 
 	
@@ -382,28 +335,16 @@
 <span class="param-type">CanvasLineCap</span>
 
 
+                
+                    (defaults to 'round')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'round'
-                
-                </td>
-            
-
-            <td class="description last"><p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -419,28 +360,16 @@
 <span class="param-type">CanvasLineJoin</span>
 
 
+                
+                    (defaults to 'round')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'round'
-                
-                </td>
-            
-
-            <td class="description last"><p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -455,27 +384,15 @@
                 
 <span class="param-type">Array.&lt;number></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line dash pattern.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Line dash pattern.</p></td>
+            </td>
         </tr>
 
 	
@@ -491,28 +408,16 @@
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line dash offset.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Line dash offset.</p></td>
+            </td>
         </tr>
 
 	
@@ -528,28 +433,16 @@
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 10)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Miter limit.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    10
-                
-                </td>
-            
-
-            <td class="description last"><p>Miter limit.</p></td>
+            </td>
         </tr>
 
 	
@@ -565,28 +458,16 @@
 <span class="param-type">Array.&lt;number></span>
 
 
+                
+                    (defaults to [0,0])
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>displacement</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    [0,0]
-                
-                </td>
-            
-
-            <td class="description last"><p>displacement</p></td>
+            </td>
         </tr>
 
 	
@@ -605,29 +486,17 @@
 <span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Scale. A two dimensional scale will produce an ellipse.
+Unless two dimensional scaling is required a better result may be obtained with an appropriate setting for <code>circle-radius</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Scale. A two dimensional scale will produce an ellipse.
-Unless two dimensional scaling is required a better result may be obtained with an appropriate setting for <code>circle-radius</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -643,29 +512,17 @@ Unless two dimensional scaling is required a better result may be obtained with 
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Rotation in radians
+(positive rotation clockwise, meaningful only when used in conjunction with a two dimensional scale).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Rotation in radians
-(positive rotation clockwise, meaningful only when used in conjunction with a two dimensional scale).</p></td>
+            </td>
         </tr>
 
 	
@@ -681,29 +538,17 @@ Unless two dimensional scaling is required a better result may be obtained with 
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Whether to rotate the shape with the view
+(meaningful only when used in conjunction with a two dimensional scale).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to rotate the shape with the view
-(meaningful only when used in conjunction with a two dimensional scale).</p></td>
+            </td>
         </tr>
 
 	
@@ -728,26 +573,14 @@ Unless two dimensional scaling is required a better result may be obtained with 
 <span class="param-type">undefined</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Declutter mode</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Declutter mode</p></td>
+            </td>
         </tr>
 
 	
@@ -819,12 +652,6 @@ Unless two dimensional scaling is required a better result may be obtained with 
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -845,23 +672,15 @@ Unless two dimensional scaling is required a better result may be obtained with 
 
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The fill color.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The fill color.</p></td>
+            </td>
         </tr>
 
 	
@@ -934,14 +753,6 @@ points with an icon.</p>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -959,27 +770,15 @@ points with an icon.</p>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Image source URI.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Image source URI.</p></td>
+            </td>
         </tr>
 
 	
@@ -997,29 +796,17 @@ points with an icon.</p>
 
 <span class="param-type">HTMLCanvasElement</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Image object for the icon. If the <code>icon-src</code> option is not provided then the
+            <td class="description last">
+                <p>Image object for the icon. If the <code>icon-src</code> option is not provided then the
 provided image must already be loaded. And in that case, it is required
-to provide the size of the image, with the <code>icon-img-size</code> option.</p></td>
+to provide the size of the image, with the <code>icon-img-size</code> option.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1034,28 +821,16 @@ to provide the size of the image, with the <code>icon-img-size</code> option.</p
                 
 <span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Image size in pixels. Only required if <code>icon-img</code> is set and <code>icon-src</code> is not.
+The provided size needs to match the actual size of the image.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Image size in pixels. Only required if <code>icon-img</code> is set and <code>icon-src</code> is not.
-The provided size needs to match the actual size of the image.</p></td>
+            </td>
         </tr>
 
 	
@@ -1071,28 +846,16 @@ The provided size needs to match the actual size of the image.</p></td>
 <span class="param-type">Array.&lt;number></span>
 
 
+                
+                    (defaults to [0.5, 0.5])
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Anchor. Default value is the icon center.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    [0.5, 0.5]
-                
-                </td>
-            
-
-            <td class="description last"><p>Anchor. Default value is the icon center.</p></td>
+            </td>
         </tr>
 
 	
@@ -1108,29 +871,17 @@ The provided size needs to match the actual size of the image.</p></td>
 <span class="param-type"><a href="module-ol_style_Icon.html#~IconOrigin">IconOrigin</a></span>
 
 
+                
+                    (defaults to 'top-left')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Origin of the anchor: <code>bottom-left</code>, <code>bottom-right</code>,
+<code>top-left</code> or <code>top-right</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'top-left'
-                
-                </td>
-            
-
-            <td class="description last"><p>Origin of the anchor: <code>bottom-left</code>, <code>bottom-right</code>,
-<code>top-left</code> or <code>top-right</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -1146,30 +897,18 @@ The provided size needs to match the actual size of the image.</p></td>
 <span class="param-type"><a href="module-ol_style_Icon.html#~IconAnchorUnits">IconAnchorUnits</a></span>
 
 
+                
+                    (defaults to 'fraction')
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'fraction'
-                
-                </td>
-            
-
-            <td class="description last"><p>Units in which the anchor x value is
+            <td class="description last">
+                <p>Units in which the anchor x value is
 specified. A value of <code>'fraction'</code> indicates the x value is a fraction of the icon. A value of <code>'pixels'</code> indicates
-the x value in pixels.</p></td>
+the x value in pixels.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1185,30 +924,18 @@ the x value in pixels.</p></td>
 <span class="param-type"><a href="module-ol_style_Icon.html#~IconAnchorUnits">IconAnchorUnits</a></span>
 
 
+                
+                    (defaults to 'fraction')
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'fraction'
-                
-                </td>
-            
-
-            <td class="description last"><p>Units in which the anchor y value is
+            <td class="description last">
+                <p>Units in which the anchor y value is
 specified. A value of <code>'fraction'</code> indicates the y value is a fraction of the icon. A value of <code>'pixels'</code> indicates
-the y value in pixels.</p></td>
+the y value in pixels.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1226,28 +953,16 @@ the y value in pixels.</p></td>
 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Color to tint the icon. If not specified,
+the icon will be left as is.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Color to tint the icon. If not specified,
-the icon will be left as is.</p></td>
+            </td>
         </tr>
 
 	
@@ -1265,29 +980,17 @@ the icon will be left as is.</p></td>
 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The <code>crossOrigin</code> attribute for loaded images. Note that you must provide a
+            <td class="description last">
+                <p>The <code>crossOrigin</code> attribute for loaded images. Note that you must provide a
 <code>icon-cross-origin</code> value if you want to access pixel data with the Canvas renderer.
-See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image">https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image</a> for more detail.</p></td>
+See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image">https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image</a> for more detail.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1303,29 +1006,17 @@ See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_imag
 <span class="param-type">Array.&lt;number></span>
 
 
+                
+                    (defaults to [0, 0])
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Offset, which, together with the size and the offset origin, define the
+sub-rectangle to use from the original icon image.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    [0, 0]
-                
-                </td>
-            
-
-            <td class="description last"><p>Offset, which, together with the size and the offset origin, define the
-sub-rectangle to use from the original icon image.</p></td>
+            </td>
         </tr>
 
 	
@@ -1341,28 +1032,16 @@ sub-rectangle to use from the original icon image.</p></td>
 <span class="param-type">Array.&lt;number></span>
 
 
+                
+                    (defaults to [0,0])
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Displacement of the icon.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    [0,0]
-                
-                </td>
-            
-
-            <td class="description last"><p>Displacement of the icon.</p></td>
+            </td>
         </tr>
 
 	
@@ -1378,29 +1057,17 @@ sub-rectangle to use from the original icon image.</p></td>
 <span class="param-type"><a href="module-ol_style_Icon.html#~IconOrigin">IconOrigin</a></span>
 
 
+                
+                    (defaults to 'top-left')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Origin of the offset: <code>bottom-left</code>, <code>bottom-right</code>,
+<code>top-left</code> or <code>top-right</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'top-left'
-                
-                </td>
-            
-
-            <td class="description last"><p>Origin of the offset: <code>bottom-left</code>, <code>bottom-right</code>,
-<code>top-left</code> or <code>top-right</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -1416,28 +1083,16 @@ sub-rectangle to use from the original icon image.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Opacity of the icon.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Opacity of the icon.</p></td>
+            </td>
         </tr>
 
 	
@@ -1456,28 +1111,16 @@ sub-rectangle to use from the original icon image.</p></td>
 <span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Scale.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Scale.</p></td>
+            </td>
         </tr>
 
 	
@@ -1492,28 +1135,16 @@ sub-rectangle to use from the original icon image.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Width of the icon. If not specified, the actual image width will be used. Cannot be combined
+with <code>scale</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Width of the icon. If not specified, the actual image width will be used. Cannot be combined
-with <code>scale</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -1528,28 +1159,16 @@ with <code>scale</code>.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Height of the icon. If not specified, the actual image height will be used. Cannot be combined
+with <code>scale</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Height of the icon. If not specified, the actual image height will be used. Cannot be combined
-with <code>scale</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -1565,28 +1184,16 @@ with <code>scale</code>.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Rotation in radians (positive rotation clockwise).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Rotation in radians (positive rotation clockwise).</p></td>
+            </td>
         </tr>
 
 	
@@ -1602,28 +1209,16 @@ with <code>scale</code>.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Whether to rotate the icon with the view.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to rotate the icon with the view.</p></td>
+            </td>
         </tr>
 
 	
@@ -1638,28 +1233,16 @@ with <code>scale</code>.</p></td>
                 
 <span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Icon size in pixel. Can be used together with <code>icon-offset</code> to define the
+sub-rectangle to use from the origin (sprite) icon image.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Icon size in pixel. Can be used together with <code>icon-offset</code> to define the
-sub-rectangle to use from the origin (sprite) icon image.</p></td>
+            </td>
         </tr>
 
 	
@@ -1684,26 +1267,14 @@ sub-rectangle to use from the origin (sprite) icon image.</p></td>
 <span class="param-type">undefined</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Declutter mode</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Declutter mode</p></td>
+            </td>
         </tr>
 
 	
@@ -1775,14 +1346,6 @@ sub-rectangle to use from the origin (sprite) icon image.</p></td>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -1800,28 +1363,16 @@ sub-rectangle to use from the origin (sprite) icon image.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Number of points for stars and regular polygons. In case of a polygon, the number of points
+is the number of sides.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Number of points for stars and regular polygons. In case of a polygon, the number of points
-is the number of sides.</p></td>
+            </td>
         </tr>
 
 	
@@ -1839,27 +1390,15 @@ is the number of sides.</p></td>
 
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The fill color.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The fill color.</p></td>
+            </td>
         </tr>
 
 	
@@ -1877,27 +1416,15 @@ is the number of sides.</p></td>
 
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The stroke color.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The stroke color.</p></td>
+            </td>
         </tr>
 
 	
@@ -1912,27 +1439,15 @@ is the number of sides.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Stroke pixel width.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Stroke pixel width.</p></td>
+            </td>
         </tr>
 
 	
@@ -1948,28 +1463,16 @@ is the number of sides.</p></td>
 <span class="param-type">CanvasLineCap</span>
 
 
+                
+                    (defaults to 'round')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'round'
-                
-                </td>
-            
-
-            <td class="description last"><p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -1985,28 +1488,16 @@ is the number of sides.</p></td>
 <span class="param-type">CanvasLineJoin</span>
 
 
+                
+                    (defaults to 'round')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'round'
-                
-                </td>
-            
-
-            <td class="description last"><p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -2021,27 +1512,15 @@ is the number of sides.</p></td>
                 
 <span class="param-type">Array.&lt;number></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line dash pattern.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Line dash pattern.</p></td>
+            </td>
         </tr>
 
 	
@@ -2057,28 +1536,16 @@ is the number of sides.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line dash offset.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Line dash offset.</p></td>
+            </td>
         </tr>
 
 	
@@ -2094,28 +1561,16 @@ is the number of sides.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 10)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Miter limit.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    10
-                
-                </td>
-            
-
-            <td class="description last"><p>Miter limit.</p></td>
+            </td>
         </tr>
 
 	
@@ -2130,27 +1585,15 @@ is the number of sides.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Radius of a regular polygon.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Radius of a regular polygon.</p></td>
+            </td>
         </tr>
 
 	
@@ -2165,27 +1608,15 @@ is the number of sides.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>First radius of a star. Ignored if radius is set.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>First radius of a star. Ignored if radius is set.</p></td>
+            </td>
         </tr>
 
 	
@@ -2200,27 +1631,15 @@ is the number of sides.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Second radius of a star.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Second radius of a star.</p></td>
+            </td>
         </tr>
 
 	
@@ -2236,28 +1655,16 @@ is the number of sides.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Shape's angle in radians. A value of 0 will have one of the shape's point facing up.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Shape's angle in radians. A value of 0 will have one of the shape's point facing up.</p></td>
+            </td>
         </tr>
 
 	
@@ -2273,28 +1680,16 @@ is the number of sides.</p></td>
 <span class="param-type">Array.&lt;number></span>
 
 
+                
+                    (defaults to [0,0])
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Displacement of the shape</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    [0,0]
-                
-                </td>
-            
-
-            <td class="description last"><p>Displacement of the shape</p></td>
+            </td>
         </tr>
 
 	
@@ -2310,28 +1705,16 @@ is the number of sides.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Rotation in radians (positive rotation clockwise).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Rotation in radians (positive rotation clockwise).</p></td>
+            </td>
         </tr>
 
 	
@@ -2347,28 +1730,16 @@ is the number of sides.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Whether to rotate the shape with the view.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to rotate the shape with the view.</p></td>
+            </td>
         </tr>
 
 	
@@ -2387,29 +1758,17 @@ is the number of sides.</p></td>
 <span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Scale. Unless two dimensional scaling is required a better
+result may be obtained with appropriate settings for <code>shape-radius</code>, <code>shape-radius1</code> and <code>shape-radius2</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Scale. Unless two dimensional scaling is required a better
-result may be obtained with appropriate settings for <code>shape-radius</code>, <code>shape-radius1</code> and <code>shape-radius2</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -2434,26 +1793,14 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
 <span class="param-type">undefined</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Declutter mode.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Declutter mode.</p></td>
+            </td>
         </tr>
 
 	
@@ -2526,14 +1873,6 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -2554,27 +1893,15 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
 
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The stroke color.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The stroke color.</p></td>
+            </td>
         </tr>
 
 	
@@ -2589,27 +1916,15 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Stroke pixel width.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Stroke pixel width.</p></td>
+            </td>
         </tr>
 
 	
@@ -2625,28 +1940,16 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
 <span class="param-type">CanvasLineCap</span>
 
 
+                
+                    (defaults to 'round')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'round'
-                
-                </td>
-            
-
-            <td class="description last"><p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -2662,28 +1965,16 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
 <span class="param-type">CanvasLineJoin</span>
 
 
+                
+                    (defaults to 'round')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'round'
-                
-                </td>
-            
-
-            <td class="description last"><p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -2698,27 +1989,15 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
                 
 <span class="param-type">Array.&lt;number></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line dash pattern.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Line dash pattern.</p></td>
+            </td>
         </tr>
 
 	
@@ -2734,28 +2013,16 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line dash offset.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Line dash offset.</p></td>
+            </td>
         </tr>
 
 	
@@ -2771,28 +2038,16 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 10)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Miter limit.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    10
-                
-                </td>
-            
-
-            <td class="description last"><p>Miter limit.</p></td>
+            </td>
         </tr>
 
 	
@@ -2965,14 +2220,6 @@ can be called with an object literal that has fill, stroke, text, icon, regular 
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -2993,31 +2240,19 @@ can be called with an object literal that has fill, stroke, text, icon, regular 
 
 <span class="param-type">Array.&lt;string></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Text content or rich text content. For plain text provide a string, which can
+            <td class="description last">
+                <p>Text content or rich text content. For plain text provide a string, which can
 contain line breaks (<code>\n</code>). For rich text provide an array of text/font tuples. A tuple consists of the text to
 render and the font to use (or <code>''</code> to use the text style's font). A line break has to be a separate tuple (i.e. <code>'\n', ''</code>).
 <strong>Example:</strong> <code>['foo', 'bold 10px sans-serif', ' bar', 'italic 10px sans-serif', ' baz', '']</code> will yield &quot;<strong>foo</strong> <em>bar</em> baz&quot;.
-<strong>Note:</strong> Rich text is not supported for <code>'text-placement': 'line'</code> or the immediate rendering API.</p></td>
+<strong>Note:</strong> Rich text is not supported for <code>'text-placement': 'line'</code> or the immediate rendering API.</p>
+                
+            </td>
         </tr>
 
 	
@@ -3032,28 +2267,16 @@ render and the font to use (or <code>''</code> to use the text style's font). A 
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Font style as CSS <code>font</code> value, see:
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font">https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font</a>. Default is <code>'10px sans-serif'</code></p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Font style as CSS <code>font</code> value, see:
-<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font">https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font</a>. Default is <code>'10px sans-serif'</code></p></td>
+            </td>
         </tr>
 
 	
@@ -3069,29 +2292,17 @@ render and the font to use (or <code>''</code> to use the text style's font). A 
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to Math.PI/4)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>When <code>text-placement</code> is set to <code>'line'</code>, allow a maximum angle between adjacent characters.
+The expected value is in radians, and the default is 45° (<code>Math.PI / 4</code>).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    Math.PI/4
-                
-                </td>
-            
-
-            <td class="description last"><p>When <code>text-placement</code> is set to <code>'line'</code>, allow a maximum angle between adjacent characters.
-The expected value is in radians, and the default is 45° (<code>Math.PI / 4</code>).</p></td>
+            </td>
         </tr>
 
 	
@@ -3107,28 +2318,16 @@ The expected value is in radians, and the default is 45° (<code>Math.PI / 4</co
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Horizontal text offset in pixels. A positive will shift the text right.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Horizontal text offset in pixels. A positive will shift the text right.</p></td>
+            </td>
         </tr>
 
 	
@@ -3144,28 +2343,16 @@ The expected value is in radians, and the default is 45° (<code>Math.PI / 4</co
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Vertical text offset in pixels. A positive will shift the text down.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Vertical text offset in pixels. A positive will shift the text down.</p></td>
+            </td>
         </tr>
 
 	
@@ -3181,29 +2368,17 @@ The expected value is in radians, and the default is 45° (<code>Math.PI / 4</co
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>For polygon labels or when <code>placement</code> is set to <code>'line'</code>, allow text to exceed
+the width of the polygon at the label position or the length of the path that it follows.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>For polygon labels or when <code>placement</code> is set to <code>'line'</code>, allow text to exceed
-the width of the polygon at the label position or the length of the path that it follows.</p></td>
+            </td>
         </tr>
 
 	
@@ -3219,28 +2394,16 @@ the width of the polygon at the label position or the length of the path that it
 <span class="param-type"><a href="module-ol_style_Text.html#~TextPlacement">TextPlacement</a></span>
 
 
+                
+                    (defaults to 'point')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Text placement.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'point'
-                
-                </td>
-            
-
-            <td class="description last"><p>Text placement.</p></td>
+            </td>
         </tr>
 
 	
@@ -3255,28 +2418,16 @@ the width of the polygon at the label position or the length of the path that it
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Repeat interval in pixels. When set, the text will be repeated at this interval. Only available when
+<code>text-placement</code> is set to <code>'line'</code>. Overrides <code>text-align</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Repeat interval in pixels. When set, the text will be repeated at this interval. Only available when
-<code>text-placement</code> is set to <code>'line'</code>. Overrides <code>text-align</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -3294,27 +2445,15 @@ the width of the polygon at the label position or the length of the path that it
 
 <span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Scale.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Scale.</p></td>
+            </td>
         </tr>
 
 	
@@ -3330,28 +2469,16 @@ the width of the polygon at the label position or the length of the path that it
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Whether to rotate the text with the view.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to rotate the text with the view.</p></td>
+            </td>
         </tr>
 
 	
@@ -3367,28 +2494,16 @@ the width of the polygon at the label position or the length of the path that it
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Rotation in radians (positive rotation clockwise).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Rotation in radians (positive rotation clockwise).</p></td>
+            </td>
         </tr>
 
 	
@@ -3403,29 +2518,17 @@ the width of the polygon at the label position or the length of the path that it
                 
 <span class="param-type">CanvasTextAlign</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Text alignment. Possible values: <code>'left'</code>, <code>'right'</code>, <code>'center'</code>, <code>'end'</code> or <code>'start'</code>.
+            <td class="description last">
+                <p>Text alignment. Possible values: <code>'left'</code>, <code>'right'</code>, <code>'center'</code>, <code>'end'</code> or <code>'start'</code>.
 Default is <code>'center'</code> for <code>'text-placement': 'point'</code>. For <code>'text-placement': 'line'</code>, the default is to let the renderer choose a
-placement where <code>text-max-angle</code> is not exceeded.</p></td>
+placement where <code>text-max-angle</code> is not exceeded.</p>
+                
+            </td>
         </tr>
 
 	
@@ -3440,30 +2543,18 @@ placement where <code>text-max-angle</code> is not exceeded.</p></td>
                 
 <span class="param-type"><a href="module-ol_style_Text.html#~TextJustify">TextJustify</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Text justification within the text box.
+            <td class="description last">
+                <p>Text justification within the text box.
 If not set, text is justified towards the <code>textAlign</code> anchor.
 Otherwise, use options <code>'left'</code>, <code>'center'</code>, or <code>'right'</code> to justify the text within the text box.
-<strong>Note:</strong> <code>text-justify</code> is ignored for immediate rendering and also for <code>'text-placement': 'line'</code>.</p></td>
+<strong>Note:</strong> <code>text-justify</code> is ignored for immediate rendering and also for <code>'text-placement': 'line'</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -3479,29 +2570,17 @@ Otherwise, use options <code>'left'</code>, <code>'center'</code>, or <code>'rig
 <span class="param-type">CanvasTextBaseline</span>
 
 
+                
+                    (defaults to 'middle')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Text base line. Possible values: <code>'bottom'</code>, <code>'top'</code>, <code>'middle'</code>, <code>'alphabetic'</code>,
+<code>'hanging'</code>, <code>'ideographic'</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'middle'
-                
-                </td>
-            
-
-            <td class="description last"><p>Text base line. Possible values: <code>'bottom'</code>, <code>'top'</code>, <code>'middle'</code>, <code>'alphabetic'</code>,
-<code>'hanging'</code>, <code>'ideographic'</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -3517,29 +2596,17 @@ Otherwise, use options <code>'left'</code>, <code>'center'</code>, or <code>'rig
 <span class="param-type">Array.&lt;number></span>
 
 
+                
+                    (defaults to [0, 0, 0, 0])
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Padding in pixels around the text for decluttering and background. The order of
+values in the array is <code>[top, right, bottom, left]</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    [0, 0, 0, 0]
-                
-                </td>
-            
-
-            <td class="description last"><p>Padding in pixels around the text for decluttering and background. The order of
-values in the array is <code>[top, right, bottom, left]</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -3557,27 +2624,15 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
 
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The fill color. Specify <code>'none'</code> to avoid hit detection on the fill.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The fill color. Specify <code>'none'</code> to avoid hit detection on the fill.</p></td>
+            </td>
         </tr>
 
 	
@@ -3595,27 +2650,15 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
 
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The fill color.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The fill color.</p></td>
+            </td>
         </tr>
 
 	
@@ -3633,27 +2676,15 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
 
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The stroke color.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The stroke color.</p></td>
+            </td>
         </tr>
 
 	
@@ -3669,28 +2700,16 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
 <span class="param-type">CanvasLineCap</span>
 
 
+                
+                    (defaults to 'round')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'round'
-                
-                </td>
-            
-
-            <td class="description last"><p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -3706,28 +2725,16 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
 <span class="param-type">CanvasLineJoin</span>
 
 
+                
+                    (defaults to 'round')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'round'
-                
-                </td>
-            
-
-            <td class="description last"><p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -3742,27 +2749,15 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
                 
 <span class="param-type">Array.&lt;number></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line dash pattern.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Line dash pattern.</p></td>
+            </td>
         </tr>
 
 	
@@ -3778,28 +2773,16 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line dash offset.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Line dash offset.</p></td>
+            </td>
         </tr>
 
 	
@@ -3815,28 +2798,16 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 10)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Miter limit.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    10
-                
-                </td>
-            
-
-            <td class="description last"><p>Miter limit.</p></td>
+            </td>
         </tr>
 
 	
@@ -3851,27 +2822,15 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Stroke pixel width.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Stroke pixel width.</p></td>
+            </td>
         </tr>
 
 	
@@ -3889,27 +2848,15 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
 
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The stroke color.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The stroke color.</p></td>
+            </td>
         </tr>
 
 	
@@ -3925,28 +2872,16 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
 <span class="param-type">CanvasLineCap</span>
 
 
+                
+                    (defaults to 'round')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'round'
-                
-                </td>
-            
-
-            <td class="description last"><p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -3962,28 +2897,16 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
 <span class="param-type">CanvasLineJoin</span>
 
 
+                
+                    (defaults to 'round')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'round'
-                
-                </td>
-            
-
-            <td class="description last"><p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -3998,27 +2921,15 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
                 
 <span class="param-type">Array.&lt;number></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line dash pattern.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Line dash pattern.</p></td>
+            </td>
         </tr>
 
 	
@@ -4034,28 +2945,16 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Line dash offset.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Line dash offset.</p></td>
+            </td>
         </tr>
 
 	
@@ -4071,28 +2970,16 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 10)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Miter limit.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    10
-                
-                </td>
-            
-
-            <td class="description last"><p>Miter limit.</p></td>
+            </td>
         </tr>
 
 	
@@ -4107,27 +2994,15 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Stroke pixel width.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Stroke pixel width.</p></td>
+            </td>
         </tr>
 
 	

@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -220,27 +212,15 @@
                 
 <span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">AttributionLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Attributions.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Attributions.</p></td>
+            </td>
         </tr>
 
 	
@@ -256,28 +236,16 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Attributions are collapsible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Attributions are collapsible.</p></td>
+            </td>
         </tr>
 
 	
@@ -292,27 +260,15 @@
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.</p></td>
+            </td>
         </tr>
 
 	
@@ -330,29 +286,17 @@
 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The <code>crossOrigin</code> attribute for loaded images.  Note that
+            <td class="description last">
+                <p>The <code>crossOrigin</code> attribute for loaded images.  Note that
 you must provide a <code>crossOrigin</code> value if you want to access pixel data with the Canvas renderer.
-See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image">https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image</a> for more detail.</p></td>
+See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image">https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image</a> for more detail.</p>
+                
+            </td>
         </tr>
 
 	
@@ -368,29 +312,17 @@ See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_imag
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Use interpolated values when resampling.  By default,
+linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Use interpolated values when resampling.  By default,
-linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.</p></td>
+            </td>
         </tr>
 
 	
@@ -406,27 +338,17 @@ linear interpolation is used when resampling.  Set to false to use the nearest n
 <span class="param-type">Object.&lt;string, *></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>WMS request parameters.
+            <td class="description last">
+                <p>WMS request parameters.
 At least a <code>LAYERS</code> param is required. <code>STYLES</code> is
 <code>''</code> by default. <code>VERSION</code> is <code>1.3.0</code> by default. <code>WIDTH</code>, <code>HEIGHT</code>, <code>BBOX</code>
-and <code>CRS</code> (<code>SRS</code> for WMS version &lt; 1.3.0) will be set dynamically.</p></td>
+and <code>CRS</code> (<code>SRS</code> for WMS version &lt; 1.3.0) will be set dynamically.</p>
+                
+            </td>
         </tr>
 
 	
@@ -442,35 +364,23 @@ and <code>CRS</code> (<code>SRS</code> for WMS version &lt; 1.3.0) will be set d
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>The size in pixels of the gutter around image tiles to ignore. By setting
+            <td class="description last">
+                <p>The size in pixels of the gutter around image tiles to ignore. By setting
 this property to a non-zero value, images will be requested that are wider
 and taller than the tile size by a value of <code>2 x gutter</code>.
 Using a non-zero value allows artifacts of rendering at tile edges to be
 ignored. If you control the WMS service it is recommended to address
 &quot;artifacts at tile edges&quot; issues by properly configuring the WMS service. For
 example, MapServer has a <code>tile_map_edge_buffer</code> configuration parameter for
-this. See <a href="https://mapserver.org/output/tile_mode.html">https://mapserver.org/output/tile_mode.html</a>.</p></td>
+this. See <a href="https://mapserver.org/output/tile_mode.html">https://mapserver.org/output/tile_mode.html</a>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -486,29 +396,17 @@ this. See <a href="https://mapserver.org/output/tile_mode.html">https://mapserve
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Use the <code>ol/Map#pixelRatio</code> value when requesting
+the image from the remote server.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Use the <code>ol/Map#pixelRatio</code> value when requesting
-the image from the remote server.</p></td>
+            </td>
         </tr>
 
 	
@@ -523,27 +421,15 @@ the image from the remote server.</p></td>
                 
 <span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Projection. Default is the view projection.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Projection. Default is the view projection.</p></td>
+            </td>
         </tr>
 
 	
@@ -559,29 +445,17 @@ the image from the remote server.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0.5)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Maximum allowed reprojection error (in pixels).
+Higher values can increase reprojection performance, but decrease precision.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0.5
-                
-                </td>
-            
-
-            <td class="description last"><p>Maximum allowed reprojection error (in pixels).
-Higher values can increase reprojection performance, but decrease precision.</p></td>
+            </td>
         </tr>
 
 	
@@ -596,28 +470,16 @@ Higher values can increase reprojection performance, but decrease precision.</p>
                 
 <span class="param-type">Class&lt;<a href="module-ol_ImageTile-ImageTile.html">ImageTile</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Class used to instantiate image tiles.
+Default is <a href="module-ol_ImageTile-ImageTile.html"><code>ImageTile</code></a>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Class used to instantiate image tiles.
-Default is <a href="module-ol_ImageTile-ImageTile.html"><code>ImageTile</code></a>.</p></td>
+            </td>
         </tr>
 
 	
@@ -632,31 +494,19 @@ Default is <a href="module-ol_ImageTile-ImageTile.html"><code>ImageTile</code></
                 
 <span class="param-type"><a href="module-ol_tilegrid_TileGrid-TileGrid.html">TileGrid</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Tile grid. Base this on the resolutions,
+            <td class="description last">
+                <p>Tile grid. Base this on the resolutions,
 tilesize and extent supported by the server.
 If this is not defined, a default grid will be used: if there is a projection
 extent, the grid will be based on that; if not, a grid based on a global
-extent with origin at 0,0 will be used.</p></td>
+extent with origin at 0,0 will be used.</p>
+                
+            </td>
         </tr>
 
 	
@@ -671,29 +521,17 @@ extent with origin at 0,0 will be used.</p></td>
                 
 <span class="param-type"><a href="module-ol_source_wms.html#~ServerType">ServerType</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The type of
+            <td class="description last">
+                <p>The type of
 the remote WMS server: <code>mapserver</code>, <code>geoserver</code>, <code>carmentaserver</code>, or <code>qgis</code>.
-Only needed if <code>hidpi</code> is <code>true</code>.</p></td>
+Only needed if <code>hidpi</code> is <code>true</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -708,30 +546,18 @@ Only needed if <code>hidpi</code> is <code>true</code>.</p></td>
                 
 <span class="param-type"><a href="module-ol_Tile.html#~LoadFunction">LoadFunction</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Optional function to load a tile given a URL. The default is</p>
+            <td class="description last">
+                <p>Optional function to load a tile given a URL. The default is</p>
 <pre class="prettyprint source lang-js"><code>function(imageTile, src) {
   imageTile.getImage().src = src;
-};</code></pre></td>
+};</code></pre>
+                
+            </td>
         </tr>
 
 	
@@ -746,27 +572,15 @@ Only needed if <code>hidpi</code> is <code>true</code>.</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>WMS service URL.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>WMS service URL.</p></td>
+            </td>
         </tr>
 
 	
@@ -781,28 +595,16 @@ Only needed if <code>hidpi</code> is <code>true</code>.</p></td>
                 
 <span class="param-type">Array.&lt;string></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>WMS service urls.
+Use this instead of <code>url</code> when the WMS supports multiple urls for GetMap requests.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>WMS service urls.
-Use this instead of <code>url</code> when the WMS supports multiple urls for GetMap requests.</p></td>
+            </td>
         </tr>
 
 	
@@ -818,31 +620,19 @@ Use this instead of <code>url</code> when the WMS supports multiple urls for Get
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to wrap the world horizontally.
+            <td class="description last">
+                <p>Whether to wrap the world horizontally.
 When set to <code>false</code>, only one world
 will be rendered. When <code>true</code>, tiles will be requested for one world only,
-but they will be wrapped horizontally to render multiple worlds.</p></td>
+but they will be wrapped horizontally to render multiple worlds.</p>
+                
+            </td>
         </tr>
 
 	
@@ -857,28 +647,16 @@ but they will be wrapped horizontally to render multiple worlds.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Duration of the opacity transition for rendering.
+To disable the opacity transition, pass <code>transition: 0</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Duration of the opacity transition for rendering.
-To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -897,29 +675,17 @@ To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
 <span class="param-type"><a href="module-ol_array.html#~NearestDirectionFunction">NearestDirectionFunction</a></span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Choose whether to use tiles with a higher or lower zoom level when between integer
+zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResolution"><code>getZForResolution</code></a>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Choose whether to use tiles with a higher or lower zoom level when between integer
-zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResolution"><code>getZForResolution</code></a>.</p></td>
+            </td>
         </tr>
 
 	

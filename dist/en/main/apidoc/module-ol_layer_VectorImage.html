@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -221,28 +213,16 @@
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'ol-layer')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>A CSS class name to set to the layer element.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'ol-layer'
-                
-                </td>
-            
-
-            <td class="description last"><p>A CSS class name to set to the layer element.</p></td>
+            </td>
         </tr>
 
 	
@@ -258,28 +238,16 @@
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Opacity (0, 1).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Opacity (0, 1).</p></td>
+            </td>
         </tr>
 
 	
@@ -295,28 +263,16 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Visibility.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Visibility.</p></td>
+            </td>
         </tr>
 
 	
@@ -331,28 +287,16 @@
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The bounding extent for layer rendering.  The layer will not be
+rendered outside of this extent.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The bounding extent for layer rendering.  The layer will not be
-rendered outside of this extent.</p></td>
+            </td>
         </tr>
 
 	
@@ -367,30 +311,18 @@ rendered outside of this extent.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The z-index for layer rendering.  At rendering time, the layers
+            <td class="description last">
+                <p>The z-index for layer rendering.  At rendering time, the layers
 will be ordered, first by Z-index and then by position. When <code>undefined</code>, a <code>zIndex</code> of 0 is assumed
 for layers that are added to the map's <code>layers</code> collection, or <code>Infinity</code> when the layer's <code>setMap()</code>
-method was used.</p></td>
+method was used.</p>
+                
+            </td>
         </tr>
 
 	
@@ -405,28 +337,16 @@ method was used.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The minimum resolution (inclusive) at which this layer will be
+visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum resolution (inclusive) at which this layer will be
-visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -441,28 +361,16 @@ visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The maximum resolution (exclusive) below which this layer will
+be visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum resolution (exclusive) below which this layer will
-be visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -477,28 +385,16 @@ be visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The minimum view zoom level (exclusive) above which this layer will be
+visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum view zoom level (exclusive) above which this layer will be
-visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -513,28 +409,16 @@ visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The maximum view zoom level (inclusive) at which this layer will
+be visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum view zoom level (inclusive) at which this layer will
-be visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -549,29 +433,17 @@ be visible.</p></td>
                 
 <span class="param-type"><a href="module-ol_render.html#~OrderFunction">OrderFunction</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Render order. Function to be used when sorting
+            <td class="description last">
+                <p>Render order. Function to be used when sorting
 features before rendering. By default features are drawn in the order that they are created. Use
-<code>null</code> to avoid the sort, but get an undefined draw order.</p></td>
+<code>null</code> to avoid the sort, but get an undefined draw order.</p>
+                
+            </td>
         </tr>
 
 	
@@ -587,30 +459,18 @@ features before rendering. By default features are drawn in the order that they 
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 100)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    100
-                
-                </td>
-            
-
-            <td class="description last"><p>The buffer in pixels around the viewport extent used by the
+            <td class="description last">
+                <p>The buffer in pixels around the viewport extent used by the
 renderer when getting features from the vector source for the rendering or hit-detection.
-Recommended value: the size of the largest symbol, line width or label.</p></td>
+Recommended value: the size of the largest symbol, line width or label.</p>
+                
+            </td>
         </tr>
 
 	
@@ -625,27 +485,15 @@ Recommended value: the size of the largest symbol, line width or label.</p></td>
                 
 <span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Source.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Source.</p></td>
+            </td>
         </tr>
 
 	
@@ -660,30 +508,18 @@ Recommended value: the size of the largest symbol, line width or label.</p></td>
                 
 <span class="param-type"><a href="module-ol_Map-Map.html">Map</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Sets the layer as overlay on a map. The map will not manage
+            <td class="description last">
+                <p>Sets the layer as overlay on a map. The map will not manage
 this layer in its layers collection, and the layer will be rendered on top. This is useful for
 temporary layers. The standard way to add a layer to a map and have it managed by the map is to
-use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</p></td>
+use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -699,30 +535,18 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Declutter images and text on this layer. The priority is defined
+            <td class="description last">
+                <p>Declutter images and text on this layer. The priority is defined
 by the <code>zIndex</code> of the style and the render order of features. Higher z-index means higher priority.
-Within the same z-index, a feature rendered before another has higher priority.</p></td>
+Within the same z-index, a feature rendered before another has higher priority.</p>
+                
+            </td>
         </tr>
 
 	
@@ -740,29 +564,17 @@ Within the same z-index, a feature rendered before another has higher priority.<
 
 <span class="param-type">null</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Layer style. When set to <code>null</code>, only
+            <td class="description last">
+                <p>Layer style. When set to <code>null</code>, only
 features that have their own style will be rendered. See <a href="module-ol_style_Style-Style.html"><code>Style</code></a> for the default style
-which will be used if this is not set.</p></td>
+which will be used if this is not set.</p>
+                
+            </td>
         </tr>
 
 	
@@ -778,29 +590,17 @@ which will be used if this is not set.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Ratio by which the rendered extent should be larger than the
+viewport extent. A larger ratio avoids cut images during panning, but will cause a decrease in performance.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Ratio by which the rendered extent should be larger than the
-viewport extent. A larger ratio avoids cut images during panning, but will cause a decrease in performance.</p></td>
+            </td>
         </tr>
 
 	
@@ -815,27 +615,15 @@ viewport extent. A larger ratio avoids cut images during panning, but will cause
                 
 <span class="param-type">Object.&lt;string, *></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p></td>
+            </td>
         </tr>
 
 	

@@ -207,10 +207,6 @@
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -229,14 +225,14 @@
 <span class="param-type"><a href="module-ol_geom_Point-Point.html">Point</a></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Geometry.</p></td>
+            <td class="description last">
+                <p>Geometry.</p>
+                
+            </td>
         </tr>
 
 	
@@ -252,14 +248,14 @@
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Text.</p></td>
+            <td class="description last">
+                <p>Text.</p>
+                
+            </td>
         </tr>
 
 	
@@ -327,14 +323,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -353,28 +341,16 @@
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'ol-layer')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>A CSS class name to set to the layer element.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'ol-layer'
-                
-                </td>
-            
-
-            <td class="description last"><p>A CSS class name to set to the layer element.</p></td>
+            </td>
         </tr>
 
 	
@@ -390,28 +366,16 @@
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Opacity (0, 1).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Opacity (0, 1).</p></td>
+            </td>
         </tr>
 
 	
@@ -427,28 +391,16 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Visibility.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Visibility.</p></td>
+            </td>
         </tr>
 
 	
@@ -463,28 +415,16 @@
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The bounding extent for layer rendering.  The layer will not be
+rendered outside of this extent.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The bounding extent for layer rendering.  The layer will not be
-rendered outside of this extent.</p></td>
+            </td>
         </tr>
 
 	
@@ -499,30 +439,18 @@ rendered outside of this extent.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The z-index for layer rendering.  At rendering time, the layers
+            <td class="description last">
+                <p>The z-index for layer rendering.  At rendering time, the layers
 will be ordered, first by Z-index and then by position. When <code>undefined</code>, a <code>zIndex</code> of 0 is assumed
 for layers that are added to the map's <code>layers</code> collection, or <code>Infinity</code> when the layer's <code>setMap()</code>
-method was used.</p></td>
+method was used.</p>
+                
+            </td>
         </tr>
 
 	
@@ -537,28 +465,16 @@ method was used.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The minimum resolution (inclusive) at which this layer will be
+visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum resolution (inclusive) at which this layer will be
-visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -573,28 +489,16 @@ visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The maximum resolution (exclusive) below which this layer will
+be visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum resolution (exclusive) below which this layer will
-be visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -609,28 +513,16 @@ be visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The minimum view zoom level (exclusive) above which this layer will be
+visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum view zoom level (exclusive) above which this layer will be
-visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -645,28 +537,16 @@ visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The maximum view zoom level (inclusive) at which this layer will
+be visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum view zoom level (inclusive) at which this layer will
-be visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -682,33 +562,21 @@ be visible.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 100)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    100
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum number of meridians and
+            <td class="description last">
+                <p>The maximum number of meridians and
 parallels from the center of the map. The default value of 100 means that at
 most 200 meridians and 200 parallels will be displayed. The default value is
 appropriate for conformal projections like Spherical Mercator. If you
 increase the value, more lines will be drawn and the drawing performance will
-decrease.</p></td>
+decrease.</p>
+                
+            </td>
         </tr>
 
 	
@@ -723,31 +591,19 @@ decrease.</p></td>
                 
 <span class="param-type"><a href="module-ol_style_Stroke-Stroke.html">Stroke</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The
+            <td class="description last">
+                <p>The
 stroke style to use for drawing the graticule. If not provided, the following stroke will be used:</p>
 <pre class="prettyprint source lang-js"><code>new Stroke({
   color: 'rgba(0, 0, 0, 0.2)' // a not fully opaque black
-});</code></pre></td>
+});</code></pre>
+                
+            </td>
         </tr>
 
 	
@@ -763,29 +619,17 @@ stroke style to use for drawing the graticule. If not provided, the following st
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 100)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The target size of the graticule cells,
+in pixels.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    100
-                
-                </td>
-            
-
-            <td class="description last"><p>The target size of the graticule cells,
-in pixels.</p></td>
+            </td>
         </tr>
 
 	
@@ -801,29 +645,17 @@ in pixels.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Render a label with the respective
+latitude/longitude for each graticule line.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Render a label with the respective
-latitude/longitude for each graticule line.</p></td>
+            </td>
         </tr>
 
 	
@@ -838,30 +670,18 @@ latitude/longitude for each graticule line.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Label formatter for
+            <td class="description last">
+                <p>Label formatter for
 longitudes. This function is called with the longitude as argument, and
 should return a formatted string representing the longitude. By default,
-labels are formatted as degrees, minutes, seconds and hemisphere.</p></td>
+labels are formatted as degrees, minutes, seconds and hemisphere.</p>
+                
+            </td>
         </tr>
 
 	
@@ -876,30 +696,18 @@ labels are formatted as degrees, minutes, seconds and hemisphere.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Label formatter for
+            <td class="description last">
+                <p>Label formatter for
 latitudes. This function is called with the latitude as argument, and
 should return a formatted string representing the latitude. By default,
-labels are formatted as degrees, minutes, seconds and hemisphere.</p></td>
+labels are formatted as degrees, minutes, seconds and hemisphere.</p>
+                
+            </td>
         </tr>
 
 	
@@ -915,30 +723,18 @@ labels are formatted as degrees, minutes, seconds and hemisphere.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Longitude label position in fractions
+            <td class="description last">
+                <p>Longitude label position in fractions
 (0..1) of view extent. 0 means at the bottom of the viewport, 1 means at the
-top.</p></td>
+top.</p>
+                
+            </td>
         </tr>
 
 	
@@ -954,30 +750,18 @@ top.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Latitude label position in fractions
+            <td class="description last">
+                <p>Latitude label position in fractions
 (0..1) of view extent. 0 means at the left of the viewport, 1 means at the
-right.</p></td>
+right.</p>
+                
+            </td>
         </tr>
 
 	
@@ -992,27 +776,13 @@ right.</p></td>
                 
 <span class="param-type"><a href="module-ol_style_Text-Text.html">Text</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Longitude label text
+            <td class="description last">
+                <p>Longitude label text
 style. If not provided, the following style will be used:</p>
 <pre class="prettyprint source lang-js"><code>new Text({
   font: '12px Calibri,sans-serif',
@@ -1026,7 +796,9 @@ style. If not provided, the following style will be used:</p>
   })
 });</code></pre><p>Note that the default's <code>textBaseline</code> configuration will not work well for
 <code>lonLabelPosition</code> configurations that position labels close to the top of
-the viewport.</p></td>
+the viewport.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1041,27 +813,13 @@ the viewport.</p></td>
                 
 <span class="param-type"><a href="module-ol_style_Text-Text.html">Text</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Latitude label text style.
+            <td class="description last">
+                <p>Latitude label text style.
 If not provided, the following style will be used:</p>
 <pre class="prettyprint source lang-js"><code>new Text({
   font: '12px Calibri,sans-serif',
@@ -1075,7 +833,9 @@ If not provided, the following style will be used:</p>
   })
 });</code></pre><p>Note that the default's <code>textAlign</code> configuration will not work well for
 <code>latLabelPosition</code> configurations that position labels close to the left of
-the viewport.</p></td>
+the viewport.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1091,29 +851,17 @@ the viewport.</p></td>
 <span class="param-type">Array.&lt;number></span>
 
 
+                
+                    (defaults to [90, 45, 30, 20, 10, 5, 2, 1, 30/60, 20/60, 10/60, 5/60, 2/60, 1/60, 30/3600, 20/3600, 10/3600, 5/3600, 2/3600, 1/3600])
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Intervals (in degrees) for the graticule. Example to limit graticules to 30 and 10 degrees intervals:</p>
+<pre class="prettyprint source lang-js"><code>[30, 10]</code></pre>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    [90, 45, 30, 20, 10, 5, 2, 1, 30/60, 20/60, 10/60, 5/60, 2/60, 1/60, 30/3600, 20/3600, 10/3600, 5/3600, 2/3600, 1/3600]
-                
-                </td>
-            
-
-            <td class="description last"><p>Intervals (in degrees) for the graticule. Example to limit graticules to 30 and 10 degrees intervals:</p>
-<pre class="prettyprint source lang-js"><code>[30, 10]</code></pre></td>
+            </td>
         </tr>
 
 	
@@ -1129,28 +877,16 @@ the viewport.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Whether to repeat the graticule horizontally.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to repeat the graticule horizontally.</p></td>
+            </td>
         </tr>
 
 	
@@ -1165,27 +901,15 @@ the viewport.</p></td>
                 
 <span class="param-type">Object.&lt;string, *></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p></td>
+            </td>
         </tr>
 
 	

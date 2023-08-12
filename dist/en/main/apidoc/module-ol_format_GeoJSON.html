@@ -253,14 +253,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -279,28 +271,16 @@
 <span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
 
+                
+                    (defaults to 'EPSG:4326')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Default data projection.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'EPSG:4326'
-                
-                </td>
-            
-
-            <td class="description last"><p>Default data projection.</p></td>
+            </td>
         </tr>
 
 	
@@ -315,28 +295,16 @@
                 
 <span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Projection for features read or
+written by the format.  Options passed to read or write methods will take precedence.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Projection for features read or
-written by the format.  Options passed to read or write methods will take precedence.</p></td>
+            </td>
         </tr>
 
 	
@@ -351,27 +319,15 @@ written by the format.  Options passed to read or write methods will take preced
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Geometry name to use when creating features.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Geometry name to use when creating features.</p></td>
+            </td>
         </tr>
 
 	
@@ -387,31 +343,19 @@ written by the format.  Options passed to read or write methods will take preced
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Certain GeoJSON providers include
+            <td class="description last">
+                <p>Certain GeoJSON providers include
 the geometry_name field in the feature GeoJSON. If set to <code>true</code> the GeoJSON reader
 will look for that field to set the geometry name. If both this field is set to <code>true</code>
-and a <code>geometryName</code> is provided, the <code>geometryName</code> will take precedence.</p></td>
+and a <code>geometryName</code> is provided, the <code>geometryName</code> will take precedence.</p>
+                
+            </td>
         </tr>
 
 	

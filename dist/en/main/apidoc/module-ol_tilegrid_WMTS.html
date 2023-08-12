@@ -408,12 +408,6 @@ WMTS tileGrid instance.
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -431,26 +425,18 @@ WMTS tileGrid instance.
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Extent for the tile grid. No tiles
+            <td class="description last">
+                <p>Extent for the tile grid. No tiles
 outside this extent will be requested by <a href="module-ol_source_Tile-TileSource.html"><code>TileSource</code></a> sources.
 When no <code>origin</code> or <code>origins</code> are configured, the <code>origin</code> will be set to the
-top-left corner of the extent.</p></td>
+top-left corner of the extent.</p>
+                
+            </td>
         </tr>
 
 	
@@ -465,25 +451,17 @@ top-left corner of the extent.</p></td>
                 
 <span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The tile grid origin, i.e.
+            <td class="description last">
+                <p>The tile grid origin, i.e.
 where the <code>x</code> and <code>y</code> axes meet (<code>[z, 0, 0]</code>). Tile coordinates increase left
-to right and downwards. If not specified, <code>extent</code> or <code>origins</code> must be provided.</p></td>
+to right and downwards. If not specified, <code>extent</code> or <code>origins</code> must be provided.</p>
+                
+            </td>
         </tr>
 
 	
@@ -498,27 +476,19 @@ to right and downwards. If not specified, <code>extent</code> or <code>origins</
                 
 <span class="param-type">Array&lt;<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Tile grid origins,
+            <td class="description last">
+                <p>Tile grid origins,
 i.e. where the <code>x</code> and <code>y</code> axes meet (<code>[z, 0, 0]</code>), for each zoom level. If
 given, the array length should match the length of the <code>resolutions</code> array, i.e.
 each resolution can have a different origin. Tile coordinates increase left to
-right and downwards. If not specified, <code>extent</code> or <code>origin</code> must be provided.</p></td>
+right and downwards. If not specified, <code>extent</code> or <code>origin</code> must be provided.</p>
+                
+            </td>
         </tr>
 
 	
@@ -534,22 +504,16 @@ right and downwards. If not specified, <code>extent</code> or <code>origin</code
 <span class="param-type">Array.&lt;number></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Resolutions. The array index of each
+            <td class="description last">
+                <p>Resolutions. The array index of each
 resolution needs to match the zoom level. This means that even if a <code>minZoom</code>
-is configured, the resolutions array will have a length of <code>maxZoom + 1</code></p></td>
+is configured, the resolutions array will have a length of <code>maxZoom + 1</code></p>
+                
+            </td>
         </tr>
 
 	
@@ -565,21 +529,15 @@ is configured, the resolutions array will have a length of <code>maxZoom + 1</co
 <span class="param-type">Array.&lt;string></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>matrix IDs. The length of this array needs
+to match the length of the <code>resolutions</code> array.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>matrix IDs. The length of this array needs
-to match the length of the <code>resolutions</code> array.</p></td>
+            </td>
         </tr>
 
 	
@@ -594,30 +552,22 @@ to match the length of the <code>resolutions</code> array.</p></td>
                 
 <span class="param-type">Array&lt;<a href="module-ol_size.html#~Size">Size</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Number of tile rows and columns
+            <td class="description last">
+                <p>Number of tile rows and columns
 of the grid for each zoom level. The values here are the <code>TileMatrixWidth</code> and
 <code>TileMatrixHeight</code> advertised in the GetCapabilities response of the WMTS, and
 define each zoom level's extent together with the <code>origin</code> or <code>origins</code>.
 A grid <code>extent</code> can be configured in addition, and will further limit the extent for
 which tile requests are made by sources. If the bottom-left corner of
 an extent is used as <code>origin</code> or <code>origins</code>, then the <code>y</code> value must be
-negative because OpenLayers tile coordinates use the top left as the origin.</p></td>
+negative because OpenLayers tile coordinates use the top left as the origin.</p>
+                
+            </td>
         </tr>
 
 	
@@ -635,23 +585,15 @@ negative because OpenLayers tile coordinates use the top left as the origin.</p>
 
 <span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Tile size.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Tile size.</p></td>
+            </td>
         </tr>
 
 	
@@ -666,24 +608,16 @@ negative because OpenLayers tile coordinates use the top left as the origin.</p>
                 
 <span class="param-type">Array.&lt;(number|<a href="module-ol_size.html#~Size">module:ol/size~Size</a>)></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Tile sizes. The length of
+this array needs to match the length of the <code>resolutions</code> array.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Tile sizes. The length of
-this array needs to match the length of the <code>resolutions</code> array.</p></td>
+            </td>
         </tr>
 
 	

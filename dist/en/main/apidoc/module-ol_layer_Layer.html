@@ -255,14 +255,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -281,28 +273,16 @@
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'ol-layer')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>A CSS class name to set to the layer element.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'ol-layer'
-                
-                </td>
-            
-
-            <td class="description last"><p>A CSS class name to set to the layer element.</p></td>
+            </td>
         </tr>
 
 	
@@ -318,28 +298,16 @@
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Opacity (0, 1).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Opacity (0, 1).</p></td>
+            </td>
         </tr>
 
 	
@@ -355,28 +323,16 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Visibility.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Visibility.</p></td>
+            </td>
         </tr>
 
 	
@@ -391,28 +347,16 @@
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The bounding extent for layer rendering.  The layer will not be
+rendered outside of this extent.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The bounding extent for layer rendering.  The layer will not be
-rendered outside of this extent.</p></td>
+            </td>
         </tr>
 
 	
@@ -427,30 +371,18 @@ rendered outside of this extent.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The z-index for layer rendering.  At rendering time, the layers
+            <td class="description last">
+                <p>The z-index for layer rendering.  At rendering time, the layers
 will be ordered, first by Z-index and then by position. When <code>undefined</code>, a <code>zIndex</code> of 0 is assumed
 for layers that are added to the map's <code>layers</code> collection, or <code>Infinity</code> when the layer's <code>setMap()</code>
-method was used.</p></td>
+method was used.</p>
+                
+            </td>
         </tr>
 
 	
@@ -465,28 +397,16 @@ method was used.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The minimum resolution (inclusive) at which this layer will be
+visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum resolution (inclusive) at which this layer will be
-visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -501,28 +421,16 @@ visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The maximum resolution (exclusive) below which this layer will
+be visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum resolution (exclusive) below which this layer will
-be visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -537,28 +445,16 @@ be visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The minimum view zoom level (exclusive) above which this layer will be
+visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum view zoom level (exclusive) above which this layer will be
-visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -573,28 +469,16 @@ visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The maximum view zoom level (inclusive) at which this layer will
+be visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum view zoom level (inclusive) at which this layer will
-be visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -609,29 +493,17 @@ be visible.</p></td>
                 
 <span class="param-type">SourceType</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Source for this layer.  If not provided to the constructor,
+            <td class="description last">
+                <p>Source for this layer.  If not provided to the constructor,
 the source can be set by calling <a href="module-ol_layer_Layer-Layer.html#setSource"><code>layer.setSource(source)</code></a> after
-construction.</p></td>
+construction.</p>
+                
+            </td>
         </tr>
 
 	
@@ -649,27 +521,15 @@ construction.</p></td>
 
 <span class="param-type">null</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Map.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Map.</p></td>
+            </td>
         </tr>
 
 	
@@ -684,28 +544,16 @@ construction.</p></td>
                 
 <span class="param-type"><a href="module-ol_layer_Layer.html#~RenderFunction">RenderFunction</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Render function. Takes the frame state as input and is expected to return an
+HTML element. Will overwrite the default rendering for the layer.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Render function. Takes the frame state as input and is expected to return an
-HTML element. Will overwrite the default rendering for the layer.</p></td>
+            </td>
         </tr>
 
 	
@@ -720,27 +568,15 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
                 
 <span class="param-type">Object.&lt;string, *></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -884,12 +720,6 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -908,20 +738,14 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
 <span class="param-type"><a href="module-ol_layer_Layer-Layer.html">Layer</a></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Layer.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Layer.</p></td>
+            </td>
         </tr>
 
 	
@@ -937,20 +761,14 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Opacity, the value is rounded to two digits to appear after the decimal point.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Opacity, the value is rounded to two digits to appear after the decimal point.</p></td>
+            </td>
         </tr>
 
 	
@@ -966,20 +784,14 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Visible.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -995,20 +807,14 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Managed.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Managed.</p></td>
+            </td>
         </tr>
 
 	
@@ -1023,23 +829,15 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Extent.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Extent.</p></td>
+            </td>
         </tr>
 
 	
@@ -1058,20 +856,14 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
 <span class="param-type">undefined</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>ZIndex.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>ZIndex.</p></td>
+            </td>
         </tr>
 
 	
@@ -1087,20 +879,14 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Maximum resolution.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Maximum resolution.</p></td>
+            </td>
         </tr>
 
 	
@@ -1116,20 +902,14 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Minimum resolution.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Minimum resolution.</p></td>
+            </td>
         </tr>
 
 	
@@ -1145,20 +925,14 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Minimum zoom.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Minimum zoom.</p></td>
+            </td>
         </tr>
 
 	
@@ -1174,20 +948,14 @@ HTML element. Will overwrite the default rendering for the layer.</p></td>
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Maximum zoom.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Maximum zoom.</p></td>
+            </td>
         </tr>
 
 	

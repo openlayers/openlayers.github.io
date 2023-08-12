@@ -459,14 +459,6 @@ Tile grid instance.
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -484,29 +476,17 @@ Tile grid instance.
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Extent for the tile grid. The origin for an XYZ tile grid is the
+            <td class="description last">
+                <p>Extent for the tile grid. The origin for an XYZ tile grid is the
 top-left corner of the extent. If <code>maxResolution</code> is not provided the zero level of the grid is defined by the resolution
-at which one tile fits in the provided extent. If not provided, the extent of the EPSG:3857 projection is used.</p></td>
+at which one tile fits in the provided extent. If not provided, the extent of the EPSG:3857 projection is used.</p>
+                
+            </td>
         </tr>
 
 	
@@ -521,27 +501,15 @@ at which one tile fits in the provided extent. If not provided, the extent of th
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Resolution at level zero.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Resolution at level zero.</p></td>
+            </td>
         </tr>
 
 	
@@ -556,28 +524,16 @@ at which one tile fits in the provided extent. If not provided, the extent of th
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Maximum zoom. The default is <code>42</code>. This determines the number of levels
+in the grid set. For example, a <code>maxZoom</code> of 21 means there are 22 levels in the grid set.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Maximum zoom. The default is <code>42</code>. This determines the number of levels
-in the grid set. For example, a <code>maxZoom</code> of 21 means there are 22 levels in the grid set.</p></td>
+            </td>
         </tr>
 
 	
@@ -593,28 +549,16 @@ in the grid set. For example, a <code>maxZoom</code> of 21 means there are 22 le
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Minimum zoom.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Minimum zoom.</p></td>
+            </td>
         </tr>
 
 	
@@ -633,28 +577,16 @@ in the grid set. For example, a <code>maxZoom</code> of 21 means there are 22 le
 <span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
 
+                
+                    (defaults to [256, 256])
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Tile size in pixels.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    [256, 256]
-                
-                </td>
-            
-
-            <td class="description last"><p>Tile size in pixels.</p></td>
+            </td>
         </tr>
 
 	

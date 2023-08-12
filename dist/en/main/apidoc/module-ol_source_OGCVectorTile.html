@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -221,24 +213,14 @@
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>URL to the OGC Vector Tileset endpoint.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>URL to the OGC Vector Tileset endpoint.</p></td>
+            </td>
         </tr>
 
 	
@@ -253,28 +235,16 @@
                 
 <span class="param-type">Object</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>A lookup of values to use in the tile URL template.  The <code>{tileMatrix}</code>
+(zoom level), <code>{tileRow}</code>, and <code>{tileCol}</code> variables in the URL will always be provided by the source.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>A lookup of values to use in the tile URL template.  The <code>{tileMatrix}</code>
-(zoom level), <code>{tileRow}</code>, and <code>{tileCol}</code> variables in the URL will always be provided by the source.</p></td>
+            </td>
         </tr>
 
 	
@@ -290,24 +260,14 @@
 <span class="param-type"><a href="module-ol_format_Feature-FeatureFormat.html">FeatureFormat</a></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Feature parser for tiles.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Feature parser for tiles.</p></td>
+            </td>
         </tr>
 
 	
@@ -322,28 +282,16 @@
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The content type for the tiles (e.g. &quot;application/vnd.mapbox-vector-tile&quot;).  If not provided,
+the source will try to find a link with rel=&quot;item&quot; that uses a vector type supported by the configured format.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The content type for the tiles (e.g. &quot;application/vnd.mapbox-vector-tile&quot;).  If not provided,
-the source will try to find a link with rel=&quot;item&quot; that uses a vector type supported by the configured format.</p></td>
+            </td>
         </tr>
 
 	
@@ -358,27 +306,15 @@ the source will try to find a link with rel=&quot;item&quot; that uses a vector 
                 
 <span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">AttributionLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Attributions.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Attributions.</p></td>
+            </td>
         </tr>
 
 	
@@ -394,28 +330,16 @@ the source will try to find a link with rel=&quot;item&quot; that uses a vector 
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Attributions are collapsible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Attributions are collapsible.</p></td>
+            </td>
         </tr>
 
 	
@@ -430,27 +354,15 @@ the source will try to find a link with rel=&quot;item&quot; that uses a vector 
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Initial tile cache size. Will auto-grow to hold at least twice the number of tiles in the viewport.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Initial tile cache size. Will auto-grow to hold at least twice the number of tiles in the viewport.</p></td>
+            </td>
         </tr>
 
 	
@@ -466,31 +378,19 @@ the source will try to find a link with rel=&quot;item&quot; that uses a vector 
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>This source may have overlapping geometries. Setting this
+            <td class="description last">
+                <p>This source may have overlapping geometries. Setting this
 to <code>false</code> (e.g. for sources with polygons that represent administrative
 boundaries or TopoJSON sources) allows the renderer to optimise fill and
-stroke operations.</p></td>
+stroke operations.</p>
+                
+            </td>
         </tr>
 
 	
@@ -506,28 +406,16 @@ stroke operations.</p></td>
 <span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
 
+                
+                    (defaults to 'EPSG:3857')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Projection of the tile grid.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'EPSG:3857'
-                
-                </td>
-            
-
-            <td class="description last"><p>Projection of the tile grid.</p></td>
+            </td>
         </tr>
 
 	
@@ -542,28 +430,16 @@ stroke operations.</p></td>
                 
 <span class="param-type">Class&lt;<a href="module-ol_VectorTile-VectorTile.html">VectorTile</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Class used to instantiate image tiles.
+Default is <a href="module-ol_VectorTile-VectorTile.html"><code>VectorTile</code></a>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Class used to instantiate image tiles.
-Default is <a href="module-ol_VectorTile-VectorTile.html"><code>VectorTile</code></a>.</p></td>
+            </td>
         </tr>
 
 	
@@ -578,28 +454,16 @@ Default is <a href="module-ol_VectorTile-VectorTile.html"><code>VectorTile</code
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>A duration for tile opacity
+transitions in milliseconds. A duration of 0 disables the opacity transition.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>A duration for tile opacity
-transitions in milliseconds. A duration of 0 disables the opacity transition.</p></td>
+            </td>
         </tr>
 
 	
@@ -615,31 +479,19 @@ transitions in milliseconds. A duration of 0 disables the opacity transition.</p
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to wrap the world horizontally.
+            <td class="description last">
+                <p>Whether to wrap the world horizontally.
 When set to <code>false</code>, only one world
 will be rendered. When set to <code>true</code>, tiles will be wrapped horizontally to
-render multiple worlds.</p></td>
+render multiple worlds.</p>
+                
+            </td>
         </tr>
 
 	
@@ -658,29 +510,17 @@ render multiple worlds.</p></td>
 <span class="param-type"><a href="module-ol_array.html#~NearestDirectionFunction">NearestDirectionFunction</a></span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Choose whether to use tiles with a higher or lower zoom level when between integer
+zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResolution"><code>getZForResolution</code></a>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Choose whether to use tiles with a higher or lower zoom level when between integer
-zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResolution"><code>getZForResolution</code></a>.</p></td>
+            </td>
         </tr>
 
 	

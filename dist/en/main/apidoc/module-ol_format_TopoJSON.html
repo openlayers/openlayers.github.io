@@ -207,14 +207,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -233,28 +225,16 @@
 <span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
 
+                
+                    (defaults to 'EPSG:4326')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Default data projection.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'EPSG:4326'
-                
-                </td>
-            
-
-            <td class="description last"><p>Default data projection.</p></td>
+            </td>
         </tr>
 
 	
@@ -269,27 +249,13 @@
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Set the name of the TopoJSON topology
+            <td class="description last">
+                <p>Set the name of the TopoJSON topology
 <code>objects</code>'s children as feature property with the specified name. This means
 that when set to <code>'layer'</code>, a topology like</p>
 <pre class="prettyprint source"><code>{
@@ -301,7 +267,9 @@ that when set to <code>'layer'</code>, a topology like</p>
     }
   }
 }</code></pre><p>will result in features that have a property <code>'layer'</code> set to <code>'example'</code>.
-When not set, no property will be added to features.</p></td>
+When not set, no property will be added to features.</p>
+                
+            </td>
         </tr>
 
 	
@@ -316,29 +284,17 @@ When not set, no property will be added to features.</p></td>
                 
 <span class="param-type">Array.&lt;string></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Names of the TopoJSON topology's
+            <td class="description last">
+                <p>Names of the TopoJSON topology's
 <code>objects</code>'s children to read features from.  If not provided, features will
-be read from all children.</p></td>
+be read from all children.</p>
+                
+            </td>
         </tr>
 
 	

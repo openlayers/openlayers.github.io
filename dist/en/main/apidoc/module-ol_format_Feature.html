@@ -208,12 +208,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -231,27 +225,19 @@
                 
 <span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Projection of the data we are reading.
+            <td class="description last">
+                <p>Projection of the data we are reading.
 If not provided, the projection will be derived from the data (where possible) or
 the <code>dataProjection</code> of the format is assigned (where set). If the projection
 can not be derived from the data and if no <code>dataProjection</code> is set for a format,
-the features will not be reprojected.</p></td>
+the features will not be reprojected.</p>
+                
+            </td>
         </tr>
 
 	
@@ -266,26 +252,18 @@ the features will not be reprojected.</p></td>
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Tile extent in map units of the tile being read.
+            <td class="description last">
+                <p>Tile extent in map units of the tile being read.
 This is only required when reading data with tile pixels as geometry units. When configured,
 a <code>dataProjection</code> with <code>TILE_PIXELS</code> as <code>units</code> and the tile's pixel extent as <code>extent</code> needs to be
-provided.</p></td>
+provided.</p>
+                
+            </td>
         </tr>
 
 	
@@ -300,25 +278,17 @@ provided.</p></td>
                 
 <span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Projection of the feature geometries
+            <td class="description last">
+                <p>Projection of the feature geometries
 created by the format reader. If not provided, features will be returned in the
-<code>dataProjection</code>.</p></td>
+<code>dataProjection</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -432,12 +402,6 @@ created by the format reader. If not provided, features will be returned in the
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -455,26 +419,18 @@ created by the format reader. If not provided, features will be returned in the
                 
 <span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Projection of the data we are writing.
+            <td class="description last">
+                <p>Projection of the data we are writing.
 If not provided, the <code>dataProjection</code> of the format is assigned (where set).
 If no <code>dataProjection</code> is set for a format, the features will be returned
-in the <code>featureProjection</code>.</p></td>
+in the <code>featureProjection</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -489,25 +445,17 @@ in the <code>featureProjection</code>.</p></td>
                 
 <span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Projection of the feature geometries
+            <td class="description last">
+                <p>Projection of the feature geometries
 that will be serialized by the format writer. If not provided, geometries are assumed
-to be in the <code>dataProjection</code> if that is set; in other words, they are not transformed.</p></td>
+to be in the <code>dataProjection</code> if that is set; in other words, they are not transformed.</p>
+                
+            </td>
         </tr>
 
 	
@@ -522,30 +470,22 @@ to be in the <code>dataProjection</code> if that is set; in other words, they ar
                 
 <span class="param-type">boolean</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>When writing geometries, follow the right-hand
+            <td class="description last">
+                <p>When writing geometries, follow the right-hand
 rule for linear ring orientation.  This means that polygons will have counter-clockwise
 exterior rings and clockwise interior rings.  By default, coordinates are serialized
 as they are provided at construction.  If <code>true</code>, the right-hand rule will
 be applied.  If <code>false</code>, the left-hand rule will be applied (clockwise for
 exterior and counter-clockwise for interior rings).  Note that not all
 formats support this.  The GeoJSON format does use this property when writing
-geometries.</p></td>
+geometries.</p>
+                
+            </td>
         </tr>
 
 	
@@ -560,28 +500,20 @@ geometries.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Maximum number of decimal places for coordinates.
+            <td class="description last">
+                <p>Maximum number of decimal places for coordinates.
 Coordinates are stored internally as floats, but floating-point arithmetic can create
 coordinates with a large number of decimal places, not generally wanted on output.
 Set a number here to round coordinates. Can also be used to ensure that
 coordinates read in can be written back out with the same number of decimals.
-Default is no rounding.</p></td>
+Default is no rounding.</p>
+                
+            </td>
         </tr>
 
 	

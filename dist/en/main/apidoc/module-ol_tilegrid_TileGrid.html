@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -220,29 +212,17 @@
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Extent for the tile grid. No tiles outside this
+            <td class="description last">
+                <p>Extent for the tile grid. No tiles outside this
 extent will be requested by <a href="module-ol_source_Tile-TileSource.html"><code>TileSource</code></a> sources. When no <code>origin</code> or
-<code>origins</code> are configured, the <code>origin</code> will be set to the top-left corner of the extent.</p></td>
+<code>origins</code> are configured, the <code>origin</code> will be set to the top-left corner of the extent.</p>
+                
+            </td>
         </tr>
 
 	
@@ -258,28 +238,16 @@ extent will be requested by <a href="module-ol_source_Tile-TileSource.html"><cod
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Minimum zoom.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Minimum zoom.</p></td>
+            </td>
         </tr>
 
 	
@@ -294,29 +262,17 @@ extent will be requested by <a href="module-ol_source_Tile-TileSource.html"><cod
                 
 <span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The tile grid origin, i.e. where the <code>x</code>
+            <td class="description last">
+                <p>The tile grid origin, i.e. where the <code>x</code>
 and <code>y</code> axes meet (<code>[z, 0, 0]</code>). Tile coordinates increase left to right and downwards. If not
-specified, <code>extent</code> or <code>origins</code> must be provided.</p></td>
+specified, <code>extent</code> or <code>origins</code> must be provided.</p>
+                
+            </td>
         </tr>
 
 	
@@ -331,31 +287,19 @@ specified, <code>extent</code> or <code>origins</code> must be provided.</p></td
                 
 <span class="param-type">Array&lt;<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Tile grid origins, i.e. where
+            <td class="description last">
+                <p>Tile grid origins, i.e. where
 the <code>x</code> and <code>y</code> axes meet (<code>[z, 0, 0]</code>), for each zoom level. If given, the array length
 should match the length of the <code>resolutions</code> array, i.e. each resolution can have a different
 origin. Tile coordinates increase left to right and downwards. If not specified, <code>extent</code> or
-<code>origin</code> must be provided.</p></td>
+<code>origin</code> must be provided.</p>
+                
+            </td>
         </tr>
 
 	
@@ -371,26 +315,16 @@ origin. Tile coordinates increase left to right and downwards. If not specified,
 <span class="param-type">Array.&lt;number></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Resolutions. The array index of each resolution needs
+            <td class="description last">
+                <p>Resolutions. The array index of each resolution needs
 to match the zoom level. This means that even if a <code>minZoom</code> is configured, the resolutions
-array will have a length of <code>maxZoom + 1</code>.</p></td>
+array will have a length of <code>maxZoom + 1</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -405,33 +339,21 @@ array will have a length of <code>maxZoom + 1</code>.</p></td>
                 
 <span class="param-type">Array&lt;<a href="module-ol_size.html#~Size">Size</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Number of tile rows and columns
+            <td class="description last">
+                <p>Number of tile rows and columns
 of the grid for each zoom level. If specified the values
 define each zoom level's extent together with the <code>origin</code> or <code>origins</code>.
 A grid <code>extent</code> can be configured in addition, and will further limit the extent
 for which tile requests are made by sources. If the bottom-left corner of
 an extent is used as <code>origin</code> or <code>origins</code>, then the <code>y</code> value must be
-negative because OpenLayers tile coordinates use the top left as the origin.</p></td>
+negative because OpenLayers tile coordinates use the top left as the origin.</p>
+                
+            </td>
         </tr>
 
 	
@@ -449,28 +371,16 @@ negative because OpenLayers tile coordinates use the top left as the origin.</p>
 
 <span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Tile size.
+Default is <code>[256, 256]</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Tile size.
-Default is <code>[256, 256]</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -485,29 +395,17 @@ Default is <code>[256, 256]</code>.</p></td>
                 
 <span class="param-type">Array.&lt;(number|<a href="module-ol_size.html#~Size">module:ol/size~Size</a>)></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Tile sizes. If given, the array length
+            <td class="description last">
+                <p>Tile sizes. If given, the array length
 should match the length of the <code>resolutions</code> array, i.e. each resolution can have a different
-tile size.</p></td>
+tile size.</p>
+                
+            </td>
         </tr>
 
 	

@@ -210,14 +210,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -238,28 +230,16 @@
 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Set the overlay id. The overlay id can be used
+with the <a href="module-ol_Map-Map.html#getOverlayById"><code>getOverlayById</code></a> method.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Set the overlay id. The overlay id can be used
-with the <a href="module-ol_Map-Map.html#getOverlayById"><code>getOverlayById</code></a> method.</p></td>
+            </td>
         </tr>
 
 	
@@ -274,27 +254,15 @@ with the <a href="module-ol_Map-Map.html#getOverlayById"><code>getOverlayById</c
                 
 <span class="param-type">HTMLElement</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The overlay element.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The overlay element.</p></td>
+            </td>
         </tr>
 
 	
@@ -310,32 +278,20 @@ with the <a href="module-ol_Map-Map.html#getOverlayById"><code>getOverlayById</c
 <span class="param-type">Array.&lt;number></span>
 
 
+                
+                    (defaults to [0, 0])
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    [0, 0]
-                
-                </td>
-            
-
-            <td class="description last"><p>Offsets in pixels used when positioning
+            <td class="description last">
+                <p>Offsets in pixels used when positioning
 the overlay. The first element in the
 array is the horizontal offset. A positive value shifts the overlay right.
 The second element in the array is the vertical offset. A positive value
-shifts the overlay down.</p></td>
+shifts the overlay down.</p>
+                
+            </td>
         </tr>
 
 	
@@ -350,28 +306,16 @@ shifts the overlay down.</p></td>
                 
 <span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The overlay position
+in map projection.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The overlay position
-in map projection.</p></td>
+            </td>
         </tr>
 
 	
@@ -387,32 +331,20 @@ in map projection.</p></td>
 <span class="param-type"><a href="module-ol_Overlay.html#~Positioning">Positioning</a></span>
 
 
+                
+                    (defaults to 'top-left')
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'top-left'
-                
-                </td>
-            
-
-            <td class="description last"><p>Defines how
+            <td class="description last">
+                <p>Defines how
 the overlay is actually positioned with respect to its <code>position</code> property.
 Possible values are <code>'bottom-left'</code>, <code>'bottom-center'</code>, <code>'bottom-right'</code>,
 <code>'center-left'</code>, <code>'center-center'</code>, <code>'center-right'</code>, <code>'top-left'</code>,
-<code>'top-center'</code>, and <code>'top-right'</code>.</p></td>
+<code>'top-center'</code>, and <code>'top-right'</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -428,32 +360,20 @@ Possible values are <code>'bottom-left'</code>, <code>'bottom-center'</code>, <c
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether event propagation to the map
+            <td class="description last">
+                <p>Whether event propagation to the map
 viewport should be stopped. If <code>true</code> the overlay is placed in the same
 container as that of the controls (CSS class name
 <code>ol-overlaycontainer-stopevent</code>); if <code>false</code> it is placed in the container
-with CSS class name specified by the <code>className</code> property.</p></td>
+with CSS class name specified by the <code>className</code> property.</p>
+                
+            </td>
         </tr>
 
 	
@@ -469,32 +389,20 @@ with CSS class name specified by the <code>className</code> property.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether the overlay is inserted first
+            <td class="description last">
+                <p>Whether the overlay is inserted first
 in the overlay container, or appended. If the overlay is placed in the same
 container as that of the controls (see the <code>stopEvent</code> option) you will
 probably set <code>insertFirst</code> to <code>true</code> so the overlay is displayed below the
-controls.</p></td>
+controls.</p>
+                
+            </td>
         </tr>
 
 	
@@ -513,29 +421,17 @@ controls.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Pan the map when calling
+<code>setPosition</code>, so that the overlay is entirely visible in the current viewport.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Pan the map when calling
-<code>setPosition</code>, so that the overlay is entirely visible in the current viewport.</p></td>
+            </td>
         </tr>
 
 	
@@ -551,29 +447,17 @@ controls.</p></td>
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'ol-overlay-container ol-selectable')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>CSS class
+name.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'ol-overlay-container ol-selectable'
-                
-                </td>
-            
-
-            <td class="description last"><p>CSS class
-name.</p></td>
+            </td>
         </tr>
 
 	
@@ -687,14 +571,6 @@ name.</p></td>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -713,28 +589,16 @@ name.</p></td>
 <span class="param-type"><a href="module-ol_Overlay.html#~PanOptions">PanOptions</a></span>
 
 
+                
+                    (defaults to {})
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The animation parameters for the pan</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    {}
-                
-                </td>
-            
-
-            <td class="description last"><p>The animation parameters for the pan</p></td>
+            </td>
         </tr>
 
 	
@@ -750,29 +614,17 @@ name.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 20)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The margin (in pixels) between the
+overlay and the borders of the map when panning into view.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    20
-                
-                </td>
-            
-
-            <td class="description last"><p>The margin (in pixels) between the
-overlay and the borders of the map when panning into view.</p></td>
+            </td>
         </tr>
 
 	
@@ -840,14 +692,6 @@ overlay and the borders of the map when panning into view.</p></td>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -866,29 +710,17 @@ overlay and the borders of the map when panning into view.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 1000)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The duration of the animation in
+milliseconds.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1000
-                
-                </td>
-            
-
-            <td class="description last"><p>The duration of the animation in
-milliseconds.</p></td>
+            </td>
         </tr>
 
 	
@@ -903,29 +735,17 @@ milliseconds.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The easing function to use. Can
+            <td class="description last">
+                <p>The easing function to use. Can
 be one from <a href="module-ol_easing.html"><code>ol/easing</code></a> or a custom function.
-Default is <a href="module-ol_easing.html#.inAndOut"><code>inAndOut</code></a>.</p></td>
+Default is <a href="module-ol_easing.html#.inAndOut"><code>inAndOut</code></a>.</p>
+                
+            </td>
         </tr>
 
 	

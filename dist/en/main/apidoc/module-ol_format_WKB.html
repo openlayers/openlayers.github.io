@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -221,28 +213,16 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Whether to split GeometryCollections into multiple features on reading.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to split GeometryCollections into multiple features on reading.</p></td>
+            </td>
         </tr>
 
 	
@@ -258,28 +238,16 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Returns hex string instead of ArrayBuffer for output. This also is used as a hint internally whether it should load contents as text or ArrayBuffer on reading.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Returns hex string instead of ArrayBuffer for output. This also is used as a hint internally whether it should load contents as text or ArrayBuffer on reading.</p></td>
+            </td>
         </tr>
 
 	
@@ -295,28 +263,16 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Use littleEndian for output.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Use littleEndian for output.</p></td>
+            </td>
         </tr>
 
 	
@@ -332,28 +288,16 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Use EWKB format for output.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Use EWKB format for output.</p></td>
+            </td>
         </tr>
 
 	
@@ -369,28 +313,16 @@
 <span class="param-type"><a href="module-ol_geom_Geometry.html#~GeometryLayout">GeometryLayout</a></span>
 
 
+                
+                    (defaults to null)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Use specific coordinate layout for output features (null: auto detect)</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>Use specific coordinate layout for output features (null: auto detect)</p></td>
+            </td>
         </tr>
 
 	
@@ -406,28 +338,16 @@
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>If the <code>geometryLayout</code> doesn't match with geometry to be output, this value is used to fill missing coordinate value of Z.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>If the <code>geometryLayout</code> doesn't match with geometry to be output, this value is used to fill missing coordinate value of Z.</p></td>
+            </td>
         </tr>
 
 	
@@ -443,28 +363,16 @@
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>If the <code>geometryLayout</code> doesn't match with geometry to be output, this value is used to fill missing coordinate value of M.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>If the <code>geometryLayout</code> doesn't match with geometry to be output, this value is used to fill missing coordinate value of M.</p></td>
+            </td>
         </tr>
 
 	
@@ -483,28 +391,16 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>SRID for output. Specify integer value to enforce the value as a SRID. Specify <code>true</code> to extract from <code>dataProjection</code>. <code>false</code> to suppress the output. This option only takes effect when <code>ewkb</code> is <code>true</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>SRID for output. Specify integer value to enforce the value as a SRID. Specify <code>true</code> to extract from <code>dataProjection</code>. <code>false</code> to suppress the output. This option only takes effect when <code>ewkb</code> is <code>true</code>.</p></td>
+            </td>
         </tr>
 
 	

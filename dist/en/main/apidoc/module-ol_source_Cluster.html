@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -220,27 +212,15 @@
                 
 <span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">AttributionLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Attributions.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Attributions.</p></td>
+            </td>
         </tr>
 
 	
@@ -256,29 +236,17 @@
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 20)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Distance in pixels within which features will
+be clustered together.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    20
-                
-                </td>
-            
-
-            <td class="description last"><p>Distance in pixels within which features will
-be clustered together.</p></td>
+            </td>
         </tr>
 
 	
@@ -294,32 +262,20 @@ be clustered together.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Minimum distance in pixels between clusters.
+            <td class="description last">
+                <p>Minimum distance in pixels between clusters.
 Will be capped at the configured distance.
 By default no minimum distance is guaranteed. This config can be used to avoid
 overlapping icons. As a tradoff, the cluster feature's position will no longer be
-the center of all its features.</p></td>
+the center of all its features.</p>
+                
+            </td>
         </tr>
 
 	
@@ -334,27 +290,13 @@ the center of all its features.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Function that takes an <a href="module-ol_Feature-Feature.html"><code>Feature</code></a> as argument and returns an
+            <td class="description last">
+                <p>Function that takes an <a href="module-ol_Feature-Feature.html"><code>Feature</code></a> as argument and returns an
 <a href="module-ol_geom_Point-Point.html"><code>Point</code></a> as cluster calculation point for the feature. When a
 feature should not be considered for clustering, the function should return
 <code>null</code>. The default, which works when the underlying source contains point
@@ -362,7 +304,9 @@ features only, is</p>
 <pre class="prettyprint source lang-js"><code>function(feature) {
   return feature.getGeometry();
 }</code></pre><p>See <a href="module-ol_geom_Polygon-Polygon.html#getInteriorPoint"><code>getInteriorPoint</code></a> for a way to get a cluster
-calculation point for polygons.</p></td>
+calculation point for polygons.</p>
+                
+            </td>
         </tr>
 
 	
@@ -377,27 +321,13 @@ calculation point for polygons.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Function that takes the cluster's center <a href="module-ol_geom_Point-Point.html"><code>Point</code></a> and an array
+            <td class="description last">
+                <p>Function that takes the cluster's center <a href="module-ol_geom_Point-Point.html"><code>Point</code></a> and an array
 of <a href="module-ol_Feature-Feature.html"><code>Feature</code></a> included in this cluster. Must return a
 <a href="module-ol_Feature-Feature.html"><code>Feature</code></a> that will be used to render. Default implementation is:</p>
 <pre class="prettyprint source lang-js"><code>function(point, features) {
@@ -405,7 +335,9 @@ of <a href="module-ol_Feature-Feature.html"><code>Feature</code></a> included in
     geometry: point,
     features: features
   });
-}</code></pre></td>
+}</code></pre>
+                
+            </td>
         </tr>
 
 	
@@ -421,28 +353,16 @@ of <a href="module-ol_Feature-Feature.html"><code>Feature</code></a> included in
 <span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a></span>
 
 
+                
+                    (defaults to null)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Source.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>Source.</p></td>
+            </td>
         </tr>
 
 	
@@ -458,28 +378,16 @@ of <a href="module-ol_Feature-Feature.html"><code>Feature</code></a> included in
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Whether to wrap the world horizontally.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to wrap the world horizontally.</p></td>
+            </td>
         </tr>
 
 	

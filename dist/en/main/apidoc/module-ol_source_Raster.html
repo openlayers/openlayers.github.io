@@ -217,10 +217,6 @@
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -239,14 +235,14 @@
 <span class="param-type">Object</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Message data.</p></td>
+            <td class="description last">
+                <p>Message data.</p>
+                
+            </td>
         </tr>
 
 	
@@ -314,10 +310,6 @@
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -336,14 +328,14 @@
 <span class="param-type">Object</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Job metadata.</p></td>
+            <td class="description last">
+                <p>Job metadata.</p>
+                
+            </td>
         </tr>
 
 	
@@ -359,14 +351,14 @@
 <span class="param-type">Array.&lt;ImageData></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Array of input data.</p></td>
+            <td class="description last">
+                <p>Array of input data.</p>
+                
+            </td>
         </tr>
 
 	
@@ -382,14 +374,14 @@
 <span class="param-type"><a href="module-ol_source_Raster.html#~JobCallback">JobCallback</a></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Called when the job is complete.</p></td>
+            <td class="description last">
+                <p>Called when the job is complete.</p>
+                
+            </td>
         </tr>
 
 	
@@ -533,10 +525,6 @@
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -555,14 +543,14 @@
 <span class="param-type">Array.&lt;ArrayBuffer></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Array of buffers.</p></td>
+            <td class="description last">
+                <p>Array of buffers.</p>
+                
+            </td>
         </tr>
 
 	
@@ -578,14 +566,14 @@
 <span class="param-type">Object</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Operation metadata.</p></td>
+            <td class="description last">
+                <p>Operation metadata.</p>
+                
+            </td>
         </tr>
 
 	
@@ -601,14 +589,14 @@
 <span class="param-type">boolean</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The operation is an image operation.</p></td>
+            <td class="description last">
+                <p>The operation is an image operation.</p>
+                
+            </td>
         </tr>
 
 	
@@ -624,14 +612,14 @@
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The width of the image.</p></td>
+            <td class="description last">
+                <p>The width of the image.</p>
+                
+            </td>
         </tr>
 
 	
@@ -647,14 +635,14 @@
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The height of the image.</p></td>
+            <td class="description last">
+                <p>The height of the image.</p>
+                
+            </td>
         </tr>
 
 	
@@ -814,14 +802,6 @@ data object is accessible from raster events, where it can be initialized in
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -840,25 +820,15 @@ data object is accessible from raster events, where it can be initialized in
 <span class="param-type">Array.&lt;(<a href="module-ol_source_Source-Source.html">module:ol/source/Source~Source</a>|<a href="module-ol_layer_Layer-Layer.html">module:ol/layer/Layer~Layer</a>)></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Input
+sources or layers.  For vector data, use an VectorImage layer.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Input
-sources or layers.  For vector data, use an VectorImage layer.</p></td>
+            </td>
         </tr>
 
 	
@@ -873,29 +843,17 @@ sources or layers.  For vector data, use an VectorImage layer.</p></td>
                 
 <span class="param-type"><a href="module-ol_source_Raster.html#~Operation">Operation</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Raster operation.
+            <td class="description last">
+                <p>Raster operation.
 The operation will be called with data from input sources
-and the output will be assigned to the raster source.</p></td>
+and the output will be assigned to the raster source.</p>
+                
+            </td>
         </tr>
 
 	
@@ -910,27 +868,15 @@ and the output will be assigned to the raster source.</p></td>
                 
 <span class="param-type">Object</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Functions that will be made available to operations run in a worker.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Functions that will be made available to operations run in a worker.</p></td>
+            </td>
         </tr>
 
 	
@@ -945,31 +891,19 @@ and the output will be assigned to the raster source.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>By default, operations will be run in a single worker thread.
+            <td class="description last">
+                <p>By default, operations will be run in a single worker thread.
 To avoid using workers altogether, set <code>threads: 0</code>.  For pixel operations, operations can
 be run in multiple worker threads.  Note that there is additional overhead in
 transferring data to multiple workers, and that depending on the user's
-system, it may not be possible to parallelize the work.</p></td>
+system, it may not be possible to parallelize the work.</p>
+                
+            </td>
         </tr>
 
 	
@@ -985,32 +919,20 @@ system, it may not be possible to parallelize the work.</p></td>
 <span class="param-type"><a href="module-ol_source_Raster.html#~RasterOperationType">RasterOperationType</a></span>
 
 
+                
+                    (defaults to 'pixel')
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'pixel'
-                
-                </td>
-            
-
-            <td class="description last"><p>Operation type.
+            <td class="description last">
+                <p>Operation type.
 Supported values are <code>'pixel'</code> and <code>'image'</code>.  By default,
 <code>'pixel'</code> operations are assumed, and operations will be called with an
 array of pixels from input sources.  If set to <code>'image'</code>, operations will
-be called with an array of ImageData objects from input sources.</p></td>
+be called with an array of ImageData objects from input sources.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1028,29 +950,17 @@ be called with an array of ImageData objects from input sources.</p></td>
 
 <span class="param-type">null</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Resolutions. If specified, raster operations will only
+            <td class="description last">
+                <p>Resolutions. If specified, raster operations will only
 be run at the given resolutions.  By default, the resolutions of the first source with resolutions
-specified will be used, if any. Set to <code>null</code> to use any view resolution instead.</p></td>
+specified will be used, if any. Set to <code>null</code> to use any view resolution instead.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1118,14 +1028,6 @@ specified will be used, if any. Set to <code>null</code> to use any view resolut
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -1144,24 +1046,14 @@ specified will be used, if any. Set to <code>null</code> to use any view resolut
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Number of workers to spawn.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Number of workers to spawn.</p></td>
+            </td>
         </tr>
 
 	
@@ -1177,24 +1069,14 @@ specified will be used, if any. Set to <code>null</code> to use any view resolut
 <span class="param-type"><a href="module-ol_source_Raster.html#~Operation">Operation</a></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The operation.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The operation.</p></td>
+            </td>
         </tr>
 
 	
@@ -1209,27 +1091,15 @@ specified will be used, if any. Set to <code>null</code> to use any view resolut
                 
 <span class="param-type">Object.&lt;string, function()></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Functions that will be made available to operations run in a worker.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Functions that will be made available to operations run in a worker.</p></td>
+            </td>
         </tr>
 
 	
@@ -1245,24 +1115,14 @@ specified will be used, if any. Set to <code>null</code> to use any view resolut
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The number of queued jobs to allow.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The number of queued jobs to allow.</p></td>
+            </td>
         </tr>
 
 	
@@ -1278,28 +1138,16 @@ specified will be used, if any. Set to <code>null</code> to use any view resolut
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Pass all the image data to the operation instead of a single pixel.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Pass all the image data to the operation instead of a single pixel.</p></td>
+            </td>
         </tr>
 
 	

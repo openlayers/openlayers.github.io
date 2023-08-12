@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -221,28 +213,16 @@
 <span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
 
 
+                
+                    (defaults to 'EPSG:3857')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Optional projection.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'EPSG:3857'
-                
-                </td>
-            
-
-            <td class="description last"><p>Optional projection.</p></td>
+            </td>
         </tr>
 
 	
@@ -257,27 +237,15 @@
                 
 <span class="param-type"><a href="module-ol_tilegrid_TileGrid-TileGrid.html">TileGrid</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Tile grid.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Tile grid.</p></td>
+            </td>
         </tr>
 
 	
@@ -293,28 +261,16 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Whether to wrap the world horizontally.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to wrap the world horizontally.</p></td>
+            </td>
         </tr>
 
 	
@@ -333,30 +289,18 @@
 <span class="param-type"><a href="module-ol_array.html#~NearestDirectionFunction">NearestDirectionFunction</a></span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Set to <code>1</code> when debugging <code>VectorTile</code> sources with a default configuration.
+            <td class="description last">
+                <p>Set to <code>1</code> when debugging <code>VectorTile</code> sources with a default configuration.
 Choose whether to use tiles with a higher or lower zoom level when between integer
-zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResolution"><code>getZForResolution</code></a>.</p></td>
+zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResolution"><code>getZForResolution</code></a>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -372,29 +316,17 @@ zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResol
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'z:{z} x:{x} y:{y}')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Template for labeling the tiles.
+Should include <code>{x}</code>, <code>{y}</code> or <code>{-y}</code>, and <code>{z}</code> placeholders.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'z:{z} x:{x} y:{y}'
-                
-                </td>
-            
-
-            <td class="description last"><p>Template for labeling the tiles.
-Should include <code>{x}</code>, <code>{y}</code> or <code>{-y}</code>, and <code>{z}</code> placeholders.</p></td>
+            </td>
         </tr>
 
 	

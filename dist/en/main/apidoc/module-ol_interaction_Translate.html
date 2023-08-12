@@ -281,14 +281,6 @@ translated or <code>false</code> otherwise.</p>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -306,30 +298,18 @@ translated or <code>false</code> otherwise.</p>
                 
 <span class="param-type"><a href="module-ol_events_condition.html#~Condition">Condition</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>A function that
+            <td class="description last">
+                <p>A function that
 takes an <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and returns a
 boolean to indicate whether that event should be handled.
-Default is <a href="module-ol_events_condition.html#.always"><code>always</code></a>.</p></td>
+Default is <a href="module-ol_events_condition.html#.always"><code>always</code></a>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -344,27 +324,15 @@ Default is <a href="module-ol_events_condition.html#.always"><code>always</code>
                 
 <span class="param-type"><a href="module-ol_Collection-Collection.html">Collection</a>&lt;<a href="module-ol_Feature-Feature.html">Feature</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Features contained in this collection will be able to be translated together.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Features contained in this collection will be able to be translated together.</p></td>
+            </td>
         </tr>
 
 	
@@ -382,32 +350,20 @@ Default is <a href="module-ol_events_condition.html#.always"><code>always</code>
 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>A list of layers from which features should be
+            <td class="description last">
+                <p>A list of layers from which features should be
 translated. Alternatively, a filter function can be provided. The
 function will be called for each layer in the map and should return
 <code>true</code> for layers that you want to be translatable. If the option is
 absent, all visible layers will be considered translatable.
-Not used if <code>features</code> is provided.</p></td>
+Not used if <code>features</code> is provided.</p>
+                
+            </td>
         </tr>
 
 	
@@ -422,30 +378,18 @@ Not used if <code>features</code> is provided.</p></td>
                 
 <span class="param-type"><a href="module-ol_interaction_Translate.html#~FilterFunction">FilterFunction</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>A function
+            <td class="description last">
+                <p>A function
 that takes an <a href="module-ol_Feature-Feature.html"><code>Feature</code></a> and an
 <a href="module-ol_layer_Layer-Layer.html"><code>Layer</code></a> and returns <code>true</code> if the feature may be
-translated or <code>false</code> otherwise. Not used if <code>features</code> is provided.</p></td>
+translated or <code>false</code> otherwise. Not used if <code>features</code> is provided.</p>
+                
+            </td>
         </tr>
 
 	
@@ -461,29 +405,17 @@ translated or <code>false</code> otherwise. Not used if <code>features</code> is
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Hit-detection tolerance. Pixels inside the radius around the given position
+will be checked for features.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Hit-detection tolerance. Pixels inside the radius around the given position
-will be checked for features.</p></td>
+            </td>
         </tr>
 
 	

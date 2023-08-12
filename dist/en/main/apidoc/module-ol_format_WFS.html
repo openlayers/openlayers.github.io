@@ -388,10 +388,6 @@ Result.
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -410,14 +406,14 @@ Result.
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>NumberOfFeatures.</p></td>
+            <td class="description last">
+                <p>NumberOfFeatures.</p>
+                
+            </td>
         </tr>
 
 	
@@ -433,14 +429,14 @@ Result.
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Bounds.</p></td>
+            <td class="description last">
+                <p>Bounds.</p>
+                
+            </td>
         </tr>
 
 	
@@ -508,10 +504,6 @@ Result.
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -530,14 +522,14 @@ Result.
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The feature type name.</p></td>
+            <td class="description last">
+                <p>The feature type name.</p>
+                
+            </td>
         </tr>
 
 	
@@ -553,14 +545,14 @@ Result.
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Extent to use for the BBOX filter.</p></td>
+            <td class="description last">
+                <p>Extent to use for the BBOX filter.</p>
+                
+            </td>
         </tr>
 
 	
@@ -576,14 +568,14 @@ Result.
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Geometry name to use in the BBOX filter.</p></td>
+            <td class="description last">
+                <p>Geometry name to use in the BBOX filter.</p>
+                
+            </td>
         </tr>
 
 	
@@ -651,14 +643,6 @@ Result.
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -679,27 +663,15 @@ Result.
 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The namespace URI used for features.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The namespace URI used for features.</p></td>
+            </td>
         </tr>
 
 	
@@ -717,27 +689,15 @@ Result.
 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The feature type to parse. Only used for read operations.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The feature type to parse. Only used for read operations.</p></td>
+            </td>
         </tr>
 
 	
@@ -752,28 +712,16 @@ Result.
                 
 <span class="param-type"><a href="module-ol_format_GMLBase-GMLBase.html">GMLBase</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The GML format to use to parse the response.
+Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code> for WFS 1.1.0 and <code>ol/format/GML32</code> for WFS 2.0.0.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The GML format to use to parse the response.
-Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code> for WFS 1.1.0 and <code>ol/format/GML32</code> for WFS 2.0.0.</p></td>
+            </td>
         </tr>
 
 	
@@ -788,27 +736,15 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Optional schemaLocation to use for serialization, this will override the default.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Optional schemaLocation to use for serialization, this will override the default.</p></td>
+            </td>
         </tr>
 
 	
@@ -824,28 +760,16 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to '1.1.0')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>WFS version to use. Can be either <code>1.0.0</code>, <code>1.1.0</code> or <code>2.0.0</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    '1.1.0'
-                
-                </td>
-            
-
-            <td class="description last"><p>WFS version to use. Can be either <code>1.0.0</code>, <code>1.1.0</code> or <code>2.0.0</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -917,10 +841,6 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -939,14 +859,14 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>TotalDeleted.</p></td>
+            <td class="description last">
+                <p>TotalDeleted.</p>
+                
+            </td>
         </tr>
 
 	
@@ -962,14 +882,14 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>TotalInserted.</p></td>
+            <td class="description last">
+                <p>TotalInserted.</p>
+                
+            </td>
         </tr>
 
 	
@@ -985,14 +905,14 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>TotalUpdated.</p></td>
+            <td class="description last">
+                <p>TotalUpdated.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1008,14 +928,14 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
 <span class="param-type">Array.&lt;string></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>InsertIds.</p></td>
+            <td class="description last">
+                <p>InsertIds.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1083,12 +1003,6 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -1107,20 +1021,14 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The namespace URI used for features.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The namespace URI used for features.</p></td>
+            </td>
         </tr>
 
 	
@@ -1136,20 +1044,14 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The prefix for the feature namespace.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The prefix for the feature namespace.</p></td>
+            </td>
         </tr>
 
 	
@@ -1165,22 +1067,16 @@ Default is <code>ol/format/GML2</code> for WFS 1.0.0, <code>ol/format/GML3</code
 <span class="param-type">Array.&lt;(string|<a href="module-ol_format_WFS.html#~FeatureType">module:ol/format/WFS~FeatureType</a>)></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The feature type names or FeatureType objects to
+            <td class="description last">
+                <p>The feature type names or FeatureType objects to
 define a unique bbox filter per feature type name (in this case, options <code>bbox</code> and <code>geometryName</code> are
-ignored.).</p></td>
+ignored.).</p>
+                
+            </td>
         </tr>
 
 	
@@ -1195,24 +1091,16 @@ ignored.).</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>SRS name. No srsName attribute will be set on
+geometries when this is not provided.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>SRS name. No srsName attribute will be set on
-geometries when this is not provided.</p></td>
+            </td>
         </tr>
 
 	
@@ -1227,23 +1115,15 @@ geometries when this is not provided.</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Handle.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Handle.</p></td>
+            </td>
         </tr>
 
 	
@@ -1258,23 +1138,15 @@ geometries when this is not provided.</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Output format.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Output format.</p></td>
+            </td>
         </tr>
 
 	
@@ -1289,23 +1161,15 @@ geometries when this is not provided.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Maximum number of features to fetch.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Maximum number of features to fetch.</p></td>
+            </td>
         </tr>
 
 	
@@ -1320,23 +1184,15 @@ geometries when this is not provided.</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Geometry name to use in a BBOX filter.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Geometry name to use in a BBOX filter.</p></td>
+            </td>
         </tr>
 
 	
@@ -1351,23 +1207,15 @@ geometries when this is not provided.</p></td>
                 
 <span class="param-type">Array.&lt;string></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Optional list of property names to serialize.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Optional list of property names to serialize.</p></td>
+            </td>
         </tr>
 
 	
@@ -1382,23 +1230,15 @@ geometries when this is not provided.</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>viewParams GeoServer vendor parameter.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>viewParams GeoServer vendor parameter.</p></td>
+            </td>
         </tr>
 
 	
@@ -1413,24 +1253,16 @@ geometries when this is not provided.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Start index to use for WFS paging. This is a
+WFS 2.0 feature backported to WFS 1.1.0 by some Web Feature Services.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Start index to use for WFS paging. This is a
-WFS 2.0 feature backported to WFS 1.1.0 by some Web Feature Services.</p></td>
+            </td>
         </tr>
 
 	
@@ -1445,25 +1277,17 @@ WFS 2.0 feature backported to WFS 1.1.0 by some Web Feature Services.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Number of features to retrieve when paging. This is a
+            <td class="description last">
+                <p>Number of features to retrieve when paging. This is a
 WFS 2.0 feature backported to WFS 1.1.0 by some Web Feature Services. Please note that some
-Web Feature Services have repurposed <code>maxfeatures</code> instead.</p></td>
+Web Feature Services have repurposed <code>maxfeatures</code> instead.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1478,24 +1302,16 @@ Web Feature Services have repurposed <code>maxfeatures</code> instead.</p></td>
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Extent to use for the BBOX filter. The <code>geometryName</code>
+option must be set.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Extent to use for the BBOX filter. The <code>geometryName</code>
-option must be set.</p></td>
+            </td>
         </tr>
 
 	
@@ -1510,24 +1326,16 @@ option must be set.</p></td>
                 
 <span class="param-type">Filter</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Filter condition. See
+<a href="module-ol_format_filter.html"><code>ol/format/filter</code></a> for more information.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Filter condition. See
-<a href="module-ol_format_filter.html"><code>ol/format/filter</code></a> for more information.</p></td>
+            </td>
         </tr>
 
 	
@@ -1542,24 +1350,16 @@ option must be set.</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Indicates what response should be returned,
+e.g. <code>hits</code> only includes the <code>numberOfFeatures</code> attribute in the response and no features.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Indicates what response should be returned,
-e.g. <code>hits</code> only includes the <code>numberOfFeatures</code> attribute in the response and no features.</p></td>
+            </td>
         </tr>
 
 	
@@ -1627,14 +1427,6 @@ e.g. <code>hits</code> only includes the <code>numberOfFeatures</code> attribute
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -1653,24 +1445,14 @@ e.g. <code>hits</code> only includes the <code>numberOfFeatures</code> attribute
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The namespace URI used for features.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The namespace URI used for features.</p></td>
+            </td>
         </tr>
 
 	
@@ -1686,24 +1468,14 @@ e.g. <code>hits</code> only includes the <code>numberOfFeatures</code> attribute
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The prefix for the feature namespace.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The prefix for the feature namespace.</p></td>
+            </td>
         </tr>
 
 	
@@ -1719,24 +1491,14 @@ e.g. <code>hits</code> only includes the <code>numberOfFeatures</code> attribute
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The feature type name.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The feature type name.</p></td>
+            </td>
         </tr>
 
 	
@@ -1751,28 +1513,16 @@ e.g. <code>hits</code> only includes the <code>numberOfFeatures</code> attribute
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>SRS name. No srsName attribute will be set on
+geometries when this is not provided.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>SRS name. No srsName attribute will be set on
-geometries when this is not provided.</p></td>
+            </td>
         </tr>
 
 	
@@ -1787,27 +1537,15 @@ geometries when this is not provided.</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Handle.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Handle.</p></td>
+            </td>
         </tr>
 
 	
@@ -1822,28 +1560,16 @@ geometries when this is not provided.</p></td>
                 
 <span class="param-type">boolean</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Must be set to true if the transaction is for
+a 3D layer. This will allow the Z coordinate to be included in the transaction.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Must be set to true if the transaction is for
-a 3D layer. This will allow the Z coordinate to be included in the transaction.</p></td>
+            </td>
         </tr>
 
 	
@@ -1859,24 +1585,14 @@ a 3D layer. This will allow the Z coordinate to be included in the transaction.<
 <span class="param-type">Array.&lt;Object></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Native elements. Currently not supported.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Native elements. Currently not supported.</p></td>
+            </td>
         </tr>
 
 	
@@ -1891,27 +1607,15 @@ a 3D layer. This will allow the Z coordinate to be included in the transaction.<
                 
 <span class="param-type"><a href="module-ol_format_GMLBase.html#~Options">Options</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>GML options for the WFS transaction writer.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>GML options for the WFS transaction writer.</p></td>
+            </td>
         </tr>
 
 	
@@ -1927,28 +1631,16 @@ a 3D layer. This will allow the Z coordinate to be included in the transaction.<
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to '1.1.0')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>WFS version to use for the transaction. Can be either <code>1.0.0</code>, <code>1.1.0</code> or <code>2.0.0</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    '1.1.0'
-                
-                </td>
-            
-
-            <td class="description last"><p>WFS version to use for the transaction. Can be either <code>1.0.0</code>, <code>1.1.0</code> or <code>2.0.0</code>.</p></td>
+            </td>
         </tr>
 
 	

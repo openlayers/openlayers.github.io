@@ -207,14 +207,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -232,28 +224,16 @@
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>CSS class name. The default is <code>ol-scale-bar</code> when configured with
+<code>bar: true</code>. Otherwise the default is <code>ol-scale-line</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>CSS class name. The default is <code>ol-scale-bar</code> when configured with
-<code>bar: true</code>. Otherwise the default is <code>ol-scale-line</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -269,29 +249,17 @@
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 64)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Minimum width in pixels at the OGC default dpi. The width will be
+adjusted to match the dpi used.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    64
-                
-                </td>
-            
-
-            <td class="description last"><p>Minimum width in pixels at the OGC default dpi. The width will be
-adjusted to match the dpi used.</p></td>
+            </td>
         </tr>
 
 	
@@ -306,28 +274,16 @@ adjusted to match the dpi used.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Maximum width in pixels at the OGC default dpi. The width will be
+adjusted to match the dpi used.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Maximum width in pixels at the OGC default dpi. The width will be
-adjusted to match the dpi used.</p></td>
+            </td>
         </tr>
 
 	
@@ -342,28 +298,16 @@ adjusted to match the dpi used.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Function called when the control
+should be re-rendered. This is called in a <code>requestAnimationFrame</code> callback.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Function called when the control
-should be re-rendered. This is called in a <code>requestAnimationFrame</code> callback.</p></td>
+            </td>
         </tr>
 
 	
@@ -381,28 +325,16 @@ should be re-rendered. This is called in a <code>requestAnimationFrame</code> ca
 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Specify a target if you want the control
+to be rendered outside of the map's viewport.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Specify a target if you want the control
-to be rendered outside of the map's viewport.</p></td>
+            </td>
         </tr>
 
 	
@@ -418,28 +350,16 @@ to be rendered outside of the map's viewport.</p></td>
 <span class="param-type"><a href="module-ol_control_ScaleLine.html#~Units">Units</a></span>
 
 
+                
+                    (defaults to 'metric')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Units.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'metric'
-                
-                </td>
-            
-
-            <td class="description last"><p>Units.</p></td>
+            </td>
         </tr>
 
 	
@@ -455,28 +375,16 @@ to be rendered outside of the map's viewport.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Render scalebars instead of a line.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Render scalebars instead of a line.</p></td>
+            </td>
         </tr>
 
 	
@@ -492,29 +400,17 @@ to be rendered outside of the map's viewport.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 4)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Number of steps the scalebar should use. Use even numbers
+for best results. Only applies when <code>bar</code> is <code>true</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    4
-                
-                </td>
-            
-
-            <td class="description last"><p>Number of steps the scalebar should use. Use even numbers
-for best results. Only applies when <code>bar</code> is <code>true</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -530,29 +426,17 @@ for best results. Only applies when <code>bar</code> is <code>true</code>.</p></
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Render the text scale above of the scalebar. Only applies
+when <code>bar</code> is <code>true</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Render the text scale above of the scalebar. Only applies
-when <code>bar</code> is <code>true</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -571,27 +455,15 @@ when <code>bar</code> is <code>true</code>.</p></td>
 <span class="param-type">undefined</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>dpi of output device such as printer. Only applies
+when <code>bar</code> is <code>true</code>. If undefined the OGC default screen pixel size of 0.28mm will be assumed.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>dpi of output device such as printer. Only applies
-when <code>bar</code> is <code>true</code>. If undefined the OGC default screen pixel size of 0.28mm will be assumed.</p></td>
+            </td>
         </tr>
 
 	

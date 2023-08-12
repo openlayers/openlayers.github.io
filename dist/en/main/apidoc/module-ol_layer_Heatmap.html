@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -221,28 +213,16 @@
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'ol-layer')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>A CSS class name to set to the layer element.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'ol-layer'
-                
-                </td>
-            
-
-            <td class="description last"><p>A CSS class name to set to the layer element.</p></td>
+            </td>
         </tr>
 
 	
@@ -258,28 +238,16 @@
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Opacity (0, 1).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Opacity (0, 1).</p></td>
+            </td>
         </tr>
 
 	
@@ -295,28 +263,16 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Visibility.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Visibility.</p></td>
+            </td>
         </tr>
 
 	
@@ -331,28 +287,16 @@
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The bounding extent for layer rendering.  The layer will not be
+rendered outside of this extent.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The bounding extent for layer rendering.  The layer will not be
-rendered outside of this extent.</p></td>
+            </td>
         </tr>
 
 	
@@ -367,30 +311,18 @@ rendered outside of this extent.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The z-index for layer rendering.  At rendering time, the layers
+            <td class="description last">
+                <p>The z-index for layer rendering.  At rendering time, the layers
 will be ordered, first by Z-index and then by position. When <code>undefined</code>, a <code>zIndex</code> of 0 is assumed
 for layers that are added to the map's <code>layers</code> collection, or <code>Infinity</code> when the layer's <code>setMap()</code>
-method was used.</p></td>
+method was used.</p>
+                
+            </td>
         </tr>
 
 	
@@ -405,28 +337,16 @@ method was used.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The minimum resolution (inclusive) at which this layer will be
+visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum resolution (inclusive) at which this layer will be
-visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -441,28 +361,16 @@ visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The maximum resolution (exclusive) below which this layer will
+be visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum resolution (exclusive) below which this layer will
-be visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -477,28 +385,16 @@ be visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The minimum view zoom level (exclusive) above which this layer will be
+visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum view zoom level (exclusive) above which this layer will be
-visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -513,28 +409,16 @@ visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The maximum view zoom level (inclusive) at which this layer will
+be visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum view zoom level (inclusive) at which this layer will
-be visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -550,29 +434,17 @@ be visible.</p></td>
 <span class="param-type">Array.&lt;string></span>
 
 
+                
+                    (defaults to ['#00f', '#0ff', '#0f0', '#ff0', '#f00'])
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The color gradient
+of the heatmap, specified as an array of CSS color strings.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    ['#00f', '#0ff', '#0f0', '#ff0', '#f00']
-                
-                </td>
-            
-
-            <td class="description last"><p>The color gradient
-of the heatmap, specified as an array of CSS color strings.</p></td>
+            </td>
         </tr>
 
 	
@@ -588,28 +460,16 @@ of the heatmap, specified as an array of CSS color strings.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 8)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Radius size in pixels.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    8
-                
-                </td>
-            
-
-            <td class="description last"><p>Radius size in pixels.</p></td>
+            </td>
         </tr>
 
 	
@@ -625,28 +485,16 @@ of the heatmap, specified as an array of CSS color strings.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 15)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Blur size in pixels.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    15
-                
-                </td>
-            
-
-            <td class="description last"><p>Blur size in pixels.</p></td>
+            </td>
         </tr>
 
 	
@@ -665,30 +513,18 @@ of the heatmap, specified as an array of CSS color strings.</p></td>
 <span class="param-type">function</span>
 
 
+                
+                    (defaults to 'weight')
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'weight'
-                
-                </td>
-            
-
-            <td class="description last"><p>The feature
+            <td class="description last">
+                <p>The feature
 attribute to use for the weight or a function that returns a weight from a feature. Weight values
-should range from 0 to 1 (and values outside will be clamped to that range).</p></td>
+should range from 0 to 1 (and values outside will be clamped to that range).</p>
+                
+            </td>
         </tr>
 
 	
@@ -703,27 +539,15 @@ should range from 0 to 1 (and values outside will be clamped to that range).</p>
                 
 <span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a>&lt;<a href="module-ol_geom_Point-Point.html">Point</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Point source.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Point source.</p></td>
+            </td>
         </tr>
 
 	
@@ -738,27 +562,15 @@ should range from 0 to 1 (and values outside will be clamped to that range).</p>
                 
 <span class="param-type">Object.&lt;string, *></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p></td>
+            </td>
         </tr>
 
 	

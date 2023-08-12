@@ -280,14 +280,6 @@ true should be returned.</p>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -306,28 +298,16 @@ true should be returned.</p>
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'ol-dragbox')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>CSS class name for styling the box.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'ol-dragbox'
-                
-                </td>
-            
-
-            <td class="description last"><p>CSS class name for styling the box.</p></td>
+            </td>
         </tr>
 
 	
@@ -342,29 +322,17 @@ true should be returned.</p>
                 
 <span class="param-type"><a href="module-ol_events_condition.html#~Condition">Condition</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>A function that takes an <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and returns a boolean
+            <td class="description last">
+                <p>A function that takes an <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and returns a boolean
 to indicate whether that event should be handled.
-Default is <code>ol/events/condition~mouseActionButton</code>.</p></td>
+Default is <code>ol/events/condition~mouseActionButton</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -380,29 +348,17 @@ Default is <code>ol/events/condition~mouseActionButton</code>.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 64)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The minimum area of the box in pixel, this value is used by the default
+<code>boxEndCondition</code> function.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    64
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum area of the box in pixel, this value is used by the default
-<code>boxEndCondition</code> function.</p></td>
+            </td>
         </tr>
 
 	
@@ -417,29 +373,17 @@ Default is <code>ol/events/condition~mouseActionButton</code>.</p></td>
                 
 <span class="param-type"><a href="module-ol_interaction_DragBox.html#~EndCondition">EndCondition</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>A function that takes a <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and two
+            <td class="description last">
+                <p>A function that takes a <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and two
 <a href="module-ol_pixel.html#~Pixel"><code>Pixel</code></a>s to indicate whether a <code>boxend</code> event should be fired.
-Default is <code>true</code> if the area of the box is bigger than the <code>minArea</code> option.</p></td>
+Default is <code>true</code> if the area of the box is bigger than the <code>minArea</code> option.</p>
+                
+            </td>
         </tr>
 
 	
@@ -454,28 +398,16 @@ Default is <code>true</code> if the area of the box is bigger than the <code>min
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Code to execute just
+before <code>boxend</code> is fired.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Code to execute just
-before <code>boxend</code> is fired.</p></td>
+            </td>
         </tr>
 
 	

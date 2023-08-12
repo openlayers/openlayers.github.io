@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -220,30 +212,18 @@
                 
 <span class="param-type"><a href="module-ol_Feature.html#~FeatureClass">FeatureClass</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Class for features returned by
+            <td class="description last">
+                <p>Class for features returned by
 <a href="module-ol_format_MVT-MVT.html#readFeatures"><code>readFeatures</code></a>. Set to <a href="module-ol_Feature-Feature.html"><code>Feature</code></a> to get full editing and geometry
 support at the cost of decreased rendering performance. The default is
-<a href="module-ol_render_Feature-RenderFeature.html"><code>RenderFeature</code></a>, which is optimized for rendering and hit detection.</p></td>
+<a href="module-ol_render_Feature-RenderFeature.html"><code>RenderFeature</code></a>, which is optimized for rendering and hit detection.</p>
+                
+            </td>
         </tr>
 
 	
@@ -259,28 +239,16 @@ support at the cost of decreased rendering performance. The default is
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'geometry')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Geometry name to use when creating features.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'geometry'
-                
-                </td>
-            
-
-            <td class="description last"><p>Geometry name to use when creating features.</p></td>
+            </td>
         </tr>
 
 	
@@ -296,28 +264,16 @@ support at the cost of decreased rendering performance. The default is
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'layer')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Name of the feature attribute that holds the layer name.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'layer'
-                
-                </td>
-            
-
-            <td class="description last"><p>Name of the feature attribute that holds the layer name.</p></td>
+            </td>
         </tr>
 
 	
@@ -332,27 +288,15 @@ support at the cost of decreased rendering performance. The default is
                 
 <span class="param-type">Array.&lt;string></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Layers to read features from. If not provided, features will be read from all</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Layers to read features from. If not provided, features will be read from all</p></td>
+            </td>
         </tr>
 
 	
@@ -367,28 +311,16 @@ support at the cost of decreased rendering performance. The default is
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Optional property that will be assigned as the feature id and removed from the properties.
+layers.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Optional property that will be assigned as the feature id and removed from the properties.
-layers.</p></td>
+            </td>
         </tr>
 
 	

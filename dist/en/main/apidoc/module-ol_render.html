@@ -843,10 +843,6 @@ It takes two instances of <a href="module-ol_Feature-Feature.html"><code>Feature
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -865,14 +861,14 @@ It takes two instances of <a href="module-ol_Feature-Feature.html"><code>Feature
 <span class="param-type">CanvasRenderingContext2D</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Canvas context that the layer is being rendered to.</p></td>
+            <td class="description last">
+                <p>Canvas context that the layer is being rendered to.</p>
+                
+            </td>
         </tr>
 
 	
@@ -888,14 +884,14 @@ It takes two instances of <a href="module-ol_Feature-Feature.html"><code>Feature
 <span class="param-type"><a href="module-ol_Feature.html#~FeatureLike">FeatureLike</a></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Feature.</p></td>
+            <td class="description last">
+                <p>Feature.</p>
+                
+            </td>
         </tr>
 
 	
@@ -911,14 +907,14 @@ It takes two instances of <a href="module-ol_Feature-Feature.html"><code>Feature
 <span class="param-type"><a href="module-ol_geom_SimpleGeometry-SimpleGeometry.html">SimpleGeometry</a></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Geometry.</p></td>
+            <td class="description last">
+                <p>Geometry.</p>
+                
+            </td>
         </tr>
 
 	
@@ -934,14 +930,14 @@ It takes two instances of <a href="module-ol_Feature-Feature.html"><code>Feature
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Pixel ratio used by the layer renderer.</p></td>
+            <td class="description last">
+                <p>Pixel ratio used by the layer renderer.</p>
+                
+            </td>
         </tr>
 
 	
@@ -957,15 +953,15 @@ It takes two instances of <a href="module-ol_Feature-Feature.html"><code>Feature
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Resolution that the render batch was created and optimized for.
-This is not the view's resolution that is being rendered.</p></td>
+            <td class="description last">
+                <p>Resolution that the render batch was created and optimized for.
+This is not the view's resolution that is being rendered.</p>
+                
+            </td>
         </tr>
 
 	
@@ -981,14 +977,14 @@ This is not the view's resolution that is being rendered.</p></td>
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Rotation of the rendered layer in radians.</p></td>
+            <td class="description last">
+                <p>Rotation of the rendered layer in radians.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1056,14 +1052,6 @@ This is not the view's resolution that is being rendered.</p></td>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -1081,30 +1069,18 @@ This is not the view's resolution that is being rendered.</p></td>
                 
 <span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Desired size of the canvas in css
+            <td class="description last">
+                <p>Desired size of the canvas in css
 pixels. When provided, both canvas and css size will be set according to the
 <code>pixelRatio</code>. If not provided, the current canvas and css sizes will not be
-altered.</p></td>
+altered.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1120,29 +1096,17 @@ altered.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to window.devicePixelRatio)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Pixel ratio (canvas
+pixel to css pixel ratio) for the canvas.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    window.devicePixelRatio
-                
-                </td>
-            
-
-            <td class="description last"><p>Pixel ratio (canvas
-pixel to css pixel ratio) for the canvas.</p></td>
+            </td>
         </tr>
 
 	

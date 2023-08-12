@@ -678,14 +678,6 @@ cousins.</p>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -704,25 +696,15 @@ cousins.</p>
 <span class="param-type"><a href="module-ol_geom_Geometry.html#~Type">Type</a></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Geometry type of
+the geometries being drawn with this instance.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Geometry type of
-the geometries being drawn with this instance.</p></td>
+            </td>
         </tr>
 
 	
@@ -738,32 +720,20 @@ the geometries being drawn with this instance.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 6)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    6
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum distance in pixels between
+            <td class="description last">
+                <p>The maximum distance in pixels between
 &quot;down&quot; and &quot;up&quot; for a &quot;up&quot; event to be considered a &quot;click&quot; event and
 actually add a point/vertex to the geometry being drawn.  The default of <code>6</code>
 was chosen for the draw interaction to behave correctly on mouse as well as
-on touch devices.</p></td>
+on touch devices.</p>
+                
+            </td>
         </tr>
 
 	
@@ -778,27 +748,15 @@ on touch devices.</p></td>
                 
 <span class="param-type"><a href="module-ol_Collection-Collection.html">Collection</a>&lt;<a href="module-ol_Feature-Feature.html">Feature</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Destination collection for the drawn features.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Destination collection for the drawn features.</p></td>
+            </td>
         </tr>
 
 	
@@ -813,28 +771,16 @@ on touch devices.</p></td>
                 
 <span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Destination source for
+the drawn features.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Destination source for
-the drawn features.</p></td>
+            </td>
         </tr>
 
 	
@@ -850,29 +796,17 @@ the drawn features.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 500)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Delay in milliseconds after pointerdown
+before the current vertex can be dragged to its exact position.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    500
-                
-                </td>
-            
-
-            <td class="description last"><p>Delay in milliseconds after pointerdown
-before the current vertex can be dragged to its exact position.</p></td>
+            </td>
         </tr>
 
 	
@@ -888,29 +822,17 @@ before the current vertex can be dragged to its exact position.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 12)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Pixel distance for snapping to the
+drawing finish. Must be greater than <code>0</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    12
-                
-                </td>
-            
-
-            <td class="description last"><p>Pixel distance for snapping to the
-drawing finish. Must be greater than <code>0</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -926,29 +848,17 @@ drawing finish. Must be greater than <code>0</code>.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Stop click, singleclick, and
+doubleclick events from firing during drawing.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Stop click, singleclick, and
-doubleclick events from firing during drawing.</p></td>
+            </td>
         </tr>
 
 	
@@ -963,29 +873,17 @@ doubleclick events from firing during drawing.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The number of points that can be drawn before
+            <td class="description last">
+                <p>The number of points that can be drawn before
 a polygon ring or line string is finished. By default there is no
-restriction.</p></td>
+restriction.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1000,29 +898,17 @@ restriction.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The number of points that must be drawn
+            <td class="description last">
+                <p>The number of points that must be drawn
 before a polygon ring or line string can be finished. Default is <code>3</code> for
-polygon rings and <code>2</code> for line strings.</p></td>
+polygon rings and <code>2</code> for line strings.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1037,30 +923,18 @@ polygon rings and <code>2</code> for line strings.</p></td>
                 
 <span class="param-type"><a href="module-ol_events_condition.html#~Condition">Condition</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>A function
+            <td class="description last">
+                <p>A function
 that takes an <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and returns a
 boolean to indicate whether the drawing can be finished. Not used when drawing
-POINT or MULTI_POINT geometries.</p></td>
+POINT or MULTI_POINT geometries.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1078,27 +952,15 @@ POINT or MULTI_POINT geometries.</p></td>
 
 <span class="param-type"><a href="module-ol_style_flat.html#~FlatStyleLike">FlatStyleLike</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Style for sketch features.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Style for sketch features.</p></td>
+            </td>
         </tr>
 
 	
@@ -1113,27 +975,15 @@ POINT or MULTI_POINT geometries.</p></td>
                 
 <span class="param-type"><a href="module-ol_interaction_Draw.html#~GeometryFunction">GeometryFunction</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Function that is called when a geometry's coordinates are updated.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Function that is called when a geometry's coordinates are updated.</p></td>
+            </td>
         </tr>
 
 	
@@ -1148,28 +998,16 @@ POINT or MULTI_POINT geometries.</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Geometry name to use for features created
+by the draw interaction.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Geometry name to use for features created
-by the draw interaction.</p></td>
+            </td>
         </tr>
 
 	
@@ -1184,31 +1022,19 @@ by the draw interaction.</p></td>
                 
 <span class="param-type"><a href="module-ol_events_condition.html#~Condition">Condition</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>A function that
+            <td class="description last">
+                <p>A function that
 takes an <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and returns a
 boolean to indicate whether that event should be handled.
 By default <a href="module-ol_events_condition.html#.noModifierKeys"><code>noModifierKeys</code></a>, i.e. a click,
-adds a vertex or deactivates freehand drawing.</p></td>
+adds a vertex or deactivates freehand drawing.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1224,30 +1050,18 @@ adds a vertex or deactivates freehand drawing.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Operate in freehand mode for lines,
+            <td class="description last">
+                <p>Operate in freehand mode for lines,
 polygons, and circles.  This makes the interaction always operate in freehand
-mode and takes precedence over any <code>freehandCondition</code> option.</p></td>
+mode and takes precedence over any <code>freehandCondition</code> option.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1262,31 +1076,19 @@ mode and takes precedence over any <code>freehandCondition</code> option.</p></t
                 
 <span class="param-type"><a href="module-ol_events_condition.html#~Condition">Condition</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Condition that activates freehand drawing for lines and polygons. This
+            <td class="description last">
+                <p>Condition that activates freehand drawing for lines and polygons. This
 function takes an <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and
 returns a boolean to indicate whether that event should be handled. The
 default is <a href="module-ol_events_condition.html#.shiftKeyOnly"><code>shiftKeyOnly</code></a>, meaning that the
-Shift key activates freehand drawing.</p></td>
+Shift key activates freehand drawing.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1305,29 +1107,17 @@ Shift key activates freehand drawing.</p></td>
 <span class="param-type"><a href="module-ol_events_condition.html#~Condition">Condition</a></span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Trace a portion of another geometry.
+Ignored when in freehand mode.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Trace a portion of another geometry.
-Ignored when in freehand mode.</p></td>
+            </td>
         </tr>
 
 	
@@ -1342,29 +1132,17 @@ Ignored when in freehand mode.</p></td>
                 
 <span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Source for features to trace.  If tracing is active and a <code>traceSource</code> is
+            <td class="description last">
+                <p>Source for features to trace.  If tracing is active and a <code>traceSource</code> is
 not provided, the interaction's <code>source</code> will be used.  Tracing requires that the interaction is configured with
-either a <code>traceSource</code> or a <code>source</code>.</p></td>
+either a <code>traceSource</code> or a <code>source</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1380,29 +1158,17 @@ either a <code>traceSource</code> or a <code>source</code>.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Wrap the world horizontally on the sketch
+overlay.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Wrap the world horizontally on the sketch
-overlay.</p></td>
+            </td>
         </tr>
 
 	
@@ -1418,29 +1184,17 @@ overlay.</p></td>
 <span class="param-type"><a href="module-ol_geom_Geometry.html#~GeometryLayout">GeometryLayout</a></span>
 
 
+                
+                    (defaults to 'XY')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Layout of the
+feature geometries created by the draw interaction.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'XY'
-                
-                </td>
-            
-
-            <td class="description last"><p>Layout of the
-feature geometries created by the draw interaction.</p></td>
+            </td>
         </tr>
 
 	
@@ -1558,10 +1312,6 @@ feature geometries created by the draw interaction.</p></td>
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -1580,14 +1330,14 @@ feature geometries created by the draw interaction.</p></td>
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The closest point expressed as a fraction along the segment length.</p></td>
+            <td class="description last">
+                <p>The closest point expressed as a fraction along the segment length.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1603,14 +1353,14 @@ feature geometries created by the draw interaction.</p></td>
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The squared distance of the point to the segment.</p></td>
+            <td class="description last">
+                <p>The squared distance of the point to the segment.</p>
+                
+            </td>
         </tr>
 
 	
@@ -1778,12 +1528,6 @@ feature geometries created by the draw interaction.</p></td>
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -1802,20 +1546,14 @@ feature geometries created by the draw interaction.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Tracing active.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Tracing active.</p></td>
+            </td>
         </tr>
 
 	
@@ -1830,23 +1568,15 @@ feature geometries created by the draw interaction.</p></td>
                 
 <span class="param-type"><a href="module-ol_pixel.html#~Pixel">Pixel</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The initially clicked pixel location.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The initially clicked pixel location.</p></td>
+            </td>
         </tr>
 
 	
@@ -1861,23 +1591,15 @@ feature geometries created by the draw interaction.</p></td>
                 
 <span class="param-type">Array&lt;<a href="module-ol_interaction_Draw.html#~TraceTarget">TraceTarget</a>></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Targets available for tracing.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Targets available for tracing.</p></td>
+            </td>
         </tr>
 
 	
@@ -1892,24 +1614,16 @@ feature geometries created by the draw interaction.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The index of the currently traced target.  A value of -1 indicates
+that no trace target is active.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The index of the currently traced target.  A value of -1 indicates
-that no trace target is active.</p></td>
+            </td>
         </tr>
 
 	
@@ -1977,10 +1691,6 @@ that no trace target is active.</p></td>
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -1999,14 +1709,14 @@ that no trace target is active.</p></td>
 <span class="param-type">Array&lt;<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>></span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Target coordinates.</p></td>
+            <td class="description last">
+                <p>Target coordinates.</p>
+                
+            </td>
         </tr>
 
 	
@@ -2022,14 +1732,14 @@ that no trace target is active.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The target coordinates are a linear ring.</p></td>
+            <td class="description last">
+                <p>The target coordinates are a linear ring.</p>
+                
+            </td>
         </tr>
 
 	
@@ -2045,15 +1755,15 @@ that no trace target is active.</p></td>
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The index of first traced coordinate.  A fractional index represents an
-edge intersection.  Index values for rings will wrap (may be negative or larger than coordinates length).</p></td>
+            <td class="description last">
+                <p>The index of first traced coordinate.  A fractional index represents an
+edge intersection.  Index values for rings will wrap (may be negative or larger than coordinates length).</p>
+                
+            </td>
         </tr>
 
 	
@@ -2069,14 +1779,14 @@ edge intersection.  Index values for rings will wrap (may be negative or larger 
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The index of last traced coordinate.  Details from startIndex also apply here.</p></td>
+            <td class="description last">
+                <p>The index of last traced coordinate.  Details from startIndex also apply here.</p>
+                
+            </td>
         </tr>
 
 	
@@ -2144,10 +1854,6 @@ edge intersection.  Index values for rings will wrap (may be negative or larger 
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -2166,14 +1872,14 @@ edge intersection.  Index values for rings will wrap (may be negative or larger 
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The new target index.</p></td>
+            <td class="description last">
+                <p>The new target index.</p>
+                
+            </td>
         </tr>
 
 	
@@ -2189,14 +1895,14 @@ edge intersection.  Index values for rings will wrap (may be negative or larger 
 <span class="param-type">number</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>The new segment end index.</p></td>
+            <td class="description last">
+                <p>The new segment end index.</p>
+                
+            </td>
         </tr>
 
 	

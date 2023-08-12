@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -220,27 +212,15 @@
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.</p></td>
+            </td>
         </tr>
 
 	
@@ -256,29 +236,17 @@
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Use interpolated values when resampling.  By default,
+linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Use interpolated values when resampling.  By default,
-linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.</p></td>
+            </td>
         </tr>
 
 	
@@ -294,24 +262,14 @@ linear interpolation is used when resampling.  Set to false to use the nearest n
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Layer name. Valid values: <code>alidade_smooth</code>, <code>alidade_smooth_dark</code>, <code>stadia_outdoors</code>, <code>stamen_terrain</code>, <code>stamen_terrain_background</code>, <code>stamen_terrain_labels</code>, <code>stamen_terrain_lines</code>, <code>stamen_toner_background</code>, <code>stamen_toner</code>, <code>stamen_toner_labels</code>, <code>stamen_toner_lines</code>, <code>stamen_toner_lite</code>, <code>stamen_watercolor</code>, and <code>osm_bright</code>.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Layer name. Valid values: <code>alidade_smooth</code>, <code>alidade_smooth_dark</code>, <code>stadia_outdoors</code>, <code>stamen_terrain</code>, <code>stamen_terrain_background</code>, <code>stamen_terrain_labels</code>, <code>stamen_terrain_lines</code>, <code>stamen_toner_background</code>, <code>stamen_toner</code>, <code>stamen_toner_labels</code>, <code>stamen_toner_lines</code>, <code>stamen_toner_lite</code>, <code>stamen_watercolor</code>, and <code>osm_bright</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -326,27 +284,15 @@ linear interpolation is used when resampling.  Set to false to use the nearest n
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Minimum zoom.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Minimum zoom.</p></td>
+            </td>
         </tr>
 
 	
@@ -361,27 +307,15 @@ linear interpolation is used when resampling.  Set to false to use the nearest n
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Maximum zoom.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Maximum zoom.</p></td>
+            </td>
         </tr>
 
 	
@@ -397,29 +331,17 @@ linear interpolation is used when resampling.  Set to false to use the nearest n
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0.5)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Maximum allowed reprojection error (in pixels).
+Higher values can increase reprojection performance, but decrease precision.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0.5
-                
-                </td>
-            
-
-            <td class="description last"><p>Maximum allowed reprojection error (in pixels).
-Higher values can increase reprojection performance, but decrease precision.</p></td>
+            </td>
         </tr>
 
 	
@@ -434,30 +356,18 @@ Higher values can increase reprojection performance, but decrease precision.</p>
                 
 <span class="param-type"><a href="module-ol_Tile.html#~LoadFunction">LoadFunction</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Optional function to load a tile given a URL. The default is</p>
+            <td class="description last">
+                <p>Optional function to load a tile given a URL. The default is</p>
 <pre class="prettyprint source lang-js"><code>function(imageTile, src) {
   imageTile.getImage().src = src;
-};</code></pre></td>
+};</code></pre>
+                
+            </td>
         </tr>
 
 	
@@ -473,29 +383,17 @@ Higher values can increase reprojection performance, but decrease precision.</p>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 250)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Duration of the opacity transition for rendering.
+To disable the opacity transition, pass <code>transition: 0</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    250
-                
-                </td>
-            
-
-            <td class="description last"><p>Duration of the opacity transition for rendering.
-To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -510,27 +408,15 @@ To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>URL template. Must include <code>{x}</code>, <code>{y}</code> or <code>{-y}</code>, and <code>{z}</code> placeholders.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>URL template. Must include <code>{x}</code>, <code>{y}</code> or <code>{-y}</code>, and <code>{z}</code> placeholders.</p></td>
+            </td>
         </tr>
 
 	
@@ -546,28 +432,16 @@ To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Whether to wrap the world horizontally.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to wrap the world horizontally.</p></td>
+            </td>
         </tr>
 
 	
@@ -586,29 +460,17 @@ To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
 <span class="param-type"><a href="module-ol_array.html#~NearestDirectionFunction">NearestDirectionFunction</a></span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Choose whether to use tiles with a higher or lower zoom level when between integer
+zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResolution"><code>getZForResolution</code></a>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Choose whether to use tiles with a higher or lower zoom level when between integer
-zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResolution"><code>getZForResolution</code></a>.</p></td>
+            </td>
         </tr>
 
 	
@@ -624,24 +486,14 @@ zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResol
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Stadia Maps API key. Not required for localhost or most public web deployments. See <a href="https://docs.stadiamaps.com/authentication/">https://docs.stadiamaps.com/authentication/</a> for details.</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Stadia Maps API key. Not required for localhost or most public web deployments. See <a href="https://docs.stadiamaps.com/authentication/">https://docs.stadiamaps.com/authentication/</a> for details.</p></td>
+            </td>
         </tr>
 
 	
@@ -657,24 +509,14 @@ zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResol
 <span class="param-type">boolean</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Use retina tiles (if available; not available for Stamen Watercolor).</p>
                 
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Use retina tiles (if available; not available for Stamen Watercolor).</p></td>
+            </td>
         </tr>
 
 	

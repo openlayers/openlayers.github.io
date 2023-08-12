@@ -432,10 +432,6 @@ Note: both methods can process arguments recursively.</p>
 
 		<th>Type</th>
 
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -454,14 +450,14 @@ Note: both methods can process arguments recursively.</p>
 <span class="param-type">function</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Returns one or several types</p></td>
+            <td class="description last">
+                <p>Returns one or several types</p>
+                
+            </td>
         </tr>
 
 	
@@ -477,16 +473,16 @@ Note: both methods can process arguments recursively.</p>
 <span class="param-type">function</span>
 
 
+                
             
             </td>
 
-            
-
-            
-
-            <td class="description last"><p>Returns a GLSL-compatible string
+            <td class="description last">
+                <p>Returns a GLSL-compatible string
 given a parsing context, an array of arguments and an expected type.
-Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTypes.STRING or ValueTypes.ANY for instance</p></td>
+Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTypes.STRING or ValueTypes.ANY for instance</p>
+                
+            </td>
         </tr>
 
 	
@@ -558,12 +554,6 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -581,23 +571,15 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
                 
 <span class="param-type">boolean</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>If false, means the expression output should be made for a vertex shader</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>If false, means the expression output should be made for a vertex shader</p></td>
+            </td>
         </tr>
 
 	
@@ -613,20 +595,14 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
 <span class="param-type">Array&lt;<a href="module-ol_style_expressions.html#~ParsingContextExternal">ParsingContextExternal</a>></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>External variables used in the expression</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>External variables used in the expression</p></td>
+            </td>
         </tr>
 
 	
@@ -642,20 +618,14 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
 <span class="param-type">Array&lt;<a href="module-ol_style_expressions.html#~ParsingContextExternal">ParsingContextExternal</a>></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>External attributes used in the expression</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>External attributes used in the expression</p></td>
+            </td>
         </tr>
 
 	
@@ -671,20 +641,14 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
 <span class="param-type">Object.&lt;string, number></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>This object maps all encountered string values to a number</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>This object maps all encountered string values to a number</p></td>
+            </td>
         </tr>
 
 	
@@ -700,20 +664,14 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
 <span class="param-type">Object.&lt;string, string></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Lookup of functions used by the style.</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Lookup of functions used by the style.</p></td>
+            </td>
         </tr>
 
 	
@@ -728,23 +686,15 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Number of bands per pixel.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Number of bands per pixel.</p></td>
+            </td>
         </tr>
 
 	
@@ -759,23 +709,15 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
                 
 <span class="param-type">Array&lt;PaletteTexture></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>List of palettes used by the style.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>List of palettes used by the style.</p></td>
+            </td>
         </tr>
 
 	
@@ -791,20 +733,14 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
 <span class="param-type"><a href="module-ol_style_literal.html#~LiteralStyle">LiteralStyle</a></span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The style being parsed</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The style being parsed</p></td>
+            </td>
         </tr>
 
 	
@@ -872,12 +808,6 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -896,20 +826,14 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Name, unprefixed</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Name, unprefixed</p></td>
+            </td>
         </tr>
 
 	
@@ -925,20 +849,14 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
 <span class="param-type">ValueTypes</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>One of the value types constants</p>
                 
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>One of the value types constants</p></td>
+            </td>
         </tr>
 
 	
@@ -953,24 +871,16 @@ Note: the expected type can be a combination such as ValueTypes.NUMBER | ValueTy
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Function used for computing the attribute value;
+  if undefined, <code>feature.get(attribute.name)</code> will be used</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Function used for computing the attribute value;
-  if undefined, <code>feature.get(attribute.name)</code> will be used</p></td>
+            </td>
         </tr>
 
 	

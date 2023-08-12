@@ -208,14 +208,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -233,28 +225,16 @@
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Font style as CSS <code>font</code> value, see:
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font">https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font</a>. Default is <code>'10px sans-serif'</code></p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Font style as CSS <code>font</code> value, see:
-<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font">https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font</a>. Default is <code>'10px sans-serif'</code></p></td>
+            </td>
         </tr>
 
 	
@@ -270,29 +250,17 @@
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to Math.PI/4)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>When <code>placement</code> is set to <code>'line'</code>, allow a maximum angle between adjacent characters.
+The expected value is in radians, and the default is 45° (<code>Math.PI / 4</code>).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    Math.PI/4
-                
-                </td>
-            
-
-            <td class="description last"><p>When <code>placement</code> is set to <code>'line'</code>, allow a maximum angle between adjacent characters.
-The expected value is in radians, and the default is 45° (<code>Math.PI / 4</code>).</p></td>
+            </td>
         </tr>
 
 	
@@ -308,28 +276,16 @@ The expected value is in radians, and the default is 45° (<code>Math.PI / 4</co
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Horizontal text offset in pixels. A positive will shift the text right.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Horizontal text offset in pixels. A positive will shift the text right.</p></td>
+            </td>
         </tr>
 
 	
@@ -345,28 +301,16 @@ The expected value is in radians, and the default is 45° (<code>Math.PI / 4</co
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Vertical text offset in pixels. A positive will shift the text down.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Vertical text offset in pixels. A positive will shift the text down.</p></td>
+            </td>
         </tr>
 
 	
@@ -382,29 +326,17 @@ The expected value is in radians, and the default is 45° (<code>Math.PI / 4</co
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>For polygon labels or when <code>placement</code> is set to <code>'line'</code>, allow text to exceed
+the width of the polygon at the label position or the length of the path that it follows.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>For polygon labels or when <code>placement</code> is set to <code>'line'</code>, allow text to exceed
-the width of the polygon at the label position or the length of the path that it follows.</p></td>
+            </td>
         </tr>
 
 	
@@ -420,28 +352,16 @@ the width of the polygon at the label position or the length of the path that it
 <span class="param-type"><a href="module-ol_style_Text.html#~TextPlacement">TextPlacement</a></span>
 
 
+                
+                    (defaults to 'point')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Text placement.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'point'
-                
-                </td>
-            
-
-            <td class="description last"><p>Text placement.</p></td>
+            </td>
         </tr>
 
 	
@@ -456,28 +376,16 @@ the width of the polygon at the label position or the length of the path that it
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Repeat interval. When set, the text will be repeated at this interval, which specifies
+the distance between two text anchors in pixels. Only available when <code>placement</code> is set to <code>'line'</code>. Overrides 'textAlign'.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Repeat interval. When set, the text will be repeated at this interval, which specifies
-the distance between two text anchors in pixels. Only available when <code>placement</code> is set to <code>'line'</code>. Overrides 'textAlign'.</p></td>
+            </td>
         </tr>
 
 	
@@ -495,27 +403,15 @@ the distance between two text anchors in pixels. Only available when <code>place
 
 <span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Scale.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Scale.</p></td>
+            </td>
         </tr>
 
 	
@@ -531,28 +427,16 @@ the distance between two text anchors in pixels. Only available when <code>place
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Whether to rotate the text with the view.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>Whether to rotate the text with the view.</p></td>
+            </td>
         </tr>
 
 	
@@ -568,28 +452,16 @@ the distance between two text anchors in pixels. Only available when <code>place
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Rotation in radians (positive rotation clockwise).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Rotation in radians (positive rotation clockwise).</p></td>
+            </td>
         </tr>
 
 	
@@ -607,31 +479,19 @@ the distance between two text anchors in pixels. Only available when <code>place
 
 <span class="param-type">Array.&lt;string></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Text content or rich text content. For plain text provide a string, which can
+            <td class="description last">
+                <p>Text content or rich text content. For plain text provide a string, which can
 contain line breaks (<code>\n</code>). For rich text provide an array of text/font tuples. A tuple consists of the text to
 render and the font to use (or <code>''</code> to use the text style's font). A line break has to be a separate tuple (i.e. <code>'\n', ''</code>).
 <strong>Example:</strong> <code>['foo', 'bold 10px sans-serif', ' bar', 'italic 10px sans-serif', ' baz', '']</code> will yield &quot;<strong>foo</strong> <em>bar</em> baz&quot;.
-<strong>Note:</strong> Rich text is not supported for <code>placement: 'line'</code> or the immediate rendering API.</p></td>
+<strong>Note:</strong> Rich text is not supported for <code>placement: 'line'</code> or the immediate rendering API.</p>
+                
+            </td>
         </tr>
 
 	
@@ -646,29 +506,17 @@ render and the font to use (or <code>''</code> to use the text style's font). A 
                 
 <span class="param-type">CanvasTextAlign</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Text alignment. Possible values: <code>'left'</code>, <code>'right'</code>, <code>'center'</code>, <code>'end'</code> or <code>'start'</code>.
+            <td class="description last">
+                <p>Text alignment. Possible values: <code>'left'</code>, <code>'right'</code>, <code>'center'</code>, <code>'end'</code> or <code>'start'</code>.
 Default is <code>'center'</code> for <code>placement: 'point'</code>. For <code>placement: 'line'</code>, the default is to let the renderer choose a
-placement where <code>maxAngle</code> is not exceeded.</p></td>
+placement where <code>maxAngle</code> is not exceeded.</p>
+                
+            </td>
         </tr>
 
 	
@@ -683,30 +531,18 @@ placement where <code>maxAngle</code> is not exceeded.</p></td>
                 
 <span class="param-type"><a href="module-ol_style_Text.html#~TextJustify">TextJustify</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Text justification within the text box.
+            <td class="description last">
+                <p>Text justification within the text box.
 If not set, text is justified towards the <code>textAlign</code> anchor.
 Otherwise, use options <code>'left'</code>, <code>'center'</code>, or <code>'right'</code> to justify the text within the text box.
-<strong>Note:</strong> <code>justify</code> is ignored for immediate rendering and also for <code>placement: 'line'</code>.</p></td>
+<strong>Note:</strong> <code>justify</code> is ignored for immediate rendering and also for <code>placement: 'line'</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -722,29 +558,17 @@ Otherwise, use options <code>'left'</code>, <code>'center'</code>, or <code>'rig
 <span class="param-type">CanvasTextBaseline</span>
 
 
+                
+                    (defaults to 'middle')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Text base line. Possible values: <code>'bottom'</code>, <code>'top'</code>, <code>'middle'</code>, <code>'alphabetic'</code>,
+<code>'hanging'</code>, <code>'ideographic'</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'middle'
-                
-                </td>
-            
-
-            <td class="description last"><p>Text base line. Possible values: <code>'bottom'</code>, <code>'top'</code>, <code>'middle'</code>, <code>'alphabetic'</code>,
-<code>'hanging'</code>, <code>'ideographic'</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -762,27 +586,15 @@ Otherwise, use options <code>'left'</code>, <code>'center'</code>, or <code>'rig
 
 <span class="param-type">null</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Fill style. If none is provided, we'll use a dark fill-style (#333). Specify <code>null</code> for no fill.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Fill style. If none is provided, we'll use a dark fill-style (#333). Specify <code>null</code> for no fill.</p></td>
+            </td>
         </tr>
 
 	
@@ -797,27 +609,15 @@ Otherwise, use options <code>'left'</code>, <code>'center'</code>, or <code>'rig
                 
 <span class="param-type"><a href="module-ol_style_Stroke-Stroke.html">Stroke</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Stroke style.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Stroke style.</p></td>
+            </td>
         </tr>
 
 	
@@ -832,28 +632,16 @@ Otherwise, use options <code>'left'</code>, <code>'center'</code>, or <code>'rig
                 
 <span class="param-type"><a href="module-ol_style_Fill-Fill.html">Fill</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Fill style for the text background when <code>placement</code> is
+<code>'point'</code>. Default is no fill.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Fill style for the text background when <code>placement</code> is
-<code>'point'</code>. Default is no fill.</p></td>
+            </td>
         </tr>
 
 	
@@ -868,28 +656,16 @@ Otherwise, use options <code>'left'</code>, <code>'center'</code>, or <code>'rig
                 
 <span class="param-type"><a href="module-ol_style_Stroke-Stroke.html">Stroke</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Stroke style for the text background  when <code>placement</code>
+is <code>'point'</code>. Default is no stroke.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Stroke style for the text background  when <code>placement</code>
-is <code>'point'</code>. Default is no stroke.</p></td>
+            </td>
         </tr>
 
 	
@@ -905,29 +681,17 @@ is <code>'point'</code>. Default is no stroke.</p></td>
 <span class="param-type">Array.&lt;number></span>
 
 
+                
+                    (defaults to [0, 0, 0, 0])
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Padding in pixels around the text for decluttering and background. The order of
+values in the array is <code>[top, right, bottom, left]</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    [0, 0, 0, 0]
-                
-                </td>
-            
-
-            <td class="description last"><p>Padding in pixels around the text for decluttering and background. The order of
-values in the array is <code>[top, right, bottom, left]</code>.</p></td>
+            </td>
         </tr>
 
 	

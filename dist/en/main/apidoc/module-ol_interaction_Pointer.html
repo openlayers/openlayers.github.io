@@ -195,12 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -218,24 +212,16 @@
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Function handling &quot;down&quot; events. If the function returns <code>true</code> then a drag
+sequence is started.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Function handling &quot;down&quot; events. If the function returns <code>true</code> then a drag
-sequence is started.</p></td>
+            </td>
         </tr>
 
 	
@@ -250,24 +236,16 @@ sequence is started.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Function handling &quot;drag&quot; events. This function is called on &quot;move&quot; events
+during a drag sequence.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Function handling &quot;drag&quot; events. This function is called on &quot;move&quot; events
-during a drag sequence.</p></td>
+            </td>
         </tr>
 
 	
@@ -282,26 +260,18 @@ during a drag sequence.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Method called by the map to notify the interaction that a browser event was
+            <td class="description last">
+                <p>Method called by the map to notify the interaction that a browser event was
 dispatched to the map. The function may return <code>false</code> to prevent the
 propagation of the event to other interactions in the map's interactions
-chain.</p></td>
+chain.</p>
+                
+            </td>
         </tr>
 
 	
@@ -316,27 +286,19 @@ chain.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Function handling &quot;move&quot; events. This function is called on &quot;move&quot; events.
+            <td class="description last">
+                <p>Function handling &quot;move&quot; events. This function is called on &quot;move&quot; events.
 This functions is also called during a drag sequence, so during a drag
 sequence both the <code>handleDragEvent</code> function and this function are called.
 If <code>handleDownEvent</code> is defined and it returns true this function will not
-be called during a drag sequence.</p></td>
+be called during a drag sequence.</p>
+                
+            </td>
         </tr>
 
 	
@@ -351,24 +313,16 @@ be called during a drag sequence.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Function handling &quot;up&quot; events. If the function returns <code>false</code> then the
+current drag sequence is stopped.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Function handling &quot;up&quot; events. If the function returns <code>false</code> then the
-current drag sequence is stopped.</p></td>
+            </td>
         </tr>
 
 	
@@ -383,24 +337,16 @@ current drag sequence is stopped.</p></td>
                 
 <span class="param-type">function</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Should the down event be propagated to other interactions, or should be
+stopped?</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Should the down event be propagated to other interactions, or should be
-stopped?</p></td>
+            </td>
         </tr>
 
 	

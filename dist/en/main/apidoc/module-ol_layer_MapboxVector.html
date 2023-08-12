@@ -195,14 +195,6 @@
 
 		<th>Type</th>
 
-		
-		<th>Argument</th>
-		
-
-		
-		<th>Default</th>
-		
-
 		<th class="last">Description</th>
 	</tr>
 	</thead>
@@ -221,26 +213,16 @@
 <span class="param-type">string</span>
 
 
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The URL of the Mapbox style object to use for this layer.  For a
+            <td class="description last">
+                <p>The URL of the Mapbox style object to use for this layer.  For a
 style created with Mapbox Studio and hosted on Mapbox, this will look like
-'mapbox://styles/you/your-style'.</p></td>
+'mapbox://styles/you/your-style'.</p>
+                
+            </td>
         </tr>
 
 	
@@ -255,29 +237,17 @@ style created with Mapbox Studio and hosted on Mapbox, this will look like
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The access token for your Mapbox style. This has to be provided
+            <td class="description last">
+                <p>The access token for your Mapbox style. This has to be provided
 for <code>mapbox://</code> style urls. For <code>https://</code> and other urls, any access key must be the last query
-parameter of the style url.</p></td>
+parameter of the style url.</p>
+                
+            </td>
         </tr>
 
 	
@@ -292,29 +262,17 @@ parameter of the style url.</p></td>
                 
 <span class="param-type">string</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>If your style uses more than one source, you need to use either the
+            <td class="description last">
+                <p>If your style uses more than one source, you need to use either the
 <code>source</code> property or the <code>layers</code> property to limit rendering to a single vector source.  The
-<code>source</code> property corresponds to the id of a vector source in your Mapbox style.</p></td>
+<code>source</code> property corresponds to the id of a vector source in your Mapbox style.</p>
+                
+            </td>
         </tr>
 
 	
@@ -329,30 +287,18 @@ parameter of the style url.</p></td>
                 
 <span class="param-type">Array.&lt;string></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Limit rendering to the list of included layers.  All layers
+            <td class="description last">
+                <p>Limit rendering to the list of included layers.  All layers
 must share the same vector source.  If your style uses more than one source, you need to use
 either the <code>source</code> property or the <code>layers</code> property to limit rendering to a single vector
-source.</p></td>
+source.</p>
+                
+            </td>
         </tr>
 
 	
@@ -368,28 +314,14 @@ source.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Declutter images and text. Decluttering is applied to all
+            <td class="description last">
+                <p>Declutter images and text. Decluttering is applied to all
 image and text styles of all Vector and VectorTile layers that have set this to <code>true</code>. The priority
 is defined by the z-index of the layer, the <code>zIndex</code> of the style and the render order of features.
 Higher z-index means higher priority. Within the same z-index, a feature rendered before another has
@@ -397,7 +329,9 @@ higher priority.</p>
 <p>As an optimization decluttered features from layers with the same <code>className</code> are rendered above
 the fill and stroke styles of all of those layers regardless of z-index.  To opt out of this
 behavior and place declutterd features with their own layer configure the layer with a <code>className</code>
-other than <code>ol-layer</code>.</p></td>
+other than <code>ol-layer</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -415,29 +349,17 @@ other than <code>ol-layer</code>.</p></td>
 
 <span class="param-type">false</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Background color for the layer.
+            <td class="description last">
+                <p>Background color for the layer.
 If not specified, the background from the Mapbox style object will be used. Set to <code>false</code> to prevent
-the Mapbox style's background from being used.</p></td>
+the Mapbox style's background from being used.</p>
+                
+            </td>
         </tr>
 
 	
@@ -453,28 +375,16 @@ the Mapbox style's background from being used.</p></td>
 <span class="param-type">string</span>
 
 
+                
+                    (defaults to 'ol-layer')
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>A CSS class name to set to the layer element.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'ol-layer'
-                
-                </td>
-            
-
-            <td class="description last"><p>A CSS class name to set to the layer element.</p></td>
+            </td>
         </tr>
 
 	
@@ -490,28 +400,16 @@ the Mapbox style's background from being used.</p></td>
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 1)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Opacity (0, 1).</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>Opacity (0, 1).</p></td>
+            </td>
         </tr>
 
 	
@@ -527,28 +425,16 @@ the Mapbox style's background from being used.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Visibility.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Visibility.</p></td>
+            </td>
         </tr>
 
 	
@@ -563,28 +449,16 @@ the Mapbox style's background from being used.</p></td>
                 
 <span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The bounding extent for layer rendering.  The layer will not be
+rendered outside of this extent.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The bounding extent for layer rendering.  The layer will not be
-rendered outside of this extent.</p></td>
+            </td>
         </tr>
 
 	
@@ -599,30 +473,18 @@ rendered outside of this extent.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The z-index for layer rendering.  At rendering time, the layers
+            <td class="description last">
+                <p>The z-index for layer rendering.  At rendering time, the layers
 will be ordered, first by Z-index and then by position. When <code>undefined</code>, a <code>zIndex</code> of 0 is assumed
 for layers that are added to the map's <code>layers</code> collection, or <code>Infinity</code> when the layer's <code>setMap()</code>
-method was used.</p></td>
+method was used.</p>
+                
+            </td>
         </tr>
 
 	
@@ -637,28 +499,16 @@ method was used.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The minimum resolution (inclusive) at which this layer will be
+visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum resolution (inclusive) at which this layer will be
-visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -673,29 +523,17 @@ visible.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum resolution (exclusive) below which this layer will
+            <td class="description last">
+                <p>The maximum resolution (exclusive) below which this layer will
 be visible. If neither <code>maxResolution</code> nor <code>minZoom</code> are defined, the layer's <code>maxResolution</code> will
-match the style source's <code>minzoom</code>.</p></td>
+match the style source's <code>minzoom</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -710,29 +548,17 @@ match the style source's <code>minzoom</code>.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The minimum view zoom level (exclusive) above which this layer will
+            <td class="description last">
+                <p>The minimum view zoom level (exclusive) above which this layer will
 be visible. If neither <code>maxResolution</code> nor <code>minZoom</code> are defined, the layer's <code>minZoom</code> will match
-the style source's <code>minzoom</code>.</p></td>
+the style source's <code>minzoom</code>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -747,28 +573,16 @@ the style source's <code>minzoom</code>.</p></td>
                 
 <span class="param-type">number</span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>The maximum view zoom level (inclusive) at which this layer will
+be visible.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The maximum view zoom level (inclusive) at which this layer will
-be visible.</p></td>
+            </td>
         </tr>
 
 	
@@ -783,29 +597,17 @@ be visible.</p></td>
                 
 <span class="param-type"><a href="module-ol_render.html#~OrderFunction">OrderFunction</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Render order. Function to be used when sorting
+            <td class="description last">
+                <p>Render order. Function to be used when sorting
 features before rendering. By default features are drawn in the order that they are created. Use
-<code>null</code> to avoid the sort, but get an undefined draw order.</p></td>
+<code>null</code> to avoid the sort, but get an undefined draw order.</p>
+                
+            </td>
         </tr>
 
 	
@@ -821,32 +623,20 @@ features before rendering. By default features are drawn in the order that they 
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 100)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    100
-                
-                </td>
-            
-
-            <td class="description last"><p>The buffer in pixels around the tile extent used by the
+            <td class="description last">
+                <p>The buffer in pixels around the tile extent used by the
 renderer when getting features from the vector tile for the rendering or hit-detection.
 Recommended value: Vector tiles are usually generated with a buffer, so this value should match
 the largest possible buffer of the used tiles. It should be at least the size of the largest
-point symbol or line width.</p></td>
+point symbol or line width.</p>
+                
+            </td>
         </tr>
 
 	
@@ -862,28 +652,14 @@ point symbol or line width.</p></td>
 <span class="param-type"><a href="module-ol_layer_VectorTile.html#~VectorTileRenderType">VectorTileRenderType</a></span>
 
 
+                
+                    (defaults to 'hybrid')
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'hybrid'
-                
-                </td>
-            
-
-            <td class="description last"><p>Render mode for vector tiles:</p>
+            <td class="description last">
+                <p>Render mode for vector tiles:</p>
 <ul>
 <li><code>'hybrid'</code>: Polygon and line elements are rendered as images, so pixels are scaled during zoom
 animations. Point symbols and texts are accurately rendered as vectors and can stay upright on
@@ -891,7 +667,9 @@ rotated views.</li>
 <li><code>'vector'</code>: Everything is rendered as vectors. Use this mode for improved performance on vector
 tile layers with only a few rendered features (e.g. for highlighting a subset of features of
 another layer with the same source).</li>
-</ul></td>
+</ul>
+                
+            </td>
         </tr>
 
 	
@@ -906,30 +684,18 @@ another layer with the same source).</li>
                 
 <span class="param-type"><a href="module-ol_Map-Map.html">Map</a></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Sets the layer as overlay on a map. The map will not manage
+            <td class="description last">
+                <p>Sets the layer as overlay on a map. The map will not manage
 this layer in its layers collection, and the layer will be rendered on top. This is useful for
 temporary layers. The standard way to add a layer to a map and have it managed by the map is to
-use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</p></td>
+use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</p>
+                
+            </td>
         </tr>
 
 	
@@ -945,31 +711,19 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>When set to <code>true</code>, feature batches will be
+            <td class="description last">
+                <p>When set to <code>true</code>, feature batches will be
 recreated during animations. This means that no vectors will be shown clipped, but the setting
 will have a performance impact for large amounts of vector data. When set to <code>false</code>, batches
-will be recreated when no animation is active.</p></td>
+will be recreated when no animation is active.</p>
+                
+            </td>
         </tr>
 
 	
@@ -985,29 +739,17 @@ will be recreated when no animation is active.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to false)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>When set to <code>true</code>, feature batches will be
+recreated during interactions. See also <code>updateWhileAnimating</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>When set to <code>true</code>, feature batches will be
-recreated during interactions. See also <code>updateWhileAnimating</code>.</p></td>
+            </td>
         </tr>
 
 	
@@ -1023,29 +765,17 @@ recreated during interactions. See also <code>updateWhileAnimating</code>.</p></
 <span class="param-type">number</span>
 
 
+                
+                    (defaults to 0)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Preload. Load low-resolution tiles up to <code>preload</code> levels. <code>0</code>
+means no preloading.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    0
-                
-                </td>
-            
-
-            <td class="description last"><p>Preload. Load low-resolution tiles up to <code>preload</code> levels. <code>0</code>
-means no preloading.</p></td>
+            </td>
         </tr>
 
 	
@@ -1061,28 +791,16 @@ means no preloading.</p></td>
 <span class="param-type">boolean</span>
 
 
+                
+                    (defaults to true)
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Use interim tiles on error.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Use interim tiles on error.</p></td>
+            </td>
         </tr>
 
 	
@@ -1097,27 +815,15 @@ means no preloading.</p></td>
                 
 <span class="param-type">Object.&lt;string, *></span>
 
-
+ | undefined
+                
             
             </td>
 
-            
-                <td class="attributes">
+            <td class="description last">
+                <p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p>
                 
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p></td>
+            </td>
         </tr>
 
 	
