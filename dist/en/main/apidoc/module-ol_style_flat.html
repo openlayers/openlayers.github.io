@@ -71,6 +71,9 @@
     <div class="member-list" data-type="typedefs">
         <span class="subtitle">Typedefs</span>
         <ul>
+            <li data-name="booleanexpression"><a href="module-ol_style_flat.html#~BooleanExpression">BooleanExpression</a>
+            <li data-name="colorexpression"><a href="module-ol_style_flat.html#~ColorExpression">ColorExpression</a>
+            <li data-name="defaultstyle"><a href="module-ol_style_flat.html#~DefaultStyle">DefaultStyle</a>
             <li data-name="flatcircle"><a href="module-ol_style_flat.html#~FlatCircle">FlatCircle</a>
             <li data-name="flatfill"><a href="module-ol_style_flat.html#~FlatFill">FlatFill</a>
             <li data-name="flaticon"><a href="module-ol_style_flat.html#~FlatIcon">FlatIcon</a>
@@ -79,6 +82,11 @@
             <li data-name="flatstyle"><a href="module-ol_style_flat.html#~FlatStyle">FlatStyle</a>
             <li data-name="flatstylelike"><a href="module-ol_style_flat.html#~FlatStyleLike">FlatStyleLike</a>
             <li data-name="flattext"><a href="module-ol_style_flat.html#~FlatText">FlatText</a>
+            <li data-name="numberarrayexpression"><a href="module-ol_style_flat.html#~NumberArrayExpression">NumberArrayExpression</a>
+            <li data-name="numberexpression"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a>
+            <li data-name="rule"><a href="module-ol_style_flat.html#~Rule">Rule</a>
+            <li data-name="sizeexpression"><a href="module-ol_style_flat.html#~SizeExpression">SizeExpression</a>
+            <li data-name="stringexpression"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a>
         </ul>
     </div>
               <li class="loading">Loading …
@@ -127,7 +135,33 @@ For example, a style with both stroke and fill properties could look like this:<
   'stroke-color': 'yellow',
   'stroke-width': 1.5,
   'fill-color': 'orange',
-};</code></pre></div>
+};</code></pre><p>See details about the available properties depending on what type of symbolizer should be applied:</p>
+<ul>
+<li><a href="module-ol_style_flat.html#~FlatStroke"><code>Stroke</code></a> - properties for applying a stroke to lines and polygons</li>
+<li><a href="module-ol_style_flat.html#~FlatFill"><code>Fill</code></a> - properties for filling polygons</li>
+<li><a href="module-ol_style_flat.html#~FlatText"><code>Text</code></a> - properties for labeling points, lines, and polygons</li>
+<li><a href="module-ol_style_flat.html#~FlatIcon"><code>Icon</code></a> - properties for rendering points with an icon</li>
+<li><a href="module-ol_style_flat.html#~FlatCircle"><code>Circle</code></a> - properties for rendering points with a circle</li>
+<li><a href="module-ol_style_flat.html#~FlatShape"><code>Shape</code></a> - properties for rendering points with a regular shape</li>
+</ul>
+<p>To conditionally apply styles based on a filter, a list of <a href="module-ol_style_flat.html#~Rule"><code>rules</code></a> can be used.
+For example, to style points with a big orange circle if the population is greater than 1 million and
+a smaller blue circle otherwise:</p>
+<pre class="prettyprint source"><code>const rules = [
+  {
+    filter: ['>', 'population', 1_000_000],
+    style: {
+      'circle-radius': 10,
+      'circle-color': 'red',
+    }
+  },
+  {
+    else: true,
+    style: {
+      'circle-radius': 5,
+      'circle-color': 'blue',
+   },
+ ];</code></pre></div>
         
 
         
@@ -182,6 +216,342 @@ For example, a style with both stroke and fill properties could look like this:<
         <h3 class="subsection-title">Type Definitions</h3>
 
         <dl>
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~BooleanExpression">
+        </div>
+        <h4 class="name">
+            BooleanExpression<span class="type-signature type boolean">{boolean}</span> <span class="type-signature type array">{Array}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>A literal boolean (e.g. <code>true</code>) or an expression that evaluates to a boolean (e.g. <code>['&gt;', ['get', 'population'], 1_000_000]</code>).</p>
+    </div>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~ColorExpression">
+        </div>
+        <h4 class="name">
+            ColorExpression<span class="type-signature type module:ol/color~color">{<a href="module-ol_color.html#~Color">Color</a>}</span> <span class="type-signature type string">{string}</span> <span class="type-signature type array">{Array}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>A CSS named color (e.g. <code>'blue'</code>), an array of 3 RGB values (e.g. <code>[0, 255, 0]</code>), an array of 4 RGBA values
+(e.g. <code>[0, 255, 0, 0.5]</code>), or an expression that evaluates to one of these color types (e.g. <code>['get', 'color']</code>).</p>
+    </div>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~DefaultStyle">
+        </div>
+        <h4 class="name">
+            DefaultStyle<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>These default style properties are applied when no other style is given.</p>
+    </div>
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>fill-color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p><code>'rgba(255,255,255,0.4)'</code></p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stroke-color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p><code>'#3399CC'</code></p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stroke-width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p><code>1.25</code></p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>circle-radius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p><code>5</code></p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>circle-fill-color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p><code>'rgba(255,255,255,0.4)'</code></p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>circle-stroke-width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p><code>1.25</code></p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>circle-stroke-color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p><code>'#3399CC'</code></p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
                 
 <dt class="">
     <div class="nameContainer">
@@ -257,10 +627,7 @@ For example, a style with both stroke and fill properties could look like this:<
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
-|
-
-<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~ColorExpression">ColorExpression</a></span>
 
  | undefined
                 
@@ -283,10 +650,7 @@ For example, a style with both stroke and fill properties could look like this:<
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
-|
-
-<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~ColorExpression">ColorExpression</a></span>
 
  | undefined
                 
@@ -309,7 +673,7 @@ For example, a style with both stroke and fill properties could look like this:<
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
  | undefined
                 
@@ -332,11 +696,11 @@ For example, a style with both stroke and fill properties could look like this:<
             <td class="type">
             
                 
-<span class="param-type">CanvasLineCap</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
 
                 
-                    (defaults to 'round')
+                    <br>(defaults to 'round')
                 
             
             </td>
@@ -357,11 +721,11 @@ For example, a style with both stroke and fill properties could look like this:<
             <td class="type">
             
                 
-<span class="param-type">CanvasLineJoin</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
 
                 
-                    (defaults to 'round')
+                    <br>(defaults to 'round')
                 
             
             </td>
@@ -382,7 +746,7 @@ For example, a style with both stroke and fill properties could look like this:<
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberArrayExpression">NumberArrayExpression</a></span>
 
  | undefined
                 
@@ -405,11 +769,11 @@ For example, a style with both stroke and fill properties could look like this:<
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 0)
+                    <br>(defaults to 0)
                 
             
             </td>
@@ -430,11 +794,11 @@ For example, a style with both stroke and fill properties could look like this:<
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 10)
+                    <br>(defaults to 10)
                 
             
             </td>
@@ -455,11 +819,11 @@ For example, a style with both stroke and fill properties could look like this:<
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberArrayExpression">NumberArrayExpression</a></span>
 
 
                 
-                    (defaults to [0,0])
+                    <br>(defaults to [0,0])
                 
             
             </td>
@@ -480,14 +844,11 @@ For example, a style with both stroke and fill properties could look like this:<
             <td class="type">
             
                 
-<span class="param-type">number</span>
-|
-
-<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~SizeExpression">SizeExpression</a></span>
 
 
                 
-                    (defaults to 1)
+                    <br>(defaults to 1)
                 
             
             </td>
@@ -509,11 +870,11 @@ Unless two dimensional scaling is required a better result may be obtained with 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 0)
+                    <br>(defaults to 0)
                 
             
             </td>
@@ -535,11 +896,11 @@ Unless two dimensional scaling is required a better result may be obtained with 
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~BooleanExpression">BooleanExpression</a></span>
 
 
                 
-                    (defaults to false)
+                    <br>(defaults to false)
                 
             
             </td>
@@ -579,6 +940,29 @@ Unless two dimensional scaling is required a better result may be obtained with 
 
             <td class="description last">
                 <p>Declutter mode</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>z-index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The zIndex of the style.</p>
                 
             </td>
         </tr>
@@ -667,10 +1051,7 @@ Unless two dimensional scaling is required a better result may be obtained with 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
-|
-
-<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~ColorExpression">ColorExpression</a></span>
 
  | undefined
                 
@@ -785,69 +1166,17 @@ points with an icon.</p>
 
         <tr>
             
-                <td class="name"><code>icon-img</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">HTMLImageElement</span>
-|
-
-<span class="param-type">HTMLCanvasElement</span>
-
- | undefined
-                
-            
-            </td>
-
-            <td class="description last">
-                <p>Image object for the icon. If the <code>icon-src</code> option is not provided then the
-provided image must already be loaded. And in that case, it is required
-to provide the size of the image, with the <code>icon-img-size</code> option.</p>
-                
-            </td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>icon-img-size</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
-
- | undefined
-                
-            
-            </td>
-
-            <td class="description last">
-                <p>Image size in pixels. Only required if <code>icon-img</code> is set and <code>icon-src</code> is not.
-The provided size needs to match the actual size of the image.</p>
-                
-            </td>
-        </tr>
-
-	
-
-        <tr>
-            
                 <td class="name"><code>icon-anchor</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberArrayExpression">NumberArrayExpression</a></span>
 
 
                 
-                    (defaults to [0.5, 0.5])
+                    <br>(defaults to [0.5, 0.5])
                 
             
             </td>
@@ -872,7 +1201,7 @@ The provided size needs to match the actual size of the image.</p>
 
 
                 
-                    (defaults to 'top-left')
+                    <br>(defaults to 'top-left')
                 
             
             </td>
@@ -898,7 +1227,7 @@ The provided size needs to match the actual size of the image.</p>
 
 
                 
-                    (defaults to 'fraction')
+                    <br>(defaults to 'fraction')
                 
             
             </td>
@@ -925,7 +1254,7 @@ the x value in pixels.</p>
 
 
                 
-                    (defaults to 'fraction')
+                    <br>(defaults to 'fraction')
                 
             
             </td>
@@ -1007,7 +1336,7 @@ See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_imag
 
 
                 
-                    (defaults to [0, 0])
+                    <br>(defaults to [0, 0])
                 
             
             </td>
@@ -1029,11 +1358,11 @@ sub-rectangle to use from the original icon image.</p>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberArrayExpression">NumberArrayExpression</a></span>
 
 
                 
-                    (defaults to [0,0])
+                    <br>(defaults to [0,0])
                 
             
             </td>
@@ -1058,7 +1387,7 @@ sub-rectangle to use from the original icon image.</p>
 
 
                 
-                    (defaults to 'top-left')
+                    <br>(defaults to 'top-left')
                 
             
             </td>
@@ -1080,11 +1409,11 @@ sub-rectangle to use from the original icon image.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 1)
+                    <br>(defaults to 1)
                 
             
             </td>
@@ -1105,14 +1434,11 @@ sub-rectangle to use from the original icon image.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
-|
-
-<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~SizeExpression">SizeExpression</a></span>
 
 
                 
-                    (defaults to 1)
+                    <br>(defaults to 1)
                 
             
             </td>
@@ -1181,11 +1507,11 @@ with <code>scale</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 0)
+                    <br>(defaults to 0)
                 
             
             </td>
@@ -1206,11 +1532,11 @@ with <code>scale</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~BooleanExpression">BooleanExpression</a></span>
 
 
                 
-                    (defaults to false)
+                    <br>(defaults to false)
                 
             
             </td>
@@ -1273,6 +1599,29 @@ sub-rectangle to use from the origin (sprite) icon image.</p>
 
             <td class="description last">
                 <p>Declutter mode</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>z-index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The zIndex of the style.</p>
                 
             </td>
         </tr>
@@ -1385,10 +1734,7 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
-|
-
-<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~ColorExpression">ColorExpression</a></span>
 
  | undefined
                 
@@ -1411,10 +1757,7 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
-|
-
-<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~ColorExpression">ColorExpression</a></span>
 
  | undefined
                 
@@ -1437,7 +1780,7 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
  | undefined
                 
@@ -1460,11 +1803,11 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">CanvasLineCap</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
 
                 
-                    (defaults to 'round')
+                    <br>(defaults to 'round')
                 
             
             </td>
@@ -1485,11 +1828,11 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">CanvasLineJoin</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
 
                 
-                    (defaults to 'round')
+                    <br>(defaults to 'round')
                 
             
             </td>
@@ -1510,7 +1853,7 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberArrayExpression">NumberArrayExpression</a></span>
 
  | undefined
                 
@@ -1533,11 +1876,11 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 0)
+                    <br>(defaults to 0)
                 
             
             </td>
@@ -1558,11 +1901,11 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 10)
+                    <br>(defaults to 10)
                 
             
             </td>
@@ -1656,7 +1999,7 @@ is the number of sides.</p>
 
 
                 
-                    (defaults to 0)
+                    <br>(defaults to 0)
                 
             
             </td>
@@ -1677,11 +2020,11 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberArrayExpression">NumberArrayExpression</a></span>
 
 
                 
-                    (defaults to [0,0])
+                    <br>(defaults to [0,0])
                 
             
             </td>
@@ -1702,11 +2045,11 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 0)
+                    <br>(defaults to 0)
                 
             
             </td>
@@ -1727,11 +2070,11 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~BooleanExpression">BooleanExpression</a></span>
 
 
                 
-                    (defaults to false)
+                    <br>(defaults to false)
                 
             
             </td>
@@ -1752,14 +2095,11 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
-|
-
-<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~SizeExpression">SizeExpression</a></span>
 
 
                 
-                    (defaults to 1)
+                    <br>(defaults to 1)
                 
             
             </td>
@@ -1799,6 +2139,29 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
 
             <td class="description last">
                 <p>Declutter mode.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>z-index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The zIndex of the style.</p>
                 
             </td>
         </tr>
@@ -1888,10 +2251,7 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
-|
-
-<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~ColorExpression">ColorExpression</a></span>
 
  | undefined
                 
@@ -1914,7 +2274,7 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
  | undefined
                 
@@ -1937,11 +2297,11 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
             <td class="type">
             
                 
-<span class="param-type">CanvasLineCap</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
 
                 
-                    (defaults to 'round')
+                    <br>(defaults to 'round')
                 
             
             </td>
@@ -1962,11 +2322,11 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
             <td class="type">
             
                 
-<span class="param-type">CanvasLineJoin</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
 
                 
-                    (defaults to 'round')
+                    <br>(defaults to 'round')
                 
             
             </td>
@@ -1987,7 +2347,7 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberArrayExpression">NumberArrayExpression</a></span>
 
  | undefined
                 
@@ -2010,11 +2370,11 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 0)
+                    <br>(defaults to 0)
                 
             
             </td>
@@ -2035,17 +2395,40 @@ result may be obtained with appropriate settings for <code>shape-radius</code>, 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 10)
+                    <br>(defaults to 10)
                 
             
             </td>
 
             <td class="description last">
                 <p>Miter limit.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>z-index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The zIndex of the style.</p>
                 
             </td>
         </tr>
@@ -2139,7 +2522,7 @@ can be called with an object literal that has fill, stroke, text, icon, regular 
         <div class="anchor" id="~FlatStyleLike">
         </div>
         <h4 class="name">
-            FlatStyleLike<span class="type-signature type flatstyle">{FlatStyle}</span> <span class="type-signature type array.<module:ol/style/flat~flatstyle>">{Array&lt;<a href="module-ol_style_flat.html#~FlatStyle">FlatStyle</a>>}</span> 
+            FlatStyleLike<span class="type-signature type flatstyle">{FlatStyle}</span> <span class="type-signature type array.<module:ol/style/flat~flatstyle>">{Array&lt;<a href="module-ol_style_flat.html#~FlatStyle">FlatStyle</a>>}</span> <span class="type-signature type array.<module:ol/style/flat~rule>">{Array&lt;<a href="module-ol_style_flat.html#~Rule">Rule</a>>}</span> 
             
 
         </h4>
@@ -2235,10 +2618,7 @@ can be called with an object literal that has fill, stroke, text, icon, regular 
             <td class="type">
             
                 
-<span class="param-type">string</span>
-|
-
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
  | undefined
                 
@@ -2246,11 +2626,7 @@ can be called with an object literal that has fill, stroke, text, icon, regular 
             </td>
 
             <td class="description last">
-                <p>Text content or rich text content. For plain text provide a string, which can
-contain line breaks (<code>\n</code>). For rich text provide an array of text/font tuples. A tuple consists of the text to
-render and the font to use (or <code>''</code> to use the text style's font). A line break has to be a separate tuple (i.e. <code>'\n', ''</code>).
-<strong>Example:</strong> <code>['foo', 'bold 10px sans-serif', ' bar', 'italic 10px sans-serif', ' baz', '']</code> will yield &quot;<strong>foo</strong> <em>bar</em> baz&quot;.
-<strong>Note:</strong> Rich text is not supported for <code>'text-placement': 'line'</code> or the immediate rendering API.</p>
+                <p>Text content (with <code>\n</code> for line breaks).</p>
                 
             </td>
         </tr>
@@ -2265,16 +2641,17 @@ render and the font to use (or <code>''</code> to use the text style's font). A 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
- | undefined
+
+                
+                    <br>(defaults to '10px sans-serif')
                 
             
             </td>
 
             <td class="description last">
-                <p>Font style as CSS <code>font</code> value, see:
-<a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font">https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font</a>. Default is <code>'10px sans-serif'</code></p>
+                <p>Font style as <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/font">CSS <code>font</code></a> value.</p>
                 
             </td>
         </tr>
@@ -2289,11 +2666,11 @@ render and the font to use (or <code>''</code> to use the text style's font). A 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to Math.PI/4)
+                    <br>(defaults to Math.PI/4)
                 
             
             </td>
@@ -2315,11 +2692,11 @@ The expected value is in radians, and the default is 45° (<code>Math.PI / 4</co
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 0)
+                    <br>(defaults to 0)
                 
             
             </td>
@@ -2340,11 +2717,11 @@ The expected value is in radians, and the default is 45° (<code>Math.PI / 4</co
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 0)
+                    <br>(defaults to 0)
                 
             
             </td>
@@ -2365,11 +2742,11 @@ The expected value is in radians, and the default is 45° (<code>Math.PI / 4</co
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~BooleanExpression">BooleanExpression</a></span>
 
 
                 
-                    (defaults to false)
+                    <br>(defaults to false)
                 
             
             </td>
@@ -2391,11 +2768,11 @@ the width of the polygon at the label position or the length of the path that it
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_style_Text.html#~TextPlacement">TextPlacement</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
 
                 
-                    (defaults to 'point')
+                    <br>(defaults to 'point')
                 
             
             </td>
@@ -2416,7 +2793,7 @@ the width of the polygon at the label position or the length of the path that it
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
  | undefined
                 
@@ -2440,10 +2817,7 @@ the width of the polygon at the label position or the length of the path that it
             <td class="type">
             
                 
-<span class="param-type">number</span>
-|
-
-<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~SizeExpression">SizeExpression</a></span>
 
  | undefined
                 
@@ -2466,11 +2840,11 @@ the width of the polygon at the label position or the length of the path that it
             <td class="type">
             
                 
-<span class="param-type">boolean</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~BooleanExpression">BooleanExpression</a></span>
 
 
                 
-                    (defaults to false)
+                    <br>(defaults to false)
                 
             
             </td>
@@ -2491,11 +2865,11 @@ the width of the polygon at the label position or the length of the path that it
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 0)
+                    <br>(defaults to 0)
                 
             
             </td>
@@ -2516,7 +2890,7 @@ the width of the polygon at the label position or the length of the path that it
             <td class="type">
             
                 
-<span class="param-type">CanvasTextAlign</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
  | undefined
                 
@@ -2541,7 +2915,7 @@ placement where <code>text-max-angle</code> is not exceeded.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_style_Text.html#~TextJustify">TextJustify</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
  | undefined
                 
@@ -2567,11 +2941,11 @@ Otherwise, use options <code>'left'</code>, <code>'center'</code>, or <code>'rig
             <td class="type">
             
                 
-<span class="param-type">CanvasTextBaseline</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
 
                 
-                    (defaults to 'middle')
+                    <br>(defaults to 'middle')
                 
             
             </td>
@@ -2593,11 +2967,11 @@ Otherwise, use options <code>'left'</code>, <code>'center'</code>, or <code>'rig
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberArrayExpression">NumberArrayExpression</a></span>
 
 
                 
-                    (defaults to [0, 0, 0, 0])
+                    <br>(defaults to [0, 0, 0, 0])
                 
             
             </td>
@@ -2619,10 +2993,7 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
-|
-
-<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~ColorExpression">ColorExpression</a></span>
 
  | undefined
                 
@@ -2645,10 +3016,7 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
-|
-
-<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~ColorExpression">ColorExpression</a></span>
 
  | undefined
                 
@@ -2671,10 +3039,7 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
-|
-
-<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~ColorExpression">ColorExpression</a></span>
 
  | undefined
                 
@@ -2697,11 +3062,11 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">CanvasLineCap</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
 
                 
-                    (defaults to 'round')
+                    <br>(defaults to 'round')
                 
             
             </td>
@@ -2722,11 +3087,11 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">CanvasLineJoin</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
 
                 
-                    (defaults to 'round')
+                    <br>(defaults to 'round')
                 
             
             </td>
@@ -2747,7 +3112,7 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberArrayExpression">NumberArrayExpression</a></span>
 
  | undefined
                 
@@ -2770,11 +3135,11 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 0)
+                    <br>(defaults to 0)
                 
             
             </td>
@@ -2795,11 +3160,11 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 10)
+                    <br>(defaults to 10)
                 
             
             </td>
@@ -2820,7 +3185,7 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
  | undefined
                 
@@ -2843,10 +3208,7 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
-|
-
-<span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~ColorExpression">ColorExpression</a></span>
 
  | undefined
                 
@@ -2869,11 +3231,11 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">CanvasLineCap</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
 
                 
-                    (defaults to 'round')
+                    <br>(defaults to 'round')
                 
             
             </td>
@@ -2894,11 +3256,11 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">CanvasLineJoin</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
 
 
                 
-                    (defaults to 'round')
+                    <br>(defaults to 'round')
                 
             
             </td>
@@ -2919,7 +3281,7 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberArrayExpression">NumberArrayExpression</a></span>
 
  | undefined
                 
@@ -2942,11 +3304,11 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 0)
+                    <br>(defaults to 0)
                 
             
             </td>
@@ -2967,11 +3329,11 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
-                    (defaults to 10)
+                    <br>(defaults to 10)
                 
             
             </td>
@@ -2992,7 +3354,7 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
  | undefined
                 
@@ -3006,9 +3368,382 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
         </tr>
 
 	
+
+        <tr>
+            
+                <td class="name"><code>z-index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The zIndex of the style.</p>
+                
+            </td>
+        </tr>
+
+	
 	</tbody>
 </table></dl>
         
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~NumberArrayExpression">
+        </div>
+        <h4 class="name">
+            NumberArrayExpression<span class="type-signature type array.<number>">{Array.&lt;number>}</span> <span class="type-signature type array">{Array}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>An array of numbers (e.g. <code>[1, 2, 3]</code>) or an expression that evaluates to the same (e.g. <code>['get', 'values']</code>).</p>
+    </div>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~NumberExpression">
+        </div>
+        <h4 class="name">
+            NumberExpression<span class="type-signature type number">{number}</span> <span class="type-signature type array">{Array}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>A literal number (e.g. <code>42</code>) or an expression that evaluates to a number (e.g. <code>['+', 40, 2]</code>).</p>
+    </div>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~Rule">
+        </div>
+        <h4 class="name">
+            Rule<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>A rule is used to conditionally apply a style.  If the rule's filter evaluates to true,
+the style will be applied.</p>
+    </div>
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>style</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">FlatStyle</span>
+|
+
+<span class="param-type">Array&lt;<a href="module-ol_style_flat.html#~FlatStyle">FlatStyle</a>></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The style to be applied if the filter matches.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>filter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_expr_expression.html#~EncodedExpression">EncodedExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The filter used
+to determine if a style applies.  If no filter is included, the rule always applies
+(unless it is an else rule).</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>else</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>If true, the rule applies only if no other previous rule applies.
+If the else rule also has a filter, the rule will not apply if the filter does not match.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~SizeExpression">
+        </div>
+        <h4 class="name">
+            SizeExpression<span class="type-signature type number">{number}</span> <span class="type-signature type array.<number>">{Array.&lt;number>}</span> <span class="type-signature type array">{Array}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>An array of two numbers (e.g. <code>[10, 20]</code>) or an expression that evaluates to the same (e.g. <code>['get', 'size']</code>).</p>
+    </div>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~StringExpression">
+        </div>
+        <h4 class="name">
+            StringExpression<span class="type-signature type string">{string}</span> <span class="type-signature type array">{Array}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>A literal string (e.g. <code>'hello'</code>) or an expression that evaluates to a string (e.g. <code>['get', 'greeting']</code>).</p>
+    </div>
+    
+
+    
+<dl class="details">
     
         
     

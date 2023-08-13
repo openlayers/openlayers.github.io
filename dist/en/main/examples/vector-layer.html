@@ -124,6 +124,7 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./select-multiple-features.html&quot;&gt;Select multiple Features&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./snap.html&quot;&gt;Snap Interaction&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./street-labels.html&quot;&gt;Street Labels&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./style-expressions.html&quot;&gt;Style Expressions&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./style-renderer.html&quot;&gt;Style renderer&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./synthetic-lines.html&quot;&gt;Synthetic Lines&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./synthetic-points.html&quot;&gt;Synthetic Points&lt;/a&gt;
@@ -148,7 +149,7 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wind-arrows.html&quot;&gt;Wind Arrows&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
-                >74</a>
+                >75</a>
             </span>
             <span class="badge-group">
               <a
@@ -210,13 +211,6 @@ import Map from &#x27;ol/Map.js&#x27;;
 import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import {Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
-
-const style &#x3D; new Style({
-  fill: new Fill({
-    color: &#x27;#eeeeee&#x27;,
-  }),
-});
 
 const vectorLayer &#x3D; new VectorLayer({
   background: &#x27;#1a2b39&#x27;,
@@ -224,11 +218,20 @@ const vectorLayer &#x3D; new VectorLayer({
     url: &#x27;https://openlayers.org/data/vector/ecoregions.json&#x27;,
     format: new GeoJSON(),
   }),
-  style: function (feature) {
-    const color &#x3D; feature.get(&#x27;COLOR&#x27;) || &#x27;#eeeeee&#x27;;
-    style.getFill().setColor(color);
-    return style;
-  },
+  style: [
+    {
+      // if features have a COLOR property, use that in the style
+      filter: [&#x27;get&#x27;, &#x27;COLOR&#x27;],
+      style: {
+        &#x27;fill-color&#x27;: [&#x27;get&#x27;, &#x27;COLOR&#x27;],
+      },
+    },
+    {
+      // otherwise, use this style
+      else: true,
+      style: {&#x27;fill-color&#x27;: &#x27;#eee&#x27;},
+    },
+  ],
 });
 
 const map &#x3D; new Map({
@@ -243,12 +246,10 @@ const map &#x3D; new Map({
 const featureOverlay &#x3D; new VectorLayer({
   source: new VectorSource(),
   map: map,
-  style: new Style({
-    stroke: new Stroke({
-      color: &#x27;rgba(255, 255, 255, 0.7)&#x27;,
-      width: 2,
-    }),
-  }),
+  style: {
+    &#x27;stroke-color&#x27;: &#x27;rgba(255, 255, 255, 0.7)&#x27;,
+    &#x27;stroke-width&#x27;: 2,
+  },
 });
 
 let highlight;
