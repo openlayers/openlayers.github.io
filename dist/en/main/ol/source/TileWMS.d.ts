@@ -248,7 +248,6 @@ declare class TileWMS extends TileImage {
     getParams(): any;
     /**
      * @param {import("../tilecoord.js").TileCoord} tileCoord Tile coordinate.
-     * @param {import("../size.js").Size} tileSize Tile size.
      * @param {import("../extent.js").Extent} tileExtent Tile extent.
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.

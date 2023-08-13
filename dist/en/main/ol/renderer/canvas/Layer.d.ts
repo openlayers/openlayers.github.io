@@ -59,12 +59,12 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      */
     protected frameState: import("../../Map.js").FrameState | null;
     /**
-     * @param {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} image Image.
+     * @param {import('../../DataTile.js').ImageLike} image Image.
      * @param {number} col The column index.
      * @param {number} row The row index.
      * @return {Uint8ClampedArray|null} The image data.
      */
-    getImageData(image: HTMLCanvasElement | HTMLImageElement | HTMLVideoElement, col: number, row: number): Uint8ClampedArray | null;
+    getImageData(image: import('../../DataTile.js').ImageLike, col: number, row: number): Uint8ClampedArray | null;
     /**
      * @param {import('../../Map.js').FrameState} frameState Frame state.
      * @return {string} Background color.

@@ -105,11 +105,6 @@ declare class ImageArcGISRest extends ImageSource {
     constructor(options?: Options | undefined);
     /**
      * @private
-     * @type {CanvasRenderingContext2D}
-     */
-    private context_;
-    /**
-     * @private
      * @type {?string}
      */
     private crossOrigin_;
@@ -161,29 +156,11 @@ declare class ImageArcGISRest extends ImageSource {
      */
     getParams(): any;
     /**
-     * @param {import("../extent.js").Extent} extent Extent.
-     * @param {number} resolution Resolution.
-     * @param {number} pixelRatio Pixel ratio.
-     * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {import("../Image.js").default} Single image.
-     */
-    getImageInternal(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../Image.js").default;
-    /**
      * Return the image load function of the source.
      * @return {import("../Image.js").LoadFunction} The image load function.
      * @api
      */
     getImageLoadFunction(): import("../Image.js").LoadFunction;
-    /**
-     * @param {import("../extent.js").Extent} extent Extent.
-     * @param {import("../size.js").Size} size Size.
-     * @param {number} pixelRatio Pixel ratio.
-     * @param {import("../proj/Projection.js").default} projection Projection.
-     * @param {Object} params Params.
-     * @return {string} Request URL.
-     * @private
-     */
-    private getRequestUrl_;
     /**
      * Return the URL used for this ArcGIS source.
      * @return {string|undefined} URL.

@@ -45,8 +45,7 @@ export type Options = {
     projection?: import("../proj.js").ProjectionLike;
     /**
      * Ratio. `1` means image requests are the size of the map viewport, `2` means
-     * twice the width and height of the map viewport, and so on. Must be `1` or
-     * higher.
+     * twice the width and height of the map viewport, and so on. Must be `1` or higher.
      */
     ratio?: number | undefined;
     /**
@@ -79,8 +78,7 @@ export type Options = {
  * and `CRS` (`SRS` for WMS version < 1.3.0) will be set dynamically.
  * @property {import("../proj.js").ProjectionLike} [projection] Projection. Default is the view projection.
  * @property {number} [ratio=1.5] Ratio. `1` means image requests are the size of the map viewport, `2` means
- * twice the width and height of the map viewport, and so on. Must be `1` or
- * higher.
+ * twice the width and height of the map viewport, and so on. Must be `1` or higher.
  * @property {Array<number>} [resolutions] Resolutions.
  * If specified, requests will be made for these resolutions only.
  * @property {string} [url] WMS service URL.
@@ -97,11 +95,6 @@ declare class ImageWMS extends ImageSource {
      * @param {Options} [options] ImageWMS options.
      */
     constructor(options?: Options | undefined);
-    /**
-     * @private
-     * @type {CanvasRenderingContext2D}
-     */
-    private context_;
     /**
      * @private
      * @type {?string}
@@ -124,11 +117,6 @@ declare class ImageWMS extends ImageSource {
     private params_;
     /**
      * @private
-     * @type {boolean}
-     */
-    private v13_;
-    /**
-     * @private
      * @type {import("./wms.js").ServerType}
      */
     private serverType_;
@@ -137,16 +125,6 @@ declare class ImageWMS extends ImageSource {
      * @type {boolean}
      */
     private hidpi_;
-    /**
-     * @private
-     * @type {import("../Image.js").default}
-     */
-    private image_;
-    /**
-     * @private
-     * @type {import("../size.js").Size}
-     */
-    private imageSize_;
     /**
      * @private
      * @type {number}
@@ -195,29 +173,11 @@ declare class ImageWMS extends ImageSource {
      */
     getParams(): any;
     /**
-     * @param {import("../extent.js").Extent} extent Extent.
-     * @param {number} resolution Resolution.
-     * @param {number} pixelRatio Pixel ratio.
-     * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {import("../Image.js").default} Single image.
-     */
-    getImageInternal(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../Image.js").default;
-    /**
      * Return the image load function of the source.
      * @return {import("../Image.js").LoadFunction} The image load function.
      * @api
      */
     getImageLoadFunction(): import("../Image.js").LoadFunction;
-    /**
-     * @param {import("../extent.js").Extent} extent Extent.
-     * @param {import("../size.js").Size} size Size.
-     * @param {number} pixelRatio Pixel ratio.
-     * @param {import("../proj/Projection.js").default} projection Projection.
-     * @param {Object} params Params.
-     * @return {string} Request URL.
-     * @private
-     */
-    private getRequestUrl_;
     /**
      * Return the URL used for this WMS source.
      * @return {string|undefined} URL.
@@ -242,10 +202,6 @@ declare class ImageWMS extends ImageSource {
      * @api
      */
     updateParams(params: any): void;
-    /**
-     * @private
-     */
-    private updateV13_;
 }
 import ImageSource from './Image.js';
 //# sourceMappingURL=ImageWMS.d.ts.map

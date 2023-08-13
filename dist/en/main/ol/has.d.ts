@@ -43,6 +43,11 @@ export const WORKER_OFFSCREEN_CANVAS: boolean;
  */
 export const IMAGE_DECODE: boolean;
 /**
+ * createImageBitmap() is supported.
+ * @type {boolean}
+ */
+export const CREATE_IMAGE_BITMAP: boolean;
+/**
  * @type {boolean}
  */
 export const PASSIVE_EVENT_LISTENERS: boolean;

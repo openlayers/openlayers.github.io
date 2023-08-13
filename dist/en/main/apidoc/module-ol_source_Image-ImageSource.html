@@ -135,9 +135,7 @@
         <script async type="text/javascript" src="https://cdn.carbonads.com/carbon.js?serve=CE7DV53U&placement=openlayersorg" id="_carbonads_js"></script>
       </div>
     
-      <div class="class-description col-lg-7 align-self-center ps-0"><p>Abstract base class; normally only used for creating subclasses and not
-instantiated in apps.
-Base class for sources providing a single image.</p></div>
+      <div class="class-description col-lg-7 align-self-center ps-0"><p>Base class for sources providing a single image.</p></div>
     
     </div>
 </header>
@@ -163,7 +161,7 @@ Base class for sources providing a single image.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Image.js">source/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Image.js#L93">line 93</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Image.js#L105">line 105</a>
         </div>
         
     </div>
@@ -249,6 +247,34 @@ Base class for sources providing a single image.</p></div>
                 
                 <p>Use interpolated values when resampling.  By default,
 linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>loader</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_Image.html#~Loader">Loader</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Loader. Can either be a custom loader, or one of the
+loaders created with a <code>createLoader()</code> function (<a href="module-ol_source_wms.html#.createLoader"><code>wms</code></a>,
+<a href="module-ol_source_arcgisRest.html#.createLoader"><code>arcgisRest</code></a>, <a href="module-ol_source_mapguide.html#.createLoader"><code>mapguide</code></a>,
+<a href="module-ol_source_static.html#.createLoader"><code>static</code></a>).</p></td>
         </tr>
 
 	

@@ -4,8 +4,6 @@ export { default as Disposable } from "./Disposable.js";
 export { default as Feature } from "./Feature.js";
 export { default as Geolocation } from "./Geolocation.js";
 export { default as Graticule } from "./layer/Graticule.js";
-export { default as Image } from "./Image.js";
-export { default as ImageBase } from "./ImageBase.js";
 export { default as ImageCanvas } from "./ImageCanvas.js";
 export { default as ImageTile } from "./ImageTile.js";
 export { default as Kinetic } from "./Kinetic.js";
@@ -23,5 +21,6 @@ export { default as TileRange } from "./TileRange.js";
 export { default as VectorRenderTile } from "./VectorRenderTile.js";
 export { default as VectorTile } from "./VectorTile.js";
 export { default as View } from "./View.js";
+export { default as Image, default as ImageWrapper } from "./Image.js";
 export { getUid, VERSION } from "./util.js";
 //# sourceMappingURL=index.d.ts.map

@@ -14,7 +14,7 @@ export type Options = {
      * Extent of the image in map coordinates.
      * This is the [left, bottom, right, top] map coordinates of your image.
      */
-    imageExtent?: import("../extent.js").Extent | undefined;
+    imageExtent: import("../extent.js").Extent;
     /**
      * Optional function to load an image given a URL.
      */
@@ -29,11 +29,6 @@ export type Options = {
      */
     projection?: import("../proj.js").ProjectionLike;
     /**
-     * Size of the image in pixels. Usually the image size is auto-detected, so this
-     * only needs to be set if auto-detection fails for some reason.
-     */
-    imageSize?: import("../size.js").Size | undefined;
-    /**
      * Image URL.
      */
     url: string;
@@ -44,14 +39,12 @@ export type Options = {
  * @property {null|string} [crossOrigin] The `crossOrigin` attribute for loaded images.  Note that
  * you must provide a `crossOrigin` value if you want to access pixel data with the Canvas renderer.
  * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
- * @property {import("../extent.js").Extent} [imageExtent] Extent of the image in map coordinates.
+ * @property {import("../extent.js").Extent} imageExtent Extent of the image in map coordinates.
  * This is the [left, bottom, right, top] map coordinates of your image.
  * @property {import("../Image.js").LoadFunction} [imageLoadFunction] Optional function to load an image given a URL.
  * @property {boolean} [interpolate=true] Use interpolated values when resampling.  By default,
  * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
  * @property {import("../proj.js").ProjectionLike} [projection] Projection. Default is the view projection.
- * @property {import("../size.js").Size} [imageSize] Size of the image in pixels. Usually the image size is auto-detected, so this
- * only needs to be set if auto-detection fails for some reason.
  * @property {string} url Image URL.
  */
 /**
@@ -75,29 +68,11 @@ declare class Static extends ImageSource {
      */
     private imageExtent_;
     /**
-     * @private
-     * @type {import("../Image.js").default}
-     */
-    private image_;
-    /**
-     * @private
-     * @type {import("../size.js").Size|null}
-     */
-    private imageSize_;
-    /**
      * Returns the image extent
      * @return {import("../extent.js").Extent} image extent.
      * @api
      */
     getImageExtent(): import("../extent.js").Extent;
-    /**
-     * @param {import("../extent.js").Extent} extent Extent.
-     * @param {number} resolution Resolution.
-     * @param {number} pixelRatio Pixel ratio.
-     * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {import("../Image.js").default} Single image.
-     */
-    getImageInternal(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../Image.js").default;
     /**
      * Return the URL used for this image source.
      * @return {string} URL.

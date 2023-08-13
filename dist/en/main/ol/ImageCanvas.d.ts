@@ -14,7 +14,7 @@ export type Loader = (arg0: (arg0: Error | undefined) => void) => void;
  *
  * @typedef {function(function(Error=): void): void} Loader
  */
-declare class ImageCanvas extends ImageBase {
+declare class ImageCanvas extends ImageWrapper {
     /**
      * @param {import("./extent.js").Extent} extent Extent.
      * @param {number} resolution Resolution.
@@ -56,5 +56,5 @@ declare class ImageCanvas extends ImageBase {
      */
     getImage(): HTMLCanvasElement;
 }
-import ImageBase from './ImageBase.js';
+import ImageWrapper from './Image.js';
 //# sourceMappingURL=ImageCanvas.d.ts.map

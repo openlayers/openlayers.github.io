@@ -1,14 +1,14 @@
 export default ReprojImage;
-export type FunctionType = (arg0: import("../extent.js").Extent, arg1: number, arg2: number) => import("../ImageBase.js").default;
+export type FunctionType = (arg0: import("../extent.js").Extent, arg1: number, arg2: number) => import("../Image.js").default;
 /**
- * @typedef {function(import("../extent.js").Extent, number, number) : import("../ImageBase.js").default} FunctionType
+ * @typedef {function(import("../extent.js").Extent, number, number) : import("../Image.js").default} FunctionType
  */
 /**
  * @classdesc
  * Class encapsulating single reprojected image.
  * See {@link module:ol/source/Image~ImageSource}.
  */
-declare class ReprojImage extends ImageBase {
+declare class ReprojImage extends ImageWrapper {
     /**
      * @param {import("../proj/Projection.js").default} sourceProj Source projection (of the data).
      * @param {import("../proj/Projection.js").default} targetProj Target projection.
@@ -47,7 +47,7 @@ declare class ReprojImage extends ImageBase {
     private targetExtent_;
     /**
      * @private
-     * @type {import("../ImageBase.js").default}
+     * @type {import("../Image.js").default}
      */
     private sourceImage_;
     /**
@@ -87,5 +87,5 @@ declare class ReprojImage extends ImageBase {
      */
     private unlistenSource_;
 }
-import ImageBase from '../ImageBase.js';
+import ImageWrapper from '../Image.js';
 //# sourceMappingURL=Image.d.ts.map

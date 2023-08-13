@@ -104,11 +104,11 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
     /**
      * Load the image if not already loaded, and register the image change
      * listener if needed.
-     * @param {import("../ImageBase.js").default} image Image.
+     * @param {import("../Image.js").default} image Image.
      * @return {boolean} `true` if the image is already loaded, `false` otherwise.
      * @protected
      */
-    protected loadImage(image: import("../ImageBase.js").default): boolean;
+    protected loadImage(image: import("../Image.js").default): boolean;
     /**
      * @protected
      */

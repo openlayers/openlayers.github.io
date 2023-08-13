@@ -5,6 +5,15 @@
  * @param {string} src Source.
  */
 export function defaultImageLoadFunction(image: import("../Image.js").default, src: string): void;
+/**
+ * Adjusts the extent so it aligns with pixel boundaries.
+ * @param {import("../extent.js").Extent} extent Extent.
+ * @param {number} resolution Reolution.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {number} ratio Ratio between request size and view size.
+ * @return {import("../extent.js").Extent} Request extent.
+ */
+export function getRequestExtent(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, ratio: number): import("../extent.js").Extent;
 export type ImageSourceEventType = string;
 export namespace ImageSourceEventType {
     let IMAGELOADSTART: string;
@@ -49,6 +58,13 @@ export type Options = {
      */
     interpolate?: boolean | undefined;
     /**
+     * Loader. Can either be a custom loader, or one of the
+     * loaders created with a `createLoader()` function ({@link module :ol/source/wms.createLoader wms},
+     * {@link module :ol/source/arcgisRest.createLoader arcgisRest}, {@link module :ol/source/mapguide.createLoader mapguide},
+     * {@link module :ol/source/static.createLoader static}).
+     */
+    loader?: import("../Image.js").Loader | undefined;
+    /**
      * Projection.
      */
     projection?: import("../proj.js").ProjectionLike;
@@ -75,16 +91,17 @@ import Event from '../events/Event.js';
  * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
  * @property {boolean} [interpolate=true] Use interpolated values when resampling.  By default,
  * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
+ * @property {import("../Image.js").Loader} [loader] Loader. Can either be a custom loader, or one of the
+ * loaders created with a `createLoader()` function ({@link module:ol/source/wms.createLoader wms},
+ * {@link module:ol/source/arcgisRest.createLoader arcgisRest}, {@link module:ol/source/mapguide.createLoader mapguide},
+ * {@link module:ol/source/static.createLoader static}).
  * @property {import("../proj.js").ProjectionLike} [projection] Projection.
  * @property {Array<number>} [resolutions] Resolutions.
  * @property {import("./Source.js").State} [state] State.
  */
 /**
  * @classdesc
- * Abstract base class; normally only used for creating subclasses and not
- * instantiated in apps.
  * Base class for sources providing a single image.
- * @abstract
  * @fires module:ol/source/Image.ImageSourceEvent
  * @api
  */
@@ -106,6 +123,11 @@ declare class ImageSource extends Source {
      */
     un: ImageSourceOnSignature<void>;
     /**
+     * @protected
+     * @type {import("../Image.js").Loader}
+     */
+    protected loader: import("../Image.js").Loader;
+    /**
      * @private
      * @type {Array<number>|null}
      */
@@ -120,6 +142,21 @@ declare class ImageSource extends Source {
      * @type {number}
      */
     private reprojectedRevision_;
+    /**
+     * @protected
+     * @type {import("../Image.js").default}
+     */
+    protected image: import("../Image.js").default;
+    /**
+     * @private
+     * @type {import("../extent.js").Extent}
+     */
+    private wantedExtent_;
+    /**
+     * @private
+     * @type {number}
+     */
+    private wantedResolution_;
     /**
      * @return {Array<number>|null} Resolutions.
      */
@@ -139,19 +176,19 @@ declare class ImageSource extends Source {
      * @param {number} resolution Resolution.
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {import("../ImageBase.js").default} Single image.
+     * @return {import("../Image.js").default} Single image.
      */
-    getImage(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../ImageBase.js").default;
+    getImage(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../Image.js").default;
     /**
      * @abstract
      * @param {import("../extent.js").Extent} extent Extent.
      * @param {number} resolution Resolution.
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {import("../ImageBase.js").default} Single image.
+     * @return {import("../Image.js").default} Single image.
      * @protected
      */
-    protected getImageInternal(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../ImageBase.js").default;
+    protected getImageInternal(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../Image.js").default;
     /**
      * Handle image change events.
      * @param {import("../events/Event.js").default} event Event.

@@ -27,7 +27,7 @@ export function calculateSourceExtentResolution(sourceProj: import("./proj/Proje
 /**
  * @typedef {Object} ImageExtent
  * @property {import("./extent.js").Extent} extent Extent.
- * @property {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} image Image.
+ * @property {import('./DataTile.js').ImageLike} image Image.
  */
 /**
  * Renders the source data into new canvas based on the triangulation.
@@ -59,6 +59,6 @@ export type ImageExtent = {
     /**
      * Image.
      */
-    image: HTMLCanvasElement | HTMLImageElement | HTMLVideoElement;
+    image: import('./DataTile.js').ImageLike;
 };
 //# sourceMappingURL=reproj.d.ts.map

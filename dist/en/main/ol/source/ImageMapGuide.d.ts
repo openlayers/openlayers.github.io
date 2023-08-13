@@ -90,11 +90,6 @@ declare class ImageMapGuide extends ImageSource {
     constructor(options: Options);
     /**
      * @private
-     * @type {CanvasRenderingContext2D}
-     */
-    private context_;
-    /**
-     * @private
      * @type {?string}
      */
     private crossOrigin_;
@@ -156,14 +151,6 @@ declare class ImageMapGuide extends ImageSource {
      */
     getParams(): any;
     /**
-     * @param {import("../extent.js").Extent} extent Extent.
-     * @param {number} resolution Resolution.
-     * @param {number} pixelRatio Pixel ratio.
-     * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {import("../Image.js").default} Single image.
-     */
-    getImageInternal(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../Image.js").default;
-    /**
      * Return the image load function of the source.
      * @return {import("../Image.js").LoadFunction} The image load function.
      * @api
@@ -175,17 +162,6 @@ declare class ImageMapGuide extends ImageSource {
      * @api
      */
     updateParams(params: any): void;
-    /**
-     * @param {string} baseUrl The mapagent url.
-     * @param {Object<string, string|number>} params Request parameters.
-     * @param {import("../extent.js").Extent} extent Extent.
-     * @param {import("../size.js").Size} size Size.
-     * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {string} The mapagent map image request URL.
-     */
-    getUrl(baseUrl: string, params: {
-        [x: string]: string | number;
-    }, extent: import("../extent.js").Extent, size: import("../size.js").Size, projection: import("../proj/Projection.js").default): string;
     /**
      * Set the image load function of the MapGuide source.
      * @param {import("../Image.js").LoadFunction} imageLoadFunction Image load function.

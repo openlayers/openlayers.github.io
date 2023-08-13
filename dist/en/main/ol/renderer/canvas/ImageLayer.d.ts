@@ -11,13 +11,13 @@ declare class CanvasImageLayerRenderer extends CanvasLayerRenderer<any> {
     constructor(imageLayer: import("../../layer/Image.js").default<any>);
     /**
      * @protected
-     * @type {?import("../../ImageBase.js").default}
+     * @type {?import("../../Image.js").default}
      */
-    protected image_: import("../../ImageBase.js").default | null;
+    protected image_: import("../../Image.js").default | null;
     /**
-     * @return {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} Image.
+     * @return {import('../../DataTile.js').ImageLike} Image.
      */
-    getImage(): HTMLCanvasElement | HTMLImageElement | HTMLVideoElement;
+    getImage(): import('../../DataTile.js').ImageLike;
     /**
      * @param {import("../../pixel.js").Pixel} pixel Pixel.
      * @return {Uint8ClampedArray} Data at the pixel location.
