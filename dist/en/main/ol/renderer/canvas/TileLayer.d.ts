@@ -76,6 +76,13 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      */
     getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray;
     /**
+     * Render the layer.
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @param {HTMLElement} target Target that may be used to render content to.
+     * @return {HTMLElement} The rendered element.
+     */
+    renderFrame(frameState: import("../../Map.js").FrameState, target: HTMLElement): HTMLElement;
+    /**
      * @param {import("../../ImageTile.js").default} tile Tile.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @param {number} x Left of the tile.

@@ -102,13 +102,6 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
      */
     renderDeclutter(frameState: import("../../Map.js").FrameState): void;
     /**
-     * Render the layer.
-     * @param {import("../../Map.js").FrameState} frameState Frame state.
-     * @param {HTMLElement|null} target Target that may be used to render content to.
-     * @return {HTMLElement|null} The rendered element.
-     */
-    renderFrame(frameState: import("../../Map.js").FrameState, target: HTMLElement | null): HTMLElement | null;
-    /**
      * Asynchronous layer level hit detection.
      * @param {import("../../pixel.js").Pixel} pixel Pixel.
      * @return {Promise<Array<import("../../Feature").default>>} Promise

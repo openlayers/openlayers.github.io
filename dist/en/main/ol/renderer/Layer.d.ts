@@ -46,10 +46,10 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
      * Render the layer.
      * @abstract
      * @param {import("../Map.js").FrameState} frameState Frame state.
-     * @param {HTMLElement} target Target that may be used to render content to.
-     * @return {HTMLElement} The rendered element.
+     * @param {HTMLElement|null} target Target that may be used to render content to.
+     * @return {HTMLElement|null} The rendered element.
      */
-    renderFrame(frameState: import("../Map.js").FrameState, target: HTMLElement): HTMLElement;
+    renderFrame(frameState: import("../Map.js").FrameState, target: HTMLElement | null): HTMLElement | null;
     /**
      * @param {Object<number, Object<string, import("../Tile.js").default>>} tiles Lookup of loaded tiles by zoom level.
      * @param {number} zoom Zoom level.
