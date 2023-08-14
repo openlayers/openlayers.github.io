@@ -262,16 +262,21 @@ const style &#x3D; {
     maxYear: 2015,
   },
   filter: [&#x27;between&#x27;, [&#x27;get&#x27;, &#x27;year&#x27;], [&#x27;var&#x27;, &#x27;minYear&#x27;], [&#x27;var&#x27;, &#x27;maxYear&#x27;]],
-  symbol: {
-    symbolType: &#x27;circle&#x27;,
-    size: [
-      &#x27;*&#x27;,
-      [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;get&#x27;, &#x27;mass&#x27;], 0, 8, 200000, 26],
-      [&#x27;-&#x27;, 1.75, [&#x27;*&#x27;, animRatio, 0.75]],
-    ],
-    color: [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], animRatio, 0, newColor, 1, oldColor],
-    opacity: [&#x27;-&#x27;, 1.0, [&#x27;*&#x27;, animRatio, 0.75]],
-  },
+  &#x27;circle-radius&#x27;: [
+    &#x27;*&#x27;,
+    [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;get&#x27;, &#x27;mass&#x27;], 0, 4, 200000, 13],
+    [&#x27;-&#x27;, 1.75, [&#x27;*&#x27;, animRatio, 0.75]],
+  ],
+  &#x27;circle-fill-color&#x27;: [
+    &#x27;interpolate&#x27;,
+    [&#x27;linear&#x27;],
+    animRatio,
+    0,
+    newColor,
+    1,
+    oldColor,
+  ],
+  &#x27;circle-opacity&#x27;: [&#x27;-&#x27;, 1.0, [&#x27;*&#x27;, animRatio, 0.75]],
 };
 
 // handle input values &amp; events

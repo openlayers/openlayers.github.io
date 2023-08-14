@@ -165,6 +165,10 @@ export class ShaderBuilder {
      */
     setSymbolOffsetExpression(expression: string): ShaderBuilder;
     /**
+     * @return {string} The current symbol offset expression
+     */
+    getSymbolOffsetExpression(): string;
+    /**
      * Sets an expression to compute the color of the shape.
      * This expression can use all the uniforms, varyings and attributes available
      * in the fragment shader, and should evaluate to a `vec4` value.
@@ -220,25 +224,11 @@ export class ShaderBuilder {
     addFragmentShaderFunction(code: any): void;
     /**
      * Generates a symbol vertex shader from the builder parameters
-     *
-     * The following uniforms are hardcoded in all shaders: `u_projectionMatrix`, `u_offsetScaleMatrix`,
-     * `u_offsetRotateMatrix`, `u_time`, `u_zoom`, `u_resolution`, `u_hitDetection`.
-     *
-     * The following attributes are hardcoded and expected to be present in the vertex buffers:
-     * `vec2 a_position`, `float a_index` (being the index of the vertex in the quad, 0 to 3), `vec4 a_hitColor`.
-     *
-     * The following varyings are hardcoded and gives the coordinate of the pixel both in the quad and on the texture:
-     * `vec2 v_quadCoord`, `vec2 v_texCoord`, `vec4 v_hitColor`.
-     *
      * @return {string|null} The full shader as a string; null if no size or color specified
      */
     getSymbolVertexShader(): string | null;
     /**
      * Generates a symbol fragment shader from the builder parameters
-     *
-     * Expects the following varyings to be transmitted by the vertex shader:
-     * `vec2 v_quadCoord`, `vec2 v_texCoord`, `vec4 v_hitColor`.
-     *
      * @return {string|null} The full shader as a string; null if no size or color specified
      */
     getSymbolFragmentShader(): string | null;

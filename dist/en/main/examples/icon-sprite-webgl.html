@@ -241,7 +241,6 @@ const map &#x3D; new Map({
 
 const oldColor &#x3D; [255, 160, 110];
 const newColor &#x3D; [180, 255, 200];
-const size &#x3D; 16;
 
 const style &#x3D; {
   variables: {
@@ -252,41 +251,39 @@ const style &#x3D; {
     [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;filterShape&#x27;], &#x27;all&#x27;],
     [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;filterShape&#x27;], [&#x27;get&#x27;, &#x27;shape&#x27;, &#x27;string&#x27;]],
   ],
-  symbol: {
-    symbolType: &#x27;image&#x27;,
-    src: &#x27;data/ufo_shapes.png&#x27;,
-    size: size,
-    color: [
-      &#x27;interpolate&#x27;,
-      [&#x27;linear&#x27;],
-      [&#x27;get&#x27;, &#x27;year&#x27;],
-      1950,
-      oldColor,
-      2013,
-      newColor,
-    ],
-    rotateWithView: false,
-    offset: [0, 0],
-    textureCoord: [
-      &#x27;match&#x27;,
-      [&#x27;get&#x27;, &#x27;shape&#x27;],
-      &#x27;light&#x27;,
-      [0, 0, 0.25, 0.5],
-      &#x27;sphere&#x27;,
-      [0.25, 0, 0.5, 0.5],
-      &#x27;circle&#x27;,
-      [0.25, 0, 0.5, 0.5],
-      &#x27;disc&#x27;,
-      [0.5, 0, 0.75, 0.5],
-      &#x27;oval&#x27;,
-      [0.5, 0, 0.75, 0.5],
-      &#x27;triangle&#x27;,
-      [0.75, 0, 1, 0.5],
-      &#x27;fireball&#x27;,
-      [0, 0.5, 0.25, 1],
-      [0.75, 0.5, 1, 1],
-    ],
-  },
+  &#x27;icon-src&#x27;: &#x27;data/ufo_shapes.png&#x27;,
+  &#x27;icon-width&#x27;: 128,
+  &#x27;icon-height&#x27;: 64,
+  &#x27;icon-color&#x27;: [
+    &#x27;interpolate&#x27;,
+    [&#x27;linear&#x27;],
+    [&#x27;get&#x27;, &#x27;year&#x27;],
+    1950,
+    oldColor,
+    2013,
+    newColor,
+  ],
+  &#x27;icon-offset&#x27;: [
+    &#x27;match&#x27;,
+    [&#x27;get&#x27;, &#x27;shape&#x27;],
+    &#x27;light&#x27;,
+    [0, 0],
+    &#x27;sphere&#x27;,
+    [32, 0],
+    &#x27;circle&#x27;,
+    [32, 0],
+    &#x27;disc&#x27;,
+    [64, 0],
+    &#x27;oval&#x27;,
+    [64, 0],
+    &#x27;triangle&#x27;,
+    [96, 0],
+    &#x27;fireball&#x27;,
+    [0, 32],
+    [96, 32],
+  ],
+  &#x27;icon-size&#x27;: [32, 32],
+  &#x27;icon-scale&#x27;: 0.5,
 };
 
 const shapeSelect &#x3D; document.getElementById(&#x27;shape-filter&#x27;);

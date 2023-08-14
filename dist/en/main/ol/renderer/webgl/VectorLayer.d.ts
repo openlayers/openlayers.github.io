@@ -2,11 +2,10 @@ export const Uniforms: {
     RENDER_EXTENT: string;
     GLOBAL_ALPHA: string;
     PROJECTION_MATRIX: string;
-    OFFSET_SCALE_MATRIX: string;
-    OFFSET_ROTATION_MATRIX: string;
     TIME: string;
     ZOOM: string;
     RESOLUTION: string;
+    ROTATION: string;
     VIEWPORT_SIZE_PX: string;
     PIXEL_RATIO: string;
     HIT_DETECTION: string;

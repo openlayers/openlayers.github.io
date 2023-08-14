@@ -1,10 +1,3 @@
-export type SymbolType = string;
-export namespace SymbolType {
-    let CIRCLE: string;
-    let SQUARE: string;
-    let TRIANGLE: string;
-    let IMAGE: string;
-}
 export type ExpressionValue = import("./expressions.js").ExpressionValue;
 export type ColorExpression = import("../color.js").Color | string | Array<ExpressionValue>;
 export type BaseProps = {
@@ -20,52 +13,6 @@ export type BaseProps = {
     variables?: {
         [x: string]: string | number | boolean | number[];
     } | undefined;
-    /**
-     * Symbol representation.
-     */
-    symbol?: LiteralSymbolStyle | undefined;
-};
-export type LiteralSymbolStyle = {
-    /**
-     * Size, mandatory.
-     */
-    size: ExpressionValue | Array<ExpressionValue>;
-    /**
-     * Symbol type to use, either a regular shape or an image.
-     */
-    symbolType: SymbolType;
-    /**
-     * Path to the image to be used for the symbol. Only required with `symbolType: 'image'`.
-     */
-    src?: string | undefined;
-    /**
-     * The `crossOrigin` attribute for loading `src`.
-     */
-    crossOrigin?: string | undefined;
-    /**
-     * Color used for the representation (either fill, line or symbol).
-     */
-    color?: ColorExpression | undefined;
-    /**
-     * Opacity.
-     */
-    opacity?: import("./expressions.js").ExpressionValue | undefined;
-    /**
-     * Symbol rotation in radians.
-     */
-    rotation?: import("./expressions.js").ExpressionValue | undefined;
-    /**
-     * Offset on X and Y axis for symbols. If not specified, the symbol will be centered.
-     */
-    offset?: import("./expressions.js").ExpressionValue[] | undefined;
-    /**
-     * Texture coordinates. If not specified, the whole texture will be used (range for 0 to 1 on both axes).
-     */
-    textureCoord?: import("./expressions.js").ExpressionValue[] | undefined;
-    /**
-     * Specify whether the symbol must rotate with the view or stay upwards.
-     */
-    rotateWithView?: boolean | undefined;
 };
 export type FillProps = {
     /**
@@ -102,7 +49,7 @@ export type IconProps = {
     /**
      * Anchor. Default value is the icon center.
      */
-    "icon-anchor"?: number[] | undefined;
+    "icon-anchor"?: number[] | import("./expressions.js").ExpressionValue | undefined;
     /**
      * Origin of the anchor: `bottom-left`, `bottom-right`,
      * `top-left` or `top-right`.
@@ -126,33 +73,23 @@ export type IconProps = {
      */
     "icon-color"?: ColorExpression | undefined;
     /**
+     * Opacity of the icon.
+     */
+    "icon-opacity"?: import("./expressions.js").ExpressionValue | undefined;
+    /**
      * The `crossOrigin` attribute for loaded images. Note that you must provide a
      * `icon-cross-origin` value if you want to access pixel data with the Canvas renderer.
      * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
      */
     "icon-cross-origin"?: string | null | undefined;
     /**
-     * Offset, which, together with the size and the offset origin, define the
-     * sub-rectangle to use from the original icon image.
-     */
-    "icon-offset"?: number[] | import("./expressions.js").ExpressionValue[] | undefined;
-    /**
      * Displacement of the icon.
      */
-    "icon-displacement"?: number[] | import("./expressions.js").ExpressionValue[] | undefined;
-    /**
-     * Origin of the offset: `bottom-left`, `bottom-right`,
-     * `top-left` or `top-right`.
-     */
-    "icon-offset-origin"?: import("./Icon.js").IconOrigin | undefined;
-    /**
-     * Opacity of the icon.
-     */
-    "icon-opacity"?: number | undefined;
+    "icon-displacement"?: number[] | import("./expressions.js").ExpressionValue | undefined;
     /**
      * Scale.
      */
-    "icon-scale"?: import("../size.js").Size | import("./expressions.js").ExpressionValue | import("./expressions.js").ExpressionValue[] | undefined;
+    "icon-scale"?: import("../size.js").Size | import("./expressions.js").ExpressionValue | undefined;
     /**
      * Width of the icon. If not specified, the actual image width will be used. Cannot be combined
      * with `scale`.
@@ -172,17 +109,27 @@ export type IconProps = {
      */
     "icon-rotate-with-view"?: boolean | undefined;
     /**
+     * Offset, which, together with the size and the offset origin, define the
+     * sub-rectangle to use from the original icon image.
+     */
+    "icon-offset"?: number[] | import("./expressions.js").ExpressionValue | undefined;
+    /**
+     * Origin of the offset: `bottom-left`, `bottom-right`,
+     * `top-left` or `top-right`.
+     */
+    "icon-offset-origin"?: import("./Icon.js").IconOrigin | undefined;
+    /**
      * Icon size in pixel. Can be used together with `icon-offset` to define the
      * sub-rectangle to use from the origin (sprite) icon image.
      */
-    "icon-size"?: import("../size.js").Size | import("./expressions.js").ExpressionValue[] | undefined;
+    "icon-size"?: import("../size.js").Size | import("./expressions.js").ExpressionValue | undefined;
 };
 export type ShapeProps = {
     /**
      * Number of points for stars and regular polygons. In case of a polygon, the number of points
      * is the number of sides.
      */
-    "shape-points"?: number | undefined;
+    "shape-points"?: import("./expressions.js").ExpressionValue | undefined;
     /**
      * The fill color.
      */
@@ -195,6 +142,10 @@ export type ShapeProps = {
      * Stroke pixel width.
      */
     "shape-stroke-width"?: import("./expressions.js").ExpressionValue | undefined;
+    /**
+     * Shape opacity.
+     */
+    "shape-opacity"?: import("./expressions.js").ExpressionValue | undefined;
     /**
      * Radius of a regular polygon.
      */
@@ -246,6 +197,10 @@ export type CircleProps = {
      * Stroke pixel width.
      */
     "circle-stroke-width"?: import("./expressions.js").ExpressionValue | undefined;
+    /**
+     * Circle opacity.
+     */
+    "circle-opacity"?: import("./expressions.js").ExpressionValue | undefined;
     /**
      * displacement
      */

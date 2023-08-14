@@ -19,11 +19,10 @@ export namespace ShaderType {
 export type DefaultUniform = string;
 export namespace DefaultUniform {
     let PROJECTION_MATRIX: string;
-    let OFFSET_SCALE_MATRIX: string;
-    let OFFSET_ROTATION_MATRIX: string;
     let TIME: string;
     let ZOOM: string;
     let RESOLUTION: string;
+    let ROTATION: string;
     let VIEWPORT_SIZE_PX: string;
     let PIXEL_RATIO: string;
     let HIT_DETECTION: string;
@@ -357,6 +356,12 @@ declare class WebGLHelper extends Disposable {
      * @param {Object<string, UniformValue>} uniforms Uniform definitions.
      */
     setUniforms(uniforms: {
+        [x: string]: UniformValue;
+    }): void;
+    /**
+     * @param {Object<string, UniformValue>} uniforms Uniform definitions.
+     */
+    addUniforms(uniforms: {
         [x: string]: UniformValue;
     }): void;
     /**

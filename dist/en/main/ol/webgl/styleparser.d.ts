@@ -1,10 +1,4 @@
 /**
- * @param {import('../style/literal.js').SymbolType} type Symbol type
- * @param {string} sizeExpressionGlsl Size expression
- * @return {string} The GLSL opacity function
- */
-export function getSymbolOpacityGlslFunction(type: import('../style/literal.js').SymbolType, sizeExpressionGlsl: string): string;
-/**
  * Packs all components of a color into a two-floats array
  * @param {import("../color.js").Color|string} color Color as array of numbers or string
  * @return {Array<number>} Vec2 array containing the color in compressed form
@@ -17,17 +11,17 @@ export function packColor(color: import("../color.js").Color | string): Array<nu
  * @property {import("../render/webgl/VectorStyleRenderer.js").AttributeDefinitions} attributes Attribute definitions
  */
 /**
- * Parses a {@link import("../style/literal").LiteralStyle} object and returns a {@link ShaderBuilder}
+ * Parses a {@link import("../style/literal.js").LiteralStyle} object and returns a {@link ShaderBuilder}
  * object that has been configured according to the given style, as well as `attributes` and `uniforms`
  * arrays to be fed to the `WebGLPointsRenderer` class.
  *
  * Also returns `uniforms` and `attributes` properties as expected by the
  * {@link module:ol/renderer/webgl/PointsLayer~WebGLPointsLayerRenderer}.
  *
- * @param {import("../style/literal").LiteralStyle} style Literal style.
+ * @param {import("../style/literal.js").LiteralStyle} style Literal style.
  * @return {StyleParseResult} Result containing shader params, attributes and uniforms.
  */
-export function parseLiteralStyle(style: import("../style/literal").LiteralStyle): StyleParseResult;
+export function parseLiteralStyle(style: import("../style/literal.js").LiteralStyle): StyleParseResult;
 export type StyleParseResult = {
     /**
      * Shader builder pre-configured according to a given style
