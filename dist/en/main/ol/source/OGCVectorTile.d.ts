@@ -103,7 +103,7 @@ export type Options = {
  * provide the `mediaType` option.
  * @api
  */
-declare class OGCVectorTile extends VectorTile {
+declare class OGCVectorTile extends VectorTileSource {
     /**
      * @param {Options} options OGC vector tile options.
      */
@@ -119,5 +119,5 @@ declare class OGCVectorTile extends VectorTile {
      */
     private handleError_;
 }
-import VectorTile_1 from './VectorTile.js';
+import VectorTileSource from './VectorTile.js';
 //# sourceMappingURL=OGCVectorTile.d.ts.map
