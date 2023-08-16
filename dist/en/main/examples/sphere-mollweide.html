@@ -178,7 +178,6 @@ import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import proj4 from &#x27;proj4&#x27;;
-import {Fill, Style} from &#x27;ol/style.js&#x27;;
 import {register} from &#x27;ol/proj/proj4.js&#x27;;
 
 proj4.defs(
@@ -199,12 +198,6 @@ const sphereMollweideProjection &#x3D; new Projection({
   worldExtent: [-179, -89.99, 179, 89.99],
 });
 
-const style &#x3D; new Style({
-  fill: new Fill({
-    color: &#x27;#eeeeee&#x27;,
-  }),
-});
-
 const map &#x3D; new Map({
   keyboardEventTarget: document,
   layers: [
@@ -213,10 +206,8 @@ const map &#x3D; new Map({
         url: &#x27;https://openlayers.org/data/vector/ecoregions.json&#x27;,
         format: new GeoJSON(),
       }),
-      style: function (feature) {
-        const color &#x3D; feature.get(&#x27;COLOR_BIO&#x27;) || &#x27;#eeeeee&#x27;;
-        style.getFill().setColor(color);
-        return style;
+      style: {
+        &#x27;fill-color&#x27;: [&#x27;string&#x27;, [&#x27;get&#x27;, &#x27;COLOR_BIO&#x27;], &#x27;#eee&#x27;],
       },
     }),
     new Graticule(),

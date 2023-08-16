@@ -241,58 +241,60 @@ import TopoJSON from &#x27;ol/format/TopoJSON.js&#x27;;
 import VectorTileLayer from &#x27;ol/layer/VectorTile.js&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import {Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
 import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 
 const key &#x3D; &#x27;Your Nextzen API key from https://developers.nextzen.org/&#x27;;
 
-const roadStyleCache &#x3D; {};
-const roadColor &#x3D; {
-  &#x27;major_road&#x27;: &#x27;#776&#x27;,
-  &#x27;minor_road&#x27;: &#x27;#ccb&#x27;,
-  &#x27;highway&#x27;: &#x27;#f39&#x27;,
-};
-const buildingStyle &#x3D; new Style({
-  fill: new Fill({
-    color: &#x27;#666&#x27;,
-    opacity: 0.4,
-  }),
-  stroke: new Stroke({
-    color: &#x27;#444&#x27;,
-    width: 1,
-  }),
-});
-const waterStyle &#x3D; new Style({
-  fill: new Fill({
-    color: &#x27;#9db9e8&#x27;,
-  }),
-});
-const roadStyle &#x3D; function (feature) {
-  const kind &#x3D; feature.get(&#x27;kind&#x27;);
-  const railway &#x3D; feature.get(&#x27;railway&#x27;);
-  const sort_key &#x3D; feature.get(&#x27;sort_key&#x27;);
-  const styleKey &#x3D; kind + &#x27;/&#x27; + railway + &#x27;/&#x27; + sort_key;
-  let style &#x3D; roadStyleCache[styleKey];
-  if (!style) {
-    let color, width;
-    if (railway) {
-      color &#x3D; &#x27;#7de&#x27;;
-      width &#x3D; 1;
-    } else {
-      color &#x3D; roadColor[kind];
-      width &#x3D; kind &#x3D;&#x3D; &#x27;highway&#x27; ? 1.5 : 1;
-    }
-    style &#x3D; new Style({
-      stroke: new Stroke({
-        color: color,
-        width: width,
-      }),
-      zIndex: sort_key,
-    });
-    roadStyleCache[styleKey] &#x3D; style;
-  }
-  return style;
-};
+const rules &#x3D; [
+  {
+    filter: [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;water&#x27;],
+    style: {
+      &#x27;fill-color&#x27;: &#x27;#9db9e8&#x27;,
+    },
+  },
+  {
+    else: true,
+    filter: [&#x27;all&#x27;, [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;roads&#x27;], [&#x27;get&#x27;, &#x27;railway&#x27;]],
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#7de&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+      &#x27;z-index&#x27;: [&#x27;number&#x27;, [&#x27;get&#x27;, &#x27;sort_key&#x27;], 0],
+    },
+  },
+  {
+    else: true,
+    filter: [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;roads&#x27;],
+    style: {
+      &#x27;stroke-color&#x27;: [
+        &#x27;match&#x27;,
+        [&#x27;get&#x27;, &#x27;kind&#x27;],
+        &#x27;major_road&#x27;,
+        &#x27;#776&#x27;,
+        &#x27;minor_road&#x27;,
+        &#x27;#ccb&#x27;,
+        &#x27;highway&#x27;,
+        &#x27;#f39&#x27;,
+        &#x27;none&#x27;,
+      ],
+      &#x27;stroke-width&#x27;: [&#x27;match&#x27;, [&#x27;get&#x27;, &#x27;kind&#x27;], &#x27;highway&#x27;, 1.5, 1],
+      &#x27;z-index&#x27;: [&#x27;number&#x27;, [&#x27;get&#x27;, &#x27;sort_key&#x27;], 0],
+    },
+  },
+  {
+    else: true,
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;buildings&#x27;],
+      [&#x27;&lt;&#x27;, [&#x27;resolution&#x27;], 10],
+    ],
+    style: {
+      &#x27;fill-color&#x27;: &#x27;#6666&#x27;,
+      &#x27;stroke-color&#x27;: &#x27;#4446&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+      &#x27;z-index&#x27;: [&#x27;number&#x27;, [&#x27;get&#x27;, &#x27;sort_key&#x27;], 0],
+    },
+  },
+];
 
 const map &#x3D; new Map({
   layers: [
@@ -310,18 +312,7 @@ const map &#x3D; new Map({
           &#x27;https://tile.nextzen.org/tilezen/vector/v1/all/{z}/{x}/{y}.topojson?api_key&#x3D;&#x27; +
           key,
       }),
-      style: function (feature, resolution) {
-        switch (feature.get(&#x27;layer&#x27;)) {
-          case &#x27;water&#x27;:
-            return waterStyle;
-          case &#x27;roads&#x27;:
-            return roadStyle(feature);
-          case &#x27;buildings&#x27;:
-            return resolution &lt; 10 ? buildingStyle : null;
-          default:
-            return null;
-        }
-      },
+      style: rules,
     }),
   ],
   target: &#x27;map&#x27;,

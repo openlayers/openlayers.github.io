@@ -251,7 +251,6 @@ import Projection from &#x27;ol/proj/Projection.js&#x27;;
 import VectorTileLayer from &#x27;ol/layer/VectorTile.js&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import {Fill, Style} from &#x27;ol/style.js&#x27;;
 
 // Converts geojson-vt data to GeoJSON
 const replacer &#x3D; function (key, value) {
@@ -292,18 +291,10 @@ const replacer &#x3D; function (key, value) {
   };
 };
 
-const style &#x3D; new Style({
-  fill: new Fill({
-    color: &#x27;#eeeeee&#x27;,
-  }),
-});
-
 const layer &#x3D; new VectorTileLayer({
   background: &#x27;#1a2b39&#x27;,
-  style: function (feature) {
-    const color &#x3D; feature.get(&#x27;COLOR&#x27;) || &#x27;#eeeeee&#x27;;
-    style.getFill().setColor(color);
-    return style;
+  style: {
+    &#x27;fill-color&#x27;: [&#x27;string&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], &#x27;#eee&#x27;],
   },
 });
 

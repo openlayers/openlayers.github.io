@@ -218,20 +218,9 @@ const vectorLayer &#x3D; new VectorLayer({
     url: &#x27;https://openlayers.org/data/vector/ecoregions.json&#x27;,
     format: new GeoJSON(),
   }),
-  style: [
-    {
-      // if features have a COLOR property, use that in the style
-      filter: [&#x27;get&#x27;, &#x27;COLOR&#x27;],
-      style: {
-        &#x27;fill-color&#x27;: [&#x27;get&#x27;, &#x27;COLOR&#x27;],
-      },
-    },
-    {
-      // otherwise, use this style
-      else: true,
-      style: {&#x27;fill-color&#x27;: &#x27;#eee&#x27;},
-    },
-  ],
+  style: {
+    &#x27;fill-color&#x27;: [&#x27;string&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], &#x27;#eee&#x27;],
+  },
 });
 
 const map &#x3D; new Map({
