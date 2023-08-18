@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9614],{42625:function(e,a,n){var r=n(1055),s=n(53061),t=n(72893),c=n(40824),i=n(81625);new r.Z({layers:[new t.Z({source:new s.Z({layer:"alidade_smooth_dark",retina:!0})})],target:"map",view:new c.ZP({center:(0,i.mi)([24.750645,59.444351]),zoom:14})})}},function(e){var a;a=42625,e(e.s=a)}]);
+//# sourceMappingURL=stadia-maps.js.map
