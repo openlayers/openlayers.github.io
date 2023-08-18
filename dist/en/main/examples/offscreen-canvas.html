@@ -286,7 +286,7 @@ worker.addEventListener(&#x27;message&#x27;, (message) &#x3D;&gt; {
     // Worker requested a new render frame
     map.render();
   } else if (canvas &amp;&amp; message.data.action &#x3D;&#x3D;&#x3D; &#x27;rendered&#x27;) {
-    // Worker provies a new render frame
+    // Worker provides a new render frame
     requestAnimationFrame(function () {
       const imageData &#x3D; message.data.imageData;
       canvas.width &#x3D; imageData.width;
