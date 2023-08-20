@@ -230,7 +230,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Rendering a layer with a Mapbox-hosted style.</p>
-          <div id="docs"><p>The MapboxVector layer allows you to create a layer based on a Mapbox-hosted style using a single vector source.  If your style uses more than one source, use the <code>source</code> property to choose a single vector source.  Use the <code>layers</code> property if you only want to render a subset of the style&#39;s layers (provided they all share the same source).</p>
+          <div id="docs"><p>The MapboxVector layer from the <a href="https://github.com/openlayers/ol-mapbox-style/">ol-mapbox-style</a> package allows you to create a layer based on a Mapbox-hosted style using a single vector source. If your style uses more than one source, use the <code>source</code> property to choose a single vector source. Use the <code>layers</code> property if you only want to render a subset of the style&#39;s layers (provided they all share the same source).</p>
 </div>
         </div>
       </div>
@@ -238,13 +238,13 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
-import MapboxVector from &#x27;ol/layer/MapboxVector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
+import {MapboxVectorLayer} from &#x27;ol-mapbox-style&#x27;;
 
 const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   layers: [
-    new MapboxVector({
+    new MapboxVectorLayer({
       styleUrl: &#x27;mapbox://styles/mapbox/bright-v9&#x27;,
       accessToken:
         &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;,
@@ -286,7 +286,8 @@ const map &#x3D; new Map({
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;mapbox-vector-layer&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;8.0.0-dev&quot;
+    &quot;ol&quot;: &quot;8.0.0-dev&quot;,
+    &quot;ol-mapbox-style&quot;: &quot;^11.0.0&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;vite&quot;: &quot;^3.2.3&quot;
