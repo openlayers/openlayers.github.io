@@ -1,4 +1,3 @@
-export { default as AssertionError } from "./AssertionError.js";
 export { default as Collection } from "./Collection.js";
 export { default as Disposable } from "./Disposable.js";
 export { default as Feature } from "./Feature.js";

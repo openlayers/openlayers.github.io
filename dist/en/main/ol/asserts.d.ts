@@ -1,6 +1,9 @@
 /**
- * @param {*} assertion Assertion we expected to be truthy.
- * @param {number} errorCode Error code.
+ * @module ol/asserts
  */
-export function assert(assertion: any, errorCode: number): void;
+/**
+ * @param {*} assertion Assertion we expected to be truthy.
+ * @param {string} errorMessage Error code.
+ */
+export function assert(assertion: any, errorMessage: string): void;
 //# sourceMappingURL=asserts.d.ts.map
