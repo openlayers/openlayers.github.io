@@ -2,12 +2,12 @@ export default CanvasImageBuilder;
 declare class CanvasImageBuilder extends CanvasBuilder {
     /**
      * @private
-     * @type {HTMLCanvasElement|HTMLVideoElement|HTMLImageElement}
+     * @type {import('../../DataTile.js').ImageLike}
      */
     private hitDetectionImage_;
     /**
      * @private
-     * @type {HTMLCanvasElement|HTMLVideoElement|HTMLImageElement}
+     * @type {import('../../DataTile.js').ImageLike}
      */
     private image_;
     /**

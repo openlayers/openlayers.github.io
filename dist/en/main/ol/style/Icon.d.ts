@@ -41,16 +41,9 @@ export type Options = {
      */
     crossOrigin?: string | null | undefined;
     /**
-     * Image object for the icon. If the `src` option is not provided then the
-     * provided image must already be loaded. And in that case, it is required
-     * to provide the size of the image, with the `imgSize` option.
+     * Image object for the icon.
      */
-    img?: HTMLCanvasElement | HTMLImageElement | undefined;
-    /**
-     * Image size in pixels. Only required if `img` is set and `src` is not.
-     * The provided `imgSize` needs to match the actual size of the image.
-     */
-    imgSize?: import("../size.js").Size | undefined;
+    img?: HTMLCanvasElement | HTMLImageElement | ImageBitmap | undefined;
     /**
      * Displacement of the icon in pixels.
      * Positive values will shift the icon right and up.
@@ -146,11 +139,6 @@ declare class Icon extends ImageStyle {
     private crossOrigin_;
     /**
      * @private
-     * @type {import("../size.js").Size|undefined}
-     */
-    private imgSize_;
-    /**
-     * @private
      * @type {import("../color.js").Color}
      */
     private color_;
@@ -203,14 +191,15 @@ declare class Icon extends ImageStyle {
     /**
      * Get the image icon.
      * @param {number} pixelRatio Pixel ratio.
-     * @return {HTMLImageElement|HTMLCanvasElement} Image or Canvas element.
+     * @return {HTMLImageElement|HTMLCanvasElement|ImageBitmap} Image or Canvas element. If the Icon
+     * style was configured with `src` or with a not let loaded `img`, an `ImageBitmap` will be returned.
      * @api
      */
-    getImage(pixelRatio: number): HTMLImageElement | HTMLCanvasElement;
+    getImage(pixelRatio: number): HTMLImageElement | HTMLCanvasElement | ImageBitmap;
     /**
-     * @return {HTMLImageElement|HTMLCanvasElement} Image element.
+     * @return {HTMLImageElement|HTMLCanvasElement|ImageBitmap} Image element.
      */
-    getHitDetectionImage(): HTMLImageElement | HTMLCanvasElement;
+    getHitDetectionImage(): HTMLImageElement | HTMLCanvasElement | ImageBitmap;
     /**
      * Get the image URL.
      * @return {string|undefined} Image src.

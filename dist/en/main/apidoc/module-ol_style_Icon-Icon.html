@@ -155,7 +155,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L86">line 86</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L82">line 82</a>
         </div>
         
     </div>
@@ -377,6 +377,9 @@ See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_imag
 |
 
 <span class="param-type">HTMLCanvasElement</span>
+|
+
+<span class="param-type">ImageBitmap</span>
 
  | undefined
                 
@@ -387,35 +390,7 @@ See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_imag
 
             <td  class="description last">
                 
-                <p>Image object for the icon. If the <code>src</code> option is not provided then the
-provided image must already be loaded. And in that case, it is required
-to provide the size of the image, with the <code>imgSize</code> option.</p></td>
-        </tr>
-
-	
-
-        <tr class="">
-            
-                <td class="name"><code>imgSize</code></td>
-            
-
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
-
- | undefined
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>Image size in pixels. Only required if <code>img</code> is set and <code>src</code> is not.
-The provided <code>imgSize</code> needs to match the actual size of the image.</p></td>
+                <p>Image object for the icon.</p></td>
         </tr>
 
 	
@@ -839,7 +814,7 @@ sub-rectangle to use from the original (sprite) image.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L303">line 303</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L288">line 288</a>
         </div>
         
     </div>
@@ -929,7 +904,7 @@ The cloned style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L345">line 345</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L328">line 328</a>
         </div>
         
     </div>
@@ -1020,7 +995,7 @@ Anchor.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L415">line 415</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L398">line 398</a>
         </div>
         
     </div>
@@ -1294,7 +1269,7 @@ Shape's center displacement
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L534">line 534</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L518">line 518</a>
         </div>
         
     </div>
@@ -1376,7 +1351,7 @@ Icon height (in pixels).
         <div class="anchor" id="getImage">
         </div>
         <h4 class="name">
-            getImage<span class="signature">(pixelRatio)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{HTMLImageElement | HTMLCanvasElement}</span>
+            getImage<span class="signature">(pixelRatio)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{HTMLImageElement | HTMLCanvasElement | ImageBitmap}</span>
             
             
 
@@ -1384,7 +1359,7 @@ Icon height (in pixels).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L425">line 425</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L409">line 409</a>
         </div>
         
     </div>
@@ -1494,7 +1469,8 @@ Icon height (in pixels).
 
 
 <h5>Returns:</h5>
-Image or Canvas element.
+Image or Canvas element. If the Icon
+style was configured with <code>src</code> or with a not let loaded <code>img</code>, an <code>ImageBitmap</code> will be returned.
 <br />
 
     
@@ -1611,7 +1587,7 @@ Opacity.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L465">line 465</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L449">line 449</a>
         </div>
         
     </div>
@@ -1701,7 +1677,7 @@ Origin.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L435">line 435</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L419">line 419</a>
         </div>
         
     </div>
@@ -2112,7 +2088,7 @@ Scale.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L509">line 509</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L493">line 493</a>
         </div>
         
     </div>
@@ -2202,7 +2178,7 @@ Image size.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L500">line 500</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L484">line 484</a>
         </div>
         
     </div>
@@ -2292,7 +2268,7 @@ Image src.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L518">line 518</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L502">line 502</a>
         </div>
         
     </div>
@@ -2382,7 +2358,7 @@ Icon width (in pixels).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L570">line 570</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L554">line 554</a>
         </div>
         
     </div>
@@ -2466,7 +2442,7 @@ method yourself for preloading or other purposes.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L405">line 405</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L388">line 388</a>
         </div>
         
     </div>
@@ -3105,7 +3081,7 @@ symbolizer.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js">style/Icon.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L551">line 551</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Icon.js#L535">line 535</a>
         </div>
         
     </div>

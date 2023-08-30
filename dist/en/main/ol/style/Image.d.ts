@@ -139,14 +139,14 @@ declare class ImageStyle {
      * Get the image element for the symbolizer.
      * @abstract
      * @param {number} pixelRatio Pixel ratio.
-     * @return {HTMLCanvasElement|HTMLVideoElement|HTMLImageElement} Image element.
+     * @return {import('../DataTile.js').ImageLike} Image element.
      */
-    getImage(pixelRatio: number): HTMLCanvasElement | HTMLVideoElement | HTMLImageElement;
+    getImage(pixelRatio: number): import('../DataTile.js').ImageLike;
     /**
      * @abstract
-     * @return {HTMLCanvasElement|HTMLVideoElement|HTMLImageElement} Image element.
+     * @return {import('../DataTile.js').ImageLike} Image element.
      */
-    getHitDetectionImage(): HTMLCanvasElement | HTMLVideoElement | HTMLImageElement;
+    getHitDetectionImage(): import('../DataTile.js').ImageLike;
     /**
      * Get the image pixel ratio.
      * @param {number} pixelRatio Pixel ratio.

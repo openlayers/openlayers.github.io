@@ -86,7 +86,7 @@ declare class CanvasImmediateRenderer extends VectorContext {
     private strokeState_;
     /**
      * @private
-     * @type {HTMLCanvasElement|HTMLVideoElement|HTMLImageElement}
+     * @type {import('../../DataTile.js').ImageLike}
      */
     private image_;
     /**

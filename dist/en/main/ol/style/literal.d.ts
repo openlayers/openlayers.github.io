@@ -36,16 +36,9 @@ export type IconProps = {
      */
     "icon-src"?: string | undefined;
     /**
-     * Image object for the icon. If the `icon-src` option is not provided then the
-     * provided image must already be loaded. And in that case, it is required
-     * to provide the size of the image, with the `icon-img-size` option.
+     * Image object for the icon. Required if the `icon-src` option is not provided.
      */
     "icon-img"?: HTMLCanvasElement | HTMLImageElement | undefined;
-    /**
-     * Image size in pixels. Only required if `icon-img` is set and `icon-src` is not.
-     * The provided size needs to match the actual size of the image.
-     */
-    "icon-img-size"?: import("../size.js").Size | undefined;
     /**
      * Anchor. Default value is the icon center.
      */
