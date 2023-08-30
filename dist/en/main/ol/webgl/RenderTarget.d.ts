@@ -3,7 +3,6 @@ export default WebGLRenderTarget;
  * @classdesc
  * This class is a wrapper around the association of both a `WebGLTexture` and a `WebGLFramebuffer` instances,
  * simplifying initialization and binding for rendering.
- * @api
  */
 declare class WebGLRenderTarget {
     /**
@@ -50,27 +49,23 @@ declare class WebGLRenderTarget {
      * Changes the size of the render target texture. Note: will do nothing if the size
      * is already the same.
      * @param {Array<number>} size Expected size of the render target texture
-     * @api
      */
     setSize(size: Array<number>): void;
     /**
      * Returns the size of the render target texture
      * @return {Array<number>} Size of the render target texture
-     * @api
      */
     getSize(): Array<number>;
     /**
      * This will cause following calls to `#readAll` or `#readPixel` to download the content of the
      * render target into memory, which is an expensive operation.
      * This content will be kept in cache but should be cleared after each new render.
-     * @api
      */
     clearCachedData(): void;
     /**
      * Returns the full content of the frame buffer as a series of r, g, b, a components
      * in the 0-255 range (unsigned byte).
      * @return {Uint8Array} Integer array of color values
-     * @api
      */
     readAll(): Uint8Array;
     /**
@@ -80,7 +75,6 @@ declare class WebGLRenderTarget {
      * @param {number} x Pixel coordinate
      * @param {number} y Pixel coordinate
      * @return {Uint8Array} Integer array with one color value (4 components)
-     * @api
      */
     readPixel(x: number, y: number): Uint8Array;
     /**
