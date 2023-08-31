@@ -69,6 +69,10 @@ export type RenderOptions = {
      */
     size: number;
     /**
+     * LineCap.
+     */
+    lineCap: CanvasLineCap;
+    /**
      * LineDash.
      */
     lineDash: Array<number> | null;
@@ -109,6 +113,7 @@ export type RenderOptions = {
  * @property {import("../colorlike.js").ColorLike} [strokeStyle] StrokeStyle.
  * @property {number} strokeWidth StrokeWidth.
  * @property {number} size Size.
+ * @property {CanvasLineCap} lineCap LineCap.
  * @property {Array<number>|null} lineDash LineDash.
  * @property {number} lineDashOffset LineDashOffset.
  * @property {CanvasLineJoin} lineJoin LineJoin.
