@@ -190,7 +190,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Image.js">Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Image.js#L314">line 314</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Image.js#L315">line 315</a>
         </div>
         
     </div>
@@ -355,7 +355,7 @@ Promise resolving to an <code>ImageBitmap</code> or an
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Image.js">Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Image.js#L267">line 267</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Image.js#L268">line 268</a>
         </div>
         
     </div>
@@ -686,7 +686,7 @@ When x and y resolution are different, use the array type (<code>[xResolution, y
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Image.js">Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Image.js#L51">line 51</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Image.js#L52">line 52</a>
         </div>
         
     </div>
@@ -869,7 +869,8 @@ image element would be set to a data URI when the content is loaded.</p>
     
     <div class="description">
         <p>Loader function used for image sources. Receives extent, resolution and pixel ratio as arguments.
-The function returns an <a href="module-ol_DataTile.html#~ImageLike"><code>image</code></a>, an
+For images that cover any extent and resolution (static images), the loader function should not accept
+any arguments. The function returns an <a href="module-ol_DataTile.html#~ImageLike"><code>image</code></a>, an
 <a href="module-ol_Image.html#~ImageObject"><code>image object</code></a>, or a promise for the same.
 For loaders that generate images, the promise should not resolve until the image is loaded.
 If the returned image does not match the extent, resolution or pixel ratio passed to the loader,

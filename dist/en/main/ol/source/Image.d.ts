@@ -158,6 +158,11 @@ declare class ImageSource extends Source {
      */
     private wantedResolution_;
     /**
+     * @private
+     * @type {boolean}
+     */
+    private static_;
+    /**
      * @return {Array<number>|null} Resolutions.
      */
     getResolutions(): Array<number> | null;
