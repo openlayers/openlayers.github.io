@@ -196,6 +196,7 @@ declare class MixedGeometryBatch {
      * @param {Array<number> | Array<Array<number>> | null} ends Coordinate ends
      * @param {Feature|RenderFeature} feature Feature
      * @param {string} featureUid Feature uid
+     * @param {number} stride Stride
      * @private
      */
     private addCoordinates_;
