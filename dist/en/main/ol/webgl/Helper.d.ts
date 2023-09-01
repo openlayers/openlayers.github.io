@@ -304,6 +304,11 @@ declare class WebGLHelper extends Disposable {
     private currentProgram_;
     /**
      * @private
+     * @type boolean
+     */
+    private needsToBeRecreated_;
+    /**
+     * @private
      * @type {import("../transform.js").Transform}
      */
     private offsetRotateMatrix_;
@@ -544,6 +549,7 @@ declare class WebGLHelper extends Disposable {
     enableAttributes(attributes: Array<AttributeDescription>): void;
     /**
      * WebGL context was lost
+     * @param {WebGLContextEvent} event The context loss event.
      * @private
      */
     private handleWebGLContextLost;
@@ -552,6 +558,11 @@ declare class WebGLHelper extends Disposable {
      * @private
      */
     private handleWebGLContextRestored;
+    /**
+     * Returns whether this helper needs to be recreated, as the context was lost and then restored.
+     * @return {boolean} Whether this helper needs to be recreated.
+     */
+    needsToBeRecreated(): boolean;
     /**
      * Will create or reuse a given webgl texture and apply the given size. If no image data
      * specified, the texture will be empty, otherwise image data will be used and the `size`
