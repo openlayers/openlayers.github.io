@@ -2,6 +2,7 @@ export const Uniforms: {
     RENDER_EXTENT: string;
     GLOBAL_ALPHA: string;
     PROJECTION_MATRIX: string;
+    SCREEN_TO_WORLD_MATRIX: string;
     TIME: string;
     ZOOM: string;
     RESOLUTION: string;

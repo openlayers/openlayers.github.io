@@ -9,6 +9,8 @@ export namespace Attributes {
     let SEGMENT_START: string;
     let SEGMENT_END: string;
     let PARAMETERS: string;
+    let JOIN_ANGLES: string;
+    let DISTANCE: string;
 }
 export default VectorStyleRenderer;
 /**

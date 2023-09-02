@@ -33,19 +33,18 @@ export function arrayToGlsl(array: Array<number>): string;
 export function colorToGlsl(color: string | import("../color.js").Color): string;
 /**
  * Returns a stable equivalent number for the string literal.
- * @param {ParsingContext} context Parsing context
  * @param {string} string String literal value
  * @return {number} Number equivalent
  */
-export function getStringNumberEquivalent(context: ParsingContext, string: string): number;
+export function getStringNumberEquivalent(string: string): number;
 /**
  * Returns a stable equivalent number for the string literal, for use in shaders. This number is then
  * converted to be a GLSL-compatible string.
- * @param {ParsingContext} context Parsing context
+ * Note: with a float precision of `mediump`, the amount of unique strings supported is 16,777,216
  * @param {string} string String literal value
  * @return {string} GLSL-compatible string containing a number
  */
-export function stringToGlsl(context: ParsingContext, string: string): string;
+export function stringToGlsl(string: string): string;
 /**
  * Recursively parses a style expression and outputs a GLSL-compatible string. Takes in a parsing context that
  * will be read and modified during the parsing operation.
@@ -125,12 +124,6 @@ export type ParsingContext = {
      * External attributes used in the expression
      */
     attributes: Array<ParsingContextExternal>;
-    /**
-     * This object maps all encountered string values to a number
-     */
-    stringLiteralsMap: {
-        [x: string]: number;
-    };
     /**
      * Lookup of functions used by the style.
      */

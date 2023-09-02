@@ -94,6 +94,26 @@ export class ShaderBuilder {
      */
     private strokeColorExpression_;
     /**
+     * @private
+     */
+    private strokeOffsetExpression_;
+    /**
+     * @private
+     */
+    private strokeCapExpression_;
+    /**
+     * @private
+     */
+    private strokeJoinExpression_;
+    /**
+     * @private
+     */
+    private strokeMiterLimitExpression_;
+    /**
+     * @private
+     */
+    private strokeDistanceFieldExpression_;
+    /**
      * @type {boolean}
      * @private
      */
@@ -215,6 +235,32 @@ export class ShaderBuilder {
      * @return {ShaderBuilder} the builder object
      */
     setStrokeColorExpression(expression: string): ShaderBuilder;
+    /**
+     * @param {string} expression Stroke color expression, evaluate to `float`
+     * @return {ShaderBuilder} the builder object
+     */
+    setStrokeOffsetExpression(expression: string): ShaderBuilder;
+    /**
+     * @param {string} expression Stroke line cap expression, evaluate to `float`
+     * @return {ShaderBuilder} the builder object
+     */
+    setStrokeCapExpression(expression: string): ShaderBuilder;
+    /**
+     * @param {string} expression Stroke line join expression, evaluate to `float`
+     * @return {ShaderBuilder} the builder object
+     */
+    setStrokeJoinExpression(expression: string): ShaderBuilder;
+    /**
+     * @param {string} expression Stroke miter limit expression, evaluate to `float`
+     * @return {ShaderBuilder} the builder object
+     */
+    setStrokeMiterLimitExpression(expression: string): ShaderBuilder;
+    /**
+     * @param {string} expression Stroke distance field expression, evaluate to `float`
+     * This can override the default distance field; can rely on currentLengthPx and currentRadiusPx
+     * @return {ShaderBuilder} the builder object
+     */
+    setStrokeDistanceFieldExpression(expression: string): ShaderBuilder;
     /**
      * @param {string} expression Fill color expression, evaluate to `vec4`
      * @return {ShaderBuilder} the builder object

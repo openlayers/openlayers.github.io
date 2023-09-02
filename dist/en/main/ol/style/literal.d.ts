@@ -29,6 +29,30 @@ export type StrokeProps = {
      * Stroke pixel width.
      */
     "stroke-width"?: import("./expressions.js").ExpressionValue | undefined;
+    /**
+     * Stroke offset in pixel. A positive value offsets the line to the right, relative to the direction of the line.
+     */
+    "stroke-offset"?: import("./expressions.js").ExpressionValue | undefined;
+    /**
+     * Line cap style: `butt`, `round`, or `square`.
+     */
+    "stroke-line-cap"?: string | number | boolean | any[] | import("../color.js").Color | undefined;
+    /**
+     * Line join style: `bevel`, `round`, or `miter`.
+     */
+    "stroke-line-join"?: string | number | boolean | any[] | import("../color.js").Color | undefined;
+    /**
+     * Line dash pattern.
+     */
+    "stroke-line-dash"?: number[] | import("./expressions.js").ExpressionValue[] | undefined;
+    /**
+     * Line dash offset.
+     */
+    "stroke-line-dash-offset"?: import("./expressions.js").ExpressionValue | undefined;
+    /**
+     * Miter limit.
+     */
+    "stroke-miter-limit"?: import("./expressions.js").ExpressionValue | undefined;
 };
 export type IconProps = {
     /**

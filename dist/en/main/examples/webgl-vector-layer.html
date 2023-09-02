@@ -91,6 +91,7 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-features.html&quot;&gt;Draw and Modify Features&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-and-modify-geodesic.html&quot;&gt;Draw and Modify Geodesic Circles&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features.html&quot;&gt;Draw Features&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./webgl-draw-line.html&quot;&gt;Draw lines rendered with WebGL&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-shapes.html&quot;&gt;Draw Shapes&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./clusters-dynamic.html&quot;&gt;Dynamic clusters&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
@@ -154,7 +155,7 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wind-arrows.html&quot;&gt;Wind Arrows&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
-                >75</a>
+                >76</a>
             </span>
             <span class="badge-group">
               <a
@@ -189,6 +190,7 @@
                 data-content="&lt;ul class=&quot;list-group&quot;&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-stretch.html&quot;&gt;Band Contrast Stretch&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-style.html&quot;&gt;Change Tile Layer Style&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./webgl-draw-line.html&quot;&gt;Draw lines rendered with WebGL&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./heatmap-earthquakes.html&quot;&gt;Earthquakes Heatmap&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./filter-points-webgl.html&quot;&gt;Filtering features with WebGL&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geotiff-reprojection.html&quot;&gt;GeoTIFF Reprojection&lt;/a&gt;
@@ -205,7 +207,7 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./webgl-vector-tiles.html&quot;&gt;WebGL Vector Tiles Layer&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
-                >16</a>
+                >17</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -251,7 +253,8 @@ import WebGLVectorLayerRenderer from &#x27;ol/renderer/webgl/VectorLayer.js&#x27
 /** @type {import(&#x27;ol/style/literal.js&#x27;).LiteralStyle} */
 const style &#x3D; {
   &#x27;stroke-color&#x27;: [&#x27;*&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], [220, 220, 220]],
-  &#x27;stroke-width&#x27;: 1.5,
+  &#x27;stroke-width&#x27;: 3,
+  &#x27;stroke-offset&#x27;: -1,
   &#x27;fill-color&#x27;: [&#x27;*&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], [255, 255, 255, 0.6]],
 };
 
