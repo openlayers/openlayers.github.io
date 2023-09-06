@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[384],{75481:function(e,r,s){var t=s(22635),a=s(1055),o=s(50463);const n=new t.Z({sources:[{url:"https://openlayers.org/data/raster/no-overviews.tif",overviews:["https://openlayers.org/data/raster/no-overviews.tif.ovr"]}]});new a.Z({target:"map",layers:[new o.Z({source:n})],view:n.getView()})}},function(e){var r;r=75481,e(e.s=r)}]);
+//# sourceMappingURL=cog-overviews.js.map
