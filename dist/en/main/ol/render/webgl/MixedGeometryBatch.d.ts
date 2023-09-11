@@ -1,5 +1,4 @@
 export default MixedGeometryBatch;
-export type RenderFeature = import("../../render/Feature").default;
 export type Feature = import("../../Feature").default;
 export type GeometryType = import("../../geom/Geometry.js").Type;
 /**
@@ -88,9 +87,6 @@ export type PointGeometryBatch = {
      */
     geometriesCount: number;
 };
-/**
- * @typedef {import("../../render/Feature").default} RenderFeature
- */
 /**
  * @typedef {import("../../Feature").default} Feature
  */
@@ -210,4 +206,5 @@ declare class MixedGeometryBatch {
     removeFeature(feature: Feature | RenderFeature): void;
     clear(): void;
 }
+import RenderFeature from '../../render/Feature.js';
 //# sourceMappingURL=MixedGeometryBatch.d.ts.map
