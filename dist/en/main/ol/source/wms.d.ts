@@ -63,6 +63,31 @@ export function getRequestParams(params: any, request: string): any;
  */
 export function createLoader(options: LoaderOptions): import("../Image.js").ImageObjectPromiseLoader;
 /**
+ * Get the GetFeatureInfo URL for the passed coordinate and resolution. Returns `undefined` if the
+ * GetFeatureInfo URL cannot be constructed.
+ * @param {LoaderOptions} options Options passed the `createWMSLoader()` function. In addition to
+ * the params required by the loader, `INFO_FORMAT` should be specified, it defaults to
+ * `application/json`. If `QUERY_LAYERS` is not provided, then the layers specified in the `LAYERS`
+ * parameter will be used.
+ * @param {import("../coordinate.js").Coordinate} coordinate Coordinate.
+ * @param {number} resolution Resolution.
+ * @return {string|undefined} GetFeatureInfo URL.
+ * @api
+ */
+export function getFeatureInfoUrl(options: LoaderOptions, coordinate: import("../coordinate.js").Coordinate, resolution: number): string | undefined;
+/**
+ * Get the GetLegendGraphic URL, optionally optimized for the passed resolution and possibly
+ * including any passed specific parameters. Returns `undefined` if the GetLegendGraphic URL
+ * cannot be constructed.
+ *
+ * @param {LoaderOptions} options Options passed the `createWMSLoader()` function.
+ * @param {number} [resolution] Resolution. If not provided, `SCALE` will not be calculated and
+ * included in URL.
+ * @return {string|undefined} GetLegendGraphic URL.
+ * @api
+ */
+export function getLegendUrl(options: LoaderOptions, resolution?: number | undefined): string | undefined;
+/**
  * Default WMS version.
  * @type {string}
  */

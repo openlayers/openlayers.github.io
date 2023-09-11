@@ -79,6 +79,8 @@
         <span class="subtitle">Methods</span>
         <ul>
             <li data-name="createloader"><a href="module-ol_source_wms.html#.createLoader">createLoader</a>
+            <li data-name="getfeatureinfourl"><a href="module-ol_source_wms.html#.getFeatureInfoUrl">getFeatureInfoUrl</a>
+            <li data-name="getlegendurl"><a href="module-ol_source_wms.html#.getLegendUrl">getLegendUrl</a>
         </ul>
     </div>
               <li class="loading">Loading …
@@ -187,7 +189,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/wms.js">source/wms.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/wms.js#L158">line 158</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/wms.js#L164">line 164</a>
         </div>
         
     </div>
@@ -494,6 +496,800 @@ returns a promise resolving to the loaded or decoded image. Default is <a href="
 
 <h5>Returns:</h5>
 Loader.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id=".getFeatureInfoUrl">
+        </div>
+        <h4 class="name">
+            getFeatureInfoUrl<span class="signature">(options, coordinate, resolution)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string | undefined}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/wms.js">source/wms.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/wms.js#L207">line 207</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+    
+    <pre class="prettyprint source"><code>import {getFeatureInfoUrl} from 'ol/source/wms';</code></pre>
+
+
+    
+    <div class="description">
+        <p>Get the GetFeatureInfo URL for the passed coordinate and resolution. Returns <code>undefined</code> if the
+GetFeatureInfo URL cannot be constructed.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_wms.html#~LoaderOptions">LoaderOptions</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Options passed the <code>createWMSLoader()</code> function. In addition to
+the params required by the loader, <code>INFO_FORMAT</code> should be specified, it defaults to
+<code>application/json</code>. If <code>QUERY_LAYERS</code> is not provided, then the layers specified in the <code>LAYERS</code>
+parameter will be used.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>coordinate</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Coordinate.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>resolution</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Resolution.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.crossOrigin</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">null</span>
+|
+
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The <code>crossOrigin</code> attribute for loaded images.  Note that
+you must provide a <code>crossOrigin</code> value if you want to access pixel data with the Canvas renderer.
+See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image">https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image</a> for more detail.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.hidpi</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    (defaults to true)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Use the <code>ol/Map#pixelRatio</code> value when requesting
+the image from the remote server.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.params</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>WMS request parameters.
+At least a <code>LAYERS</code> param is required. <code>STYLES</code> is
+<code>''</code> by default. <code>VERSION</code> is <code>1.3.0</code> by default. <code>WIDTH</code>, <code>HEIGHT</code> and <code>BBOX</code> will be set
+dynamically. <code>CRS</code> (<code>SRS</code> for WMS version &lt; 1.3.0) will is derived from the <code>proection</code> config.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.projection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection. Default is 'EPSG:3857'.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.ratio</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    (defaults to 1.5)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Ratio. <code>1</code> means image requests are the size of the map viewport, <code>2</code> means
+twice the width and height of the map viewport, and so on. Must be <code>1</code> or higher.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.serverType</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_wms.html#~ServerType">ServerType</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The type of
+the remote WMS server: <code>mapserver</code>, <code>geoserver</code>, <code>carmentaserver</code>, or <code>qgis</code>.
+Only needed if <code>hidpi</code> is <code>true</code>.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.url</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>WMS service URL.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.load</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Function
+to perform loading of the image. Receives the created <code>HTMLImageElement</code> and the desired <code>src</code> as argument and
+returns a promise resolving to the loaded or decoded image. Default is <a href="module-ol_Image.html#.decode"><code>decode</code></a>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+GetFeatureInfo URL.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id=".getLegendUrl">
+        </div>
+        <h4 class="name">
+            getLegendUrl<span class="signature">(options, <span class="optional">resolution</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string | undefined}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/wms.js">source/wms.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/wms.js#L257">line 257</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+    
+    <pre class="prettyprint source"><code>import {getLegendUrl} from 'ol/source/wms';</code></pre>
+
+
+    
+    <div class="description">
+        <p>Get the GetLegendGraphic URL, optionally optimized for the passed resolution and possibly
+including any passed specific parameters. Returns <code>undefined</code> if the GetLegendGraphic URL
+cannot be constructed.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_wms.html#~LoaderOptions">LoaderOptions</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Options passed the <code>createWMSLoader()</code> function.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>resolution</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Resolution. If not provided, <code>SCALE</code> will not be calculated and
+included in URL.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.crossOrigin</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">null</span>
+|
+
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The <code>crossOrigin</code> attribute for loaded images.  Note that
+you must provide a <code>crossOrigin</code> value if you want to access pixel data with the Canvas renderer.
+See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image">https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image</a> for more detail.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.hidpi</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    (defaults to true)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Use the <code>ol/Map#pixelRatio</code> value when requesting
+the image from the remote server.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.params</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>WMS request parameters.
+At least a <code>LAYERS</code> param is required. <code>STYLES</code> is
+<code>''</code> by default. <code>VERSION</code> is <code>1.3.0</code> by default. <code>WIDTH</code>, <code>HEIGHT</code> and <code>BBOX</code> will be set
+dynamically. <code>CRS</code> (<code>SRS</code> for WMS version &lt; 1.3.0) will is derived from the <code>proection</code> config.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.projection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection. Default is 'EPSG:3857'.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.ratio</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    (defaults to 1.5)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Ratio. <code>1</code> means image requests are the size of the map viewport, <code>2</code> means
+twice the width and height of the map viewport, and so on. Must be <code>1</code> or higher.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.serverType</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_wms.html#~ServerType">ServerType</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The type of
+the remote WMS server: <code>mapserver</code>, <code>geoserver</code>, <code>carmentaserver</code>, or <code>qgis</code>.
+Only needed if <code>hidpi</code> is <code>true</code>.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.url</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>WMS service URL.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options.load</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Function
+to perform loading of the image. Receives the created <code>HTMLImageElement</code> and the desired <code>src</code> as argument and
+returns a promise resolving to the loaded or decoded image. Default is <a href="module-ol_Image.html#.decode"><code>decode</code></a>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+GetLegendGraphic URL.
 <br />
 
     
