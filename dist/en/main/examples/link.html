@@ -163,6 +163,10 @@
             </div>
           </div>
           <div id="map" class="map"></div>
+<label>
+  <input type="checkbox" id="example-checkbox">
+  See the <code>example</code> search parameter update when toggling this checkbox.
+</label>
 
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
@@ -173,7 +177,8 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Synchronizing map state with the URL.</p>
-          <div id="docs"><p>The <code>Link</code> interaction allows you to synchronize the map state with the URL. The view center, zoom level, and rotation will be reflected in the URL as you navigate around the map.  Layer visibility is also reflected in the URL. Reloading the page restores the map view state.</p>
+          <div id="docs"><p>The <code>Link</code> interaction allows you to synchronize the map state with the URL. The view center, zoom level, and rotation will be reflected in the URL as you navigate around the map.  Layer visibility is also reflected in the URL. Reloading the page restores the map view state.
+The interaction can also be used to track other parts of your application state. For example, toggling the checkbox below updates the URL.  Navigating back through history will also update the state of the checkbox.</p>
 </div>
         </div>
       </div>
@@ -199,7 +204,25 @@ const map &#x3D; new Map({
   }),
 });
 
-map.addInteraction(new Link());
+const link &#x3D; new Link();
+
+const exampleCheckbox &#x3D; document.getElementById(&#x27;example-checkbox&#x27;);
+exampleCheckbox.addEventListener(&#x27;change&#x27;, function () {
+  if (exampleCheckbox.checked) {
+    link.update(&#x27;example&#x27;, &#x27;checked&#x27;);
+  } else {
+    // updating to null will remove the param from the URL
+    link.update(&#x27;example&#x27;, null);
+  }
+});
+
+const initialValue &#x3D; link.track(&#x27;example&#x27;, (newValue) &#x3D;&gt; {
+  exampleCheckbox.checked &#x3D; newValue &#x3D;&#x3D;&#x3D; &#x27;checked&#x27;;
+});
+
+exampleCheckbox.checked &#x3D; initialValue &#x3D;&#x3D;&#x3D; &#x27;checked&#x27;;
+
+map.addInteraction(link);
 </code></pre>
       </div>
 
@@ -220,6 +243,10 @@ map.addInteraction(new Link());
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;label&gt;
+      &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;example-checkbox&quot;&gt;
+      See the &lt;code&gt;example&lt;/code&gt; search parameter update when toggling this checkbox.
+    &lt;/label&gt;
 
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;

@@ -85,8 +85,10 @@
             <li data-name="set"><a href="module-ol_interaction_Link-Link.html#set">set</a>
             <li data-name="setactive"><a href="module-ol_interaction_Link-Link.html#setActive">setActive</a>
             <li data-name="setproperties"><a href="module-ol_interaction_Link-Link.html#setProperties">setProperties</a>
+            <li data-name="track"><a href="module-ol_interaction_Link-Link.html#track">track</a>
             <li data-name="un"><a href="module-ol_interaction_Link-Link.html#un">un</a>
             <li data-name="unset"><a href="module-ol_interaction_Link-Link.html#unset">unset</a>
+            <li data-name="update"><a href="module-ol_interaction_Link-Link.html#update">update</a>
         </ul>
     </div>
     <div class="member-list" data-type="fires">
@@ -157,7 +159,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Link.js">interaction/Link.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Link.js#L75">line 75</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Link.js#L79">line 79</a>
         </div>
         
     </div>
@@ -2227,6 +2229,167 @@ properties and adds new ones (it does not remove any existing properties).</p>
             
 <dt class="">
     
+    <div class="nameContainer">
+        <div class="anchor" id="track">
+        </div>
+        <h4 class="name">
+            track<span class="signature">(key, callback)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string | null}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Link.js">interaction/Link.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Link.js#L380">line 380</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Register a listener for a URL search parameter.  The callback will be called with a new value
+when the corresponding search parameter changes due to history events (e.g. browser navigation).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>key</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The URL search parameter.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_interaction_Link.html#~Callback">Callback</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The function to call when the search parameter changes.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The initial value of the search parameter (or null if absent from the URL).
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
     <div class="nameContainer inherited">
         <div class="anchor" id="un">
         </div>
@@ -2484,6 +2647,161 @@ properties and adds new ones (it does not remove any existing properties).</p>
             <td  class="description last">
                 
                 <p>Unset without triggering an event.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="update">
+        </div>
+        <h4 class="name">
+            update<span class="signature">(key, value)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Link.js">interaction/Link.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Link.js#L397">line 397</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Update the URL with a new search parameter value.  If the value is null, it will be
+deleted from the search parameters.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>key</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The URL search parameter.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>value</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The updated value (or null to remove it from the URL).</p></td>
         </tr>
 
 	
