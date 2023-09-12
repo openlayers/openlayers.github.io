@@ -9,6 +9,24 @@ export const Uniforms: {
     ROTATION: string;
     VIEWPORT_SIZE_PX: string;
     PIXEL_RATIO: string;
+    /**
+     * @classdesc
+     * Experimental WebGL vector renderer. Supports polygons, lines and points:
+     *  * Polygons are broken down into triangles
+     *  * Lines are rendered as strips of quads
+     *  * Points are rendered as quads
+     *
+     * You need to provide vertex and fragment shaders as well as custom attributes for each type of geometry. All shaders
+     * can access the uniforms in the {@link module:ol/webgl/Helper~DefaultUniform} enum.
+     * The vertex shaders can access the following attributes depending on the geometry type:
+     *  * For polygons: {@link module:ol/render/webgl/PolygonBatchRenderer~Attributes}
+     *  * For line strings: {@link module:ol/render/webgl/LineStringBatchRenderer~Attributes}
+     *  * For points: {@link module:ol/render/webgl/PointBatchRenderer~Attributes}
+     *
+     * Please note that the fragment shaders output should have premultiplied alpha, otherwise visual anomalies may occur.
+     *
+     * Note: this uses {@link module:ol/webgl/Helper~WebGLHelper} internally.
+     */
     HIT_DETECTION: string;
 };
 export default WebGLVectorLayerRenderer;
@@ -96,7 +114,21 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @private
      */
     private batch_;
-    sourceListenKeys_: import("../../events.js").EventsKey[];
+    /**
+     * @private
+     * @type {boolean}
+     */
+    private initialFeaturesAdded_;
+    /**
+     * @private
+     * @type {Array<import("../../events.js").EventsKey|null>}
+     */
+    private sourceListenKeys_;
+    /**
+     * @private
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     */
+    private addInitialFeatures_;
     /**
      * @param {Options} options Options.
      * @private
@@ -108,6 +140,7 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
     private createRenderers_;
     reset(options: any): void;
     /**
+     * @param {import("../../proj.js").TransformFunction} projectionTransform Transform function.
      * @param {import("../../source/Vector.js").VectorSourceEvent} event Event.
      * @private
      */

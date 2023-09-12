@@ -159,12 +159,14 @@ declare class MixedGeometryBatch {
     lineStringBatch: LineStringGeometryBatch;
     /**
      * @param {Array<Feature|RenderFeature>} features Array of features to add to the batch
+     * @param {import("../../proj.js").TransformFunction} [projectionTransform] Projection transform.
      */
-    addFeatures(features: Array<Feature | RenderFeature>): void;
+    addFeatures(features: Array<Feature | RenderFeature>, projectionTransform?: import("../../proj.js").TransformFunction | undefined): void;
     /**
      * @param {Feature|RenderFeature} feature Feature to add to the batch
+     * @param {import("../../proj.js").TransformFunction} [projectionTransform] Projection transform.
      */
-    addFeature(feature: Feature | RenderFeature): void;
+    addFeature(feature: Feature | RenderFeature, projectionTransform?: import("../../proj.js").TransformFunction | undefined): void;
     /**
      * @param {Feature|RenderFeature} feature Feature
      * @private
