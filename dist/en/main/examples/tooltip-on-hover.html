@@ -3,13 +3,14 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>Style Expressions</title>
+    <title>Tooltip on Hover</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/theme/ol.css">
     <link rel="stylesheet" type="text/css" href="/theme/site.css">
+    <link rel="stylesheet" type="text/css" href="tooltip-on-hover.css">
     <link rel="icon" type="image/svg+xml" href="/theme/img/logo-light.svg" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href="/theme/img/logo-dark.svg" media="(prefers-color-scheme: dark)" />
   </head>
@@ -61,8 +62,23 @@
           <i class="fab fa-codepen fa-lg"></i> Edit
         </a>
         <div class="span12">
-          <h4 id="title">Style Expressions</h4>
+          <h4 id="title">Tooltip on Hover</h4>
           <p class="tags">
+            <span class="badge-group">
+              <a
+                href="./index.html?q=hover" class="badge badge-info">hover</a
+              ><a
+                class="badge badge-info tag-modal-toggle"
+                data-bs-toggle="modal"
+                data-bs-target="#tag-example-list"
+                data-title="hover"
+                data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./tooltip-on-hover.html&quot;&gt;Tooltip on Hover&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./hitdetect-vector.html&quot;&gt;Vector Layer Hit Detection&lt;/a&gt;
+                  &lt;/ul&gt;"
+                tabindex="0"
+                >2</a>
+            </span>
             <span class="badge-group">
               <a
                 href="./index.html?q=vector" class="badge badge-info">vector</a
@@ -125,12 +141,12 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./select-multiple-features.html&quot;&gt;Select multiple Features&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./snap.html&quot;&gt;Snap Interaction&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./street-labels.html&quot;&gt;Street Labels&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./style-expressions.html&quot;&gt;Style Expressions&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./style-expressions.html&quot;&gt;Style Expressions&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./style-renderer.html&quot;&gt;Style renderer&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./synthetic-lines.html&quot;&gt;Synthetic Lines&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./synthetic-points.html&quot;&gt;Synthetic Points&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml-timezones.html&quot;&gt;Timezones in KML&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./tooltip-on-hover.html&quot;&gt;Tooltip on Hover&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./tooltip-on-hover.html&quot;&gt;Tooltip on Hover&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./topojson.html&quot;&gt;TopoJSON&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./topolis.html&quot;&gt;topolis integration&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./tracing.html&quot;&gt;Tracing around a polygon&lt;/a&gt;
@@ -153,59 +169,6 @@
                 tabindex="0"
                 >77</a>
             </span>
-            <span class="badge-group">
-              <a
-                href="./index.html?q=style" class="badge badge-info">style</a
-              ><a
-                class="badge badge-info tag-modal-toggle"
-                data-bs-toggle="modal"
-                data-bs-target="#tag-example-list"
-                data-title="style"
-                data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./animated-gif.html&quot;&gt;Animated GIF&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-stretch.html&quot;&gt;Band Contrast Stretch&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-style.html&quot;&gt;Change Tile Layer Style&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./polygon-styles.html&quot;&gt;Custom Polygon Styles&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./draw-features-style.html&quot;&gt;Drawing Features Style&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./clusters-dynamic.html&quot;&gt;Dynamic clusters&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-clusters.html&quot;&gt;Earthquake Clusters&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./heatmap-earthquakes.html&quot;&gt;Earthquakes Heatmap&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml-earthquakes.html&quot;&gt;Earthquakes in KML&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-custom-symbol.html&quot;&gt;Earthquakes with custom symbols&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geotiff-reprojection.html&quot;&gt;GeoTIFF Reprojection&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon-scale.html&quot;&gt;Icon and Label Scale&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon-color.html&quot;&gt;Icon Colors&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon-negative.html&quot;&gt;Icon Pixel Operations&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon.html&quot;&gt;Icon Symbolizer&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon-width.html&quot;&gt;Icon Symbolizer width and height&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./measure-style.html&quot;&gt;Measure using vector styles&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./regularshape.html&quot;&gt;Regular Shapes&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./style-expressions.html&quot;&gt;Style Expressions&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./style-renderer.html&quot;&gt;Style renderer&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./canvas-gradient-pattern.html&quot;&gt;Styling feature with CanvasGradient or CanvasPattern&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml-timezones.html&quot;&gt;Timezones in KML&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./topojson.html&quot;&gt;TopoJSON&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./webgl-tile-style.html&quot;&gt;WebGL Tile Layer Styles&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wind-arrows.html&quot;&gt;Wind Arrows&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./zoomslider.html&quot;&gt;Zoom Sliders&lt;/a&gt;
-                  &lt;/ul&gt;"
-                tabindex="0"
-                >26</a>
-            </span>
-            <span class="badge-group">
-              <a
-                href="./index.html?q=expression" class="badge badge-info">expression</a
-              ><a
-                class="badge badge-info tag-modal-toggle"
-                data-bs-toggle="modal"
-                data-bs-target="#tag-example-list"
-                data-title="expression"
-                data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./style-expressions.html&quot;&gt;Style Expressions&lt;/a&gt;
-                  &lt;/ul&gt;"
-                tabindex="0"
-                >1</a>
-            </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -220,7 +183,9 @@
               </div>
             </div>
           </div>
-          <div id="map" class="map"></div>
+          <div id="map" class="map">
+  <div id="info"></div>
+</div>
 
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
@@ -230,10 +195,8 @@
 
       <div class="row-fluid">
         <div class="span12">
-          <p id="shortdesc">Demonstrates rule based styling.</p>
-          <div id="docs"><p>To style all features in a layer in the same way, you can use a symbolizer object with literal values as shown below for the land layer.  In this case, all features have the same fill color.
-To style features in a layer based on a feature property, an expression can be provided in a symbolizer instead of literal values.  In the first populated places layer below, the circle radius is based on the <code>scalerank</code> property.
-To conditionally apply different symbolizers based on a feature property, a list of rules can be provided. Each rule can have a <code>filter</code> expression.  If this expression evaluates to true, the rule&#39;s <code>style</code> is applied.  A rule with <code>else: true</code> applies if no previous rules have applied.  The populated place labels are rendered with a list of rules given to the third layer.</p>
+          <p id="shortdesc">Example of displaying feature information in tooltip by hovering.</p>
+          <div id="docs"><p>In this example, a listener is registered on the map&#39;s <code>pointermove</code> to display the feature information in a tooltip when the pointer hovers over a feature.</p>
 </div>
         </div>
       </div>
@@ -241,73 +204,72 @@ To conditionally apply different symbolizers based on a feature property, a list
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
-import Layer from &#x27;ol/layer/Vector.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
-import Source from &#x27;ol/source/Vector.js&#x27;;
+import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
+import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 
-const format &#x3D; new GeoJSON();
+const vector &#x3D; new VectorLayer({
+  source: new VectorSource({
+    url: &#x27;https://openlayers.org/data/vector/ecoregions.json&#x27;,
+    format: new GeoJSON(),
+  }),
+  background: &#x27;white&#x27;,
+  style: {
+    &#x27;fill-color&#x27;: [&#x27;string&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], &#x27;#eeeeee&#x27;],
+  },
+});
 
 const map &#x3D; new Map({
-  layers: [
-    new Layer({
-      background: &#x27;#1a2b39&#x27;,
-      source: new Source({
-        url: &#x27;https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_110m_land.geojson&#x27;,
-        format,
-      }),
-      style: {
-        &#x27;fill-color&#x27;: &#x27;darkgray&#x27;,
-      },
-    }),
-    new Layer({
-      source: new Source({
-        url: &#x27;https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_populated_places_simple.geojson&#x27;,
-        format,
-      }),
-      style: {
-        &#x27;circle-radius&#x27;: [&#x27;get&#x27;, &#x27;scalerank&#x27;],
-        &#x27;circle-fill-color&#x27;: &#x27;gray&#x27;,
-        &#x27;circle-stroke-color&#x27;: &#x27;white&#x27;,
-        &#x27;circle-stroke-width&#x27;: 0.5,
-      },
-    }),
-    new Layer({
-      source: new Source({
-        url: &#x27;https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_populated_places_simple.geojson&#x27;,
-        format,
-      }),
-      declutter: true,
-      style: [
-        {
-          filter: [&#x27;&gt;&#x27;, [&#x27;get&#x27;, &#x27;pop_max&#x27;], 10_000_000],
-          style: {
-            &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;nameascii&#x27;],
-            &#x27;text-font&#x27;: &#x27;16px sans-serif&#x27;,
-            &#x27;text-fill-color&#x27;: &#x27;white&#x27;,
-            &#x27;text-stroke-color&#x27;: &#x27;gray&#x27;,
-            &#x27;text-stroke-width&#x27;: 2,
-          },
-        },
-        {
-          else: true,
-          filter: [&#x27;&gt;&#x27;, [&#x27;get&#x27;, &#x27;pop_max&#x27;], 5_000_000],
-          style: {
-            &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;nameascii&#x27;],
-            &#x27;text-font&#x27;: &#x27;12px sans-serif&#x27;,
-            &#x27;text-fill-color&#x27;: &#x27;white&#x27;,
-            &#x27;text-stroke-color&#x27;: &#x27;gray&#x27;,
-            &#x27;text-stroke-width&#x27;: 2,
-          },
-        },
-      ],
-    }),
-  ],
+  layers: [vector],
   target: &#x27;map&#x27;,
   view: new View({
     center: [0, 0],
-    zoom: 1,
+    zoom: 2,
   }),
+});
+
+const info &#x3D; document.getElementById(&#x27;info&#x27;);
+info.style.visibility &#x3D; &#x27;hidden&#x27;;
+info.style.pointerEvents &#x3D; &#x27;none&#x27;;
+
+let currentFeature;
+const displayFeatureInfo &#x3D; function (pixel, target) {
+  const feature &#x3D; target.closest(&#x27;.ol-control&#x27;)
+    ? undefined
+    : map.forEachFeatureAtPixel(pixel, function (feature) {
+        return feature;
+      });
+  if (feature) {
+    info.style.left &#x3D; pixel[0] + &#x27;px&#x27;;
+    info.style.top &#x3D; pixel[1] + &#x27;px&#x27;;
+    if (feature !&#x3D;&#x3D; currentFeature) {
+      info.style.visibility &#x3D; &#x27;visible&#x27;;
+      info.innerText &#x3D; feature.get(&#x27;ECO_NAME&#x27;);
+    }
+  } else {
+    info.style.visibility &#x3D; &#x27;hidden&#x27;;
+  }
+  currentFeature &#x3D; feature;
+};
+
+map.on(&#x27;pointermove&#x27;, function (evt) {
+  if (evt.dragging) {
+    info.style.visibility &#x3D; &#x27;hidden&#x27;;
+    currentFeature &#x3D; undefined;
+    return;
+  }
+  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
+  displayFeatureInfo(pixel, evt.originalEvent.target);
+});
+
+map.on(&#x27;click&#x27;, function (evt) {
+  displayFeatureInfo(evt.pixel, evt.originalEvent.target);
+});
+
+map.getTargetElement().addEventListener(&#x27;pointerleave&#x27;, function () {
+  currentFeature &#x3D; undefined;
+  info.style.visibility &#x3D; &#x27;hidden&#x27;;
 });
 </code></pre>
       </div>
@@ -318,17 +280,37 @@ const map &#x3D; new Map({
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;Style Expressions&lt;/title&gt;
+    &lt;title&gt;Tooltip on Hover&lt;/title&gt;
     &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
         height: 400px;
       }
+      #map {
+          position: relative;
+      }
+
+      #info {
+          position: absolute;
+          display: inline-block;
+          height: auto;
+          width: auto;
+          z-index: 100;
+          background-color: #333;
+          color: #fff;
+          text-align: center;
+          border-radius: 4px;
+          padding: 5px;
+          left: 50%;
+          transform: translateX(3%);
+      }
     &lt;/style&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;
+      &lt;div id&#x3D;&quot;info&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
 
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
@@ -338,7 +320,7 @@ const map &#x3D; new Map({
       <div class="row-fluid">
         <h5 class="source-heading">package.json</h5>
         <pre><code id="example-pkg-source" class="language-json">{
-  &quot;name&quot;: &quot;style-expressions&quot;,
+  &quot;name&quot;: &quot;tooltip-on-hover&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;8.1.1-dev&quot;
   },
@@ -355,7 +337,7 @@ const map &#x3D; new Map({
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="common.js"></script>
-    <script src="style-expressions.js"></script>
+    <script src="tooltip-on-hover.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/toolbar/prism-toolbar.min.js"></script>
