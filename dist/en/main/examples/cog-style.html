@@ -178,6 +178,8 @@ Set the layer style
   <option value="trueColor">True Color</option>
   <option value="falseColor">False Color</option>
   <option value="ndvi">NDVI</option>
+  <option value="ndviPalettePlasma">NDVI w/ palette 1</option>
+  <option value="ndviPaletteViridis">NDVI w/ palette 2</option>
 </select>
 
         </div>
@@ -270,6 +272,37 @@ const ndvi &#x3D; {
   ],
 };
 
+const ndviPalettePlasma &#x3D; {
+  color: [
+    &#x27;palette&#x27;,
+    [
+      &#x27;interpolate&#x27;,
+      [&#x27;linear&#x27;],
+      [&#x27;/&#x27;, [&#x27;-&#x27;, nir, red], [&#x27;+&#x27;, nir, red]],
+      -0.2,
+      0,
+      0.65,
+      4,
+    ],
+    [&#x27;#0d0887&#x27;, &#x27;#7e03a8&#x27;, &#x27;#cb4778&#x27;, &#x27;#f89540&#x27;, &#x27;#f0f921&#x27;],
+  ],
+};
+const ndviPaletteViridis &#x3D; {
+  color: [
+    &#x27;palette&#x27;,
+    [
+      &#x27;interpolate&#x27;,
+      [&#x27;linear&#x27;],
+      [&#x27;/&#x27;, [&#x27;-&#x27;, nir, red], [&#x27;+&#x27;, nir, red]],
+      -0.2,
+      0,
+      0.65,
+      4,
+    ],
+    [&#x27;#440154&#x27;, &#x27;#3b528b&#x27;, &#x27;#21918c&#x27;, &#x27;#5ec962&#x27;, &#x27;#fde725&#x27;],
+  ],
+};
+
 const layer &#x3D; new TileLayer({
   style: trueColor,
   source: new GeoTIFF({
@@ -293,7 +326,14 @@ const map &#x3D; new Map({
   }),
 });
 
-const styles &#x3D; {trueColor, falseColor, ndvi};
+const styles &#x3D; {
+  trueColor,
+  falseColor,
+  ndvi,
+  ndviPalettePlasma,
+  ndviPaletteViridis,
+};
+
 const styleSelector &#x3D; document.getElementById(&#x27;style&#x27;);
 
 function update() {
@@ -326,6 +366,8 @@ styleSelector.addEventListener(&#x27;change&#x27;, update);
       &lt;option value&#x3D;&quot;trueColor&quot;&gt;True Color&lt;/option&gt;
       &lt;option value&#x3D;&quot;falseColor&quot;&gt;False Color&lt;/option&gt;
       &lt;option value&#x3D;&quot;ndvi&quot;&gt;NDVI&lt;/option&gt;
+      &lt;option value&#x3D;&quot;ndviPalettePlasma&quot;&gt;NDVI w/ palette 1&lt;/option&gt;
+      &lt;option value&#x3D;&quot;ndviPaletteViridis&quot;&gt;NDVI w/ palette 2&lt;/option&gt;
     &lt;/select&gt;
 
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
