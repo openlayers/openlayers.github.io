@@ -176,6 +176,18 @@ declare class RenderFeature {
      */
     transform(projection: import("../proj.js").ProjectionLike): void;
     /**
+     * Apply a transform function to the coordinates of the geometry.
+     * The geometry is modified in place.
+     * If you do not want the geometry modified in place, first `clone()` it and
+     * then use this function on the clone.
+     * @param {import("../proj.js").TransformFunction} transformFn Transform function.
+     */
+    applyTransform(transformFn: import("../proj.js").TransformFunction): void;
+    /**
+     * @return {RenderFeature} A cloned render feature.
+     */
+    clone(): RenderFeature;
+    /**
      * @return {Array<number>|Array<Array<number>>} Ends or endss.
      */
     getEnds(): Array<number> | Array<Array<number>>;
