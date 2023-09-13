@@ -1,4 +1,9 @@
 /**
+ * @param {number} stride Stride.
+ * @return {import("./Geometry.js").GeometryLayout} layout Layout.
+ */
+export function getLayoutForStride(stride: number): import("./Geometry.js").GeometryLayout;
+/**
  * @param {import("./Geometry.js").GeometryLayout} layout Layout.
  * @return {number} Stride.
  */

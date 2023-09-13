@@ -19,20 +19,26 @@ export function toGeometry(renderFeature: RenderFeature): Point | MultiPoint | L
 export function toFeature(renderFeature: RenderFeature, geometryName?: string | undefined): Feature;
 export default RenderFeature;
 /**
+ * The geometry type.  One of `'Point'`, `'LineString'`, `'LinearRing'`,
+ * `'Polygon'`, `'MultiPoint'` or 'MultiLineString'`.
+ */
+export type Type = 'Point' | 'LineString' | 'LinearRing' | 'Polygon' | 'MultiPoint' | 'MultiLineString';
+/**
  * Lightweight, read-only, {@link module:ol/Feature~Feature} and {@link module:ol/geom/Geometry~Geometry} like
  * structure, optimized for vector tile rendering and styling. Geometry access
  * through the API is limited to getting the type and extent of the geometry.
  */
 declare class RenderFeature {
     /**
-     * @param {import("../geom/Geometry.js").Type} type Geometry type.
+     * @param {Type} type Geometry type.
      * @param {Array<number>} flatCoordinates Flat coordinates. These always need
      *     to be right-handed for polygons.
-     * @param {Array<number>|Array<Array<number>>} ends Ends or Endss.
+     * @param {Array<number>} ends Ends.
+     * @param {number} stride Stride.
      * @param {Object<string, *>} properties Properties.
      * @param {number|string|undefined} id Feature id.
      */
-    constructor(type: import("../geom/Geometry.js").Type, flatCoordinates: Array<number>, ends: Array<number> | Array<Array<number>>, properties: {
+    constructor(type: Type, flatCoordinates: Array<number>, ends: Array<number>, stride: number, properties: {
         [x: string]: any;
     }, id: number | string | undefined);
     /**
@@ -51,7 +57,7 @@ declare class RenderFeature {
     private id_;
     /**
      * @private
-     * @type {import("../geom/Geometry.js").Type}
+     * @type {Type}
      */
     private type_;
     /**
@@ -71,7 +77,7 @@ declare class RenderFeature {
     private flatMidpoints_;
     /**
      * @private
-     * @type {Array<number>|Array<Array<number>>}
+     * @type {Array<number>}
      */
     private ends_;
     /**
@@ -79,6 +85,19 @@ declare class RenderFeature {
      * @type {Object<string, *>}
      */
     private properties_;
+    /**
+     * @type {number}
+     */
+    squaredTolerance_: number;
+    /**
+     * @type {number}
+     */
+    stride_: number;
+    /**
+     * @private
+     * @type {RenderFeature}
+     */
+    private simplifiedGeometry_;
     /**
      * Get a feature property by its key.
      * @param {string} key Key
@@ -133,7 +152,6 @@ declare class RenderFeature {
     getSimplifiedGeometry(squaredTolerance: number): RenderFeature;
     /**
      * Get a transformed and simplified version of the geometry.
-     * @abstract
      * @param {number} squaredTolerance Squared tolerance.
      * @param {import("../proj.js").TransformFunction} [transform] Optional transform function.
      * @return {RenderFeature} Simplified geometry.
@@ -165,10 +183,10 @@ declare class RenderFeature {
     getStyleFunction(): import('../style/Style.js').StyleFunction | undefined;
     /**
      * Get the type of this feature's geometry.
-     * @return {import("../geom/Geometry.js").Type} Geometry type.
+     * @return {Type} Geometry type.
      * @api
      */
-    getType(): import("../geom/Geometry.js").Type;
+    getType(): Type;
     /**
      * Transform geometry coordinates from tile pixel space to projected.
      *
@@ -188,10 +206,14 @@ declare class RenderFeature {
      */
     clone(): RenderFeature;
     /**
-     * @return {Array<number>|Array<Array<number>>} Ends or endss.
+     * @return {Array<number>} Ends.
      */
-    getEnds(): Array<number> | Array<Array<number>>;
-    getEndss: () => Array<number> | Array<Array<number>>;
+    getEnds(): Array<number>;
+    /**
+     * Add transform and resolution based geometry simplification to this instance.
+     * @return {RenderFeature} This render feature.
+     */
+    enableSimplifyTransformed(): RenderFeature;
     /**
      * @return {Array<number>} Flat coordinates.
      */

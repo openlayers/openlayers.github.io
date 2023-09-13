@@ -49,7 +49,7 @@ export type Options = {
     /**
      * Source.
      */
-    source?: VectorSource<import("../geom/Geometry.js").default> | undefined;
+    source?: VectorSource<Feature<import("../geom/Geometry.js").default>> | undefined;
     /**
      * Whether to wrap the world horizontally.
      */
@@ -104,7 +104,7 @@ export type Options = {
  * from the wrapped source.
  * @api
  */
-declare class Cluster extends VectorSource<import("../geom/Geometry.js").default> {
+declare class Cluster extends VectorSource<Feature<import("../geom/Geometry.js").default>> {
     /**
      * @param {Options} options Cluster options.
      */

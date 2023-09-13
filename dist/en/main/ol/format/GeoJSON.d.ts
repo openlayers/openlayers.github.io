@@ -31,6 +31,13 @@ export type Options = {
      * and a `geometryName` is provided, the `geometryName` will take precedence.
      */
     extractGeometryName?: boolean | undefined;
+    /**
+     * Feature class
+     * to be used when reading features. The default is {@link module :ol/Feature~Feature}. If performance is
+     * the primary concern, and features are not going to be modified or round-tripped through the format,
+     * consider using {@link module :ol/render/Feature~RenderFeature}
+     */
+    featureClass?: import("../Feature.js").FeatureClass | undefined;
 };
 /**
  * @typedef {import("geojson").GeoJSON} GeoJSONObject
@@ -55,6 +62,10 @@ export type Options = {
  * the geometry_name field in the feature GeoJSON. If set to `true` the GeoJSON reader
  * will look for that field to set the geometry name. If both this field is set to `true`
  * and a `geometryName` is provided, the `geometryName` will take precedence.
+ * @property {import("../Feature.js").FeatureClass} [featureClass] Feature class
+ * to be used when reading features. The default is {@link module:ol/Feature~Feature}. If performance is
+ * the primary concern, and features are not going to be modified or round-tripped through the format,
+ * consider using {@link module:ol/render/Feature~RenderFeature}
  */
 /**
  * @classdesc

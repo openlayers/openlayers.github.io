@@ -1,5 +1,5 @@
 export default VectorImageLayer;
-export type Options<VectorSourceType extends import("../source/Vector.js").default<import("../geom/Geometry.js").default>> = {
+export type Options<VectorSourceType extends import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -147,7 +147,7 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
  * @extends {BaseVectorLayer<VectorSourceType, CanvasVectorImageLayerRenderer>}
  * @api
  */
-declare class VectorImageLayer<VectorSourceType extends import("../source/Vector.js").default<import("../geom/Geometry.js").default>> extends BaseVectorLayer<VectorSourceType, CanvasVectorImageLayerRenderer> {
+declare class VectorImageLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>>> extends BaseVectorLayer<VectorSourceType, CanvasVectorImageLayerRenderer> {
     /**
      * @param {Options<VectorSourceType>} [options] Options.
      */

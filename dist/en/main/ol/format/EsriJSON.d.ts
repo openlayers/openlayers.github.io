@@ -63,6 +63,13 @@ declare class EsriJSON extends JSONFeature {
      */
     protected readFeatureFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined, idField?: string | undefined): import("../Feature.js").default;
     /**
+     * @param {Object} object Object.
+     * @param {import("./Feature.js").ReadOptions} [options] Read options.
+     * @protected
+     * @return {Array<Feature>} Features.
+     */
+    protected readFeaturesFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined): Array<Feature>;
+    /**
      * @param {EsriJSONGeometry} object Object.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @protected
@@ -89,4 +96,5 @@ declare class EsriJSON extends JSONFeature {
     writeFeaturesObject(features: Array<import("../Feature.js").default>, options?: import("./Feature.js").WriteOptions | undefined): EsriJSONFeatureSet;
 }
 import JSONFeature from './JSONFeature.js';
+import Feature from '../Feature.js';
 //# sourceMappingURL=EsriJSON.d.ts.map

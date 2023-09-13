@@ -148,7 +148,7 @@ export type Options = {
      * features to modify.  If a vector source is not provided, a feature collection
      * must be provided with the `features` option.
      */
-    source?: VectorSource<import("../geom/Geometry.js").default> | undefined;
+    source?: VectorSource<Feature<import("../geom/Geometry.js").default>> | undefined;
     /**
      * When configured, point
      * features will be considered for modification based on their visual appearance, instead of being within

@@ -651,7 +651,7 @@ See <a href="module-ol_source_Vector-VectorSource.html#clear"><code>source.clear
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L333">line 333</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L334">line 334</a>
         </div>
         
     </div>
@@ -708,7 +708,7 @@ be removed from it right away.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a>&lt;Geometry></span>
+<span class="param-type">FeatureClass</span>
 
 
                 
@@ -786,7 +786,7 @@ be removed from it right away.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L419">line 419</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L434">line 434</a>
         </div>
         
     </div>
@@ -836,7 +836,7 @@ be removed from it right away.</p>
             <td class="type">
             
                 
-<span class="param-type">Array&lt;<a href="module-ol_Feature-Feature.html">Feature</a>&lt;Geometry>></span>
+<span class="param-type">Array.&lt;FeatureClass></span>
 
 
                 
@@ -1266,7 +1266,7 @@ Object with a <code>type</code> property.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L583">line 583</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L600">line 600</a>
         </div>
         
     </div>
@@ -1407,7 +1407,7 @@ The return value from the last call to the callback.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L634">line 634</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L657">line 657</a>
         </div>
         
     </div>
@@ -1577,7 +1577,7 @@ The return value from the last call to the callback.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L658">line 658</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L681">line 681</a>
         </div>
         
     </div>
@@ -2051,7 +2051,7 @@ Attributions are collapsible.
         <div class="anchor" id="getClosestFeatureToCoordinate">
         </div>
         <h4 class="name">
-            getClosestFeatureToCoordinate<span class="signature">(coordinate, <span class="optional">filter</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Feature-Feature.html">Feature</a>&lt;Geometry>}</span>
+            getClosestFeatureToCoordinate<span class="signature">(coordinate, <span class="optional">filter</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{FeatureClass}</span>
             
                 <span class="inherited"><a href="module-ol_source_Vector-VectorSource.html#getClosestFeatureToCoordinate">inherited</a></span>
             
@@ -2061,7 +2061,7 @@ Attributions are collapsible.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L769">line 769</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L794">line 794</a>
         </div>
         
     </div>
@@ -2076,7 +2076,8 @@ Attributions are collapsible.
     <div class="description">
         <p>Get the closest feature to the provided coordinate.</p>
 <p>This method is not available when the source is configured with
-<code>useSpatialIndex</code> set to <code>false</code>.</p>
+<code>useSpatialIndex</code> set to <code>false</code> and the features in this source are of type
+<a href="module-ol_Feature-Feature.html"><code>Feature</code></a>.</p>
     </div>
     
 
@@ -2317,7 +2318,7 @@ Distance.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L827">line 827</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L850">line 850</a>
         </div>
         
     </div>
@@ -2447,7 +2448,7 @@ Extent.
         <div class="anchor" id="getFeatureById">
         </div>
         <h4 class="name">
-            getFeatureById<span class="signature">(id)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Feature-Feature.html">Feature</a>&lt;Geometry> | null}</span>
+            getFeatureById<span class="signature">(id)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{FeatureClass | Array&lt;<a href="module-ol_render_Feature-RenderFeature.html">RenderFeature</a>> | null}</span>
             
                 <span class="inherited"><a href="module-ol_source_Vector-VectorSource.html#getFeatureById">inherited</a></span>
             
@@ -2457,7 +2458,7 @@ Extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L840">line 840</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L866">line 866</a>
         </div>
         
     </div>
@@ -2470,7 +2471,10 @@ Extent.
 
     
     <div class="description">
-        <p>Get a feature by its identifier (the value returned by feature.getId()).
+        <p>Get a feature by its identifier (the value returned by feature.getId()). When <code>RenderFeature</code>s
+are used, <code>getFeatureById()</code> can return an array of <code>RenderFeature</code>s. This allows for handling
+of <code>GeometryCollection</code> geometries, where format readers create one <code>RenderFeature</code> per
+<code>GeometryCollection</code> member.
 Note that the index treats string and numeric identifiers as the same.  So
 <code>source.getFeatureById(2)</code> will return a feature with id <code>'2'</code> or <code>2</code>.</p>
     </div>
@@ -2589,7 +2593,7 @@ The feature (or <code>null</code> if not found).
         <div class="anchor" id="getFeatures">
         </div>
         <h4 class="name">
-            getFeatures<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array&lt;<a href="module-ol_Feature-Feature.html">Feature</a>&lt;Geometry>>}</span>
+            getFeatures<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;FeatureClass>}</span>
             
                 <span class="inherited"><a href="module-ol_source_Vector-VectorSource.html#getFeatures">inherited</a></span>
             
@@ -2599,7 +2603,7 @@ The feature (or <code>null</code> if not found).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L694">line 694</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L720">line 720</a>
         </div>
         
     </div>
@@ -2682,7 +2686,7 @@ Features.
         <div class="anchor" id="getFeaturesAtCoordinate">
         </div>
         <h4 class="name">
-            getFeaturesAtCoordinate<span class="signature">(coordinate)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array&lt;<a href="module-ol_Feature-Feature.html">Feature</a>&lt;Geometry>>}</span>
+            getFeaturesAtCoordinate<span class="signature">(coordinate)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array&lt;<a href="module-ol_Feature-Feature.html">Feature</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_source_Vector-VectorSource.html#getFeaturesAtCoordinate">inherited</a></span>
             
@@ -2692,7 +2696,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L715">line 715</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L739">line 739</a>
         </div>
         
     </div>
@@ -2819,7 +2823,7 @@ Features.
         <div class="anchor" id="getFeaturesCollection">
         </div>
         <h4 class="name">
-            getFeaturesCollection<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Collection-Collection.html">Collection</a>&lt;<a href="module-ol_Feature-Feature.html">Feature</a>&lt;Geometry>> | null}</span>
+            getFeaturesCollection<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Collection-Collection.html">Collection</a>&lt;FeatureClass> | null}</span>
             
                 <span class="inherited"><a href="module-ol_source_Vector-VectorSource.html#getFeaturesCollection">inherited</a></span>
             
@@ -2829,7 +2833,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L684">line 684</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L710">line 710</a>
         </div>
         
     </div>
@@ -2913,7 +2917,7 @@ The collection of features.
         <div class="anchor" id="getFeaturesInExtent">
         </div>
         <h4 class="name">
-            getFeaturesInExtent<span class="signature">(extent, <span class="optional">projection</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array&lt;<a href="module-ol_Feature-Feature.html">Feature</a>&lt;Geometry>>}</span>
+            getFeaturesInExtent<span class="signature">(extent, <span class="optional">projection</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;FeatureClass>}</span>
             
                 <span class="inherited"><a href="module-ol_source_Vector-VectorSource.html#getFeaturesInExtent">inherited</a></span>
             
@@ -2923,7 +2927,7 @@ The collection of features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L737">line 737</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L761">line 761</a>
         </div>
         
     </div>
@@ -3090,7 +3094,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L862">line 862</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L888">line 888</a>
         </div>
         
     </div>
@@ -3823,7 +3827,7 @@ State.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L879">line 879</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L905">line 905</a>
         </div>
         
     </div>
@@ -3915,7 +3919,7 @@ The url.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L936">line 936</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L960">line 960</a>
         </div>
         
     </div>
@@ -3965,7 +3969,7 @@ The url.
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a>&lt;Geometry></span>
+<span class="param-type">FeatureClass</span>
 
 
                 
@@ -4386,7 +4390,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1045">line 1045</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1069">line 1069</a>
         </div>
         
     </div>
@@ -4438,7 +4442,7 @@ instead.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a>&lt;Geometry></span>
+<span class="param-type">FeatureClass</span>
 
 
                 
@@ -4516,7 +4520,7 @@ instead.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1024">line 1024</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1048">line 1048</a>
         </div>
         
     </div>
@@ -5081,7 +5085,7 @@ instead.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1114">line 1114</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1145">line 1145</a>
         </div>
         
     </div>
@@ -5620,7 +5624,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js">source/Vector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1123">line 1123</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Vector.js#L1154">line 1154</a>
         </div>
         
     </div>

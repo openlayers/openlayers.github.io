@@ -44,7 +44,7 @@ export type Options = {
     /**
      * Snap to features from this source. Either this option or features should be provided
      */
-    source?: import("../source/Vector.js").default<import("../geom/Geometry.js").default> | undefined;
+    source?: import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>> | undefined;
 };
 /**
  * *

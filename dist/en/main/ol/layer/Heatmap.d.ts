@@ -66,7 +66,7 @@ export type Options = {
     /**
      * Point source.
      */
-    source?: import("../source/Vector.js").default<import("../geom/Point.js").default> | undefined;
+    source?: import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>> | undefined;
     /**
      * Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
      */
@@ -85,7 +85,7 @@ export type Options = {
  * @extends {BaseVector<import("../source/Vector.js").default, WebGLPointsLayerRenderer>}
  * @api
  */
-declare class Heatmap extends BaseVector<import("../source/Vector.js").default<import("../geom/Geometry.js").default>, WebGLPointsLayerRenderer> {
+declare class Heatmap extends BaseVector<import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>>, WebGLPointsLayerRenderer> {
     /**
      * @param {Options} [options] Options.
      */

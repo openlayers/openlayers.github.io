@@ -142,7 +142,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js">format/GeoJSON.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L50">line 50</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L57">line 57</a>
         </div>
         
     </div>
@@ -286,6 +286,34 @@ and a <code>geometryName</code> is provided, the <code>geometryName</code> will 
         </tr>
 
 	
+
+        <tr class="">
+            
+                <td class="name"><code>featureClass</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_Feature.html#~FeatureClass">FeatureClass</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Feature class
+to be used when reading features. The default is <a href="module-ol_Feature-Feature.html"><code>Feature</code></a>. If performance is
+the primary concern, and features are not going to be modified or round-tripped through the format,
+consider using <a href="module-ol_render_Feature-RenderFeature.html"><code>RenderFeature</code></a></p></td>
+        </tr>
+
+	
 	</tbody>
 </table>
     
@@ -368,7 +396,7 @@ and a <code>geometryName</code> is provided, the <code>geometryName</code> will 
         <div class="anchor" id="readFeature">
         </div>
         <h4 class="name">
-            readFeature<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Feature-Feature.html">Feature</a>}</span>
+            readFeature<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Feature.html#~FeatureLike">FeatureLike</a> | Array&lt;<a href="module-ol_render_Feature-RenderFeature.html">RenderFeature</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_format_JSONFeature-JSONFeature.html#readFeature">inherited</a></span>
             
@@ -636,7 +664,7 @@ Feature.
         <div class="anchor" id="readFeatures">
         </div>
         <h4 class="name">
-            readFeatures<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array&lt;<a href="module-ol_Feature-Feature.html">Feature</a>>}</span>
+            readFeatures<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array&lt;<a href="module-ol_Feature.html#~FeatureLike">FeatureLike</a>>}</span>
             
                 <span class="inherited"><a href="module-ol_format_JSONFeature-JSONFeature.html#readFeatures">inherited</a></span>
             
@@ -1616,7 +1644,7 @@ Encoded feature.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js">format/GeoJSON.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L201">line 201</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L230">line 230</a>
         </div>
         
     </div>
@@ -2190,7 +2218,7 @@ Encoded features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js">format/GeoJSON.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L243">line 243</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L272">line 272</a>
         </div>
         
     </div>
@@ -2764,7 +2792,7 @@ Encoded geometry.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js">format/GeoJSON.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L263">line 263</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L292">line 292</a>
         </div>
         
     </div>

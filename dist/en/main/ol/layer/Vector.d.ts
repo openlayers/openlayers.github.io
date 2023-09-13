@@ -14,7 +14,7 @@ export default VectorLayer;
  * @extends {BaseVectorLayer<VectorSourceType, CanvasVectorLayerRenderer>}
  * @api
  */
-declare class VectorLayer<VectorSourceType extends import("../source/Vector.js").default<import("../geom/Geometry.js").default>> extends BaseVectorLayer<VectorSourceType, CanvasVectorLayerRenderer> {
+declare class VectorLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>>> extends BaseVectorLayer<VectorSourceType, CanvasVectorLayerRenderer> {
     /**
      * @param {import("./BaseVector.js").Options<VectorSourceType>} [options] Options.
      */

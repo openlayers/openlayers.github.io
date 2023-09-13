@@ -71,7 +71,11 @@
     <div class="member-list" data-type="typedefs">
         <span class="subtitle">Typedefs</span>
         <ul>
+            <li data-name="featureobject"><a href="module-ol_format_Feature.html#~FeatureObject">FeatureObject</a>
+            <li data-name="geometrycollectionobject"><a href="module-ol_format_Feature.html#~GeometryCollectionObject">GeometryCollectionObject</a>
+            <li data-name="geometryobject"><a href="module-ol_format_Feature.html#~GeometryObject">GeometryObject</a>
             <li data-name="readoptions"><a href="module-ol_format_Feature.html#~ReadOptions">ReadOptions</a>
+            <li data-name="simplegeometryobject"><a href="module-ol_format_Feature.html#~SimpleGeometryObject">SimpleGeometryObject</a>
             <li data-name="type"><a href="module-ol_format_Feature.html#~Type">Type</a>
             <li data-name="writeoptions"><a href="module-ol_format_Feature.html#~WriteOptions">WriteOptions</a>
         </ul>
@@ -175,6 +179,240 @@
         <h3 class="subsection-title">Type Definitions</h3>
 
         <dl>
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~FeatureObject">
+        </div>
+        <h4 class="name">
+            FeatureObject<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Id.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>geometry</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_format_Feature.html#~GeometryObject">GeometryObject</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Geometry.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>properties</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Properties.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~GeometryCollectionObject">
+        </div>
+        <h4 class="name">
+            GeometryCollectionObject<span class="type-signature type array.<module:ol/format/feature~geometryobject>">{Array&lt;<a href="module-ol_format_Feature.html#~GeometryObject">GeometryObject</a>>}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~GeometryObject">
+        </div>
+        <h4 class="name">
+            GeometryObject<span class="type-signature type module:ol/format/feature~simplegeometryobject">{<a href="module-ol_format_Feature.html#~SimpleGeometryObject">SimpleGeometryObject</a>}</span> <span class="type-signature type module:ol/format/feature~geometrycollectionobject">{<a href="module-ol_format_Feature.html#~GeometryCollectionObject">GeometryCollectionObject</a>}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
                 
 <dt class="">
     <div class="nameContainer">
@@ -287,6 +525,171 @@ provided.</p>
                 <p>Projection of the feature geometries
 created by the format reader. If not provided, features will be returned in the
 <code>dataProjection</code>.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~SimpleGeometryObject">
+        </div>
+        <h4 class="name">
+            SimpleGeometryObject<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_geom_Geometry.html#~Type">Type</a></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Type.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>flatCoordinates</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Flat coordinates.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>ends</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+|
+
+<span class="param-type">Array.&lt;Array.&lt;number>></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Ends or endss.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>layout</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_geom_Geometry.html#~GeometryLayout">GeometryLayout</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Layout.</p>
                 
             </td>
         </tr>
