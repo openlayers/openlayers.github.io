@@ -21,7 +21,7 @@ declare class VectorTile extends Tile {
     private format_;
     /**
      * @private
-     * @type {Array<import("./Feature.js").default>}
+     * @type {Array<import("./Feature.js").FeatureLike>}
      */
     private features_;
     /**
@@ -74,10 +74,10 @@ declare class VectorTile extends Tile {
     /**
      * Function for use in an {@link module:ol/source/VectorTile~VectorTile}'s `tileLoadFunction`.
      * Sets the features for the tile.
-     * @param {Array<import("./Feature.js").default>} features Features.
+     * @param {Array<import("./Feature.js").FeatureLike>} features Features.
      * @api
      */
-    setFeatures(features: Array<import("./Feature.js").default>): void;
+    setFeatures(features: Array<import("./Feature.js").FeatureLike>): void;
     /**
      * Set the feature loader for reading this tile's features.
      * @param {import("./featureloader.js").FeatureLoader} loader Feature loader.
