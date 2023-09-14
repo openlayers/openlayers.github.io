@@ -278,13 +278,6 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
      */
     renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
     /**
-     * Compute world params
-     * @private
-     * @param {import("../../Map.js").FrameState} frameState Frame state.
-     * @return {Array<number>} The world start, end and width.
-     */
-    private getWorldParameters_;
-    /**
      * Rebuild internal webgl buffers based on current view extent; costly, should not be called too much
      * @param {import("../../Map").FrameState} frameState Frame state.
      * @private

@@ -225,6 +225,7 @@
             </div>
           </div>
           <div id="map" class="map"></div>
+<div id="info">&nbsp;</div>
 
         </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
@@ -286,6 +287,51 @@ const map &#x3D; new Map({
     zoom: 1,
   }),
 });
+
+const featureOverlay &#x3D; new WebGLLayer({
+  source: new VectorSource(),
+  map: map,
+  style: {
+    &#x27;stroke-color&#x27;: &#x27;rgba(255, 255, 255, 0.7)&#x27;,
+    &#x27;stroke-width&#x27;: 2,
+  },
+});
+
+let highlight;
+const displayFeatureInfo &#x3D; function (pixel) {
+  const feature &#x3D; map.forEachFeatureAtPixel(pixel, function (feature) {
+    return feature;
+  });
+
+  const info &#x3D; document.getElementById(&#x27;info&#x27;);
+  if (feature) {
+    info.innerHTML &#x3D; feature.get(&#x27;ECO_NAME&#x27;) || &#x27;&amp;nbsp;&#x27;;
+  } else {
+    info.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
+  }
+
+  if (feature !&#x3D;&#x3D; highlight) {
+    if (highlight) {
+      featureOverlay.getSource().removeFeature(highlight);
+    }
+    if (feature) {
+      featureOverlay.getSource().addFeature(feature);
+    }
+    highlight &#x3D; feature;
+  }
+};
+
+map.on(&#x27;pointermove&#x27;, function (evt) {
+  if (evt.dragging) {
+    return;
+  }
+  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
+  displayFeatureInfo(pixel);
+});
+
+map.on(&#x27;click&#x27;, function (evt) {
+  displayFeatureInfo(evt.pixel);
+});
 </code></pre>
       </div>
 
@@ -306,6 +352,7 @@ const map &#x3D; new Map({
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;div id&#x3D;&quot;info&quot;&gt;&amp;nbsp;&lt;/div&gt;
 
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;

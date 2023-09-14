@@ -9,24 +9,6 @@ export const Uniforms: {
     ROTATION: string;
     VIEWPORT_SIZE_PX: string;
     PIXEL_RATIO: string;
-    /**
-     * @classdesc
-     * Experimental WebGL vector renderer. Supports polygons, lines and points:
-     *  * Polygons are broken down into triangles
-     *  * Lines are rendered as strips of quads
-     *  * Points are rendered as quads
-     *
-     * You need to provide vertex and fragment shaders as well as custom attributes for each type of geometry. All shaders
-     * can access the uniforms in the {@link module:ol/webgl/Helper~DefaultUniform} enum.
-     * The vertex shaders can access the following attributes depending on the geometry type:
-     *  * For polygons: {@link module:ol/render/webgl/PolygonBatchRenderer~Attributes}
-     *  * For line strings: {@link module:ol/render/webgl/LineStringBatchRenderer~Attributes}
-     *  * For points: {@link module:ol/render/webgl/PointBatchRenderer~Attributes}
-     *
-     * Please note that the fragment shaders output should have premultiplied alpha, otherwise visual anomalies may occur.
-     *
-     * Note: this uses {@link module:ol/webgl/Helper~WebGLHelper} internally.
-     */
     HIT_DETECTION: string;
 };
 export default WebGLVectorLayerRenderer;
@@ -41,6 +23,11 @@ export type Options = {
      */
     style: VectorStyle | Array<VectorStyle>;
     /**
+     * Setting this to true will provide a slight performance boost, but will
+     * prevent all hit detection on the layer.
+     */
+    disableHitDetection?: boolean | undefined;
+    /**
      * Post-processes definitions
      */
     postProcesses?: import("./Layer.js").PostProcessesOptions[] | undefined;
@@ -52,6 +39,8 @@ export type Options = {
  * @typedef {Object} Options
  * @property {string} [className='ol-layer'] A CSS class name to set to the canvas element.
  * @property {VectorStyle|Array<VectorStyle>} style Vector style as literal style or shaders; can also accept an array of styles
+ * @property {boolean} [disableHitDetection=false] Setting this to true will provide a slight performance boost, but will
+ * prevent all hit detection on the layer.
  * @property {Array<import("./Layer").PostProcessesOptions>} [postProcesses] Post-processes definitions
  */
 /**
@@ -78,6 +67,16 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @param {Options} options Options.
      */
     constructor(layer: import("../../layer/Layer.js").default, options: Options);
+    /**
+     * @type {boolean}
+     * @private
+     */
+    private hitDetectionEnabled_;
+    /**
+     * @type {WebGLRenderTarget}
+     * @private
+     */
+    private hitRenderTarget_;
     sourceRevision_: number;
     previousExtent_: import("../../extent.js").Extent;
     /**
@@ -170,6 +169,15 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @return {HTMLElement} The rendered element.
      */
     renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
+    /**
+     * Render the world, either to the main framebuffer or to the hit framebuffer
+     * @param {import("../../Map.js").FrameState} frameState current frame state
+     * @param {boolean} forHitDetection whether the rendering is for hit detection
+     * @param {number} startWorld the world to render in the first iteration
+     * @param {number} endWorld the last world to render
+     * @param {number} worldWidth the width of the worlds being rendered
+     */
+    renderWorlds(frameState: import("../../Map.js").FrameState, forHitDetection: boolean, startWorld: number, endWorld: number, worldWidth: number): void;
 }
 import WebGLLayerRenderer from './Layer.js';
 //# sourceMappingURL=VectorLayer.d.ts.map

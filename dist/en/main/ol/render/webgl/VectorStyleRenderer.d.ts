@@ -27,7 +27,7 @@ export type AttributeDefinition = {
      * This callback computes the numerical value of the
      * attribute for a given feature.
      */
-    callback: (arg0: import("../../Feature").FeatureLike) => number | Array<number>;
+    callback: (this: import("./MixedGeometryBatch.js").GeometryBatchItem, arg1: import("../../Feature").FeatureLike) => number | Array<number>;
 };
 export type AttributeDefinitions = {
     [x: string]: AttributeDefinition;
@@ -113,7 +113,7 @@ export type VectorStyle = import('../../style/literal.js').LiteralStyle | StyleS
  * for each feature.
  * @property {number} [size] Amount of numerical values composing the attribute, either 1, 2, 3 or 4; in case size is > 1, the return value
  * of the callback should be an array; if unspecified, assumed to be a single float value
- * @property {function(import("../../Feature").FeatureLike):number|Array<number>} callback This callback computes the numerical value of the
+ * @property {function(this:import("./MixedGeometryBatch.js").GeometryBatchItem, import("../../Feature").FeatureLike):number|Array<number>} callback This callback computes the numerical value of the
  * attribute for a given feature.
  */
 /**
@@ -167,9 +167,11 @@ declare class VectorStyleRenderer {
     /**
      * @param {VectorStyle} styleOrShaders Literal style or custom shaders
      * @param {import('../../webgl/Helper.js').default} helper Helper
+     * @param {boolean} enableHitDetection Whether to enable the hit detection (needs compatible shader)
      */
-    constructor(styleOrShaders: VectorStyle, helper: import('../../webgl/Helper.js').default);
+    constructor(styleOrShaders: VectorStyle, helper: import('../../webgl/Helper.js').default, enableHitDetection: boolean);
     helper_: import("../../webgl/Helper.js").default;
+    hitDetectionEnabled_: boolean;
     /**
      * @type {boolean}
      * @private
@@ -194,9 +196,18 @@ declare class VectorStyleRenderer {
     symbolVertexShader_: string | undefined;
     symbolFragmentShader_: string | undefined;
     symbolProgram_: WebGLProgram | undefined;
-    customAttributes_: {
+    customAttributes_: ({
+        hitColor: {
+            callback(): number[];
+            size: number;
+        };
+    } & {
         [x: string]: AttributeDefinition;
-    } | undefined;
+    }) | ({
+        hitColor?: undefined;
+    } & {
+        [x: string]: AttributeDefinition;
+    });
     uniforms_: {
         [x: string]: import("../../webgl/Helper.js").UniformValue;
     } | undefined;

@@ -6,6 +6,11 @@ export type Options = {
      */
     style: VectorStyle | Array<VectorStyle>;
     /**
+     * Setting this to true will provide a slight performance boost, but will
+     * prevent all hit detection on the layer.
+     */
+    disableHitDetection?: boolean | undefined;
+    /**
      * The vector tile cache size.
      */
     cacheSize?: number | undefined;
@@ -17,6 +22,8 @@ export type LayerType = import("../../layer/BaseTile.js").default<any, any>;
 /**
  * @typedef {Object} Options
  * @property {VectorStyle|Array<VectorStyle>} style Vector style as literal style or shaders; can also accept an array of styles
+ * @property {boolean} [disableHitDetection=false] Setting this to true will provide a slight performance boost, but will
+ * prevent all hit detection on the layer.
  * @property {number} [cacheSize=512] The vector tile cache size.
  */
 /**
@@ -33,6 +40,11 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      * @param {Options} options Options.
      */
     constructor(tileLayer: import("../../layer/BaseTile.js").default<any, any>, options: Options);
+    /**
+     * @type {boolean}
+     * @private
+     */
+    private hitDetectionEnabled_;
     /**
      * @type {Array<VectorStyle>}
      * @private

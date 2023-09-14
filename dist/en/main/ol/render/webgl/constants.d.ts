@@ -20,11 +20,11 @@ export type WebGLWorkerGenerateBuffersMessage = {
      */
     type: WebGLWorkerMessageType;
     /**
-     * Polygon render instructions raw binary buffer.
+     * render instructions raw binary buffer.
      */
     renderInstructions: ArrayBuffer;
     /**
-     * Amount of custom attributes count in the polygon render instructions.
+     * Amount of hit detection + custom attributes count in the render instructions.
      */
     customAttributesSize?: number | undefined;
     /**
