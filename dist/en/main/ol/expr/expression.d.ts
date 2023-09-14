@@ -29,6 +29,7 @@ export function isType(type: number, expected: number): boolean;
  * @typedef {Object} ParsingContext
  * @property {Set<string>} variables Variables referenced with the 'var' operator.
  * @property {Set<string>} properties Properties referenced with the 'get' operator.
+ * @property {import("../style/literal").LiteralStyle} style The style being parsed
  */
 /**
  * @return {ParsingContext} A new parsing context.
@@ -40,9 +41,10 @@ export function newParsingContext(): ParsingContext;
 /**
  * @param {EncodedExpression} encoded The encoded expression.
  * @param {ParsingContext} context The parsing context.
+ * @param {number} [typeHint] Optional type hint
  * @return {Expression} The parsed expression result.
  */
-export function parse(encoded: EncodedExpression, context: ParsingContext): Expression;
+export function parse(encoded: EncodedExpression, context: ParsingContext, typeHint?: number | undefined): Expression;
 export const NoneType: 0;
 export const BooleanType: number;
 export const NumberType: number;
@@ -89,9 +91,22 @@ export type ParsingContext = {
      * Properties referenced with the 'get' operator.
      */
     properties: Set<string>;
+    /**
+     * The style being parsed
+     */
+    style: import("../style/literal").LiteralStyle;
 };
 export type EncodedExpression = LiteralValue | any[];
-export type ArgValidator = (arg0: any[], arg1: ParsingContext) => Array<Expression>;
+/**
+ * An argument validator applies various checks to an encoded expression arguments
+ * Returns the parsed arguments if any.
+ * Third argument is the array of parsed arguments from previous validators
+ * Fourth argument is an optional type hint
+ */
+export type ArgValidator = (arg0: Array<EncodedExpression>, arg1: ParsingContext, arg2: Array<Expression>, arg3: number | null) => Array<Expression> | void;
 export type LiteralValue = boolean | number | string | Array<number>;
-export type Parser = (arg0: any[], arg1: ParsingContext) => Expression;
+/**
+ * Third argument is a type hint
+ */
+export type Parser = (arg0: any[], arg1: ParsingContext, arg2: number) => Expression;
 //# sourceMappingURL=expression.d.ts.map
