@@ -14,7 +14,7 @@ export function asString(color: Color | string): string;
  */
 export function asArray(color: Color | string): Color;
 /**
- * TODO this function is only used in the test, we probably shouldn't export it
+ * Exported for the tests.
  * @param {Color} color Color.
  * @return {Color} Clamped color.
  */
