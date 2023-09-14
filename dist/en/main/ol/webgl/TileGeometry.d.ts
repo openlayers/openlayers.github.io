@@ -24,6 +24,17 @@ declare class TileGeometry extends BaseTileRepresentation<import("../VectorRende
      * @type {Array<import("../render/webgl/VectorStyleRenderer.js").WebGLBuffers>}
      */
     buffers: Array<import("../render/webgl/VectorStyleRenderer.js").WebGLBuffers>;
+    /**
+     * Each geometry tile also has a mask which consisted of a quad (two triangles); this mask is intended to
+     * be rendered to an offscreen buffer, and be used to correctly mask tiles according to their zoom level
+     * during rendering
+     */
+    maskVertices: WebGLArrayBuffer;
+    /**
+     * @private
+     */
+    private generateMaskBuffer_;
 }
 import BaseTileRepresentation from './BaseTileRepresentation.js';
+import WebGLArrayBuffer from './Buffer.js';
 //# sourceMappingURL=TileGeometry.d.ts.map

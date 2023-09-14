@@ -219,6 +219,10 @@ export class ShaderBuilder {
      */
     setFragmentDiscardExpression(expression: string): ShaderBuilder;
     /**
+     * @return {string} The current fragment discard expression
+     */
+    getFragmentDiscardExpression(): string;
+    /**
      * Sets whether the symbols should rotate with the view or stay aligned with the map.
      * Note: will only be used for point geometry shaders.
      * @param {boolean} rotateWithView Rotate with view
@@ -235,6 +239,10 @@ export class ShaderBuilder {
      * @return {ShaderBuilder} the builder object
      */
     setStrokeColorExpression(expression: string): ShaderBuilder;
+    /**
+     * @return {string} The current stroke color expression
+     */
+    getStrokeColorExpression(): string;
     /**
      * @param {string} expression Stroke color expression, evaluate to `float`
      * @return {ShaderBuilder} the builder object
@@ -266,6 +274,10 @@ export class ShaderBuilder {
      * @return {ShaderBuilder} the builder object
      */
     setFillColorExpression(expression: string): ShaderBuilder;
+    /**
+     * @return {string} The current fill color expression
+     */
+    getFillColorExpression(): string;
     addVertexShaderFunction(code: any): void;
     addFragmentShaderFunction(code: any): void;
     /**

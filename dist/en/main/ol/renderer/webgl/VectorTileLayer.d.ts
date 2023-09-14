@@ -1,3 +1,19 @@
+export const Uniforms: {
+    TILE_MASK_TEXTURE: string;
+    TILE_ZOOM_LEVEL: string;
+    TILE_TRANSFORM: string;
+    TRANSITION_ALPHA: string;
+    DEPTH: string;
+    RENDER_EXTENT: string;
+    RESOLUTION: string;
+    ZOOM: string;
+    GLOBAL_ALPHA: string;
+    PROJECTION_MATRIX: string;
+    SCREEN_TO_WORLD_MATRIX: string;
+};
+export namespace Attributes {
+    let POSITION: string;
+}
 export default WebGLVectorTileLayerRenderer;
 export type VectorStyle = import('../../render/webgl/VectorStyleRenderer.js').VectorStyle;
 export type Options = {
@@ -66,6 +82,24 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
     tmpTransform_: number[];
     tmpMat4_: number[];
     /**
+     * @type {WebGLRenderTarget}
+     * @private
+     */
+    private tileMaskTarget_;
+    /**
+     * @private
+     */
+    private tileMaskIndices_;
+    /**
+     * @type {Array<import('../../webgl/Helper.js').AttributeDescription>}
+     * @private
+     */
+    private tileMaskAttributes_;
+    /**
+     * @type {WebGLProgram}
+     */
+    tileMaskProgram_: WebGLProgram;
+    /**
      * @param {Options} options Options.
      */
     reset(options: Options): void;
@@ -78,12 +112,20 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      * @private
      */
     private createRenderers_;
+    /**
+     * @private
+     */
+    private initTileMask_;
     createTileRepresentation(options: any): TileGeometry;
     beforeTilesRender(frameState: any, tilesWithAlpha: any): void;
+    beforeTilesMaskRender(frameState: any): boolean;
+    renderTileMask(tileRepresentation: any, tileZ: any, extent: any, depth: any): void;
     /**
      * @param {number} alpha Alpha value of the tile
      * @param {import("../../extent.js").Extent} renderExtent Which extent to restrict drawing to
      * @param {import("../../transform.js").Transform} batchInvertTransform Inverse of the transformation in which tile geometries are expressed
+     * @param {number} tileZ Tile zoom level
+     * @param {number} depth Depth of the tile
      * @private
      */
     private applyUniforms_;

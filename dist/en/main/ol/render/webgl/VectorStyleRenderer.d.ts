@@ -82,17 +82,9 @@ export type ShaderProgram = {
 };
 export type StyleShaders = {
     /**
-     * Shaders for filling polygons.
+     * Shader builder with the appropriate presets.
      */
-    fill?: ShaderProgram | undefined;
-    /**
-     * Shaders for line strings and polygon strokes.
-     */
-    stroke?: ShaderProgram | undefined;
-    /**
-     * Shaders for symbols.
-     */
-    symbol?: ShaderProgram | undefined;
+    builder: import("../../webgl/ShaderBuilder.js").ShaderBuilder;
     /**
      * Custom attributes made available in the vertex shaders.
      * Default shaders rely on the attributes in {@link Attributes }.
@@ -140,9 +132,7 @@ export type VectorStyle = import('../../style/literal.js').LiteralStyle | StyleS
  */
 /**
  * @typedef {Object} StyleShaders
- * @property {ShaderProgram} [fill] Shaders for filling polygons.
- * @property {ShaderProgram} [stroke] Shaders for line strings and polygon strokes.
- * @property {ShaderProgram} [symbol] Shaders for symbols.
+ * @property {import("../../webgl/ShaderBuilder.js").ShaderBuilder} builder Shader builder with the appropriate presets.
  * @property {AttributeDefinitions} [attributes] Custom attributes made available in the vertex shaders.
  * Default shaders rely on the attributes in {@link Attributes}.
  * @property {UniformDefinitions} [uniforms] Additional uniforms usable in shaders.
@@ -158,7 +148,8 @@ export type VectorStyle = import('../../style/literal.js').LiteralStyle | StyleS
  * A layer renderer will typically maintain several of these in order to have several styles rendered separately.
  *
  * A VectorStyleRenderer instance can be created either from a literal style or from shaders using either
- * `VectorStyleRenderer.fromStyle` or `VectorStyleRenderer.fromShaders`.
+ * `VectorStyleRenderer.fromStyle` or `VectorStyleRenderer.fromShaders`. The shaders should not be provided explicitly
+ * but instead as a preconfigured ShaderBuilder instance.
  *
  * The `generateBuffers` method returns a promise resolving to WebGL buffers that are intended to be rendered by the
  * same renderer.
@@ -177,24 +168,24 @@ declare class VectorStyleRenderer {
      * @private
      */
     private hasFill_;
-    fillVertexShader_: string | undefined;
-    fillFragmentShader_: string | undefined;
+    fillVertexShader_: string | null | undefined;
+    fillFragmentShader_: string | null | undefined;
     fillProgram_: WebGLProgram | undefined;
     /**
      * @type {boolean}
      * @private
      */
     private hasStroke_;
-    strokeVertexShader_: string | undefined;
-    strokeFragmentShader_: string | undefined;
+    strokeVertexShader_: string | null | undefined;
+    strokeFragmentShader_: string | null | undefined;
     strokeProgram_: WebGLProgram | undefined;
     /**
      * @type {boolean}
      * @private
      */
     private hasSymbol_;
-    symbolVertexShader_: string | undefined;
-    symbolFragmentShader_: string | undefined;
+    symbolVertexShader_: string | null | undefined;
+    symbolFragmentShader_: string | null | undefined;
     symbolProgram_: WebGLProgram | undefined;
     customAttributes_: ({
         hitColor: {
