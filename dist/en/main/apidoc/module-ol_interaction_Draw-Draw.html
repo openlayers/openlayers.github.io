@@ -167,7 +167,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L586">line 586</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L594">line 594</a>
         </div>
         
     </div>
@@ -501,7 +501,15 @@ POINT or MULTI_POINT geometries.</p></td>
 
             <td  class="description last">
                 
-                <p>Style for sketch features.</p></td>
+                <p>Style for sketch features. The draw interaction can have up to three sketch features, depending on the mode.
+It will always contain a feature with a <code>Point</code> geometry that corresponds to the current cursor position.
+If the mode is <code>LineString</code> or <code>Polygon</code>, and there is at least one drawn point, it will also contain a feature with
+a <code>LineString</code> geometry that corresponds to the line between the already drawn points and the current cursor position.
+If the mode is <code>Polygon</code>, and there is at least one drawn point, it will also contain a feature with a <code>Polygon</code>
+geometry that corresponds to the polygon between the already drawn points and the current cursor position
+(note that this polygon has only two points if only one point is drawn).
+If the mode is <code>Circle</code>, and there is one point drawn, it will also contain a feature with a <code>Circle</code> geometry whose
+center is the drawn point and the radius is determined by the distance between the drawn point and the cursor.</p></td>
         </tr>
 
 	
@@ -969,7 +977,7 @@ feature geometries created by the draw interaction.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1729">line 1729</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1737">line 1737</a>
         </div>
         
     </div>
@@ -1050,7 +1058,7 @@ feature geometries created by the draw interaction.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1745">line 1745</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1753">line 1753</a>
         </div>
         
     </div>
@@ -1406,7 +1414,7 @@ Object with a <code>type</code> property.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1794">line 1794</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1802">line 1802</a>
         </div>
         
     </div>
@@ -1537,7 +1545,7 @@ This will change the original feature, instead of drawing a copy.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1663">line 1663</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1671">line 1671</a>
         </div>
         
     </div>
@@ -2033,7 +2041,7 @@ Map.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L971">line 971</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L979">line 979</a>
         </div>
         
     </div>
@@ -2401,7 +2409,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L981">line 981</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L989">line 989</a>
         </div>
         
     </div>
@@ -2870,7 +2878,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1653">line 1653</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1661">line 1661</a>
         </div>
         
     </div>

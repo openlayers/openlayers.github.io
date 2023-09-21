@@ -207,7 +207,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1906">line 1906</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1914">line 1914</a>
         </div>
         
     </div>
@@ -302,7 +302,7 @@ Function that draws a box-shaped polygon.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1865">line 1865</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L1873">line 1873</a>
         </div>
         
     </div>
@@ -476,7 +476,7 @@ Function that draws a polygon.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js">interaction/Draw.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L142">line 142</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Draw.js#L150">line 150</a>
         </div>
         
     </div>
@@ -958,7 +958,15 @@ POINT or MULTI_POINT geometries.</p>
             </td>
 
             <td class="description last">
-                <p>Style for sketch features.</p>
+                <p>Style for sketch features. The draw interaction can have up to three sketch features, depending on the mode.
+It will always contain a feature with a <code>Point</code> geometry that corresponds to the current cursor position.
+If the mode is <code>LineString</code> or <code>Polygon</code>, and there is at least one drawn point, it will also contain a feature with
+a <code>LineString</code> geometry that corresponds to the line between the already drawn points and the current cursor position.
+If the mode is <code>Polygon</code>, and there is at least one drawn point, it will also contain a feature with a <code>Polygon</code>
+geometry that corresponds to the polygon between the already drawn points and the current cursor position
+(note that this polygon has only two points if only one point is drawn).
+If the mode is <code>Circle</code>, and there is one point drawn, it will also contain a feature with a <code>Circle</code> geometry whose
+center is the drawn point and the radius is determined by the distance between the drawn point and the cursor.</p>
                 
             </td>
         </tr>
