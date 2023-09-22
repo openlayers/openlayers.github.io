@@ -125,6 +125,12 @@ export type Options = {
      * two zoom levels worth of tiles.
      */
     cacheSize?: number | undefined;
+    /**
+     * Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
+     */
+    properties?: {
+        [x: string]: any;
+    } | undefined;
 };
 export type ParsedStyle = {
     /**
