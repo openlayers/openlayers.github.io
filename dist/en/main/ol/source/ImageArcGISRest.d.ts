@@ -149,6 +149,11 @@ declare class ImageArcGISRest extends ImageSource {
      */
     private ratio_;
     /**
+     * @private
+     * @type {import("../proj/Projection.js").default}
+     */
+    private loaderProjection_;
+    /**
      * Get the user-provided params, i.e. those passed to the constructor through
      * the "params" option, and possibly updated using the updateParams method.
      * @return {Object} Params.

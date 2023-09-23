@@ -163,6 +163,11 @@ declare class ImageSource extends Source {
      */
     private static_;
     /**
+     * @private
+     * @type {import("../proj/Projection.js").default}
+     */
+    private wantedProjection_;
+    /**
      * @return {Array<number>|null} Resolutions.
      */
     getResolutions(): Array<number> | null;

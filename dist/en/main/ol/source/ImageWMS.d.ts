@@ -136,6 +136,11 @@ declare class ImageWMS extends ImageSource {
      */
     private ratio_;
     /**
+     * @private
+     * @type {import("../proj/Projection.js").default}
+     */
+    private loaderProjection_;
+    /**
      * Return the GetFeatureInfo URL for the passed coordinate, resolution, and
      * projection. Return `undefined` if the GetFeatureInfo URL cannot be
      * constructed.
