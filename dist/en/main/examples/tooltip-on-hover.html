@@ -133,6 +133,7 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./ogc-vector-tiles.html&quot;&gt;OGC Vector Tiles&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./osm-vector-tiles.html&quot;&gt;OSM Vector Tiles&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-osm.html&quot;&gt;OSM XML&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./populated-places.html&quot;&gt;Populated Places&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./regularshape.html&quot;&gt;Regular Shapes&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./rich-text-labels.html&quot;&gt;Rich Text Labels&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-scale-and-rotate.html&quot;&gt;Scale and Rotate using Modify Interaction&lt;/a&gt;
@@ -167,7 +168,7 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wind-arrows.html&quot;&gt;Wind Arrows&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
-                >77</a>
+                >78</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -230,8 +231,6 @@ const map &#x3D; new Map({
 });
 
 const info &#x3D; document.getElementById(&#x27;info&#x27;);
-info.style.visibility &#x3D; &#x27;hidden&#x27;;
-info.style.pointerEvents &#x3D; &#x27;none&#x27;;
 
 let currentFeature;
 const displayFeatureInfo &#x3D; function (pixel, target) {
@@ -288,22 +287,24 @@ map.getTargetElement().addEventListener(&#x27;pointerleave&#x27;, function () {
         height: 400px;
       }
       #map {
-          position: relative;
+        position: relative;
       }
 
       #info {
-          position: absolute;
-          display: inline-block;
-          height: auto;
-          width: auto;
-          z-index: 100;
-          background-color: #333;
-          color: #fff;
-          text-align: center;
-          border-radius: 4px;
-          padding: 5px;
-          left: 50%;
-          transform: translateX(3%);
+        position: absolute;
+        display: inline-block;
+        height: auto;
+        width: auto;
+        z-index: 100;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 4px;
+        padding: 5px;
+        left: 50%;
+        transform: translateX(3%);
+        visibility: hidden;
+        pointer-events: none;
       }
     &lt;/style&gt;
   &lt;/head&gt;

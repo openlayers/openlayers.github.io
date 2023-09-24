@@ -14,6 +14,23 @@
  */
 export function asString(color: Color | string): string;
 /**
+ * @param {Color} color A color that may or may not have an alpha channel.
+ * @return {Color} The input color with an alpha channel.  If the input color has
+ * an alpha channel, the input color will be returned unchanged.  Otherwise, a new
+ * array will be returned with the input color and an alpha channel of 1.
+ */
+export function withAlpha(color: Color): Color;
+/**
+ * @param {Color} color RGBA color.
+ * @return {Color} LCHuv color with alpha.
+ */
+export function rgbaToLcha(color: Color): Color;
+/**
+ * @param {Color} color LCHuv color with alpha.
+ * @return {Color} RGBA color.
+ */
+export function lchaToRgba(color: Color): Color;
+/**
  * @param {string} s String.
  * @return {Color} Color.
  */
