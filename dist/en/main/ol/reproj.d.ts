@@ -44,9 +44,10 @@ export function calculateSourceExtentResolution(sourceProj: import("./proj/Proje
  * @param {number} gutter Gutter of the sources.
  * @param {boolean} [renderEdges] Render reprojection edges.
  * @param {boolean} [interpolate] Use linear interpolation when resampling.
+ * @param {boolean} [drawSingle] Draw single source images directly without stitchContext.
  * @return {HTMLCanvasElement} Canvas with reprojected data.
  */
-export function render(width: number, height: number, pixelRatio: number, sourceResolution: number, sourceExtent: import("./extent.js").Extent, targetResolution: number, targetExtent: import("./extent.js").Extent, triangulation: import("./reproj/Triangulation.js").default, sources: Array<ImageExtent>, gutter: number, renderEdges?: boolean | undefined, interpolate?: boolean | undefined): HTMLCanvasElement;
+export function render(width: number, height: number, pixelRatio: number, sourceResolution: number, sourceExtent: import("./extent.js").Extent, targetResolution: number, targetExtent: import("./extent.js").Extent, triangulation: import("./reproj/Triangulation.js").default, sources: Array<ImageExtent>, gutter: number, renderEdges?: boolean | undefined, interpolate?: boolean | undefined, drawSingle?: boolean | undefined): HTMLCanvasElement;
 /**
  * @type {Array<HTMLCanvasElement>}
  */
