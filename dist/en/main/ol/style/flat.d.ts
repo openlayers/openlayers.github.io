@@ -27,19 +27,20 @@
  *
  *     const rules = [
  *       {
- *         filter: ['>', 'population', 1_000_000],
+ *         filter: ['>', ['get', 'population'], 1_000_000],
  *         style: {
  *           'circle-radius': 10,
- *           'circle-color': 'red',
+ *           'circle-fill-color': 'red',
  *         }
  *       },
  *       {
  *         else: true,
  *         style: {
  *           'circle-radius': 5,
- *           'circle-color': 'blue',
- *        },
- *      ];
+ *           'circle-fill-color': 'blue',
+ *         },
+ *       },
+ *     ];
  */
 /**
  * A literal boolean (e.g. `true`) or an expression that evaluates to a boolean (e.g. `['>', ['get', 'population'], 1_000_000]`).
