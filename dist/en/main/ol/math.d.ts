@@ -36,9 +36,9 @@ export function squaredDistance(x1: number, y1: number, x2: number, y2: number):
  *
  * @param {Array<Array<number>>} mat Augmented matrix (n x n + 1 column)
  *                                     in row-major order.
- * @return {Array<number>} The resulting vector.
+ * @return {Array<number>|null} The resulting vector.
  */
-export function solveLinearSystem(mat: Array<Array<number>>): Array<number>;
+export function solveLinearSystem(mat: Array<Array<number>>): Array<number> | null;
 /**
  * Converts radians to to degrees.
  *

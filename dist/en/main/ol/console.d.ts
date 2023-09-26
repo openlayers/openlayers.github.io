@@ -6,8 +6,17 @@
  * @param {Level} l The new level.
  */
 export function setLevel(l: Level): void;
+/**
+ * @param  {...any} args Arguments to log
+ */
 export function log(...args: any[]): void;
+/**
+ * @param  {...any} args Arguments to log
+ */
 export function warn(...args: any[]): void;
+/**
+ * @param  {...any} args Arguments to log
+ */
 export function error(...args: any[]): void;
 export type Level = 'info' | 'warn' | 'error' | 'none';
 //# sourceMappingURL=console.d.ts.map
