@@ -59,7 +59,7 @@ export type RenderOptions = {
     /**
      * StrokeStyle.
      */
-    strokeStyle?: import("../colorlike.js").ColorLike | undefined;
+    strokeStyle: import("../colorlike.js").ColorLike | undefined;
     /**
      * StrokeWidth.
      */
@@ -110,7 +110,7 @@ export type RenderOptions = {
  */
 /**
  * @typedef {Object} RenderOptions
- * @property {import("../colorlike.js").ColorLike} [strokeStyle] StrokeStyle.
+ * @property {import("../colorlike.js").ColorLike|undefined} strokeStyle StrokeStyle.
  * @property {number} strokeWidth StrokeWidth.
  * @property {number} size Size.
  * @property {CanvasLineCap} lineCap LineCap.
@@ -135,15 +135,15 @@ declare class RegularShape extends ImageStyle {
      * @private
      * @type {Object<number, HTMLCanvasElement>}
      */
-    private canvas_;
+    private canvases_;
     /**
      * @private
-     * @type {HTMLCanvasElement}
+     * @type {HTMLCanvasElement|null}
      */
     private hitDetectionCanvas_;
     /**
      * @private
-     * @type {import("./Fill.js").default}
+     * @type {import("./Fill.js").default|null}
      */
     private fill_;
     /**
@@ -173,7 +173,7 @@ declare class RegularShape extends ImageStyle {
     private angle_;
     /**
      * @private
-     * @type {import("./Stroke.js").default}
+     * @type {import("./Stroke.js").default|null}
      */
     private stroke_;
     /**
@@ -200,16 +200,16 @@ declare class RegularShape extends ImageStyle {
     getAngle(): number;
     /**
      * Get the fill style for the shape.
-     * @return {import("./Fill.js").default} Fill style.
+     * @return {import("./Fill.js").default|null} Fill style.
      * @api
      */
-    getFill(): import("./Fill.js").default;
+    getFill(): import("./Fill.js").default | null;
     /**
      * Set the fill style.
-     * @param {import("./Fill.js").default} fill Fill style.
+     * @param {import("./Fill.js").default|null} fill Fill style.
      * @api
      */
-    setFill(fill: import("./Fill.js").default): void;
+    setFill(fill: import("./Fill.js").default | null): void;
     /**
      * @return {HTMLCanvasElement} Image element.
      */
@@ -241,16 +241,16 @@ declare class RegularShape extends ImageStyle {
     getRadius2(): number | undefined;
     /**
      * Get the stroke style for the shape.
-     * @return {import("./Stroke.js").default} Stroke style.
+     * @return {import("./Stroke.js").default|null} Stroke style.
      * @api
      */
-    getStroke(): import("./Stroke.js").default;
+    getStroke(): import("./Stroke.js").default | null;
     /**
      * Set the stroke style.
-     * @param {import("./Stroke.js").default} stroke Stroke style.
+     * @param {import("./Stroke.js").default|null} stroke Stroke style.
      * @api
      */
-    setStroke(stroke: import("./Stroke.js").default): void;
+    setStroke(stroke: import("./Stroke.js").default | null): void;
     /**
      * Calculate additional canvas size needed for the miter.
      * @param {string} lineJoin Line join
@@ -279,6 +279,7 @@ declare class RegularShape extends ImageStyle {
     /**
      * @private
      * @param {RenderOptions} renderOptions Render options.
+     * @return {HTMLCanvasElement} Canvas containing the icon
      */
     private createHitDetectionCanvas_;
     /**

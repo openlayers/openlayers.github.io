@@ -11,7 +11,7 @@ declare class PaletteTexture {
     name: string;
     data: Uint8Array;
     /**
-     * @type {WebGLTexture}
+     * @type {WebGLTexture|null}
      * @private
      */
     private texture_;

@@ -203,7 +203,7 @@ declare class Text {
     private textBaseline_;
     /**
      * @private
-     * @type {import("./Fill.js").default}
+     * @type {import("./Fill.js").default|null}
      */
     private fill_;
     /**
@@ -223,7 +223,7 @@ declare class Text {
     private overflow_;
     /**
      * @private
-     * @type {import("./Stroke.js").default}
+     * @type {import("./Stroke.js").default|null}
      */
     private stroke_;
     /**
@@ -238,12 +238,12 @@ declare class Text {
     private offsetY_;
     /**
      * @private
-     * @type {import("./Fill.js").default}
+     * @type {import("./Fill.js").default|null}
      */
     private backgroundFill_;
     /**
      * @private
-     * @type {import("./Stroke.js").default}
+     * @type {import("./Stroke.js").default|null}
      */
     private backgroundStroke_;
     /**
@@ -301,10 +301,10 @@ declare class Text {
     getOffsetY(): number;
     /**
      * Get the fill style for the text.
-     * @return {import("./Fill.js").default} Fill style.
+     * @return {import("./Fill.js").default|null} Fill style.
      * @api
      */
-    getFill(): import("./Fill.js").default;
+    getFill(): import("./Fill.js").default | null;
     /**
      * Determine whether the text rotates with the map.
      * @return {boolean|undefined} Rotate with map.
@@ -330,10 +330,10 @@ declare class Text {
     getScaleArray(): import("../size.js").Size;
     /**
      * Get the stroke style for the text.
-     * @return {import("./Stroke.js").default} Stroke style.
+     * @return {import("./Stroke.js").default|null} Stroke style.
      * @api
      */
-    getStroke(): import("./Stroke.js").default;
+    getStroke(): import("./Stroke.js").default | null;
     /**
      * Get the text to be rendered.
      * @return {string|Array<string>|undefined} Text.
@@ -360,16 +360,16 @@ declare class Text {
     getTextBaseline(): CanvasTextBaseline | undefined;
     /**
      * Get the background fill style for the text.
-     * @return {import("./Fill.js").default} Fill style.
+     * @return {import("./Fill.js").default|null} Fill style.
      * @api
      */
-    getBackgroundFill(): import("./Fill.js").default;
+    getBackgroundFill(): import("./Fill.js").default | null;
     /**
      * Get the background stroke style for the text.
-     * @return {import("./Stroke.js").default} Stroke style.
+     * @return {import("./Stroke.js").default|null} Stroke style.
      * @api
      */
-    getBackgroundStroke(): import("./Stroke.js").default;
+    getBackgroundStroke(): import("./Stroke.js").default | null;
     /**
      * Get the padding for the text.
      * @return {Array<number>|null} Padding.
@@ -434,10 +434,10 @@ declare class Text {
     /**
      * Set the fill.
      *
-     * @param {import("./Fill.js").default} fill Fill style.
+     * @param {import("./Fill.js").default|null} fill Fill style.
      * @api
      */
-    setFill(fill: import("./Fill.js").default): void;
+    setFill(fill: import("./Fill.js").default | null): void;
     /**
      * Set the rotation.
      *
@@ -455,10 +455,10 @@ declare class Text {
     /**
      * Set the stroke.
      *
-     * @param {import("./Stroke.js").default} stroke Stroke style.
+     * @param {import("./Stroke.js").default|null} stroke Stroke style.
      * @api
      */
-    setStroke(stroke: import("./Stroke.js").default): void;
+    setStroke(stroke: import("./Stroke.js").default | null): void;
     /**
      * Set the text.
      *
@@ -490,17 +490,17 @@ declare class Text {
     /**
      * Set the background fill.
      *
-     * @param {import("./Fill.js").default} fill Fill style.
+     * @param {import("./Fill.js").default|null} fill Fill style.
      * @api
      */
-    setBackgroundFill(fill: import("./Fill.js").default): void;
+    setBackgroundFill(fill: import("./Fill.js").default | null): void;
     /**
      * Set the background stroke.
      *
-     * @param {import("./Stroke.js").default} stroke Stroke style.
+     * @param {import("./Stroke.js").default|null} stroke Stroke style.
      * @api
      */
-    setBackgroundStroke(stroke: import("./Stroke.js").default): void;
+    setBackgroundStroke(stroke: import("./Stroke.js").default | null): void;
     /**
      * Set the padding (`[top, right, bottom, left]`).
      *

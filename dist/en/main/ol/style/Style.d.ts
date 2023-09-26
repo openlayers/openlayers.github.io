@@ -224,7 +224,7 @@ declare class Style {
     constructor(options?: Options | undefined);
     /**
      * @private
-     * @type {string|import("../geom/Geometry.js").default|GeometryFunction}
+     * @type {string|import("../geom/Geometry.js").default|GeometryFunction|null}
      */
     private geometry_;
     /**
@@ -234,12 +234,12 @@ declare class Style {
     private geometryFunction_;
     /**
      * @private
-     * @type {import("./Fill.js").default}
+     * @type {import("./Fill.js").default|null}
      */
     private fill_;
     /**
      * @private
-     * @type {import("./Image.js").default}
+     * @type {import("./Image.js").default|null}
      */
     private image_;
     /**
@@ -254,12 +254,12 @@ declare class Style {
     private hitDetectionRenderer_;
     /**
      * @private
-     * @type {import("./Stroke.js").default}
+     * @type {import("./Stroke.js").default|null}
      */
     private stroke_;
     /**
      * @private
-     * @type {import("./Text.js").default}
+     * @type {import("./Text.js").default|null}
      */
     private text_;
     /**
@@ -303,12 +303,12 @@ declare class Style {
     getHitDetectionRenderer(): RenderFunction | null;
     /**
      * Get the geometry to be rendered.
-     * @return {string|import("../geom/Geometry.js").default|GeometryFunction}
+     * @return {string|import("../geom/Geometry.js").default|GeometryFunction|null}
      * Feature property or geometry or function that returns the geometry that will
      * be rendered with this style.
      * @api
      */
-    getGeometry(): string | import("../geom/Geometry.js").default | GeometryFunction;
+    getGeometry(): string | import("../geom/Geometry.js").default | GeometryFunction | null;
     /**
      * Get the function used to generate a geometry for rendering.
      * @return {!GeometryFunction} Function that is called with a feature
@@ -318,22 +318,22 @@ declare class Style {
     getGeometryFunction(): GeometryFunction;
     /**
      * Get the fill style.
-     * @return {import("./Fill.js").default} Fill style.
+     * @return {import("./Fill.js").default|null} Fill style.
      * @api
      */
-    getFill(): import("./Fill.js").default;
+    getFill(): import("./Fill.js").default | null;
     /**
      * Set the fill style.
-     * @param {import("./Fill.js").default} fill Fill style.
+     * @param {import("./Fill.js").default|null} fill Fill style.
      * @api
      */
-    setFill(fill: import("./Fill.js").default): void;
+    setFill(fill: import("./Fill.js").default | null): void;
     /**
      * Get the image style.
-     * @return {import("./Image.js").default} Image style.
+     * @return {import("./Image.js").default|null} Image style.
      * @api
      */
-    getImage(): import("./Image.js").default;
+    getImage(): import("./Image.js").default | null;
     /**
      * Set the image style.
      * @param {import("./Image.js").default} image Image style.
@@ -342,22 +342,22 @@ declare class Style {
     setImage(image: import("./Image.js").default): void;
     /**
      * Get the stroke style.
-     * @return {import("./Stroke.js").default} Stroke style.
+     * @return {import("./Stroke.js").default|null} Stroke style.
      * @api
      */
-    getStroke(): import("./Stroke.js").default;
+    getStroke(): import("./Stroke.js").default | null;
     /**
      * Set the stroke style.
-     * @param {import("./Stroke.js").default} stroke Stroke style.
+     * @param {import("./Stroke.js").default|null} stroke Stroke style.
      * @api
      */
-    setStroke(stroke: import("./Stroke.js").default): void;
+    setStroke(stroke: import("./Stroke.js").default | null): void;
     /**
      * Get the text style.
-     * @return {import("./Text.js").default} Text style.
+     * @return {import("./Text.js").default|null} Text style.
      * @api
      */
-    getText(): import("./Text.js").default;
+    getText(): import("./Text.js").default | null;
     /**
      * Set the text style.
      * @param {import("./Text.js").default} text Text style.

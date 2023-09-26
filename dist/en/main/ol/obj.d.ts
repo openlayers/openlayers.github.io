@@ -3,9 +3,11 @@
  */
 /**
  * Removes all properties from an object.
- * @param {Object} object The object to clear.
+ * @param {Object<string, unknown>} object The object to clear.
  */
-export function clear(object: any): void;
+export function clear(object: {
+    [x: string]: unknown;
+}): void;
 /**
  * Determine if an object has any properties.
  * @param {Object} object The object to check.

@@ -99,7 +99,7 @@ declare class BaseObject extends Observable {
     un: ObjectOnSignature<void>;
     /**
      * @private
-     * @type {Object<string, *>}
+     * @type {Object<string, *>|null}
      */
     private values_;
     /**
