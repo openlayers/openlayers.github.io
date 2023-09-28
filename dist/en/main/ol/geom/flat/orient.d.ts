@@ -6,9 +6,9 @@
  * @param {number} offset Offset.
  * @param {number} end End.
  * @param {number} stride Stride.
- * @return {boolean} Is clockwise.
+ * @return {boolean|undefined} Is clockwise.
  */
-export function linearRingIsClockwise(flatCoordinates: Array<number>, offset: number, end: number, stride: number): boolean;
+export function linearRingIsClockwise(flatCoordinates: Array<number>, offset: number, end: number, stride: number): boolean | undefined;
 /**
  * Determines if linear rings are oriented.  By default, left-hand orientation
  * is tested (first ring must be clockwise, remaining rings counter-clockwise).

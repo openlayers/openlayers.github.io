@@ -140,9 +140,9 @@ declare class Tile extends EventTarget {
      * An "interim" tile for this tile. The interim tile may be used while this
      * one is loading, for "smooth" transitions when changing params/dimensions
      * on the source.
-     * @type {Tile}
+     * @type {Tile|null}
      */
-    interimTile: Tile;
+    interimTile: Tile | null;
     /**
      * A key assigned to the tile. This is used by the tile source to determine
      * if this tile can effectively be used, or if a new tile should be created

@@ -7,11 +7,11 @@ export type Entry = {
     /**
      * Newer.
      */
-    newer: any;
+    newer: Entry | null;
     /**
      * Older.
      */
-    older: any;
+    older: Entry | null;
     /**
      * Value.
      */
@@ -20,8 +20,8 @@ export type Entry = {
 /**
  * @typedef {Object} Entry
  * @property {string} key_ Key.
- * @property {Object} newer Newer.
- * @property {Object} older Older.
+ * @property {Entry|null} newer Newer.
+ * @property {Entry|null} older Older.
  * @property {*} value_ Value.
  */
 /**
@@ -131,9 +131,9 @@ declare class LRUCache<T> {
     /**
      * Return an entry without updating least recently used time.
      * @param {string} key Key.
-     * @return {T} Value.
+     * @return {T|undefined} Value.
      */
-    peek(key: string): T;
+    peek(key: string): T | undefined;
     /**
      * @return {T} value Value.
      */

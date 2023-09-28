@@ -311,9 +311,9 @@ declare class TileGrid {
     getTileSize(z: number): number | import("../size.js").Size;
     /**
      * @param {number} z Zoom level.
-     * @return {import("../TileRange.js").default} Extent tile range for the specified zoom level.
+     * @return {import("../TileRange.js").default|null} Extent tile range for the specified zoom level.
      */
-    getFullTileRange(z: number): import("../TileRange.js").default;
+    getFullTileRange(z: number): import("../TileRange.js").default | null;
     /**
      * @param {number} resolution Resolution.
      * @param {number|import("../array.js").NearestDirectionFunction} [opt_direction]

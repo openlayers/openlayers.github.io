@@ -10,20 +10,20 @@ declare class XML {
      * Read the source document.
      *
      * @param {Document|Element|string} source The XML source.
-     * @return {Object} An object representing the source.
+     * @return {Object|null} An object representing the source.
      * @api
      */
-    read(source: Document | Element | string): any;
+    read(source: Document | Element | string): any | null;
     /**
      * @param {Document} doc Document.
-     * @return {Object} Object
+     * @return {Object|null} Object
      */
-    readFromDocument(doc: Document): any;
+    readFromDocument(doc: Document): any | null;
     /**
      * @abstract
      * @param {Element} node Node.
-     * @return {Object} Object
+     * @return {Object|null} Object
      */
-    readFromNode(node: Element): any;
+    readFromNode(node: Element): any | null;
 }
 //# sourceMappingURL=XML.d.ts.map

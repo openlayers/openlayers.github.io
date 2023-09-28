@@ -1,13 +1,13 @@
 /**
  * @param {HTMLCanvasElement} canvas Canvas.
  * @param {Object} [attributes] Attributes.
- * @return {WebGLRenderingContext} WebGL rendering context.
+ * @return {WebGLRenderingContext|null} WebGL rendering context.
  */
-export function getContext(canvas: HTMLCanvasElement, attributes?: any): WebGLRenderingContext;
+export function getContext(canvas: HTMLCanvasElement, attributes?: any): WebGLRenderingContext | null;
 /**
- * @return {Array<string>} List of supported WebGL extensions.
+ * @return {Array<string>|null} List of supported WebGL extensions.
  */
-export function getSupportedExtensions(): Array<string>;
+export function getSupportedExtensions(): Array<string> | null;
 /**
  * Constants taken from goog.webgl
  */
