@@ -23,9 +23,9 @@ declare class ReprojTile extends Tile {
      *     Function returning source tiles (z, x, y, pixelRatio).
      * @param {number} [errorThreshold] Acceptable reprojection error (in px).
      * @param {boolean} [renderEdges] Render reprojection edges.
-     * @param {boolean} [interpolate] Use linear interpolation when resampling.
+     * @param {import("../Tile.js").Options} [options] Tile options.
      */
-    constructor(sourceProj: import("../proj/Projection.js").default, sourceTileGrid: import("../tilegrid/TileGrid.js").default, targetProj: import("../proj/Projection.js").default, targetTileGrid: import("../tilegrid/TileGrid.js").default, tileCoord: import("../tilecoord.js").TileCoord, wrappedTileCoord: import("../tilecoord.js").TileCoord, pixelRatio: number, gutter: number, getTileFunction: FunctionType, errorThreshold?: number | undefined, renderEdges?: boolean | undefined, interpolate?: boolean | undefined);
+    constructor(sourceProj: import("../proj/Projection.js").default, sourceTileGrid: import("../tilegrid/TileGrid.js").default, targetProj: import("../proj/Projection.js").default, targetTileGrid: import("../tilegrid/TileGrid.js").default, tileCoord: import("../tilecoord.js").TileCoord, wrappedTileCoord: import("../tilecoord.js").TileCoord, pixelRatio: number, gutter: number, getTileFunction: FunctionType, errorThreshold?: number | undefined, renderEdges?: boolean | undefined, options?: import("../Tile.js").Options | undefined);
     /**
      * @private
      * @type {boolean}
