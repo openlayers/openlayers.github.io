@@ -283,7 +283,12 @@ const map &#x3D; new Map({
         {
           filter: [&#x27;&gt;&#x27;, [&#x27;get&#x27;, &#x27;pop_max&#x27;], 10_000_000],
           style: {
-            &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;nameascii&#x27;],
+            &#x27;text-value&#x27;: [
+              &#x27;concat&#x27;,
+              [&#x27;get&#x27;, &#x27;adm1name&#x27;],
+              &#x27;, &#x27;,
+              [&#x27;get&#x27;, &#x27;adm0name&#x27;],
+            ],
             &#x27;text-font&#x27;: &#x27;16px sans-serif&#x27;,
             &#x27;text-fill-color&#x27;: &#x27;white&#x27;,
             &#x27;text-stroke-color&#x27;: &#x27;gray&#x27;,
