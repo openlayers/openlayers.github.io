@@ -52,7 +52,7 @@ declare class Geometry extends BaseObject {
      * @param {import("../proj.js").TransformFunction} [transform] Optional transform function.
      * @return {Geometry} Simplified geometry.
      */
-    simplifyTransformedInternal: (...arg0: any[]) => any;
+    simplifyTransformedInternal: (...arg0: any[]) => Geometry;
     /**
      * Get a transformed and simplified version of the geometry.
      * @abstract

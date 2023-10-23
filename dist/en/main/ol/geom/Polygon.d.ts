@@ -69,7 +69,7 @@ declare class Polygon extends SimpleGeometry {
     private flatInteriorPointRevision_;
     /**
      * @private
-     * @type {import("../coordinate.js").Coordinate}
+     * @type {import("../coordinate.js").Coordinate|null}
      */
     private flatInteriorPoint_;
     /**
@@ -89,7 +89,7 @@ declare class Polygon extends SimpleGeometry {
     private orientedRevision_;
     /**
      * @private
-     * @type {Array<number>}
+     * @type {Array<number>|null}
      */
     private orientedFlatCoordinates_;
     /**

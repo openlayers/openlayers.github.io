@@ -25,7 +25,7 @@ declare class MultiPolygon extends SimpleGeometry {
     private flatInteriorPointsRevision_;
     /**
      * @private
-     * @type {Array<number>}
+     * @type {Array<number>|null}
      */
     private flatInteriorPoints_;
     /**
@@ -45,7 +45,7 @@ declare class MultiPolygon extends SimpleGeometry {
     private orientedRevision_;
     /**
      * @private
-     * @type {Array<number>}
+     * @type {Array<number>|null}
      */
     private orientedFlatCoordinates_;
     /**
