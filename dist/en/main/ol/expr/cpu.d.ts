@@ -10,6 +10,7 @@
  * @property {Object} properties The values for properties used in 'get' expressions.
  * @property {Object} variables The values for variables used in 'var' expressions.
  * @property {number} resolution The map resolution.
+ * @property {string|number|null} featureId The feature id.
  */
 /**
  * @return {EvaluationContext} A new evaluation context.
@@ -59,6 +60,10 @@ export type EvaluationContext = {
      * The map resolution.
      */
     resolution: number;
+    /**
+     * The feature id.
+     */
+    featureId: string | number | null;
 };
 export type ExpressionEvaluator = (arg0: EvaluationContext) => import("./expression.js").LiteralValue;
 export type BooleanEvaluator = (arg0: EvaluationContext) => boolean;

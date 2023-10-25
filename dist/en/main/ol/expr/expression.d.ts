@@ -29,6 +29,7 @@ export function isType(type: number, expected: number): boolean;
  * @typedef {Object} ParsingContext
  * @property {Set<string>} variables Variables referenced with the 'var' operator.
  * @property {Set<string>} properties Properties referenced with the 'get' operator.
+ * @property {boolean} featureId The style uses the feature id.
  * @property {import("../style/literal").LiteralStyle} style The style being parsed
  */
 /**
@@ -91,6 +92,10 @@ export type ParsingContext = {
      * Properties referenced with the 'get' operator.
      */
     properties: Set<string>;
+    /**
+     * The style uses the feature id.
+     */
+    featureId: boolean;
     /**
      * The style being parsed
      */
