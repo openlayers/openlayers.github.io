@@ -967,9 +967,10 @@ between 0 and 1 representing the progress toward the destination state.</p>
             </td>
 
             <td class="description last">
-                <p>The size in pixels of the box to fit
-the extent into. Default is the current size of the first map in the DOM that
-uses this view, or <code>[100, 100]</code> if no such map is found.</p>
+                <p>The size in pixels of the box to
+fit the extent into. Defaults to the size of the map the view is associated with.
+If no map or multiple maps are connected to the view, provide the desired box size
+(e.g. <code>map.getSize()</code>).</p>
                 
             </td>
         </tr>

@@ -244,7 +244,7 @@ put back the view to a stable state;</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L312">line 312</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L313">line 313</a>
         </div>
         
     </div>
@@ -1186,7 +1186,7 @@ The default is no padding, which is equivalent to <code>[0, 0, 0, 0]</code>.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1544">line 1544</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1545">line 1545</a>
         </div>
         
     </div>
@@ -1312,7 +1312,7 @@ The default is no padding, which is equivalent to <code>[0, 0, 0, 0]</code>.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1571">line 1571</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1572">line 1572</a>
         </div>
         
     </div>
@@ -1464,7 +1464,7 @@ constraint will apply.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1618">line 1618</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1619">line 1619</a>
         </div>
         
     </div>
@@ -1616,7 +1616,7 @@ constraint will apply.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1607">line 1607</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1608">line 1608</a>
         </div>
         
     </div>
@@ -1768,7 +1768,7 @@ constraint will apply.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L586">line 586</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L587">line 587</a>
         </div>
         
     </div>
@@ -2108,7 +2108,7 @@ between 0 and 1 representing the progress toward the destination state.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1834">line 1834</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1835">line 1835</a>
         </div>
         
     </div>
@@ -2191,7 +2191,7 @@ The view state will be resolved to a stable one if needed
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L998">line 998</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L999">line 999</a>
         </div>
         
     </div>
@@ -2204,10 +2204,7 @@ The view state will be resolved to a stable one if needed
 
     
     <div class="description">
-        <p>Calculate the extent for the current view state and the passed size.
-The size is the pixel dimensions of the box into which the calculated extent
-should fit. In most cases you want to get the extent of the entire map,
-that is <code>map.getSize()</code>.</p>
+        <p>Calculate the extent for the current view state and the passed box size.</p>
     </div>
     
 
@@ -2255,8 +2252,11 @@ that is <code>map.getSize()</code>.</p>
 
             <td  class="description last">
                 
-                <p>Box pixel size. If not provided, the size
-of the map that uses this view will be used.</p></td>
+                <p>The pixel dimensions of the box
+into which the calculated extent should fit. Defaults to the size of the
+map the view is associated with.
+If no map or multiple maps are connected to the view, provide the desired
+box size (e.g. <code>map.getSize()</code>).</p></td>
         </tr>
 
 	
@@ -2330,7 +2330,7 @@ Extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L726">line 726</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L727">line 727</a>
         </div>
         
     </div>
@@ -2411,7 +2411,7 @@ Extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1479">line 1479</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1480">line 1480</a>
         </div>
         
     </div>
@@ -2813,7 +2813,7 @@ Object with a <code>type</code> property.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1848">line 1848</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1849">line 1849</a>
         </div>
         
     </div>
@@ -2990,7 +2990,7 @@ to a stable one if needed (depending on its constraints).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1343">line 1343</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1344">line 1344</a>
         </div>
         
     </div>
@@ -3111,9 +3111,10 @@ Takes care of the map angle.</p>
 
             <td  class="description last">
                 
-                <p>The size in pixels of the box to fit
-the extent into. Default is the current size of the first map in the DOM that
-uses this view, or <code>[100, 100]</code> if no such map is found.</p></td>
+                <p>The size in pixels of the box to
+fit the extent into. Defaults to the size of the map the view is associated with.
+If no map or multiple maps are connected to the view, provide the desired box size
+(e.g. <code>map.getSize()</code>).</p></td>
         </tr>
 
 	
@@ -3513,7 +3514,7 @@ Value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L709">line 709</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L710">line 710</a>
         </div>
         
     </div>
@@ -3603,7 +3604,7 @@ The view is being animated.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L943">line 943</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L944">line 944</a>
         </div>
         
     </div>
@@ -3693,7 +3694,7 @@ The center of the view.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L718">line 718</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L719">line 719</a>
         </div>
         
     </div>
@@ -3875,7 +3876,7 @@ List of property names.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1027">line 1027</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1028">line 1028</a>
         </div>
         
     </div>
@@ -3965,7 +3966,7 @@ The maximum resolution of the view.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1045">line 1045</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1046">line 1046</a>
         </div>
         
     </div>
@@ -4055,7 +4056,7 @@ The maximum zoom level.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1036">line 1036</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1037">line 1037</a>
         </div>
         
     </div>
@@ -4145,7 +4146,7 @@ The minimum resolution of the view.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1065">line 1065</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1066">line 1066</a>
         </div>
         
     </div>
@@ -4235,7 +4236,7 @@ The minimum zoom level.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1094">line 1094</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1095">line 1095</a>
         </div>
         
     </div>
@@ -4417,7 +4418,7 @@ Object.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1104">line 1104</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1105">line 1105</a>
         </div>
         
     </div>
@@ -4507,7 +4508,7 @@ The resolution of the view.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1126">line 1126</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1127">line 1127</a>
         </div>
         
     </div>
@@ -4668,7 +4669,7 @@ The resolution at which the provided extent will render at
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1311">line 1311</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1312">line 1312</a>
         </div>
         
     </div>
@@ -4803,7 +4804,7 @@ The view resolution for the provided zoom level.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1114">line 1114</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1115">line 1115</a>
         </div>
         
     </div>
@@ -4987,7 +4988,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1176">line 1176</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1177">line 1177</a>
         </div>
         
     </div>
@@ -5077,7 +5078,7 @@ The rotation of the view in radians.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1271">line 1271</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1272">line 1272</a>
         </div>
         
     </div>
@@ -5169,7 +5170,7 @@ Zoom.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1286">line 1286</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1287">line 1287</a>
         </div>
         
     </div>
@@ -5816,7 +5817,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1648">line 1648</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1649">line 1649</a>
         </div>
         
     </div>
@@ -5945,7 +5946,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1085">line 1085</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1086">line 1086</a>
         </div>
         
     </div>
@@ -6071,7 +6072,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1056">line 1056</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1057">line 1057</a>
         </div>
         
     </div>
@@ -6197,7 +6198,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1076">line 1076</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1077">line 1077</a>
         </div>
         
     </div>
@@ -6477,7 +6478,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1680">line 1680</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1681">line 1681</a>
         </div>
         
     </div>
@@ -6606,7 +6607,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1691">line 1691</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1692">line 1692</a>
         </div>
         
     </div>
@@ -6732,7 +6733,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js">View.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1701">line 1701</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/View.js#L1702">line 1702</a>
         </div>
         
     </div>

@@ -847,6 +847,7 @@ declare class Map extends BaseObject {
     updateSize(): void;
     /**
      * Recomputes the viewport size and save it on the view object (if any)
+     * @param {import("./size.js").Size|undefined} size The size.
      * @private
      */
     private updateViewportSize_;
