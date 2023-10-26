@@ -1,4 +1,13 @@
 /**
+ * Recursively parses a style expression and outputs a GLSL-compatible string. Takes in a compilation context that
+ * will be read and modified during the parsing operation.
+ * @param {import("../expr/gpu.js").CompilationContext} compilationContext Compilation context
+ * @param {import("../expr/expression.js").EncodedExpression} value Value
+ * @param {number} [expectedType] Expected final type (can be several types combined)
+ * @return {string} GLSL-compatible output
+ */
+export function expressionToGlsl(compilationContext: import("../expr/gpu.js").CompilationContext, value: import("../expr/expression.js").EncodedExpression, expectedType?: number | undefined): string;
+/**
  * Packs all components of a color into a two-floats array
  * @param {import("../color.js").Color|string} color Color as array of numbers or string
  * @return {Array<number>} Vec2 array containing the color in compressed form

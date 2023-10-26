@@ -1,11 +1,11 @@
-export type ExpressionValue = import("./expressions.js").ExpressionValue;
+export type ExpressionValue = import("../expr/expression.js").ExpressionValue;
 export type ColorExpression = import("../color.js").Color | string | Array<ExpressionValue>;
 export type BaseProps = {
     /**
      * Filter expression. If it resolves to a number strictly greater than 0, the
      * point will be displayed. If undefined, all points will show.
      */
-    filter?: import("./expressions.js").ExpressionValue | undefined;
+    filter?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Style variables; each variable must hold a number.
      * Note: **this object is meant to be mutated**: changes to the values will immediately be visible on the rendered features
@@ -28,11 +28,11 @@ export type StrokeProps = {
     /**
      * Stroke pixel width.
      */
-    "stroke-width"?: import("./expressions.js").ExpressionValue | undefined;
+    "stroke-width"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Stroke offset in pixel. A positive value offsets the line to the right, relative to the direction of the line.
      */
-    "stroke-offset"?: import("./expressions.js").ExpressionValue | undefined;
+    "stroke-offset"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Line cap style: `butt`, `round`, or `square`.
      */
@@ -44,15 +44,15 @@ export type StrokeProps = {
     /**
      * Line dash pattern.
      */
-    "stroke-line-dash"?: number[] | import("./expressions.js").ExpressionValue[] | undefined;
+    "stroke-line-dash"?: number[] | import("../expr/expression.js").ExpressionValue[] | undefined;
     /**
      * Line dash offset.
      */
-    "stroke-line-dash-offset"?: import("./expressions.js").ExpressionValue | undefined;
+    "stroke-line-dash-offset"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Miter limit.
      */
-    "stroke-miter-limit"?: import("./expressions.js").ExpressionValue | undefined;
+    "stroke-miter-limit"?: import("../expr/expression.js").ExpressionValue | undefined;
 };
 export type IconProps = {
     /**
@@ -66,7 +66,7 @@ export type IconProps = {
     /**
      * Anchor. Default value is the icon center.
      */
-    "icon-anchor"?: number[] | import("./expressions.js").ExpressionValue | undefined;
+    "icon-anchor"?: number[] | import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Origin of the anchor: `bottom-left`, `bottom-right`,
      * `top-left` or `top-right`.
@@ -92,7 +92,7 @@ export type IconProps = {
     /**
      * Opacity of the icon.
      */
-    "icon-opacity"?: import("./expressions.js").ExpressionValue | undefined;
+    "icon-opacity"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * The `crossOrigin` attribute for loaded images. Note that you must provide a
      * `icon-cross-origin` value if you want to access pixel data with the Canvas renderer.
@@ -102,25 +102,25 @@ export type IconProps = {
     /**
      * Displacement of the icon.
      */
-    "icon-displacement"?: number[] | import("./expressions.js").ExpressionValue | undefined;
+    "icon-displacement"?: number[] | import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Scale.
      */
-    "icon-scale"?: import("../size.js").Size | import("./expressions.js").ExpressionValue | undefined;
+    "icon-scale"?: import("../size.js").Size | import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Width of the icon. If not specified, the actual image width will be used. Cannot be combined
      * with `scale`.
      */
-    "icon-width"?: import("./expressions.js").ExpressionValue | undefined;
+    "icon-width"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Height of the icon. If not specified, the actual image height will be used. Cannot be combined
      * with `scale`.
      */
-    "icon-height"?: import("./expressions.js").ExpressionValue | undefined;
+    "icon-height"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Rotation in radians (positive rotation clockwise).
      */
-    "icon-rotation"?: import("./expressions.js").ExpressionValue | undefined;
+    "icon-rotation"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Whether to rotate the icon with the view.
      */
@@ -129,7 +129,7 @@ export type IconProps = {
      * Offset, which, together with the size and the offset origin, define the
      * sub-rectangle to use from the original icon image.
      */
-    "icon-offset"?: number[] | import("./expressions.js").ExpressionValue | undefined;
+    "icon-offset"?: number[] | import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Origin of the offset: `bottom-left`, `bottom-right`,
      * `top-left` or `top-right`.
@@ -139,14 +139,14 @@ export type IconProps = {
      * Icon size in pixel. Can be used together with `icon-offset` to define the
      * sub-rectangle to use from the origin (sprite) icon image.
      */
-    "icon-size"?: import("../size.js").Size | import("./expressions.js").ExpressionValue | undefined;
+    "icon-size"?: import("../size.js").Size | import("../expr/expression.js").ExpressionValue | undefined;
 };
 export type ShapeProps = {
     /**
      * Number of points for stars and regular polygons. In case of a polygon, the number of points
      * is the number of sides.
      */
-    "shape-points"?: import("./expressions.js").ExpressionValue | undefined;
+    "shape-points"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * The fill color.
      */
@@ -158,35 +158,35 @@ export type ShapeProps = {
     /**
      * Stroke pixel width.
      */
-    "shape-stroke-width"?: import("./expressions.js").ExpressionValue | undefined;
+    "shape-stroke-width"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Shape opacity.
      */
-    "shape-opacity"?: import("./expressions.js").ExpressionValue | undefined;
+    "shape-opacity"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Radius of a regular polygon.
      */
-    "shape-radius"?: import("./expressions.js").ExpressionValue | undefined;
+    "shape-radius"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * First radius of a star. Ignored if radius is set.
      */
-    "shape-radius1"?: import("./expressions.js").ExpressionValue | undefined;
+    "shape-radius1"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Second radius of a star.
      */
-    "shape-radius2"?: import("./expressions.js").ExpressionValue | undefined;
+    "shape-radius2"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Shape's angle in radians. A value of 0 will have one of the shape's point facing up.
      */
-    "shape-angle"?: import("./expressions.js").ExpressionValue | undefined;
+    "shape-angle"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Displacement of the shape
      */
-    "shape-displacement"?: number[] | import("./expressions.js").ExpressionValue[] | undefined;
+    "shape-displacement"?: number[] | import("../expr/expression.js").ExpressionValue[] | undefined;
     /**
      * Rotation in radians (positive rotation clockwise).
      */
-    "shape-rotation"?: import("./expressions.js").ExpressionValue | undefined;
+    "shape-rotation"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Whether to rotate the shape with the view.
      */
@@ -195,13 +195,13 @@ export type ShapeProps = {
      * Scale. Unless two dimensional scaling is required a better
      * result may be obtained with appropriate settings for `shape-radius`, `shape-radius1` and `shape-radius2`.
      */
-    "shape-scale"?: import("../size.js").Size | import("./expressions.js").ExpressionValue | import("./expressions.js").ExpressionValue[] | undefined;
+    "shape-scale"?: import("../size.js").Size | import("../expr/expression.js").ExpressionValue | import("../expr/expression.js").ExpressionValue[] | undefined;
 };
 export type CircleProps = {
     /**
      * Circle radius.
      */
-    "circle-radius"?: import("./expressions.js").ExpressionValue | undefined;
+    "circle-radius"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * The fill color.
      */
@@ -213,25 +213,25 @@ export type CircleProps = {
     /**
      * Stroke pixel width.
      */
-    "circle-stroke-width"?: import("./expressions.js").ExpressionValue | undefined;
+    "circle-stroke-width"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Circle opacity.
      */
-    "circle-opacity"?: import("./expressions.js").ExpressionValue | undefined;
+    "circle-opacity"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * displacement
      */
-    "circle-displacement"?: number[] | import("./expressions.js").ExpressionValue[] | undefined;
+    "circle-displacement"?: number[] | import("../expr/expression.js").ExpressionValue[] | undefined;
     /**
      * Scale. A two dimensional scale will produce an ellipse.
      * Unless two dimensional scaling is required a better result may be obtained with an appropriate setting for `circle-radius`.
      */
-    "circle-scale"?: import("../size.js").Size | import("./expressions.js").ExpressionValue | import("./expressions.js").ExpressionValue[] | undefined;
+    "circle-scale"?: import("../size.js").Size | import("../expr/expression.js").ExpressionValue | import("../expr/expression.js").ExpressionValue[] | undefined;
     /**
      * Rotation in radians
      * (positive rotation clockwise, meaningful only when used in conjunction with a two dimensional scale).
      */
-    "circle-rotation"?: import("./expressions.js").ExpressionValue | undefined;
+    "circle-rotation"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
      * Whether to rotate the shape with the view
      * (meaningful only when used in conjunction with a two dimensional scale).
