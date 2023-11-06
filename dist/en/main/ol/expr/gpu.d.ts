@@ -69,7 +69,7 @@ export function uniformNameForVariable(variableName: string): string;
  * @property {Object<string, string>} functions Lookup of functions used by the style.
  * @property {number} [bandCount] Number of bands per pixel.
  * @property {Array<PaletteTexture>} [paletteTextures] List of palettes used by the style.
- * @property {import("../style/literal.js").LiteralStyle} style Literal style.
+ * @property {import("../style/webgl.js").WebGLStyle} style Literal style.
  */
 /**
  * @return {CompilationContext} A new compilation context.
@@ -156,7 +156,7 @@ export type CompilationContext = {
     /**
      * Literal style.
      */
-    style: import("../style/literal.js").LiteralStyle;
+    style: import("../style/webgl.js").WebGLStyle;
 };
 export type CompiledExpression = string;
 /**

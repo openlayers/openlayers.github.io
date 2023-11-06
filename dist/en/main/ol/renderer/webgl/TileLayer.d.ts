@@ -9,6 +9,7 @@ export const Uniforms: {
     TRANSITION_ALPHA: string;
     DEPTH: string;
     RENDER_EXTENT: string;
+    PATTERN_ORIGIN: string;
     RESOLUTION: string;
     ZOOM: string;
     GLOBAL_ALPHA: string;

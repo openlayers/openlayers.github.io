@@ -3,7 +3,7 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
     /**
      * Literal style to apply to the layer features.
      */
-    style: import('../style/literal.js').LiteralStyle;
+    style: import('../style/webgl.js').WebGLStyle;
     /**
      * A CSS class name to set to the layer element.
      */
@@ -67,7 +67,7 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
 /**
  * @template {import("../source/Vector.js").default} VectorSourceType
  * @typedef {Object} Options
- * @property {import('../style/literal.js').LiteralStyle} style Literal style to apply to the layer features.
+ * @property {import('../style/webgl.js').WebGLStyle} style Literal style to apply to the layer features.
  * @property {string} [className='ol-layer'] A CSS class name to set to the layer element.
  * @property {number} [opacity=1] Opacity (0, 1).
  * @property {boolean} [visible=true] Visibility.

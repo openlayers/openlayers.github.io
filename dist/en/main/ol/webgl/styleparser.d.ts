@@ -14,23 +14,29 @@ export function expressionToGlsl(compilationContext: import("../expr/gpu.js").Co
  */
 export function packColor(color: import("../color.js").Color | string): Array<number>;
 /**
+ * see https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
+ * @param {Object|string} input The hash input, either an object or string
+ * @return {string} Hash (if the object cannot be serialized, it is based on `getUid`)
+ */
+export function computeHash(input: any | string): string;
+/**
  * @typedef {Object} StyleParseResult
  * @property {ShaderBuilder} builder Shader builder pre-configured according to a given style
  * @property {import("../render/webgl/VectorStyleRenderer.js").UniformDefinitions} uniforms Uniform definitions
  * @property {import("../render/webgl/VectorStyleRenderer.js").AttributeDefinitions} attributes Attribute definitions
  */
 /**
- * Parses a {@link import("../style/literal.js").LiteralStyle} object and returns a {@link ShaderBuilder}
+ * Parses a {@link import("../style/webgl.js").WebGLStyle} object and returns a {@link ShaderBuilder}
  * object that has been configured according to the given style, as well as `attributes` and `uniforms`
  * arrays to be fed to the `WebGLPointsRenderer` class.
  *
  * Also returns `uniforms` and `attributes` properties as expected by the
  * {@link module:ol/renderer/webgl/PointsLayer~WebGLPointsLayerRenderer}.
  *
- * @param {import("../style/literal.js").LiteralStyle} style Literal style.
+ * @param {import("../style/webgl.js").WebGLStyle} style Literal style.
  * @return {StyleParseResult} Result containing shader params, attributes and uniforms.
  */
-export function parseLiteralStyle(style: import("../style/literal.js").LiteralStyle): StyleParseResult;
+export function parseLiteralStyle(style: import("../style/webgl.js").WebGLStyle): StyleParseResult;
 export type StyleParseResult = {
     /**
      * Shader builder pre-configured according to a given style

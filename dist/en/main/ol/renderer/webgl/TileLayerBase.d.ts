@@ -16,6 +16,7 @@ export namespace Uniforms {
     let TRANSITION_ALPHA: string;
     let DEPTH: string;
     let RENDER_EXTENT: string;
+    let PATTERN_ORIGIN: string;
     let RESOLUTION: string;
     let ZOOM: string;
     let GLOBAL_ALPHA: string;

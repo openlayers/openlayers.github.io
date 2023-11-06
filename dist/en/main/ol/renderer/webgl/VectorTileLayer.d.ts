@@ -5,7 +5,26 @@ export const Uniforms: {
     TRANSITION_ALPHA: string;
     DEPTH: string;
     RENDER_EXTENT: string;
+    PATTERN_ORIGIN: string;
     RESOLUTION: string;
+    /**
+     * @typedef {import('../../render/webgl/VectorStyleRenderer.js').VectorStyle} VectorStyle
+     */
+    /**
+     * @typedef {Object} Options
+     * @property {VectorStyle|Array<VectorStyle>} style Vector style as literal style or shaders; can also accept an array of styles
+     * @property {boolean} [disableHitDetection=false] Setting this to true will provide a slight performance boost, but will
+     * prevent all hit detection on the layer.
+     * @property {number} [cacheSize=512] The vector tile cache size.
+     */
+    /**
+     * @typedef {import("../../layer/BaseTile.js").default} LayerType
+     */
+    /**
+     * @classdesc
+     * WebGL renderer for vector tile layers. Experimental.
+     * @extends {WebGLBaseTileLayerRenderer<LayerType>}
+     */
     ZOOM: string;
     GLOBAL_ALPHA: string;
     PROJECTION_MATRIX: string;

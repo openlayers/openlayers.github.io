@@ -99,7 +99,7 @@ export type StyleShaders = {
         [x: string]: import("../../webgl/Helper.js").UniformValue;
     } | undefined;
 };
-export type VectorStyle = import('../../style/literal.js').LiteralStyle | StyleShaders;
+export type VectorStyle = import('../../style/webgl.js').WebGLStyle | StyleShaders;
 /**
  * @typedef {Object} AttributeDefinition A description of a custom attribute to be passed on to the GPU, with a value different
  * for each feature.
@@ -138,7 +138,7 @@ export type VectorStyle = import('../../style/literal.js').LiteralStyle | StyleS
  * @property {UniformDefinitions} [uniforms] Additional uniforms usable in shaders.
  */
 /**
- * @typedef {import('../../style/literal.js').LiteralStyle|StyleShaders} VectorStyle
+ * @typedef {import('../../style/webgl.js').WebGLStyle|StyleShaders} VectorStyle
  */
 /**
  * @classdesc This class is responsible for:

@@ -30,7 +30,7 @@ export function isType(type: number, expected: number): boolean;
  * @property {Set<string>} variables Variables referenced with the 'var' operator.
  * @property {Set<string>} properties Properties referenced with the 'get' operator.
  * @property {boolean} featureId The style uses the feature id.
- * @property {import("../style/literal").LiteralStyle} style The style being parsed
+ * @property {import("../style/flat.js").FlatStyle|import("../style/webgl.js").WebGLStyle} style The style being parsed
  */
 /**
  * @return {ParsingContext} A new parsing context.
@@ -99,7 +99,7 @@ export type ParsingContext = {
     /**
      * The style being parsed
      */
-    style: import("../style/literal").LiteralStyle;
+    style: import("../style/flat.js").FlatStyle | import("../style/webgl.js").WebGLStyle;
 };
 export type EncodedExpression = LiteralValue | any[];
 /**

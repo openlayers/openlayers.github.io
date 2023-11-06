@@ -14,8 +14,25 @@
 export function writePointFeatureToBuffers(instructions: Float32Array, elementIndex: number, vertexBuffer: Float32Array, indexBuffer: Uint32Array, customAttributesSize: number, bufferPositions?: BufferPositions | undefined): BufferPositions;
 /**
  * Pushes a single quad to form a line segment; also includes a computation for the join angles with previous and next
- * segment, in order to be able to offset the vertices correctly in the shader
- * @param {Float32Array} instructions Array of render instructions for lines.
+ * segment, in order to be able to offset the vertices correctly in the shader.
+ * Join angles are between 0 and 2PI.
+ * This also computes the length of the current segment and the sum of the join angle tangents in order
+ * to store this information on each subsequent segment along the line. This is necessary to correctly render dashes
+ * and symbols along the line.
+ *
+ *   pB (before)                          pA (after)
+ *    X             negative             X
+ *     \             offset             /
+ *      \                              /
+ *       \   join              join   /
+ *        \ angle 0          angle 1 /
+ *         \←---                ←---/      positive
+ *          \   ←--          ←--   /        offset
+ *           \     ↑       ↓      /
+ *            X────┴───────┴─────X
+ *            p0                  p1
+ *
+ * @param {Float32Array} instructions Array of render instructions for lines.s
  * @param {number} segmentStartIndex Index of the segment start point from which render instructions will be read.
  * @param {number} segmentEndIndex Index of the segment end point from which render instructions will be read.
  * @param {number|null} beforeSegmentIndex Index of the point right before the segment (null if none, e.g this is a line start)
@@ -25,10 +42,14 @@ export function writePointFeatureToBuffers(instructions: Float32Array, elementIn
  * @param {Array<number>} customAttributes Array of custom attributes value
  * @param {import('../../transform.js').Transform} toWorldTransform Transform matrix used to obtain world coordinates from instructions
  * @param {number} currentLength Cumulated length of segments processed so far
- * @return {number} Cumulated length with the newly processed segment (in world units)
+ * @param {number} currentAngleTangentSum Cumulated tangents of the join angles processed so far
+ * @return {{length: number, angle: number}} Cumulated length with the newly processed segment (in world units), new sum of the join angle tangents
  * @private
  */
-export function writeLineSegmentToBuffers(instructions: Float32Array, segmentStartIndex: number, segmentEndIndex: number, beforeSegmentIndex: number | null, afterSegmentIndex: number | null, vertexArray: Array<number>, indexArray: Array<number>, customAttributes: Array<number>, toWorldTransform: import('../../transform.js').Transform, currentLength: number): number;
+export function writeLineSegmentToBuffers(instructions: Float32Array, segmentStartIndex: number, segmentEndIndex: number, beforeSegmentIndex: number | null, afterSegmentIndex: number | null, vertexArray: Array<number>, indexArray: Array<number>, customAttributes: Array<number>, toWorldTransform: import('../../transform.js').Transform, currentLength: number, currentAngleTangentSum: number): {
+    length: number;
+    angle: number;
+};
 /**
  * Pushes several triangles to form a polygon, including holes
  * @param {Float32Array} instructions Array of render instructions for lines.
@@ -61,6 +82,7 @@ export function colorEncodeId(id: number, array?: number[] | undefined): Array<n
  * @return {number} Decoded id
  */
 export function colorDecodeId(color: Array<number>): number;
+export const LINESTRING_ANGLE_COSINE_CUTOFF: 0.985;
 /**
  * An object holding positions both in an index and a vertex buffer.
  */

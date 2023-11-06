@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./theme/ol.css">
     <link rel="stylesheet" type="text/css" href="/theme/site.css">
+    <link rel="stylesheet" type="text/css" href="webgl-draw-line.css">
     <link rel="icon" type="image/svg+xml" href="/theme/img/logo-light.svg" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href="/theme/img/logo-dark.svg" media="(prefers-color-scheme: dark)" />
   </head>
@@ -300,6 +301,12 @@
   </div>
   <div class="form-group">
     <label>
+      <input type="checkbox" class="rebuild" id="dashEnable">
+      Enable dashes
+    </label>
+    </div>
+  <div class="form-group" style="margin-left: 18px">
+    <label>
       Line dash pattern (px)
       <input type="number" class="uniform" name="dashLength1" min="0" max="100" value="25">
       <input type="number" class="uniform" name="dashLength2" min="0" max="100" value="15">
@@ -307,11 +314,26 @@
       <input type="number" class="uniform" name="dashLength4" min="0" max="100" value="15">
     </label>
   </div>
-  <label>
-    Line dash offset (pixels)
-    <input type="range" class="uniform" name="dashOffset" min="-200" max="200" value="0">
-  </label>
-  <span id="value-dashOffset">0</span>
+  <div class="form-group" style="margin-left: 18px">
+    <label>
+      Line dash offset (pixels)
+      <input type="range" class="uniform" name="dashOffset" min="-200" max="200" value="0">
+    </label>
+    <span id="value-dashOffset">0</span>
+  </div>
+  <div class="form-group">
+    <label>
+      <input type="checkbox" class="rebuild" id="patternEnable">
+      Enable image pattern
+    </label>
+  </div>
+  <div class="form-group" style="margin-left: 18px">
+    <label>
+      Pattern spacing (pixels)
+      <input type="range" class="uniform" name="patternSpacing" min="0" max="64" value="0">
+    </label>
+    <span id="value-patternSpacing">0</span>
+  </div>
 </form>
 
         </div>
@@ -340,33 +362,10 @@ import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
 import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 
-const style &#x3D; {
-  variables: {
-    width: 12,
-    offset: 0,
-    capType: &#x27;butt&#x27;,
-    joinType: &#x27;miter&#x27;,
-    miterLimit: 10, // ratio
-    dashLength1: 25,
-    dashLength2: 15,
-    dashLength3: 15,
-    dashLength4: 15,
-    dashOffset: 0,
-  },
-  &#x27;stroke-width&#x27;: [&#x27;var&#x27;, &#x27;width&#x27;],
-  &#x27;stroke-color&#x27;: &#x27;rgba(24,86,34,0.7)&#x27;,
-  &#x27;stroke-line-dash&#x27;: [
-    [&#x27;var&#x27;, &#x27;dashLength1&#x27;],
-    [&#x27;var&#x27;, &#x27;dashLength2&#x27;],
-    [&#x27;var&#x27;, &#x27;dashLength3&#x27;],
-    [&#x27;var&#x27;, &#x27;dashLength4&#x27;],
-  ],
-  &#x27;stroke-line-dash-offset&#x27;: [&#x27;var&#x27;, &#x27;dashOffset&#x27;],
-  &#x27;stroke-offset&#x27;: [&#x27;var&#x27;, &#x27;offset&#x27;],
-  &#x27;stroke-line-cap&#x27;: [&#x27;var&#x27;, &#x27;capType&#x27;],
-  &#x27;stroke-line-join&#x27;: [&#x27;var&#x27;, &#x27;joinType&#x27;],
-  &#x27;stroke-miter-limit&#x27;: [&#x27;var&#x27;, &#x27;miterLimit&#x27;],
-};
+/**
+ * @type {import(&#x27;ol/style/webgl.js&#x27;).WebGLStyle}
+ */
+let style;
 
 class WebGLLayer extends Layer {
   createRenderer() {
@@ -377,26 +376,93 @@ class WebGLLayer extends Layer {
   }
 }
 
-const osm &#x3D; new TileLayer({
-  source: new OSM(),
-});
-
 const source &#x3D; new VectorSource({
   url: &#x27;data/geojson/switzerland.geojson&#x27;,
   format: new GeoJSON(),
 });
-const vector &#x3D; new WebGLLayer({
-  source: source,
+
+/**
+ * @param {boolean} dash Include line dash
+ * @param {boolean} pattern Include image pattern
+ * @return {import(&#x27;ol/style/webgl.js&#x27;).WebGLStyle} Generated style
+ */
+const getStyle &#x3D; (dash, pattern) &#x3D;&gt; {
+  let newStyle &#x3D; {
+    variables: style
+      ? style.variables
+      : {
+          width: 12,
+          offset: 0,
+          capType: &#x27;butt&#x27;,
+          joinType: &#x27;miter&#x27;,
+          miterLimit: 10, // ratio
+          dashLength1: 25,
+          dashLength2: 15,
+          dashLength3: 15,
+          dashLength4: 15,
+          dashOffset: 0,
+          patternSpacing: 0,
+        },
+    &#x27;stroke-width&#x27;: [&#x27;var&#x27;, &#x27;width&#x27;],
+    &#x27;stroke-color&#x27;: &#x27;rgba(24,86,34,0.7)&#x27;,
+    &#x27;stroke-offset&#x27;: [&#x27;var&#x27;, &#x27;offset&#x27;],
+    &#x27;stroke-miter-limit&#x27;: [&#x27;var&#x27;, &#x27;miterLimit&#x27;],
+    &#x27;stroke-line-cap&#x27;: [&#x27;var&#x27;, &#x27;capType&#x27;],
+    &#x27;stroke-line-join&#x27;: [&#x27;var&#x27;, &#x27;joinType&#x27;],
+  };
+  if (dash) {
+    newStyle &#x3D; {
+      ...newStyle,
+      &#x27;stroke-line-dash&#x27;: [
+        [&#x27;var&#x27;, &#x27;dashLength1&#x27;],
+        [&#x27;var&#x27;, &#x27;dashLength2&#x27;],
+        [&#x27;var&#x27;, &#x27;dashLength3&#x27;],
+        [&#x27;var&#x27;, &#x27;dashLength4&#x27;],
+      ],
+      &#x27;stroke-line-dash-offset&#x27;: [&#x27;var&#x27;, &#x27;dashOffset&#x27;],
+    };
+  }
+  if (pattern) {
+    delete newStyle[&#x27;stroke-color&#x27;];
+    newStyle &#x3D; {
+      ...newStyle,
+      &#x27;stroke-pattern-src&#x27;: &#x27;data/dot.svg&#x27;,
+      &#x27;stroke-pattern-spacing&#x27;: [&#x27;var&#x27;, &#x27;patternSpacing&#x27;],
+    };
+  }
+  return newStyle;
+};
+
+style &#x3D; getStyle(false, false);
+
+let vector &#x3D; new WebGLLayer({
+  source,
 });
 
 const map &#x3D; new Map({
-  layers: [osm, vector],
+  layers: [
+    new TileLayer({
+      source: new OSM(),
+    }),
+    vector,
+  ],
   target: &#x27;map&#x27;,
   view: new View({
     center: fromLonLat([8.43, 46.82]),
     zoom: 7,
   }),
 });
+
+const rebuildStyle &#x3D; () &#x3D;&gt; {
+  const dash &#x3D; document.getElementById(&#x27;dashEnable&#x27;).checked;
+  const pattern &#x3D; document.getElementById(&#x27;patternEnable&#x27;).checked;
+  style &#x3D; getStyle(dash, pattern);
+  map.removeLayer(vector);
+  vector &#x3D; new WebGLLayer({
+    source,
+  });
+  map.addLayer(vector);
+};
 
 const modify &#x3D; new Modify({source: source});
 map.addInteraction(modify);
@@ -432,6 +498,9 @@ const inputListener &#x3D; (event) &#x3D;&gt; {
 document
   .querySelectorAll(&#x27;input.uniform&#x27;)
   .forEach((input) &#x3D;&gt; input.addEventListener(&#x27;input&#x27;, inputListener));
+document
+  .querySelectorAll(&#x27;input.rebuild&#x27;)
+  .forEach((input) &#x3D;&gt; input.addEventListener(&#x27;input&#x27;, rebuildStyle));
 </code></pre>
       </div>
 
@@ -447,6 +516,17 @@ document
       .map {
         width: 100%;
         height: 400px;
+      }
+      .form-group label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 30px;
+      }
+      .form-group {
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
     &lt;/style&gt;
   &lt;/head&gt;
@@ -498,6 +578,12 @@ document
       &lt;/div&gt;
       &lt;div class&#x3D;&quot;form-group&quot;&gt;
         &lt;label&gt;
+          &lt;input type&#x3D;&quot;checkbox&quot; class&#x3D;&quot;rebuild&quot; id&#x3D;&quot;dashEnable&quot;&gt;
+          Enable dashes
+        &lt;/label&gt;
+        &lt;/div&gt;
+      &lt;div class&#x3D;&quot;form-group&quot; style&#x3D;&quot;margin-left: 18px&quot;&gt;
+        &lt;label&gt;
           Line dash pattern (px)
           &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;uniform&quot; name&#x3D;&quot;dashLength1&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; value&#x3D;&quot;25&quot;&gt;
           &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;uniform&quot; name&#x3D;&quot;dashLength2&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; value&#x3D;&quot;15&quot;&gt;
@@ -505,11 +591,26 @@ document
           &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;uniform&quot; name&#x3D;&quot;dashLength4&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;100&quot; value&#x3D;&quot;15&quot;&gt;
         &lt;/label&gt;
       &lt;/div&gt;
-      &lt;label&gt;
-        Line dash offset (pixels)
-        &lt;input type&#x3D;&quot;range&quot; class&#x3D;&quot;uniform&quot; name&#x3D;&quot;dashOffset&quot; min&#x3D;&quot;-200&quot; max&#x3D;&quot;200&quot; value&#x3D;&quot;0&quot;&gt;
-      &lt;/label&gt;
-      &lt;span id&#x3D;&quot;value-dashOffset&quot;&gt;0&lt;/span&gt;
+      &lt;div class&#x3D;&quot;form-group&quot; style&#x3D;&quot;margin-left: 18px&quot;&gt;
+        &lt;label&gt;
+          Line dash offset (pixels)
+          &lt;input type&#x3D;&quot;range&quot; class&#x3D;&quot;uniform&quot; name&#x3D;&quot;dashOffset&quot; min&#x3D;&quot;-200&quot; max&#x3D;&quot;200&quot; value&#x3D;&quot;0&quot;&gt;
+        &lt;/label&gt;
+        &lt;span id&#x3D;&quot;value-dashOffset&quot;&gt;0&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;form-group&quot;&gt;
+        &lt;label&gt;
+          &lt;input type&#x3D;&quot;checkbox&quot; class&#x3D;&quot;rebuild&quot; id&#x3D;&quot;patternEnable&quot;&gt;
+          Enable image pattern
+        &lt;/label&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;form-group&quot; style&#x3D;&quot;margin-left: 18px&quot;&gt;
+        &lt;label&gt;
+          Pattern spacing (pixels)
+          &lt;input type&#x3D;&quot;range&quot; class&#x3D;&quot;uniform&quot; name&#x3D;&quot;patternSpacing&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;64&quot; value&#x3D;&quot;0&quot;&gt;
+        &lt;/label&gt;
+        &lt;span id&#x3D;&quot;value-patternSpacing&quot;&gt;0&lt;/span&gt;
+      &lt;/div&gt;
     &lt;/form&gt;
 
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;

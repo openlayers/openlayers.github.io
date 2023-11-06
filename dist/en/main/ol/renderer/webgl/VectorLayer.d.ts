@@ -1,5 +1,6 @@
 export const Uniforms: {
     RENDER_EXTENT: string;
+    PATTERN_ORIGIN: string;
     GLOBAL_ALPHA: string;
     PROJECTION_MATRIX: string;
     SCREEN_TO_WORLD_MATRIX: string;
@@ -87,6 +88,7 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @private
      */
     private currentTransform_;
+    tmpCoords_: number[];
     tmpTransform_: number[];
     tmpMat4_: number[];
     /**
