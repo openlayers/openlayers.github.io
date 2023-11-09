@@ -56,6 +56,8 @@ export function createForProjection(projection: import("./proj.js").ProjectionLi
  * @return {import("./extent.js").Extent} Extent.
  */
 export function extentFromProjection(projection: import("./proj.js").ProjectionLike): import("./extent.js").Extent;
+export { TileGrid };
+export { default as WMTS } from "./tilegrid/WMTS.js";
 export type XYZOptions = {
     /**
      * Extent for the tile grid. The origin for an XYZ tile grid is the
