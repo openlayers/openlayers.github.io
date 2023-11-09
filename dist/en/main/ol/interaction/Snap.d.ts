@@ -12,6 +12,10 @@ export type Result = {
      * Feature.
      */
     feature: import("../Feature.js").default | null;
+    /**
+     * Segment, or `null` if snapped to a vertex.
+     */
+    segment: Array<import("../coordinate.js").Coordinate> | null;
 };
 export type SegmentData = {
     /**
