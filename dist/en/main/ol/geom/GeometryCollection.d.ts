@@ -7,9 +7,9 @@ export default GeometryCollection;
  */
 declare class GeometryCollection extends Geometry {
     /**
-     * @param {Array<Geometry>} [geometries] Geometries.
+     * @param {Array<Geometry>} geometries Geometries.
      */
-    constructor(geometries?: Geometry[] | undefined);
+    constructor(geometries: Array<Geometry>);
     /**
      * @private
      * @type {Array<Geometry>}
