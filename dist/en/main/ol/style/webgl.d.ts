@@ -206,11 +206,7 @@ export type ShapeProps = {
      */
     "shape-radius"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
-     * First radius of a star. Ignored if radius is set.
-     */
-    "shape-radius1"?: import("../expr/expression.js").ExpressionValue | undefined;
-    /**
-     * Second radius of a star.
+     * Second radius to make a star instead of a regular polygon.
      */
     "shape-radius2"?: import("../expr/expression.js").ExpressionValue | undefined;
     /**
@@ -231,7 +227,7 @@ export type ShapeProps = {
     "shape-rotate-with-view"?: boolean | undefined;
     /**
      * Scale. Unless two dimensional scaling is required a better
-     * result may be obtained with appropriate settings for `shape-radius`, `shape-radius1` and `shape-radius2`.
+     * result may be obtained with appropriate settings for `shape-radius` and `shape-radius2`.
      */
     "shape-scale"?: import("../size.js").Size | import("../expr/expression.js").ExpressionValue | import("../expr/expression.js").ExpressionValue[] | undefined;
 };

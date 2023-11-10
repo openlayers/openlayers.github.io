@@ -190,7 +190,7 @@
 <dd class="">
     
     <div class="description">
-        <p>Specify radius for regular polygons, or radius1 and radius2 for stars.</p>
+        <p>Specify radius for regular polygons, or both radius and radius2 for stars.</p>
     </div>
     
 
@@ -275,36 +275,13 @@ is the number of sides.</p>
                 
 <span class="param-type">number</span>
 
- | undefined
+
                 
             
             </td>
 
             <td class="description last">
                 <p>Radius of a regular polygon.</p>
-                
-            </td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>radius1</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
- | undefined
-                
-            
-            </td>
-
-            <td class="description last">
-                <p>First radius of a star. Ignored if radius is set.</p>
                 
             </td>
         </tr>
@@ -327,7 +304,7 @@ is the number of sides.</p>
             </td>
 
             <td class="description last">
-                <p>Second radius of a star.</p>
+                <p>Second radius to make a star instead of a regular polygon.</p>
                 
             </td>
         </tr>
@@ -480,7 +457,7 @@ Positive values will shift the shape right and up.</p>
 
             <td class="description last">
                 <p>Scale. Unless two dimensional scaling is required a better
-result may be obtained with appropriate settings for <code>radius</code>, <code>radius1</code> and <code>radius2</code>.</p>
+result may be obtained with appropriate settings for <code>radius</code> and <code>radius2</code>.</p>
                 
             </td>
         </tr>

@@ -1,6 +1,6 @@
 export default RegularShape;
 /**
- * Specify radius for regular polygons, or radius1 and radius2 for stars.
+ * Specify radius for regular polygons, or both radius and radius2 for stars.
  */
 export type Options = {
     /**
@@ -15,13 +15,9 @@ export type Options = {
     /**
      * Radius of a regular polygon.
      */
-    radius?: number | undefined;
+    radius: number;
     /**
-     * First radius of a star. Ignored if radius is set.
-     */
-    radius1?: number | undefined;
-    /**
-     * Second radius of a star.
+     * Second radius to make a star instead of a regular polygon.
      */
     radius2?: number | undefined;
     /**
@@ -47,7 +43,7 @@ export type Options = {
     rotateWithView?: boolean | undefined;
     /**
      * Scale. Unless two dimensional scaling is required a better
-     * result may be obtained with appropriate settings for `radius`, `radius1` and `radius2`.
+     * result may be obtained with appropriate settings for `radius` and `radius2`.
      */
     scale?: number | import("../size.js").Size | undefined;
     /**
@@ -90,14 +86,13 @@ export type RenderOptions = {
     miterLimit: number;
 };
 /**
- * Specify radius for regular polygons, or radius1 and radius2 for stars.
+ * Specify radius for regular polygons, or both radius and radius2 for stars.
  * @typedef {Object} Options
  * @property {import("./Fill.js").default} [fill] Fill style.
  * @property {number} points Number of points for stars and regular polygons. In case of a polygon, the number of points
  * is the number of sides.
- * @property {number} [radius] Radius of a regular polygon.
- * @property {number} [radius1] First radius of a star. Ignored if radius is set.
- * @property {number} [radius2] Second radius of a star.
+ * @property {number} radius Radius of a regular polygon.
+ * @property {number} [radius2] Second radius to make a star instead of a regular polygon.
  * @property {number} [angle=0] Shape's angle in radians. A value of 0 will have one of the shape's points facing up.
  * @property {Array<number>} [displacement=[0, 0]] Displacement of the shape in pixels.
  * Positive values will shift the shape right and up.
@@ -105,7 +100,7 @@ export type RenderOptions = {
  * @property {number} [rotation=0] Rotation in radians (positive rotation clockwise).
  * @property {boolean} [rotateWithView=false] Whether to rotate the shape with the view.
  * @property {number|import("../size.js").Size} [scale=1] Scale. Unless two dimensional scaling is required a better
- * result may be obtained with appropriate settings for `radius`, `radius1` and `radius2`.
+ * result may be obtained with appropriate settings for `radius` and `radius2`.
  * @property {"declutter"|"obstacle"|"none"|undefined} [declutterMode] Declutter mode.
  */
 /**
@@ -122,7 +117,7 @@ export type RenderOptions = {
 /**
  * @classdesc
  * Set regular shape style for vector features. The resulting shape will be
- * a regular polygon when `radius` is provided, or a star when `radius1` and
+ * a regular polygon when `radius` is provided, or a star when both `radius` and
  * `radius2` are provided.
  * @api
  */
