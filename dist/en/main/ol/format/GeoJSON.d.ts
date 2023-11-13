@@ -85,7 +85,7 @@ declare class GeoJSON extends JSONFeature {
      */
     private geometryName_;
     /**
-     * Look for the geometry name in the feature GeoJSON
+     * Look for the `geometry_name` in the feature GeoJSON
      * @type {boolean|undefined}
      * @private
      */

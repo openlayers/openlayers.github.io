@@ -302,12 +302,11 @@ first, and then latitude.</p>
 <p>Suppose you want to load a KML file and display the contained features on the
 map. Code like the following could be used:</p>
 <pre><code class="language-javascript">import VectorLayer from &#39;ol/layer/Vector.js&#39;;
-import VectorSource from &#39;ol/source/Vector.js&#39;;
-import KML from &#39;ol/format/KML.js&#39;;
+import KMLSource from &#39;ol/source/KML.js&#39;;
 
 const vector = new VectorLayer({
-  source: new VectorSource({
-    format: new KML(),
+  source: new KMLSource({
+    projection: &#39;EPSG:3857&#39;,
     url: &#39;data/kml/2012-02-10.kml&#39;
   })
 });
@@ -315,12 +314,11 @@ const vector = new VectorLayer({
 <p>You may ask yourself how many features are in that KML, and try something like
 the following:</p>
 <pre><code class="language-javascript">import VectorLayer from &#39;ol/layer/Vector.js&#39;;
-import VectorSource from &#39;ol/source/Vector.js&#39;;
-import KML from &#39;ol/format/KML.js&#39;;
+import KMLSource from &#39;ol/source/KML.js&#39;;
 
 const vector = new VectorLayer({
-  source: new VectorSource({
-    format: new KML(),
+  source: new KMLSource({
+    projection: &#39;EPSG:3857&#39;,
     url: &#39;data/kml/2012-02-10.kml&#39;
   })
 });
@@ -332,10 +330,12 @@ loading of the KML-file will happen in an asynchronous manner. To get the count
 as soon as possible (right after the file has been fetched and the source has
 been populated with features), you should use an event listener function on the
 <code>source</code>:</p>
-<pre><code class="language-javascript">vector.getSource().on(&#39;featuresloadend&#39;, function(evt){
+<pre><code class="language-javascript">vector.getSource().on(&#39;change&#39;, function(evt){
   const source = evt.target;
-  const numFeatures = source.getFeatures().length;
-  console.log(&quot;Count after loading: &quot; + numFeatures);
+  if (source.getState() === &#39;ready&#39;) {
+    const numFeatures = source.getFeatures().length;
+    console.log(&quot;Count after change: &quot; + numFeatures);
+  }
 });
 </code></pre>
 <p>This will correctly report the number of features, <code>1119</code> in that particular
