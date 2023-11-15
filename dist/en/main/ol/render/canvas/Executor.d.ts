@@ -95,9 +95,9 @@ declare class Executor {
     protected resolution: number;
     /**
      * @private
-     * @type {boolean}
+     * @type {number}
      */
-    private alignFill_;
+    private alignAndScaleFill_;
     /**
      * @protected
      * @type {Array<*>}

@@ -1,22 +1,23 @@
 /**
- * @param {HTMLImageElement|HTMLCanvasElement|ImageBitmap} image Image.
- * @param {string} cacheKey Src.
+ * @param {HTMLImageElement|HTMLCanvasElement|ImageBitmap|null} image Image.
+ * @param {string|undefined} cacheKey Src.
  * @param {?string} crossOrigin Cross origin.
- * @param {import("../ImageState.js").default} imageState Image state.
- * @param {import("../color.js").Color} color Color.
+ * @param {import("../ImageState.js").default|undefined} imageState Image state.
+ * @param {import("../color.js").Color|string|null} color Color.
+ * @param {boolean} [pattern] Also cache a `repeat` pattern with the icon image.
  * @return {IconImage} Icon image.
  */
-export function get(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap, cacheKey: string, crossOrigin: string | null, imageState: any, color: import("../color.js").Color): IconImage;
+export function get(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap | null, cacheKey: string | undefined, crossOrigin: string | null, imageState: any | undefined, color: import("../color.js").Color | string | null, pattern?: boolean | undefined): IconImage;
 export default IconImage;
 declare class IconImage extends EventTarget {
     /**
-     * @param {HTMLImageElement|HTMLCanvasElement|ImageBitmap} image Image.
+     * @param {HTMLImageElement|HTMLCanvasElement|ImageBitmap|null} image Image.
      * @param {string|undefined} src Src.
      * @param {?string} crossOrigin Cross origin.
-     * @param {import("../ImageState.js").default} imageState Image state.
-     * @param {import("../color.js").Color} color Color.
+     * @param {import("../ImageState.js").default|undefined} imageState Image state.
+     * @param {import("../color.js").Color|string|null} color Color.
      */
-    constructor(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap, src: string | undefined, crossOrigin: string | null, imageState: any, color: import("../color.js").Color);
+    constructor(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap | null, src: string | undefined, crossOrigin: string | null, imageState: any | undefined, color: import("../color.js").Color | string | null);
     /**
      * @private
      * @type {HTMLImageElement|HTMLCanvasElement|ImageBitmap}
@@ -24,7 +25,7 @@ declare class IconImage extends EventTarget {
     private hitDetectionImage_;
     /**
      * @private
-     * @type {HTMLImageElement|HTMLCanvasElement|ImageBitmap}
+     * @type {HTMLImageElement|HTMLCanvasElement|ImageBitmap|null}
      */
     private image_;
     /**
@@ -39,7 +40,7 @@ declare class IconImage extends EventTarget {
     private canvas_;
     /**
      * @private
-     * @type {import("../color.js").Color}
+     * @type {import("../color.js").Color|string|null}
      */
     private color_;
     /**
@@ -57,6 +58,11 @@ declare class IconImage extends EventTarget {
      * @type {string|undefined}
      */
     private src_;
+    /**
+     * @private
+     * @type {Promise<void>|null}
+     */
+    private ready_;
     /**
      * @private
      */
@@ -115,6 +121,10 @@ declare class IconImage extends EventTarget {
      * @private
      */
     private replaceColor_;
+    /**
+     * @return {Promise<void>} Promise that resolves when the image is loaded.
+     */
+    ready(): Promise<void>;
 }
 import EventTarget from '../events/Target.js';
 //# sourceMappingURL=IconImage.d.ts.map

@@ -181,6 +181,7 @@ declare class RegularShape extends ImageStyle {
      * @type {RenderOptions}
      */
     private renderOptions_;
+    imageState_: number;
     /**
      * Clones the style.
      * @return {RegularShape} The cloned style.

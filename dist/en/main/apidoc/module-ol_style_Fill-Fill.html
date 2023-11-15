@@ -135,7 +135,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Fill.js">style/Fill.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Fill.js#L17">line 17</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Fill.js#L22">line 22</a>
         </div>
         
     </div>
@@ -187,6 +187,9 @@
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
 |
 
+<span class="param-type"><a href="module-ol_colorlike.html#~PatternDescriptor">PatternDescriptor</a></span>
+|
+
 <span class="param-type">null</span>
 
 
@@ -200,8 +203,10 @@
 
             <td  class="description last">
                 
-                <p>A color, gradient or pattern.
-See <a href="module-ol_color.html#~Color"><code>Color</code></a> and <a href="module-ol_colorlike.html#~ColorLike"><code>ColorLike</code></a> for possible formats.
+                <p>A color,
+gradient or pattern.
+See <a href="module-ol_color.html#~Color"><code>Color</code></a> and <a href="module-ol_colorlike.html#~ColorLike"><code>ColorLike</code></a> for possible formats. For polygon fills (not for <a href="module-ol_style_RegularShape-RegularShape.html"><code>RegularShape</code></a> fills),
+a pattern can also be provided as <a href="module-ol_colorlike.html#~PatternDescriptor"><code>PatternDescriptor</code></a>.
 Default null; if null, the Canvas/renderer default black will be used.</p></td>
         </tr>
 
@@ -290,7 +295,7 @@ Default null; if null, the Canvas/renderer default black will be used.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Fill.js">style/Fill.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Fill.js#L36">line 36</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Fill.js#L50">line 50</a>
         </div>
         
     </div>
@@ -372,7 +377,7 @@ The cloned style.
         <div class="anchor" id="getColor">
         </div>
         <h4 class="name">
-            getColor<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_color.html#~Color">Color</a> | <a href="module-ol_colorlike.html#~ColorLike">ColorLike</a> | null}</span>
+            getColor<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_color.html#~Color">Color</a> | <a href="module-ol_colorlike.html#~ColorLike">ColorLike</a> | <a href="module-ol_colorlike.html#~PatternDescriptor">PatternDescriptor</a> | null}</span>
             
             
 
@@ -380,7 +385,7 @@ The cloned style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Fill.js">style/Fill.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Fill.js#L48">line 48</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Fill.js#L62">line 62</a>
         </div>
         
     </div>
@@ -470,7 +475,7 @@ Color.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Fill.js">style/Fill.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Fill.js#L58">line 58</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Fill.js#L72">line 72</a>
         </div>
         
     </div>
@@ -524,6 +529,9 @@ Color.
 |
 
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
+|
+
+<span class="param-type"><a href="module-ol_colorlike.html#~PatternDescriptor">PatternDescriptor</a></span>
 |
 
 <span class="param-type">null</span>

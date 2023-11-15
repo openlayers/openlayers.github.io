@@ -1,3 +1,10 @@
+/**
+ * @param {string} src Src.
+ * @param {?string} crossOrigin Cross origin.
+ * @param {import("../color.js").Color|string|null} color Color.
+ * @return {string} Cache key.
+ */
+export function getCacheKey(src: string, crossOrigin: string | null, color: import("../color.js").Color | string | null): string;
 export default IconImageCache;
 /**
  * The {@link module:ol/style/IconImageCache~IconImageCache} for
@@ -15,6 +22,11 @@ declare class IconImageCache {
      * @private
      */
     private cache_;
+    /**
+     * @type {!Object<string, CanvasPattern>}
+     * @private
+     */
+    private patternCache_;
     /**
      * @type {number}
      * @private
@@ -40,17 +52,25 @@ declare class IconImageCache {
     /**
      * @param {string} src Src.
      * @param {?string} crossOrigin Cross origin.
-     * @param {import("../color.js").Color} color Color.
+     * @param {import("../color.js").Color|string|null} color Color.
      * @return {import("./IconImage.js").default} Icon image.
      */
-    get(src: string, crossOrigin: string | null, color: import("../color.js").Color): import("./IconImage.js").default;
+    get(src: string, crossOrigin: string | null, color: import("../color.js").Color | string | null): import("./IconImage.js").default;
     /**
      * @param {string} src Src.
      * @param {?string} crossOrigin Cross origin.
-     * @param {import("../color.js").Color} color Color.
-     * @param {import("./IconImage.js").default} iconImage Icon image.
+     * @param {import("../color.js").Color|string|null} color Color.
+     * @return {CanvasPattern} Icon image.
      */
-    set(src: string, crossOrigin: string | null, color: import("../color.js").Color, iconImage: import("./IconImage.js").default): void;
+    getPattern(src: string, crossOrigin: string | null, color: import("../color.js").Color | string | null): CanvasPattern;
+    /**
+     * @param {string} src Src.
+     * @param {?string} crossOrigin Cross origin.
+     * @param {import("../color.js").Color|string|null} color Color.
+     * @param {import("./IconImage.js").default|null} iconImage Icon image.
+     * @param {boolean} [pattern] Also cache a `'repeat'` pattern with this `iconImage`.
+     */
+    set(src: string, crossOrigin: string | null, color: import("../color.js").Color | string | null, iconImage: import("./IconImage.js").default | null, pattern?: boolean | undefined): void;
     /**
      * Set the cache size of the icon cache. Default is `32`. Change this value when
      * your map uses more than 32 different icon images and you are not caching icon

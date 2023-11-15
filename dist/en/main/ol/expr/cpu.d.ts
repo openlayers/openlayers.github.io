@@ -38,6 +38,9 @@ export function newEvaluationContext(): EvaluationContext;
  * @typedef {function(EvaluationContext):Array<number>} CoordinateEvaluator
  */
 /**
+ * @typedef {function(EvaluationContext):(Array<number>)} SizeEvaluator
+ */
+/**
  * @typedef {function(EvaluationContext):(Array<number>|number)} SizeLikeEvaluator
  */
 /**
@@ -72,5 +75,6 @@ export type StringEvaluator = (arg0: EvaluationContext) => string;
 export type ColorLikeEvaluator = (arg0: EvaluationContext) => (Array<number> | string);
 export type NumberArrayEvaluator = (arg0: EvaluationContext) => Array<number>;
 export type CoordinateEvaluator = (arg0: EvaluationContext) => Array<number>;
+export type SizeEvaluator = (arg0: EvaluationContext) => (Array<number>);
 export type SizeLikeEvaluator = (arg0: EvaluationContext) => (Array<number> | number);
 //# sourceMappingURL=cpu.d.ts.map

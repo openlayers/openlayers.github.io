@@ -225,5 +225,9 @@ declare class ImageStyle {
      * @param {function(import("../events/Event.js").default): void} listener Listener function.
      */
     unlistenImageChange(listener: (arg0: import("../events/Event.js").default) => void): void;
+    /**
+     * @return {Promise<void>} `false` or Promise that resolves when the style is ready to use.
+     */
+    ready(): Promise<void>;
 }
 //# sourceMappingURL=Image.d.ts.map

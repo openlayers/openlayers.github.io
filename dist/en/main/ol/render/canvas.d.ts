@@ -79,6 +79,7 @@ export function drawImageOrLabel(context: CanvasRenderingContext2D, transform: i
  * @property {CanvasLineJoin} [lineJoin] LineJoin.
  * @property {number} [lineWidth] LineWidth.
  * @property {number} [miterLimit] MiterLimit.
+ * @property {number} [fillPatternScale] Fill pattern scale.
  */
 /**
  * @typedef {Object} StrokeState
@@ -279,6 +280,10 @@ export type FillStrokeState = {
      * MiterLimit.
      */
     miterLimit?: number | undefined;
+    /**
+     * Fill pattern scale.
+     */
+    fillPatternScale?: number | undefined;
 };
 export type StrokeState = {
     /**

@@ -11,6 +11,10 @@
  */
 export function createCanvasContext2D(width?: number | undefined, height?: number | undefined, canvasPool?: HTMLCanvasElement[] | undefined, settings?: CanvasRenderingContext2DSettings | undefined): CanvasRenderingContext2D;
 /**
+ * @return {CanvasRenderingContext2D} Shared canvas context.
+ */
+export function getSharedCanvasContext2D(): CanvasRenderingContext2D;
+/**
  * Releases canvas memory to avoid exceeding memory limits in Safari.
  * See https://pqina.nl/blog/total-canvas-memory-use-exceeds-the-maximum-limit/
  * @param {CanvasRenderingContext2D} context Context.

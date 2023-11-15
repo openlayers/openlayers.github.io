@@ -72,6 +72,7 @@
         <span class="subtitle">Typedefs</span>
         <ul>
             <li data-name="colorlike"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a>
+            <li data-name="patterndescriptor"><a href="module-ol_colorlike.html#~PatternDescriptor">PatternDescriptor</a>
         </ul>
     </div>
     <div class="member-list" data-type="methods">
@@ -180,7 +181,7 @@
         <div class="anchor" id=".asColorLike">
         </div>
         <h4 class="name">
-            asColorLike<span class="signature">(color)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_colorlike.html#~ColorLike">ColorLike</a>}</span>
+            asColorLike<span class="signature">(color)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_colorlike.html#~ColorLike">ColorLike</a> | null}</span>
             
             
 
@@ -188,7 +189,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/colorlike.js">colorlike.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/colorlike.js#L23">line 23</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/colorlike.js#L38">line 38</a>
         </div>
         
     </div>
@@ -241,6 +242,12 @@
 |
 
 <span class="param-type"><a href="module-ol_colorlike.html#~ColorLike">ColorLike</a></span>
+|
+
+<span class="param-type"><a href="module-ol_colorlike.html#~PatternDescriptor">PatternDescriptor</a></span>
+|
+
+<span class="param-type">null</span>
 
 
                 
@@ -333,8 +340,9 @@ The color as an <code>ol/colorlike~ColorLike</code>.
     <div class="description">
         <p>A type accepted by CanvasRenderingContext2D.fillStyle
 or CanvasRenderingContext2D.strokeStyle.
-Represents a color, pattern, or gradient. The origin for patterns and
-gradients as fill style is an increment of 512 css pixels from map coordinate
+Represents a color, <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasPattern">CanvasPattern</a>,
+or <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasGradient">CanvasGradient</a>. The origin for
+patterns and gradients as fill style is an increment of 512 css pixels from map coordinate
 <code>[0, 0]</code>. For seamless repeat patterns, width and height of the pattern image
 must be a factor of two (2, 4, 8, ..., 512).</p>
     </div>
@@ -342,6 +350,173 @@ must be a factor of two (2, 4, 8, ..., 512).</p>
 
     
 <dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~PatternDescriptor">
+        </div>
+        <h4 class="name">
+            PatternDescriptor<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>src</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Pattern image URL</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
+|
+
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Color to tint the pattern with.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Size of the desired slice from the pattern image.
+Use this together with <code>offset</code> when the pattern image is a sprite sheet.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Offset of the desired slice from the pattern image.
+Use this together with <code>size</code> when the pattern image is a sprite sheet.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
     
         
     
