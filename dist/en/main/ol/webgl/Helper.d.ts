@@ -69,7 +69,7 @@ export type AttributeDescription = {
      */
     type?: number | undefined;
 };
-export type UniformLiteralValue = number | Array<number> | HTMLCanvasElement | HTMLImageElement | ImageData | import("../transform").Transform;
+export type UniformLiteralValue = number | Array<number> | HTMLCanvasElement | HTMLImageElement | ImageData | WebGLTexture | import("../transform").Transform;
 /**
  * Uniform value can be a number, array of numbers (2 to 4), canvas element or a callback returning
  * one of the previous types.
