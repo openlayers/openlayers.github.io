@@ -57,7 +57,7 @@ export type Options<FeatureClass extends import("../Feature.js").FeatureLike = i
      * The feature format used by the XHR
      * feature loader when `url` is set. Required if `url` is set, otherwise ignored.
      */
-    format?: import("../format/Feature.js").default | undefined;
+    format?: import("../format/Feature.js").default<typeof import("../Feature.js").default> | undefined;
     /**
      * The loader function used to load features, from a remote source for example.
      * If this is not set and `url` is set, the source will create and use an XHR

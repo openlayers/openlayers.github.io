@@ -5,9 +5,11 @@ export default JSONFeature;
  * instantiated in apps.
  * Base class for JSON feature formats.
  *
+ * @template {import('../Feature.js').FeatureClass} [T=typeof import('../Feature.js').default]
+ * @extends {FeatureFormat<T>}
  * @abstract
  */
-declare class JSONFeature extends FeatureFormat {
+declare class JSONFeature<T extends import("../Feature.js").FeatureClass = typeof import("../Feature.js").default> extends FeatureFormat<T> {
     /**
      * @abstract
      * @param {Object} object Object.

@@ -79,7 +79,7 @@ export type Options = {
  *
  * @api
  */
-declare class TopoJSON extends JSONFeature {
+declare class TopoJSON extends JSONFeature<typeof Feature> {
     /**
      * @param {Options} [options] Options.
      */
@@ -102,6 +102,6 @@ declare class TopoJSON extends JSONFeature {
      */
     protected readFeaturesFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined): Array<Feature>;
 }
-import JSONFeature from './JSONFeature.js';
 import Feature from '../Feature.js';
+import JSONFeature from './JSONFeature.js';
 //# sourceMappingURL=TopoJSON.d.ts.map

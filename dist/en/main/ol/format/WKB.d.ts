@@ -51,7 +51,7 @@ export type Options = {
  *
  * @api
  */
-declare class WKB extends FeatureFormat {
+declare class WKB extends FeatureFormat<typeof Feature> {
     /**
      * @param {Options} [options] Optional configuration object.
      */
@@ -101,5 +101,6 @@ declare class WKB extends FeatureFormat {
      */
     readProjection(source: string | ArrayBuffer | ArrayBufferView): import("../proj/Projection.js").default | undefined;
 }
+import Feature from '../Feature.js';
 import FeatureFormat from './Feature.js';
 //# sourceMappingURL=WKB.d.ts.map

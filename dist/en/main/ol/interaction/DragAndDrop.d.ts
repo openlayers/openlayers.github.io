@@ -36,7 +36,7 @@ export type Options = {
      * Format constructors
      * (and/or formats pre-constructed with options).
      */
-    formatConstructors?: (import("../format/Feature.js").default | typeof import("../format/Feature.js").default)[] | undefined;
+    formatConstructors?: (typeof import("../format/Feature.js").default | import("../format/Feature.js").default<typeof import("../Feature.js").default>)[] | undefined;
     /**
      * Optional vector source where features will be added.  If a source is provided
      * all existing features will be removed and new features will be added when

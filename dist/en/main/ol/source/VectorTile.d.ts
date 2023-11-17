@@ -25,7 +25,7 @@ export type Options = {
     /**
      * Feature format for tiles. Used and required by the default.
      */
-    format?: import("../format/Feature.js").default | undefined;
+    format?: import("../format/Feature.js").default<typeof import("../Feature.js").default> | undefined;
     /**
      * This source may have overlapping geometries. Setting this
      * to `false` (e.g. for sources with polygons that represent administrative
