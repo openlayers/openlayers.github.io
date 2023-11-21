@@ -455,9 +455,9 @@ expression. If <code>haystack</code> is an array of strings, use the <code>liter
 <ul>
 <li><code>['array', value1, ...valueN]</code> creates a numerical array from <code>number</code> values; please note that the amount of
 values can currently only be 2, 3 or 4.</li>
-<li><code>['color', red, green, blue, alpha]</code> creates a <code>color</code> value from <code>number</code> values; the <code>alpha</code> parameter is
-optional; if not specified, it will be set to 1.
-Note: <code>red</code>, <code>green</code> and <code>blue</code> components must be values between 0 and 255; <code>alpha</code> between 0 and 1.</li>
+<li><code>['color', red, green, blue, alpha]</code> or <code>['color', shade, alpha]</code> creates a <code>color</code> value from <code>number</code> values;
+the <code>alpha</code> parameter is optional; if not specified, it will be set to 1.
+Note: <code>red</code>, <code>green</code> and <code>blue</code> or <code>shade</code> components must be values between 0 and 255; <code>alpha</code> between 0 and 1.</li>
 <li><code>['palette', index, colors]</code> picks a <code>color</code> value from an array of colors using the given index; the <code>index</code>
 expression must evaluate to a number; the items in the <code>colors</code> array must be strings with hex colors
 (e.g. <code>'#86A136'</code>), colors using the rgba[a] functional notation (e.g. <code>'rgb(134, 161, 54)'</code> or <code>'rgba(134, 161, 54, 1)'</code>),

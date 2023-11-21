@@ -232,6 +232,7 @@ const incidence &#x3D; [
   [&#x27;*&#x27;, [&#x27;sin&#x27;, sunEl], [&#x27;cos&#x27;, slope]],
   [&#x27;*&#x27;, [&#x27;cos&#x27;, sunEl], [&#x27;sin&#x27;, slope], [&#x27;cos&#x27;, [&#x27;-&#x27;, sunAz, aspect]]],
 ];
+const scaled &#x3D; [&#x27;*&#x27;, 255, incidence];
 
 const variables &#x3D; {};
 
@@ -245,7 +246,7 @@ const layer &#x3D; new TileLayer({
   }),
   style: {
     variables: variables,
-    color: [&#x27;array&#x27;, incidence, incidence, incidence, 1],
+    color: [&#x27;color&#x27;, scaled],
   },
 });
 
