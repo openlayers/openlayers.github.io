@@ -64,8 +64,9 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
     /**
      * Render declutter items for this layer
      * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @param {import("../../layer/Layer.js").State} layerState Layer state.
      */
-    renderDeclutter(frameState: import("../../Map.js").FrameState): void;
+    renderDeclutter(frameState: import("../../Map.js").FrameState, layerState: import("../../layer/Layer.js").State): void;
     getTileRenderTransform(tile: any, frameState: any): number[];
     /**
      * @param {import("../../Feature.js").FeatureLike} feature Feature.

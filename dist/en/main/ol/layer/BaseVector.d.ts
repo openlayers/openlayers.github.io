@@ -198,8 +198,9 @@ declare class BaseVectorLayer<VectorSourceType extends import("../source/Vector.
     /**
      * Render declutter items for this layer
      * @param {import("../Map.js").FrameState} frameState Frame state.
+     * @param {import("../layer/Layer.js").State} layerState Layer state.
      */
-    renderDeclutter(frameState: import("../Map.js").FrameState): void;
+    renderDeclutter(frameState: import("../Map.js").FrameState, layerState: import("../layer/Layer.js").State): void;
     /**
      * @param {import("../render.js").OrderFunction|null|undefined} renderOrder
      *     Render order.
