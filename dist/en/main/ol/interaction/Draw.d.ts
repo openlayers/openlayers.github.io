@@ -572,6 +572,7 @@ declare class Draw extends PointerInteraction {
     /**
      * Add a new coordinate to the drawing.
      * @param {!PointCoordType} coordinate Coordinate
+     * @return {Feature<import("../geom/SimpleGeometry.js").default>} The sketch feature.
      * @private
      */
     private addToDrawing_;
@@ -589,9 +590,10 @@ declare class Draw extends PointerInteraction {
      * Stop drawing and add the sketch feature to the target layer.
      * The {@link module:ol/interaction/Draw~DrawEventType.DRAWEND} event is
      * dispatched before inserting the feature.
+     * @return {Feature<import("../geom/SimpleGeometry.js").default>|null} The drawn feature.
      * @api
      */
-    finishDrawing(): void;
+    finishDrawing(): Feature<import("../geom/SimpleGeometry.js").default> | null;
     /**
      * Stop drawing without adding the sketch feature to the target layer.
      * @return {Feature<import("../geom/SimpleGeometry.js").default>|null} The sketch feature (or null if none).
