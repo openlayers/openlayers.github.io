@@ -171,10 +171,7 @@ export type FeatureCollectionMetadata = {
      */
     bounds: import("../extent.js").Extent;
 };
-/**
- * Total deleted; total inserted; total updated; array of insert ids.
- */
-export type TransactionResponse = {
+export type TransactionSummary = {
     /**
      * TotalDeleted.
      */
@@ -187,6 +184,15 @@ export type TransactionResponse = {
      * TotalUpdated.
      */
     totalUpdated: number;
+};
+/**
+ * Total deleted; total inserted; total updated; array of insert ids.
+ */
+export type TransactionResponse = {
+    /**
+     * Transaction summary.
+     */
+    transactionSummary: TransactionSummary;
     /**
      * InsertIds.
      */
