@@ -11,6 +11,16 @@ export default JSONFeature;
  */
 declare class JSONFeature<T extends import("../Feature.js").FeatureClass = typeof import("../Feature.js").default> extends FeatureFormat<T> {
     /**
+     * Read a feature.  Only works for a single feature. Use `readFeatures` to
+     * read a feature collection.
+     *
+     * @param {ArrayBuffer|Document|Element|Object|string} source Source.
+     * @param {import("./Feature.js").ReadOptions} [options] Read options.
+     * @return {import('./Feature.js').FeatureOrRenderFeature<T>} Feature.
+     * @api
+     */
+    readFeature(source: ArrayBuffer | Document | Element | any | string, options?: import("./Feature.js").ReadOptions | undefined): import('./Feature.js').FeatureOrRenderFeature<T>;
+    /**
      * @abstract
      * @param {Object} object Object.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
