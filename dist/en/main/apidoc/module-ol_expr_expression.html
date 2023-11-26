@@ -375,18 +375,18 @@ are in the 0..1 range. <a href="module-ol_source_TileImage-TileImage.html"><code
 green, blue and alpha. <a href="module-ol_source_DataTile-DataTileSource.html"><code>DataTileSource</code></a> sources can have any number
 of bands, depending on the underlying data source and
 <a href="module-ol_source_GeoTIFF.html#~Options"><code>configuration</code></a>. <code>xOffset</code> and <code>yOffset</code> are optional
-and allow specifying pixel offsets for x and y. This is used for sampling data from neighboring pixels.</li>
+and allow specifying pixel offsets for x and y. This is used for sampling data from neighboring pixels (WebGL only).</li>
 <li><code>['get', 'attributeName', typeHint]</code> fetches a feature property value, similar to <code>feature.get('attributeName')</code>
 A type hint can optionally be specified, in case the resulting expression contains a type ambiguity which
 will make it invalid. Type hints can be one of: 'string', 'color', 'number', 'boolean', 'number[]'</li>
 <li><code>['geometry-type']</code> returns a feature's geometry type as string, either: 'LineString', 'Point' or 'Polygon'
 <code>Multi*</code> values are returned as their singular equivalent
 <code>Circle</code> geometries are returned as 'Polygon'
-<code>GeometryCollection</code> geometries are returned as the type of the first geometry found in the collection</li>
+<code>GeometryCollection</code> geometries are returned as the type of the first geometry found in the collection (WebGL only).</li>
 <li><code>['resolution']</code> returns the current resolution</li>
-<li><code>['time']</code> returns the time in seconds since the creation of the layer</li>
+<li><code>['time']</code> The time in seconds since the creation of the layer (WebGL only).</li>
 <li><code>['var', 'varName']</code> fetches a value from the style variables; will throw an error if that variable is undefined</li>
-<li><code>['zoom']</code> returns the current zoom level</li>
+<li><code>['zoom']</code> The current zoom level (WebGL only).</li>
 </ul>
 </li>
 <li><p>Math operators:</p>
@@ -439,9 +439,9 @@ between <code>output1</code> and <code>outputN</code>.</li>
 <li><code>['all', value1, value2, ...]</code> returns <code>true</code> if all the inputs are <code>true</code>, <code>false</code> otherwise.</li>
 <li><code>['any', value1, value2, ...]</code> returns <code>true</code> if any of the inputs are <code>true</code>, <code>false</code> otherwise.</li>
 <li><code>['between', value1, value2, value3]</code> returns <code>true</code> if <code>value1</code> is contained between <code>value2</code> and <code>value3</code>
-(inclusively), or <code>false</code> otherwise.</li>
+(inclusively), or <code>false</code> otherwise (WebGL only).</li>
 <li><code>['in', needle, haystack]</code> returns <code>true</code> if <code>needle</code> is found in <code>haystack</code>, and
-<code>false</code> otherwise.
+<code>false</code> otherwise (WebGL only).
 This operator has the following limitations:<ul>
 <li><code>haystack</code> has to be an array of numbers or strings (searching for a substring in a string is not supported yet)</li>
 <li>Only literal arrays are supported as <code>haystack</code> for now; this means that <code>haystack</code> cannot be the result of an
@@ -454,15 +454,15 @@ expression. If <code>haystack</code> is an array of strings, use the <code>liter
 <li><p>Conversion operators:</p>
 <ul>
 <li><code>['array', value1, ...valueN]</code> creates a numerical array from <code>number</code> values; please note that the amount of
-values can currently only be 2, 3 or 4.</li>
+values can currently only be 2, 3 or 4 (WebGL only).</li>
 <li><code>['color', red, green, blue, alpha]</code> or <code>['color', shade, alpha]</code> creates a <code>color</code> value from <code>number</code> values;
-the <code>alpha</code> parameter is optional; if not specified, it will be set to 1.
+the <code>alpha</code> parameter is optional; if not specified, it will be set to 1 (WebGL only).
 Note: <code>red</code>, <code>green</code> and <code>blue</code> or <code>shade</code> components must be values between 0 and 255; <code>alpha</code> between 0 and 1.</li>
 <li><code>['palette', index, colors]</code> picks a <code>color</code> value from an array of colors using the given index; the <code>index</code>
 expression must evaluate to a number; the items in the <code>colors</code> array must be strings with hex colors
 (e.g. <code>'#86A136'</code>), colors using the rgba[a] functional notation (e.g. <code>'rgb(134, 161, 54)'</code> or <code>'rgba(134, 161, 54, 1)'</code>),
 named colors (e.g. <code>'red'</code>), or array literals with 3 ([r, g, b]) or 4 ([r, g, b, a]) values (with r, g, and b
-in the 0-255 range and a in the 0-1 range).</li>
+in the 0-255 range and a in the 0-1 range) (WebGL only).</li>
 </ul>
 </li>
 </ul>
