@@ -580,7 +580,7 @@ declare class View extends BaseObject {
      * @type {Constraints}
      */
     private constraints_;
-    set padding(arg: number[] | undefined);
+    set padding(padding: number[] | undefined);
     /**
      * Padding (in css pixels).
      * If the map viewport is partially covered with other content (overlays) along
