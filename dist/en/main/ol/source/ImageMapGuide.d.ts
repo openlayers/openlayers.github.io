@@ -135,11 +135,6 @@ declare class ImageMapGuide extends ImageSource {
     private useOverlay_;
     /**
      * @private
-     * @type {import("../Image.js").default}
-     */
-    private image_;
-    /**
-     * @private
      * @type {number}
      */
     private renderedRevision_;

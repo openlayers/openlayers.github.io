@@ -130,11 +130,6 @@ declare class ImageArcGISRest extends ImageSource {
     private params_;
     /**
      * @private
-     * @type {import("../Image.js").default}
-     */
-    private image_;
-    /**
-     * @private
      * @type {import("../size.js").Size}
      */
     private imageSize_;
