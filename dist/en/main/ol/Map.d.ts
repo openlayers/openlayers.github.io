@@ -597,10 +597,10 @@ declare class Map extends BaseObject {
      * Note that the index treats string and numeric identifiers as the same. So
      * `map.getOverlayById(2)` will return an overlay with id `'2'` or `2`.
      * @param {string|number} id Overlay identifier.
-     * @return {import("./Overlay.js").default} Overlay.
+     * @return {import("./Overlay.js").default|null} Overlay.
      * @api
      */
-    getOverlayById(id: string | number): import("./Overlay.js").default;
+    getOverlayById(id: string | number): import("./Overlay.js").default | null;
     /**
      * Get the map interactions. Modifying this collection changes the interactions
      * associated with the map.
