@@ -148,7 +148,7 @@ Go to
           <p id="shortdesc">Render sea level at different elevations</p>
           <div id="docs"><p>
   This example uses a <code>ol/source/Raster</code> with
-  <a href="https://blog.mapbox.com/styling-mapbox-terrain-rgb-c75d1cd71471">Mapbox Terrain-RGB tiles</a>
+  <a href="https://documentation.maptiler.com/hc/en-us/articles/4405444055313-RGB-Terrain-by-MapTiler">MapTiler Terrain-RGB tiles</a>
   to "flood" areas below the elevation shown on the sea level slider.
 </p>
 </div>
@@ -187,10 +187,11 @@ const attributions &#x3D;
 
 const elevation &#x3D; new XYZ({
   // The RGB values in the source collectively represent elevation.
-  // Interpolation of individual colors would produce incorrect evelations and is disabled.
-  url: &#x27;https://api.maptiler.com/tiles/terrain-rgb/{z}/{x}/{y}.png?key&#x3D;&#x27; + key,
+  // Interpolation of individual colors would produce incorrect elevations and is disabled.
+  url:
+    &#x27;https://api.maptiler.com/tiles/terrain-rgb-v2/{z}/{x}/{y}.webp?key&#x3D;&#x27; + key,
   tileSize: 512,
-  maxZoom: 12,
+  maxZoom: 14,
   crossOrigin: &#x27;&#x27;,
   interpolate: false,
 });
