@@ -30,6 +30,7 @@ export function isType(type: number, expected: number): boolean;
  * @property {Set<string>} variables Variables referenced with the 'var' operator.
  * @property {Set<string>} properties Properties referenced with the 'get' operator.
  * @property {boolean} featureId The style uses the feature id.
+ * @property {boolean} geometryType The style uses the feature geometry type.
  * @property {import("../style/flat.js").FlatStyle|import("../style/webgl.js").WebGLStyle} style The style being parsed
  */
 /**
@@ -46,6 +47,12 @@ export function newParsingContext(): ParsingContext;
  * @return {Expression} The parsed expression result.
  */
 export function parse(encoded: EncodedExpression, context: ParsingContext, typeHint?: number | undefined): Expression;
+/**
+ * Returns a simplified geometry type suited for the `geometry-type` operator
+ * @param {import('../geom/Geometry.js').default|import('../render/Feature.js').default} geometry Geometry object
+ * @return {'Point'|'LineString'|'Polygon'|''} Simplified geometry type; empty string of no geometry found
+ */
+export function computeGeometryType(geometry: import('../geom/Geometry.js').default | import('../render/Feature.js').default): 'Point' | 'LineString' | 'Polygon' | '';
 export const NoneType: 0;
 export const BooleanType: number;
 export const NumberType: number;
@@ -96,6 +103,10 @@ export type ParsingContext = {
      * The style uses the feature id.
      */
     featureId: boolean;
+    /**
+     * The style uses the feature geometry type.
+     */
+    geometryType: boolean;
     /**
      * The style being parsed
      */
