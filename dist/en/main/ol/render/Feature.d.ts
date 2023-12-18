@@ -77,7 +77,7 @@ declare class RenderFeature {
     private flatMidpoints_;
     /**
      * @private
-     * @type {Array<number>}
+     * @type {Array<number>|null}
      */
     private ends_;
     /**
@@ -206,9 +206,9 @@ declare class RenderFeature {
      */
     clone(): RenderFeature;
     /**
-     * @return {Array<number>} Ends.
+     * @return {Array<number>|null} Ends.
      */
-    getEnds(): Array<number>;
+    getEnds(): Array<number> | null;
     /**
      * Add transform and resolution based geometry simplification to this instance.
      * @return {RenderFeature} This render feature.
