@@ -60,6 +60,11 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     private renderedProjection_;
     /**
      * @private
+     * @type {number}
+     */
+    private renderedPixelRatio_;
+    /**
+     * @private
      * @type {function(import("../../Feature.js").default, import("../../Feature.js").default): number|null}
      */
     private renderedRenderOrder_;
