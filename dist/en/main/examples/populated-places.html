@@ -273,7 +273,7 @@ function displayFeatureInfo(pixel, width) {
   const feature &#x3D; map.getFeaturesAtPixel(pixel)[0];
   if (feature) {
     const featurePixel &#x3D; map.getPixelFromCoordinate(
-      feature.getGeometry().getCoordinates()
+      feature.getGeometry().getCoordinates(),
     );
     if (featurePixel[0] &gt; width) {
       featurePixel[0] &#x3D; featurePixel[0] % width;

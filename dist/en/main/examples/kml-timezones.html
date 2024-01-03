@@ -269,7 +269,7 @@ const styleFunction &#x3D; function (feature) {
   const tzOffset &#x3D; feature.get(&#x27;tz-offset&#x27;);
   const local &#x3D; new Date();
   local.setTime(
-    local.getTime() + (local.getTimezoneOffset() + (tzOffset || 0)) * 60000
+    local.getTime() + (local.getTimezoneOffset() + (tzOffset || 0)) * 60000,
   );
   // offset from local noon (in hours)
   let delta &#x3D; Math.abs(12 - (local.getHours() + local.getMinutes() / 60));

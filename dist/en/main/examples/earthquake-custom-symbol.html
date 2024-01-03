@@ -326,7 +326,7 @@ const styleFunction &#x3D; function (feature) {
       new Style({
         fill: new Fill({color: &#x27;rgba(255, 153, 0, 0.4)&#x27;}),
         stroke: new Stroke({color: &#x27;rgba(255, 204, 0, 0.2)&#x27;, width: 2}),
-      })
+      }),
     );
     vectorContext.drawGeometry(new Polygon([symbol.map(scaleFunction)]));
     style &#x3D; new Style({

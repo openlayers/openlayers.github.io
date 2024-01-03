@@ -381,7 +381,7 @@ const vectorSource &#x3D; new VectorSource({
           extent[3] +
           &#x27;,&quot;spatialReference&quot;:{&quot;wkid&quot;:&#x27; +
           srid +
-          &#x27;}}&#x27;
+          &#x27;}}&#x27;,
       ) +
       &#x27;&amp;geometryType&#x3D;esriGeometryEnvelope&amp;inSR&#x3D;&#x27; +
       srid +
@@ -394,7 +394,7 @@ const vectorSource &#x3D; new VectorSource({
   strategy: tileStrategy(
     createXYZ({
       tileSize: 512,
-    })
+    }),
   ),
   attributions:
     &#x27;University of Leicester (commissioned by the &#x27; +

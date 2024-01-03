@@ -191,7 +191,7 @@ function updateContainerTransform() {
         renderedResolution / resolution,
         rotation - renderedRotation,
         0,
-        0
+        0,
       );
     }
     transformContainer.style.transform &#x3D; toTransformString(transform);
@@ -274,9 +274,9 @@ worker.addEventListener(&#x27;message&#x27;, (message) &#x3D;&gt; {
               image: imageBitmap,
               src: message.data.src,
             },
-            [imageBitmap]
+            [imageBitmap],
           );
-        }
+        },
       );
     });
     image.src &#x3D; message.data.src;
@@ -310,7 +310,10 @@ function showInfo(propertiesFromFeatures) {
   const properties &#x3D; propertiesFromFeatures.map((e) &#x3D;&gt;
     Object.keys(e)
       .filter((key) &#x3D;&gt; !key.includes(&#x27;:&#x27;))
-      .reduce((newObj, currKey) &#x3D;&gt; ((newObj[currKey] &#x3D; e[currKey]), newObj), {})
+      .reduce(
+        (newObj, currKey) &#x3D;&gt; ((newObj[currKey] &#x3D; e[currKey]), newObj),
+        {},
+      ),
   );
   info.innerText &#x3D; JSON.stringify(properties, null, 2);
   info.style.opacity &#x3D; 1;
@@ -472,7 +475,7 @@ function loadStyles() {
               undefined,
               spriteJson,
               spriteImageUrl,
-              getFont
+              getFont,
             );
             layers.push(layer);
           });
@@ -489,9 +492,9 @@ const tileQueue &#x3D; new TileQueue(
       tile,
       tileSourceKey,
       tileCenter,
-      tileResolution
+      tileResolution,
     ),
-  () &#x3D;&gt; worker.postMessage({action: &#x27;requestRender&#x27;})
+  () &#x3D;&gt; worker.postMessage({action: &#x27;requestRender&#x27;}),
 );
 
 const maxTotalLoading &#x3D; 8;
@@ -500,10 +503,10 @@ const maxNewLoads &#x3D; 2;
 worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
   if (event.data.action &#x3D;&#x3D;&#x3D; &#x27;requestFeatures&#x27;) {
     const layersInView &#x3D; layers.filter((l) &#x3D;&gt;
-      inView(l.getLayerState(), frameState.viewState)
+      inView(l.getLayerState(), frameState.viewState),
     );
     const observables &#x3D; layersInView.map((l) &#x3D;&gt;
-      l.getFeatures(event.data.pixel)
+      l.getFeatures(event.data.pixel),
     );
     Promise.all(observables).then((res) &#x3D;&gt; {
       const features &#x3D; res.flat();
@@ -532,7 +535,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
     }
   });
   layers.forEach(
-    (layer) &#x3D;&gt; layer.getRenderer().context &amp;&amp; layer.renderDeclutter(frameState)
+    (layer) &#x3D;&gt; layer.getRenderer().context &amp;&amp; layer.renderDeclutter(frameState),
   );
   if (tileQueue.getTilesLoading() &lt; maxTotalLoading) {
     tileQueue.reprioritize();
@@ -546,7 +549,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
       transform: rendererTransform,
       frameState: JSON.parse(stringify(frameState)),
     },
-    [imageData]
+    [imageData],
   );
 });
 </code></pre>

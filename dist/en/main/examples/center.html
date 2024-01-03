@@ -218,7 +218,7 @@ zoomtoswitzerland.addEventListener(
     const polygon &#x3D; feature.getGeometry();
     view.fit(polygon, {padding: [170, 50, 30, 150]});
   },
-  false
+  false,
 );
 
 const zoomtolausanne &#x3D; document.getElementById(&#x27;zoomtolausanne&#x27;);
@@ -229,7 +229,7 @@ zoomtolausanne.addEventListener(
     const point &#x3D; feature.getGeometry();
     view.fit(point, {padding: [170, 50, 30, 150], minResolution: 50});
   },
-  false
+  false,
 );
 
 const centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
@@ -241,7 +241,7 @@ centerlausanne.addEventListener(
     const size &#x3D; map.getSize();
     view.centerOn(point.getCoordinates(), size, [570, 500]);
   },
-  false
+  false,
 );
 </code></pre>
       </div>

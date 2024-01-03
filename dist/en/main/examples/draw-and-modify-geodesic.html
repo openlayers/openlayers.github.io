@@ -407,7 +407,7 @@ const modify &#x3D; new Modify({
           last &#x3D; transform(
             polygon[(polygon.length - 1) / 2],
             projection,
-            &#x27;EPSG:4326&#x27;
+            &#x27;EPSG:4326&#x27;,
           );
           radius &#x3D; getDistance(first, last) / 2;
         } else {
@@ -420,7 +420,7 @@ const modify &#x3D; new Modify({
         const circle &#x3D; circular(
           transform(center, projection, &#x27;EPSG:4326&#x27;),
           radius,
-          128
+          128,
         );
         circle.transform(&#x27;EPSG:4326&#x27;, projection);
         geometries[0].setCoordinates(circle.getCoordinates());

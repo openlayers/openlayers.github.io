@@ -329,7 +329,7 @@ circleFeature.setStyle(
         innerRadius,
         x,
         y,
-        outerRadius
+        outerRadius,
       );
       gradient.addColorStop(0, &#x27;rgba(255,0,0,0)&#x27;);
       gradient.addColorStop(0.6, &#x27;rgba(255,0,0,0.2)&#x27;);
@@ -348,7 +348,7 @@ circleFeature.setStyle(
       const ctx &#x3D; state.context;
       renderLabelText(ctx, x, y, circleFeature.get(&#x27;label-color&#x27;));
     },
-  })
+  }),
 );
 
 const map &#x3D; new Map({

@@ -374,7 +374,7 @@ function calculateCenter(geometry) {
     minRadius &#x3D;
       Math.max(
         getWidth(geometry.getExtent()),
-        getHeight(geometry.getExtent())
+        getHeight(geometry.getExtent()),
       ) / 3;
   }
   return {
@@ -405,7 +405,7 @@ const vector &#x3D; new VectorLayer({
               color: &#x27;#ff3333&#x27;,
             }),
           }),
-        })
+        }),
       );
       const coordinates &#x3D; result.coordinates;
       if (coordinates) {
@@ -424,7 +424,7 @@ const vector &#x3D; new VectorLayer({
                 color: &#x27;#33cc33&#x27;,
               }),
             }),
-          })
+          }),
         );
       }
     }
@@ -499,7 +499,7 @@ modify.on(&#x27;modifystart&#x27;, function (event) {
     feature.set(
       &#x27;modifyGeometry&#x27;,
       {geometry: feature.getGeometry().clone()},
-      true
+      true,
     );
   });
 });
@@ -521,7 +521,7 @@ map.addInteraction(
       return primaryAction(event) &amp;&amp; platformModifierKeyOnly(event);
     },
     layers: [vector],
-  })
+  }),
 );
 
 let draw; // global so we can remove it later

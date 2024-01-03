@@ -170,7 +170,7 @@ osm.on(&#x27;prerender&#x27;, function (event) {
   // calculate the pixel ratio and rotation of the canvas
   const matrix &#x3D; event.inversePixelTransform;
   const canvasPixelRatio &#x3D; Math.sqrt(
-    matrix[0] * matrix[0] + matrix[1] * matrix[1]
+    matrix[0] * matrix[0] + matrix[1] * matrix[1],
   );
   const canvasRotation &#x3D; -Math.atan2(matrix[1], matrix[0]);
   ctx.save();

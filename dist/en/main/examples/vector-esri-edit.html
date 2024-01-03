@@ -414,7 +414,7 @@ const vectorSource &#x3D; new VectorSource({
           extent[2] +
           &#x27;,&quot;ymax&quot;:&#x27; +
           extent[3] +
-          &#x27;,&quot;spatialReference&quot;:{&quot;wkid&quot;:102100}}&#x27;
+          &#x27;,&quot;spatialReference&quot;:{&quot;wkid&quot;:102100}}&#x27;,
       ) +
       &#x27;&amp;geometryType&#x3D;esriGeometryEnvelope&amp;inSR&#x3D;102100&amp;outFields&#x3D;*&#x27; +
       &#x27;&amp;outSR&#x3D;102100&#x27;;
@@ -424,7 +424,7 @@ const vectorSource &#x3D; new VectorSource({
       success: function (response) {
         if (response.error) {
           alert(
-            response.error.message + &#x27;\n&#x27; + response.error.details.join(&#x27;\n&#x27;)
+            response.error.message + &#x27;\n&#x27; + response.error.details.join(&#x27;\n&#x27;),
           );
         } else {
           // dataProjection will be read from document
@@ -441,7 +441,7 @@ const vectorSource &#x3D; new VectorSource({
   strategy: tileStrategy(
     createXYZ({
       tileSize: 512,
-    })
+    }),
   ),
 });
 

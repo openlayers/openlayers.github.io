@@ -231,7 +231,7 @@ imagery.on(&#x27;postrender&#x27;, function (event) {
       mousePosition[1],
     ]);
     const half &#x3D; Math.sqrt(
-      Math.pow(offset[0] - pixel[0], 2) + Math.pow(offset[1] - pixel[1], 2)
+      Math.pow(offset[0] - pixel[0], 2) + Math.pow(offset[1] - pixel[1], 2),
     );
     const context &#x3D; event.context;
     const centerX &#x3D; pixel[0];

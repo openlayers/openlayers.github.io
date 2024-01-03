@@ -347,7 +347,7 @@ widthInput.addEventListener(&#x27;input&#x27;, (event) &#x3D;&gt; {
       src: &#x27;data/icon.png&#x27;,
       width: Number(event.target.value),
       height: currentIcon.getHeight(),
-    })
+    }),
   );
   iconFeature.setStyle(iconStyle);
 });
@@ -358,7 +358,7 @@ heightInput.addEventListener(&#x27;input&#x27;, (event) &#x3D;&gt; {
       src: &#x27;data/icon.png&#x27;,
       height: Number(event.target.value),
       width: currentIcon.getWidth(),
-    })
+    }),
   );
   iconFeature.setStyle(iconStyle);
 });
@@ -368,7 +368,7 @@ clearWidthButton.addEventListener(&#x27;click&#x27;, () &#x3D;&gt; {
     new Icon({
       src: &#x27;data/icon.png&#x27;,
       height: currentIcon.getHeight(),
-    })
+    }),
   );
   iconFeature.setStyle(iconStyle);
   widthInput.value &#x3D; Math.round(iconStyle.getImage().getWidth());
@@ -381,7 +381,7 @@ clearHeightButton.addEventListener(&#x27;click&#x27;, () &#x3D;&gt; {
     new Icon({
       src: &#x27;data/icon.png&#x27;,
       width: currentIcon.getWidth(),
-    })
+    }),
   );
   iconFeature.setStyle(iconStyle);
   heightInput.value &#x3D; Math.round(iconStyle.getImage().getHeight());
@@ -406,7 +406,7 @@ const map &#x3D; new Map({
 });
 map.on(
   &#x27;rendercomplete&#x27;,
-  () &#x3D;&gt; (scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale()))
+  () &#x3D;&gt; (scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale())),
 );
 
 function formatScale(scale) {

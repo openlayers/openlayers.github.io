@@ -327,7 +327,7 @@ const featureRequest &#x3D; new WFS().writeGetFeature({
   outputFormat: &#x27;application/json&#x27;,
   filter: andFilter(
     likeFilter(&#x27;name&#x27;, &#x27;Mississippi*&#x27;),
-    equalToFilter(&#x27;waterway&#x27;, &#x27;riverbank&#x27;)
+    equalToFilter(&#x27;waterway&#x27;, &#x27;riverbank&#x27;),
   ),
 });
 

@@ -293,7 +293,7 @@ function tileUrlFunction(tileCoord) {
     .replace(&#x27;{y}&#x27;, String(tileCoord[2]))
     .replace(
       &#x27;{a-d}&#x27;,
-      &#x27;abcd&#x27;.substr(((tileCoord[1] &lt;&lt; tileCoord[0]) + tileCoord[2]) % 4, 1)
+      &#x27;abcd&#x27;.substr(((tileCoord[1] &lt;&lt; tileCoord[0]) + tileCoord[2]) % 4, 1),
     );
 }
 

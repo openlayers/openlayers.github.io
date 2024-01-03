@@ -236,7 +236,7 @@ const cogSource &#x3D; new GeoTIFF({
 
 cogSource.setAttributions(
   &#x27;Contains OS data © Crown Copyright and database right &#x27; +
-    new Date().getFullYear()
+    new Date().getFullYear(),
 );
 
 const map &#x3D; new Map({
@@ -261,7 +261,7 @@ const map &#x3D; new Map({
   view: cogSource
     .getView()
     .then((viewConfig) &#x3D;&gt;
-      fromEPSGCode(viewConfig.projection.getCode()).then(() &#x3D;&gt; viewConfig)
+      fromEPSGCode(viewConfig.projection.getCode()).then(() &#x3D;&gt; viewConfig),
     ),
 });
 </code></pre>

@@ -254,7 +254,7 @@ dragBox.on(&#x27;boxend&#x27;, function () {
       .filter(
         (feature) &#x3D;&gt;
           !selectedFeatures.getArray().includes(feature) &amp;&amp;
-          feature.getGeometry().intersectsExtent(extent)
+          feature.getGeometry().intersectsExtent(extent),
       );
 
     // features that intersect the box geometry are added to the

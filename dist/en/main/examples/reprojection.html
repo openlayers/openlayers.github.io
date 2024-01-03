@@ -311,38 +311,38 @@ proj4.defs(
   &#x27;+proj&#x3D;tmerc +lat_0&#x3D;49 +lon_0&#x3D;-2 +k&#x3D;0.9996012717 &#x27; +
     &#x27;+x_0&#x3D;400000 +y_0&#x3D;-100000 +ellps&#x3D;airy &#x27; +
     &#x27;+towgs84&#x3D;446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 &#x27; +
-    &#x27;+units&#x3D;m +no_defs&#x27;
+    &#x27;+units&#x3D;m +no_defs&#x27;,
 );
 proj4.defs(
   &#x27;EPSG:23032&#x27;,
   &#x27;+proj&#x3D;utm +zone&#x3D;32 +ellps&#x3D;intl &#x27; +
-    &#x27;+towgs84&#x3D;-87,-98,-121,0,0,0,0 +units&#x3D;m +no_defs&#x27;
+    &#x27;+towgs84&#x3D;-87,-98,-121,0,0,0,0 +units&#x3D;m +no_defs&#x27;,
 );
 proj4.defs(
   &#x27;EPSG:5479&#x27;,
   &#x27;+proj&#x3D;lcc +lat_1&#x3D;-76.66666666666667 +lat_2&#x3D;&#x27; +
     &#x27;-79.33333333333333 +lat_0&#x3D;-78 +lon_0&#x3D;163 +x_0&#x3D;7000000 +y_0&#x3D;5000000 &#x27; +
-    &#x27;+ellps&#x3D;GRS80 +towgs84&#x3D;0,0,0,0,0,0,0 +units&#x3D;m +no_defs&#x27;
+    &#x27;+ellps&#x3D;GRS80 +towgs84&#x3D;0,0,0,0,0,0,0 +units&#x3D;m +no_defs&#x27;,
 );
 proj4.defs(
   &#x27;EPSG:21781&#x27;,
   &#x27;+proj&#x3D;somerc +lat_0&#x3D;46.95240555555556 &#x27; +
     &#x27;+lon_0&#x3D;7.439583333333333 +k_0&#x3D;1 +x_0&#x3D;600000 +y_0&#x3D;200000 +ellps&#x3D;bessel &#x27; +
-    &#x27;+towgs84&#x3D;674.4,15.1,405.3,0,0,0,0 +units&#x3D;m +no_defs&#x27;
+    &#x27;+towgs84&#x3D;674.4,15.1,405.3,0,0,0,0 +units&#x3D;m +no_defs&#x27;,
 );
 proj4.defs(
   &#x27;EPSG:3413&#x27;,
   &#x27;+proj&#x3D;stere +lat_0&#x3D;90 +lat_ts&#x3D;70 +lon_0&#x3D;-45 +k&#x3D;1 &#x27; +
-    &#x27;+x_0&#x3D;0 +y_0&#x3D;0 +datum&#x3D;WGS84 +units&#x3D;m +no_defs&#x27;
+    &#x27;+x_0&#x3D;0 +y_0&#x3D;0 +datum&#x3D;WGS84 +units&#x3D;m +no_defs&#x27;,
 );
 proj4.defs(
   &#x27;EPSG:2163&#x27;,
   &#x27;+proj&#x3D;laea +lat_0&#x3D;45 +lon_0&#x3D;-100 +x_0&#x3D;0 +y_0&#x3D;0 &#x27; +
-    &#x27;+a&#x3D;6370997 +b&#x3D;6370997 +units&#x3D;m +no_defs&#x27;
+    &#x27;+a&#x3D;6370997 +b&#x3D;6370997 +units&#x3D;m +no_defs&#x27;,
 );
 proj4.defs(
   &#x27;ESRI:54009&#x27;,
-  &#x27;+proj&#x3D;moll +lon_0&#x3D;0 +x_0&#x3D;0 +y_0&#x3D;0 +datum&#x3D;WGS84 &#x27; + &#x27;+units&#x3D;m +no_defs&#x27;
+  &#x27;+proj&#x3D;moll +lon_0&#x3D;0 +x_0&#x3D;0 +y_0&#x3D;0 +datum&#x3D;WGS84 &#x27; + &#x27;+units&#x3D;m +no_defs&#x27;,
 );
 register(proj4);
 
@@ -503,7 +503,7 @@ function updateViewProjection() {
   // Example how to prevent double occurrence of map by limiting layer extent
   if (newProj.isGlobal()) {
     layers[&#x27;bng&#x27;].setExtent(
-      transformExtent(proj27700.getExtent(), proj27700, newProj, 2)
+      transformExtent(proj27700.getExtent(), proj27700, newProj, 2),
     );
   } else {
     layers[&#x27;bng&#x27;].setExtent(undefined);

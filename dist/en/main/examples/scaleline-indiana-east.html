@@ -247,7 +247,7 @@ proj4.defs(
     &#x27;PARAMETER[&quot;scale_factor&quot;,0.999966666667],&#x27; +
     &#x27;PARAMETER[&quot;central_meridian&quot;,-85.66666666666670],&#x27; +
     &#x27;PARAMETER[&quot;latitude_of_origin&quot;,37.50000000000000],&#x27; +
-    &#x27;UNIT[&quot;Foot_US&quot;,0.30480060960122]]&#x27;
+    &#x27;UNIT[&quot;Foot_US&quot;,0.30480060960122]]&#x27;,
 );
 register(proj4);
 
@@ -265,7 +265,7 @@ const map &#x3D; new Map({
     extent: transformExtent(
       [-172.54, 23.81, -47.74, 86.46],
       &#x27;EPSG:4326&#x27;,
-      &#x27;Indiana-East&#x27;
+      &#x27;Indiana-East&#x27;,
     ),
     minZoom: 6,
   }),

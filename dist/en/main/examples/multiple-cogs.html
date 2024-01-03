@@ -298,14 +298,14 @@ const map &#x3D; new Map({
   view: Promise.all(
     sources.map(function (source) {
       return source.getView();
-    })
+    }),
   ).then(function (options) {
     const projection &#x3D; &#x27;EPSG:3857&#x27;;
     const extent &#x3D; createEmpty();
     options.forEach(function (options) {
       extend(
         extent,
-        transformExtent(options.extent, options.projection, projection)
+        transformExtent(options.extent, options.projection, projection),
       );
     });
     return {

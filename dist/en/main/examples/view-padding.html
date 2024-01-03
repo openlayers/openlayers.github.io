@@ -223,7 +223,7 @@ vectorLayer.getSource().on(&#x27;featuresloadend&#x27;, function () {
       const polygon &#x3D; feature.getGeometry();
       view.fit(polygon);
     },
-    false
+    false,
   );
 
   const centerlausanne &#x3D; document.getElementById(&#x27;centerlausanne&#x27;);
@@ -234,7 +234,7 @@ vectorLayer.getSource().on(&#x27;featuresloadend&#x27;, function () {
       const point &#x3D; feature.getGeometry();
       view.setCenter(point.getCoordinates());
     },
-    false
+    false,
   );
 });
 </code></pre>

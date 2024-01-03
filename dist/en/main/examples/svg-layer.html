@@ -205,13 +205,13 @@ map.addLayer(
         scale,
         frameState.viewState.rotation,
         -center[0] / svgResolution - width / 2,
-        center[1] / svgResolution - height / 2
+        center[1] / svgResolution - height / 2,
       );
       svgContainer.style.transform &#x3D; cssTransform;
       svgContainer.style.opacity &#x3D; this.getOpacity();
       return svgContainer;
     },
-  })
+  }),
 );
 </code></pre>
       </div>

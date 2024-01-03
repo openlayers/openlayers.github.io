@@ -312,7 +312,7 @@ map.on(&#x27;click&#x27;, (e) &#x3D;&gt; {
       const features &#x3D; clickedFeatures[0].get(&#x27;features&#x27;);
       if (features.length &gt; 1) {
         const extent &#x3D; boundingExtent(
-          features.map((r) &#x3D;&gt; r.getGeometry().getCoordinates())
+          features.map((r) &#x3D;&gt; r.getGeometry().getCoordinates()),
         );
         map.getView().fit(extent, {duration: 1000, padding: [50, 50, 50, 50]});
       }

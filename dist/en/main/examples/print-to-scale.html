@@ -253,7 +253,7 @@ proj4.defs(
   &#x27;+proj&#x3D;tmerc +lat_0&#x3D;49 +lon_0&#x3D;-2 +k&#x3D;0.9996012717 &#x27; +
     &#x27;+x_0&#x3D;400000 +y_0&#x3D;-100000 +ellps&#x3D;airy &#x27; +
     &#x27;+towgs84&#x3D;446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 &#x27; +
-    &#x27;+units&#x3D;m +no_defs&#x27;
+    &#x27;+units&#x3D;m +no_defs&#x27;,
 );
 
 register(proj4);
@@ -343,7 +343,7 @@ exportButton.addEventListener(
       getPointResolution(
         map.getView().getProjection(),
         resolution / 25.4,
-        map.getView().getCenter()
+        map.getView().getCenter(),
       );
 
     map.once(&#x27;rendercomplete&#x27;, function () {
@@ -357,7 +357,7 @@ exportButton.addEventListener(
           0,
           0,
           dim[0],
-          dim[1]
+          dim[1],
         );
         pdf.save(&#x27;map.pdf&#x27;);
         // Reset original map size
@@ -378,7 +378,7 @@ exportButton.addEventListener(
     map.updateSize();
     map.getView().setResolution(scaleResolution);
   },
-  false
+  false,
 );
 </code></pre>
       </div>

@@ -161,7 +161,7 @@ const COG &#x3D;
 
 function numpyTileLoader(z, x, y) {
   const url &#x3D; &#x60;https://api.cogeo.xyz/cog/tiles/WebMercatorQuad/${z}/${x}/${y}@1x?format&#x3D;npy&amp;url&#x3D;${encodeURIComponent(
-    COG
+    COG,
   )}&#x60;;
 
   return fetch(url)

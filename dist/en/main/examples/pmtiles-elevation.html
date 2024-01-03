@@ -174,7 +174,7 @@ import {useGeographic} from &#x27;ol/proj.js&#x27;;
 useGeographic();
 
 const tiles &#x3D; new pmtiles.PMTiles(
-  &#x27;https://pub-9288c68512ed46eca46ddcade307709b.r2.dev/protomaps-sample-datasets/terrarium_z9.pmtiles&#x27;
+  &#x27;https://pub-9288c68512ed46eca46ddcade307709b.r2.dev/protomaps-sample-datasets/terrarium_z9.pmtiles&#x27;,
 );
 
 function loadImage(src) {
@@ -285,7 +285,7 @@ function formatLocation([lon, lat]) {
   const NS &#x3D; lat &lt; 0 ? &#x27;S&#x27; : &#x27;N&#x27;;
   const EW &#x3D; lon &lt; 0 ? &#x27;W&#x27; : &#x27;E&#x27;;
   return &#x60;${Math.abs(lat).toFixed(1)}° ${NS}, ${Math.abs(lon).toFixed(
-    1
+    1,
   )}° ${EW}&#x60;;
 }
 

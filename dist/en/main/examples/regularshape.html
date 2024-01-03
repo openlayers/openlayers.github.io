@@ -455,7 +455,7 @@ for (let i &#x3D; 0; i &lt; count; ++i) {
   const coordinates &#x3D; [2 * e * Math.random() - e, 2 * e * Math.random() - e];
   features[i] &#x3D; new Feature(new Point(coordinates));
   features[i].setStyle(
-    styles[styleKeys[Math.floor(Math.random() * styleKeys.length)]]
+    styles[styleKeys[Math.floor(Math.random() * styleKeys.length)]],
   );
 }
 

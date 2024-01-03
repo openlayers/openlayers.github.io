@@ -333,7 +333,7 @@ fetch(&#x27;data/polyline/route.json&#x27;).then(function (response) {
       lastTime &#x3D; time;
 
       const currentCoordinate &#x3D; route.getCoordinateAt(
-        distance &gt; 1 ? 2 - distance : distance
+        distance &gt; 1 ? 2 - distance : distance,
       );
       position.setCoordinates(currentCoordinate);
       const vectorContext &#x3D; getVectorContext(event);

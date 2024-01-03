@@ -338,14 +338,14 @@ fetch(url)
         const data &#x3D; tileIndex.getTile(
           tileCoord[0],
           tileCoord[1],
-          tileCoord[2]
+          tileCoord[2],
         );
         const geojson &#x3D; JSON.stringify(
           {
             type: &#x27;FeatureCollection&#x27;,
             features: data ? data.features : [],
           },
-          replacer
+          replacer,
         );
         const features &#x3D; format.readFeatures(geojson, {
           extent: vectorSource.getTileGrid().getTileCoordExtent(tileCoord),

@@ -333,7 +333,7 @@ client.addEventListener(&#x27;load&#x27;, function () {
         shape: shape,
         duration: line[3],
         geometry: new Point(fromLonLat(coords)),
-      })
+      }),
     );
   }
   shapeTypes[&#x27;all&#x27;] &#x3D; features.length;
@@ -344,7 +344,7 @@ client.addEventListener(&#x27;load&#x27;, function () {
         attributions: &#x27;National UFO Reporting Center&#x27;,
       }),
       style: style,
-    })
+    }),
   );
   fillShapeSelect(shapeTypes);
 });

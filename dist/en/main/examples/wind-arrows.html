@@ -346,7 +346,7 @@ fetch(&#x27;data/openweather/weather.json&#x27;)
     const features &#x3D; [];
     data.list.forEach(function (report) {
       const feature &#x3D; new Feature(
-        new Point(fromLonLat([report.coord.lon, report.coord.lat]))
+        new Point(fromLonLat([report.coord.lon, report.coord.lat])),
       );
       feature.setProperties(report);
       features.push(feature);
