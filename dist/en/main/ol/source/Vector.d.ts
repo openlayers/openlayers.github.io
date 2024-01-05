@@ -42,6 +42,10 @@ export type LoadingStrategy = (arg0: import("../extent.js").Extent, arg1: number
 /**
  * *
  */
+export type FeatureClassOrArrayOfRenderFeatures<T extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom/Geometry.js").default>> = T extends RenderFeature ? T | Array<T> : T;
+/**
+ * *
+ */
 export type VectorSourceOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("./VectorEventType").VectorSourceEventTypes, VectorSourceEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | import("./VectorEventType").VectorSourceEventTypes, Return>;
 export type Options<FeatureClass extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom/Geometry.js").default>> = {
     /**
@@ -156,6 +160,10 @@ export type Options<FeatureClass extends import("../Feature.js").FeatureLike = i
     wrapX?: boolean | undefined;
 };
 import Event from '../events/Event.js';
+/***
+ * @template {import("../Feature.js").FeatureLike} [T=import("../Feature.js").default]
+ * @typedef {T extends RenderFeature ? T|Array<T> : T} FeatureClassOrArrayOfRenderFeatures
+ */
 /***
  * @template Return
  * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
@@ -331,7 +339,7 @@ declare class VectorSource<FeatureClass extends import("../Feature.js").FeatureL
     /**
      * A lookup of features by id (the return from feature.getId()).
      * @private
-     * @type {!Object<string, FeatureClass|Array<RenderFeature>>}
+     * @type {!Object<string, import('../Feature.js').FeatureLike|Array<import('../Feature.js').FeatureLike>>}
      */
     private idIndex_;
     /**
@@ -542,10 +550,10 @@ declare class VectorSource<FeatureClass extends import("../Feature.js").FeatureL
      * `source.getFeatureById(2)` will return a feature with id `'2'` or `2`.
      *
      * @param {string|number} id Feature identifier.
-     * @return {FeatureClass|Array<RenderFeature>|null} The feature (or `null` if not found).
+     * @return {FeatureClassOrArrayOfRenderFeatures<FeatureClass>|null} The feature (or `null` if not found).
      * @api
      */
-    getFeatureById(id: string | number): FeatureClass | Array<RenderFeature> | null;
+    getFeatureById(id: string | number): FeatureClassOrArrayOfRenderFeatures<FeatureClass> | null;
     /**
      * Get a feature by its internal unique identifier (using `getUid`).
      *
@@ -637,7 +645,7 @@ declare class VectorSource<FeatureClass extends import("../Feature.js").FeatureL
      */
     setUrl(url: string | import("../featureloader.js").FeatureUrlFunction): void;
 }
+import RenderFeature from '../render/Feature.js';
 import Collection from '../Collection.js';
 import Source from './Source.js';
-import RenderFeature from '../render/Feature.js';
 //# sourceMappingURL=Vector.d.ts.map
