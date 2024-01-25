@@ -187,7 +187,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L618">line 618</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L634">line 634</a>
         </div>
         
     </div>
@@ -425,6 +425,8 @@ of 1 is equivalent to <code>['linear']</code>.
 <code>input</code> and <code>stopX</code> values must all be of type <code>number</code>. <code>outputX</code> values can be <code>number</code> or <code>color</code> values.
 Note: <code>input</code> will be clamped between <code>stop1</code> and <code>stopN</code>, meaning that all output values will be comprised
 between <code>output1</code> and <code>outputN</code>.</li>
+<li><code>['coalesce', value1, value2, ...]</code> returns the first value in the list which is not null or undefined.
+An example would be to provide a default value for get: ['coalesce',['get','propertynanme'],'default value']]</li>
 </ul>
 </li>
 <li><p>Logical operators:</p>
@@ -569,7 +571,7 @@ Literal values can be of the following types:</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L371">line 371</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L374">line 374</a>
         </div>
         
     </div>
