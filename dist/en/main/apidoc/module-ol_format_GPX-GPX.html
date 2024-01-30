@@ -73,6 +73,7 @@
         <ul>
             <li data-name="readfeature"><a href="module-ol_format_GPX-GPX.html#readFeature">readFeature</a>
             <li data-name="readfeatures"><a href="module-ol_format_GPX-GPX.html#readFeatures">readFeatures</a>
+            <li data-name="readmetadata"><a href="module-ol_format_GPX-GPX.html#readMetadata">readMetadata</a>
             <li data-name="readprojection"><a href="module-ol_format_GPX-GPX.html#readProjection">readProjection</a>
             <li data-name="writefeatures"><a href="module-ol_format_GPX-GPX.html#writeFeatures">writeFeatures</a>
             <li data-name="writefeaturesnode"><a href="module-ol_format_GPX-GPX.html#writeFeaturesNode">writeFeaturesNode</a>
@@ -144,7 +145,7 @@ MultiLineString as tracks (<code>&lt;trk&gt;</code>).</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GPX.js">format/GPX.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GPX.js#L129">line 129</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GPX.js#L202">line 202</a>
         </div>
         
     </div>
@@ -816,6 +817,156 @@ Features.
             
 <dt class="">
     
+    <div class="nameContainer">
+        <div class="anchor" id="readMetadata">
+        </div>
+        <h4 class="name">
+            readMetadata<span class="signature">(source)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_format_GPX.html#~GPXMetadata">GPXMetadata</a> | null}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GPX.js">format/GPX.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GPX.js#L253">line 253</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Reads a GPX file's metadata tag, reading among other things:</p>
+<ul>
+<li>the name and description of this GPX</li>
+<li>its author</li>
+<li>the copyright associated with this GPX file</li>
+</ul>
+<p>Will return null if no metadata tag is present (or no valid source is given).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>source</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">Element</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Source.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Metadata
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
     <div class="nameContainer inherited">
         <div class="anchor" id="readProjection">
         </div>
@@ -1262,7 +1413,7 @@ Result.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GPX.js">format/GPX.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GPX.js#L222">line 222</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GPX.js#L355">line 355</a>
         </div>
         
     </div>
