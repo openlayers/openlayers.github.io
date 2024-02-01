@@ -195,11 +195,11 @@ declare class Geometry extends BaseObject {
      *     string identifier or a {@link module:ol/proj/Projection~Projection} object.
      * @param {import("../proj.js").ProjectionLike} destination The desired projection.  Can be a
      *     string identifier or a {@link module:ol/proj/Projection~Projection} object.
-     * @return {Geometry} This geometry.  Note that original geometry is
+     * @return {this} This geometry.  Note that original geometry is
      *     modified in place.
      * @api
      */
-    transform(source: import("../proj.js").ProjectionLike, destination: import("../proj.js").ProjectionLike): Geometry;
+    transform(source: import("../proj.js").ProjectionLike, destination: import("../proj.js").ProjectionLike): this;
 }
 import BaseObject from '../Object.js';
 //# sourceMappingURL=Geometry.d.ts.map
