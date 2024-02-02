@@ -1,12 +1,12 @@
 export default MVT;
-export type Options<FeatureOrRenderFeature extends import("../Feature.js").FeatureClass> = {
+export type Options<FeatureClassToFeature extends import("../Feature.js").FeatureClass> = {
     /**
      * Class for features returned by
      * {@link module :ol/format/MVT~MVT#readFeatures}. Set to {@link module :ol/Feature~Feature} to get full editing and geometry
      * support at the cost of decreased rendering performance. The default is
      * {@link module :ol/render/Feature~RenderFeature}, which is optimized for rendering and hit detection.
      */
-    featureClass?: FeatureOrRenderFeature | undefined;
+    featureClass?: FeatureClassToFeature | undefined;
     /**
      * Geometry name to use when creating features.
      */
@@ -26,9 +26,9 @@ export type Options<FeatureOrRenderFeature extends import("../Feature.js").Featu
     idProperty?: string | undefined;
 };
 /**
- * @template {import("../Feature.js").FeatureClass} FeatureOrRenderFeature
+ * @template {import("../Feature.js").FeatureClass} FeatureClassToFeature
  * @typedef {Object} Options
- * @property {FeatureOrRenderFeature} [featureClass] Class for features returned by
+ * @property {FeatureClassToFeature} [featureClass] Class for features returned by
  * {@link module:ol/format/MVT~MVT#readFeatures}. Set to {@link module:ol/Feature~Feature} to get full editing and geometry
  * support at the cost of decreased rendering performance. The default is
  * {@link module:ol/render/Feature~RenderFeature}, which is optimized for rendering and hit detection.
@@ -99,10 +99,10 @@ declare class MVT<T extends import("../Feature.js").FeatureClass = typeof Render
      *
      * @param {ArrayBuffer} source Source.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
-     * @return {Array<import('./Feature.js').FeatureOrRenderFeature<T>>} Features.
+     * @return {Array<import('./Feature.js').FeatureClassToFeature<T>>} Features.
      * @api
      */
-    readFeatures(source: ArrayBuffer, options?: import("./Feature.js").ReadOptions | undefined): Array<import('./Feature.js').FeatureOrRenderFeature<T>>;
+    readFeatures(source: ArrayBuffer, options?: import("./Feature.js").ReadOptions | undefined): Array<import('./Feature.js').FeatureClassToFeature<T>>;
     /**
      * Read the projection from the source.
      *

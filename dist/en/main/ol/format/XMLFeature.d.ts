@@ -36,6 +36,15 @@ declare class XMLFeature extends FeatureFormat<typeof import("../Feature.js").de
      */
     readFeatureFromNode(node: Element, options?: import("../format/Feature.js").ReadOptions | undefined): import("../Feature.js").default;
     /**
+     * Read all features from a feature collection.
+     *
+     * @param {Document|Element|Object|string} source Source.
+     * @param {import("./Feature.js").ReadOptions} [options] Options.
+     * @return {Array<import("../Feature.js").default>} Features.
+     * @api
+     */
+    readFeatures(source: Document | Element | any | string, options?: import("../format/Feature.js").ReadOptions | undefined): Array<import("../Feature.js").default>;
+    /**
      * @param {Document} doc Document.
      * @param {import("./Feature.js").ReadOptions} [options] Options.
      * @protected

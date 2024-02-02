@@ -10,7 +10,7 @@ export type GeoJSONMultiPoint = import("geojson").MultiPoint;
 export type GeoJSONMultiLineString = import("geojson").MultiLineString;
 export type GeoJSONMultiPolygon = import("geojson").MultiPolygon;
 export type GeoJSONGeometryCollection = import("geojson").GeometryCollection;
-export type Options<FeatureOrRenderFeature extends import("../Feature.js").FeatureClass> = {
+export type Options<FeatureClassToFeature extends import("../Feature.js").FeatureClass> = {
     /**
      * Default data projection.
      */
@@ -37,7 +37,7 @@ export type Options<FeatureOrRenderFeature extends import("../Feature.js").Featu
      * the primary concern, and features are not going to be modified or round-tripped through the format,
      * consider using {@link module :ol/render/Feature~RenderFeature}
      */
-    featureClass?: FeatureOrRenderFeature | undefined;
+    featureClass?: FeatureClassToFeature | undefined;
 };
 /**
  * @typedef {import("geojson").GeoJSON} GeoJSONObject
@@ -53,7 +53,7 @@ export type Options<FeatureOrRenderFeature extends import("../Feature.js").Featu
  * @typedef {import("geojson").GeometryCollection} GeoJSONGeometryCollection
  */
 /**
- * @template {import("../Feature.js").FeatureClass} FeatureOrRenderFeature
+ * @template {import("../Feature.js").FeatureClass} FeatureClassToFeature
  * @typedef {Object} Options
  *
  * @property {import("../proj.js").ProjectionLike} [dataProjection='EPSG:4326'] Default data projection.
@@ -64,7 +64,7 @@ export type Options<FeatureOrRenderFeature extends import("../Feature.js").Featu
  * the geometry_name field in the feature GeoJSON. If set to `true` the GeoJSON reader
  * will look for that field to set the geometry name. If both this field is set to `true`
  * and a `geometryName` is provided, the `geometryName` will take precedence.
- * @property {FeatureOrRenderFeature} [featureClass] Feature class
+ * @property {FeatureClassToFeature} [featureClass] Feature class
  * to be used when reading features. The default is {@link module:ol/Feature~Feature}. If performance is
  * the primary concern, and features are not going to be modified or round-tripped through the format,
  * consider using {@link module:ol/render/Feature~RenderFeature}

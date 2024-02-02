@@ -123,7 +123,11 @@ export type FeatureObject = {
 /**
  * <T>
  */
-export type FeatureOrRenderFeature<T extends import("../Feature.js").FeatureClass> = T extends typeof import("../render/Feature.js").default ? import("../render/Feature.js").default : import("../Feature.js").default;
+export type FeatureToFeatureClass<T extends import("../Feature.js").FeatureLike> = T extends import("../render/Feature.js").default ? typeof import("../render/Feature.js").default : typeof import("../Feature.js").default;
+/**
+ * <T>
+ */
+export type FeatureClassToFeature<T extends import("../Feature.js").FeatureClass> = T[keyof T] extends import("../render/Feature.js").default ? import("../render/Feature.js").default : import("../Feature.js").default;
 import RenderFeature from '../render/Feature.js';
 /**
  * @typedef {Object} ReadOptions
@@ -187,8 +191,12 @@ import RenderFeature from '../render/Feature.js';
  * @property {Object<string, *>} [properties] Properties.
  */
 /***
+ * @template {import("../Feature.js").FeatureLike} T
+ * @typedef {T extends import("../render/Feature.js").default ? typeof import("../render/Feature.js").default : typeof import("../Feature.js").default} FeatureToFeatureClass<T>
+ */
+/***
  * @template {import("../Feature.js").FeatureClass} T
- * @typedef {T extends typeof import("../render/Feature.js").default ? import("../render/Feature.js").default : import("../Feature.js").default} FeatureOrRenderFeature<T>
+ * @typedef {T[keyof T] extends import("../render/Feature.js").default ? import("../render/Feature.js").default : import("../Feature.js").default} FeatureClassToFeature<T>
  */
 /**
  * @classdesc
@@ -262,9 +270,9 @@ declare class FeatureFormat<T extends import("../Feature.js").FeatureClass = typ
      * @abstract
      * @param {Document|Element|ArrayBuffer|Object|string} source Source.
      * @param {ReadOptions} [options] Read options.
-     * @return {Array<FeatureOrRenderFeature<T>>} Features.
+     * @return {Array<import('../Feature.js').FeatureLike|FeatureClassToFeature<T>>} Features.
      */
-    readFeatures(source: Document | Element | ArrayBuffer | any | string, options?: ReadOptions | undefined): Array<FeatureOrRenderFeature<T>>;
+    readFeatures(source: Document | Element | ArrayBuffer | any | string, options?: ReadOptions | undefined): Array<import('../Feature.js').FeatureLike | FeatureClassToFeature<T>>;
     /**
      * Read a single geometry from a source.
      *

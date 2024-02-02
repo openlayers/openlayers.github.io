@@ -48,11 +48,11 @@ export function loadFeaturesXhr(url: string | FeatureUrlFunction, format: import
  * loads features (with XHR), parses the features, and adds them to the
  * vector source.
  * @param {string|FeatureUrlFunction} url Feature URL service.
- * @param {import("./format/Feature.js").default} format Feature format.
+ * @param {import("./format/Feature.js").default<typeof import("./Feature.js").default|typeof import("./render/Feature.js").default>} format Feature format.
  * @return {FeatureLoader} The feature loader.
  * @api
  */
-export function xhr(url: string | FeatureUrlFunction, format: import("./format/Feature.js").default): FeatureLoader;
+export function xhr(url: string | FeatureUrlFunction, format: import("./format/Feature.js").default<typeof import("./Feature.js").default | typeof import("./render/Feature.js").default>): FeatureLoader;
 /**
  * Setter for the withCredentials configuration for the XHR.
  *

@@ -103,7 +103,7 @@ export type Options = {
  * provide the `mediaType` option.
  * @api
  */
-declare class OGCVectorTile extends VectorTileSource {
+declare class OGCVectorTile extends VectorTileSource<import("../Feature.js").default<import("../geom/Geometry.js").default>> {
     /**
      * @param {Options} options OGC vector tile options.
      */

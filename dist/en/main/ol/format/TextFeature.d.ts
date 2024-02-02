@@ -27,6 +27,15 @@ declare class TextFeature extends FeatureFormat<typeof import("../Feature.js").d
      */
     protected readFeatureFromText(text: string, options?: import("../format/Feature.js").ReadOptions | undefined): import("../Feature.js").default;
     /**
+     * Read the features from the source.
+     *
+     * @param {Document|Element|Object|string} source Source.
+     * @param {import("./Feature.js").ReadOptions} [options] Read options.
+     * @return {Array<import("../Feature.js").default>} Features.
+     * @api
+     */
+    readFeatures(source: Document | Element | any | string, options?: import("../format/Feature.js").ReadOptions | undefined): Array<import("../Feature.js").default>;
+    /**
      * @abstract
      * @param {string} text Text.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.

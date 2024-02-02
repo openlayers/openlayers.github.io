@@ -16,10 +16,20 @@ declare class JSONFeature<T extends import("../Feature.js").FeatureClass = typeo
      *
      * @param {ArrayBuffer|Document|Element|Object|string} source Source.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
-     * @return {import('./Feature.js').FeatureOrRenderFeature<T>} Feature.
+     * @return {import('./Feature.js').FeatureClassToFeature<T>} Feature.
      * @api
      */
-    readFeature(source: ArrayBuffer | Document | Element | any | string, options?: import("./Feature.js").ReadOptions | undefined): import('./Feature.js').FeatureOrRenderFeature<T>;
+    readFeature(source: ArrayBuffer | Document | Element | any | string, options?: import("./Feature.js").ReadOptions | undefined): import('./Feature.js').FeatureClassToFeature<T>;
+    /**
+     * Read all features.  Works with both a single feature and a feature
+     * collection.
+     *
+     * @param {ArrayBuffer|Document|Element|Object|string} source Source.
+     * @param {import("./Feature.js").ReadOptions} [options] Read options.
+     * @return {Array<import('./Feature.js').FeatureClassToFeature<T>>} Features.
+     * @api
+     */
+    readFeatures(source: ArrayBuffer | Document | Element | any | string, options?: import("./Feature.js").ReadOptions | undefined): Array<import('./Feature.js').FeatureClassToFeature<T>>;
     /**
      * @abstract
      * @param {Object} object Object.

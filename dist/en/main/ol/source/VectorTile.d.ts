@@ -5,7 +5,7 @@
  */
 export function defaultLoadFunction(tile: import("../VectorTile.js").default, url: string): void;
 export default VectorTile;
-export type Options = {
+export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
     /**
      * Attributions.
      */
@@ -25,7 +25,7 @@ export type Options = {
     /**
      * Feature format for tiles. Used and required by the default.
      */
-    format?: import("../format/Feature.js").default<typeof import("../Feature.js").default> | undefined;
+    format?: import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>> | undefined;
     /**
      * This source may have overlapping geometries. Setting this
      * to `false` (e.g. for sources with polygons that represent administrative
@@ -130,12 +130,13 @@ export type Options = {
     zDirection?: number | import("../array.js").NearestDirectionFunction | undefined;
 };
 /**
+ * @template {import("../Feature.js").FeatureLike} FeatureType
  * @typedef {Object} Options
  * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
  * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
  * @property {number} [cacheSize] Initial tile cache size. Will auto-grow to hold at least twice the number of tiles in the viewport.
  * @property {import("../extent.js").Extent} [extent] Extent.
- * @property {import("../format/Feature.js").default} [format] Feature format for tiles. Used and required by the default.
+ * @property {import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>>} [format] Feature format for tiles. Used and required by the default.
  * @property {boolean} [overlaps=true] This source may have overlapping geometries. Setting this
  * to `false` (e.g. for sources with polygons that represent administrative
  * boundaries or TopoJSON sources) allows the renderer to optimise fill and
@@ -205,15 +206,16 @@ export type Options = {
  *
  * @fires import("./Tile.js").TileSourceEvent
  * @api
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
  */
-declare class VectorTile extends UrlTile {
+declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom/Geometry.js").default>> extends UrlTile {
     /**
-     * @param {!Options} options Vector tile options.
+     * @param {!Options<FeatureType>} options Vector tile options.
      */
-    constructor(options: Options);
+    constructor(options: Options<FeatureType>);
     /**
      * @private
-     * @type {import("../format/Feature.js").default|null}
+     * @type {import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>>|null}
      */
     private format_;
     /**
