@@ -1,16 +1,16 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[9148],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[6212],{
 
-/***/ 51805:
+/***/ 78823:
 /***/ (function(__unused_webpack___webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) {
 
-/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(1055);
-/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1940);
-/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(40824);
-/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(64469);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(72893);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11802);
-/* harmony import */ var _src_ol_proj_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(81625);
+/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(68444);
+/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(68496);
+/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(86728);
+/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(70596);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(80372);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(58520);
+/* harmony import */ var _src_ol_proj_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(88470);
 
 
 
@@ -93,8 +93,8 @@ const attributions =
   '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
   '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
 
-const imagery = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z({
-  source: new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z({
+const imagery = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .c({
+  source: new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .c({
     attributions: attributions,
     url: 'https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=' + key,
     maxZoom: 20,
@@ -102,7 +102,7 @@ const imagery = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] 
   }),
 });
 
-const raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .ZP({
+const raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .cp({
   sources: [imagery.getSource()],
   operationType: 'image',
   operation: growRegion,
@@ -113,16 +113,16 @@ const raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_3__/* ["def
   },
 });
 
-const rasterImage = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .Z({
+const rasterImage = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .c({
   opacity: 0.7,
   source: raster,
 });
 
-const map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .Z({
+const map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .c({
   layers: [imagery, rasterImage],
   target: 'map',
-  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .ZP({
-    center: (0,_src_ol_proj_js__WEBPACK_IMPORTED_MODULE_0__/* .fromLonLat */ .mi)([-119.07, 47.65]),
+  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .cp({
+    center: (0,_src_ol_proj_js__WEBPACK_IMPORTED_MODULE_0__/* .fromLonLat */ .QH)([-119.07, 47.65]),
     zoom: 11,
   }),
 });
@@ -161,7 +161,7 @@ thresholdControl.addEventListener('input', function () {
 },
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ var __webpack_exec__ = function(moduleId) { return __webpack_require__(__webpack_require__.s = moduleId); }
-/******/ var __webpack_exports__ = (__webpack_exec__(51805));
+/******/ var __webpack_exports__ = (__webpack_exec__(78823));
 /******/ }
 ]);
 //# sourceMappingURL=region-growing.js.map

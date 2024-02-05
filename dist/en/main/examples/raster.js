@@ -1,15 +1,15 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[6386],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[5704],{
 
-/***/ 17671:
+/***/ 30712:
 /***/ (function(__unused_webpack___webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) {
 
-/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1055);
-/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1940);
-/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(40824);
-/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(64469);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(72893);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11802);
+/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(68444);
+/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(68496);
+/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(86728);
+/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(70596);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(80372);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(58520);
 
 
 
@@ -61,7 +61,7 @@ const attributions =
   '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
   '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
 
-const aerial = new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z({
+const aerial = new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .c({
   attributions: attributions,
   url: 'https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=' + key,
   maxZoom: 20,
@@ -72,7 +72,7 @@ const aerial = new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__/* ["defaul
  * Create a raster source where pixels with VGI values above a threshold will
  * be colored green.
  */
-const raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .ZP({
+const raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .cp({
   sources: [aerial],
   /**
    * Run calculations on pixel data.
@@ -123,17 +123,17 @@ raster.on('afteroperations', function (event) {
   schedulePlot(event.resolution, event.data.counts, event.data.threshold);
 });
 
-const map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z({
+const map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .c({
   layers: [
-    new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z({
+    new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .c({
       source: aerial,
     }),
-    new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .Z({
+    new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .c({
       source: raster,
     }),
   ],
   target: 'map',
-  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .ZP({
+  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .cp({
     center: [-9651695, 4937351],
     zoom: 13,
     minZoom: 12,
@@ -239,7 +239,7 @@ function message(value, area) {
 },
 /******/ function(__webpack_require__) { // webpackRuntimeModules
 /******/ var __webpack_exec__ = function(moduleId) { return __webpack_require__(__webpack_require__.s = moduleId); }
-/******/ var __webpack_exports__ = (__webpack_exec__(17671));
+/******/ var __webpack_exports__ = (__webpack_exec__(30712));
 /******/ }
 ]);
 //# sourceMappingURL=raster.js.map

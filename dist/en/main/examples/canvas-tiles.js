@@ -1,2 +1,2 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7816],{76966:function(e,n,s){var w=s(1055),c=s(72893),r=s(40824),u=s(55117),a=s(96565);new w.Z({layers:[new c.Z({source:new u.Z}),new c.Z({source:new a.Z})],target:"map",view:new r.ZP({center:[0,0],zoom:1})})}},function(e){var n;n=76966,e(e.s=n)}]);
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3076],{7412:function(e,c,n){var s=n(68444),w=n(80372),r=n(86728),u=n(96480),a=n(71264);new s.c({layers:[new w.c({source:new u.c}),new w.c({source:new a.c})],target:"map",view:new r.cp({center:[0,0],zoom:1})})}},function(e){var c;c=7412,e(e.s=c)}]);
 //# sourceMappingURL=canvas-tiles.js.map

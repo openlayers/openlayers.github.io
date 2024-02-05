@@ -1,2 +1,2 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[98],{35861:function(e,n,s){var a=s(1055),c=s(55117),r=s(50463),t=s(40824);new a.Z({target:"map",layers:[new r.Z({source:new c.Z})],view:new t.ZP({center:[0,0],zoom:0})})}},function(e){var n;n=35861,e(e.s=n)}]);
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5644],{87892:function(e,c,n){var s=n(68444),a=n(96480),r=n(95319),t=n(86728);new s.c({target:"map",layers:[new r.c({source:new a.c})],view:new t.cp({center:[0,0],zoom:0})})}},function(e){var c;c=87892,e(e.s=c)}]);
 //# sourceMappingURL=webgl-tiles.js.map

@@ -1,2 +1,2 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6997],{54478:function(e,t,n){var s=n(22635),a=n(1055),c=n(50463);fetch("data/example.tif").then((e=>e.blob())).then((e=>{const t=new s.Z({sources:[{blob:e}]});new a.Z({target:"map",layers:[new c.Z({source:t})],view:t.getView().then((e=>(e.showFullExtent=!0,e)))})}))}},function(e){var t;t=54478,e(e.s=t)}]);
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1224],{94100:function(e,t,n){var c=n(93624),s=n(68444),a=n(95319);fetch("data/example.tif").then((e=>e.blob())).then((e=>{const t=new c.c({sources:[{blob:e}]});new s.c({target:"map",layers:[new a.c({source:t})],view:t.getView().then((e=>(e.showFullExtent=!0,e)))})}))}},function(e){var t;t=94100,e(e.s=t)}]);
 //# sourceMappingURL=cog-blob.js.map
