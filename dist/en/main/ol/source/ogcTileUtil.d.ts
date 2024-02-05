@@ -136,6 +136,10 @@ export type TileMatrixSet = {
      */
     crs: string;
     /**
+     * Axis order.
+     */
+    orderedAxes?: string[] | undefined;
+    /**
      * Array of tile matrices.
      */
     tileMatrices: Array<TileMatrix>;
