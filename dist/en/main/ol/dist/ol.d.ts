@@ -649,6 +649,7 @@ declare namespace ol {
             export { $ol$render$canvas$LineStringBuilder as LineStringBuilder };
             export { $ol$render$canvas$PolygonBuilder as PolygonBuilder };
             export { $ol$render$canvas$TextBuilder as TextBuilder };
+            export { $ol$render$canvas$ZIndexContext as ZIndexContext };
             export { _ol_render_canvas$checkedFonts as checkedFonts };
             export { _ol_render_canvas$defaultFillStyle as defaultFillStyle };
             export { _ol_render_canvas$defaultFont as defaultFont };
@@ -1501,6 +1502,7 @@ import { strokeInstruction as _ol_render_canvas_Instruction$strokeInstruction } 
 import $ol$render$canvas$LineStringBuilder from '../../ol/render/canvas/LineStringBuilder.js';
 import $ol$render$canvas$PolygonBuilder from '../../ol/render/canvas/PolygonBuilder.js';
 import $ol$render$canvas$TextBuilder from '../../ol/render/canvas/TextBuilder.js';
+import $ol$render$canvas$ZIndexContext from '../../ol/render/canvas/ZIndexContext.js';
 import { checkedFonts as _ol_render_canvas$checkedFonts } from '../../ol/render/canvas.js';
 import { defaultFillStyle as _ol_render_canvas$defaultFillStyle } from '../../ol/render/canvas.js';
 import { defaultFont as _ol_render_canvas$defaultFont } from '../../ol/render/canvas.js';

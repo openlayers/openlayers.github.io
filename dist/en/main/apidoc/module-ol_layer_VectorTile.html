@@ -511,10 +511,11 @@ point symbol or line width.</p>
 <ul>
 <li><code>'hybrid'</code>: Polygon and line elements are rendered as images, so pixels are scaled during zoom
 animations. Point symbols and texts are accurately rendered as vectors and can stay upright on
-rotated views.</li>
-<li><code>'vector'</code>: Everything is rendered as vectors. Use this mode for improved performance on vector
-tile layers with only a few rendered features (e.g. for highlighting a subset of features of
-another layer with the same source).</li>
+rotated views, but get lifted above all polygon and line elements.</li>
+<li><code>'vector'</code>: Everything is rendered as vectors and the original render order is maintained. Use
+this mode for improved performance and visual epxerience on vector tile layers with not too many
+rendered features (e.g. for highlighting a subset of features of another layer with the same
+source).</li>
 </ul>
                 
             </td>
@@ -580,6 +581,12 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
             
                 
 <span class="param-type">boolean</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
 
 
                 
@@ -589,15 +596,11 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
             </td>
 
             <td class="description last">
-                <p>Declutter images and text. Decluttering is applied to all
-image and text styles of all Vector and VectorTile layers that have set this to <code>true</code>. The priority
-is defined by the z-index of the layer, the <code>zIndex</code> of the style and the render order of features.
-Higher z-index means higher priority. Within the same z-index, a feature rendered before another has
-higher priority.</p>
-<p>As an optimization decluttered features from layers with the same <code>className</code> are rendered above
-the fill and stroke styles of all of those layers regardless of z-index.  To opt out of this
-behavior and place declutterd features with their own layer configure the layer with a <code>className</code>
-other than <code>ol-layer</code>.</p>
+                <p>Declutter images and text. Any truthy value will enable
+decluttering. Within a layer, a feature rendered before another has higher priority. All layers with the
+same <code>declutter</code> value will be decluttered together. The priority is determined by the drawing order of the
+layers with the same <code>declutter</code> value. Higher in the layer stack means higher priority. To declutter distinct
+layers or groups of layers separately, use different truthy values for <code>declutter</code>.</p>
                 
             </td>
         </tr>

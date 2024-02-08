@@ -96,9 +96,10 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     /**
      * @param {ExecutorGroup} executorGroup Executor group.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
-     * @param {import("rbush").default} [declutterTree] Declutter tree.
+     * @param {boolean} [declutterable] `true` to only render declutterable items,
+     *     `false` to only render non-declutterable items, `undefined` to render all.
      */
-    renderWorlds(executorGroup: ExecutorGroup, frameState: import("../../Map.js").FrameState, declutterTree?: any): void;
+    renderWorlds(executorGroup: ExecutorGroup, frameState: import("../../Map.js").FrameState, declutterable?: boolean | undefined): void;
     setupCompositionContext_(): void;
     releaseCompositionContext_(): void;
     /**
@@ -125,12 +126,12 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
      * @param {import("../../style/Style.js").default|Array<import("../../style/Style.js").default>} styles The style or array of styles.
      * @param {import("../../render/canvas/BuilderGroup.js").default} builderGroup Builder group.
      * @param {import("../../proj.js").TransformFunction} [transform] Transform from user to view projection.
-     * @param {import("../../render/canvas/BuilderGroup.js").default} [declutterBuilderGroup] Builder for decluttering.
+     * @param {boolean} [declutter] Enable decluttering.
+     * @param {number} [index] Render order index.
      * @return {boolean} `true` if an image is loading.
      */
-    renderFeature(feature: import("../../Feature.js").default, squaredTolerance: number, styles: import("../../style/Style.js").default | Array<import("../../style/Style.js").default>, builderGroup: import("../../render/canvas/BuilderGroup.js").default, transform?: import("../../proj.js").TransformFunction | undefined, declutterBuilderGroup?: CanvasBuilderGroup | undefined): boolean;
+    renderFeature(feature: import("../../Feature.js").default, squaredTolerance: number, styles: import("../../style/Style.js").default | Array<import("../../style/Style.js").default>, builderGroup: import("../../render/canvas/BuilderGroup.js").default, transform?: import("../../proj.js").TransformFunction | undefined, declutter?: boolean | undefined, index?: number | undefined): boolean;
 }
 import CanvasLayerRenderer from './Layer.js';
 import ExecutorGroup from '../../render/canvas/ExecutorGroup.js';
-import CanvasBuilderGroup from '../../render/canvas/BuilderGroup.js';
 //# sourceMappingURL=VectorLayer.d.ts.map

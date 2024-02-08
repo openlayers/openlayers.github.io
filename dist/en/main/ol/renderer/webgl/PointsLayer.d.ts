@@ -292,6 +292,7 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
      * @param {number} worldWidth the width of the worlds being rendered
      */
     renderWorlds(frameState: import("../../Map.js").FrameState, forHitDetection: boolean, startWorld: number, endWorld: number, worldWidth: number): void;
+    renderDeclutter(): void;
 }
 import WebGLLayerRenderer from './Layer.js';
 import WebGLArrayBuffer from '../../webgl/Buffer.js';

@@ -155,6 +155,7 @@
  * @property {NumberExpression} [text-background-stroke-line-dash-offset=0] Line dash offset.
  * @property {NumberExpression} [text-background-stroke-miter-limit=10] Miter limit.
  * @property {NumberExpression} [text-background-stroke-width] Stroke pixel width.
+ * @property {import("./Style.js").DeclutterMode} [text-declutter-mode] Declutter mode
  * @property {NumberExpression} [z-index] The zIndex of the style.
  */
 /**
@@ -192,7 +193,7 @@
  * @property {BooleanExpression} [icon-rotate-with-view=false] Whether to rotate the icon with the view.
  * @property {import("../size.js").Size} [icon-size] Icon size in pixel. Can be used together with `icon-offset` to define the
  * sub-rectangle to use from the origin (sprite) icon image.
- * @property {"declutter"|"obstacle"|"none"|undefined} [icon-declutter-mode] Declutter mode
+ * @property {import("./Style.js").DeclutterMode} [icon-declutter-mode] Declutter mode
  * @property {NumberExpression} [z-index] The zIndex of the style.
  */
 /**
@@ -217,7 +218,7 @@
  * @property {BooleanExpression} [shape-rotate-with-view=false] Whether to rotate the shape with the view.
  * @property {SizeExpression} [shape-scale=1] Scale. Unless two dimensional scaling is required a better
  * result may be obtained with appropriate settings for `shape-radius` and `shape-radius2`.
- * @property {"declutter"|"obstacle"|"none"|undefined} [shape-declutter-mode] Declutter mode.
+ * @property {import("./Style.js").DeclutterMode} [shape-declutter-mode] Declutter mode.
  * @property {NumberExpression} [z-index] The zIndex of the style.
  */
 /**
@@ -240,7 +241,7 @@
  * (positive rotation clockwise, meaningful only when used in conjunction with a two dimensional scale).
  * @property {BooleanExpression} [circle-rotate-with-view=false] Whether to rotate the shape with the view
  * (meaningful only when used in conjunction with a two dimensional scale).
- * @property {"declutter"|"obstacle"|"none"|undefined} [circle-declutter-mode] Declutter mode
+ * @property {import("./Style.js").DeclutterMode} [circle-declutter-mode] Declutter mode
  * @property {NumberExpression} [z-index] The zIndex of the style.
  */
 /**
@@ -493,6 +494,10 @@ export type FlatText = {
      */
     "text-background-stroke-width"?: NumberExpression | undefined;
     /**
+     * Declutter mode
+     */
+    "text-declutter-mode"?: import("./Style.js").DeclutterMode | undefined;
+    /**
      * The zIndex of the style.
      */
     "z-index"?: NumberExpression | undefined;
@@ -586,7 +591,7 @@ export type FlatIcon = {
     /**
      * Declutter mode
      */
-    "icon-declutter-mode"?: "declutter" | "obstacle" | "none" | undefined;
+    "icon-declutter-mode"?: import("./Style.js").DeclutterMode | undefined;
     /**
      * The zIndex of the style.
      */
@@ -665,7 +670,7 @@ export type FlatShape = {
     /**
      * Declutter mode.
      */
-    "shape-declutter-mode"?: "declutter" | "obstacle" | "none" | undefined;
+    "shape-declutter-mode"?: import("./Style.js").DeclutterMode | undefined;
     /**
      * The zIndex of the style.
      */
@@ -733,7 +738,7 @@ export type FlatCircle = {
     /**
      * Declutter mode
      */
-    "circle-declutter-mode"?: "declutter" | "obstacle" | "none" | undefined;
+    "circle-declutter-mode"?: import("./Style.js").DeclutterMode | undefined;
     /**
      * The zIndex of the style.
      */

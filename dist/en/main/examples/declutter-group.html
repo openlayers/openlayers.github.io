@@ -94,9 +94,41 @@
                 data-title="declutter"
                 data-content="&lt;ul class=&quot;list-group&quot;&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./declutter-group.html&quot;&gt;Declutter Group&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-label-decluttering.html&quot;&gt;Vector Label Decluttering&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
-                >1</a>
+                >2</a>
+            </span>
+            <span class="badge-group">
+              <a
+                href="./index.html?q=decluttering" class="badge badge-info">decluttering</a
+              ><a
+                class="badge badge-info tag-modal-toggle"
+                data-bs-toggle="modal"
+                data-bs-target="#tag-example-list"
+                data-title="decluttering"
+                data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./declutter-group.html&quot;&gt;Declutter Group&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-label-decluttering.html&quot;&gt;Vector Label Decluttering&lt;/a&gt;
+                  &lt;/ul&gt;"
+                tabindex="0"
+                >2</a>
+            </span>
+            <span class="badge-group">
+              <a
+                href="./index.html?q=labels" class="badge badge-info">labels</a
+              ><a
+                class="badge badge-info tag-modal-toggle"
+                data-bs-toggle="modal"
+                data-bs-target="#tag-example-list"
+                data-title="labels"
+                data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./declutter-group.html&quot;&gt;Declutter Group&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./rich-text-labels.html&quot;&gt;Rich Text Labels&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-label-decluttering.html&quot;&gt;Vector Label Decluttering&lt;/a&gt;
+                  &lt;/ul&gt;"
+                tabindex="0"
+                >3</a>
             </span>
             <span class="badge-group">
               <a
@@ -214,8 +246,8 @@
 
       <div class="row-fluid">
         <div class="span12">
-          <p id="shortdesc">Declutter vector layers by groups</p>
-          <div id="docs"><p>This shows how to specify when vector(tile) layers are decluttered if <code>declutter</code> is set to true. By default, all decluttering will happen after all layers have been rendered. Calling the map&#39;s <code>flushDeclutter()</code> method  makes decluttering occur immediately. This is useful for layers that need to be entirely rendered above the declutter items of layers lower in the layer stack. In the example, the blue square overlay displays above the decluttered vector symbols and labels.</p>
+          <p id="shortdesc">Group decluttering of vector symbols and text.</p>
+          <div id="docs"><p>Different truthy <code>declutter</code> values enable declutter groups. If <code>declutter</code> was set to <code>true</code> on the vector layer in this example, the symbol and texts of the vector layer would prevent overlapping symbols and texts from the Mapbox styled layers below. Because it is set to <code>&quot;separate&quot;</code>, which is a different value than <code>true</code>, the vector layer is decluttered separate from the Mapbox styled layers below. Symbols and texts of the Mapbox styled layers below can overlap those of the vector layer.</p>
 </div>
         </div>
       </div>
@@ -224,6 +256,7 @@
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import {Feature, Map, View} from &#x27;ol/index.js&#x27;;
 import {Group as LayerGroup, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+import {Point} from &#x27;ol/geom.js&#x27;;
 import {Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {apply} from &#x27;ol-mapbox-style&#x27;;
 import {fromExtent} from &#x27;ol/geom/Polygon.js&#x27;;
@@ -231,13 +264,30 @@ import {getCenter} from &#x27;ol/extent.js&#x27;;
 
 const square &#x3D; [-12e6, 3.5e6, -10e6, 5.5e6];
 const overlay &#x3D; new VectorLayer({
+  declutter: &#x27;separate&#x27;,
   source: new VectorSource({
-    features: [new Feature(fromExtent(square))],
+    features: [
+      new Feature({
+        geometry: fromExtent(square),
+        text: &#x27;Polygon above Mapbox styled layers&#x27;,
+      }),
+      new Feature({
+        geometry: new Point([-11e6, 4.3e6]),
+        text: &#x27;Point above Mapbox styled layers&#x27;,
+      }),
+    ],
   }),
   style: {
     &#x27;stroke-color&#x27;: &#x27;rgba(180, 180, 255, 1)&#x27;,
     &#x27;stroke-width&#x27;: 1,
     &#x27;fill-color&#x27;: &#x27;rgba(200, 200, 255, 0.85)&#x27;,
+    &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;text&#x27;],
+    &#x27;text-font&#x27;: &#x27;bold 14px sans-serif&#x27;,
+    &#x27;text-offset-y&#x27;: -12,
+    &#x27;text-overflow&#x27;: true,
+    &#x27;circle-radius&#x27;: 5,
+    &#x27;circle-fill-color&#x27;: &#x27;rgba(180, 180, 255, 1)&#x27;,
+    &#x27;circle-stroke-color&#x27;: &#x27;rgba(255, 255, 255, 1)&#x27;,
   },
 });
 
@@ -251,12 +301,10 @@ const map &#x3D; new Map({
   target: &#x27;map&#x27;,
   view: new View({
     center: getCenter(square),
-    zoom: 4,
+    zoom: 3.9,
   }),
   layers: [layer, overlay],
 });
-
-overlay.on(&#x27;prerender&#x27;, () &#x3D;&gt; map.flushDeclutterItems());
 </code></pre>
       </div>
 

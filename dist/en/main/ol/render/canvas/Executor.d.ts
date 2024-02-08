@@ -61,7 +61,7 @@ export type ImageOrLabelDimensions = {
 };
 export type ReplayImageOrLabelArgs = {
     0: CanvasRenderingContext2D;
-    1: number;
+    1: import('../../size.js').Size;
     2: import("../canvas.js").Label | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement;
     3: ImageOrLabelDimensions;
     4: number;
@@ -74,9 +74,10 @@ declare class Executor {
      * @param {number} resolution Resolution.
      * @param {number} pixelRatio Pixel ratio.
      * @param {boolean} overlaps The replay can have overlapping geometries.
-     * @param {import("../canvas.js").SerializableInstructions} instructions The serializable instructions
+     * @param {import("../canvas.js").SerializableInstructions} instructions The serializable instructions.
+     * @param {boolean} [deferredRendering] Enable deferred rendering.
      */
-    constructor(resolution: number, pixelRatio: number, overlaps: boolean, instructions: import("../canvas.js").SerializableInstructions);
+    constructor(resolution: number, pixelRatio: number, overlaps: boolean, instructions: import("../canvas.js").SerializableInstructions, deferredRendering?: boolean | undefined);
     /**
      * @protected
      * @type {boolean}
@@ -162,6 +163,15 @@ declare class Executor {
      */
     private labels_;
     /**
+     * @private
+     * @type {import("../canvas/ZIndexContext.js").default}
+     */
+    private zIndexContext_;
+    /**
+     * @return {ZIndexContext} ZIndex context.
+     */
+    getZIndexContext(): ZIndexContext;
+    /**
      * @param {string|Array<string>} text Text.
      * @param {string} textKey Text style key.
      * @param {string} fillKey Fill style key.
@@ -203,7 +213,7 @@ declare class Executor {
     /**
      * @private
      * @param {CanvasRenderingContext2D} context Context.
-     * @param {number} contextScale Scale of the context.
+     * @param {import('../../size.js').Size} scaledCanvasSize Scaled canvas size.
      * @param {import("../canvas.js").Label|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement} imageOrLabel Image.
      * @param {ImageOrLabelDimensions} dimensions Dimensions.
      * @param {number} opacity Opacity.
@@ -235,7 +245,7 @@ declare class Executor {
     /**
      * @private
      * @param {CanvasRenderingContext2D} context Context.
-     * @param {number} contextScale Scale of the context.
+     * @param {import('../../size.js').Size} scaledCanvasSize Scaled canvas size
      * @param {import("../../transform.js").Transform} transform Transform.
      * @param {Array<*>} instructions Instructions array.
      * @param {boolean} snapToPixel Snap point symbols and text to integer pixels.
@@ -249,13 +259,13 @@ declare class Executor {
     private execute_;
     /**
      * @param {CanvasRenderingContext2D} context Context.
-     * @param {number} contextScale Scale of the context.
+     * @param {import('../../size.js').Size} scaledCanvasSize Scaled canvas size.
      * @param {import("../../transform.js").Transform} transform Transform.
      * @param {number} viewRotation View rotation.
      * @param {boolean} snapToPixel Snap point symbols and text to integer pixels.
      * @param {import("rbush").default} [declutterTree] Declutter tree.
      */
-    execute(context: CanvasRenderingContext2D, contextScale: number, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, declutterTree?: any): void;
+    execute(context: CanvasRenderingContext2D, scaledCanvasSize: import('../../size.js').Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, declutterTree?: any): void;
     /**
      * @param {CanvasRenderingContext2D} context Context.
      * @param {import("../../transform.js").Transform} transform Transform.
@@ -268,4 +278,5 @@ declare class Executor {
      */
     executeHitDetection<T>(context: CanvasRenderingContext2D, transform: import("../../transform.js").Transform, viewRotation: number, featureCallback?: FeatureCallback<T> | undefined, hitExtent?: import("../../extent.js").Extent | undefined): T | undefined;
 }
+import ZIndexContext from '../canvas/ZIndexContext.js';
 //# sourceMappingURL=Executor.d.ts.map

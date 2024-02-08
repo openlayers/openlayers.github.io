@@ -312,6 +312,18 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      * Called when a layer is not visible during a map render.
      */
     unrender(): void;
+    /** @return {string} Declutter */
+    getDeclutter(): string;
+    /**
+     * @param {import("../Map.js").FrameState} frameState Frame state.
+     * @param {import("../layer/Layer.js").State} layerState Layer state.
+     */
+    renderDeclutter(frameState: import("../Map.js").FrameState, layerState: import("../layer/Layer.js").State): void;
+    /**
+     * When the renderer follows a layout -> render approach, do the final rendering here.
+     * @param {import('../Map.js').FrameState} frameState Frame state
+     */
+    renderDeferred(frameState: import('../Map.js').FrameState): void;
     /**
      * For use inside the library only.
      * @param {import("../Map.js").default|null} map Map.

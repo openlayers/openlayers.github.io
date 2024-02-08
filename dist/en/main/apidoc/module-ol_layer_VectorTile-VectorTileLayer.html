@@ -200,7 +200,7 @@ options means that <code>title</code> is observable, and has get/set accessors.<
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L100">line 100</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L96">line 96</a>
         </div>
         
     </div>
@@ -560,10 +560,11 @@ point symbol or line width.</p></td>
 <ul>
 <li><code>'hybrid'</code>: Polygon and line elements are rendered as images, so pixels are scaled during zoom
 animations. Point symbols and texts are accurately rendered as vectors and can stay upright on
-rotated views.</li>
-<li><code>'vector'</code>: Everything is rendered as vectors. Use this mode for improved performance on vector
-tile layers with only a few rendered features (e.g. for highlighting a subset of features of
-another layer with the same source).</li>
+rotated views, but get lifted above all polygon and line elements.</li>
+<li><code>'vector'</code>: Everything is rendered as vectors and the original render order is maintained. Use
+this mode for improved performance and visual epxerience on vector tile layers with not too many
+rendered features (e.g. for highlighting a subset of features of another layer with the same
+source).</li>
 </ul></td>
         </tr>
 
@@ -632,6 +633,12 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
             
                 
 <span class="param-type">boolean</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
 
 
                 
@@ -644,15 +651,11 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
 
             <td  class="description last">
                 
-                <p>Declutter images and text. Decluttering is applied to all
-image and text styles of all Vector and VectorTile layers that have set this to <code>true</code>. The priority
-is defined by the z-index of the layer, the <code>zIndex</code> of the style and the render order of features.
-Higher z-index means higher priority. Within the same z-index, a feature rendered before another has
-higher priority.</p>
-<p>As an optimization decluttered features from layers with the same <code>className</code> are rendered above
-the fill and stroke styles of all of those layers regardless of z-index.  To opt out of this
-behavior and place declutterd features with their own layer configure the layer with a <code>className</code>
-other than <code>ol-layer</code>.</p></td>
+                <p>Declutter images and text. Any truthy value will enable
+decluttering. Within a layer, a feature rendered before another has higher priority. All layers with the
+same <code>declutter</code> value will be decluttered together. The priority is determined by the drawing order of the
+layers with the same <code>declutter</code> value. Higher in the layer stack means higher priority. To declutter distinct
+layers or groups of layers separately, use different truthy values for <code>declutter</code>.</p></td>
         </tr>
 
 	
@@ -1836,7 +1839,7 @@ Attributions for this layer at the given view.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L156">line 156</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L152">line 152</a>
         </div>
         
     </div>
@@ -2015,7 +2018,7 @@ The layer extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L184">line 184</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L180">line 180</a>
         </div>
         
     </div>
@@ -2712,7 +2715,7 @@ The opacity of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L201">line 201</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L197">line 197</a>
         </div>
         
     </div>
@@ -3081,7 +3084,7 @@ The layer source (or <code>null</code> if not yet set).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L202">line 202</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L196">line 196</a>
         </div>
         
     </div>
@@ -3174,7 +3177,7 @@ Layer style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L211">line 211</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L205">line 205</a>
         </div>
         
     </div>
@@ -3264,7 +3267,7 @@ Layer style function.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L211">line 211</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L207">line 207</a>
         </div>
         
     </div>
@@ -4195,7 +4198,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L163">line 163</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L159">line 159</a>
         </div>
         
     </div>
@@ -4451,7 +4454,7 @@ will be visible at all extents.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L414">line 414</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L437">line 437</a>
         </div>
         
     </div>
@@ -5229,7 +5232,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L223">line 223</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L219">line 219</a>
         </div>
         
     </div>
@@ -5511,7 +5514,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L456">line 456</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L479">line 479</a>
         </div>
         
     </div>
@@ -5642,7 +5645,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L275">line 275</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L267">line 267</a>
         </div>
         
     </div>
@@ -5786,7 +5789,7 @@ literals instead of using the <code>Style</code> and symbolizer constructors (<c
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L233">line 233</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L229">line 229</a>
         </div>
         
     </div>

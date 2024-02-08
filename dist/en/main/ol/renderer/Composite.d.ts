@@ -25,9 +25,10 @@ declare class CompositeMapRenderer extends MapRenderer {
      */
     private renderedVisible_;
     /**
-     * @type {Array<import("../layer/BaseVector.js").default>}
+     * @param {import("../Map.js").FrameState} frameState Frame state.
+     * @param {Array<import('../layer/Layer.js').State>} layerStates Layers.
      */
-    declutterLayers_: Array<import("../layer/BaseVector.js").default<any, any>>;
+    declutter(frameState: import("../Map.js").FrameState, layerStates: Array<import('../layer/Layer.js').State>): void;
 }
 import MapRenderer from './Map.js';
 //# sourceMappingURL=Composite.d.ts.map

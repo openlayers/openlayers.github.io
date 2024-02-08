@@ -94,6 +94,10 @@ declare class CanvasTextBuilder extends CanvasBuilder {
      */
     private strokeKey_;
     /**
+     * @type {import('../../style/Style.js').DeclutterMode}
+     */
+    declutterMode_: import('../../style/Style.js').DeclutterMode;
+    /**
      * Data shared with an image builder for combined decluttering.
      * @private
      * @type {import("../canvas.js").DeclutterImageWithText}

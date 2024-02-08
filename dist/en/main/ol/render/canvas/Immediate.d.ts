@@ -250,6 +250,17 @@ declare class CanvasImmediateRenderer extends VectorContext {
      */
     drawGeometry(geometry: import("../../geom/Geometry.js").default | import("../Feature.js").default): void;
     /**
+     * Render a feature into the canvas.  Note that any `zIndex` on the provided
+     * style will be ignored - features are rendered immediately in the order that
+     * this method is called.  If you need `zIndex` support, you should be using an
+     * {@link module:ol/layer/Vector~VectorLayer} instead.
+     *
+     * @param {import("../../Feature.js").default} feature Feature.
+     * @param {import("../../style/Style.js").default} style Style.
+     * @api
+     */
+    drawFeature(feature: import("../../Feature.js").default, style: import("../../style/Style.js").default): void;
+    /**
      * Render a GeometryCollection to the canvas.  Rendering is immediate and
      * uses the current styles appropriate for each geometry in the collection.
      *

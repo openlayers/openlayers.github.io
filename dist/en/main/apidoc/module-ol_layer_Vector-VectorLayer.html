@@ -590,6 +590,12 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
             
                 
 <span class="param-type">boolean</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
 
 
                 
@@ -602,15 +608,11 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
 
             <td  class="description last">
                 
-                <p>Declutter images and text. Decluttering is applied to all
-image and text styles of all Vector and VectorTile layers that have set this to <code>true</code>. The priority
-is defined by the z-index of the layer, the <code>zIndex</code> of the style and the render order of features.
-Higher z-index means higher priority. Within the same z-index, a feature rendered before another has
-higher priority.</p>
-<p>As an optimization decluttered features from layers with the same <code>className</code> are rendered above
-the fill and stroke styles of all of those layers regardless of z-index.  To opt out of this
-behavior and place declutterd features with their own layer configure the layer with a <code>className</code>
-other than <code>ol-layer</code>.</p></td>
+                <p>Declutter images and text. Any truthy value will enable
+decluttering. Within a layer, a feature rendered before another has higher priority. All layers with the
+same <code>declutter</code> value will be decluttered together. The priority is determined by the drawing order of the
+layers with the same <code>declutter</code> value. Higher in the layer stack means higher priority. To declutter distinct
+layers or groups of layers separately, use different truthy values for <code>declutter</code>.</p></td>
         </tr>
 
 	
@@ -1789,7 +1791,7 @@ The layer extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L175">line 175</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L169">line 169</a>
         </div>
         
     </div>
@@ -2765,7 +2767,7 @@ The layer source (or <code>null</code> if not yet set).
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L202">line 202</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L196">line 196</a>
         </div>
         
     </div>
@@ -2858,7 +2860,7 @@ Layer style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L211">line 211</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L205">line 205</a>
         </div>
         
     </div>
@@ -3923,7 +3925,7 @@ will be visible at all extents.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L414">line 414</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L437">line 437</a>
         </div>
         
     </div>
@@ -4857,7 +4859,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js">layer/Layer.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L456">line 456</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Layer.js#L479">line 479</a>
         </div>
         
     </div>
@@ -4988,7 +4990,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L275">line 275</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L267">line 267</a>
         </div>
         
     </div>

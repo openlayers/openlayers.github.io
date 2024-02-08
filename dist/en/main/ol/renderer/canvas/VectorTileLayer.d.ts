@@ -29,9 +29,19 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
     private renderedRotation_;
     /**
      * @private
+     * @type {number}
+     */
+    private renderedOpacity_;
+    /**
+     * @private
      * @type {import("../../transform.js").Transform}
      */
     private tmpTransform_;
+    /**
+     * @private
+     * @type {Array<ZIndexContext>}
+     */
+    private tileClipContexts_;
     /**
      * @param {import("../../VectorRenderTile.js").default} tile Tile.
      * @param {number} pixelRatio Pixel ratio.
@@ -67,16 +77,18 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
      * @param {import("../../layer/Layer.js").State} layerState Layer state.
      */
     renderDeclutter(frameState: import("../../Map.js").FrameState, layerState: import("../../layer/Layer.js").State): void;
+    renderDeferredInternal(): void;
     getTileRenderTransform(tile: any, frameState: any): number[];
     /**
      * @param {import("../../Feature.js").FeatureLike} feature Feature.
      * @param {number} squaredTolerance Squared tolerance.
      * @param {import("../../style/Style.js").default|Array<import("../../style/Style.js").default>} styles The style or array of styles.
      * @param {import("../../render/canvas/BuilderGroup.js").default} builderGroup Replay group.
-     * @param {import("../../render/canvas/BuilderGroup.js").default} [declutterBuilderGroup] Builder group for decluttering.
+     * @param {boolean} [declutter] Enable decluttering.
+     * @param {number} [index] Render order index.
      * @return {boolean} `true` if an image is loading.
      */
-    renderFeature(feature: import("../../Feature.js").FeatureLike, squaredTolerance: number, styles: import("../../style/Style.js").default | Array<import("../../style/Style.js").default>, builderGroup: import("../../render/canvas/BuilderGroup.js").default, declutterBuilderGroup?: CanvasBuilderGroup | undefined): boolean;
+    renderFeature(feature: import("../../Feature.js").FeatureLike, squaredTolerance: number, styles: import("../../style/Style.js").default | Array<import("../../style/Style.js").default>, builderGroup: import("../../render/canvas/BuilderGroup.js").default, declutter?: boolean | undefined, index?: number | undefined): boolean;
     /**
      * @param {import("../../VectorRenderTile.js").default} tile Tile.
      * @return {boolean} A new tile image was rendered.
@@ -91,5 +103,4 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
     private renderTileImage_;
 }
 import CanvasTileLayerRenderer from './TileLayer.js';
-import CanvasBuilderGroup from '../../render/canvas/BuilderGroup.js';
 //# sourceMappingURL=VectorTileLayer.d.ts.map

@@ -95,7 +95,7 @@ export type Options = {
     /**
      * Declutter mode.
      */
-    declutterMode?: "declutter" | "obstacle" | "none" | undefined;
+    declutterMode?: import("./Style.js").DeclutterMode | undefined;
 };
 /**
  * @classdesc

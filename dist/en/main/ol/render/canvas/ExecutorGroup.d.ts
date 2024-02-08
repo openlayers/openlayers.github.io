@@ -6,6 +6,21 @@
  * @return {Array<number>} An array with indexes within a circle.
  */
 export function getPixelIndexArray(radius: number): Array<number>;
+/**
+ * @const
+ * @type {Array<import("../canvas.js").BuilderType>}
+ */
+export const ALL: Array<import("../canvas.js").BuilderType>;
+/**
+ * @const
+ * @type {Array<import("../canvas.js").BuilderType>}
+ */
+export const DECLUTTER: Array<import("../canvas.js").BuilderType>;
+/**
+ * @const
+ * @type {Array<import("../canvas.js").BuilderType>}
+ */
+export const NON_DECLUTTER: Array<import("../canvas.js").BuilderType>;
 export default ExecutorGroup;
 declare class ExecutorGroup {
     /**
@@ -19,10 +34,11 @@ declare class ExecutorGroup {
      * @param {!Object<string, !Object<import("../canvas.js").BuilderType, import("../canvas.js").SerializableInstructions>>} allInstructions
      * The serializable instructions.
      * @param {number} [renderBuffer] Optional rendering buffer.
+     * @param {boolean} [deferredRendering] Enable deferred rendering with renderDeferred().
      */
     constructor(maxExtent: import("../../extent.js").Extent, resolution: number, pixelRatio: number, overlaps: boolean, allInstructions: {
         [x: string]: any;
-    }, renderBuffer?: number | undefined);
+    }, renderBuffer?: number | undefined, deferredRendering?: boolean | undefined);
     /**
      * @private
      * @type {import("../../extent.js").Extent}
@@ -50,7 +66,7 @@ declare class ExecutorGroup {
     private renderBuffer_;
     /**
      * @private
-     * @type {!Object<string, !Object<import("../canvas.js").BuilderType, import("./Executor").default>>}
+     * @type {!Object<string, !Object<string, import("./Executor").default>>}
      */
     private executorsByZIndex_;
     /**
@@ -64,6 +80,15 @@ declare class ExecutorGroup {
      */
     private hitDetectionTransform_;
     /**
+     * @private
+     * @type {CanvasRenderingContext2D}
+     */
+    private renderedContext_;
+    /**
+     * @type {Array<Array<import("./ZIndexContext.js").default>>}
+     */
+    deferredZIndexContexts_: Array<Array<import("./ZIndexContext.js").default>>;
+    /**
      * @param {CanvasRenderingContext2D} context Context.
      * @param {import("../../transform.js").Transform} transform Transform.
      */
@@ -71,7 +96,8 @@ declare class ExecutorGroup {
     /**
      * Create executors and populate them using the provided instructions.
      * @private
-     * @param {!Object<string, !Object<import("../canvas.js").BuilderType, import("../canvas.js").SerializableInstructions>>} allInstructions The serializable instructions
+     * @param {!Object<string, !Object<string, import("../canvas.js").SerializableInstructions>>} allInstructions The serializable instructions
+     * @param {boolean} deferredRendering Enable deferred rendering.
      */
     private createExecutors_;
     /**
@@ -100,15 +126,19 @@ declare class ExecutorGroup {
      */
     isEmpty(): boolean;
     /**
-     * @param {CanvasRenderingContext2D} context Context.
-     * @param {number} contextScale Scale of the context.
+     * @param {CanvasRenderingContext2D} targetContext Context.
+     * @param {import('../../size.js').Size} scaledCanvasSize Scale of the context.
      * @param {import("../../transform.js").Transform} transform Transform.
      * @param {number} viewRotation View rotation.
      * @param {boolean} snapToPixel Snap point symbols and test to integer pixel.
      * @param {Array<import("../canvas.js").BuilderType>} [builderTypes] Ordered replay types to replay.
-     *     Default is {@link module:ol/render/replay~ORDER}
-     * @param {import("rbush").default} [declutterTree] Declutter tree.
+     *     Default is {@link module:ol/render/replay~ALL}
+     * @param {import("rbush").default|null} [declutterTree] Declutter tree.
+     *     When set to null, no decluttering is done, even when the executor group has a `ZIndexContext`.
      */
-    execute(context: CanvasRenderingContext2D, contextScale: number, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, builderTypes?: import("../canvas.js").BuilderType[] | undefined, declutterTree?: any): void;
+    execute(targetContext: CanvasRenderingContext2D, scaledCanvasSize: import('../../size.js').Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, builderTypes?: import("../canvas.js").BuilderType[] | undefined, declutterTree?: any | null): void;
+    getDeferredZIndexContexts(): import("./ZIndexContext.js").default[][];
+    getRenderedContext(): CanvasRenderingContext2D;
+    renderDeferred(): void;
 }
 //# sourceMappingURL=ExecutorGroup.d.ts.map

@@ -113,6 +113,10 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
      * @protected
      */
     protected renderIfReadyAndVisible(): void;
+    /**
+     * @param {import("../Map.js").FrameState} frameState Frame state.
+     */
+    renderDeferred(frameState: import("../Map.js").FrameState): void;
 }
 import Observable from '../Observable.js';
 //# sourceMappingURL=Layer.d.ts.map

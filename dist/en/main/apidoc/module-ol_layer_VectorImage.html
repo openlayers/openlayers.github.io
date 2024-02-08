@@ -542,9 +542,11 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
             </td>
 
             <td class="description last">
-                <p>Declutter images and text on this layer. The priority is defined
-by the <code>zIndex</code> of the style and the render order of features. Higher z-index means higher priority.
-Within the same z-index, a feature rendered before another has higher priority.</p>
+                <p>Declutter images and text on this layer. The priority
+is defined by the <code>zIndex</code> of the style and the render order of features. Higher z-index means higher
+priority. Within the same z-index, a feature rendered before another has higher priority. Items will
+not be decluttered against or together with items on other layers with the same <code>declutter</code> value. If
+that is needed, use <a href="module-ol_layer_Vector-VectorLayer.html"><code>VectorLayer</code></a> instead.</p>
                 
             </td>
         </tr>

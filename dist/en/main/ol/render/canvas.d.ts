@@ -34,7 +34,7 @@ export function getTextDimensions(baseStyle: TextState, chunks: Array<string>): 
  */
 export function rotateAtOffset(context: CanvasRenderingContext2D, rotation: number, offsetX: number, offsetY: number): void;
 /**
- * @param {CanvasRenderingContext2D} context Context.
+ * @param {CanvasRenderingContext2D|import("../render/canvas/ZIndexContext.js").ZIndexContextProxy} context Context.
  * @param {import("../transform.js").Transform|null} transform Transform.
  * @param {number} opacity Opacity.
  * @param {Label|HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} labelOrImage Label.
@@ -46,7 +46,7 @@ export function rotateAtOffset(context: CanvasRenderingContext2D, rotation: numb
  * @param {number} y Y.
  * @param {import("../size.js").Size} scale Scale.
  */
-export function drawImageOrLabel(context: CanvasRenderingContext2D, transform: import("../transform.js").Transform | null, opacity: number, labelOrImage: Label | HTMLCanvasElement | HTMLImageElement | HTMLVideoElement, originX: number, originY: number, w: number, h: number, x: number, y: number, scale: import("../size.js").Size): void;
+export function drawImageOrLabel(context: CanvasRenderingContext2D | import("../render/canvas/ZIndexContext.js").ZIndexContextProxy, transform: import("../transform.js").Transform | null, opacity: number, labelOrImage: Label | HTMLCanvasElement | HTMLImageElement | HTMLVideoElement, originX: number, originY: number, w: number, h: number, x: number, y: number, scale: import("../size.js").Size): void;
 /**
  * @typedef {'Circle' | 'Image' | 'LineString' | 'Polygon' | 'Text' | 'Default'} BuilderType
  */

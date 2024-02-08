@@ -101,6 +101,10 @@ export type Options = {
      * values in the array is `[top, right, bottom, left]`.
      */
     padding?: number[] | undefined;
+    /**
+     * Declutter mode: `declutter`, `obstacle`, `none`
+     */
+    declutterMode?: import("../style/Style.js").DeclutterMode | undefined;
 };
 /**
  * @typedef {Object} Options
@@ -140,6 +144,7 @@ export type Options = {
  * is `'point'`. Default is no stroke.
  * @property {Array<number>} [padding=[0, 0, 0, 0]] Padding in pixels around the text for decluttering and background. The order of
  * values in the array is `[top, right, bottom, left]`.
+ * @property {import('../style/Style.js').DeclutterMode} [declutterMode] Declutter mode: `declutter`, `obstacle`, `none`
  */
 /**
  * @classdesc
@@ -251,6 +256,11 @@ declare class Text {
      * @type {Array<number>|null}
      */
     private padding_;
+    /**
+     * @private
+     * @type {import('../style/Style.js').DeclutterMode}
+     */
+    private declutterMode_;
     /**
      * Clones the style.
      * @return {Text} The cloned style.
@@ -376,6 +386,12 @@ declare class Text {
      * @api
      */
     getPadding(): Array<number> | null;
+    /**
+     * Get the declutter mode of the shape
+     * @return {import("./Style.js").DeclutterMode} Shape's declutter mode
+     * @api
+     */
+    getDeclutterMode(): import("./Style.js").DeclutterMode;
     /**
      * Set the `overflow` property.
      *

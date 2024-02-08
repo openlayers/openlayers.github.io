@@ -67,7 +67,7 @@ declare class CanvasImageBuilder extends CanvasBuilder {
     private width_;
     /**
      * @private
-     * @type {"declutter"|"obstacle"|"none"|undefined}
+     * @type {import('../../style/Style.js').DeclutterMode}
      */
     private declutterMode_;
     /**
