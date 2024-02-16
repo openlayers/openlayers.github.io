@@ -97,6 +97,9 @@ export type Options = {
  * but this can be changed by using the css selector `.ol-scale-line`.
  * When specifying `bar` as `true`, a scalebar will be rendered instead
  * of a scaleline.
+ * For cartesian measurements of the scaleline, you need to set the
+ * `getPointResolution` method of your projection to simply return the input
+ * value, e.g. `projection.setGetPointResolution(r => r);`
  *
  * @api
  */

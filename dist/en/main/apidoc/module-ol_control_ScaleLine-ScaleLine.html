@@ -142,7 +142,10 @@ viewport center cannot be calculated in the view projection.
 By default the scale line will show in the bottom left portion of the map,
 but this can be changed by using the css selector <code>.ol-scale-line</code>.
 When specifying <code>bar</code> as <code>true</code>, a scalebar will be rendered instead
-of a scaleline.</p></div>
+of a scaleline.
+For cartesian measurements of the scaleline, you need to set the
+<code>getPointResolution</code> method of your projection to simply return the input
+value, e.g. <code>projection.setGetPointResolution(r =&gt; r);</code></p></div>
     
     </div>
 </header>
@@ -168,7 +171,7 @@ of a scaleline.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js">control/ScaleLine.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js#L75">line 75</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js#L78">line 78</a>
         </div>
         
     </div>
@@ -1387,7 +1390,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js">control/ScaleLine.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js#L195">line 195</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js#L198">line 198</a>
         </div>
         
     </div>
@@ -1814,7 +1817,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js">control/ScaleLine.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js#L473">line 473</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js#L476">line 476</a>
         </div>
         
     </div>
@@ -2118,7 +2121,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js">control/ScaleLine.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js#L221">line 221</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js#L224">line 224</a>
         </div>
         
     </div>
@@ -2670,7 +2673,7 @@ then the control is added to the map's overlay container.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js">control/ScaleLine.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js#L212">line 212</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/ScaleLine.js#L215">line 215</a>
         </div>
         
     </div>
