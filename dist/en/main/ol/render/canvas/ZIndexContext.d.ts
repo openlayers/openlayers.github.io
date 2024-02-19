@@ -2,9 +2,6 @@ export default ZIndexContext;
 export type ZIndexContextProxy = CanvasRenderingContext2D & {
     globalAlpha: any;
 };
-/**
- * @module ol/render/canvas/ZIndexContext
- */
 /** @typedef {CanvasRenderingContext2D & {globalAlpha: any}} ZIndexContextProxy */
 /**
  * @extends {CanvasRenderingContext2D}
