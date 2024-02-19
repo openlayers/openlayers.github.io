@@ -45,6 +45,11 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      */
     context: CanvasRenderingContext2D;
     /**
+     * @private
+     * @type {ZIndexContext}
+     */
+    private deferredContext_;
+    /**
      * @type {boolean}
      */
     containerReused: boolean;
@@ -107,6 +112,11 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      */
     renderDeferredInternal(frameState: import("../../Map.js").FrameState): void;
+    /**
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @return {import('../../render/canvas/ZIndexContext.js').ZIndexContextProxy} Context.
+     */
+    getRenderContext(frameState: import("../../Map.js").FrameState): import('../../render/canvas/ZIndexContext.js').ZIndexContextProxy;
     /**
      * Creates a transform for rendering to an element that will be rotated after rendering.
      * @param {import("../../coordinate.js").Coordinate} center Center.

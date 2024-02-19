@@ -57,10 +57,6 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      */
     private tmpTileRange_;
     /**
-     * @type {ZIndexContext}
-     */
-    deferredContext_: ZIndexContext;
-    /**
      * @protected
      * @param {import("../../Tile.js").default} tile Tile.
      * @return {boolean} Tile is drawable.
@@ -146,5 +142,4 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
     protected manageTilePyramid(frameState: import("../../Map.js").FrameState, tileSource: import("../../source/Tile.js").default, tileGrid: import("../../tilegrid/TileGrid.js").default, pixelRatio: number, projection: import("../../proj/Projection.js").default, extent: import("../../extent.js").Extent, currentZ: number, preload: number, tileCallback?: ((arg0: import("../../Tile.js").default) => void) | undefined): void;
 }
 import CanvasLayerRenderer from './Layer.js';
-import ZIndexContext from '../../render/canvas/ZIndexContext.js';
 //# sourceMappingURL=TileLayer.d.ts.map
