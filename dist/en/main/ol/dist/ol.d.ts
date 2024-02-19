@@ -772,6 +772,7 @@ declare namespace ol {
         export { $ol$source$Cluster as Cluster };
         export { $ol$source$DataTile as DataTile };
         export { $ol$source$GeoTIFF as GeoTIFF };
+        export { $ol$source$Google as Google };
         export { $ol$source$IIIF as IIIF };
         export { $ol$source$Image as Image };
         export { $ol$source$ImageArcGISRest as ImageArcGISRest };
@@ -1592,6 +1593,7 @@ import $ol$source$CartoDB from '../../ol/source/CartoDB.js';
 import $ol$source$Cluster from '../../ol/source/Cluster.js';
 import $ol$source$DataTile from '../../ol/source/DataTile.js';
 import $ol$source$GeoTIFF from '../../ol/source/GeoTIFF.js';
+import $ol$source$Google from '../../ol/source/Google.js';
 import $ol$source$IIIF from '../../ol/source/IIIF.js';
 import $ol$source$Image from '../../ol/source/Image.js';
 import $ol$source$ImageArcGISRest from '../../ol/source/ImageArcGISRest.js';
