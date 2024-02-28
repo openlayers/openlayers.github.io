@@ -187,7 +187,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L634">line 634</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L643">line 643</a>
         </div>
         
     </div>
@@ -465,6 +465,9 @@ expression must evaluate to a number; the items in the <code>colors</code> array
 (e.g. <code>'#86A136'</code>), colors using the rgba[a] functional notation (e.g. <code>'rgb(134, 161, 54)'</code> or <code>'rgba(134, 161, 54, 1)'</code>),
 named colors (e.g. <code>'red'</code>), or array literals with 3 ([r, g, b]) or 4 ([r, g, b, a]) values (with r, g, and b
 in the 0-255 range and a in the 0-1 range) (WebGL only).</li>
+<li><code>['to-string', value]</code> converts the input value to a string. If the input is a boolean, the result is &quot;true&quot; or &quot;false&quot;.
+If the input is a number, it is converted to a string as specified by the &quot;NumberToString&quot; algorithm of the ECMAScript
+Language Specification. If the input is a color, it is converted to a string of the form &quot;rgba(r,g,b,a)&quot;. (Canvas only)</li>
 </ul>
 </li>
 </ul>
@@ -571,7 +574,7 @@ Literal values can be of the following types:</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L374">line 374</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L378">line 378</a>
         </div>
         
     </div>
