@@ -441,9 +441,9 @@ An example would be to provide a default value for get: ['coalesce',['get','prop
 <li><code>['all', value1, value2, ...]</code> returns <code>true</code> if all the inputs are <code>true</code>, <code>false</code> otherwise.</li>
 <li><code>['any', value1, value2, ...]</code> returns <code>true</code> if any of the inputs are <code>true</code>, <code>false</code> otherwise.</li>
 <li><code>['between', value1, value2, value3]</code> returns <code>true</code> if <code>value1</code> is contained between <code>value2</code> and <code>value3</code>
-(inclusively), or <code>false</code> otherwise (WebGL only).</li>
+(inclusively), or <code>false</code> otherwise.</li>
 <li><code>['in', needle, haystack]</code> returns <code>true</code> if <code>needle</code> is found in <code>haystack</code>, and
-<code>false</code> otherwise (WebGL only).
+<code>false</code> otherwise.
 This operator has the following limitations:<ul>
 <li><code>haystack</code> has to be an array of numbers or strings (searching for a substring in a string is not supported yet)</li>
 <li>Only literal arrays are supported as <code>haystack</code> for now; this means that <code>haystack</code> cannot be the result of an
