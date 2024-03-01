@@ -112,7 +112,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Map with tiles from Google Maps</p>
-          <div id="docs"><p>This example demonstrates how to display tiles from Google&#39;s Map Tiles API in a map.  To use the Google Map Tiles API, you need to set up a Google Cloud project and create an API key for your application.  See the <a href="https://developers.google.com/maps/documentation/tile/overview">Map Tiles API documentation</a> for instructions. The <code>ol/source/Google</code> source can be used with a tile layer and is configured by passing properties to the constructor that are used in creating the <a href="https://developers.google.com/maps/documentation/tile/session_tokens">session token request</a> for accessing the tiles.  The <code>mapType</code> defaults to <code>&#39;roadmap&#39;</code> and can be changed to any of the supported map types.</p>
+          <div id="docs"><p>This example demonstrates how to display tiles from Google&#39;s Map Tiles API in a map.  To use the Google Map Tiles API, you need to set up a Google Cloud project and create an API key for your application.  See the <a href="https://developers.google.com/maps/documentation/tile/overview">Map Tiles API documentation</a> for instructions.<br> The <code>ol/source/Google</code> source can be used with a tile layer and is configured by passing properties to the constructor that are used in creating the <a href="https://developers.google.com/maps/documentation/tile/session_tokens">session token request</a> for accessing the tiles.  The <code>mapType</code> defaults to <code>&#39;roadmap&#39;</code> and can be changed to any of the <a href="https://developers.google.com/maps/documentation/tile/session_tokens#required_fields">supported map types</a>.<br>  When using the Google source, please make sure you comply with the Google <a href="https://developers.google.com/maps/documentation/tile/policies">Map Tiles API Policies</a>, by adding the <a href="https://developers.google.com/maps/documentation/tile/policies#logo">Google logo</a> in the bottom-left corner of the map. You can add the logo as a static image by using a custom OpenLayers control, as shown in the example below.</p>
 </div>
         </div>
       </div>
@@ -123,6 +123,7 @@
 import Layer from &#x27;ol/layer/WebGLTile.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
+import {Control, defaults as defaultControls} from &#x27;ol/control.js&#x27;;
 
 function showMap(key) {
   const source &#x3D; new Google({
@@ -137,8 +138,24 @@ function showMap(key) {
     }
   });
 
+  class GoogleLogoControl extends Control {
+    constructor() {
+      const element &#x3D; document.createElement(&#x27;img&#x27;);
+      element.style.pointerEvents &#x3D; &#x27;none&#x27;;
+      element.style.position &#x3D; &#x27;absolute&#x27;;
+      element.style.bottom &#x3D; &#x27;5px&#x27;;
+      element.style.left &#x3D; &#x27;5px&#x27;;
+      element.src &#x3D;
+        &#x27;https://developers.google.com/static/maps/documentation/images/google_on_white.png&#x27;;
+      super({
+        element: element,
+      });
+    }
+  }
+
   const map &#x3D; new Map({
     layers: [new Layer({source})],
+    controls: defaultControls().extend([new GoogleLogoControl()]),
     target: &#x27;map&#x27;,
     view: new View({
       center: [0, 0],

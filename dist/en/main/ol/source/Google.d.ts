@@ -41,10 +41,6 @@ export type Options = {
      */
     styles?: any[] | undefined;
     /**
-     * Attributions.
-     */
-    attributions?: import("./Source.js").AttributionLike | undefined;
-    /**
      * Use interpolated values when resampling.  By default,
      * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
      */
@@ -154,7 +150,6 @@ export type SessionTokenResponse = {
  * @property {Array<string>} [layerTypes] The layer types added to the map (e.g. `'layerRoadmap'`, `'layerStreetview'`, or `'layerTraffic'`).
  * @property {boolean} [overlay=false] Display only the `layerTypes` and not the underlying `mapType` (only works if `layerTypes` is provided).
  * @property {Array<Object>} [styles] [Custom styles](https://developers.google.com/maps/documentation/tile/style-reference) applied to the map.
- * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
  * @property {boolean} [interpolate=true] Use interpolated values when resampling.  By default,
  * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
  * @property {number} [cacheSize] Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.
@@ -221,10 +216,25 @@ declare class Google extends TileImage {
      */
     private sessionTokenRequest_;
     /**
+     * @type {string}
+     * @private
+     */
+    private sessionTokenValue_;
+    /**
      * @type {ReturnType<typeof setTimeout>}
      * @private
      */
     private sessionRefreshId_;
+    /**
+     * @type {string}
+     * @private
+     */
+    private previousViewportAttribution_;
+    /**
+     * @type {string}
+     * @private
+     */
+    private previousViewportExtent_;
     /**
      * @return {Error|null} A source loading error. When the source state is `error`, use this function
      * to get more information about the error. To debug a faulty configuration, you may want to use
@@ -250,6 +260,7 @@ declare class Google extends TileImage {
      * @private
      */
     private createSession_;
+    fetchAttributions(frameState: any): Promise<string>;
 }
 import TileImage from './TileImage.js';
 //# sourceMappingURL=Google.d.ts.map
