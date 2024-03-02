@@ -85,9 +85,11 @@ declare class ExecutorGroup {
      */
     private renderedContext_;
     /**
-     * @type {Array<Array<import("./ZIndexContext.js").default>>}
+     * @type {Object<number, Array<import("./ZIndexContext.js").default>>}
      */
-    deferredZIndexContexts_: Array<Array<import("./ZIndexContext.js").default>>;
+    deferredZIndexContexts_: {
+        [x: number]: Array<import("./ZIndexContext.js").default>;
+    };
     /**
      * @param {CanvasRenderingContext2D} context Context.
      * @param {import("../../transform.js").Transform} transform Transform.
@@ -137,7 +139,9 @@ declare class ExecutorGroup {
      *     When set to null, no decluttering is done, even when the executor group has a `ZIndexContext`.
      */
     execute(targetContext: CanvasRenderingContext2D, scaledCanvasSize: import('../../size.js').Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, builderTypes?: import("../canvas.js").BuilderType[] | undefined, declutterTree?: any | null): void;
-    getDeferredZIndexContexts(): import("./ZIndexContext.js").default[][];
+    getDeferredZIndexContexts(): {
+        [x: number]: import("./ZIndexContext.js").default[];
+    };
     getRenderedContext(): CanvasRenderingContext2D;
     renderDeferred(): void;
 }
