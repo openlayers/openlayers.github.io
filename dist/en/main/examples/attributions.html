@@ -173,7 +173,7 @@ function checkSize() {
   attribution.setCollapsed(small);
 }
 
-window.addEventListener(&#x27;resize&#x27;, checkSize);
+map.on(&#x27;change:size&#x27;, checkSize);
 checkSize();
 </code></pre>
       </div>
