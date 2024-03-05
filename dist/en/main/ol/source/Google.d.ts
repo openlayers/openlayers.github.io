@@ -41,6 +41,10 @@ export type Options = {
      */
     styles?: any[] | undefined;
     /**
+     * Allow the attributions to be collapsed.
+     */
+    attributionsCollapsible?: boolean | undefined;
+    /**
      * Use interpolated values when resampling.  By default,
      * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
      */
@@ -150,6 +154,7 @@ export type SessionTokenResponse = {
  * @property {Array<string>} [layerTypes] The layer types added to the map (e.g. `'layerRoadmap'`, `'layerStreetview'`, or `'layerTraffic'`).
  * @property {boolean} [overlay=false] Display only the `layerTypes` and not the underlying `mapType` (only works if `layerTypes` is provided).
  * @property {Array<Object>} [styles] [Custom styles](https://developers.google.com/maps/documentation/tile/style-reference) applied to the map.
+ * @property {boolean} [attributionsCollapsible=true] Allow the attributions to be collapsed.
  * @property {boolean} [interpolate=true] Use interpolated values when resampling.  By default,
  * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
  * @property {number} [cacheSize] Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.
@@ -260,7 +265,12 @@ declare class Google extends TileImage {
      * @private
      */
     private createSession_;
-    fetchAttributions(frameState: any): Promise<string>;
+    /**
+     * @param {import('../Map.js').FrameState} frameState The frame state.
+     * @return {Promise<string>} The attributions.
+     * @private
+     */
+    private fetchAttributions_;
 }
 import TileImage from './TileImage.js';
 //# sourceMappingURL=Google.d.ts.map
