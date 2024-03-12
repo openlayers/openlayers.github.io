@@ -77,7 +77,7 @@ export type Options = {
     /**
      * Source.
      */
-    source?: import("../source/VectorTile.js").default<import("../Feature").default<import("../geom/Geometry.js").default>> | undefined;
+    source?: import("../source/VectorTile.js").default<import("../Feature").default<import("../geom.js").Geometry>> | undefined;
     /**
      * Sets the layer as overlay on a map. The map will not manage
      * this layer in its layers collection, and the layer will be rendered on top. This is useful for
@@ -216,7 +216,7 @@ export type Options = {
  * @extends {BaseVectorLayer<import("../source/VectorTile.js").default, CanvasVectorTileLayerRenderer>}
  * @api
  */
-declare class VectorTileLayer extends BaseVectorLayer<import("../source/VectorTile.js").default<import("../Feature").default<import("../geom/Geometry.js").default>>, CanvasVectorTileLayerRenderer> {
+declare class VectorTileLayer extends BaseVectorLayer<import("../source/VectorTile.js").default<import("../Feature").default<import("../geom.js").Geometry>>, CanvasVectorTileLayerRenderer> {
     /**
      * @param {Options} [options] Options.
      */

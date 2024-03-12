@@ -85,7 +85,7 @@ export type Options = {
     /**
      * Features contained in this collection will be able to be translated together.
      */
-    features?: Collection<Feature<import("../geom/Geometry.js").default>> | undefined;
+    features?: Collection<Feature<import("../geom.js").Geometry>> | undefined;
     /**
      * A list of layers from which features should be
      * translated. Alternatively, a filter function can be provided. The

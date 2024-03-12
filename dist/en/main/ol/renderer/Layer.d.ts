@@ -2,7 +2,7 @@ export default LayerRenderer;
 /**
  * @template {import("../layer/Layer.js").default} LayerType
  */
-declare class LayerRenderer<LayerType extends import("../layer/Layer.js").default<import("../source/Source.js").default, LayerRenderer<any>>> extends Observable {
+declare class LayerRenderer<LayerType extends import("../layer/Layer.js").default<import("../source.js").Source, LayerRenderer<any>>> extends Observable {
     /**
      * @param {LayerType} layer Layer.
      */

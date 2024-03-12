@@ -1,5 +1,5 @@
 export default BaseVectorLayer;
-export type Options<VectorSourceType extends import("../source/Vector.js").default<import("../Feature").default<import("../geom/Geometry.js").default>> | import("../source/VectorTile.js").default<import("../Feature").default<import("../geom/Geometry.js").default>>> = {
+export type Options<VectorSourceType extends import("../source/Vector.js").default<import("../Feature").default<import("../geom.js").Geometry>> | import("../source/VectorTile.js").default<import("../Feature").default<import("../geom.js").Geometry>>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -117,7 +117,7 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
  * @extends {Layer<VectorSourceType, RendererType>}
  * @api
  */
-declare class BaseVectorLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature").default<import("../geom/Geometry.js").default>> | import("../source/VectorTile.js").default<import("../Feature").default<import("../geom/Geometry.js").default>>, RendererType extends import("../renderer/canvas/VectorLayer.js").default | import("../renderer/canvas/VectorTileLayer.js").default | import("../renderer/canvas/VectorImageLayer.js").default | import("../renderer/webgl/PointsLayer.js").default> extends Layer<VectorSourceType, RendererType> {
+declare class BaseVectorLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature").default<import("../geom.js").Geometry>> | import("../source/VectorTile.js").default<import("../Feature").default<import("../geom.js").Geometry>>, RendererType extends import("../renderer/canvas/VectorLayer.js").default | import("../renderer/canvas/VectorTileLayer.js").default | import("../renderer/canvas/VectorImageLayer.js").default | import("../renderer/webgl/PointsLayer.js").default> extends Layer<VectorSourceType, RendererType> {
     /**
      * @param {Options<VectorSourceType>} [options] Options.
      */

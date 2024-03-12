@@ -5,7 +5,7 @@
  * @param {WriteOptions|ReadOptions} [options] Options.
  * @return {T} Transformed geometry.
  */
-export function transformGeometryWithOptions<T extends import("../geom/Geometry.js").default | RenderFeature>(geometry: T, write: boolean, options?: ReadOptions | WriteOptions | undefined): T;
+export function transformGeometryWithOptions<T extends import("../geom.js").Geometry | RenderFeature>(geometry: T, write: boolean, options?: ReadOptions | WriteOptions | undefined): T;
 /**
  * @param {import("../extent.js").Extent} extent Extent.
  * @param {ReadOptions} [options] Read options.

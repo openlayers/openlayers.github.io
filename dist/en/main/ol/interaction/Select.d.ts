@@ -164,7 +164,7 @@ export type Options = {
      * used by the interaction is returned by
      * {@link module :ol/interaction/Select~Select#getFeatures}.
      */
-    features?: Collection<Feature<import("../geom/Geometry.js").default>> | undefined;
+    features?: Collection<Feature<import("../geom.js").Geometry>> | undefined;
     /**
      * A function
      * that takes an {@link module :ol/Feature~Feature} and an

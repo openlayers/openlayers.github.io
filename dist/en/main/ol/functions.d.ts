@@ -23,7 +23,7 @@ export function VOID(): void;
  * @return {function(...any): ReturnType} The memoized function.
  * @template ReturnType
  */
-export function memoizeOne<ReturnType_1>(fn: (...arg0: any[]) => ReturnType_1): (...arg0: any[]) => ReturnType_1;
+export function memoizeOne<ReturnType>(fn: (...arg0: any[]) => ReturnType): (...arg0: any[]) => ReturnType;
 /**
  * @template T
  * @param {function(): (T | Promise<T>)} getter A function that returns a value or a promise for a value.

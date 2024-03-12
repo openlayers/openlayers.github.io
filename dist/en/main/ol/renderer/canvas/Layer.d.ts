@@ -8,7 +8,7 @@ export default CanvasLayerRenderer;
  * @template {import("../../layer/Layer.js").default} LayerType
  * @extends {LayerRenderer<LayerType>}
  */
-declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js").default<import("../../source/Source.js").default, LayerRenderer<any>>> extends LayerRenderer<LayerType> {
+declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js").default<import("../../source.js").Source, LayerRenderer<any>>> extends LayerRenderer<LayerType> {
     /**
      * @protected
      * @type {HTMLElement}

@@ -10,7 +10,7 @@ export class DragAndDropEvent extends Event {
      * @param {Array<import("../Feature.js").default>} [features] Features.
      * @param {import("../proj/Projection.js").default} [projection] Projection.
      */
-    constructor(type: DragAndDropEventType, file: File, features?: import("../Feature.js").default<import("../geom/Geometry.js").default>[] | undefined, projection?: import("../proj/Projection.js").default | undefined);
+    constructor(type: DragAndDropEventType, file: File, features?: import("../Feature.js").default<import("../geom.js").Geometry>[] | undefined, projection?: import("../proj.js").Projection | undefined);
     /**
      * The features parsed from dropped data.
      * @type {Array<import("../Feature.js").FeatureLike>|undefined}
@@ -44,7 +44,7 @@ export type Options = {
      * source without removing the existing features (append only), instead of
      * providing the source option listen for the "addfeatures" event.
      */
-    source?: import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>> | undefined;
+    source?: import("../source/Vector.js").default<import("../Feature.js").default<import("../geom.js").Geometry>> | undefined;
     /**
      * Target projection. By default, the map's view's projection is used.
      */

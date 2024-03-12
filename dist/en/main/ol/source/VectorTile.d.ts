@@ -208,7 +208,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
  * @api
  * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
  */
-declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom/Geometry.js").default>> extends UrlTile {
+declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>> extends UrlTile {
     /**
      * @param {!Options<FeatureType>} options Vector tile options.
      */

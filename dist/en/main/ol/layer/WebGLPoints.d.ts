@@ -1,5 +1,5 @@
 export default WebGLPointsLayer;
-export type Options<VectorSourceType extends import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>>> = {
+export type Options<VectorSourceType extends import("../source/Vector.js").default<import("../Feature.js").default<import("../geom.js").Geometry>>> = {
     /**
      * Literal style to apply to the layer features.
      */
@@ -124,7 +124,7 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
  * @extends {Layer<VectorSourceType, WebGLPointsLayerRenderer>}
  * @fires import("../render/Event.js").RenderEvent
  */
-declare class WebGLPointsLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>>> extends Layer<VectorSourceType, WebGLPointsLayerRenderer> {
+declare class WebGLPointsLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature.js").default<import("../geom.js").Geometry>>> extends Layer<VectorSourceType, WebGLPointsLayerRenderer> {
     /**
      * @param {Options<VectorSourceType>} options Options.
      */

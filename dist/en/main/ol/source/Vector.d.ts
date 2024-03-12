@@ -12,7 +12,7 @@
  * type.
  * @template {import("../Feature.js").FeatureLike} [FeatureClass=import("../Feature.js").default]
  */
-export class VectorSourceEvent<FeatureClass extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom/Geometry.js").default>> extends Event {
+export class VectorSourceEvent<FeatureClass extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>> extends Event {
     /**
      * @param {string} type Type.
      * @param {FeatureClass} [feature] Feature.
@@ -42,7 +42,7 @@ export type LoadingStrategy = (arg0: import("../extent.js").Extent, arg1: number
 /**
  * *
  */
-export type FeatureClassOrArrayOfRenderFeatures<T extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom/Geometry.js").default>> = T extends RenderFeature ? T | Array<T> : T;
+export type FeatureClassOrArrayOfRenderFeatures<T extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>> = T extends RenderFeature ? T | Array<T> : T;
 /**
  * *
  */
@@ -274,7 +274,7 @@ import Event from '../events/Event.js';
  * @api
  * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
  */
-declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom/Geometry.js").default>> extends Source {
+declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>> extends Source {
     /**
      * @param {Options<FeatureType>} [options] Vector source options.
      */

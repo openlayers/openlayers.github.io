@@ -52,7 +52,7 @@ export type Options = {
  * @template {import("../../layer/Layer.js").default} LayerType
  * @extends {LayerRenderer<LayerType>}
  */
-declare class WebGLLayerRenderer<LayerType extends import("../../layer/Layer.js").default<import("../../source/Source.js").default, LayerRenderer<any>>> extends LayerRenderer<LayerType> {
+declare class WebGLLayerRenderer<LayerType extends import("../../layer/Layer.js").default<import("../../source.js").Source, LayerRenderer<any>>> extends LayerRenderer<LayerType> {
     /**
      * @param {LayerType} layer Layer.
      * @param {Options} [options] Options.

@@ -48,7 +48,7 @@ export type Options = {
     /**
      * Tile grid.
      */
-    tileGrid?: import("../tilegrid/TileGrid.js").default | undefined;
+    tileGrid?: import("../tilegrid.js").TileGrid | undefined;
     /**
      * Optional function to load a tile given a URL. The default is
      * ```js

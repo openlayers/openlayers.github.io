@@ -53,7 +53,7 @@ export type Options = {
     /**
      * TileGrid.
      */
-    tileGrid?: import("../tilegrid/TileGrid.js").default | undefined;
+    tileGrid?: import("../tilegrid.js").TileGrid | undefined;
     /**
      * WrapX.
      */
@@ -262,7 +262,7 @@ declare class TileSource extends Source {
      * @return {import("../tilecoord.js").TileCoord} Tile coordinate to be passed to the tileUrlFunction or
      *     null if no tile URL should be created for the passed `tileCoord`.
      */
-    getTileCoordForTileUrlFunction(tileCoord: import("../tilecoord.js").TileCoord, projection?: import("../proj/Projection.js").default | undefined): import("../tilecoord.js").TileCoord;
+    getTileCoordForTileUrlFunction(tileCoord: import("../tilecoord.js").TileCoord, projection?: import("../proj.js").Projection | undefined): import("../tilecoord.js").TileCoord;
     /**
      * Remove all cached tiles from the source. The next render cycle will fetch new tiles.
      * @api

@@ -14,7 +14,7 @@
  * @param {import("../../proj/Projection.js").default} [projection] Render projection.
  * @return {ImageData} Hit detection image data.
  */
-export function createHitDetectionImageData(size: import("../../size.js").Size, transforms: Array<import("../../transform.js").Transform>, features: Array<import("../../Feature.js").FeatureLike>, styleFunction: import("../../style/Style.js").StyleFunction | undefined, extent: import("../../extent.js").Extent, resolution: number, rotation: number, squaredTolerance?: number | undefined, projection?: import("../../proj/Projection.js").default | undefined): ImageData;
+export function createHitDetectionImageData(size: import("../../size.js").Size, transforms: Array<import("../../transform.js").Transform>, features: Array<import("../../Feature.js").FeatureLike>, styleFunction: import("../../style/Style.js").StyleFunction | undefined, extent: import("../../extent.js").Extent, resolution: number, rotation: number, squaredTolerance?: number | undefined, projection?: import("../../proj.js").Projection | undefined): ImageData;
 /**
  * @param {import("../../pixel").Pixel} pixel Pixel coordinate on the hit
  * detection canvas in css pixels.
