@@ -87,7 +87,7 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
      * @private
      * @type {CanvasRenderingContext2D}
      */
-    private compositionContext_;
+    private targetContext_;
     /**
      * @private
      * @type {number}
@@ -100,8 +100,14 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
      *     `false` to only render non-declutterable items, `undefined` to render all.
      */
     renderWorlds(executorGroup: ExecutorGroup, frameState: import("../../Map.js").FrameState, declutterable?: boolean | undefined): void;
-    setupCompositionContext_(): void;
-    releaseCompositionContext_(): void;
+    /**
+     * @private
+     */
+    private setDrawContext_;
+    /**
+     * @private
+     */
+    private resetDrawContext_;
     /**
      * Render declutter items for this layer
      * @param {import("../../Map.js").FrameState} frameState Frame state.
