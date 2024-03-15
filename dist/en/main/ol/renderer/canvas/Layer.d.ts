@@ -78,10 +78,10 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
     /**
      * Get a rendering container from an existing target, if compatible.
      * @param {HTMLElement} target Potential render target.
-     * @param {string} transform CSS Transform.
-     * @param {string} [backgroundColor] Background color.
+     * @param {import('../../transform.js').Transform} transform Transform parameters for the CSS matrix.
+     * @param {import('../../Map.js').FrameState} [frameState] Frame state.
      */
-    useContainer(target: HTMLElement, transform: string, backgroundColor?: string | undefined): void;
+    useContainer(target: HTMLElement, transform: import('../../transform.js').Transform, frameState?: import("../../Map.js").FrameState | undefined): void;
     /**
      * @param {CanvasRenderingContext2D} context Context.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
