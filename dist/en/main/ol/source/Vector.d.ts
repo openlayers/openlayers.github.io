@@ -608,8 +608,15 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      */
     removeLoadedExtent(extent: import("../extent.js").Extent): void;
     /**
-     * Remove a single feature from the source.  If you want to remove all features
+     * Batch remove features from the source.  If you want to remove all features
      * at once, use the {@link module:ol/source/Vector~VectorSource#clear #clear()} method
+     * instead.
+     * @param {Array<FeatureType>} features Features to remove.
+     */
+    removeFeatures(features: Array<FeatureType>): void;
+    /**
+     * Remove a single feature from the source. If you want to batch remove
+     * features, use the {@link module:ol/source/Vector~VectorSource#removeFeatures #removeFeatures()} method
      * instead.
      * @param {FeatureType} feature Feature to remove.
      * @api
