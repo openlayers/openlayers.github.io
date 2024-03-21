@@ -48,10 +48,6 @@ export type FrameState = {
      */
     layerStatesArray: Array<import("./layer/Layer.js").State>;
     /**
-     * Current layer transform.
-     */
-    layerTransform: import('./transform.js').Transform;
-    /**
      * LayerIndex.
      */
     layerIndex: number;

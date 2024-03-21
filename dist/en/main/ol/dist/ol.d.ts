@@ -898,7 +898,6 @@ declare namespace ol {
         export { _ol_transform$composeCssTransform as composeCssTransform };
         export { _ol_transform$create as create };
         export { _ol_transform$determinant as determinant };
-        export { _ol_transform$equals as equals };
         export { _ol_transform$invert as invert };
         export { _ol_transform$makeInverse as makeInverse };
         export { _ol_transform$makeScale as makeScale };
@@ -1687,7 +1686,6 @@ import { compose as _ol_transform$compose } from '../../ol/transform.js';
 import { composeCssTransform as _ol_transform$composeCssTransform } from '../../ol/transform.js';
 import { create as _ol_transform$create } from '../../ol/transform.js';
 import { determinant as _ol_transform$determinant } from '../../ol/transform.js';
-import { equals as _ol_transform$equals } from '../../ol/transform.js';
 import { invert as _ol_transform$invert } from '../../ol/transform.js';
 import { makeInverse as _ol_transform$makeInverse } from '../../ol/transform.js';
 import { makeScale as _ol_transform$makeScale } from '../../ol/transform.js';

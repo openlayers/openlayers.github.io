@@ -10,12 +10,6 @@ export function create(): number[];
  */
 export function reset(transform: number[]): number[];
 /**
- * @param {!Transform} transform1 Transform 1.
- * @param {!Transform} transform2 Transform 2.
- * @return {boolean} Transform 1 and 2 are pixel equal.
- */
-export function equals(transform1: number[], transform2: number[]): boolean;
-/**
  * Multiply the underlying matrices of two transforms and return the result in
  * the first transform.
  * @param {!Transform} transform1 Transform parameters of matrix 1.
