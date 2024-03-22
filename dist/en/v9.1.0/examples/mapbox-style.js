@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6190],{43577:function(n,t,e){var o=e(5596);(0,e(99872).Ay)("map","https://api.maptiler.com/maps/topo-v2/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB").then((function(n){n.addControl(new o.A)}))}},function(n){var t;t=43577,n(n.s=t)}]);
+//# sourceMappingURL=mapbox-style.js.map
