@@ -612,6 +612,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      * at once, use the {@link module:ol/source/Vector~VectorSource#clear #clear()} method
      * instead.
      * @param {Array<FeatureType>} features Features to remove.
+     * @api
      */
     removeFeatures(features: Array<FeatureType>): void;
     /**
