@@ -207,7 +207,8 @@ const map &#x3D; new Map({
     new TileLayer({
       source: new XYZ({
         attributions: attributions,
-        url: &#x27;https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key&#x3D;&#x27; + key,
+        url:
+          &#x27;https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key&#x3D;&#x27; + key,
         tileSize: 512,
         maxZoom: 22,
       }),
