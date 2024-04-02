@@ -225,7 +225,8 @@ const notInterpolated &#x3D; new TileLayer({
   source: new XYZ({
     attributions: attributions,
     url:
-      &#x27;https://api.maptiler.com/tiles/terrain-rgb/{z}/{x}/{y}.png?key&#x3D;&#x27; + key,
+      &#x27;https://api.maptiler.com/tiles/terrain-rgb-v2/{z}/{x}/{y}.webp?key&#x3D;&#x27; +
+      key,
     tileSize: 512,
     maxZoom: 12,
     crossOrigin: &#x27;&#x27;,
@@ -237,7 +238,8 @@ const interpolated &#x3D; new TileLayer({
   source: new XYZ({
     attributions: attributions,
     url:
-      &#x27;https://api.maptiler.com/tiles/terrain-rgb/{z}/{x}/{y}.png?key&#x3D;&#x27; + key,
+      &#x27;https://api.maptiler.com/tiles/terrain-rgb-v2/{z}/{x}/{y}.webp?key&#x3D;&#x27; +
+      key,
     tileSize: 512,
     maxZoom: 12,
     crossOrigin: &#x27;&#x27;,
