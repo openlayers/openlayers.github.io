@@ -278,7 +278,8 @@ import XYZ from &#x27;ol/source/XYZ.js&#x27;;
 
 const raster &#x3D; new TileLayer({
   source: new XYZ({
-    url: &#x27;https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key&#x3D;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;,
+    url: &#x27;https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key&#x3D;get_your_own_D6rA4zTHduk6KOKTXzGB&#x27;,
+    tileSize: 512,
     maxZoom: 20,
   }),
 });

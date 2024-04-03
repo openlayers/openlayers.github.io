@@ -63,7 +63,8 @@ const attributions =
 
 const aerial = new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A({
   attributions: attributions,
-  url: 'https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key=' + key,
+  url: 'https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=' + key,
+  tileSize: 512,
   maxZoom: 20,
   crossOrigin: '',
 });

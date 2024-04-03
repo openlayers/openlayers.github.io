@@ -156,7 +156,8 @@ const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#
 
 const imagery &#x3D; new TileLayer({
   source: new XYZ({
-    url: &#x27;https://api.maptiler.com/tiles/satellite/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
+    url: &#x27;https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
+    tileSize: 512,
     attributions:
       &#x27;&lt;a href&#x3D;&quot;https://www.maptiler.com/copyright/&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; MapTiler&lt;/a&gt; &#x27; +
       &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;,
