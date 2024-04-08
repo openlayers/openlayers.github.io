@@ -80,7 +80,6 @@ export type Options = {
 };
 import Event from '../events/Event.js';
 import BaseLayer from './Base.js';
-import EventType from '../events/EventType.js';
 /**
  * @classdesc
  * A {@link module:ol/Collection~Collection} of layers that are handled together.
