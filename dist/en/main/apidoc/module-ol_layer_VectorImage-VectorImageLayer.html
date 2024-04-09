@@ -195,7 +195,7 @@ options means that <code>title</code> is observable, and has get/set accessors.<
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorImage.js">layer/VectorImage.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorImage.js#L66">line 66</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorImage.js#L68">line 68</a>
         </div>
         
     </div>
@@ -590,6 +590,12 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
             
                 
 <span class="param-type">boolean</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
 
 
                 
@@ -602,11 +608,11 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
 
             <td  class="description last">
                 
-                <p>Declutter images and text on this layer. The priority
-is defined by the <code>zIndex</code> of the style and the render order of features. Higher z-index means higher
-priority. Within the same z-index, a feature rendered before another has higher priority. Items will
-not be decluttered against or together with items on other layers with the same <code>declutter</code> value. If
-that is needed, use <a href="module-ol_layer_Vector-VectorLayer.html"><code>VectorLayer</code></a> instead.</p></td>
+                <p>Declutter images and text. Any truthy value will enable
+decluttering. Within a layer, a feature rendered before another has higher priority. All layers with the
+same <code>declutter</code> value will be decluttered together. The priority is determined by the drawing order of the
+layers with the same <code>declutter</code> value. Higher in the layer stack means higher priority. To declutter distinct
+layers or groups of layers separately, use different truthy values for <code>declutter</code>.</p></td>
         </tr>
 
 	
@@ -623,6 +629,9 @@ that is needed, use <a href="module-ol_layer_Vector-VectorLayer.html"><code>Vect
 <span class="param-type"><a href="module-ol_style_Style.html#~StyleLike">StyleLike</a></span>
 |
 
+<span class="param-type"><a href="module-ol_style_flat.html#~FlatStyleLike">FlatStyleLike</a></span>
+|
+
 <span class="param-type">null</span>
 
  | undefined
@@ -637,6 +646,32 @@ that is needed, use <a href="module-ol_layer_Vector-VectorLayer.html"><code>Vect
                 <p>Layer style. When set to <code>null</code>, only
 features that have their own style will be rendered. See <a href="module-ol_style_Style-Style.html"><code>Style</code></a> for the default style
 which will be used if this is not set.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>background</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_layer_Base.html#~BackgroundColor">BackgroundColor</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Background color for the layer. If not specified, no background
+will be rendered.</p></td>
         </tr>
 
 	
