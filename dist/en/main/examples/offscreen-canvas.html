@@ -530,13 +530,20 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
   frameState.viewState.projection &#x3D; get(&#x27;EPSG:3857&#x27;);
   layers.forEach((layer) &#x3D;&gt; {
     if (inView(layer.getLayerState(), frameState.viewState)) {
+      if (layer.getDeclutter() &amp;&amp; !frameState.declutterTree) {
+        frameState.declutter &#x3D; {};
+      }
       const renderer &#x3D; layer.getRenderer();
       renderer.renderFrame(frameState, canvas);
     }
   });
-  layers.forEach(
-    (layer) &#x3D;&gt; layer.getRenderer().context &amp;&amp; layer.renderDeclutter(frameState),
-  );
+  layers.forEach((layer) &#x3D;&gt; {
+    if (!layer.getRenderer().context) {
+      return;
+    }
+    layer.renderDeclutter(frameState, layer.getLayerState());
+    layer.renderDeferred(frameState);
+  });
   if (tileQueue.getTilesLoading() &lt; maxTotalLoading) {
     tileQueue.reprioritize();
     tileQueue.loadMoreTiles(maxTotalLoading, maxNewLoads);
@@ -561,7 +568,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;9.1.1-dev&quot;,
     &quot;json-stringify-safe&quot;: &quot;^5.0.1&quot;,
-    &quot;ol-mapbox-style&quot;: &quot;^12.2.0&quot;
+    &quot;ol-mapbox-style&quot;: &quot;^12.3.1&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;vite&quot;: &quot;^3.2.3&quot;
