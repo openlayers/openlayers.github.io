@@ -90,6 +90,12 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      */
     protected clipUnrotated(context: CanvasRenderingContext2D, frameState: import("../../Map.js").FrameState, extent: import("../../extent.js").Extent): void;
     /**
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @param {HTMLElement} target Target that may be used to render content to.
+     * @protected
+     */
+    protected prepareContainer(frameState: import("../../Map.js").FrameState, target: HTMLElement): void;
+    /**
      * @param {import("../../render/EventType.js").default} type Event type.
      * @param {CanvasRenderingContext2D} context Context.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
