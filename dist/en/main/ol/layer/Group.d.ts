@@ -1,5 +1,5 @@
 /**
- * @typedef {'addlayer'|'removelayer'} EventType
+ * @typedef {'addlayer'|'removelayer'} GroupEventType
  */
 /**
  * @classdesc
@@ -9,10 +9,10 @@
  */
 export class GroupEvent extends Event {
     /**
-     * @param {EventType} type The event type.
+     * @param {GroupEventType} type The event type.
      * @param {BaseLayer} layer The layer.
      */
-    constructor(type: EventType, layer: BaseLayer);
+    constructor(type: GroupEventType, layer: BaseLayer);
     /**
      * The added or removed layer.
      * @type {BaseLayer}
@@ -21,7 +21,7 @@ export class GroupEvent extends Event {
     layer: BaseLayer;
 }
 export default LayerGroup;
-export type EventType = 'addlayer' | 'removelayer';
+export type GroupEventType = 'addlayer' | 'removelayer';
 /**
  * *
  */
