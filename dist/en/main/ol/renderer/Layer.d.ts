@@ -20,10 +20,6 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
      */
     protected layer_: LayerType;
     /**
-     * @type {import("../render/canvas/ExecutorGroup").default}
-     */
-    declutterExecutorGroup: import("../render/canvas/ExecutorGroup").default;
-    /**
      * Asynchronous layer level hit detection.
      * @param {import("../pixel.js").Pixel} pixel Pixel.
      * @return {Promise<Array<import("../Feature").FeatureLike>>} Promise that resolves with
