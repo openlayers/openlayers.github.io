@@ -70,6 +70,11 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     private renderedRenderOrder_;
     /**
      * @private
+     * @type {boolean}
+     */
+    private renderedFrameDeclutter_;
+    /**
+     * @private
      * @type {import("../../render/canvas/ExecutorGroup").default}
      */
     private replayGroup_;
