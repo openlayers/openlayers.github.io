@@ -11,7 +11,7 @@ export default TileLayer;
  * @extends BaseTileLayer<TileSourceType, CanvasTileLayerRenderer>
  * @api
  */
-declare class TileLayer<TileSourceType extends import("../source/Tile.js").default> extends BaseTileLayer<TileSourceType, CanvasTileLayerRenderer<TileLayer<import("../source/Tile.js").default> | import("./VectorTile.js").default>> {
+declare class TileLayer<TileSourceType extends import("../source/Tile.js").default> extends BaseTileLayer<TileSourceType, CanvasTileLayerRenderer<TileLayer<import("../source/Tile.js").default> | import("./VectorTile.js").default<any>>> {
     /**
      * @param {import("./BaseTile.js").Options<TileSourceType>} [options] Tile layer options.
      */

@@ -10,11 +10,11 @@ export default VectorLayer;
  * property on the layer object; for example, setting `title: 'My Title'` in the
  * options means that `title` is observable, and has get/set accessors.
  *
- * @template {import("../source/Vector.js").default} VectorSourceType
+ * @template {import("../source/Vector.js").default<import('../Feature.js').FeatureLike>} VectorSourceType
  * @extends {BaseVectorLayer<VectorSourceType, CanvasVectorLayerRenderer>}
  * @api
  */
-declare class VectorLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature.js").default<import("../geom.js").Geometry>>> extends BaseVectorLayer<VectorSourceType, CanvasVectorLayerRenderer> {
+declare class VectorLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature.js").FeatureLike>> extends BaseVectorLayer<VectorSourceType, CanvasVectorLayerRenderer> {
     /**
      * @param {import("./BaseVector.js").Options<VectorSourceType>} [options] Options.
      */

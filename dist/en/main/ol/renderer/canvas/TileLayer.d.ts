@@ -6,7 +6,7 @@ export default CanvasTileLayerRenderer;
  * @template {import("../../layer/Tile.js").default<import("../../source/Tile.js").default>|import("../../layer/VectorTile.js").default} [LayerType=import("../../layer/Tile.js").default<import("../../source/Tile.js").default>|import("../../layer/VectorTile.js").default]
  * @extends {CanvasLayerRenderer<LayerType>}
  */
-declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile.js").default<import("../../source/Tile.js").default> | import("../../layer/VectorTile.js").default = import("../../layer/Tile.js").default<import("../../source/Tile.js").default> | import("../../layer/VectorTile.js").default> extends CanvasLayerRenderer<LayerType> {
+declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile.js").default<import("../../source/Tile.js").default> | import("../../layer/VectorTile.js").default<any> = import("../../layer/Tile.js").default<import("../../source/Tile.js").default> | import("../../layer/VectorTile.js").default<any>> extends CanvasLayerRenderer<LayerType> {
     /**
      * @param {LayerType} tileLayer Tile layer.
      */

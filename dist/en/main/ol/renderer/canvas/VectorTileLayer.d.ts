@@ -5,11 +5,11 @@ export default CanvasVectorTileLayerRenderer;
  * @api
  * @extends {CanvasTileLayerRenderer<import("../../layer/VectorTile.js").default>}
  */
-declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<import("../../layer/VectorTile.js").default> {
+declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<import("../../layer/VectorTile.js").default<any>> {
     /**
      * @param {import("../../layer/VectorTile.js").default} layer VectorTile layer.
      */
-    constructor(layer: import("../../layer/VectorTile.js").default);
+    constructor(layer: import("../../layer/VectorTile.js").default<any>);
     /** @private */
     private boundHandleStyleImageChange_;
     /**
