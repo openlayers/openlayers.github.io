@@ -152,16 +152,20 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Example of a map with an interactive svg layer.</p>
-          <div id="docs"><p>With a plain <code>ol/Layer</code> and a <code>render</code> function, we can use an interactive svg as layer. Hover over countries to see the interactivity that is defined purely with a css <code>:hover</code> pseudo-class.</p>
+          <div id="docs"><p>With a plain <code>ol/Layer</code> and a <code>render</code> function, we can use an interactive svg as layer. Hover over countries to see the interactivity that is defined purely with a css <code>:hover</code> pseudo-class. Other layers can be added to the same map. The blue circle is a vector feature on a separate layer.</p>
 </div>
         </div>
       </div>
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import Layer from &#x27;ol/layer/Layer.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import Feature from &#x27;ol/Feature.js&#x27;;
+import Layer from &#x27;ol/layer/Layer.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
+import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
+import {Point} from &#x27;ol/geom.js&#x27;;
+import {Vector} from &#x27;ol/layer.js&#x27;;
 import {composeCssTransform} from &#x27;ol/transform.js&#x27;;
 
 const map &#x3D; new Map({
@@ -191,6 +195,7 @@ svgContainer.style.width &#x3D; width + &#x27;px&#x27;;
 svgContainer.style.height &#x3D; height + &#x27;px&#x27;;
 svgContainer.style.transformOrigin &#x3D; &#x27;top left&#x27;;
 svgContainer.className &#x3D; &#x27;svg-layer&#x27;;
+svgContainer.style.position &#x3D; &#x27;absolute&#x27;;
 
 map.addLayer(
   new Layer({
@@ -210,6 +215,19 @@ map.addLayer(
       svgContainer.style.transform &#x3D; cssTransform;
       svgContainer.style.opacity &#x3D; this.getOpacity();
       return svgContainer;
+    },
+  }),
+);
+
+map.addLayer(
+  new Vector({
+    source: new VectorSource({
+      features: [new Feature(new Point([0, 0]))],
+    }),
+    style: {
+      &#x27;circle-fill-color&#x27;: &#x27;blue&#x27;,
+      &#x27;circle-radius&#x27;: 10,
+      &#x27;circle-stroke-color&#x27;: &#x27;white&#x27;,
     },
   }),
 );
@@ -235,6 +253,10 @@ map.addLayer(
 
       .svg-layer path:hover {
         opacity: 0.4;
+      }
+
+      .ol-layer {
+        pointer-events: none;
       }
     &lt;/style&gt;
   &lt;/head&gt;
