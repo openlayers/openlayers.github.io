@@ -20,5 +20,9 @@ declare class PaletteTexture {
      * @return {WebGLTexture} The texture.
      */
     getTexture(gl: WebGLRenderingContext): WebGLTexture;
+    /**
+     * @param {WebGLRenderingContext} gl Rendering context.
+     */
+    delete(gl: WebGLRenderingContext): void;
 }
 //# sourceMappingURL=PaletteTexture.d.ts.map
