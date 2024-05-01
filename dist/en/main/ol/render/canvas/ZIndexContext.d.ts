@@ -32,6 +32,11 @@ declare class ZIndexContext {
      */
     private pushMethodArgs_;
     /**
+     * Push a function that renders to the context directly.
+     * @param {function(CanvasRenderingContext2D): void} render Function.
+     */
+    pushFunction(render: (arg0: CanvasRenderingContext2D) => void): void;
+    /**
      * Get a proxy for CanvasRenderingContext2D which does not support getting state
      * (e.g. `context.globalAlpha`, which will return `undefined`). To set state, if it relies on a
      * previous state (e.g. `context.globalAlpha = context.globalAlpha / 2`), set a function,
