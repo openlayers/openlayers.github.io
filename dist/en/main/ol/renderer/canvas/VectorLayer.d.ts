@@ -20,9 +20,15 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
      */
     hitDetectionImageData_: ImageData | null;
     /**
+     * @private
+     * @type {boolean}
+     */
+    private clipped_;
+    /**
+     * @private
      * @type {Array<import("../../Feature.js").default>}
      */
-    renderedFeatures_: Array<import("../../Feature.js").default>;
+    private renderedFeatures_;
     /**
      * @private
      * @type {number}
