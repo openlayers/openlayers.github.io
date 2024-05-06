@@ -105,7 +105,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
      * });
      * ```
      */
-    loader?: import("../featureloader.js").FeatureLoader | undefined;
+    loader?: import("../featureloader.js").FeatureLoader<FeatureType> | undefined;
     /**
      * This source may have overlapping geometries.
      * Setting this to `false` (e.g. for sources with polygons that represent administrative
@@ -182,7 +182,7 @@ import Event from '../events/Event.js';
  * and the collection will stay in sync.
  * @property {import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>>} [format] The feature format used by the XHR
  * feature loader when `url` is set. Required if `url` is set, otherwise ignored.
- * @property {import("../featureloader.js").FeatureLoader} [loader]
+ * @property {import("../featureloader.js").FeatureLoader<FeatureType>} [loader]
  * The loader function used to load features, from a remote source for example.
  * If this is not set and `url` is set, the source will create and use an XHR
  * feature loader. The `'featuresloadend'` and `'featuresloaderror'` events
@@ -294,7 +294,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     un: VectorSourceOnSignature<void>;
     /**
      * @private
-     * @type {import("../featureloader.js").FeatureLoader}
+     * @type {import("../featureloader.js").FeatureLoader<FeatureType>}
      */
     private loader_;
     /**
@@ -643,10 +643,10 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     /**
      * Set the new loader of the source. The next render cycle will use the
      * new loader.
-     * @param {import("../featureloader.js").FeatureLoader} loader The loader to set.
+     * @param {import("../featureloader.js").FeatureLoader<FeatureType>} loader The loader to set.
      * @api
      */
-    setLoader(loader: import("../featureloader.js").FeatureLoader): void;
+    setLoader(loader: import("../featureloader.js").FeatureLoader<FeatureType>): void;
     /**
      * Points the source to a new url. The next render cycle will use the new url.
      * @param {string|import("../featureloader.js").FeatureUrlFunction} url Url.
