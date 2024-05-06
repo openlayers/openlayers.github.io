@@ -1,5 +1,5 @@
 export default WebGLPointsLayer;
-export type Options<VectorSourceType extends import("../source/Vector.js").default<import("../Feature.js").default<import("../geom.js").Geometry>>> = {
+export type Options<VectorSourceType extends import("../source/Vector.js").default<import("../Feature").FeatureLike>> = {
     /**
      * Literal style to apply to the layer features.
      */
@@ -65,7 +65,7 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
     } | undefined;
 };
 /**
- * @template {import("../source/Vector.js").default} VectorSourceType
+ * @template {import("../source/Vector.js").default<import('../Feature').FeatureLike>} VectorSourceType
  * @typedef {Object} Options
  * @property {import('../style/webgl.js').WebGLStyle} style Literal style to apply to the layer features.
  * @property {string} [className='ol-layer'] A CSS class name to set to the layer element.
@@ -120,11 +120,11 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
  * property on the layer object; for example, setting `title: 'My Title'` in the
  * options means that `title` is observable, and has get/set accessors.
  *
- * @template {import("../source/Vector.js").default} VectorSourceType
+ * @template {import("../source/Vector.js").default<import('../Feature').FeatureLike>} VectorSourceType
  * @extends {Layer<VectorSourceType, WebGLPointsLayerRenderer>}
  * @fires import("../render/Event.js").RenderEvent
  */
-declare class WebGLPointsLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature.js").default<import("../geom.js").Geometry>>> extends Layer<VectorSourceType, WebGLPointsLayerRenderer> {
+declare class WebGLPointsLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature").FeatureLike>> extends Layer<VectorSourceType, WebGLPointsLayerRenderer> {
     /**
      * @param {Options<VectorSourceType>} options Options.
      */
