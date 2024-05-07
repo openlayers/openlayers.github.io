@@ -148,7 +148,9 @@
     
       <div class="class-description col-lg-7 align-self-center ps-0"><p>Layer source for map tiles from an <a href="https://ogcapi.ogc.org/tiles/">OGC API - Tiles</a> service that provides &quot;map&quot; type tiles.
 The service must conform to at least the core (<a href="http://www.opengis.net/spec/ogcapi-tiles-1/1.0/conf/core">http://www.opengis.net/spec/ogcapi-tiles-1/1.0/conf/core</a>)
-and tileset (<a href="http://www.opengis.net/spec/ogcapi-tiles-1/1.0/conf/tileset">http://www.opengis.net/spec/ogcapi-tiles-1/1.0/conf/tileset</a>) conformance classes.</p></div>
+and tileset (<a href="http://www.opengis.net/spec/ogcapi-tiles-1/1.0/conf/tileset">http://www.opengis.net/spec/ogcapi-tiles-1/1.0/conf/tileset</a>) conformance classes. For supporting the <code>collections</code>
+option, the service must conform to the collections selection
+(<a href="http://www.opengis.net/spec/ogcapi-tiles-1/1.0/conf/collections-selection">http://www.opengis.net/spec/ogcapi-tiles-1/1.0/conf/collections-selection</a>) conformance class.</p></div>
     
     </div>
 </header>
@@ -174,7 +176,7 @@ and tileset (<a href="http://www.opengis.net/spec/ogcapi-tiles-1/1.0/conf/tilese
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/OGCMapTile.js">source/OGCMapTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/OGCMapTile.js#L45">line 45</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/OGCMapTile.js#L49">line 49</a>
         </div>
         
     </div>
@@ -528,6 +530,32 @@ Higher values can increase reprojection performance, but decrease precision.</p>
                 
                 <p>Duration of the opacity transition for rendering.
 To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>collections</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>A list of geospatial data sub-resources to include. If not provided, the entire dataset will
+be included. This option is not applicable when requesting the tileset for a single collection.</p></td>
         </tr>
 
 	

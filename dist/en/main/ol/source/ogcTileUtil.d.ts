@@ -11,20 +11,29 @@
  * @property {Array<string>} [supportedMediaTypes] The supported media types.
  * @property {import("../proj/Projection.js").default} projection The source projection.
  * @property {Object} [context] Optional context for constructing the URL.
+ * @property {Array<string>} [collections] Optional collections to append the URL with.
  */
+/**
+ * @param {string} tileUrlTemplate Tile URL template.
+ * @param {Array<string>} collections List of collections to include as query parameter.
+ * @return {string} The tile URL template with appended collections query parameter.
+ */
+export function appendCollectionsQueryParam(tileUrlTemplate: string, collections: Array<string>): string;
 /**
  * @param {Array<Link>} links Tileset links.
  * @param {string} [mediaType] The preferred media type.
+ * @param {Array<string>} [collections] Optional collections to append the URL with.
  * @return {string} The tile URL template.
  */
-export function getMapTileUrlTemplate(links: Array<Link>, mediaType?: string | undefined): string;
+export function getMapTileUrlTemplate(links: Array<Link>, mediaType?: string | undefined, collections?: string[] | undefined): string;
 /**
  * @param {Array<Link>} links Tileset links.
  * @param {string} [mediaType] The preferred media type.
  * @param {Array<string>} [supportedMediaTypes] The media types supported by the parser.
+ * @param {Array<string>} [collections] Optional collections to append the URL with.
  * @return {string} The tile URL template.
  */
-export function getVectorTileUrlTemplate(links: Array<Link>, mediaType?: string | undefined, supportedMediaTypes?: string[] | undefined): string;
+export function getVectorTileUrlTemplate(links: Array<Link>, mediaType?: string | undefined, supportedMediaTypes?: string[] | undefined, collections?: string[] | undefined): string;
 /**
  * @param {SourceInfo} sourceInfo Source info.
  * @return {Promise<TileSetInfo>} Tile set info.
@@ -65,6 +74,10 @@ export type SourceInfo = {
      * Optional context for constructing the URL.
      */
     context?: any;
+    /**
+     * Optional collections to append the URL with.
+     */
+    collections?: string[] | undefined;
 };
 export type TileType = 'map' | 'vector';
 export type CornerOfOrigin = 'topLeft' | 'bottomLeft';
