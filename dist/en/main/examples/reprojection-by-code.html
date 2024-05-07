@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>Reprojection with EPSG.io Search</title>
+    <title>Reprojection with coordinate system search</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
@@ -61,7 +61,7 @@
           <i class="fab fa-codepen fa-lg"></i> Edit
         </a>
         <div class="span12">
-          <h4 id="title">Reprojection with EPSG.io Search</h4>
+          <h4 id="title">Reprojection with coordinate system search</h4>
           <p class="tags">
             <span class="badge-group">
               <a
@@ -79,7 +79,7 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection-wgs84.html&quot;&gt;OpenStreetMap Reprojection&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./scaleline-indiana-east.html&quot;&gt;OpenStreetMap Reprojection with ScaleLine Control&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection.html&quot;&gt;Raster Reprojection&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection-by-code.html&quot;&gt;Reprojection with EPSG.io Search&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection-by-code.html&quot;&gt;Reprojection with coordinate system search&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
                 >8</a>
@@ -101,7 +101,7 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./scaleline-indiana-east.html&quot;&gt;OpenStreetMap Reprojection with ScaleLine Control&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./projection-and-scale.html&quot;&gt;Projection and Scale&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection.html&quot;&gt;Raster Reprojection&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection-by-code.html&quot;&gt;Reprojection with EPSG.io Search&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection-by-code.html&quot;&gt;Reprojection with coordinate system search&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-image-custom-proj.html&quot;&gt;Single Image WMS with Proj4js&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./sphere-mollweide.html&quot;&gt;Sphere Mollweide&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-no-proj.html&quot;&gt;WMS without Projection&lt;/a&gt;
@@ -122,7 +122,7 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-projection.html&quot;&gt;COG with Projection Lookup&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection-image.html&quot;&gt;Image Reprojection&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection.html&quot;&gt;Raster Reprojection&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection-by-code.html&quot;&gt;Reprojection with EPSG.io Search&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection-by-code.html&quot;&gt;Reprojection with coordinate system search&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-image-custom-proj.html&quot;&gt;Single Image WMS with Proj4js&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./sphere-mollweide.html&quot;&gt;Sphere Mollweide&lt;/a&gt;
                   &lt;/ul&gt;"
@@ -131,17 +131,57 @@
             </span>
             <span class="badge-group">
               <a
-                href="./index.html?q=epsg.io" class="badge badge-info">epsg.io</a
+                href="./index.html?q=epsg" class="badge badge-info">epsg</a
               ><a
                 class="badge badge-info tag-modal-toggle"
                 data-bs-toggle="modal"
                 data-bs-target="#tag-example-list"
-                data-title="epsg.io"
+                data-title="epsg"
                 data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection-by-code.html&quot;&gt;Reprojection with EPSG.io Search&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection-by-code.html&quot;&gt;Reprojection with coordinate system search&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
                 >1</a>
+            </span>
+            <span class="badge-group">
+              <a
+                href="./index.html?q=maptiler" class="badge badge-info">maptiler</a
+              ><a
+                class="badge badge-info tag-modal-toggle"
+                data-bs-toggle="modal"
+                data-bs-target="#tag-example-list"
+                data-title="maptiler"
+                data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-projection.html&quot;&gt;COG with Projection Lookup&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./zoom-constrained.html&quot;&gt;Constrained Zoom&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop.html&quot;&gt;Drag-and-Drop&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./full-screen.html&quot;&gt;Full Screen Control&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./full-screen-drag-rotate-and-zoom.html&quot;&gt;Full Screen Drag, Rotate, and Zoom&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./gpx.html&quot;&gt;GPX Data&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./image-filter.html&quot;&gt;Image Filters&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./interpolation.html&quot;&gt;Interpolation&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml.html&quot;&gt;KML&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./layer-spy.html&quot;&gt;Layer Spy&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./layer-swipe.html&quot;&gt;Layer Swipe&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./magnify.html&quot;&gt;Magnify&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./mapbox-layer.html&quot;&gt;Mapbox-gl Layer&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./feature-move-animation.html&quot;&gt;Marker Animation&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-osm.html&quot;&gt;OSM XML&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./raster.html&quot;&gt;Raster Source&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./region-growing.html&quot;&gt;Region Growing&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection-by-code.html&quot;&gt;Reprojection with coordinate system search&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./side-by-side.html&quot;&gt;Shared Views&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./street-labels.html&quot;&gt;Street Labels&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./mapbox-style.html&quot;&gt;Vector tiles created from a Mapbox Style object&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-tiles-4326.html&quot;&gt;Vector tiles in EPSG:4326&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs.html&quot;&gt;WFS&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-getfeature.html&quot;&gt;WFS - GetFeature&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-geographic.html&quot;&gt;WFS with geographic coordinates&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./xyz-retina.html&quot;&gt;XYZ Retina Tiles&lt;/a&gt;
+                  &lt;/ul&gt;"
+                tabindex="0"
+                >27</a>
             </span>
             <span class="badge-group">
               <a
@@ -153,7 +193,7 @@
                 data-title="graticule"
                 data-content="&lt;ul class=&quot;list-group&quot;&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./graticule.html&quot;&gt;Map Graticule&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection-by-code.html&quot;&gt;Reprojection with EPSG.io Search&lt;/a&gt;
+                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./reprojection-by-code.html&quot;&gt;Reprojection with coordinate system search&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./sphere-mollweide.html&quot;&gt;Sphere Mollweide&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
@@ -208,7 +248,7 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Demonstrates client-side raster reprojection of OSM to arbitrary projection</p>
-          <div id="docs"><p>This example shows client-side raster reprojection capabilities from OSM (EPSG:3857) to arbitrary projection by searching in <a href="https://epsg.io/">EPSG.io</a> database.</p>
+          <div id="docs"><p>This example shows client-side raster reprojection capabilities from OSM (EPSG:3857) to arbitrary projection by searching in <a href="https://docs.maptiler.com/cloud/api/coordinates/">MapTiler Cloud Coordinates API</a>. <strong>Note</strong>: Make sure to get your own API key at <a href="https://www.maptiler.com/cloud/">https://www.maptiler.com/cloud/</a> when using this example.</p>
 </div>
         </div>
       </div>
@@ -287,21 +327,19 @@ function setProjection(code, name, proj4def, bbox) {
 
   resultSpan.innerHTML &#x3D; &#x27;(&#x27; + code + &#x27;) &#x27; + name;
 
-  const newProjCode &#x3D; &#x27;EPSG:&#x27; + code;
-  proj4.defs(newProjCode, proj4def);
+  proj4.defs(code, proj4def);
   register(proj4);
-  const newProj &#x3D; getProjection(newProjCode);
+  const newProj &#x3D; getProjection(code);
   const fromLonLat &#x3D; getTransform(&#x27;EPSG:4326&#x27;, newProj);
 
-  let worldExtent &#x3D; [bbox[1], bbox[2], bbox[3], bbox[0]];
-  newProj.setWorldExtent(worldExtent);
+  newProj.setWorldExtent(bbox);
 
   // approximate calculation of projection extent,
   // checking if the world extent crosses the dateline
-  if (bbox[1] &gt; bbox[3]) {
-    worldExtent &#x3D; [bbox[1], bbox[2], bbox[3] + 360, bbox[0]];
+  if (bbox[0] &gt; bbox[2]) {
+    bbox[2] +&#x3D; 360;
   }
-  const extent &#x3D; applyTransform(worldExtent, fromLonLat, undefined, 8);
+  const extent &#x3D; applyTransform(bbox, fromLonLat, undefined, 8);
   newProj.setExtent(extent);
   const newView &#x3D; new View({
     projection: newProj,
@@ -312,7 +350,9 @@ function setProjection(code, name, proj4def, bbox) {
 
 function search(query) {
   resultSpan.innerHTML &#x3D; &#x27;Searching ...&#x27;;
-  fetch(&#x27;https://epsg.io/?format&#x3D;json&amp;q&#x3D;&#x27; + query)
+  fetch(
+    &#x60;https://api.maptiler.com/coordinates/search/${query}.json?exports&#x3D;true&amp;key&#x3D;Get your own API key at https://www.maptiler.com/cloud/&#x60;,
+  )
     .then(function (response) {
       return response.json();
     })
@@ -322,9 +362,10 @@ function search(query) {
         for (let i &#x3D; 0, ii &#x3D; results.length; i &lt; ii; i++) {
           const result &#x3D; results[i];
           if (result) {
-            const code &#x3D; result[&#x27;code&#x27;];
+            const id &#x3D; result[&#x27;id&#x27;];
+            const code &#x3D; id[&#x27;authority&#x27;] + &#x27;:&#x27; + id[&#x27;code&#x27;];
             const name &#x3D; result[&#x27;name&#x27;];
-            const proj4def &#x3D; result[&#x27;wkt&#x27;];
+            const proj4def &#x3D; result[&#x27;exports&#x27;][&#x27;wkt&#x27;];
             const bbox &#x3D; result[&#x27;bbox&#x27;];
             if (
               code &amp;&amp;
@@ -381,7 +422,7 @@ onTilesChange();
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;Reprojection with EPSG.io Search&lt;/title&gt;
+    &lt;title&gt;Reprojection with coordinate system search&lt;/title&gt;
     &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"&gt;
     &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
