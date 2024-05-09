@@ -68,7 +68,7 @@ export type ReplayImageOrLabelArgs = {
     5: Array<any>;
     6: Array<any>;
 };
-export type FeatureCallback<T> = (arg0: import("../../Feature.js").FeatureLike, arg1: import("../../geom/SimpleGeometry.js").default) => T;
+export type FeatureCallback<T> = (arg0: import("../../Feature.js").FeatureLike, arg1: import("../../geom/SimpleGeometry.js").default, arg2: import("../../style/Style.js").DeclutterMode) => T;
 declare class Executor {
     /**
      * @param {number} resolution Resolution.
