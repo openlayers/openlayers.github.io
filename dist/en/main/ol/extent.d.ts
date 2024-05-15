@@ -373,9 +373,10 @@ export function wrapX(extent: Extent, projection: import("./proj/Projection.js")
  *
  * @param {Extent} extent Extent.
  * @param {import("./proj/Projection.js").default} projection Projection
+ * @param {boolean} [multiWorld] Return all worlds
  * @return {Array<Extent>} The extent within the real world extent.
  */
-export function wrapAndSliceX(extent: Extent, projection: import("./proj/Projection.js").default): Array<Extent>;
+export function wrapAndSliceX(extent: Extent, projection: import("./proj/Projection.js").default, multiWorld?: boolean | undefined): Array<Extent>;
 /**
  * An array of numbers representing an extent: `[minx, miny, maxx, maxy]`.
  */

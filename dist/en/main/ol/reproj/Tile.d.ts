@@ -1,7 +1,22 @@
 export default ReprojTile;
 export type FunctionType = (arg0: number, arg1: number, arg2: number, arg3: number) => (import("../ImageTile.js").default);
+export type TileOffset = {
+    /**
+     * Tile.
+     */
+    tile: import("../ImageTile.js").default;
+    /**
+     * Offset.
+     */
+    offset: number;
+};
 /**
  * @typedef {function(number, number, number, number) : (import("../ImageTile.js").default)} FunctionType
+ */
+/**
+ * @typedef {Object} TileOffset
+ * @property {import("../ImageTile.js").default} tile Tile.
+ * @property {number} offset Offset.
  */
 /**
  * @classdesc
@@ -63,7 +78,7 @@ declare class ReprojTile extends Tile {
     private wrappedTileCoord_;
     /**
      * @private
-     * @type {!Array<import("../ImageTile.js").default>}
+     * @type {!Array<TileOffset>}
      */
     private sourceTiles_;
     /**
@@ -76,6 +91,11 @@ declare class ReprojTile extends Tile {
      * @type {number}
      */
     private sourceZ_;
+    /**
+     * @private
+     * @type {import("../extent.js").Extent}
+     */
+    private clipExtent_;
     /**
      * @private
      * @type {!import("./Triangulation.js").default}

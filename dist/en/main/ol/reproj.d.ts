@@ -27,6 +27,7 @@ export function calculateSourceExtentResolution(sourceProj: import("./proj/Proje
 /**
  * @typedef {Object} ImageExtent
  * @property {import("./extent.js").Extent} extent Extent.
+ * @property {import("./extent.js").Extent} [clipExtent] Clip extent.
  * @property {import('./DataTile.js').ImageLike} image Image.
  */
 /**
@@ -58,6 +59,10 @@ export type ImageExtent = {
      * Extent.
      */
     extent: import("./extent.js").Extent;
+    /**
+     * Clip extent.
+     */
+    clipExtent?: import("./extent.js").Extent | undefined;
     /**
      * Image.
      */

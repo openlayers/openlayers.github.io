@@ -1,5 +1,15 @@
 export default ReprojDataTile;
 export type TileGetter = (arg0: number, arg1: number, arg2: number, arg3: number) => import("../DataTile.js").default;
+export type TileOffset = {
+    /**
+     * Tile.
+     */
+    tile: DataTile;
+    /**
+     * Offset.
+     */
+    offset: number;
+};
 export type Options = {
     /**
      * Source projection.
@@ -54,6 +64,11 @@ export type Options = {
 };
 /**
  * @typedef {function(number, number, number, number) : import("../DataTile.js").default} TileGetter
+ */
+/**
+ * @typedef {Object} TileOffset
+ * @property {DataTile} tile Tile.
+ * @property {number} offset Offset.
  */
 /**
  * @typedef {Object} Options
@@ -125,7 +140,7 @@ declare class ReprojDataTile extends DataTile {
     private wrappedTileCoord_;
     /**
      * @private
-     * @type {!Array<DataTile>}
+     * @type {!Array<TileOffset>}
      */
     private sourceTiles_;
     /**
@@ -138,6 +153,11 @@ declare class ReprojDataTile extends DataTile {
      * @type {number}
      */
     private sourceZ_;
+    /**
+     * @private
+     * @type {import("../extent.js").Extent}
+     */
+    private clipExtent_;
     /**
      * @private
      * @type {!import("./Triangulation.js").default}
