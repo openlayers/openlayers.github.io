@@ -134,7 +134,7 @@ declare class BaseVectorLayer<VectorSourceType extends import("../source/VectorT
     private renderBuffer_;
     /**
      * User provided style.
-     * @type {import("../style/Style.js").StyleLike}
+     * @type {import("../style/Style.js").StyleLike|import("../style/flat.js").FlatStyleLike}
      * @private
      */
     private style_;
@@ -166,10 +166,10 @@ declare class BaseVectorLayer<VectorSourceType extends import("../source/VectorT
     /**
      * Get the style for features.  This returns whatever was passed to the `style`
      * option at construction or to the `setStyle` method.
-     * @return {import("../style/Style.js").StyleLike|null|undefined} Layer style.
+     * @return {import("../style/Style.js").StyleLike|import("../style/flat.js").FlatStyleLike|null|undefined} Layer style.
      * @api
      */
-    getStyle(): import("../style/Style.js").StyleLike | null | undefined;
+    getStyle(): import("../style/Style.js").StyleLike | import("../style/flat.js").FlatStyleLike | null | undefined;
     /**
      * Get the style function.
      * @return {import("../style/Style.js").StyleFunction|undefined} Layer style function.
