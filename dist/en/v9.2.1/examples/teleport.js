@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6906],{2085:function(e,t,n){var a=n(41564),c=n(28e3),s=n(12185),r=n(87240);const o=new a.A({layers:[new s.A({source:new c.A})],view:new r.Ay({center:[0,0],zoom:2})});o.setTarget("map1");document.getElementById("teleport").addEventListener("click",(function(){const e="map1"===o.getTarget()?"map2":"map1";o.setTarget(e)}),!1)}},function(e){var t;t=2085,e(e.s=t)}]);
+//# sourceMappingURL=teleport.js.map

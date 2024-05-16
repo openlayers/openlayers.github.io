@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5518],{67705:function(e,r,s){var c=s(41564),t=s(12185),a=s(87240),n=s(55238),o=s(28487);new c.A({target:"map",layers:[new t.A({source:new n.A({attributions:'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',url:"https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"})})],view:new a.Ay({center:(0,o.Rb)([-121.1,47.5]),zoom:7})})}},function(e){var r;r=67705,e(e.s=r)}]);
+//# sourceMappingURL=xyz-esri.js.map
