@@ -1,5 +1,5 @@
 export default Heatmap;
-export type Options = {
+export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -66,7 +66,7 @@ export type Options = {
     /**
      * Point source.
      */
-    source?: import("../source/Vector.js").default<import("../Feature.js").default<import("../geom.js").Geometry>> | undefined;
+    source?: import("../source/Vector.js").default<FeatureType> | undefined;
     /**
      * Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
      */
@@ -82,14 +82,15 @@ export type Options = {
  * options means that `title` is observable, and has get/set accessors.
  *
  * @fires import("../render/Event.js").RenderEvent
- * @extends {BaseVector<import("../source/Vector.js").default, WebGLPointsLayerRenderer>}
+ * @template {import("../Feature.js").FeatureLike} FeatureType
+ * @extends {BaseVector<import("../source/Vector.js").default<FeatureType>, WebGLPointsLayerRenderer>}
  * @api
  */
-declare class Heatmap extends BaseVector<import("../source/Vector.js").default<import("../Feature.js").default<import("../geom.js").Geometry>>, WebGLPointsLayerRenderer> {
+declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike> extends BaseVector<import("../source/Vector.js").default<FeatureType>, WebGLPointsLayerRenderer> {
     /**
-     * @param {Options} [options] Options.
+     * @param {Options<FeatureType>} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options<FeatureType> | undefined);
     /**
      * @private
      * @type {HTMLCanvasElement}

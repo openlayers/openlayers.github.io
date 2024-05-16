@@ -154,15 +154,15 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
  * property on the layer object; for example, setting `title: 'My Title'` in the
  * options means that `title` is observable, and has get/set accessors.
  *
- * @template {import("../source/Vector.js").default} VectorSourceType
- * @extends {BaseVectorLayer<VectorSourceType, CanvasVectorImageLayerRenderer>}
+ * @template {import("../Feature.js").default} FeatureType
+ * @extends {BaseVectorLayer<import("../source/Vector.js").default<FeatureType>, CanvasVectorImageLayerRenderer>}
  * @api
  */
-declare class VectorImageLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature.js").default<import("../geom.js").Geometry>>> extends BaseVectorLayer<VectorSourceType, CanvasVectorImageLayerRenderer> {
+declare class VectorImageLayer<FeatureType extends import("../Feature.js").default<import("../geom.js").Geometry>> extends BaseVectorLayer<import("../source/Vector.js").default<FeatureType>, CanvasVectorImageLayerRenderer> {
     /**
-     * @param {Options<VectorSourceType>} [options] Options.
+     * @param {Options<import("../source/Vector.js").default<FeatureType>>} [options] Options.
      */
-    constructor(options?: Options<VectorSourceType> | undefined);
+    constructor(options?: Options<import("../source/Vector.js").default<FeatureType>> | undefined);
     /**
      * @type {number}
      * @private

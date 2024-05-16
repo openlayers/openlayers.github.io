@@ -87,11 +87,11 @@ export type Options = any;
  * options means that `title` is observable, and has get/set accessors.
  *
  * @param {Options} [options] Options.
- * @template {import("../source/VectorTile.js").default<import('../Feature').FeatureLike>} VectorTileSourceType
- * @extends {BaseVectorLayer<VectorTileSourceType, CanvasVectorTileLayerRenderer>}
+ * @template {import('../Feature').FeatureLike} FeatureType
+ * @extends {BaseVectorLayer<import("../source/VectorTile.js").default<FeatureType>, CanvasVectorTileLayerRenderer>}
  * @api
  */
-declare class VectorTileLayer<VectorTileSourceType extends import("../source/VectorTile.js").default<import("../Feature").FeatureLike>> extends BaseVectorLayer<VectorTileSourceType, CanvasVectorTileLayerRenderer> {
+declare class VectorTileLayer<FeatureType extends import("../Feature").FeatureLike> extends BaseVectorLayer<import("../source/VectorTile.js").default<FeatureType>, CanvasVectorTileLayerRenderer> {
     /**
      * @param {Options} [options] Options.
      */
