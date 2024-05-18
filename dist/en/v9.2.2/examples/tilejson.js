@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5829],{27120:function(e,s,a){var n=a(41564),r=a(14407),t=a(12185),o=a(87240);new n.A({layers:[new t.A({source:new r.A({url:"https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:raster:HYP_HR_SR_OB_DR/map/tiles/WebMercatorQuad?f=tilejson",crossOrigin:"anonymous"})})],target:"map",view:new o.Ay({center:[0,0],zoom:2})})}},function(e){var s;s=27120,e(e.s=s)}]);
+//# sourceMappingURL=tilejson.js.map

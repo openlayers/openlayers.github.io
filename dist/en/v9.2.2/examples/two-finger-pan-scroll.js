@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1797],{74576:function(e,n,t){var o=t(41564),i=t(28e3),r=t(12185),c=t(87240),s=t(35947),u=t(91713),a=t(8631),w=t(38808);new o.A({interactions:(0,s.N)({dragPan:!1,mouseWheelZoom:!1}).extend([new u.A({condition:function(e){return 2===this.getPointerCount()||(0,w.k5)(e)}}),new a.A({condition:w.k5})]),layers:[new r.A({source:new i.A})],target:"map",view:new c.Ay({center:[0,0],zoom:2})})}},function(e){var n;n=74576,e(e.s=n)}]);
+//# sourceMappingURL=two-finger-pan-scroll.js.map

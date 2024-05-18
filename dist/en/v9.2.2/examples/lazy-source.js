@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6801],{25084:function(e,n,t){var c=t(41564),u=t(28e3),o=t(12185),s=t(87240);const r=new u.A,l=new o.A;new c.A({layers:[l],target:"map",view:new s.Ay({center:[0,0],zoom:2})});document.getElementById("set-source").onclick=function(){l.setSource(r)},document.getElementById("unset-source").onclick=function(){l.setSource(null)}}},function(e){var n;n=25084,e(e.s=n)}]);
+//# sourceMappingURL=lazy-source.js.map
