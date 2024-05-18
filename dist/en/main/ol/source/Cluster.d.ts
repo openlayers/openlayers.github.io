@@ -109,9 +109,9 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
  */
 declare class Cluster<FeatureType extends import("../Feature.js").FeatureLike> extends VectorSource<Feature<import("../geom/Geometry.js").default>> {
     /**
-     * @param {Options<FeatureType>} options Cluster options.
+     * @param {Options<FeatureType>} [options] Cluster options.
      */
-    constructor(options: Options<FeatureType>);
+    constructor(options?: Options<FeatureType> | undefined);
     /**
      * @type {number|undefined}
      * @protected
