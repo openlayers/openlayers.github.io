@@ -53,11 +53,6 @@ declare class MVT<T extends import("../Feature.js").FeatureClass = typeof Render
     constructor(options?: Options<T> | undefined);
     /**
      * @private
-     * @type {import("../Feature.js").FeatureClass}
-     */
-    private featureClass_;
-    /**
-     * @private
      * @type {string|undefined}
      */
     private geometryName_;

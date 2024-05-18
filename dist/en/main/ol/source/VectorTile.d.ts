@@ -206,9 +206,9 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
  *
  * @fires import("./Tile.js").TileSourceEvent
  * @api
- * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../render/Feature.js").default]
  */
-declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>> extends UrlTile {
+declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike = import("../render/Feature.js").default> extends UrlTile {
     /**
      * @param {!Options<FeatureType>} options Vector tile options.
      */
@@ -247,10 +247,10 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
      * they can be clipped, duplicated across tiles, and simplified to the render resolution.
      *
      * @param {import("../extent.js").Extent} extent Extent.
-     * @return {Array<import("../Feature.js").FeatureLike>} Features.
+     * @return {Array<FeatureType>} Features.
      * @api
      */
-    getFeaturesInExtent(extent: import("../extent.js").Extent): Array<import("../Feature.js").FeatureLike>;
+    getFeaturesInExtent(extent: import("../extent.js").Extent): Array<FeatureType>;
     /**
      * @return {boolean} The source can have overlapping geometries.
      */

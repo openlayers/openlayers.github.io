@@ -16,7 +16,7 @@ declare class VectorTile extends Tile {
     extent: import("./extent.js").Extent;
     /**
      * @private
-     * @type {import("./format/Feature.js").default}
+     * @type {import("./format/Feature.js").default<typeof import("./Feature.js").default|typeof import("./render/Feature.js").default>}
      */
     private format_;
     /**
@@ -51,10 +51,10 @@ declare class VectorTile extends Tile {
     private url_;
     /**
      * Get the feature format assigned for reading this tile's features.
-     * @return {import("./format/Feature.js").default} Feature format.
+     * @return {import("./format/Feature.js").default<typeof import("./Feature.js").default|typeof import("./render/Feature.js").default>} Feature format.
      * @api
      */
-    getFormat(): import("./format/Feature.js").default;
+    getFormat(): import("./format/Feature.js").default<typeof import("./Feature.js").default | typeof import("./render/Feature.js").default>;
     /**
      * Get the features for this tile. Geometries will be in the view projection.
      * @return {Array<import("./Feature.js").FeatureLike>} Features.

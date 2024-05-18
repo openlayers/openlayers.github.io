@@ -159,6 +159,569 @@
     
 
     
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl>
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~Options">
+        </div>
+        <h4 class="name">
+            Options<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>className</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+                    <br>(defaults to 'ol-layer')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>A CSS class name to set to the layer element.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>opacity</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    <br>(defaults to 1)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Opacity (0, 1).</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>visible</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    <br>(defaults to true)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Visibility.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>extent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The bounding extent for layer rendering.  The layer will not be
+rendered outside of this extent.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>zIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The z-index for layer rendering.  At rendering time, the layers
+will be ordered, first by Z-index and then by position. When <code>undefined</code>, a <code>zIndex</code> of 0 is assumed
+for layers that are added to the map's <code>layers</code> collection, or <code>Infinity</code> when the layer's <code>setMap()</code>
+method was used.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>minResolution</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The minimum resolution (inclusive) at which this layer will be
+visible.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>maxResolution</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The maximum resolution (exclusive) below which this layer will
+be visible.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>minZoom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The minimum view zoom level (exclusive) above which this layer will be
+visible.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>maxZoom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The maximum view zoom level (inclusive) at which this layer will
+be visible.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>renderOrder</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_render.html#~OrderFunction">OrderFunction</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Render order. Function to be used when sorting
+features before rendering. By default features are drawn in the order that they are created. Use
+<code>null</code> to avoid the sort, but get an undefined draw order.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>renderBuffer</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    <br>(defaults to 100)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The buffer in pixels around the viewport extent used by the
+renderer when getting features from the vector source for the rendering or hit-detection.
+Recommended value: the size of the largest symbol, line width or label.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a>&lt;FeatureType></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Source.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>map</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_Map-Map.html">Map</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Sets the layer as overlay on a map. The map will not manage
+this layer in its layers collection, and the layer will be rendered on top. This is useful for
+temporary layers. The standard way to add a layer to a map and have it managed by the map is to
+use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>declutter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
+
+
+                
+                    <br>(defaults to false)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Declutter images and text. Any truthy value will enable
+decluttering. Within a layer, a feature rendered before another has higher priority. All layers with the
+same <code>declutter</code> value will be decluttered together. The priority is determined by the drawing order of the
+layers with the same <code>declutter</code> value. Higher in the layer stack means higher priority. To declutter distinct
+layers or groups of layers separately, use different truthy values for <code>declutter</code>.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>style</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_Style.html#~StyleLike">StyleLike</a></span>
+|
+
+<span class="param-type"><a href="module-ol_style_flat.html#~FlatStyleLike">FlatStyleLike</a></span>
+|
+
+<span class="param-type">null</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Layer style. When set to <code>null</code>, only
+features that have their own style will be rendered. See <a href="module-ol_style_Style-Style.html"><code>Style</code></a> for the default style
+which will be used if this is not set.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>background</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_layer_Base.html#~BackgroundColor">BackgroundColor</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Background color for the layer. If not specified, no background
+will be rendered.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>updateWhileAnimating</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    <br>(defaults to false)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>When set to <code>true</code>, feature batches will
+be recreated during animations. This means that no vectors will be shown clipped, but the
+setting will have a performance impact for large amounts of vector data. When set to <code>false</code>,
+batches will be recreated when no animation is active.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>updateWhileInteracting</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    <br>(defaults to false)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>When set to <code>true</code>, feature batches will
+be recreated during interactions. See also <code>updateWhileAnimating</code>.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>properties</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            </dl>
+    
 
     
 </article>
