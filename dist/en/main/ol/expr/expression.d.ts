@@ -59,6 +59,7 @@ export const NumberType: number;
 export const StringType: number;
 export const ColorType: number;
 export const NumberArrayType: number;
+export const SizeType: number;
 export const AnyType: number;
 /**
  * @typedef {boolean|number|string|Array<number>} LiteralValue

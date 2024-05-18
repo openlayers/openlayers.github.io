@@ -19,6 +19,12 @@ export function arrayToGlsl(array: Array<number>): string;
  */
 export function colorToGlsl(color: string | import("../color.js").Color): string;
 /**
+ * Normalizes and converts a number or array toa `vec2` array compatible with GLSL.
+ * @param {number|import('../size.js').Size} size Size.
+ * @return {string} The color expressed in the `vec4(1.0, 1.0, 1.0, 1.0)` form.
+ */
+export function sizeToGlsl(size: number | import('../size.js').Size): string;
+/**
  * Returns a stable equivalent number for the string literal.
  * @param {string} string String literal value
  * @return {number} Number equivalent

@@ -170,6 +170,7 @@ declare namespace ol {
             export { _ol_expr_expression$NumberArrayType as NumberArrayType };
             export { _ol_expr_expression$NumberType as NumberType };
             export { _ol_expr_expression$Ops as Ops };
+            export { _ol_expr_expression$SizeType as SizeType };
             export { _ol_expr_expression$StringType as StringType };
             export { _ol_expr_expression$computeGeometryType as computeGeometryType };
             export { _ol_expr_expression$includesType as includesType };
@@ -187,6 +188,7 @@ declare namespace ol {
             export { _ol_expr_gpu$getStringNumberEquivalent as getStringNumberEquivalent };
             export { _ol_expr_gpu$newCompilationContext as newCompilationContext };
             export { _ol_expr_gpu$numberToGlsl as numberToGlsl };
+            export { _ol_expr_gpu$sizeToGlsl as sizeToGlsl };
             export { _ol_expr_gpu$stringToGlsl as stringToGlsl };
             export { _ol_expr_gpu$uniformNameForVariable as uniformNameForVariable };
         }
@@ -1121,6 +1123,7 @@ import { NoneType as _ol_expr_expression$NoneType } from '../../ol/expr/expressi
 import { NumberArrayType as _ol_expr_expression$NumberArrayType } from '../../ol/expr/expression.js';
 import { NumberType as _ol_expr_expression$NumberType } from '../../ol/expr/expression.js';
 import { Ops as _ol_expr_expression$Ops } from '../../ol/expr/expression.js';
+import { SizeType as _ol_expr_expression$SizeType } from '../../ol/expr/expression.js';
 import { StringType as _ol_expr_expression$StringType } from '../../ol/expr/expression.js';
 import { computeGeometryType as _ol_expr_expression$computeGeometryType } from '../../ol/expr/expression.js';
 import { includesType as _ol_expr_expression$includesType } from '../../ol/expr/expression.js';
@@ -1136,6 +1139,7 @@ import { colorToGlsl as _ol_expr_gpu$colorToGlsl } from '../../ol/expr/gpu.js';
 import { getStringNumberEquivalent as _ol_expr_gpu$getStringNumberEquivalent } from '../../ol/expr/gpu.js';
 import { newCompilationContext as _ol_expr_gpu$newCompilationContext } from '../../ol/expr/gpu.js';
 import { numberToGlsl as _ol_expr_gpu$numberToGlsl } from '../../ol/expr/gpu.js';
+import { sizeToGlsl as _ol_expr_gpu$sizeToGlsl } from '../../ol/expr/gpu.js';
 import { stringToGlsl as _ol_expr_gpu$stringToGlsl } from '../../ol/expr/gpu.js';
 import { uniformNameForVariable as _ol_expr_gpu$uniformNameForVariable } from '../../ol/expr/gpu.js';
 import { applyTransform as _ol_extent$applyTransform } from '../../ol/extent.js';
