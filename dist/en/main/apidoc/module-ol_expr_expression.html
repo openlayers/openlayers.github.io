@@ -187,7 +187,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L659">line 659</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L625">line 625</a>
         </div>
         
     </div>
@@ -376,9 +376,9 @@ green, blue and alpha. <a href="module-ol_source_DataTile-DataTileSource.html"><
 of bands, depending on the underlying data source and
 <a href="module-ol_source_GeoTIFF.html#~Options"><code>configuration</code></a>. <code>xOffset</code> and <code>yOffset</code> are optional
 and allow specifying pixel offsets for x and y. This is used for sampling data from neighboring pixels (WebGL only).</li>
-<li><code>['get', 'attributeName', typeHint]</code> fetches a feature property value, similar to <code>feature.get('attributeName')</code>
-A type hint can optionally be specified, in case the resulting expression contains a type ambiguity which
-will make it invalid. Type hints can be one of: 'string', 'color', 'number', 'boolean', 'number[]'</li>
+<li><code>['get', attributeName]</code> fetches a feature property value, similar to <code>feature.get('attributeName')</code>.</li>
+<li><code>['get', attributeName, keyOrArrayIndex, ...]</code> (Canvas only) Access nested properties and array items of a
+feature property. The result is <code>undefined</code> when there is nothing at the specified key or index.</li>
 <li><code>['geometry-type']</code> returns a feature's geometry type as string, either: 'LineString', 'Point' or 'Polygon'
 <code>Multi*</code> values are returned as their singular equivalent
 <code>Circle</code> geometries are returned as 'Polygon'
@@ -581,7 +581,7 @@ Literal values can be of the following types:</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L392">line 392</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L371">line 371</a>
         </div>
         
     </div>

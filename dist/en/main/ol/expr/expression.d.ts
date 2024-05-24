@@ -135,9 +135,9 @@ export type ArgValidator = (arg0: Array<EncodedExpression>, arg1: ParsingContext
  *     of bands, depending on the underlying data source and
  *     {@link import ("../source/GeoTIFF.js").Options configuration}. `xOffset` and `yOffset` are optional
  *     and allow specifying pixel offsets for x and y. This is used for sampling data from neighboring pixels (WebGL only).
- *   * `['get', 'attributeName', typeHint]` fetches a feature property value, similar to `feature.get('attributeName')`
- *     A type hint can optionally be specified, in case the resulting expression contains a type ambiguity which
- *     will make it invalid. Type hints can be one of: 'string', 'color', 'number', 'boolean', 'number[]'
+ *   * `['get', attributeName]` fetches a feature property value, similar to `feature.get('attributeName')`.
+ *   * `['get', attributeName, keyOrArrayIndex, ...]` (Canvas only) Access nested properties and array items of a
+ *     feature property. The result is `undefined` when there is nothing at the specified key or index.
  *   * `['geometry-type']` returns a feature's geometry type as string, either: 'LineString', 'Point' or 'Polygon'
  *     `Multi*` values are returned as their singular equivalent
  *     `Circle` geometries are returned as 'Polygon'
