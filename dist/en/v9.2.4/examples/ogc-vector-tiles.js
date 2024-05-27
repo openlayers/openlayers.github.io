@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1668],{54895:function(e,t,r){var a=r(4158),o=r(41564),n=r(96469),s=r(88887),c=r(87240);new o.A({target:"map",layers:[new s.A({source:new n.A({url:"https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:cultural:ne_10m_admin_0_countries/tiles/WebMercatorQuad",format:new a.A}),background:"#d1d1d1",style:{"stroke-width":.6,"stroke-color":"#8c8b8b","fill-color":"#f7f7e9"}})],view:new c.Ay({center:[0,0],zoom:1})})}},function(e){var t;t=54895,e(e.s=t)}]);
+//# sourceMappingURL=ogc-vector-tiles.js.map
