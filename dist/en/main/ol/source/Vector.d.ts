@@ -627,16 +627,14 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     /**
      * Remove feature without firing a `change` event.
      * @param {FeatureType} feature Feature.
-     * @return {FeatureType|undefined} The removed feature
-     *     (or undefined if the feature was not found).
+     * @return {boolean} True if the feature was removed, false if it was not found.
      * @protected
      */
-    protected removeFeatureInternal(feature: FeatureType): FeatureType | undefined;
+    protected removeFeatureInternal(feature: FeatureType): boolean;
     /**
      * Remove a feature from the id index.  Called internally when the feature id
      * may have changed.
      * @param {FeatureType} feature The feature.
-     * @return {boolean} Removed the feature from the index.
      * @private
      */
     private removeFromIdIndex_;
