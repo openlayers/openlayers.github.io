@@ -94,13 +94,6 @@ declare class TopoJSON extends JSONFeature<typeof Feature> {
      * @type {?Array<string>}
      */
     private layers_;
-    /**
-     * @param {Object} object Object.
-     * @param {import("./Feature.js").ReadOptions} [options] Read options.
-     * @protected
-     * @return {Array<Feature>} Features.
-     */
-    protected readFeaturesFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined): Array<Feature>;
 }
 import Feature from '../Feature.js';
 import JSONFeature from './JSONFeature.js';

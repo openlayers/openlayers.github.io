@@ -14,7 +14,7 @@
  * source.
  *
  * @template {import("./Feature.js").FeatureLike} [FeatureType=import("./Feature.js").default]
- * @typedef {function(this:(import("./source/Vector").default|import("./VectorTile.js").default),
+ * @typedef {function(this:(import("./source/Vector").default<FeatureType>|import("./VectorTile.js").default),
  *           import("./extent.js").Extent,
  *           number,
  *           import("./proj/Projection.js").default,
@@ -34,9 +34,9 @@
  * @api
  */
 /**
- * @template {import("./Feature.js").FeatureLike} [FeatureType=import("./Feature.js").FeatureLike]
+ * @template {import("./Feature.js").FeatureLike} [FeatureType=import("./Feature.js").default]
  * @param {string|FeatureUrlFunction} url Feature URL service.
- * @param {import("./format/Feature.js").default<import('./format/Feature.js').FeatureToFeatureClass<FeatureType>>} format Feature format.
+ * @param {import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>} format Feature format.
  * @param {import("./extent.js").Extent} extent Extent.
  * @param {number} resolution Resolution.
  * @param {import("./proj/Projection.js").default} projection Projection.
@@ -45,18 +45,18 @@
  * @param {function(): void} failure Failure
  *      Function called when loading failed.
  */
-export function loadFeaturesXhr<FeatureType extends import("./Feature.js").FeatureLike = import("./Feature.js").FeatureLike>(url: string | FeatureUrlFunction, format: import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>, extent: import("./extent.js").Extent, resolution: number, projection: import("./proj/Projection.js").default, success: (arg0: FeatureType[], arg1: import("./proj/Projection.js").default) => void, failure: () => void): void;
+export function loadFeaturesXhr<FeatureType extends import("./Feature.js").FeatureLike = import("./Feature.js").default<import("./geom.js").Geometry>>(url: string | FeatureUrlFunction, format: import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>, extent: import("./extent.js").Extent, resolution: number, projection: import("./proj/Projection.js").default, success: (arg0: FeatureType[], arg1: import("./proj/Projection.js").default) => void, failure: () => void): void;
 /**
  * Create an XHR feature loader for a `url` and `format`. The feature loader
  * loads features (with XHR), parses the features, and adds them to the
  * vector source.
- * @template {import("./Feature.js").FeatureLike} [FeatureType=import("./Feature.js").FeatureLike]
+ * @template {import("./Feature.js").FeatureLike} FeatureType
  * @param {string|FeatureUrlFunction} url Feature URL service.
- * @param {import("./format/Feature.js").default<import('./format/Feature.js').FeatureToFeatureClass<FeatureType>>} format Feature format.
+ * @param {import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>} format Feature format.
  * @return {FeatureLoader<FeatureType>} The feature loader.
  * @api
  */
-export function xhr<FeatureType extends import("./Feature.js").FeatureLike = import("./Feature.js").FeatureLike>(url: string | FeatureUrlFunction, format: import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>): FeatureLoader<FeatureType>;
+export function xhr<FeatureType extends import("./Feature.js").FeatureLike>(url: string | FeatureUrlFunction, format: import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>): FeatureLoader<FeatureType>;
 /**
  * Setter for the withCredentials configuration for the XHR.
  *
@@ -80,7 +80,7 @@ export function setWithCredentials(xhrWithCredentials: boolean): void;
  * The function is responsible for loading the features and adding them to the
  * source.
  */
-export type FeatureLoader<FeatureType extends import("./Feature.js").FeatureLike = import("./Feature.js").default<import("./geom.js").Geometry>> = (this: (import("./source/Vector").default | import("./VectorTile.js").default), arg1: import("./extent.js").Extent, arg2: number, arg3: import("./proj/Projection.js").default, arg4: ((arg0: Array<FeatureType>) => void) | undefined, arg5: (() => void) | undefined) => void;
+export type FeatureLoader<FeatureType extends import("./Feature.js").FeatureLike = import("./Feature.js").default<import("./geom.js").Geometry>> = (this: (import("./source/Vector").default<FeatureType> | import("./VectorTile.js").default<any>), arg1: import("./extent.js").Extent, arg2: number, arg3: import("./proj/Projection.js").default, arg4: ((arg0: Array<FeatureType>) => void) | undefined, arg5: (() => void) | undefined) => void;
 /**
  * {@link module :ol/source/Vector~VectorSource} sources use a function of this type to
  * get the url to load features from.

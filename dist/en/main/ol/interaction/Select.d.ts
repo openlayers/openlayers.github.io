@@ -316,7 +316,7 @@ declare class Select extends Interaction {
      * @return {import('../layer/Vector.js').default} Layer.
      * @api
      */
-    getLayer(feature: import("../Feature.js").default): VectorLayer<any>;
+    getLayer(feature: import("../Feature.js").default): import('../layer/Vector.js').default;
     /**
      * Hit-detection tolerance. Pixels inside the radius around the given position
      * will be checked for features.
@@ -357,5 +357,4 @@ declare class Select extends Interaction {
 import Feature from '../Feature.js';
 import Collection from '../Collection.js';
 import Interaction from './Interaction.js';
-import VectorLayer from '../layer/Vector.js';
 //# sourceMappingURL=Select.d.ts.map

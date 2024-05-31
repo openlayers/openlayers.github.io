@@ -8,7 +8,7 @@ declare class CanvasVectorImageLayerRenderer extends CanvasImageLayerRenderer {
     /**
      * @param {import("../../layer/VectorImage.js").default} layer Vector image layer.
      */
-    constructor(layer: import("../../layer/VectorImage.js").default<any>);
+    constructor(layer: import("../../layer/VectorImage.js").default);
     /**
      * @private
      * @type {import("./VectorLayer.js").default}

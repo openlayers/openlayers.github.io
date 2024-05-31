@@ -1,11 +1,12 @@
 /**
  * Sets the loader for a tile.
- * @param {import("../VectorTile.js").default} tile Vector tile.
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../render/Feature.js").default]
+ * @param {import("../VectorTile.js").default<FeatureType>} tile Vector tile.
  * @param {string} url URL.
  */
-export function defaultLoadFunction(tile: import("../VectorTile.js").default, url: string): void;
+export function defaultLoadFunction<FeatureType extends import("../Feature.js").FeatureLike = import("../render/Feature.js").default>(tile: Tile<FeatureType>, url: string): void;
 export default VectorTile;
-export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
+export type Options<FeatureType extends import("../Feature.js").FeatureLike = import("../render/Feature.js").default> = {
     /**
      * Attributions.
      */
@@ -129,8 +130,9 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
      */
     zDirection?: number | import("../array.js").NearestDirectionFunction | undefined;
 };
+import Tile from '../VectorTile.js';
 /**
- * @template {import("../Feature.js").FeatureLike} FeatureType
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../render/Feature.js").default]
  * @typedef {Object} Options
  * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
  * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
@@ -232,7 +234,7 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
      * @protected
      * @type {typeof import("../VectorTile.js").default}
      */
-    protected tileClass: typeof import("../VectorTile.js").default;
+    protected tileClass: typeof Tile;
     /**
      * @private
      * @type {Object<string, import("../tilegrid/TileGrid.js").default>}
@@ -261,7 +263,7 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
      * @param {VectorRenderTile} tile Vector image tile.
      * @return {Array<import("../VectorTile").default>} Tile keys.
      */
-    getSourceTiles(pixelRatio: number, projection: import("../proj/Projection").default, tile: VectorRenderTile): Array<import("../VectorTile").default>;
+    getSourceTiles(pixelRatio: number, projection: import("../proj/Projection").default, tile: VectorRenderTile): Array<Tile<any>>;
     /**
      * @param {number} z Tile coordinate z.
      * @param {number} x Tile coordinate x.
@@ -272,7 +274,6 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
      */
     getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): VectorRenderTile;
 }
-import Tile from '../VectorTile.js';
 import TileGrid from '../tilegrid/TileGrid.js';
 import UrlTile from './UrlTile.js';
 import VectorRenderTile from '../VectorRenderTile.js';

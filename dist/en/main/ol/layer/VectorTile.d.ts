@@ -4,7 +4,7 @@ export default VectorTileLayer;
  */
 export type VectorTileLayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | 'change:preload' | 'change:useInterimTilesOnError', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | 'change:preload' | 'change:useInterimTilesOnError' | import("../render/EventType").LayerRenderEventTypes, Return>;
 export type VectorTileRenderType = 'hybrid' | 'vector';
-export type Options<FeatureType extends import("../Feature").FeatureLike> = {
+export type Options<FeatureType extends import("../Feature").FeatureLike = import("../render/Feature.js").default, VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source/VectorTile.js").default<FeatureType>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -77,7 +77,7 @@ export type Options<FeatureType extends import("../Feature").FeatureLike> = {
     /**
      * Source.
      */
-    source?: import("../source/VectorTile.js").default<FeatureType> | undefined;
+    source?: VectorTileSourceType | undefined;
     /**
      * Sets the layer as overlay on a map. The map will not manage
      * this layer in its layers collection, and the layer will be rendered on top. This is useful for
@@ -145,7 +145,8 @@ export type Options<FeatureType extends import("../Feature").FeatureLike> = {
  * @typedef {'hybrid' | 'vector'} VectorTileRenderType
  */
 /**
- * @template {import('../Feature').FeatureLike} FeatureType
+ * @template {import("../Feature").FeatureLike} [FeatureType=import("../render/Feature.js").default]
+ * @template {import("../source/VectorTile.js").default<FeatureType>} [VectorTileSourceType=import("../source/VectorTile.js").default<FeatureType>]
  * @typedef {Object} Options
  * @property {string} [className='ol-layer'] A CSS class name to set to the layer element.
  * @property {number} [opacity=1] Opacity (0, 1).
@@ -180,7 +181,7 @@ export type Options<FeatureType extends import("../Feature").FeatureLike> = {
  *    this mode for improved performance and visual epxerience on vector tile layers with not too many
  *    rendered features (e.g. for highlighting a subset of features of another layer with the same
  *    source).
- * @property {import("../source/VectorTile.js").default<FeatureType>} [source] Source.
+ * @property {VectorTileSourceType} [source] Source.
  * @property {import("../Map.js").default} [map] Sets the layer as overlay on a map. The map will not manage
  * this layer in its layers collection, and the layer will be rendered on top. This is useful for
  * temporary layers. The standard way to add a layer to a map and have it managed by the map is to
@@ -213,15 +214,16 @@ export type Options<FeatureType extends import("../Feature").FeatureLike> = {
  * property on the layer object; for example, setting `title: 'My Title'` in the
  * options means that `title` is observable, and has get/set accessors.
  *
- * @template {import('../Feature').FeatureLike} FeatureType
- * @extends {BaseVectorLayer<import("../source/VectorTile.js").default<FeatureType>, CanvasVectorTileLayerRenderer>}
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../render/Feature.js").default]
+ * @template {import("../source/VectorTile.js").default<FeatureType>} [VectorTileSourceType=import("../source/VectorTile.js").default<FeatureType>]
+ * @extends {BaseVectorLayer<FeatureType, VectorTileSourceType, CanvasVectorTileLayerRenderer>}
  * @api
  */
-declare class VectorTileLayer<FeatureType extends import("../Feature").FeatureLike> extends BaseVectorLayer<import("../source/VectorTile.js").default<FeatureType>, CanvasVectorTileLayerRenderer> {
+declare class VectorTileLayer<FeatureType extends import("../Feature").FeatureLike = import("../render/Feature.js").default, VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source/VectorTile.js").default<FeatureType>> extends BaseVectorLayer<FeatureType, VectorTileSourceType, CanvasVectorTileLayerRenderer> {
     /**
-     * @param {Options<FeatureType>} [options] Options.
+     * @param {Options<FeatureType, VectorTileSourceType>} [options] Options.
      */
-    constructor(options?: Options<FeatureType> | undefined);
+    constructor(options?: Options<FeatureType, VectorTileSourceType> | undefined);
     /***
      * @type {VectorTileLayerOnSignature<import("../events").EventsKey>}
      */

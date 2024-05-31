@@ -63,13 +63,6 @@ declare class EsriJSON extends JSONFeature<typeof Feature> {
      */
     protected readFeatureFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined, idField?: string | undefined): import("../Feature.js").default;
     /**
-     * @param {Object} object Object.
-     * @param {import("./Feature.js").ReadOptions} [options] Read options.
-     * @protected
-     * @return {Array<Feature>} Features.
-     */
-    protected readFeaturesFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined): Array<Feature>;
-    /**
      * @param {EsriJSONGeometry} object Object.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @protected

@@ -1,12 +1,12 @@
 export default MVT;
-export type Options<FeatureClassToFeature extends import("../Feature.js").FeatureClass> = {
+export type Options<FeatureClassType extends import("../Feature.js").FeatureClass = typeof RenderFeature> = {
     /**
      * Class for features returned by
      * {@link module :ol/format/MVT~MVT#readFeatures}. Set to {@link module :ol/Feature~Feature} to get full editing and geometry
      * support at the cost of decreased rendering performance. The default is
      * {@link module :ol/render/Feature~RenderFeature}, which is optimized for rendering and hit detection.
      */
-    featureClass?: FeatureClassToFeature | undefined;
+    featureClass?: FeatureClassType | undefined;
     /**
      * Geometry name to use when creating features.
      */
@@ -26,9 +26,9 @@ export type Options<FeatureClassToFeature extends import("../Feature.js").Featur
     idProperty?: string | undefined;
 };
 /**
- * @template {import("../Feature.js").FeatureClass} FeatureClassToFeature
+ * @template {import("../Feature.js").FeatureClass} [FeatureClassType=import('./Feature.js').FeatureToFeatureClass<import("../render/Feature.js").default>]
  * @typedef {Object} Options
- * @property {FeatureClassToFeature} [featureClass] Class for features returned by
+ * @property {FeatureClassType} [featureClass] Class for features returned by
  * {@link module:ol/format/MVT~MVT#readFeatures}. Set to {@link module:ol/Feature~Feature} to get full editing and geometry
  * support at the cost of decreased rendering performance. The default is
  * {@link module:ol/render/Feature~RenderFeature}, which is optimized for rendering and hit detection.
@@ -42,15 +42,15 @@ export type Options<FeatureClassToFeature extends import("../Feature.js").Featur
  * @classdesc
  * Feature format for reading data in the Mapbox MVT format.
  *
- * @template {import('../Feature.js').FeatureClass} [T=typeof import("../render/Feature.js").default]
- * @extends {FeatureFormat<T>}
+ * @template {import('../Feature.js').FeatureClass} [FeatureClassType=import('./Feature.js').FeatureToFeatureClass<import("../render/Feature.js").default>]
+ * @extends {FeatureFormat<FeatureClassType>}
  * @api
  */
-declare class MVT<T extends import("../Feature.js").FeatureClass = typeof RenderFeature> extends FeatureFormat<T> {
+declare class MVT<FeatureClassType extends import("../Feature.js").FeatureClass = typeof RenderFeature> extends FeatureFormat<FeatureClassType> {
     /**
-     * @param {Options<T>} [options] Options.
+     * @param {Options<FeatureClassType>} [options] Options.
      */
-    constructor(options?: Options<T> | undefined);
+    constructor(options?: Options<FeatureClassType> | undefined);
     /**
      * @private
      * @type {string|undefined}
@@ -86,7 +86,7 @@ declare class MVT<T extends import("../Feature.js").FeatureClass = typeof Render
      * @param {PBF} pbf PBF
      * @param {Object} rawFeature Raw Mapbox feature.
      * @param {import("./Feature.js").ReadOptions} options Read options.
-     * @return {import("../Feature.js").FeatureLike|null} Feature.
+     * @return {import('./Feature.js').FeatureClassToFeature<FeatureClassType>|null} Feature.
      */
     private createFeature_;
     /**
@@ -94,10 +94,10 @@ declare class MVT<T extends import("../Feature.js").FeatureClass = typeof Render
      *
      * @param {ArrayBuffer} source Source.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
-     * @return {Array<import('./Feature.js').FeatureClassToFeature<T>>} Features.
+     * @return {Array<import('./Feature.js').FeatureClassToFeature<FeatureClassType>>} Features.
      * @api
      */
-    readFeatures(source: ArrayBuffer, options?: import("./Feature.js").ReadOptions | undefined): Array<import('./Feature.js').FeatureClassToFeature<T>>;
+    readFeatures(source: ArrayBuffer, options?: import("./Feature.js").ReadOptions | undefined): Array<import('./Feature.js').FeatureClassToFeature<FeatureClassType>>;
     /**
      * Read the projection from the source.
      *

@@ -497,7 +497,7 @@ declare class Draw extends PointerInteraction {
      * @return {VectorLayer} Overlay layer.
      * @api
      */
-    getOverlay(): VectorLayer<any>;
+    getOverlay(): VectorLayer;
     /**
      * @private
      */

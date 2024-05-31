@@ -3,13 +3,13 @@ export default CanvasVectorTileLayerRenderer;
  * @classdesc
  * Canvas renderer for vector tile layers.
  * @api
- * @extends {CanvasTileLayerRenderer<import("../../layer/VectorTile.js").default>}
+ * @extends {CanvasTileLayerRenderer<import("../../layer/VectorTile.js").default<import('../../Feature.js').FeatureLike, import('../../source/VectorTile.js').default>>}
  */
-declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<import("../../layer/VectorTile.js").default<any>> {
+declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<import("../../layer/VectorTile.js").default<import("../../Feature.js").FeatureLike, import("../../source/VectorTile.js").default<import("../../render/Feature.js").default>>> {
     /**
      * @param {import("../../layer/VectorTile.js").default} layer VectorTile layer.
      */
-    constructor(layer: import("../../layer/VectorTile.js").default<any>);
+    constructor(layer: import("../../layer/VectorTile.js").default);
     /** @private */
     private boundHandleStyleImageChange_;
     /**

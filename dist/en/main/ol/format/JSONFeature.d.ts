@@ -5,47 +5,27 @@ export default JSONFeature;
  * instantiated in apps.
  * Base class for JSON feature formats.
  *
- * @template {import('../Feature.js').FeatureClass} [T=typeof import('../Feature.js').default]
- * @extends {FeatureFormat<T>}
+ * @template {import('../Feature.js').FeatureClass} [FeatureClassType=import('./Feature.js').FeatureToFeatureClass<import("../Feature.js").default>]
+ * @extends {FeatureFormat<FeatureClassType>}
  * @abstract
  */
-declare class JSONFeature<T extends import("../Feature.js").FeatureClass = typeof import("../Feature.js").default> extends FeatureFormat<T> {
-    /**
-     * Read a feature.  Only works for a single feature. Use `readFeatures` to
-     * read a feature collection.
-     *
-     * @param {ArrayBuffer|Document|Element|Object|string} source Source.
-     * @param {import("./Feature.js").ReadOptions} [options] Read options.
-     * @return {import('./Feature.js').FeatureClassToFeature<T>} Feature.
-     * @api
-     */
-    readFeature(source: ArrayBuffer | Document | Element | any | string, options?: import("./Feature.js").ReadOptions | undefined): import('./Feature.js').FeatureClassToFeature<T>;
-    /**
-     * Read all features.  Works with both a single feature and a feature
-     * collection.
-     *
-     * @param {ArrayBuffer|Document|Element|Object|string} source Source.
-     * @param {import("./Feature.js").ReadOptions} [options] Read options.
-     * @return {Array<import('./Feature.js').FeatureClassToFeature<T>>} Features.
-     * @api
-     */
-    readFeatures(source: ArrayBuffer | Document | Element | any | string, options?: import("./Feature.js").ReadOptions | undefined): Array<import('./Feature.js').FeatureClassToFeature<T>>;
+declare class JSONFeature<FeatureClassType extends import("../Feature.js").FeatureClass = typeof import("../Feature.js").default> extends FeatureFormat<FeatureClassType> {
     /**
      * @abstract
      * @param {Object} object Object.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @protected
-     * @return {import("../Feature.js").default|import("../render/Feature.js").default|Array<import("../render/Feature.js").default>} Feature.
+     * @return {import('./Feature.js').FeatureClassToFeature<FeatureClassType>|Array<import('./Feature.js').FeatureClassToFeature<FeatureClassType>>} Feature.
      */
-    protected readFeatureFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined): import("../Feature.js").default | import("../render/Feature.js").default | Array<import("../render/Feature.js").default>;
+    protected readFeatureFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined): import('./Feature.js').FeatureClassToFeature<FeatureClassType> | Array<import('./Feature.js').FeatureClassToFeature<FeatureClassType>>;
     /**
      * @abstract
      * @param {Object} object Object.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @protected
-     * @return {Array<import("../Feature.js").default|import("../render/Feature.js").default>} Features.
+     * @return {Array<import('./Feature.js').FeatureClassToFeature<FeatureClassType>>} Features.
      */
-    protected readFeaturesFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined): Array<import("../Feature.js").default | import("../render/Feature.js").default>;
+    protected readFeaturesFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined): Array<import('./Feature.js').FeatureClassToFeature<FeatureClassType>>;
     /**
      * @abstract
      * @param {Object} object Object.

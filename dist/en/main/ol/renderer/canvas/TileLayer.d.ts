@@ -3,10 +3,10 @@ export default CanvasTileLayerRenderer;
  * @classdesc
  * Canvas renderer for tile layers.
  * @api
- * @template {import("../../layer/Tile.js").default<import("../../source/Tile.js").default>|import("../../layer/VectorTile.js").default} [LayerType=import("../../layer/Tile.js").default<import("../../source/Tile.js").default>|import("../../layer/VectorTile.js").default]
+ * @template {import("../../layer/Tile.js").default|import("../../layer/VectorTile.js").default} [LayerType=import("../../layer/Tile.js").default<import("../../source/Tile.js").default>|import("../../layer/VectorTile.js").default]
  * @extends {CanvasLayerRenderer<LayerType>}
  */
-declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile.js").default<import("../../source/Tile.js").default> | import("../../layer/VectorTile.js").default<any> = import("../../layer/Tile.js").default<import("../../source/Tile.js").default> | import("../../layer/VectorTile.js").default<any>> extends CanvasLayerRenderer<LayerType> {
+declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile.js").default<import("../../source/Tile.js").default> | import("../../layer/VectorTile.js").default<import("../../render/Feature.js").default, import("../../source.js").VectorTile<import("../../render/Feature.js").default>> = import("../../layer/Tile.js").default<import("../../source/Tile.js").default> | import("../../layer/VectorTile.js").default<import("../../render/Feature.js").default, import("../../source.js").VectorTile<import("../../render/Feature.js").default>>> extends CanvasLayerRenderer<LayerType> {
     /**
      * @param {LayerType} tileLayer Tile layer.
      */

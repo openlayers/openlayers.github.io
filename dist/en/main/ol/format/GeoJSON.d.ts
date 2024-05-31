@@ -10,7 +10,7 @@ export type GeoJSONMultiPoint = import("geojson").MultiPoint;
 export type GeoJSONMultiLineString = import("geojson").MultiLineString;
 export type GeoJSONMultiPolygon = import("geojson").MultiPolygon;
 export type GeoJSONGeometryCollection = import("geojson").GeometryCollection;
-export type Options<FeatureClassToFeature extends import("../Feature.js").FeatureClass> = {
+export type Options<FeatureClassType extends import("../Feature.js").FeatureClass = typeof Feature> = {
     /**
      * Default data projection.
      */
@@ -37,7 +37,7 @@ export type Options<FeatureClassToFeature extends import("../Feature.js").Featur
      * the primary concern, and features are not going to be modified or round-tripped through the format,
      * consider using {@link module :ol/render/Feature~RenderFeature}
      */
-    featureClass?: FeatureClassToFeature | undefined;
+    featureClass?: FeatureClassType | undefined;
 };
 /**
  * @typedef {import("geojson").GeoJSON} GeoJSONObject
@@ -53,7 +53,7 @@ export type Options<FeatureClassToFeature extends import("../Feature.js").Featur
  * @typedef {import("geojson").GeometryCollection} GeoJSONGeometryCollection
  */
 /**
- * @template {import("../Feature.js").FeatureClass} FeatureClassToFeature
+ * @template {import("../Feature.js").FeatureClass} [FeatureClassType=import('./Feature.js').FeatureToFeatureClass<import("../Feature.js").default>]
  * @typedef {Object} Options
  *
  * @property {import("../proj.js").ProjectionLike} [dataProjection='EPSG:4326'] Default data projection.
@@ -64,7 +64,7 @@ export type Options<FeatureClassToFeature extends import("../Feature.js").Featur
  * the geometry_name field in the feature GeoJSON. If set to `true` the GeoJSON reader
  * will look for that field to set the geometry name. If both this field is set to `true`
  * and a `geometryName` is provided, the `geometryName` will take precedence.
- * @property {FeatureClassToFeature} [featureClass] Feature class
+ * @property {FeatureClassType} [featureClass] Feature class
  * to be used when reading features. The default is {@link module:ol/Feature~Feature}. If performance is
  * the primary concern, and features are not going to be modified or round-tripped through the format,
  * consider using {@link module:ol/render/Feature~RenderFeature}
@@ -73,15 +73,15 @@ export type Options<FeatureClassToFeature extends import("../Feature.js").Featur
  * @classdesc
  * Feature format for reading and writing data in the GeoJSON format.
  *
- * @template {import('../Feature.js').FeatureClass} [T=typeof Feature]
- * @extends {JSONFeature<T>}
+ * @template {import('../Feature.js').FeatureClass} [FeatureClassType=import('./Feature.js').FeatureToFeatureClass<import("../Feature.js").default>]
+ * @extends {JSONFeature<FeatureClassType>}
  * @api
  */
-declare class GeoJSON<T extends import("../Feature.js").FeatureClass = typeof Feature> extends JSONFeature<T> {
+declare class GeoJSON<FeatureClassType extends import("../Feature.js").FeatureClass = typeof Feature> extends JSONFeature<FeatureClassType> {
     /**
-     * @param {Options<T>} [options] Options.
+     * @param {Options<FeatureClassType>} [options] Options.
      */
-    constructor(options?: Options<T> | undefined);
+    constructor(options?: Options<FeatureClassType> | undefined);
     /**
      * Name of the geometry attribute for features.
      * @type {string|undefined}

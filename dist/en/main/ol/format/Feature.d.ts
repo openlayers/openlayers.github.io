@@ -123,7 +123,7 @@ export type FeatureObject = {
 /**
  * *
  */
-export type FeatureToFeatureClass<T extends Feature<import("../geom.js").Geometry> | RenderFeature> = T extends RenderFeature ? typeof RenderFeature : typeof Feature;
+export type FeatureToFeatureClass<T extends import("../Feature.js").FeatureLike> = T extends RenderFeature ? typeof RenderFeature : typeof Feature;
 /**
  * *
  */
@@ -191,7 +191,7 @@ import RenderFeature from '../render/Feature.js';
  * @property {Object<string, *>} [properties] Properties.
  */
 /***
- * @template {Feature|RenderFeature} T
+ * @template {import('../Feature.js').FeatureLike} T
  * @typedef {T extends RenderFeature ? typeof RenderFeature : typeof Feature} FeatureToFeatureClass
  */
 /***
@@ -207,11 +207,11 @@ import RenderFeature from '../render/Feature.js';
  * {@link module:ol/Feature~Feature} objects from a variety of commonly used geospatial
  * file formats.  See the documentation for each format for more details.
  *
- * @template {import('../Feature.js').FeatureClass} [T=typeof import('../Feature.js').default]
+ * @template {import('../Feature.js').FeatureClass} [FeatureClassType=import('./Feature.js').FeatureToFeatureClass<import("../Feature.js").default>]
  * @abstract
  * @api
  */
-declare class FeatureFormat<T extends import("../Feature.js").FeatureClass = typeof Feature> {
+declare class FeatureFormat<FeatureClassType extends import("../Feature.js").FeatureClass = typeof Feature> {
     /**
      * @protected
      * @type {import("../proj/Projection.js").default|undefined}
@@ -224,9 +224,9 @@ declare class FeatureFormat<T extends import("../Feature.js").FeatureClass = typ
     protected defaultFeatureProjection: import("../proj/Projection.js").default | undefined;
     /**
      * @protected
-     * @type {T}
+     * @type {FeatureClassType}
      */
-    protected featureClass: T;
+    protected featureClass: FeatureClassType;
     /**
      * A list media types supported by the format in descending order of preference.
      * @type {Array<string>}
@@ -261,18 +261,18 @@ declare class FeatureFormat<T extends import("../Feature.js").FeatureClass = typ
      * @abstract
      * @param {Document|Element|Object|string} source Source.
      * @param {ReadOptions} [options] Read options.
-     * @return {import("../Feature.js").FeatureLike|Array<import("../render/Feature.js").default>} Feature.
+     * @return {FeatureClassToFeature<FeatureClassType>|Array<FeatureClassToFeature<FeatureClassType>>} Feature.
      */
-    readFeature(source: Document | Element | any | string, options?: ReadOptions | undefined): import("../Feature.js").FeatureLike | Array<import("../render/Feature.js").default>;
+    readFeature(source: Document | Element | any | string, options?: ReadOptions | undefined): FeatureClassToFeature<FeatureClassType> | Array<FeatureClassToFeature<FeatureClassType>>;
     /**
      * Read all features from a source.
      *
      * @abstract
      * @param {Document|Element|ArrayBuffer|Object|string} source Source.
      * @param {ReadOptions} [options] Read options.
-     * @return {Array<import('../Feature.js').FeatureLike|FeatureClassToFeature<T>>} Features.
+     * @return {Array<FeatureClassToFeature<FeatureClassType>>} Features.
      */
-    readFeatures(source: Document | Element | ArrayBuffer | any | string, options?: ReadOptions | undefined): Array<import('../Feature.js').FeatureLike | FeatureClassToFeature<T>>;
+    readFeatures(source: Document | Element | ArrayBuffer | any | string, options?: ReadOptions | undefined): Array<FeatureClassToFeature<FeatureClassType>>;
     /**
      * Read a single geometry from a source.
      *

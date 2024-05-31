@@ -1,5 +1,5 @@
 export default Heatmap;
-export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
+export type Options<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -66,7 +66,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
     /**
      * Point source.
      */
-    source?: import("../source/Vector.js").default<FeatureType> | undefined;
+    source?: VectorSourceType | undefined;
     /**
      * Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
      */
@@ -82,15 +82,16 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
  * options means that `title` is observable, and has get/set accessors.
  *
  * @fires import("../render/Event.js").RenderEvent
- * @template {import("../Feature.js").FeatureLike} FeatureType
- * @extends {BaseVector<import("../source/Vector.js").default<FeatureType>, WebGLPointsLayerRenderer>}
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
+ * @template {import("../source/Vector.js").default<FeatureType>} [VectorSourceType=import("../source/Vector.js").default<FeatureType>]
+ * @extends {BaseVector<FeatureType, VectorSourceType, WebGLPointsLayerRenderer>}
  * @api
  */
-declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike> extends BaseVector<import("../source/Vector.js").default<FeatureType>, WebGLPointsLayerRenderer> {
+declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> extends BaseVector<FeatureType, VectorSourceType, WebGLPointsLayerRenderer> {
     /**
-     * @param {Options<FeatureType>} [options] Options.
+     * @param {Options<FeatureType, VectorSourceType>} [options] Options.
      */
-    constructor(options?: Options<FeatureType> | undefined);
+    constructor(options?: Options<FeatureType, VectorSourceType> | undefined);
     /**
      * @private
      * @type {HTMLCanvasElement}

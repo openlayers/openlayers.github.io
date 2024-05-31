@@ -1,14 +1,17 @@
 export default VectorTile;
-declare class VectorTile extends Tile {
+/**
+ * @template {import('./Feature.js').FeatureLike} FeatureType
+ */
+declare class VectorTile<FeatureType extends import("./Feature.js").FeatureLike> extends Tile {
     /**
      * @param {import("./tilecoord.js").TileCoord} tileCoord Tile coordinate.
      * @param {import("./TileState.js").default} state State.
      * @param {string} src Data source url.
-     * @param {import("./format/Feature.js").default<typeof import("./Feature.js").default|typeof import("./render/Feature.js").default>} format Feature format.
+     * @param {import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>} format Feature format.
      * @param {import("./Tile.js").LoadFunction} tileLoadFunction Tile load function.
      * @param {import("./Tile.js").Options} [options] Tile options.
      */
-    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, src: string, format: import("./format/Feature.js").default<typeof import("./Feature.js").default | typeof import("./render/Feature.js").default>, tileLoadFunction: import("./Tile.js").LoadFunction, options?: import("./Tile.js").Options | undefined);
+    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, src: string, format: import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>, tileLoadFunction: import("./Tile.js").LoadFunction, options?: import("./Tile.js").Options | undefined);
     /**
      * Extent of this tile; set by the source.
      * @type {import("./extent.js").Extent}
@@ -16,17 +19,17 @@ declare class VectorTile extends Tile {
     extent: import("./extent.js").Extent;
     /**
      * @private
-     * @type {import("./format/Feature.js").default<typeof import("./Feature.js").default|typeof import("./render/Feature.js").default>}
+     * @type {import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>}
      */
     private format_;
     /**
      * @private
-     * @type {Array<import("./Feature.js").FeatureLike>}
+     * @type {Array<FeatureType>}
      */
     private features_;
     /**
      * @private
-     * @type {import("./featureloader.js").FeatureLoader}
+     * @type {import("./featureloader.js").FeatureLoader<FeatureType>}
      */
     private loader_;
     /**
@@ -51,22 +54,22 @@ declare class VectorTile extends Tile {
     private url_;
     /**
      * Get the feature format assigned for reading this tile's features.
-     * @return {import("./format/Feature.js").default<typeof import("./Feature.js").default|typeof import("./render/Feature.js").default>} Feature format.
+     * @return {import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>} Feature format.
      * @api
      */
-    getFormat(): import("./format/Feature.js").default<typeof import("./Feature.js").default | typeof import("./render/Feature.js").default>;
+    getFormat(): import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>;
     /**
      * Get the features for this tile. Geometries will be in the view projection.
-     * @return {Array<import("./Feature.js").FeatureLike>} Features.
+     * @return {Array<FeatureType>} Features.
      * @api
      */
-    getFeatures(): Array<import("./Feature.js").FeatureLike>;
+    getFeatures(): Array<FeatureType>;
     /**
      * Handler for successful tile load.
-     * @param {Array<import("./Feature.js").default>} features The loaded features.
+     * @param {Array<FeatureType>} features The loaded features.
      * @param {import("./proj/Projection.js").default} dataProjection Data projection.
      */
-    onLoad(features: Array<import("./Feature.js").default>, dataProjection: import("./proj/Projection.js").default): void;
+    onLoad(features: Array<FeatureType>, dataProjection: import("./proj/Projection.js").default): void;
     /**
      * Handler for tile load errors.
      */
@@ -74,16 +77,16 @@ declare class VectorTile extends Tile {
     /**
      * Function for use in an {@link module:ol/source/VectorTile~VectorTile}'s `tileLoadFunction`.
      * Sets the features for the tile.
-     * @param {Array<import("./Feature.js").FeatureLike>} features Features.
+     * @param {Array<FeatureType>} features Features.
      * @api
      */
-    setFeatures(features: Array<import("./Feature.js").FeatureLike>): void;
+    setFeatures(features: Array<FeatureType>): void;
     /**
      * Set the feature loader for reading this tile's features.
-     * @param {import("./featureloader.js").FeatureLoader} loader Feature loader.
+     * @param {import("./featureloader.js").FeatureLoader<FeatureType>} loader Feature loader.
      * @api
      */
-    setLoader(loader: import("./featureloader.js").FeatureLoader): void;
+    setLoader(loader: import("./featureloader.js").FeatureLoader<FeatureType>): void;
 }
 import Tile from './Tile.js';
 //# sourceMappingURL=VectorTile.d.ts.map

@@ -1,5 +1,5 @@
 export default OGCVectorTile;
-export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
+export type Options<FeatureType extends import("../Feature.js").FeatureLike = import("../render/Feature.js").default> = {
     /**
      * URL to the OGC Vector Tileset endpoint.
      */
@@ -10,9 +10,9 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
      */
     context?: any;
     /**
-     * Feature parser for tiles.
+     * Feature format for tiles. Used and required by the default.
      */
-    format: import("../format/Feature.js").default<import('../format/Feature.js').FeatureToFeatureClass<FeatureType>>;
+    format?: import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>> | undefined;
     /**
      * The content type for the tiles (e.g. "application/vnd.mapbox-vector-tile").  If not provided,
      * the source will try to find a link with rel="item" that uses a vector type supported by the configured format.
@@ -70,12 +70,12 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
     collections?: string[] | undefined;
 };
 /**
- * @template {import("../Feature.js").FeatureLike} FeatureType
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../render/Feature.js").default]
  * @typedef {Object} Options
  * @property {string} url URL to the OGC Vector Tileset endpoint.
  * @property {Object} [context] A lookup of values to use in the tile URL template.  The `{tileMatrix}`
  * (zoom level), `{tileRow}`, and `{tileCol}` variables in the URL will always be provided by the source.
- * @property {import("../format/Feature.js").default<import('../format/Feature.js').FeatureToFeatureClass<FeatureType>>} format Feature parser for tiles.
+ * @property {import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>>} [format] Feature format for tiles. Used and required by the default.
  * @property {string} [mediaType] The content type for the tiles (e.g. "application/vnd.mapbox-vector-tile").  If not provided,
  * the source will try to find a link with rel="item" that uses a vector type supported by the configured format.
  * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
@@ -112,10 +112,10 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
  * which of the advertised media types is used.  If you need to force the use of a particular media type, you can
  * provide the `mediaType` option.
  * @api
- * @template {import("../Feature.js").FeatureLike} FeatureType
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../render/Feature.js").default]
  * @extends {VectorTileSource<FeatureType>}
  */
-declare class OGCVectorTile<FeatureType extends import("../Feature.js").FeatureLike> extends VectorTileSource<FeatureType> {
+declare class OGCVectorTile<FeatureType extends import("../Feature.js").FeatureLike = import("../render/Feature.js").default> extends VectorTileSource<FeatureType> {
     /**
      * @param {Options<FeatureType>} options OGC vector tile options.
      */

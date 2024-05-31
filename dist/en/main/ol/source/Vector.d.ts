@@ -10,27 +10,27 @@
  * @classdesc
  * Events emitted by {@link module:ol/source/Vector~VectorSource} instances are instances of this
  * type.
- * @template {import("../Feature.js").FeatureLike} [FeatureClass=import("../Feature.js").default]
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
  */
-export class VectorSourceEvent<FeatureClass extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>> extends Event {
+export class VectorSourceEvent<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>> extends Event {
     /**
      * @param {string} type Type.
-     * @param {FeatureClass} [feature] Feature.
-     * @param {Array<FeatureClass>} [features] Features.
+     * @param {FeatureType} [feature] Feature.
+     * @param {Array<FeatureType>} [features] Features.
      */
-    constructor(type: string, feature?: FeatureClass | undefined, features?: FeatureClass[] | undefined);
+    constructor(type: string, feature?: FeatureType | undefined, features?: FeatureType[] | undefined);
     /**
      * The added or removed feature for the `ADDFEATURE` and `REMOVEFEATURE` events, `undefined` otherwise.
-     * @type {FeatureClass|undefined}
+     * @type {FeatureType|undefined}
      * @api
      */
-    feature: FeatureClass | undefined;
+    feature: FeatureType | undefined;
     /**
      * The loaded features for the `FEATURESLOADED` event, `undefined` otherwise.
-     * @type {Array<FeatureClass>|undefined}
+     * @type {Array<FeatureType>|undefined}
      * @api
      */
-    features: Array<FeatureClass> | undefined;
+    features: Array<FeatureType> | undefined;
 }
 export default VectorSource;
 /**
@@ -47,7 +47,7 @@ export type FeatureClassOrArrayOfRenderFeatures<T extends import("../Feature.js"
  * *
  */
 export type VectorSourceOnSignature<Return, FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("./VectorEventType").VectorSourceEventTypes, VectorSourceEvent<FeatureType>, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | import("./VectorEventType").VectorSourceEventTypes, Return>;
-export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
+export type Options<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>> = {
     /**
      * Attributions.
      */
@@ -174,7 +174,7 @@ import Event from '../events/Event.js';
  *     import("./VectorEventType").VectorSourceEventTypes, Return>} VectorSourceOnSignature
  */
 /**
- * @template {import("../Feature.js").FeatureLike} FeatureType
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
  * @typedef {Object} Options
  * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
  * @property {Array<FeatureType>|Collection<FeatureType>} [features]
@@ -299,7 +299,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     private loader_;
     /**
      * @private
-     * @type {import("../format/Feature.js").default<import('../format/Feature.js').FeatureToFeatureClass<FeatureType>>|undefined}
+     * @type {import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>>|null}
      */
     private format_;
     /**
@@ -565,10 +565,10 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     /**
      * Get the format associated with this source.
      *
-     * @return {import("../format/Feature.js").default<import('../format/Feature.js').FeatureToFeatureClass<FeatureType>>|undefined} The feature format.
+     * @return {import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>>|null}} The feature format.
      * @api
      */
-    getFormat(): import("../format/Feature.js").default<import('../format/Feature.js').FeatureToFeatureClass<FeatureType>> | undefined;
+    getFormat(): import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>> | null;
     /**
      * @return {boolean} The source can have overlapping geometries.
      */

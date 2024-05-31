@@ -37,7 +37,7 @@ declare class VectorRenderTile extends Tile {
      * @param {function(VectorRenderTile):Array<import("./VectorTile").default>} getSourceTiles Function
      * to get source tiles for this tile.
      */
-    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, urlTileCoord: import("./tilecoord.js").TileCoord, getSourceTiles: (arg0: VectorRenderTile) => Array<import("./VectorTile").default>);
+    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, urlTileCoord: import("./tilecoord.js").TileCoord, getSourceTiles: (arg0: VectorRenderTile) => Array<import("./VectorTile").default<any>>);
     /**
      * @private
      * @type {!Object<string, CanvasRenderingContext2D>}
@@ -69,7 +69,7 @@ declare class VectorRenderTile extends Tile {
     /**
      * @type {Array<import("./VectorTile.js").default>}
      */
-    sourceTiles: Array<import("./VectorTile.js").default>;
+    sourceTiles: Array<import("./VectorTile").default<any>>;
     /**
      * @type {Object<string, boolean>}
      */
@@ -83,7 +83,7 @@ declare class VectorRenderTile extends Tile {
     /**
      * @type {!function():Array<import("./VectorTile.js").default>}
      */
-    getSourceTiles: () => Array<import("./VectorTile.js").default>;
+    getSourceTiles: () => Array<import("./VectorTile").default<any>>;
     /**
      * @type {import("./tilecoord.js").TileCoord}
      */

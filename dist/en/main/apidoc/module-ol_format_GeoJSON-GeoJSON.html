@@ -296,7 +296,7 @@ and a <code>geometryName</code> is provided, the <code>geometryName</code> will 
             <td class="type">
             
                 
-<span class="param-type">FeatureClassToFeature</span>
+<span class="param-type">FeatureClassType</span>
 
  | undefined
                 
@@ -396,7 +396,7 @@ consider using <a href="module-ol_render_Feature-RenderFeature.html"><code>Rende
         <div class="anchor" id="readFeature">
         </div>
         <h4 class="name">
-            readFeature<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{FeatureClassToFeature&lt;T>}</span>
+            readFeature<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{FeatureClassToFeature&lt;FeatureClassType> | Array&lt;FeatureClassToFeature&lt;FeatureClassType>>}</span>
             
                 <span class="inherited"><a href="module-ol_format_JSONFeature-JSONFeature.html#readFeature">inherited</a></span>
             
@@ -664,7 +664,7 @@ Feature.
         <div class="anchor" id="readFeatures">
         </div>
         <h4 class="name">
-            readFeatures<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array&lt;FeatureClassToFeature&lt;T>>}</span>
+            readFeatures<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array&lt;FeatureClassToFeature&lt;FeatureClassType>>}</span>
             
                 <span class="inherited"><a href="module-ol_format_JSONFeature-JSONFeature.html#readFeatures">inherited</a></span>
             
@@ -674,7 +674,7 @@ Feature.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js">format/JSONFeature.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js#L56">line 56</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js#L54">line 54</a>
         </div>
         
     </div>
@@ -942,7 +942,7 @@ Features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js">format/JSONFeature.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js#L95">line 95</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js#L93">line 93</a>
         </div>
         
     </div>
@@ -1209,7 +1209,7 @@ Geometry.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js">format/JSONFeature.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js#L120">line 120</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js#L118">line 118</a>
         </div>
         
     </div>
@@ -1358,7 +1358,7 @@ Projection.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js">format/JSONFeature.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js#L142">line 142</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js#L140">line 140</a>
         </div>
         
     </div>
@@ -1644,7 +1644,7 @@ Encoded feature.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js">format/GeoJSON.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L231">line 231</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L236">line 236</a>
         </div>
         
     </div>
@@ -1932,7 +1932,7 @@ Object.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js">format/JSONFeature.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js#L164">line 164</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js#L162">line 162</a>
         </div>
         
     </div>
@@ -2218,7 +2218,7 @@ Encoded features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js">format/GeoJSON.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L273">line 273</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L278">line 278</a>
         </div>
         
     </div>
@@ -2506,7 +2506,7 @@ GeoJSON Object.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js">format/JSONFeature.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js#L186">line 186</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/JSONFeature.js#L184">line 184</a>
         </div>
         
     </div>
@@ -2792,7 +2792,7 @@ Encoded geometry.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js">format/GeoJSON.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L293">line 293</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/GeoJSON.js#L298">line 298</a>
         </div>
         
     </div>

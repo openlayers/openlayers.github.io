@@ -274,10 +274,10 @@ export type Options = {
  * Note that the view projection must define both extent and worldExtent.
  *
  * @fires import("../render/Event.js").RenderEvent
- * @extends {VectorLayer<Feature>}
+ * @extends {VectorLayer<Feature, VectorSource>}
  * @api
  */
-declare class Graticule extends VectorLayer<Feature<import("../geom.js").Geometry>> {
+declare class Graticule extends VectorLayer<Feature<import("../geom.js").Geometry>, VectorSource<Feature<import("../geom.js").Geometry>>> {
     /**
      * @param {Options} [options] Options.
      */
@@ -587,6 +587,7 @@ import Point from '../geom/Point.js';
 import Stroke from '../style/Stroke.js';
 import Text from '../style/Text.js';
 import Feature from '../Feature.js';
+import VectorSource from '../source/Vector.js';
 import VectorLayer from './Vector.js';
 import LineString from '../geom/LineString.js';
 //# sourceMappingURL=Graticule.d.ts.map

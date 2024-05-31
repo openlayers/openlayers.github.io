@@ -155,7 +155,7 @@ export type Options = {
      * the `pixelTolerance` from the pointer location. When a {@link module :ol/layer/BaseVector~BaseVectorLayer} is
      * provided, only the rendered representation of the features on that layer will be considered.
      */
-    hitDetection?: boolean | import("../layer/BaseVector").default<any, any> | undefined;
+    hitDetection?: boolean | import("../layer/BaseVector").default<any, any, any> | undefined;
     /**
      * The features the interaction works on.  If a feature collection is not
      * provided, a vector source must be provided with the `source` option.
@@ -331,7 +331,7 @@ declare class Modify extends PointerInteraction {
     /**
      * @type {boolean|import("../layer/BaseVector").default}
      */
-    hitDetection_: boolean | import("../layer/BaseVector").default<any, any>;
+    hitDetection_: boolean | import("../layer/BaseVector").default<any, any, any>;
     /**
      * @type {Collection<Feature>}
      * @private
@@ -384,7 +384,7 @@ declare class Modify extends PointerInteraction {
      * @return {VectorLayer} Overlay layer.
      * @api
      */
-    getOverlay(): VectorLayer<any>;
+    getOverlay(): VectorLayer;
     /**
      * @param {import("../source/Vector.js").VectorSourceEvent} event Event.
      * @private

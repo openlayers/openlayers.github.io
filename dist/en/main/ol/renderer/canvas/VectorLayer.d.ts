@@ -8,7 +8,7 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     /**
      * @param {import("../../layer/BaseVector.js").default} vectorLayer Vector layer.
      */
-    constructor(vectorLayer: import("../../layer/BaseVector.js").default<any, any>);
+    constructor(vectorLayer: import("../../layer/BaseVector.js").default<any, any, any>);
     /** @private */
     private boundHandleStyleImageChange_;
     /**
