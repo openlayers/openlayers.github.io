@@ -4,7 +4,11 @@ export default VectorTileLayer;
  */
 export type VectorTileLayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | 'change:preload' | 'change:useInterimTilesOnError', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | 'change:preload' | 'change:useInterimTilesOnError' | import("../render/EventType").LayerRenderEventTypes, Return>;
 export type VectorTileRenderType = 'hybrid' | 'vector';
-export type Options<FeatureType extends import("../Feature").FeatureLike = import("../render/Feature.js").default, VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source/VectorTile.js").default<FeatureType>> = {
+/**
+ * *
+ */
+export type ExtractedFeatureType<T> = T extends import("../source/VectorTile.js").default<infer U extends import("../Feature.js").FeatureLike> ? U : never;
+export type Options<VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source/VectorTile.js").default<any>, FeatureType extends import("../Feature.js").FeatureLike = ExtractedFeatureType<VectorTileSourceType>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -144,9 +148,13 @@ export type Options<FeatureType extends import("../Feature").FeatureLike = impor
 /**
  * @typedef {'hybrid' | 'vector'} VectorTileRenderType
  */
+/***
+ * @template T
+ * @typedef {T extends import("../source/VectorTile.js").default<infer U extends import("../Feature.js").FeatureLike> ? U : never} ExtractedFeatureType
+ */
 /**
- * @template {import("../Feature").FeatureLike} [FeatureType=import("../render/Feature.js").default]
- * @template {import("../source/VectorTile.js").default<FeatureType>} [VectorTileSourceType=import("../source/VectorTile.js").default<FeatureType>]
+ * @template {import("../source/VectorTile.js").default<FeatureType>} [VectorTileSourceType=import("../source/VectorTile.js").default<*>]
+ * @template {import("../Feature").FeatureLike} [FeatureType=ExtractedFeatureType<VectorTileSourceType>]
  * @typedef {Object} Options
  * @property {string} [className='ol-layer'] A CSS class name to set to the layer element.
  * @property {number} [opacity=1] Opacity (0, 1).
@@ -214,16 +222,16 @@ export type Options<FeatureType extends import("../Feature").FeatureLike = impor
  * property on the layer object; for example, setting `title: 'My Title'` in the
  * options means that `title` is observable, and has get/set accessors.
  *
- * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../render/Feature.js").default]
- * @template {import("../source/VectorTile.js").default<FeatureType>} [VectorTileSourceType=import("../source/VectorTile.js").default<FeatureType>]
+ * @template {import("../source/VectorTile.js").default<FeatureType>} [VectorTileSourceType=import("../source/VectorTile.js").default<*>]
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=ExtractedFeatureType<VectorTileSourceType>]
  * @extends {BaseVectorLayer<FeatureType, VectorTileSourceType, CanvasVectorTileLayerRenderer>}
  * @api
  */
-declare class VectorTileLayer<FeatureType extends import("../Feature").FeatureLike = import("../render/Feature.js").default, VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source/VectorTile.js").default<FeatureType>> extends BaseVectorLayer<FeatureType, VectorTileSourceType, CanvasVectorTileLayerRenderer> {
+declare class VectorTileLayer<VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source/VectorTile.js").default<any>, FeatureType extends import("../Feature.js").FeatureLike = ExtractedFeatureType<VectorTileSourceType>> extends BaseVectorLayer<FeatureType, VectorTileSourceType, CanvasVectorTileLayerRenderer> {
     /**
-     * @param {Options<FeatureType, VectorTileSourceType>} [options] Options.
+     * @param {Options<VectorTileSourceType, FeatureType>} [options] Options.
      */
-    constructor(options?: Options<FeatureType, VectorTileSourceType> | undefined);
+    constructor(options?: Options<VectorTileSourceType, FeatureType> | undefined);
     /***
      * @type {VectorTileLayerOnSignature<import("../events").EventsKey>}
      */
