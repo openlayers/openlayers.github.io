@@ -31,7 +31,6 @@ export function isType(type: number, expected: number): boolean;
  * @property {Set<string>} properties Properties referenced with the 'get' operator.
  * @property {boolean} featureId The style uses the feature id.
  * @property {boolean} geometryType The style uses the feature geometry type.
- * @property {import("../style/flat.js").FlatStyle|import("../style/webgl.js").WebGLStyle} style The style being parsed
  */
 /**
  * @return {ParsingContext} A new parsing context.
@@ -42,11 +41,11 @@ export function newParsingContext(): ParsingContext;
  */
 /**
  * @param {EncodedExpression} encoded The encoded expression.
+ * @param {number} expectedType The expected type.
  * @param {ParsingContext} context The parsing context.
- * @param {number} [typeHint] Optional type hint
  * @return {Expression} The parsed expression result.
  */
-export function parse(encoded: EncodedExpression, context: ParsingContext, typeHint?: number | undefined): Expression;
+export function parse(encoded: EncodedExpression, expectedType: number, context: ParsingContext): Expression;
 /**
  * Returns a simplified geometry type suited for the `geometry-type` operator
  * @param {import('../geom/Geometry.js').default|import('../render/Feature.js').default} geometry Geometry object
@@ -108,19 +107,13 @@ export type ParsingContext = {
      * The style uses the feature geometry type.
      */
     geometryType: boolean;
-    /**
-     * The style being parsed
-     */
-    style: import("../style/flat.js").FlatStyle | import("../style/webgl.js").WebGLStyle;
 };
 export type EncodedExpression = LiteralValue | any[];
 /**
- * An argument validator applies various checks to an encoded expression arguments
- * Returns the parsed arguments if any.
- * Third argument is the array of parsed arguments from previous validators
- * Fourth argument is an optional type hint
+ * An argument validator applies various checks to an encoded expression arguments and
+ * returns the parsed arguments if any.  The second argument is the return type of the call expression.
  */
-export type ArgValidator = (arg0: Array<EncodedExpression>, arg1: ParsingContext, arg2: Array<Expression>, arg3: number | null) => Array<Expression> | void;
+export type ArgValidator = (arg0: Array<EncodedExpression>, arg1: number, arg2: ParsingContext) => Array<Expression> | void;
 /**
  * Base type used for literal style parameters; can be a number literal or the output of an operator,
  * which in turns takes {@link import ("./expression.js").ExpressionValue} arguments.
@@ -236,7 +229,7 @@ export type ArgValidator = (arg0: Array<EncodedExpression>, arg1: ParsingContext
 export type ExpressionValue = Array<any> | import("../color.js").Color | string | number | boolean;
 export type LiteralValue = boolean | number | string | Array<number>;
 /**
- * Third argument is a type hint
+ * Second argument is the expected type.
  */
-export type Parser = (arg0: any[], arg1: ParsingContext, arg2: number) => Expression;
+export type Parser = (arg0: any[], arg1: number, arg2: ParsingContext) => Expression;
 //# sourceMappingURL=expression.d.ts.map
