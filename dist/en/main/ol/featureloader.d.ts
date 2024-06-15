@@ -3,7 +3,7 @@
  * load features.
  *
  * This function takes up to 5 arguments. These are an {@link module:ol/extent~Extent} representing
- * the area to be loaded, a `{number}` representing the resolution (map units per pixel), an
+ * the area to be loaded, a `{number}` representing the resolution (map units per pixel), a
  * {@link module:ol/proj/Projection~Projection} for the projection, an optional success callback that should get
  * the loaded features passed as an argument and an optional failure callback with no arguments. If
  * the callbacks are not used, the corresponding vector source will not fire `'featuresloadend'` and
@@ -70,7 +70,7 @@ export function setWithCredentials(xhrWithCredentials: boolean): void;
  * load features.
  *
  * This function takes up to 5 arguments. These are an {@link module :ol/extent~Extent} representing
- * the area to be loaded, a `{number}` representing the resolution (map units per pixel), an
+ * the area to be loaded, a `{number}` representing the resolution (map units per pixel), a
  * {@link module :ol/proj/Projection~Projection} for the projection, an optional success callback that should get
  * the loaded features passed as an argument and an optional failure callback with no arguments. If
  * the callbacks are not used, the corresponding vector source will not fire `'featuresloadend'` and

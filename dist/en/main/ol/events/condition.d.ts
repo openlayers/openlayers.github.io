@@ -1,5 +1,5 @@
 /**
- * A function that takes an {@link module:ol/MapBrowserEvent~MapBrowserEvent} and returns a
+ * A function that takes a {@link module:ol/MapBrowserEvent~MapBrowserEvent} and returns a
  * `{boolean}`. If the condition is met, true should be returned.
  *
  * @typedef {function(this: ?, import("../MapBrowserEvent.js").default): boolean} Condition
@@ -45,7 +45,7 @@ export function touchOnly(mapBrowserEvent: import("../MapBrowserEvent.js").defau
 export function penOnly(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): boolean;
 export function primaryAction(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): boolean;
 /**
- * A function that takes an {@link module :ol/MapBrowserEvent~MapBrowserEvent} and returns a
+ * A function that takes a {@link module :ol/MapBrowserEvent~MapBrowserEvent} and returns a
  * `{boolean}`. If the condition is met, true should be returned.
  */
 export type Condition = (this: unknown, arg1: import("../MapBrowserEvent.js").default<any>) => boolean;

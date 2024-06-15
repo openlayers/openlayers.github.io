@@ -37,7 +37,7 @@ export type Options = {
      */
     className?: string | undefined;
     /**
-     * A function that takes an {@link module :ol/MapBrowserEvent~MapBrowserEvent} and returns a boolean
+     * A function that takes a {@link module :ol/MapBrowserEvent~MapBrowserEvent} and returns a boolean
      * to indicate whether that event should be handled.
      * Default is {@link ol /events/condition~mouseActionButton}.
      */
@@ -76,7 +76,7 @@ import Event from '../events/Event.js';
 /**
  * @classdesc
  * Allows the user to draw a vector box by clicking and dragging on the map,
- * normally combined with an {@link module:ol/events/condition} that limits
+ * normally combined with a {@link module:ol/events/condition} that limits
  * it to when the shift or other key is held down. This is used, for example,
  * for zooming to a specific area of the map
  * (see {@link module:ol/interaction/DragZoom~DragZoom} and

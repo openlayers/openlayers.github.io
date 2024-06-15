@@ -1,6 +1,6 @@
 export default Tile;
 /**
- * A function that takes an {@link module :ol/Tile~Tile} for the tile and a
+ * A function that takes a {@link module :ol/Tile~Tile} for the tile and a
  * `{string}` for the url as arguments. The default is
  * ```js
  * source.setTileLoadFunction(function(tile, src) {
@@ -37,7 +37,7 @@ export type LoadFunction = (arg0: Tile, arg1: string) => void;
  * {@link module :ol/source/Tile~TileSource} sources use a function of this type to get
  * the url that provides a tile for a given tile coordinate.
  *
- * This function takes an {@link module :ol/tilecoord~TileCoord} for the tile
+ * This function takes a {@link module :ol/tilecoord~TileCoord} for the tile
  * coordinate, a `{number}` representing the pixel ratio and a
  * {@link module :ol/proj/Projection~Projection} for the projection  as arguments
  * and returns a `{string}` representing the tile URL, or undefined if no tile
@@ -57,7 +57,7 @@ export type Options = {
     interpolate?: boolean | undefined;
 };
 /**
- * A function that takes an {@link module:ol/Tile~Tile} for the tile and a
+ * A function that takes a {@link module:ol/Tile~Tile} for the tile and a
  * `{string}` for the url as arguments. The default is
  * ```js
  * source.setTileLoadFunction(function(tile, src) {
@@ -96,7 +96,7 @@ export type Options = {
  * {@link module:ol/source/Tile~TileSource} sources use a function of this type to get
  * the url that provides a tile for a given tile coordinate.
  *
- * This function takes an {@link module:ol/tilecoord~TileCoord} for the tile
+ * This function takes a {@link module:ol/tilecoord~TileCoord} for the tile
  * coordinate, a `{number}` representing the pixel ratio and a
  * {@link module:ol/proj/Projection~Projection} for the projection  as arguments
  * and returns a `{string}` representing the tile URL, or undefined if no tile

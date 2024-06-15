@@ -38,7 +38,7 @@ declare class Fill {
      */
     private color_;
     /**
-     * Clones the style. The color is not cloned if it is an {@link module:ol/colorlike~ColorLike}.
+     * Clones the style. The color is not cloned if it is a {@link module:ol/colorlike~ColorLike}.
      * @return {Fill} The cloned style.
      * @api
      */
