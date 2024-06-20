@@ -266,7 +266,7 @@
             </td>
 
             <td class="description last">
-                <p>Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.</p>
+                <p>Deprecated.  Use the cacheSize option on the layer instead.</p>
                 
             </td>
         </tr>
@@ -321,31 +321,6 @@ See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_imag
             <td class="description last">
                 <p>Use interpolated values when resampling.  By default,
 linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.</p>
-                
-            </td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>opaque</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-                
-                    <br>(defaults to false)
-                
-            
-            </td>
-
-            <td class="description last">
-                <p>Whether the layer is opaque.</p>
                 
             </td>
         </tr>
@@ -515,7 +490,8 @@ Higher values can increase reprojection performance, but decrease precision.</p>
             </td>
 
             <td class="description last">
-                <p>Optional function to load a tile given a URL. The default is</p>
+                <p>Deprecated.  Use an ImageTile source with a loader
+instead.  Optional function to load a tile given a URL. The default is</p>
 <pre class="prettyprint source lang-js"><code>function(imageTile, src) {
   imageTile.getImage().src = src;
 };</code></pre>
@@ -625,9 +601,8 @@ Supported images should be wider and taller than the tile size by a value of <co
             </td>
 
             <td class="description last">
-                <p>Optional function to get
-tile URL given a tile coordinate and the projection.
-Required if <code>url</code> or <code>urls</code> are not provided.</p>
+                <p>Deprecated.  Use an ImageTile source and provide a function
+for the url option instead.</p>
                 
             </td>
         </tr>
@@ -675,7 +650,8 @@ may be used instead of defining each one separately in the <code>urls</code> opt
             </td>
 
             <td class="description last">
-                <p>An array of URL templates.</p>
+                <p>Deprecated.  Use an ImageTile source and provide an array of URLs for the
+url option instead.</p>
                 
             </td>
         </tr>

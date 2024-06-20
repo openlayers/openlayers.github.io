@@ -46,6 +46,13 @@ export function fromKey(key: string): TileCoord;
  */
 export function hash(tileCoord: TileCoord): number;
 /**
+ * @param {number} z The tile z coordinate.
+ * @param {number} x The tile x coordinate.
+ * @param {number} y The tile y coordinate.
+ * @return {number} Hash.
+ */
+export function hashZXY(z: number, x: number, y: number): number;
+/**
  * @param {TileCoord} tileCoord Tile coordinate.
  * @param {!import("./tilegrid/TileGrid.js").default} tileGrid Tile grid.
  * @return {boolean} Tile coordinate is within extent and zoom level range.

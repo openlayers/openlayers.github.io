@@ -208,13 +208,13 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Feature from &#x27;ol/Feature.js&#x27;;
+import ImageTile from &#x27;ol/source/ImageTile.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import Point from &#x27;ol/geom/Point.js&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import WebGLPointsLayer from &#x27;ol/layer/WebGLPoints.js&#x27;;
-import XYZ from &#x27;ol/source/XYZ.js&#x27;;
 import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 
 const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
@@ -225,11 +225,10 @@ const attributions &#x3D;
 const map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new XYZ({
+      source: new ImageTile({
         attributions: attributions,
         url:
           &#x27;https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
-        tileSize: 512,
       }),
     }),
   ],

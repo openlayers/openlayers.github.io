@@ -9,7 +9,7 @@ export type Options = {
      */
     attributionsCollapsible?: boolean | undefined;
     /**
-     * Size of the cache.
+     * Deprecated.  Use the cacheSize option on the layer instead.
      */
     cacheSize?: number | undefined;
     /**

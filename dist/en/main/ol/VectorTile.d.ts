@@ -7,11 +7,11 @@ declare class VectorTile<FeatureType extends import("./Feature.js").FeatureLike>
      * @param {import("./tilecoord.js").TileCoord} tileCoord Tile coordinate.
      * @param {import("./TileState.js").default} state State.
      * @param {string} src Data source url.
-     * @param {import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>} format Feature format.
+     * @param {import("./format/Feature.js").default<FeatureType>} format Feature format.
      * @param {import("./Tile.js").LoadFunction} tileLoadFunction Tile load function.
      * @param {import("./Tile.js").Options} [options] Tile options.
      */
-    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, src: string, format: import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>, tileLoadFunction: import("./Tile.js").LoadFunction, options?: import("./Tile.js").Options | undefined);
+    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, src: string, format: import("./format/Feature.js").default<FeatureType>, tileLoadFunction: import("./Tile.js").LoadFunction, options?: import("./Tile.js").Options | undefined);
     /**
      * Extent of this tile; set by the source.
      * @type {import("./extent.js").Extent}
@@ -19,7 +19,7 @@ declare class VectorTile<FeatureType extends import("./Feature.js").FeatureLike>
     extent: import("./extent.js").Extent;
     /**
      * @private
-     * @type {import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>}
+     * @type {import("./format/Feature.js").default<FeatureType>}
      */
     private format_;
     /**
@@ -54,10 +54,10 @@ declare class VectorTile<FeatureType extends import("./Feature.js").FeatureLike>
     private url_;
     /**
      * Get the feature format assigned for reading this tile's features.
-     * @return {import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>} Feature format.
+     * @return {import("./format/Feature.js").default<FeatureType>} Feature format.
      * @api
      */
-    getFormat(): import("./format/Feature.js").default<import("./format/Feature.js").FeatureToFeatureClass<FeatureType>>;
+    getFormat(): import("./format/Feature.js").default<FeatureType>;
     /**
      * Get the features for this tile. Geometries will be in the view projection.
      * @return {Array<FeatureType>} Features.

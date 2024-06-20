@@ -31,13 +31,9 @@ export type Options = {
      */
     attributionsCollapsible?: boolean | undefined;
     /**
-     * CacheSize.
+     * Deprecated.  Use the cacheSize option on the layer instead.
      */
     cacheSize?: number | undefined;
-    /**
-     * Whether the layer is opaque.
-     */
-    opaque?: boolean | undefined;
     /**
      * TilePixelRatio.
      */
@@ -89,8 +85,7 @@ import Event from '../events/Event.js';
  * @typedef {Object} Options
  * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
  * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
- * @property {number} [cacheSize] CacheSize.
- * @property {boolean} [opaque=false] Whether the layer is opaque.
+ * @property {number} [cacheSize] Deprecated.  Use the cacheSize option on the layer instead.
  * @property {number} [tilePixelRatio] TilePixelRatio.
  * @property {import("../proj.js").ProjectionLike} [projection] Projection.
  * @property {import("./Source.js").State} [state] State.
@@ -107,10 +102,12 @@ import Event from '../events/Event.js';
  * Abstract base class; normally only used for creating subclasses and not
  * instantiated in apps.
  * Base class for sources providing images divided into a tile grid.
+ *
+ * @template {import("../Tile.js").default} [TileType=import("../Tile.js").default]
  * @abstract
  * @api
  */
-declare class TileSource extends Source {
+declare class TileSource<TileType extends import("../Tile.js").default = import("../Tile.js").default> extends Source {
     /**
      * @param {Options} options SourceTile source options.
      */
@@ -127,11 +124,6 @@ declare class TileSource extends Source {
      * @type {TileSourceOnSignature<void>}
      */
     un: TileSourceOnSignature<void>;
-    /**
-     * @private
-     * @type {boolean}
-     */
-    private opaque_;
     /**
      * @private
      * @type {number}
@@ -182,16 +174,6 @@ declare class TileSource extends Source {
     }): void;
     /**
      * @param {import("../proj/Projection.js").default} projection Projection.
-     * @param {number} z Zoom level.
-     * @param {import("../TileRange.js").default} tileRange Tile range.
-     * @param {function(import("../Tile.js").default):(boolean|void)} callback Called with each
-     *     loaded tile.  If the callback returns `false`, the tile will not be
-     *     considered loaded.
-     * @return {boolean} The tile range is fully covered with loaded tiles.
-     */
-    forEachLoadedTile(projection: import("../proj/Projection.js").default, z: number, tileRange: import("../TileRange.js").default, callback: (arg0: import("../Tile.js").default) => (boolean | void)): boolean;
-    /**
-     * @param {import("../proj/Projection.js").default} projection Projection.
      * @return {number} Gutter.
      */
     getGutterForProjection(projection: import("../proj/Projection.js").default): number;
@@ -207,20 +189,15 @@ declare class TileSource extends Source {
      */
     protected setKey(key: string): void;
     /**
-     * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {boolean} Opaque.
-     */
-    getOpaque(projection: import("../proj/Projection.js").default): boolean;
-    /**
      * @abstract
      * @param {number} z Tile coordinate z.
      * @param {number} x Tile coordinate x.
      * @param {number} y Tile coordinate y.
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {!import("../Tile.js").default} Tile.
+     * @return {TileType|null} Tile.
      */
-    getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../Tile.js").default;
+    getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): TileType | null;
     /**
      * Return the tile grid of the tile source.
      * @return {import("../tilegrid/TileGrid.js").default|null} Tile grid.
@@ -268,12 +245,6 @@ declare class TileSource extends Source {
      * @api
      */
     clear(): void;
-    /**
-     * Increases the cache size if needed
-     * @param {number} tileCount Minimum number of tiles needed.
-     * @param {import("../proj/Projection.js").default} projection Projection.
-     */
-    updateCacheSize(tileCount: number, projection: import("../proj/Projection.js").default): void;
     /**
      * Marks a tile coord as being used, without triggering a load.
      * @abstract

@@ -9,13 +9,9 @@ export type Options = {
      */
     attributionsCollapsible?: boolean | undefined;
     /**
-     * Cache size.
+     * Deprecated.  Use the cacheSize option on the layer instead.
      */
     cacheSize?: number | undefined;
-    /**
-     * Whether the layer is opaque.
-     */
-    opaque?: boolean | undefined;
     /**
      * Projection.
      */
@@ -37,7 +33,8 @@ export type Options = {
      */
     tilePixelRatio?: number | undefined;
     /**
-     * TileUrlFunction.
+     * Deprecated.  Use an ImageTile source and provide a function
+     * for the url option instead.
      */
     tileUrlFunction?: import("../Tile.js").UrlFunction | undefined;
     /**
@@ -74,14 +71,14 @@ export type Options = {
  * @typedef {Object} Options
  * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
  * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
- * @property {number} [cacheSize] Cache size.
- * @property {boolean} [opaque=false] Whether the layer is opaque.
+ * @property {number} [cacheSize] Deprecated.  Use the cacheSize option on the layer instead.
  * @property {import("../proj.js").ProjectionLike} [projection] Projection.
  * @property {import("./Source.js").State} [state] State.
  * @property {import("../tilegrid/TileGrid.js").default} [tileGrid] TileGrid.
  * @property {import("../Tile.js").LoadFunction} tileLoadFunction TileLoadFunction.
  * @property {number} [tilePixelRatio] TilePixelRatio.
- * @property {import("../Tile.js").UrlFunction} [tileUrlFunction] TileUrlFunction.
+ * @property {import("../Tile.js").UrlFunction} [tileUrlFunction] Deprecated.  Use an ImageTile source and provide a function
+ * for the url option instead.
  * @property {string} [url] Url.
  * @property {Array<string>} [urls] Urls.
  * @property {boolean} [wrapX=true] WrapX.
@@ -92,12 +89,11 @@ export type Options = {
  * the nearest neighbor is used when resampling.
  */
 /**
- * @classdesc
- * Base class for sources providing tiles divided into a tile grid over http.
+ * @deprecated Use the ol/source/ImageTile.js instead.
  *
  * @fires import("./Tile.js").TileSourceEvent
  */
-declare class UrlTile extends TileSource {
+declare class UrlTile extends TileSource<import("../Tile.js").default> {
     /**
      * @param {Options} options Image tile options.
      */
@@ -130,18 +126,21 @@ declare class UrlTile extends TileSource {
      */
     private tileLoadingKeys_;
     /**
+     * Deprecated.  Use an ImageTile source instead.
      * Return the tile load function of the source.
      * @return {import("../Tile.js").LoadFunction} TileLoadFunction
      * @api
      */
     getTileLoadFunction(): import("../Tile.js").LoadFunction;
     /**
+     * Deprecated.  Use an ImageTile source instead.
      * Return the tile URL function of the source.
      * @return {import("../Tile.js").UrlFunction} TileUrlFunction
      * @api
      */
     getTileUrlFunction(): import("../Tile.js").UrlFunction;
     /**
+     * Deprecated.  Use an ImageTile source instead.
      * Return the URLs used for this source.
      * When a tileUrlFunction is used instead of url or urls,
      * null will be returned.
@@ -156,12 +155,14 @@ declare class UrlTile extends TileSource {
      */
     protected handleTileChange(event: import("../events/Event.js").default): void;
     /**
+     * Deprecated.  Use an ImageTile source instead.
      * Set the tile load function of the source.
      * @param {import("../Tile.js").LoadFunction} tileLoadFunction Tile load function.
      * @api
      */
     setTileLoadFunction(tileLoadFunction: import("../Tile.js").LoadFunction): void;
     /**
+     * Deprecated.  Use an ImageTile source instead.
      * Set the tile URL function of the source.
      * @param {import("../Tile.js").UrlFunction} tileUrlFunction Tile URL function.
      * @param {string} [key] Optional new tile key for the source.
@@ -175,6 +176,7 @@ declare class UrlTile extends TileSource {
      */
     setUrl(url: string): void;
     /**
+     * Deprecated.  Use an ImageTile source instead.
      * Set the URLs to use for requests.
      * @param {Array<string>} urls URLs.
      * @api

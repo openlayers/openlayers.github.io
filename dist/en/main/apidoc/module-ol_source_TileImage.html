@@ -266,7 +266,7 @@
             </td>
 
             <td class="description last">
-                <p>Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.</p>
+                <p>Deprecated.  Use the cacheSize option on the layer instead.</p>
                 
             </td>
         </tr>
@@ -321,31 +321,6 @@ See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_imag
             <td class="description last">
                 <p>Use interpolated values when resampling.  By default,
 linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.</p>
-                
-            </td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>opaque</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-                
-                    <br>(defaults to false)
-                
-            
-            </td>
-
-            <td class="description last">
-                <p>Whether the layer is opaque.</p>
                 
             </td>
         </tr>
@@ -541,7 +516,8 @@ should be set to <code>2</code>.</p>
             </td>
 
             <td class="description last">
-                <p>Optional function to get tile URL given a tile coordinate and the projection.</p>
+                <p>Deprecated.  Use an ImageTile source and provide a function
+for the url option instead.</p>
                 
             </td>
         </tr>

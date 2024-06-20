@@ -378,10 +378,10 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import EsriJSON from &#x27;ol/format/EsriJSON.js&#x27;;
+import ImageTile from &#x27;ol/source/ImageTile.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import XYZ from &#x27;ol/source/XYZ.js&#x27;;
 import {
   Draw,
   Modify,
@@ -451,7 +451,7 @@ const vector &#x3D; new VectorLayer({
 });
 
 const raster &#x3D; new TileLayer({
-  source: new XYZ({
+  source: new ImageTile({
     attributions:
       &#x27;Tiles © &lt;a href&#x3D;&quot;https://services.arcgisonline.com/ArcGIS/&#x27; +
       &#x27;rest/services/World_Topo_Map/MapServer&quot;&gt;ArcGIS&lt;/a&gt;&#x27;,

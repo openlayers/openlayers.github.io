@@ -3,7 +3,7 @@ export default BaseTileLayer;
  * *
  */
 export type BaseTileLayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | 'change:preload' | 'change:useInterimTilesOnError', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | 'change:preload' | 'change:useInterimTilesOnError' | import("../render/EventType").LayerRenderEventTypes, Return>;
-export type Options<TileSourceType extends import("../source/Tile.js").default> = {
+export type Options<TileSourceType extends import("../source/Tile.js").default<import("../Tile.js").default>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -65,7 +65,7 @@ export type Options<TileSourceType extends import("../source/Tile.js").default> 
      */
     map?: import("../Map.js").default | undefined;
     /**
-     * Use interim tiles on error.
+     * Deprecated.  Use interim tiles on error.
      */
     useInterimTilesOnError?: boolean | undefined;
     /**
@@ -74,6 +74,11 @@ export type Options<TileSourceType extends import("../source/Tile.js").default> 
     properties?: {
         [x: string]: any;
     } | undefined;
+    /**
+     * The internal tile cache size.  This needs to be large enough to render
+     * two zoom levels worth of tiles.
+     */
+    cacheSize?: number | undefined;
 };
 /***
  * @template Return
@@ -111,8 +116,10 @@ export type Options<TileSourceType extends import("../source/Tile.js").default> 
  * this layer in its layers collection, and the layer will be rendered on top. This is useful for
  * temporary layers. The standard way to add a layer to a map and have it managed by the map is to
  * use {@link import("../Map.js").default#addLayer map.addLayer()}.
- * @property {boolean} [useInterimTilesOnError=true] Use interim tiles on error.
+ * @property {boolean} [useInterimTilesOnError=true] Deprecated.  Use interim tiles on error.
  * @property {Object<string, *>} [properties] Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
+ * @property {number} [cacheSize=512] The internal tile cache size.  This needs to be large enough to render
+ * two zoom levels worth of tiles.
  */
 /**
  * @classdesc
@@ -127,7 +134,7 @@ export type Options<TileSourceType extends import("../source/Tile.js").default> 
  * @extends {Layer<TileSourceType, RendererType>}
  * @api
  */
-declare class BaseTileLayer<TileSourceType extends import("../source/Tile.js").default, RendererType extends import("../renderer/Layer.js").default<any>> extends Layer<TileSourceType, RendererType> {
+declare class BaseTileLayer<TileSourceType extends import("../source/Tile.js").default<import("../Tile.js").default>, RendererType extends import("../renderer/Layer.js").default<any>> extends Layer<TileSourceType, RendererType> {
     /**
      * @param {Options<TileSourceType>} [options] Tile layer options.
      */
@@ -145,6 +152,16 @@ declare class BaseTileLayer<TileSourceType extends import("../source/Tile.js").d
      */
     un: BaseTileLayerOnSignature<void>;
     /**
+     * @type {number|undefined}
+     * @private
+     */
+    private cacheSize_;
+    /**
+     * @return {number|undefined} The suggested cache size
+     * @protected
+     */
+    protected getCacheSize(): number | undefined;
+    /**
      * Return the level as number to which we will preload tiles up to.
      * @return {number} The level to preload tiles up to.
      * @observable
@@ -159,14 +176,14 @@ declare class BaseTileLayer<TileSourceType extends import("../source/Tile.js").d
      */
     setPreload(preload: number): void;
     /**
-     * Whether we use interim tiles on error.
+     * Deprecated.  Whether we use interim tiles on error.
      * @return {boolean} Use interim tiles on error.
      * @observable
      * @api
      */
     getUseInterimTilesOnError(): boolean;
     /**
-     * Set whether we use interim tiles on error.
+     * Deprecated.  Set whether we use interim tiles on error.
      * @param {boolean} useInterimTilesOnError Use interim tiles on error.
      * @observable
      * @api

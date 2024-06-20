@@ -77,7 +77,6 @@
             <li data-name="get"><a href="module-ol_source_OGCVectorTile-OGCVectorTile.html#get">get</a>
             <li data-name="getattributions"><a href="module-ol_source_OGCVectorTile-OGCVectorTile.html#getAttributions">getAttributions</a>
             <li data-name="getattributionscollapsible"><a href="module-ol_source_OGCVectorTile-OGCVectorTile.html#getAttributionsCollapsible">getAttributionsCollapsible</a>
-            <li data-name="getfeaturesinextent"><a href="module-ol_source_OGCVectorTile-OGCVectorTile.html#getFeaturesInExtent">getFeaturesInExtent</a>
             <li data-name="getkeys"><a href="module-ol_source_OGCVectorTile-OGCVectorTile.html#getKeys">getKeys</a>
             <li data-name="getprojection"><a href="module-ol_source_OGCVectorTile-OGCVectorTile.html#getProjection">getProjection</a>
             <li data-name="getproperties"><a href="module-ol_source_OGCVectorTile-OGCVectorTile.html#getProperties">getProperties</a>
@@ -275,7 +274,7 @@ provide the <code>mediaType</code> option.</p></div>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_format_Feature-FeatureFormat.html">FeatureFormat</a>&lt;FeatureToFeatureClass&lt;FeatureType>></span>
+<span class="param-type"><a href="module-ol_format_Feature-FeatureFormat.html">FeatureFormat</a>&lt;FeatureType></span>
 
  | undefined
                 
@@ -389,7 +388,7 @@ the source will try to find a link with rel=&quot;item&quot; that uses a vector 
 
             <td  class="description last">
                 
-                <p>Initial tile cache size. Will auto-grow to hold at least twice the number of tiles in the viewport.</p></td>
+                <p>Deprecated.  Use the cacheSize option on the layer instead.</p></td>
         </tr>
 
 	
@@ -842,7 +841,7 @@ for details.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/VectorTile.js">source/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/VectorTile.js#L230">line 230</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/VectorTile.js#L184">line 184</a>
         </div>
         
     </div>
@@ -1372,147 +1371,6 @@ Attributions are collapsible.
 <dt class="">
     
     <div class="nameContainer inherited">
-        <div class="anchor" id="getFeaturesInExtent">
-        </div>
-        <h4 class="name">
-            getFeaturesInExtent<span class="signature">(extent)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;FeatureType>}</span>
-            
-                <span class="inherited"><a href="module-ol_source_VectorTile-VectorTile.html#getFeaturesInExtent">inherited</a></span>
-            
-            
-
-        </h4>
-        
-        <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/VectorTile.js">source/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/VectorTile.js#L186">line 186</a>
-        </div>
-        
-    </div>
-    
-    
-</dt>
-<dd class="">
-
-
-
-    
-    <div class="description">
-        <p>Get features whose bounding box intersects the provided extent. Only features for cached
-tiles for the last rendered zoom level are available in the source. So this method is only
-suitable for requesting tiles for extents that are currently rendered.</p>
-<p>Features are returned in random tile order and as they are included in the tiles. This means
-they can be clipped, duplicated across tiles, and simplified to the render resolution.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-
-		<th>Type</th>
-
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-
-	<tbody>
-	
-
-        <tr class="">
-            
-                <td class="name"><code>extent</code></td>
-            
-
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
-
-
-                
-            
-            </td>
-
-            
-
-            <td  class="description last">
-                
-                <p>Extent.</p></td>
-        </tr>
-
-	
-	</tbody>
-</table>
-    
-    
-
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-    
-
-
-<h5>Returns:</h5>
-Features.
-<br />
-
-    
-
-    
-</dd>
-
-        
-            
-            
-<dt class="">
-    
-    <div class="nameContainer inherited">
         <div class="anchor" id="getKeys">
         </div>
         <h4 class="name">
@@ -1987,7 +1845,7 @@ State.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Tile.js">source/Tile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Tile.js#L266">line 266</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Tile.js#L214">line 214</a>
         </div>
         
     </div>
@@ -2092,7 +1950,8 @@ Tile grid.
 
     
     <div class="description">
-        <p>Return the tile load function of the source.</p>
+        <p>Deprecated.  Use an ImageTile source instead.
+Return the tile load function of the source.</p>
     </div>
     
 
@@ -2171,7 +2030,7 @@ TileLoadFunction
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js">source/UrlTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js#L110">line 110</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js#L111">line 111</a>
         </div>
         
     </div>
@@ -2184,7 +2043,8 @@ TileLoadFunction
 
     
     <div class="description">
-        <p>Return the tile URL function of the source.</p>
+        <p>Deprecated.  Use an ImageTile source instead.
+Return the tile URL function of the source.</p>
     </div>
     
 
@@ -2263,7 +2123,7 @@ TileUrlFunction
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js">source/UrlTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js#L123">line 123</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js#L125">line 125</a>
         </div>
         
     </div>
@@ -2276,7 +2136,8 @@ TileUrlFunction
 
     
     <div class="description">
-        <p>Return the URLs used for this source.
+        <p>Deprecated.  Use an ImageTile source instead.
+Return the URLs used for this source.
 When a tileUrlFunction is used instead of url or urls,
 null will be returned.</p>
     </div>
@@ -3239,7 +3100,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js">source/UrlTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js#L159">line 159</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js#L162">line 162</a>
         </div>
         
     </div>
@@ -3252,7 +3113,8 @@ properties and adds new ones (it does not remove any existing properties).</p>
 
     
     <div class="description">
-        <p>Set the tile load function of the source.</p>
+        <p>Deprecated.  Use an ImageTile source instead.
+Set the tile load function of the source.</p>
     </div>
     
 
@@ -3367,7 +3229,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js">source/UrlTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js#L171">line 171</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js#L175">line 175</a>
         </div>
         
     </div>
@@ -3380,7 +3242,8 @@ properties and adds new ones (it does not remove any existing properties).</p>
 
     
     <div class="description">
-        <p>Set the tile URL function of the source.</p>
+        <p>Deprecated.  Use an ImageTile source instead.
+Set the tile URL function of the source.</p>
     </div>
     
 
@@ -3520,7 +3383,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js">source/UrlTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js#L186">line 186</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js#L190">line 190</a>
         </div>
         
     </div>
@@ -3648,7 +3511,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js">source/UrlTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js#L197">line 197</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/UrlTile.js#L202">line 202</a>
         </div>
         
     </div>
@@ -3661,7 +3524,8 @@ properties and adds new ones (it does not remove any existing properties).</p>
 
     
     <div class="description">
-        <p>Set the URLs to use for requests.</p>
+        <p>Deprecated.  Use an ImageTile source instead.
+Set the URLs to use for requests.</p>
     </div>
     
 

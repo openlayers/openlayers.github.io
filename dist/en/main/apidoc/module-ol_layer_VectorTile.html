@@ -757,7 +757,7 @@ means no preloading.</p>
             </td>
 
             <td class="description last">
-                <p>Use interim tiles on error.</p>
+                <p>Deprecated.  Use interim tiles on error.</p>
                 
             </td>
         </tr>
@@ -781,6 +781,32 @@ means no preloading.</p>
 
             <td class="description last">
                 <p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>cacheSize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    <br>(defaults to 0)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The internal tile cache size.  If too small, this will auto-grow to hold
+two zoom levels worth of tiles.</p>
                 
             </td>
         </tr>

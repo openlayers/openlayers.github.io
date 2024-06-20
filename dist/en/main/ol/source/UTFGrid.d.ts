@@ -169,7 +169,7 @@ import Tile from '../Tile.js';
  * Layer source for UTFGrid interaction data loaded from TileJSON format.
  * @api
  */
-declare class UTFGrid extends TileSource {
+declare class UTFGrid extends TileSource<Tile> {
     /**
      * @param {Options} options Source options.
      */

@@ -516,7 +516,7 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
             </td>
 
             <td class="description last">
-                <p>Use interim tiles on error.</p>
+                <p>Deprecated.  Use interim tiles on error.</p>
                 
             </td>
         </tr>
@@ -540,6 +540,32 @@ use <a href="module-ol_Map-Map.html#addLayer"><code>map.addLayer()</code></a>.</
 
             <td class="description last">
                 <p>Arbitrary observable properties. Can be accessed with <code>#get()</code> and <code>#set()</code>.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>cacheSize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    <br>(defaults to 512)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The internal tile cache size.  This needs to be large enough to render
+two zoom levels worth of tiles.</p>
                 
             </td>
         </tr>

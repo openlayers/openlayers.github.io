@@ -130,12 +130,6 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends import("../../layer/B
      */
     reset(options: Options): void;
     /**
-     * @param {TileType} tile Tile.
-     * @return {boolean} Tile is drawable.
-     * @private
-     */
-    private isDrawableTile_;
-    /**
      * @abstract
      * @param {import("../../webgl/BaseTileRepresentation.js").TileRepresentationOptions<TileType>} options tile representation options
      * @return {TileRepresentation} A new tile representation

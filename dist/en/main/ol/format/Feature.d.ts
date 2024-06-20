@@ -207,11 +207,11 @@ import RenderFeature from '../render/Feature.js';
  * {@link module:ol/Feature~Feature} objects from a variety of commonly used geospatial
  * file formats.  See the documentation for each format for more details.
  *
- * @template {import('../Feature.js').FeatureClass} [FeatureClassType=import('./Feature.js').FeatureToFeatureClass<import("../Feature.js").default>]
+ * @template {import('../Feature.js').FeatureLike} [FeatureType=import("../Feature.js").default]
  * @abstract
  * @api
  */
-declare class FeatureFormat<FeatureClassType extends import("../Feature.js").FeatureClass = typeof Feature> {
+declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom.js").Geometry>> {
     /**
      * @protected
      * @type {import("../proj/Projection.js").default|undefined}
@@ -224,9 +224,9 @@ declare class FeatureFormat<FeatureClassType extends import("../Feature.js").Fea
     protected defaultFeatureProjection: import("../proj/Projection.js").default | undefined;
     /**
      * @protected
-     * @type {FeatureClassType}
+     * @type {FeatureToFeatureClass<FeatureType>}
      */
-    protected featureClass: FeatureClassType;
+    protected featureClass: FeatureToFeatureClass<FeatureType>;
     /**
      * A list media types supported by the format in descending order of preference.
      * @type {Array<string>}
@@ -261,18 +261,18 @@ declare class FeatureFormat<FeatureClassType extends import("../Feature.js").Fea
      * @abstract
      * @param {Document|Element|Object|string} source Source.
      * @param {ReadOptions} [options] Read options.
-     * @return {FeatureClassToFeature<FeatureClassType>|Array<FeatureClassToFeature<FeatureClassType>>} Feature.
+     * @return {FeatureType|Array<FeatureType>} Feature.
      */
-    readFeature(source: Document | Element | any | string, options?: ReadOptions | undefined): FeatureClassToFeature<FeatureClassType> | Array<FeatureClassToFeature<FeatureClassType>>;
+    readFeature(source: Document | Element | any | string, options?: ReadOptions | undefined): FeatureType | Array<FeatureType>;
     /**
      * Read all features from a source.
      *
      * @abstract
      * @param {Document|Element|ArrayBuffer|Object|string} source Source.
      * @param {ReadOptions} [options] Read options.
-     * @return {Array<FeatureClassToFeature<FeatureClassType>>} Features.
+     * @return {Array<FeatureType>} Features.
      */
-    readFeatures(source: Document | Element | ArrayBuffer | any | string, options?: ReadOptions | undefined): Array<FeatureClassToFeature<FeatureClassType>>;
+    readFeatures(source: Document | Element | ArrayBuffer | any | string, options?: ReadOptions | undefined): Array<FeatureType>;
     /**
      * Read a single geometry from a source.
      *

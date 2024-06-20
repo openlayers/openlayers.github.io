@@ -4,10 +4,10 @@
 /***/ 90995:
 /***/ (function(__unused_webpack___webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) {
 
+/* harmony import */ var _src_ol_source_ImageTile_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15264);
 /* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(41564);
 /* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(54272);
 /* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(87240);
-/* harmony import */ var _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(55238);
 /* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(12185);
 /* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(47085);
 
@@ -61,7 +61,7 @@ const attributions =
   '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> ' +
   '<a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
 
-const aerial = new _src_ol_source_XYZ_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A({
+const aerial = new _src_ol_source_ImageTile_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A({
   attributions: attributions,
   url: 'https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=' + key,
   tileSize: 512,

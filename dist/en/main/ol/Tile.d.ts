@@ -137,16 +137,8 @@ declare class Tile extends EventTarget {
      */
     protected state: any;
     /**
-     * An "interim" tile for this tile. The interim tile may be used while this
-     * one is loading, for "smooth" transitions when changing params/dimensions
-     * on the source.
-     * @type {Tile|null}
-     */
-    interimTile: Tile | null;
-    /**
-     * A key assigned to the tile. This is used by the tile source to determine
-     * if this tile can effectively be used, or if a new tile should be created
-     * and this one be used as an interim tile for this new tile.
+     * A key assigned to the tile. This is used in conjunction with a source key
+     * to determine if a cached version of this tile may be used by the renderer.
      * @type {string}
      */
     key: string;
@@ -179,18 +171,6 @@ declare class Tile extends EventTarget {
      * @return {string} Key.
      */
     getKey(): string;
-    /**
-     * Get the interim tile most suitable for rendering using the chain of interim
-     * tiles. This corresponds to the  most recent tile that has been loaded, if no
-     * such tile exists, the original tile is returned.
-     * @return {!Tile} Best tile for rendering.
-     */
-    getInterimTile(): Tile;
-    /**
-     * Goes through the chain of interim tiles and discards sections of the chain
-     * that are no longer relevant.
-     */
-    refreshInterimChain(): void;
     /**
      * Get the tile coordinate for this tile.
      * @return {import("./tilecoord.js").TileCoord} The tile coordinate.

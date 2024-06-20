@@ -781,6 +781,7 @@ declare namespace ol {
         export { $ol$source$ImageCanvas as ImageCanvas };
         export { $ol$source$ImageMapGuide as ImageMapGuide };
         export { $ol$source$ImageStatic as ImageStatic };
+        export { $ol$source$ImageTile as ImageTile };
         export { $ol$source$ImageWMS as ImageWMS };
         export { $ol$source$OGCMapTile as OGCMapTile };
         export { $ol$source$OGCVectorTile as OGCVectorTile };
@@ -872,6 +873,7 @@ declare namespace ol {
         export { _ol_tilecoord$getKey as getKey };
         export { _ol_tilecoord$getKeyZXY as getKeyZXY };
         export { _ol_tilecoord$hash as hash };
+        export { _ol_tilecoord$hashZXY as hashZXY };
         export { _ol_tilecoord$withinExtentAndZ as withinExtentAndZ };
     }
     export namespace tilegrid {
@@ -892,7 +894,6 @@ declare namespace ol {
         export { _ol_tileurlfunction$createFromTemplate as createFromTemplate };
         export { _ol_tileurlfunction$createFromTemplates as createFromTemplates };
         export { _ol_tileurlfunction$createFromTileUrlFunctions as createFromTileUrlFunctions };
-        export { _ol_tileurlfunction$expandUrl as expandUrl };
         export { _ol_tileurlfunction$nullTileUrlFunction as nullTileUrlFunction };
     }
     export namespace transform {
@@ -915,6 +916,9 @@ declare namespace ol {
     }
     export namespace uri {
         export { _ol_uri$appendParams as appendParams };
+        export { _ol_uri$expandUrl as expandUrl };
+        export { _ol_uri$pickUrl as pickUrl };
+        export { _ol_uri$renderXYZTemplate as renderXYZTemplate };
     }
     export namespace util {
         export { _ol_util$VERSION as VERSION };
@@ -1605,6 +1609,7 @@ import $ol$source$ImageArcGISRest from '../../ol/source/ImageArcGISRest.js';
 import $ol$source$ImageCanvas from '../../ol/source/ImageCanvas.js';
 import $ol$source$ImageMapGuide from '../../ol/source/ImageMapGuide.js';
 import $ol$source$ImageStatic from '../../ol/source/ImageStatic.js';
+import $ol$source$ImageTile from '../../ol/source/ImageTile.js';
 import $ol$source$ImageWMS from '../../ol/source/ImageWMS.js';
 import $ol$source$OGCMapTile from '../../ol/source/OGCMapTile.js';
 import $ol$source$OGCVectorTile from '../../ol/source/OGCVectorTile.js';
@@ -1671,6 +1676,7 @@ import { getCacheKeyForTileKey as _ol_tilecoord$getCacheKeyForTileKey } from '..
 import { getKey as _ol_tilecoord$getKey } from '../../ol/tilecoord.js';
 import { getKeyZXY as _ol_tilecoord$getKeyZXY } from '../../ol/tilecoord.js';
 import { hash as _ol_tilecoord$hash } from '../../ol/tilecoord.js';
+import { hashZXY as _ol_tilecoord$hashZXY } from '../../ol/tilecoord.js';
 import { withinExtentAndZ as _ol_tilecoord$withinExtentAndZ } from '../../ol/tilecoord.js';
 import $ol$tilegrid$TileGrid from '../../ol/tilegrid/TileGrid.js';
 import $ol$tilegrid$WMTS from '../../ol/tilegrid/WMTS.js';
@@ -1685,7 +1691,6 @@ import { wrapX as _ol_tilegrid$wrapX } from '../../ol/tilegrid.js';
 import { createFromTemplate as _ol_tileurlfunction$createFromTemplate } from '../../ol/tileurlfunction.js';
 import { createFromTemplates as _ol_tileurlfunction$createFromTemplates } from '../../ol/tileurlfunction.js';
 import { createFromTileUrlFunctions as _ol_tileurlfunction$createFromTileUrlFunctions } from '../../ol/tileurlfunction.js';
-import { expandUrl as _ol_tileurlfunction$expandUrl } from '../../ol/tileurlfunction.js';
 import { nullTileUrlFunction as _ol_tileurlfunction$nullTileUrlFunction } from '../../ol/tileurlfunction.js';
 import { apply as _ol_transform$apply } from '../../ol/transform.js';
 import { compose as _ol_transform$compose } from '../../ol/transform.js';
@@ -1704,6 +1709,9 @@ import { setFromArray as _ol_transform$setFromArray } from '../../ol/transform.j
 import { toString as _ol_transform$toString } from '../../ol/transform.js';
 import { translate as _ol_transform$translate } from '../../ol/transform.js';
 import { appendParams as _ol_uri$appendParams } from '../../ol/uri.js';
+import { expandUrl as _ol_uri$expandUrl } from '../../ol/uri.js';
+import { pickUrl as _ol_uri$pickUrl } from '../../ol/uri.js';
+import { renderXYZTemplate as _ol_uri$renderXYZTemplate } from '../../ol/uri.js';
 import { VERSION as _ol_util$VERSION } from '../../ol/util.js';
 import { abstract as _ol_util$abstract } from '../../ol/util.js';
 import { getUid as _ol_util$getUid } from '../../ol/util.js';

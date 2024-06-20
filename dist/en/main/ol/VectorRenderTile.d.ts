@@ -40,16 +40,14 @@ declare class VectorRenderTile extends Tile {
     constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, urlTileCoord: import("./tilecoord.js").TileCoord, getSourceTiles: (arg0: VectorRenderTile) => Array<import("./VectorTile").default<any>>);
     /**
      * @private
-     * @type {!Object<string, CanvasRenderingContext2D>}
+     * @type {CanvasRenderingContext2D|null}
      */
     private context_;
     /**
-     * Executor groups by layer uid. Entries are read/written by the renderer.
-     * @type {Object<string, Array<import("./render/canvas/ExecutorGroup.js").default>>}
+     * Executor groups. Read/written by the renderer.
+     * @type {Array<import("./render/canvas/ExecutorGroup.js").default>}
      */
-    executorGroups: {
-        [x: string]: Array<import("./render/canvas/ExecutorGroup.js").default>;
-    };
+    executorGroups: Array<import("./render/canvas/ExecutorGroup.js").default>;
     /**
      * Number of loading source tiles. Read/written by the source.
      * @type {number}
@@ -89,21 +87,18 @@ declare class VectorRenderTile extends Tile {
      */
     wrappedTileCoord: import("./tilecoord.js").TileCoord;
     /**
-     * @param {import("./layer/Layer.js").default} layer Layer.
      * @return {CanvasRenderingContext2D} The rendering context.
      */
-    getContext(layer: import("./layer/Layer.js").default): CanvasRenderingContext2D;
+    getContext(): CanvasRenderingContext2D;
     /**
-     * @param {import("./layer/Layer.js").default} layer Layer.
-     * @return {boolean} Tile has a rendering context for the given layer.
+     * @return {boolean} Tile has a rendering context.
      */
-    hasContext(layer: import("./layer/Layer.js").default): boolean;
+    hasContext(): boolean;
     /**
      * Get the Canvas for this tile.
-     * @param {import("./layer/Layer.js").default} layer Layer.
      * @return {HTMLCanvasElement} Canvas.
      */
-    getImage(layer: import("./layer/Layer.js").default): HTMLCanvasElement;
+    getImage(): HTMLCanvasElement;
     /**
      * @param {import("./layer/Layer.js").default} layer Layer.
      * @return {ReplayState} The replay state.

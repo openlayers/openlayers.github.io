@@ -7,7 +7,7 @@ export default TextFeature;
  *
  * @abstract
  */
-declare class TextFeature extends FeatureFormat<typeof import("../Feature.js").default> {
+declare class TextFeature extends FeatureFormat<import("../Feature.js").default<import("../geom/Geometry.js").default>> {
     constructor();
     /**
      * Read the feature from the source.

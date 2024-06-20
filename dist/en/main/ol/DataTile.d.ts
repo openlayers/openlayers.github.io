@@ -23,6 +23,10 @@ export function asArrayLike(data: Data): ArrayLike | null;
  * @return {Uint8ClampedArray} The data.
  */
 export function toArray(image: ImageLike): Uint8ClampedArray;
+/**
+ * This is set as the cancellation reason when a tile is disposed.
+ */
+export const disposedError: Error;
 export default DataTile;
 export type ImageLike = HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap;
 export type ArrayLike = Uint8Array | Uint8ClampedArray | Float32Array | DataView;
@@ -54,6 +58,10 @@ export type Options = {
      * Tile size.
      */
     size?: import("./size.js").Size | undefined;
+    /**
+     * An abort controller.
+     */
+    controller?: AbortController | undefined;
 };
 /**
  * @typedef {Object} Options
@@ -65,6 +73,7 @@ export type Options = {
  * @property {boolean} [interpolate=false] Use interpolated values when resampling.  By default,
  * the nearest neighbor is used when resampling.
  * @property {import('./size.js').Size} [size=[256, 256]] Tile size.
+ * @property {AbortController} [controller] An abort controller.
  * @api
  */
 declare class DataTile extends Tile {
@@ -92,6 +101,11 @@ declare class DataTile extends Tile {
      * @private
      */
     private size_;
+    /**
+     * @type {AbortController|null}
+     * @private
+     */
+    private controller_;
     /**
      * Get the tile size.
      * @return {import('./size.js').Size} Tile size.

@@ -20,6 +20,28 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
      */
     protected layer_: LayerType;
     /**
+     * @type {import("../render/canvas/ExecutorGroup").default}
+     */
+    declutterExecutorGroup: import("../render/canvas/ExecutorGroup").default;
+    /**
+     * @type {Array<string>}
+     * @private
+     */
+    private staleKeys_;
+    /**
+     * @type {number}
+     * @protected
+     */
+    protected maxStaleKeys: number;
+    /**
+     * @return {Array<string>} Get the list of stale keys.
+     */
+    getStaleKeys(): Array<string>;
+    /**
+     * @param {string} key The new stale key.
+     */
+    prependStaleKey(key: string): void;
+    /**
      * Asynchronous layer level hit detection.
      * @param {import("../pixel.js").Pixel} pixel Pixel.
      * @return {Promise<Array<import("../Feature").FeatureLike>>} Promise that resolves with
@@ -46,31 +68,6 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
      * @return {HTMLElement|null} The rendered element.
      */
     renderFrame(frameState: import("../Map.js").FrameState, target: HTMLElement | null): HTMLElement | null;
-    /**
-     * @param {Object<number, Object<string, import("../Tile.js").default>>} tiles Lookup of loaded tiles by zoom level.
-     * @param {number} zoom Zoom level.
-     * @param {import("../Tile.js").default} tile Tile.
-     * @return {boolean|void} If `false`, the tile will not be considered loaded.
-     */
-    loadedTileCallback(tiles: {
-        [x: number]: {
-            [x: string]: import("../Tile.js").default;
-        };
-    }, zoom: number, tile: import("../Tile.js").default): boolean | void;
-    /**
-     * Create a function that adds loaded tiles to the tile lookup.
-     * @param {import("../source/Tile.js").default} source Tile source.
-     * @param {import("../proj/Projection.js").default} projection Projection of the tiles.
-     * @param {Object<number, Object<string, import("../Tile.js").default>>} tiles Lookup of loaded tiles by zoom level.
-     * @return {function(number, import("../TileRange.js").default):boolean} A function that can be
-     *     called with a zoom level and a tile range to add loaded tiles to the lookup.
-     * @protected
-     */
-    protected createLoadedTileFinder(source: import("../source/Tile.js").default, projection: import("../proj/Projection.js").default, tiles: {
-        [x: number]: {
-            [x: string]: import("../Tile.js").default;
-        };
-    }): (arg0: number, arg1: import("../TileRange.js").default) => boolean;
     /**
      * @abstract
      * @param {import("../coordinate.js").Coordinate} coordinate Coordinate.

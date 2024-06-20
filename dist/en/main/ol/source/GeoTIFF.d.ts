@@ -153,10 +153,6 @@ export type Options = {
      */
     normalize?: boolean | undefined;
     /**
-     * Whether the layer is opaque.
-     */
-    opaque?: boolean | undefined;
-    /**
      * Source projection.  If not provided, the GeoTIFF metadata
      * will be read for projection information.
      */
@@ -208,7 +204,6 @@ export type Options = {
  * 0 and 1 with scaling factors based on the raster statistics or `min` and `max` properties of each source.
  * If instead you want to work with the raw values in a style expression, set this to `false`.  Setting this option
  * to `false` will make it so any `min` and `max` properties on sources are ignored.
- * @property {boolean} [opaque=false] Whether the layer is opaque.
  * @property {import("../proj.js").ProjectionLike} [projection] Source projection.  If not provided, the GeoTIFF metadata
  * will be read for projection information.
  * @property {number} [transition=250] Duration of the opacity transition for rendering.
@@ -225,7 +220,7 @@ export type Options = {
  *
  * @api
  */
-declare class GeoTIFFSource extends DataTile {
+declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
     /**
      * @param {Options} options Data tile options.
      */
@@ -324,6 +319,7 @@ declare class GeoTIFFSource extends DataTile {
      * @param {number} z The z tile index.
      * @param {number} x The x tile index.
      * @param {number} y The y tile index.
+     * @param {import('./DataTile.js').LoaderOptions} options The loader options.
      * @return {Promise} The composed tile data.
      * @private
      */

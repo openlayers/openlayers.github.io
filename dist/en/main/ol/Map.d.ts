@@ -286,7 +286,7 @@ declare class Map extends BaseObject {
     un: MapEventHandler<void>;
     /**
      * @private
-     * @type {boolean|undefined}
+     * @type {boolean}
      */
     private renderComplete_;
     /**

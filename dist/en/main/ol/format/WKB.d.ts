@@ -51,7 +51,7 @@ export type Options = {
  *
  * @api
  */
-declare class WKB extends FeatureFormat<typeof Feature> {
+declare class WKB extends FeatureFormat<Feature<import("../geom/Geometry.js").default>> {
     /**
      * @param {Options} [options] Optional configuration object.
      */

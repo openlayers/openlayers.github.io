@@ -1,9 +1,9 @@
 /**
  * @param {string} template Template.
- * @param {import("./tilegrid/TileGrid.js").default} tileGrid Tile grid.
+ * @param {import("./tilegrid/TileGrid.js").default|null} tileGrid Tile grid.
  * @return {import("./Tile.js").UrlFunction} Tile URL function.
  */
-export function createFromTemplate(template: string, tileGrid: import("./tilegrid/TileGrid.js").default): import("./Tile.js").UrlFunction;
+export function createFromTemplate(template: string, tileGrid: import("./tilegrid/TileGrid.js").default | null): import("./Tile.js").UrlFunction;
 /**
  * @param {Array<string>} templates Templates.
  * @param {import("./tilegrid/TileGrid.js").default} tileGrid Tile grid.
@@ -22,9 +22,5 @@ export function createFromTileUrlFunctions(tileUrlFunctions: Array<import("./Til
  * @return {string|undefined} Tile URL.
  */
 export function nullTileUrlFunction(tileCoord: import("./tilecoord.js").TileCoord, pixelRatio: number, projection: import("./proj/Projection.js").default): string | undefined;
-/**
- * @param {string} url URL.
- * @return {Array<string>} Array of urls.
- */
-export function expandUrl(url: string): Array<string>;
+export { expandUrl } from "./uri.js";
 //# sourceMappingURL=tileurlfunction.d.ts.map

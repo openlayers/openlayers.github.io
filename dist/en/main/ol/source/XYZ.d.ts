@@ -9,7 +9,7 @@ export type Options = {
      */
     attributionsCollapsible?: boolean | undefined;
     /**
-     * Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.
+     * Deprecated.  Use the cacheSize option on the layer instead.
      */
     cacheSize?: number | undefined;
     /**
@@ -23,10 +23,6 @@ export type Options = {
      * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
      */
     interpolate?: boolean | undefined;
-    /**
-     * Whether the layer is opaque.
-     */
-    opaque?: boolean | undefined;
     /**
      * Projection.
      */
@@ -53,7 +49,8 @@ export type Options = {
      */
     tileGrid?: import("../tilegrid.js").TileGrid | undefined;
     /**
-     * Optional function to load a tile given a URL. The default is
+     * Deprecated.  Use an ImageTile source with a loader
+     * instead.  Optional function to load a tile given a URL. The default is
      * ```js
      * function(imageTile, src) {
      * imageTile.getImage().src = src;
@@ -80,9 +77,8 @@ export type Options = {
      */
     gutter?: number | undefined;
     /**
-     * Optional function to get
-     * tile URL given a tile coordinate and the projection.
-     * Required if `url` or `urls` are not provided.
+     * Deprecated.  Use an ImageTile source and provide a function
+     * for the url option instead.
      */
     tileUrlFunction?: import("../Tile.js").UrlFunction | undefined;
     /**
@@ -92,7 +88,8 @@ export type Options = {
      */
     url?: string | undefined;
     /**
-     * An array of URL templates.
+     * Deprecated.  Use an ImageTile source and provide an array of URLs for the
+     * url option instead.
      */
     urls?: string[] | undefined;
     /**
@@ -114,13 +111,12 @@ export type Options = {
  * @typedef {Object} Options
  * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
  * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
- * @property {number} [cacheSize] Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.
+ * @property {number} [cacheSize] Deprecated.  Use the cacheSize option on the layer instead.
  * @property {null|string} [crossOrigin] The `crossOrigin` attribute for loaded images.  Note that
  * you must provide a `crossOrigin` value if you want to access pixel data with the Canvas renderer.
  * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
  * @property {boolean} [interpolate=true] Use interpolated values when resampling.  By default,
  * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
- * @property {boolean} [opaque=false] Whether the layer is opaque.
  * @property {import("../proj.js").ProjectionLike} [projection='EPSG:3857'] Projection.
  * @property {number} [reprojectionErrorThreshold=0.5] Maximum allowed reprojection error (in pixels).
  * Higher values can increase reprojection performance, but decrease precision.
@@ -128,7 +124,8 @@ export type Options = {
  * @property {number} [minZoom=0] Optional min zoom level. Not used if `tileGrid` is provided.
  * @property {number} [maxResolution] Optional tile grid resolution at level zero. Not used if `tileGrid` is provided.
  * @property {import("../tilegrid/TileGrid.js").default} [tileGrid] Tile grid.
- * @property {import("../Tile.js").LoadFunction} [tileLoadFunction] Optional function to load a tile given a URL. The default is
+ * @property {import("../Tile.js").LoadFunction} [tileLoadFunction] Deprecated.  Use an ImageTile source with a loader
+ * instead.  Optional function to load a tile given a URL. The default is
  * ```js
  * function(imageTile, src) {
  *   imageTile.getImage().src = src;
@@ -143,13 +140,13 @@ export type Options = {
  * @property {number} [gutter=0] The size in pixels of the gutter around image tiles to ignore.
  * This allows artifacts of rendering at tile edges to be ignored.
  * Supported images should be wider and taller than the tile size by a value of `2 x gutter`.
- * @property {import("../Tile.js").UrlFunction} [tileUrlFunction] Optional function to get
- * tile URL given a tile coordinate and the projection.
- * Required if `url` or `urls` are not provided.
+ * @property {import("../Tile.js").UrlFunction} [tileUrlFunction] Deprecated.  Use an ImageTile source and provide a function
+ * for the url option instead.
  * @property {string} [url] URL template. Must include `{x}`, `{y}` or `{-y}`,
  * and `{z}` placeholders. A `{?-?}` template pattern, for example `subdomain{a-f}.domain.com`,
  * may be used instead of defining each one separately in the `urls` option.
- * @property {Array<string>} [urls] An array of URL templates.
+ * @property {Array<string>} [urls] Deprecated.  Use an ImageTile source and provide an array of URLs for the
+ * url option instead.
  * @property {boolean} [wrapX=true] Whether to wrap the world horizontally.
  * @property {number} [transition=250] Duration of the opacity transition for rendering.
  * To disable the opacity transition, pass `transition: 0`.

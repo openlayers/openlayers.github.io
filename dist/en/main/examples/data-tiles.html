@@ -121,7 +121,7 @@ const canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
 canvas.width &#x3D; size;
 canvas.height &#x3D; size;
 
-const context &#x3D; canvas.getContext(&#x27;2d&#x27;);
+const context &#x3D; canvas.getContext(&#x27;2d&#x27;, {willReadFrequently: true});
 context.strokeStyle &#x3D; &#x27;white&#x27;;
 context.textAlign &#x3D; &#x27;center&#x27;;
 context.font &#x3D; &#x27;24px sans-serif&#x27;;
@@ -142,9 +142,7 @@ const map &#x3D; new Map({
           context.fillText(&#x60;x: ${x}&#x60;, half, half);
           context.fillText(&#x60;y: ${y}&#x60;, half, half + lineHeight);
           context.strokeRect(0, 0, size, size);
-          const data &#x3D; context.getImageData(0, 0, size, size).data;
-          // converting to Uint8Array for increased browser compatibility
-          return new Uint8Array(data.buffer);
+          return context.getImageData(0, 0, size, size).data;
         },
         // disable opacity transition to avoid overlapping labels during tile loading
         transition: 0,

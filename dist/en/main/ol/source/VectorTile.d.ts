@@ -26,7 +26,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
     /**
      * Feature format for tiles. Used and required by the default.
      */
-    format?: import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>> | undefined;
+    format?: import("../format/Feature.js").default<FeatureType> | undefined;
     /**
      * This source may have overlapping geometries. Setting this
      * to `false` (e.g. for sources with polygons that represent administrative
@@ -138,7 +138,7 @@ import Tile from '../VectorTile.js';
  * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
  * @property {number} [cacheSize] Initial tile cache size. Will auto-grow to hold at least twice the number of tiles in the viewport.
  * @property {import("../extent.js").Extent} [extent] Extent.
- * @property {import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>>} [format] Feature format for tiles. Used and required by the default.
+ * @property {import("../format/Feature.js").default<FeatureType>} [format] Feature format for tiles. Used and required by the default.
  * @property {boolean} [overlaps=true] This source may have overlapping geometries. Setting this
  * to `false` (e.g. for sources with polygons that represent administrative
  * boundaries or TopoJSON sources) allows the renderer to optimise fill and
@@ -217,14 +217,14 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
     constructor(options: Options<FeatureType>);
     /**
      * @private
-     * @type {import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>>|null}
+     * @type {import("../format/Feature.js").default<FeatureType>|null}
      */
     private format_;
     /**
      * @private
      * @type {TileCache}
      */
-    private sourceTileCache;
+    private sourceTileCache_;
     /**
      * @private
      * @type {boolean}
@@ -240,19 +240,6 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
      * @type {Object<string, import("../tilegrid/TileGrid.js").default>}
      */
     private tileGrids_;
-    /**
-     * Get features whose bounding box intersects the provided extent. Only features for cached
-     * tiles for the last rendered zoom level are available in the source. So this method is only
-     * suitable for requesting tiles for extents that are currently rendered.
-     *
-     * Features are returned in random tile order and as they are included in the tiles. This means
-     * they can be clipped, duplicated across tiles, and simplified to the render resolution.
-     *
-     * @param {import("../extent.js").Extent} extent Extent.
-     * @return {Array<FeatureType>} Features.
-     * @api
-     */
-    getFeaturesInExtent(extent: import("../extent.js").Extent): Array<FeatureType>;
     /**
      * @return {boolean} The source can have overlapping geometries.
      */

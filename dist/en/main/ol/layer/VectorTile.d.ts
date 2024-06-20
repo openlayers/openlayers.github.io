@@ -126,7 +126,7 @@ export type Options<VectorTileSourceType extends import("../source/VectorTile.js
      */
     preload?: number | undefined;
     /**
-     * Use interim tiles on error.
+     * Deprecated.  Use interim tiles on error.
      */
     useInterimTilesOnError?: boolean | undefined;
     /**
@@ -135,6 +135,11 @@ export type Options<VectorTileSourceType extends import("../source/VectorTile.js
     properties?: {
         [x: string]: any;
     } | undefined;
+    /**
+     * The internal tile cache size.  If too small, this will auto-grow to hold
+     * two zoom levels worth of tiles.
+     */
+    cacheSize?: number | undefined;
 };
 /***
  * @template Return
@@ -153,7 +158,7 @@ export type Options<VectorTileSourceType extends import("../source/VectorTile.js
  * @typedef {T extends import("../source/VectorTile.js").default<infer U extends import("../Feature.js").FeatureLike> ? U : never} ExtractedFeatureType
  */
 /**
- * @template {import("../source/VectorTile.js").default<FeatureType>} [VectorTileSourceType=import("../source/VectorTile.js").default<*>]
+ * @template {import("../source/VectorTile.js").default<FeatureType>} [VectorTileSourceType=import("../source/VectorTile.js").default<*, *>]
  * @template {import("../Feature").FeatureLike} [FeatureType=ExtractedFeatureType<VectorTileSourceType>]
  * @typedef {Object} Options
  * @property {string} [className='ol-layer'] A CSS class name to set to the layer element.
@@ -212,8 +217,10 @@ export type Options<VectorTileSourceType extends import("../source/VectorTile.js
  * recreated during interactions. See also `updateWhileAnimating`.
  * @property {number} [preload=0] Preload. Load low-resolution tiles up to `preload` levels. `0`
  * means no preloading.
- * @property {boolean} [useInterimTilesOnError=true] Use interim tiles on error.
+ * @property {boolean} [useInterimTilesOnError=true] Deprecated.  Use interim tiles on error.
  * @property {Object<string, *>} [properties] Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
+ * @property {number} [cacheSize=0] The internal tile cache size.  If too small, this will auto-grow to hold
+ * two zoom levels worth of tiles.
  */
 /**
  * @classdesc
@@ -222,7 +229,7 @@ export type Options<VectorTileSourceType extends import("../source/VectorTile.js
  * property on the layer object; for example, setting `title: 'My Title'` in the
  * options means that `title` is observable, and has get/set accessors.
  *
- * @template {import("../source/VectorTile.js").default<FeatureType>} [VectorTileSourceType=import("../source/VectorTile.js").default<*>]
+ * @template {import("../source/VectorTile.js").default<FeatureType>} [VectorTileSourceType=import("../source/VectorTile.js").default<*, *>]
  * @template {import("../Feature.js").FeatureLike} [FeatureType=ExtractedFeatureType<VectorTileSourceType>]
  * @extends {BaseVectorLayer<FeatureType, VectorTileSourceType, CanvasVectorTileLayerRenderer>}
  * @api
@@ -245,10 +252,16 @@ declare class VectorTileLayer<VectorTileSourceType extends import("../source/Vec
      */
     un: VectorTileLayerOnSignature<void>;
     /**
+     * @type {number|undefined}
+     * @private
+     */
+    private cacheSize_;
+    /**
      * @private
      * @type {VectorTileRenderType}
      */
     private renderMode_;
+    getFeaturesInExtent(extent: any): void;
     /**
      * @return {VectorTileRenderType} The render mode.
      */
@@ -261,7 +274,7 @@ declare class VectorTileLayer<VectorTileSourceType extends import("../source/Vec
      */
     getPreload(): number;
     /**
-     * Whether we use interim tiles on error.
+     * Deprecated.  Whether we use interim tiles on error.
      * @return {boolean} Use interim tiles on error.
      * @observable
      * @api
@@ -275,7 +288,7 @@ declare class VectorTileLayer<VectorTileSourceType extends import("../source/Vec
      */
     setPreload(preload: number): void;
     /**
-     * Set whether we use interim tiles on error.
+     * Deprecated.  Set whether we use interim tiles on error.
      * @param {boolean} useInterimTilesOnError Use interim tiles on error.
      * @observable
      * @api

@@ -8,8 +8,9 @@ export default CanvasVectorTileLayerRenderer;
 declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<import("../../layer/VectorTile.js").default<import("../../source/VectorTile.js").default<import("../../Feature.js").FeatureLike>, import("../../Feature.js").FeatureLike>> {
     /**
      * @param {import("../../layer/VectorTile.js").default} layer VectorTile layer.
+     * @param {import("./TileLayer.js").Options} options Options.
      */
-    constructor(layer: import("../../layer/VectorTile.js").default);
+    constructor(layer: import("../../layer/VectorTile.js").default, options: import("./TileLayer.js").Options);
     /** @private */
     private boundHandleStyleImageChange_;
     /**
@@ -44,16 +45,15 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
     private tileClipContexts_;
     /**
      * @param {import("../../VectorRenderTile.js").default} tile Tile.
-     * @param {number} pixelRatio Pixel ratio.
-     * @param {import("../../proj/Projection").default} projection Projection.
-     * @return {boolean|undefined} Tile needs to be rendered.
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @param {number} x Left of the tile.
+     * @param {number} y Top of the tile.
+     * @param {number} w Width of the tile.
+     * @param {number} h Height of the tile.
+     * @param {number} gutter Tile gutter.
+     * @param {boolean} transition Apply an alpha transition.
      */
-    prepareTile(tile: import("../../VectorRenderTile.js").default, pixelRatio: number, projection: import("../../proj/Projection").default): boolean | undefined;
-    /**
-     * @param {import("../../VectorRenderTile.js").default} tile Tile.
-     * @return {boolean} Tile is drawable.
-     */
-    isDrawableTile(tile: import("../../VectorRenderTile.js").default): boolean;
+    drawTile(tile: import("../../VectorRenderTile.js").default, frameState: import("../../Map.js").FrameState, x: number, y: number, w: number, h: number, gutter: number, transition: boolean): void;
     /**
      * @inheritDoc
      */

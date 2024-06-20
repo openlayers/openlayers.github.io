@@ -61,7 +61,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
      * The feature format used by the XHR
      * feature loader when `url` is set. Required if `url` is set, otherwise ignored.
      */
-    format?: import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>> | undefined;
+    format?: import("../format/Feature.js").default<FeatureType> | undefined;
     /**
      * The loader function used to load features, from a remote source for example.
      * If this is not set and `url` is set, the source will create and use an XHR
@@ -180,7 +180,7 @@ import Event from '../events/Event.js';
  * @property {Array<FeatureType>|Collection<FeatureType>} [features]
  * Features. If provided as {@link module:ol/Collection~Collection}, the features in the source
  * and the collection will stay in sync.
- * @property {import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>>} [format] The feature format used by the XHR
+ * @property {import("../format/Feature.js").default<FeatureType>} [format] The feature format used by the XHR
  * feature loader when `url` is set. Required if `url` is set, otherwise ignored.
  * @property {import("../featureloader.js").FeatureLoader<FeatureType>} [loader]
  * The loader function used to load features, from a remote source for example.
@@ -299,7 +299,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     private loader_;
     /**
      * @private
-     * @type {import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>>|null}
+     * @type {import("../format/Feature.js").default<FeatureType>|null}
      */
     private format_;
     /**
@@ -565,10 +565,10 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     /**
      * Get the format associated with this source.
      *
-     * @return {import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>>|null}} The feature format.
+     * @return {import("../format/Feature.js").default<FeatureType>|null}} The feature format.
      * @api
      */
-    getFormat(): import("../format/Feature.js").default<import("../format/Feature.js").FeatureToFeatureClass<FeatureType>> | null;
+    getFormat(): import("../format/Feature.js").default<FeatureType> | null;
     /**
      * @return {boolean} The source can have overlapping geometries.
      */

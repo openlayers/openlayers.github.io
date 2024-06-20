@@ -5,27 +5,27 @@ export default JSONFeature;
  * instantiated in apps.
  * Base class for JSON feature formats.
  *
- * @template {import('../Feature.js').FeatureClass} [FeatureClassType=import('./Feature.js').FeatureToFeatureClass<import("../Feature.js").default>]
- * @extends {FeatureFormat<FeatureClassType>}
+ * @template {import('../Feature.js').FeatureLike} [FeatureType=import("../Feature.js").default]
+ * @extends {FeatureFormat<FeatureType>}
  * @abstract
  */
-declare class JSONFeature<FeatureClassType extends import("../Feature.js").FeatureClass = typeof import("../Feature.js").default> extends FeatureFormat<FeatureClassType> {
+declare class JSONFeature<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom/Geometry.js").default>> extends FeatureFormat<FeatureType> {
     /**
      * @abstract
      * @param {Object} object Object.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @protected
-     * @return {import('./Feature.js').FeatureClassToFeature<FeatureClassType>|Array<import('./Feature.js').FeatureClassToFeature<FeatureClassType>>} Feature.
+     * @return {FeatureType|Array<FeatureType>} Feature.
      */
-    protected readFeatureFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined): import('./Feature.js').FeatureClassToFeature<FeatureClassType> | Array<import('./Feature.js').FeatureClassToFeature<FeatureClassType>>;
+    protected readFeatureFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined): FeatureType | Array<FeatureType>;
     /**
      * @abstract
      * @param {Object} object Object.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @protected
-     * @return {Array<import('./Feature.js').FeatureClassToFeature<FeatureClassType>>} Features.
+     * @return {Array<FeatureType>} Features.
      */
-    protected readFeaturesFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined): Array<import('./Feature.js').FeatureClassToFeature<FeatureClassType>>;
+    protected readFeaturesFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined): Array<FeatureType>;
     /**
      * @abstract
      * @param {Object} object Object.

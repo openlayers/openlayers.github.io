@@ -188,7 +188,6 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./full-screen-drag-rotate-and-zoom.html&quot;&gt;Full Screen Drag, Rotate, and Zoom&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./gpx.html&quot;&gt;GPX Data&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./image-filter.html&quot;&gt;Image Filters&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./interpolation.html&quot;&gt;Interpolation&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./kml.html&quot;&gt;KML&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./layer-spy.html&quot;&gt;Layer Spy&lt;/a&gt;
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./layer-swipe.html&quot;&gt;Layer Swipe&lt;/a&gt;
@@ -209,7 +208,7 @@
                   &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./xyz-retina.html&quot;&gt;XYZ Retina Tiles&lt;/a&gt;
                   &lt;/ul&gt;"
                 tabindex="0"
-                >27</a>
+                >26</a>
             </span>
           </p>
           <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -261,11 +260,12 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import DragAndDrop from &#x27;ol/interaction/DragAndDrop.js&#x27;;
+import ImageTile from &#x27;ol/source/ImageTile.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import {GPX, GeoJSON, IGC, KML, TopoJSON} from &#x27;ol/format.js&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import {Vector as VectorSource, XYZ} from &#x27;ol/source.js&#x27;;
+import {Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 
 const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
 const attributions &#x3D;
@@ -275,7 +275,7 @@ const attributions &#x3D;
 const map &#x3D; new Map({
   layers: [
     new TileLayer({
-      source: new XYZ({
+      source: new ImageTile({
         attributions: attributions,
         url:
           &#x27;https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key&#x3D;&#x27; + key,
