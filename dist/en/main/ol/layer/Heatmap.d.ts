@@ -144,7 +144,6 @@ declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = 
      * @observable
      */
     setRadius(radius: number): void;
-    createRenderer(): any;
     renderDeclutter(): void;
 }
 import WebGLPointsLayerRenderer from '../renderer/webgl/PointsLayer.js';

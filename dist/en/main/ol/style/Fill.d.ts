@@ -48,14 +48,14 @@ declare class Fill {
      * @return {import("../color.js").Color|import("../colorlike.js").ColorLike|import('../colorlike.js').PatternDescriptor|null} Color.
      * @api
      */
-    getColor(): import("../color.js").Color | import("../colorlike.js").ColorLike | import('../colorlike.js').PatternDescriptor | null;
+    getColor(): import("../color.js").Color | import("../colorlike.js").ColorLike | import("../colorlike.js").PatternDescriptor | null;
     /**
      * Set the color.
      *
      * @param {import("../color.js").Color|import("../colorlike.js").ColorLike|import('../colorlike.js').PatternDescriptor|null} color Color.
      * @api
      */
-    setColor(color: import("../color.js").Color | import("../colorlike.js").ColorLike | import('../colorlike.js').PatternDescriptor | null): void;
+    setColor(color: import("../color.js").Color | import("../colorlike.js").ColorLike | import("../colorlike.js").PatternDescriptor | null): void;
     /**
      * @return {boolean} The fill style is loading an image pattern.
      */

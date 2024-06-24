@@ -23,11 +23,11 @@ export function VOID(): void;
  * @return {function(...any): ReturnType} The memoized function.
  * @template ReturnType
  */
-export function memoizeOne<ReturnType>(fn: (...arg0: any[]) => ReturnType): (...arg0: any[]) => ReturnType;
+export function memoizeOne<ReturnType>(fn: (...args: any[]) => ReturnType): (...args: any[]) => ReturnType;
 /**
  * @template T
  * @param {function(): (T | Promise<T>)} getter A function that returns a value or a promise for a value.
  * @return {Promise<T>} A promise for the value.
  */
-export function toPromise<T>(getter: () => T | Promise<T>): Promise<T>;
+export function toPromise<T>(getter: () => (T | Promise<T>)): Promise<T>;
 //# sourceMappingURL=functions.d.ts.map

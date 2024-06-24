@@ -3,7 +3,7 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
     /**
      * Literal style to apply to the layer features.
      */
-    style: import('../style/webgl.js').WebGLStyle;
+    style: import("../style/webgl.js").WebGLStyle;
     /**
      * A CSS class name to set to the layer element.
      */
@@ -144,7 +144,6 @@ declare class WebGLPointsLayer<VectorSourceType extends import("../source/Vector
      * @type {boolean}
      */
     private hitDetectionDisabled_;
-    createRenderer(): any;
     /**
      * Update any variables used by the layer style and trigger a re-render.
      * @param {Object<string, number>} variables Variables to update.

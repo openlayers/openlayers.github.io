@@ -4,7 +4,7 @@
  * @return {import('../Image.js').ImageObjectPromiseLoader} ArcGIS Rest image.
  * @api
  */
-export function createLoader(options: LoaderOptions): import('../Image.js').ImageObjectPromiseLoader;
+export function createLoader(options: LoaderOptions): import("../Image.js").ImageObjectPromiseLoader;
 export type LoaderOptions = {
     /**
      * The mapagent url.
@@ -47,6 +47,6 @@ export type LoaderOptions = {
      * to perform loading of the image. Receives the created `HTMLImageElement` and the desired `src` as argument and
      * returns a promise resolving to the loaded or decoded image. Default is {@link module :ol/Image.decode}.
      */
-    load?: ((arg0: HTMLImageElement, arg1: string) => Promise<import('../DataTile.js').ImageLike>) | undefined;
+    load?: ((arg0: HTMLImageElement, arg1: string) => Promise<import("../DataTile.js").ImageLike>) | undefined;
 };
 //# sourceMappingURL=mapguide.d.ts.map

@@ -1,5 +1,5 @@
 export default MouseWheelZoom;
-export type Mode = 'trackpad' | 'wheel';
+export type Mode = "trackpad" | "wheel";
 export type Options = {
     /**
      * A function that

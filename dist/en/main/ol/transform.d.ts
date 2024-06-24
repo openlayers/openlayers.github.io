@@ -2,13 +2,13 @@
  * Create an identity transform.
  * @return {!Transform} Identity transform.
  */
-export function create(): number[];
+export function create(): Transform;
 /**
  * Resets the given transform to an identity transform.
  * @param {!Transform} transform Transform.
  * @return {!Transform} Transform.
  */
-export function reset(transform: number[]): number[];
+export function reset(transform: Transform): Transform;
 /**
  * Multiply the underlying matrices of two transforms and return the result in
  * the first transform.
@@ -16,7 +16,7 @@ export function reset(transform: number[]): number[];
  * @param {!Transform} transform2 Transform parameters of matrix 2.
  * @return {!Transform} transform1 multiplied with transform2.
  */
-export function multiply(transform1: number[], transform2: number[]): number[];
+export function multiply(transform1: Transform, transform2: Transform): Transform;
 /**
  * Set the transform components a-f on a given transform.
  * @param {!Transform} transform Transform.
@@ -28,14 +28,14 @@ export function multiply(transform1: number[], transform2: number[]): number[];
  * @param {number} f The f component of the transform.
  * @return {!Transform} Matrix with transform applied.
  */
-export function set(transform: number[], a: number, b: number, c: number, d: number, e: number, f: number): number[];
+export function set(transform: Transform, a: number, b: number, c: number, d: number, e: number, f: number): Transform;
 /**
  * Set transform on one matrix from another matrix.
  * @param {!Transform} transform1 Matrix to set transform to.
  * @param {!Transform} transform2 Matrix to set transform from.
  * @return {!Transform} transform1 with transform from transform2 applied.
  */
-export function setFromArray(transform1: number[], transform2: number[]): number[];
+export function setFromArray(transform1: Transform, transform2: Transform): Transform;
 /**
  * Transforms the given coordinate with the given transform returning the
  * resulting, transformed coordinate. The coordinate will be modified in-place.
@@ -45,14 +45,14 @@ export function setFromArray(transform1: number[], transform2: number[]): number
  * @return {import("./coordinate.js").Coordinate|import("./pixel.js").Pixel} return coordinate so that operations can be
  *     chained together.
  */
-export function apply(transform: number[], coordinate: import("./coordinate.js").Coordinate | import("./pixel.js").Pixel): import("./coordinate.js").Coordinate | import("./pixel.js").Pixel;
+export function apply(transform: Transform, coordinate: import("./coordinate.js").Coordinate | import("./pixel.js").Pixel): import("./coordinate.js").Coordinate | import("./pixel.js").Pixel;
 /**
  * Applies rotation to the given transform.
  * @param {!Transform} transform Transform.
  * @param {number} angle Angle in radians.
  * @return {!Transform} The rotated transform.
  */
-export function rotate(transform: number[], angle: number): number[];
+export function rotate(transform: Transform, angle: number): Transform;
 /**
  * Applies scale to a given transform.
  * @param {!Transform} transform Transform.
@@ -60,7 +60,7 @@ export function rotate(transform: number[], angle: number): number[];
  * @param {number} y Scale factor y.
  * @return {!Transform} The scaled transform.
  */
-export function scale(transform: number[], x: number, y: number): number[];
+export function scale(transform: Transform, x: number, y: number): Transform;
 /**
  * Creates a scale transform.
  * @param {!Transform} target Transform to overwrite.
@@ -68,7 +68,7 @@ export function scale(transform: number[], x: number, y: number): number[];
  * @param {number} y Scale factor y.
  * @return {!Transform} The scale transform.
  */
-export function makeScale(target: number[], x: number, y: number): number[];
+export function makeScale(target: Transform, x: number, y: number): Transform;
 /**
  * Applies translation to the given transform.
  * @param {!Transform} transform Transform.
@@ -76,7 +76,7 @@ export function makeScale(target: number[], x: number, y: number): number[];
  * @param {number} dy Translation y.
  * @return {!Transform} The translated transform.
  */
-export function translate(transform: number[], dx: number, dy: number): number[];
+export function translate(transform: Transform, dx: number, dy: number): Transform;
 /**
  * Creates a composite transform given an initial translation, scale, rotation, and
  * final translation (in that order only, not commutative).
@@ -90,7 +90,7 @@ export function translate(transform: number[], dx: number, dy: number): number[]
  * @param {number} dy2 Final translation y.
  * @return {!Transform} The composite transform.
  */
-export function compose(transform: number[], dx1: number, dy1: number, sx: number, sy: number, angle: number, dx2: number, dy2: number): number[];
+export function compose(transform: Transform, dx1: number, dy1: number, sx: number, sy: number, angle: number, dx2: number, dy2: number): Transform;
 /**
  * Creates a composite transform given an initial translation, scale, rotation, and
  * final translation (in that order only, not commutative). The resulting transform
@@ -111,7 +111,7 @@ export function composeCssTransform(dx1: number, dy1: number, sx: number, sy: nu
  * @param {!Transform} source The source transform to invert.
  * @return {!Transform} The inverted (source) transform.
  */
-export function invert(source: number[]): number[];
+export function invert(source: Transform): Transform;
 /**
  * Invert the given transform.
  * @param {!Transform} target Transform to be set as the inverse of
@@ -119,20 +119,20 @@ export function invert(source: number[]): number[];
  * @param {!Transform} source The source transform to invert.
  * @return {!Transform} The inverted (target) transform.
  */
-export function makeInverse(target: number[], source: number[]): number[];
+export function makeInverse(target: Transform, source: Transform): Transform;
 /**
  * Returns the determinant of the given matrix.
  * @param {!Transform} mat Matrix.
  * @return {number} Determinant.
  */
-export function determinant(mat: number[]): number;
+export function determinant(mat: Transform): number;
 /**
  * A rounded string version of the transform.  This can be used
  * for CSS transforms.
  * @param {!Transform} mat Matrix.
  * @return {string} The transform as a string.
  */
-export function toString(mat: number[]): string;
+export function toString(mat: Transform): string;
 /**
  * An array representing an affine 2d transformation for use with
  * {@link module :ol/transform} functions. The array has 6 elements.

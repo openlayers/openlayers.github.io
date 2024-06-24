@@ -79,8 +79,8 @@ export type SourceInfo = {
      */
     collections?: string[] | undefined;
 };
-export type TileType = 'map' | 'vector';
-export type CornerOfOrigin = 'topLeft' | 'bottomLeft';
+export type TileType = "map" | "vector";
+export type CornerOfOrigin = "topLeft" | "bottomLeft";
 export type TileSet = {
     /**
      * Type of data represented in the tileset.

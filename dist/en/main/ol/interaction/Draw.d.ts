@@ -176,7 +176,7 @@ export type PolyCoordType = Array<Array<import("../coordinate.js").Coordinate>>;
 /**
  * Types used for drawing coordinates.
  */
-export type SketchCoordType = number[] | import("../coordinate.js").Coordinate[] | import("../coordinate.js").Coordinate[][];
+export type SketchCoordType = PointCoordType | LineCoordType | PolyCoordType;
 export type TraceState = {
     /**
      * Tracing active.
@@ -226,7 +226,7 @@ export type GeometryFunction = (arg0: SketchCoordType, arg1: import("../geom/Sim
  * Draw mode.  This collapses multi-part geometry types with their single-part
  * cousins.
  */
-export type Mode = 'Point' | 'LineString' | 'Polygon' | 'Circle';
+export type Mode = "Point" | "LineString" | "Polygon" | "Circle";
 export type TraceTargetUpdateInfo = {
     /**
      * The new target index.
@@ -250,7 +250,7 @@ export type PointSegmentRelationship = {
 /**
  * *
  */
-export type DrawOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | 'change:active', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<'drawabort' | 'drawend' | 'drawstart', DrawEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | 'change:active' | 'drawabort' | 'drawend' | 'drawstart', Return>;
+export type DrawOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"drawabort" | "drawend" | "drawstart", DrawEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "drawabort" | "drawend" | "drawstart", Return>;
 import Event from '../events/Event.js';
 import Feature from '../Feature.js';
 type DrawEventType = string;

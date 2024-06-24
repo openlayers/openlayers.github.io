@@ -2,7 +2,7 @@ export default IGC;
 /**
  * IGC altitude/z. One of 'barometric', 'gps', 'none'.
  */
-export type IGCZ = 'barometric' | 'gps' | 'none';
+export type IGCZ = "barometric" | "gps" | "none";
 export type Options = {
     /**
      * Altitude mode. Possible

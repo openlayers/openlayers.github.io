@@ -50,7 +50,7 @@ export function newEvaluationContext(): EvaluationContext;
  * @param {import('./expression.js').ParsingContext} context The parsing context.
  * @return {ExpressionEvaluator} The expression evaluator.
  */
-export function buildExpression(encoded: import('./expression.js').EncodedExpression, type: number, context: import('./expression.js').ParsingContext): ExpressionEvaluator;
+export function buildExpression(encoded: import("./expression.js").EncodedExpression, type: number, context: import("./expression.js").ParsingContext): ExpressionEvaluator;
 export type EvaluationContext = {
     /**
      * The values for properties used in 'get' expressions.

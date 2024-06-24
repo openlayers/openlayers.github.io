@@ -1,5 +1,5 @@
 export default Link;
-export type Params = 'x' | 'y' | 'z' | 'r' | 'l';
+export type Params = "x" | "y" | "z" | "r" | "l";
 export type Callback = (arg0: string) => void;
 export type Options = {
     /**

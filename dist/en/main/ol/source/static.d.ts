@@ -40,6 +40,6 @@ export type LoaderOptions = {
      * to perform loading of the image. Receives the created `HTMLImageElement` and the desired `src` as argument and
      * returns a promise resolving to the loaded or decoded image. Default is {@link module :ol/Image.decode}.
      */
-    load?: ((arg0: HTMLImageElement, arg1: string) => Promise<import('../DataTile.js').ImageLike>) | undefined;
+    load?: ((arg0: HTMLImageElement, arg1: string) => Promise<import("../DataTile.js").ImageLike>) | undefined;
 };
 //# sourceMappingURL=static.d.ts.map

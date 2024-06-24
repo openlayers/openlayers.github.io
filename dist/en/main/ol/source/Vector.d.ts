@@ -443,7 +443,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      * @return {T|undefined} The return value from the last call to the callback.
      * @template T
      */
-    forEachFeatureAtCoordinateDirect<T_1>(coordinate: import("../coordinate.js").Coordinate, callback: (arg0: FeatureType) => T_1): T_1 | undefined;
+    forEachFeatureAtCoordinateDirect<T>(coordinate: import("../coordinate.js").Coordinate, callback: (arg0: FeatureType) => T): T | undefined;
     /**
      * Iterate through all features whose bounding box intersects the provided
      * extent (note that the feature's geometry may not intersect the extent),
@@ -463,7 +463,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      * @template T
      * @api
      */
-    forEachFeatureInExtent<T_2>(extent: import("../extent.js").Extent, callback: (arg0: FeatureType) => T_2): T_2 | undefined;
+    forEachFeatureInExtent<T>(extent: import("../extent.js").Extent, callback: (arg0: FeatureType) => T): T | undefined;
     /**
      * Iterate through all features whose geometry intersects the provided extent,
      * calling the callback with each feature.  If the callback returns a "truthy"
@@ -479,7 +479,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      * @template T
      * @api
      */
-    forEachFeatureIntersectingExtent<T_3>(extent: import("../extent.js").Extent, callback: (arg0: FeatureType) => T_3): T_3 | undefined;
+    forEachFeatureIntersectingExtent<T>(extent: import("../extent.js").Extent, callback: (arg0: FeatureType) => T): T | undefined;
     /**
      * Get the features collection associated with this source. Will be `null`
      * unless the source was configured with `useSpatialIndex` set to `false`, or

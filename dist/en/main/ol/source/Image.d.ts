@@ -42,7 +42,7 @@ export class ImageSourceEvent extends Event {
     image: import("../Image.js").default;
 }
 export default ImageSource;
-export type ImageSourceEventTypes = 'imageloadend' | 'imageloaderror' | 'imageloadstart';
+export type ImageSourceEventTypes = "imageloadend" | "imageloaderror" | "imageloadstart";
 /**
  * *
  */

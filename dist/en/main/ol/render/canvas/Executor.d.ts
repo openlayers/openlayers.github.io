@@ -61,7 +61,7 @@ export type ImageOrLabelDimensions = {
 };
 export type ReplayImageOrLabelArgs = {
     0: CanvasRenderingContext2D;
-    1: import('../../size.js').Size;
+    1: import("../../size.js").Size;
     2: import("../canvas.js").Label | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement;
     3: ImageOrLabelDimensions;
     4: number;
@@ -265,7 +265,7 @@ declare class Executor {
      * @param {boolean} snapToPixel Snap point symbols and text to integer pixels.
      * @param {import("rbush").default} [declutterTree] Declutter tree.
      */
-    execute(context: CanvasRenderingContext2D, scaledCanvasSize: import('../../size.js').Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, declutterTree?: any): void;
+    execute(context: CanvasRenderingContext2D, scaledCanvasSize: import("../../size.js").Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, declutterTree?: any): void;
     /**
      * @param {CanvasRenderingContext2D} context Context.
      * @param {import("../../transform.js").Transform} transform Transform.

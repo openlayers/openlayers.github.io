@@ -2,8 +2,8 @@ export default BaseTileLayer;
 /**
  * *
  */
-export type BaseTileLayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | 'change:preload' | 'change:useInterimTilesOnError', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | 'change:preload' | 'change:useInterimTilesOnError' | import("../render/EventType").LayerRenderEventTypes, Return>;
-export type Options<TileSourceType extends import("../source/Tile.js").default<import("../Tile.js").default>> = {
+export type BaseTileLayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | "change:preload" | "change:useInterimTilesOnError", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | "change:preload" | "change:useInterimTilesOnError" | import("../render/EventType").LayerRenderEventTypes, Return>;
+export type Options<TileSourceType extends import("../source/Tile.js").default> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -134,7 +134,7 @@ export type Options<TileSourceType extends import("../source/Tile.js").default<i
  * @extends {Layer<TileSourceType, RendererType>}
  * @api
  */
-declare class BaseTileLayer<TileSourceType extends import("../source/Tile.js").default<import("../Tile.js").default>, RendererType extends import("../renderer/Layer.js").default<any>> extends Layer<TileSourceType, RendererType> {
+declare class BaseTileLayer<TileSourceType extends import("../source/Tile.js").default, RendererType extends import("../renderer/Layer.js").default<any>> extends Layer<TileSourceType, RendererType> {
     /**
      * @param {Options<TileSourceType>} [options] Tile layer options.
      */

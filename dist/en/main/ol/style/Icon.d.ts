@@ -2,11 +2,11 @@ export default Icon;
 /**
  * Anchor unit can be either a fraction of the icon size or in pixels.
  */
-export type IconAnchorUnits = 'fraction' | 'pixels';
+export type IconAnchorUnits = "fraction" | "pixels";
 /**
  * Icon origin. One of 'bottom-left', 'bottom-right', 'top-left', 'top-right'.
  */
-export type IconOrigin = 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right';
+export type IconOrigin = "bottom-left" | "bottom-right" | "top-left" | "top-right";
 export type Options = {
     /**
      * Anchor. Default value is the icon center.

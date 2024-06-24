@@ -51,7 +51,7 @@ export function parse(encoded: EncodedExpression, expectedType: number, context:
  * @param {import('../geom/Geometry.js').default|import('../render/Feature.js').default} geometry Geometry object
  * @return {'Point'|'LineString'|'Polygon'|''} Simplified geometry type; empty string of no geometry found
  */
-export function computeGeometryType(geometry: import('../geom/Geometry.js').default | import('../render/Feature.js').default): 'Point' | 'LineString' | 'Polygon' | '';
+export function computeGeometryType(geometry: import("../geom/Geometry.js").default | import("../render/Feature.js").default): "Point" | "LineString" | "Polygon" | "";
 export const NoneType: 0;
 export const BooleanType: number;
 export const NumberType: number;

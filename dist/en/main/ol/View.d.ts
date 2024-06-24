@@ -376,7 +376,7 @@ export type ViewStateLayerStateExtent = {
      */
     layerStatesArray?: import("./layer/Layer.js").State[] | undefined;
 };
-export type ViewObjectEventTypes = import("./ObjectEventType").Types | 'change:center' | 'change:resolution' | 'change:rotation';
+export type ViewObjectEventTypes = import("./ObjectEventType").Types | "change:center" | "change:resolution" | "change:rotation";
 /**
  * *
  */

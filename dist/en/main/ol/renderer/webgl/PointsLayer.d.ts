@@ -197,7 +197,7 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
      * index of the vertex (0 to 3) are required.
      * @type {Array<import('../../webgl/Helper.js').AttributeDescription>}
      */
-    attributes: Array<import('../../webgl/Helper.js').AttributeDescription>;
+    attributes: Array<import("../../webgl/Helper.js").AttributeDescription>;
     customAttributes: CustomAttribute[];
     previousExtent_: import("../../extent.js").Extent;
     /**

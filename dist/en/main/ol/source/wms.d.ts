@@ -99,7 +99,7 @@ export const DEFAULT_VERSION: string;
  * - `'mapserver'`: HiDPI support for [MapServer](https://mapserver.org/)
  * - `'qgis'`: HiDPI support for [QGIS](https://qgis.org/)
  */
-export type ServerType = 'carmentaserver' | 'geoserver' | 'mapserver' | 'qgis';
+export type ServerType = "carmentaserver" | "geoserver" | "mapserver" | "qgis";
 export type LoaderOptions = {
     /**
      * The `crossOrigin` attribute for loaded images.  Note that
@@ -145,6 +145,6 @@ export type LoaderOptions = {
      * to perform loading of the image. Receives the created `HTMLImageElement` and the desired `src` as argument and
      * returns a promise resolving to the loaded or decoded image. Default is {@link module :ol/Image.decode}.
      */
-    load?: ((arg0: HTMLImageElement, arg1: string) => Promise<import('../DataTile.js').ImageLike>) | undefined;
+    load?: ((arg0: HTMLImageElement, arg1: string) => Promise<import("../DataTile.js").ImageLike>) | undefined;
 };
 //# sourceMappingURL=wms.d.ts.map

@@ -2,11 +2,11 @@ export default ScaleLine;
 /**
  * Units for the scale line.
  */
-export type Units = 'degrees' | 'imperial' | 'nautical' | 'metric' | 'us';
+export type Units = "degrees" | "imperial" | "nautical" | "metric" | "us";
 /**
  * *
  */
-export type ScaleLineOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | 'change:units', import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | 'change:units', Return>;
+export type ScaleLineOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:units", import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:units", Return>;
 export type Options = {
     /**
      * CSS class name. The default is `ol-scale-bar` when configured with
@@ -217,7 +217,7 @@ declare class ScaleLine extends Control {
      * @param {'absolute'|'relative'} position The position, absolute or relative
      * @return {string} The stringified div containing the marker
      */
-    createMarker(position: 'absolute' | 'relative'): string;
+    createMarker(position: "absolute" | "relative"): string;
     /**
      * Creates the label for a marker marker at given position
      * @param {number} i The iterator

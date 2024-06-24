@@ -62,7 +62,7 @@ export function offset(c1: import("./coordinate.js").Coordinate, distance: numbe
  */
 export const DEFAULT_RADIUS: number;
 /**
- * Object literal with options for the {@link getLength } or {@link getArea }
+ * Object literal with options for the {@link getLength} or {@link getArea}
  * functions.
  */
 export type SphereMetricOptions = {

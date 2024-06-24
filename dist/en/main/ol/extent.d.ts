@@ -193,7 +193,7 @@ export function extendXY(extent: Extent, x: number, y: number): void;
  * @return {S|boolean} Value.
  * @template S
  */
-export function forEachCorner<S>(extent: Extent, callback: (arg0: import("./coordinate.js").Coordinate) => S): boolean | S;
+export function forEachCorner<S>(extent: Extent, callback: (arg0: import("./coordinate.js").Coordinate) => S): S | boolean;
 /**
  * Get the size of an extent.
  * @param {Extent} extent Extent.
@@ -384,5 +384,5 @@ export type Extent = Array<number>;
 /**
  * Extent corner.
  */
-export type Corner = 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right';
+export type Corner = "bottom-left" | "bottom-right" | "top-left" | "top-right";
 //# sourceMappingURL=extent.d.ts.map

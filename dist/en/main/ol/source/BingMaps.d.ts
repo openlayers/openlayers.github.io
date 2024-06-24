@@ -2,7 +2,7 @@
  * @param {import('../tilecoord.js').TileCoord} tileCoord Tile coord.
  * @return {string} Quad key.
  */
-export function quadKey(tileCoord: import('../tilecoord.js').TileCoord): string;
+export function quadKey(tileCoord: import("../tilecoord.js").TileCoord): string;
 export default BingMaps;
 export type Options = {
     /**

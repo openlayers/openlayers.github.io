@@ -160,7 +160,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
  * @extends {BaseVectorLayer<FeatureType, VectorSourceType, CanvasVectorImageLayerRenderer>}
  * @api
  */
-declare class VectorImageLayer<FeatureType extends import("../Feature.js").default<import("../geom.js").Geometry> = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> extends BaseVectorLayer<FeatureType, VectorSourceType, CanvasVectorImageLayerRenderer> {
+declare class VectorImageLayer<FeatureType extends import("../Feature.js").default = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> extends BaseVectorLayer<FeatureType, VectorSourceType, CanvasVectorImageLayerRenderer> {
     /**
      * @param {Options<FeatureType, VectorSourceType>} [options] Options.
      */

@@ -21,11 +21,11 @@ export class GroupEvent extends Event {
     layer: BaseLayer;
 }
 export default LayerGroup;
-export type GroupEventType = 'addlayer' | 'removelayer';
+export type GroupEventType = "addlayer" | "removelayer";
 /**
  * *
  */
-export type GroupOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | 'change:layers', import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | 'change:layers', Return>;
+export type GroupOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | "change:layers", import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | "change:layers", Return>;
 export type Options = {
     /**
      * Opacity (0, 1).

@@ -4,7 +4,7 @@
  * @param {import("../VectorTile.js").default<FeatureType>} tile Vector tile.
  * @param {string} url URL.
  */
-export function defaultLoadFunction<FeatureType extends import("../Feature.js").FeatureLike = import("../render/Feature.js").default>(tile: Tile<FeatureType>, url: string): void;
+export function defaultLoadFunction<FeatureType extends import("../Feature.js").FeatureLike = import("../render/Feature.js").default>(tile: import("../VectorTile.js").default<FeatureType>, url: string): void;
 export default VectorTile;
 export type Options<FeatureType extends import("../Feature.js").FeatureLike = import("../render/Feature.js").default> = {
     /**
@@ -130,7 +130,6 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
      */
     zDirection?: number | import("../array.js").NearestDirectionFunction | undefined;
 };
-import Tile from '../VectorTile.js';
 /**
  * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../render/Feature.js").default]
  * @typedef {Object} Options
@@ -261,6 +260,7 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
      */
     getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): VectorRenderTile;
 }
+import Tile from '../VectorTile.js';
 import TileGrid from '../tilegrid/TileGrid.js';
 import UrlTile from './UrlTile.js';
 import VectorRenderTile from '../VectorRenderTile.js';

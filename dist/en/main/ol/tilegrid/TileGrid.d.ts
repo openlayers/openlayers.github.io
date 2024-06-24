@@ -338,7 +338,7 @@ declare class TileGrid {
      * @param {Array<number>} viewport Viewport as returned from {@link module:ol/extent.getRotatedViewport}.
      * @return {boolean} The tile with the provided tile coordinate intersects the given viewport.
      */
-    tileCoordIntersectsViewport(tileCoord: import('../tilecoord.js').TileCoord, viewport: Array<number>): boolean;
+    tileCoordIntersectsViewport(tileCoord: import("../tilecoord.js").TileCoord, viewport: Array<number>): boolean;
     /**
      * @param {!import("../extent.js").Extent} extent Extent for this tile grid.
      * @private

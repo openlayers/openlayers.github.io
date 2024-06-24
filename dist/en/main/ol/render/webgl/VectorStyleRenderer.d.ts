@@ -87,7 +87,7 @@ export type StyleShaders = {
     builder: import("../../webgl/ShaderBuilder.js").ShaderBuilder;
     /**
      * Custom attributes made available in the vertex shaders.
-     * Default shaders rely on the attributes in {@link Attributes }.
+     * Default shaders rely on the attributes in {@link Attributes}.
      */
     attributes?: {
         [x: string]: AttributeDefinition;
@@ -99,7 +99,7 @@ export type StyleShaders = {
         [x: string]: import("../../webgl/Helper.js").UniformValue;
     } | undefined;
 };
-export type VectorStyle = import('../../style/webgl.js').WebGLStyle | StyleShaders;
+export type VectorStyle = import("../../style/webgl.js").WebGLStyle | StyleShaders;
 /**
  * @typedef {Object} AttributeDefinition A description of a custom attribute to be passed on to the GPU, with a value different
  * for each feature.
@@ -160,7 +160,7 @@ declare class VectorStyleRenderer {
      * @param {import('../../webgl/Helper.js').default} helper Helper
      * @param {boolean} enableHitDetection Whether to enable the hit detection (needs compatible shader)
      */
-    constructor(styleOrShaders: VectorStyle, helper: import('../../webgl/Helper.js').default, enableHitDetection: boolean);
+    constructor(styleOrShaders: VectorStyle, helper: import("../../webgl/Helper.js").default, enableHitDetection: boolean);
     helper_: import("../../webgl/Helper.js").default;
     hitDetectionEnabled_: boolean;
     /**
@@ -222,7 +222,7 @@ declare class VectorStyleRenderer {
      * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
      * @return {Promise<WebGLBuffers>} A promise resolving to WebGL buffers
      */
-    generateBuffers(geometryBatch: import('./MixedGeometryBatch.js').default, transform: import("../../transform.js").Transform): Promise<WebGLBuffers>;
+    generateBuffers(geometryBatch: import("./MixedGeometryBatch.js").default, transform: import("../../transform.js").Transform): Promise<WebGLBuffers>;
     /**
      * @param {import('./MixedGeometryBatch.js').default} geometryBatch Geometry batch
      * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates

@@ -18,5 +18,5 @@ export function warn(...args: any[]): void;
  * @param  {...any} args Arguments to log
  */
 export function error(...args: any[]): void;
-export type Level = 'info' | 'warn' | 'error' | 'none';
+export type Level = "info" | "warn" | "error" | "none";
 //# sourceMappingURL=console.d.ts.map

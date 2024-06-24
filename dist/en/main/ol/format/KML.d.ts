@@ -265,7 +265,7 @@ declare class KML extends XMLFeature {
      * @return {Array<KMLCamera>} Cameras.
      * @api
      */
-    readCamera(source: Document | Element | string): {
+    readCamera(source: Document | Element | string): Array<{
         /**
          * Latitude of the camera.
          */
@@ -294,12 +294,12 @@ declare class KML extends XMLFeature {
          * Vertical camera rotation.
          */
         Roll?: number | undefined;
-    }[];
+    }>;
     /**
      * @param {Document} doc Document.
      * @return {Array<KMLCamera>} Cameras.
      */
-    readCameraFromDocument(doc: Document): {
+    readCameraFromDocument(doc: Document): Array<{
         /**
          * Latitude of the camera.
          */
@@ -328,13 +328,13 @@ declare class KML extends XMLFeature {
          * Vertical camera rotation.
          */
         Roll?: number | undefined;
-    }[];
+    }>;
     /**
      * @param {Element} node Node.
      * @return {Array<KMLCamera>} Cameras.
      * @api
      */
-    readCameraFromNode(node: Element): {
+    readCameraFromNode(node: Element): Array<{
         /**
          * Latitude of the camera.
          */
@@ -363,7 +363,7 @@ declare class KML extends XMLFeature {
          * Vertical camera rotation.
          */
         Roll?: number | undefined;
-    }[];
+    }>;
 }
 import XMLFeature from './XMLFeature.js';
 //# sourceMappingURL=KML.d.ts.map

@@ -66,6 +66,6 @@ export type ImageExtent = {
     /**
      * Image.
      */
-    image: import('./DataTile.js').ImageLike;
+    image: import("./DataTile.js").ImageLike;
 };
 //# sourceMappingURL=reproj.d.ts.map

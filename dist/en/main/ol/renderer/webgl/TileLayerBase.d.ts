@@ -34,7 +34,7 @@ export type TileRepresentationLookup = {
      * Tile representations by zoom level.
      */
     representationsByZ: {
-        [x: number]: Set<import("../../webgl/BaseTileRepresentation.js").default<import("../../Tile.js").default>>;
+        [x: number]: Set<AbstractTileRepresentation>;
     };
 };
 export type Options = {
@@ -73,7 +73,7 @@ export type BaseLayerType = import("../../layer/BaseTile.js").default<any, any>;
  * @template {import("../../webgl/BaseTileRepresentation.js").default<TileType>} TileRepresentation
  * @extends {WebGLLayerRenderer<LayerType>}
  */
-declare class WebGLBaseTileLayerRenderer<LayerType extends import("../../layer/BaseTile.js").default<any, any>, TileType extends import("../../Tile.js").default, TileRepresentation extends import("../../webgl/BaseTileRepresentation.js").default<TileType>> extends WebGLLayerRenderer<LayerType> {
+declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileType extends import("../../Tile.js").default, TileRepresentation extends import("../../webgl/BaseTileRepresentation.js").default<TileType>> extends WebGLLayerRenderer<LayerType> {
     /**
      * @param {LayerType} tileLayer Tile layer.
      * @param {Options} options Options.

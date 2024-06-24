@@ -21,7 +21,7 @@ export const METERS_PER_UNIT: MetersPerUnitLookup;
 /**
  * Projection units.
  */
-export type Units = 'radians' | 'degrees' | 'ft' | 'm' | 'pixels' | 'tile-pixels' | 'us-ft';
+export type Units = "radians" | "degrees" | "ft" | "m" | "pixels" | "tile-pixels" | "us-ft";
 export type MetersPerUnitLookup = {
     /**
      * Radians

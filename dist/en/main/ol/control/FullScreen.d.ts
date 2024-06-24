@@ -2,7 +2,7 @@ export default FullScreen;
 /**
  * *
  */
-export type FullScreenOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes | 'enterfullscreen' | 'leavefullscreen', import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | 'enterfullscreen' | 'leavefullscreen' | import("../ObjectEventType").Types, Return>;
+export type FullScreenOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes | "enterfullscreen" | "leavefullscreen", import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | "enterfullscreen" | "leavefullscreen" | import("../ObjectEventType").Types, Return>;
 export type Options = {
     /**
      * CSS class name.

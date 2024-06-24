@@ -110,7 +110,7 @@ declare class DataTile extends Tile {
      * Get the tile size.
      * @return {import('./size.js').Size} Tile size.
      */
-    getSize(): import('./size.js').Size;
+    getSize(): import("./size.js").Size;
     /**
      * Get the data for the tile.
      * @return {Data} Tile data.

@@ -61,14 +61,14 @@ export function reverseSubArray(arr: Array<any>, begin: number, end: number): vo
  * @param {!Array<VALUE>|VALUE} data The elements or arrays of elements to add to arr.
  * @template VALUE
  */
-export function extend<VALUE>(arr: VALUE[], data: VALUE | VALUE[]): void;
+export function extend<VALUE>(arr: Array<VALUE>, data: Array<VALUE> | VALUE): void;
 /**
  * @param {Array<VALUE>} arr The array to modify.
  * @param {VALUE} obj The element to remove.
  * @template VALUE
  * @return {boolean} If the element was removed.
  */
-export function remove<VALUE>(arr: VALUE[], obj: VALUE): boolean;
+export function remove<VALUE>(arr: Array<VALUE>, obj: VALUE): boolean;
 /**
  * @param {Array<any>|Uint8ClampedArray} arr1 The first array to compare.
  * @param {Array<any>|Uint8ClampedArray} arr2 The second array to compare.

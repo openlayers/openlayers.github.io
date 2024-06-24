@@ -181,7 +181,7 @@ export type Options = {
 /**
  * *
  */
-export type SelectOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | 'change:active', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<'select', SelectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | 'change:active' | 'select', Return>;
+export type SelectOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"select", SelectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "select", Return>;
 import Event from '../events/Event.js';
 type SelectEventType = string;
 declare namespace SelectEventType {
@@ -316,7 +316,7 @@ declare class Select extends Interaction {
      * @return {import('../layer/Vector.js').default} Layer.
      * @api
      */
-    getLayer(feature: import("../Feature.js").default): import('../layer/Vector.js').default;
+    getLayer(feature: import("../Feature.js").default): import("../layer/Vector.js").default;
     /**
      * Hit-detection tolerance. Pixels inside the radius around the given position
      * will be checked for features.

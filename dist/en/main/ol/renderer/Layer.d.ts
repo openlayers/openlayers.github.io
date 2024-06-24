@@ -2,7 +2,7 @@ export default LayerRenderer;
 /**
  * @template {import("../layer/Layer.js").default} LayerType
  */
-declare class LayerRenderer<LayerType extends import("../layer/Layer.js").default<import("../source.js").Source, LayerRenderer<any>>> extends Observable {
+declare class LayerRenderer<LayerType extends import("../layer/Layer.js").default> extends Observable {
     /**
      * @param {LayerType} layer Layer.
      */
@@ -78,7 +78,7 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
      * @return {T|undefined} Callback result.
      * @template T
      */
-    forEachFeatureAtCoordinate<T>(coordinate: import("../coordinate.js").Coordinate, frameState: import("../Map.js").FrameState, hitTolerance: number, callback: import("./vector.js").FeatureCallback<T>, matches: import("./Map.js").HitMatch<T>[]): T | undefined;
+    forEachFeatureAtCoordinate<T>(coordinate: import("../coordinate.js").Coordinate, frameState: import("../Map.js").FrameState, hitTolerance: number, callback: import("./vector.js").FeatureCallback<T>, matches: Array<import("./Map.js").HitMatch<T>>): T | undefined;
     /**
      * @return {LayerType} Layer.
      */

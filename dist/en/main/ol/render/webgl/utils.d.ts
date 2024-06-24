@@ -46,7 +46,7 @@ export function writePointFeatureToBuffers(instructions: Float32Array, elementIn
  * @return {{length: number, angle: number}} Cumulated length with the newly processed segment (in world units), new sum of the join angle tangents
  * @private
  */
-export function writeLineSegmentToBuffers(instructions: Float32Array, segmentStartIndex: number, segmentEndIndex: number, beforeSegmentIndex: number | null, afterSegmentIndex: number | null, vertexArray: Array<number>, indexArray: Array<number>, customAttributes: Array<number>, toWorldTransform: import('../../transform.js').Transform, currentLength: number, currentAngleTangentSum: number): {
+export function writeLineSegmentToBuffers(instructions: Float32Array, segmentStartIndex: number, segmentEndIndex: number, beforeSegmentIndex: number | null, afterSegmentIndex: number | null, vertexArray: Array<number>, indexArray: Array<number>, customAttributes: Array<number>, toWorldTransform: import("../../transform.js").Transform, currentLength: number, currentAngleTangentSum: number): {
     length: number;
     angle: number;
 };

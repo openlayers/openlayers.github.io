@@ -3,7 +3,7 @@ export default BaseLayer;
  * A css color, or a function called with a view resolution returning a css color.
  */
 export type BackgroundColor = string | ((arg0: number) => string);
-export type BaseLayerObjectEventTypes = import("../ObjectEventType").Types | 'change:extent' | 'change:maxResolution' | 'change:maxZoom' | 'change:minResolution' | 'change:minZoom' | 'change:opacity' | 'change:visible' | 'change:zIndex';
+export type BaseLayerObjectEventTypes = import("../ObjectEventType").Types | "change:extent" | "change:maxResolution" | "change:maxZoom" | "change:minResolution" | "change:minZoom" | "change:opacity" | "change:visible" | "change:zIndex";
 /**
  * *
  */

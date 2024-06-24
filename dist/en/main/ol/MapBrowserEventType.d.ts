@@ -16,5 +16,5 @@ export default _default;
 /**
  * *
  */
-export type Types = 'singleclick' | 'click' | 'dblclick' | 'pointerdrag' | 'pointermove';
+export type Types = "singleclick" | "click" | "dblclick" | "pointerdrag" | "pointermove";
 //# sourceMappingURL=MapBrowserEventType.d.ts.map

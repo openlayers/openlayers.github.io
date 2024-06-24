@@ -23,7 +23,7 @@ export function colorToGlsl(color: string | import("../color.js").Color): string
  * @param {number|import('../size.js').Size} size Size.
  * @return {string} The color expressed in the `vec4(1.0, 1.0, 1.0, 1.0)` form.
  */
-export function sizeToGlsl(size: number | import('../size.js').Size): string;
+export function sizeToGlsl(size: number | import("../size.js").Size): string;
 /**
  * Returns a stable equivalent number for the string literal.
  * @param {string} string String literal value
@@ -95,9 +95,9 @@ export function newCompilationContext(): CompilationContext;
  * @param {CompilationContext} compilationContext An existing compilation context
  * @return {CompiledExpression} The compiled expression.
  */
-export function buildExpression(encoded: import('./expression.js').EncodedExpression, type: number, parsingContext: import('./expression.js').ParsingContext, compilationContext: CompilationContext): CompiledExpression;
+export function buildExpression(encoded: import("./expression.js").EncodedExpression, type: number, parsingContext: import("./expression.js").ParsingContext, compilationContext: CompilationContext): CompiledExpression;
 export const PALETTE_TEXTURE_ARRAY: "u_paletteTextures";
-export type ParsingContext = import('./expression.js').ParsingContext;
+export type ParsingContext = import("./expression.js").ParsingContext;
 export type Expression = import("./expression.js").Expression;
 export type LiteralExpression = import("./expression.js").LiteralExpression;
 export type CompilationContextProperty = {

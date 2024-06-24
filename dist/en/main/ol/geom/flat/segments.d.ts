@@ -14,5 +14,5 @@
  * @return {T|boolean} Value.
  * @template T
  */
-export function forEach<T>(flatCoordinates: Array<number>, offset: number, end: number, stride: number, callback: (arg0: import("../../coordinate.js").Coordinate, arg1: import("../../coordinate.js").Coordinate) => T): boolean | T;
+export function forEach<T>(flatCoordinates: Array<number>, offset: number, end: number, stride: number, callback: (arg0: import("../../coordinate.js").Coordinate, arg1: import("../../coordinate.js").Coordinate) => T): T | boolean;
 //# sourceMappingURL=segments.d.ts.map

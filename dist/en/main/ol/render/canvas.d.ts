@@ -190,7 +190,7 @@ export const textHeights: {
 };
 export function registerFont(fontSpec: any): void;
 export function measureTextHeight(fontSpec: any): number;
-export type BuilderType = 'Circle' | 'Image' | 'LineString' | 'Polygon' | 'Text' | 'Default';
+export type BuilderType = "Circle" | "Image" | "LineString" | "Polygon" | "Text" | "Default";
 export type FillState = {
     /**
      * FillStyle.

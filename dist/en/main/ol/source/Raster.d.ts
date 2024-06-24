@@ -208,8 +208,8 @@ export type Operation = (arg0: (Array<Array<number>> | Array<ImageData>), arg1: 
 /**
  * Raster operation type. Supported values are `'pixel'` and `'image'`.
  */
-export type RasterOperationType = 'pixel' | 'image';
-export type RasterSourceEventTypes = import("./Image.js").ImageSourceEventTypes | 'beforeoperations' | 'afteroperations';
+export type RasterOperationType = "pixel" | "image";
+export type RasterSourceEventTypes = import("./Image.js").ImageSourceEventTypes | "beforeoperations" | "afteroperations";
 export type Options = {
     /**
      * Input

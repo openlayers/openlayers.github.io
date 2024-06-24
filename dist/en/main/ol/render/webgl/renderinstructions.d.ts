@@ -2,7 +2,7 @@
  * @param {import('./VectorStyleRenderer.js').AttributeDefinitions} customAttributes Custom attributes
  * @return {number} Cumulated size of all attributes
  */
-export function getCustomAttributesSize(customAttributes: import('./VectorStyleRenderer.js').AttributeDefinitions): number;
+export function getCustomAttributesSize(customAttributes: import("./VectorStyleRenderer.js").AttributeDefinitions): number;
 /**
  * Render instructions for lines are structured like so:
  * [ x0, y0, customAttr0, ... , xN, yN, customAttrN ]
@@ -12,7 +12,7 @@ export function getCustomAttributesSize(customAttributes: import('./VectorStyleR
  * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
  * @return {Float32Array} Generated render instructions
  */
-export function generatePointRenderInstructions(batch: import("./MixedGeometryBatch.js").PointGeometryBatch, renderInstructions: Float32Array, customAttributes: import('./VectorStyleRenderer.js').AttributeDefinitions, transform: import("../../transform.js").Transform): Float32Array;
+export function generatePointRenderInstructions(batch: import("./MixedGeometryBatch.js").PointGeometryBatch, renderInstructions: Float32Array, customAttributes: import("./VectorStyleRenderer.js").AttributeDefinitions, transform: import("../../transform.js").Transform): Float32Array;
 /**
  * Render instructions for lines are structured like so:
  * [ customAttr0, ... , customAttrN, numberOfVertices0, x0, y0, ... , xN, yN, numberOfVertices1, ... ]
@@ -22,7 +22,7 @@ export function generatePointRenderInstructions(batch: import("./MixedGeometryBa
  * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
  * @return {Float32Array} Generated render instructions
  */
-export function generateLineStringRenderInstructions(batch: import("./MixedGeometryBatch.js").LineStringGeometryBatch, renderInstructions: Float32Array, customAttributes: import('./VectorStyleRenderer.js').AttributeDefinitions, transform: import("../../transform.js").Transform): Float32Array;
+export function generateLineStringRenderInstructions(batch: import("./MixedGeometryBatch.js").LineStringGeometryBatch, renderInstructions: Float32Array, customAttributes: import("./VectorStyleRenderer.js").AttributeDefinitions, transform: import("../../transform.js").Transform): Float32Array;
 /**
  * Render instructions for polygons are structured like so:
  * [ customAttr0, ..., customAttrN, numberOfRings, numberOfVerticesInRing0, ..., numberOfVerticesInRingN, x0, y0, ..., xN, yN, numberOfRings,... ]
@@ -32,5 +32,5 @@ export function generateLineStringRenderInstructions(batch: import("./MixedGeome
  * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
  * @return {Float32Array} Generated render instructions
  */
-export function generatePolygonRenderInstructions(batch: import("./MixedGeometryBatch.js").PolygonGeometryBatch, renderInstructions: Float32Array, customAttributes: import('./VectorStyleRenderer.js').AttributeDefinitions, transform: import("../../transform.js").Transform): Float32Array;
+export function generatePolygonRenderInstructions(batch: import("./MixedGeometryBatch.js").PolygonGeometryBatch, renderInstructions: Float32Array, customAttributes: import("./VectorStyleRenderer.js").AttributeDefinitions, transform: import("../../transform.js").Transform): Float32Array;
 //# sourceMappingURL=renderinstructions.d.ts.map

@@ -5,8 +5,8 @@ export default Text;
  * {@link module :ol/geom/Polygon~Polygon}, {@link module :ol/geom/MultiLineString~MultiLineString} or
  * {@link module :ol/geom/MultiPolygon~MultiPolygon}.
  */
-export type TextPlacement = 'point' | 'line';
-export type TextJustify = 'left' | 'center' | 'right';
+export type TextPlacement = "point" | "line";
+export type TextJustify = "left" | "center" | "right";
 export type Options = {
     /**
      * Font style as CSS `font` value, see:

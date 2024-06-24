@@ -1,6 +1,6 @@
 export default BaseTileRepresentation;
 export type BaseTileType = import("../Tile.js").default;
-export type TileRepresentationOptions<TileType extends import("../Tile.js").default> = {
+export type TileRepresentationOptions<TileType extends BaseTileType> = {
     /**
      * The tile.
      */

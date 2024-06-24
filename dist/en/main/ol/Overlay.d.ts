@@ -4,7 +4,7 @@ export default Overlay;
  * `'center-left'`, `'center-center'`, `'center-right'`, `'top-left'`,
  * `'top-center'`, or `'top-right'`.
  */
-export type Positioning = 'bottom-left' | 'bottom-center' | 'bottom-right' | 'center-left' | 'center-center' | 'center-right' | 'top-left' | 'top-center' | 'top-right';
+export type Positioning = "bottom-left" | "bottom-center" | "bottom-right" | "center-left" | "center-center" | "center-right" | "top-left" | "top-center" | "top-right";
 export type Options = {
     /**
      * Set the overlay id. The overlay id can be used
@@ -87,7 +87,7 @@ export type PanIntoViewOptions = {
      */
     margin?: number | undefined;
 };
-export type OverlayObjectEventTypes = import("./ObjectEventType").Types | 'change:element' | 'change:map' | 'change:offset' | 'change:position' | 'change:positioning';
+export type OverlayObjectEventTypes = import("./ObjectEventType").Types | "change:element" | "change:map" | "change:offset" | "change:position" | "change:positioning";
 /**
  * *
  */

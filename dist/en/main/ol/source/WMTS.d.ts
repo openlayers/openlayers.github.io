@@ -27,7 +27,7 @@ export default WMTS;
 /**
  * Request encoding. One of 'KVP', 'REST'.
  */
-export type RequestEncoding = 'KVP' | 'REST';
+export type RequestEncoding = "KVP" | "REST";
 export type Options = {
     /**
      * Attributions.

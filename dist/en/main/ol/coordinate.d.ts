@@ -263,5 +263,5 @@ export type Coordinate = Array<number>;
  * A function that takes a {@link module :ol/coordinate~Coordinate} and
  * transforms it into a `{string}`.
  */
-export type CoordinateFormat = (arg0: (number[] | undefined)) => string;
+export type CoordinateFormat = (arg0: (Coordinate | undefined)) => string;
 //# sourceMappingURL=coordinate.d.ts.map

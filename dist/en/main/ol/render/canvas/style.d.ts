@@ -6,7 +6,7 @@
  * @param {Array<import('../../style/flat.js').Rule>} rules The rules.
  * @return {import('../../style/Style.js').StyleFunction} A style function.
  */
-export function rulesToStyleFunction(rules: Array<import('../../style/flat.js').Rule>): import('../../style/Style.js').StyleFunction;
+export function rulesToStyleFunction(rules: Array<import("../../style/flat.js").Rule>): import("../../style/Style.js").StyleFunction;
 /**
  * This function adapts a style evaluator to the existing style function interface.
  * After we have deprecated the style function, we can use the compiled rules directly
@@ -15,7 +15,7 @@ export function rulesToStyleFunction(rules: Array<import('../../style/flat.js').
  * @param {Array<import('../../style/flat.js').FlatStyle>} flatStyles The flat styles.
  * @return {import('../../style/Style.js').StyleFunction} A style function.
  */
-export function flatStylesToStyleFunction(flatStyles: Array<import('../../style/flat.js').FlatStyle>): import('../../style/Style.js').StyleFunction;
+export function flatStylesToStyleFunction(flatStyles: Array<import("../../style/flat.js").FlatStyle>): import("../../style/Style.js").StyleFunction;
 /**
  * @typedef {function(EvaluationContext):Array<Style>} RuleSetEvaluator
  */
@@ -29,7 +29,7 @@ export function flatStylesToStyleFunction(flatStyles: Array<import('../../style/
  * @param {ParsingContext} context The parsing context.
  * @return {RuleSetEvaluator} The evaluator function.
  */
-export function buildRuleSet(rules: Array<import('../../style/flat.js').Rule>, context: ParsingContext): RuleSetEvaluator;
+export function buildRuleSet(rules: Array<import("../../style/flat.js").Rule>, context: ParsingContext): RuleSetEvaluator;
 /**
  * @typedef {function(EvaluationContext):Style|null} StyleEvaluator
  */

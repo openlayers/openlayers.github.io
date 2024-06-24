@@ -9,5 +9,5 @@ export default _default;
 /**
  * *
  */
-export type Types = 'postrender' | 'movestart' | 'moveend' | 'loadstart' | 'loadend';
+export type Types = "postrender" | "movestart" | "moveend" | "loadstart" | "loadend";
 //# sourceMappingURL=MapEventType.d.ts.map

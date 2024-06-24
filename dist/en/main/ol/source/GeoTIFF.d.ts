@@ -283,7 +283,7 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
     /**
      * @type {true|false|'auto'}
      */
-    convertToRGB_: true | false | 'auto';
+    convertToRGB_: true | false | "auto";
     /**
      * @return {Error} A source loading error. When the source state is `error`, use this function
      * to get more information about the error. To debug a faulty configuration, you may want to use

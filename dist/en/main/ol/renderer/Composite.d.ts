@@ -28,7 +28,7 @@ declare class CompositeMapRenderer extends MapRenderer {
      * @param {import("../Map.js").FrameState} frameState Frame state.
      * @param {Array<import('../layer/Layer.js').State>} layerStates Layers.
      */
-    declutter(frameState: import("../Map.js").FrameState, layerStates: Array<import('../layer/Layer.js').State>): void;
+    declutter(frameState: import("../Map.js").FrameState, layerStates: Array<import("../layer/Layer.js").State>): void;
 }
 import MapRenderer from './Map.js';
 //# sourceMappingURL=Composite.d.ts.map

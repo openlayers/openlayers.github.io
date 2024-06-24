@@ -7,24 +7,6 @@ export const Uniforms: {
     RENDER_EXTENT: string;
     PATTERN_ORIGIN: string;
     RESOLUTION: string;
-    /**
-     * @typedef {import('../../render/webgl/VectorStyleRenderer.js').VectorStyle} VectorStyle
-     */
-    /**
-     * @typedef {Object} Options
-     * @property {VectorStyle|Array<VectorStyle>} style Vector style as literal style or shaders; can also accept an array of styles
-     * @property {boolean} [disableHitDetection=false] Setting this to true will provide a slight performance boost, but will
-     * prevent all hit detection on the layer.
-     * @property {number} [cacheSize=512] The vector tile cache size.
-     */
-    /**
-     * @typedef {import("../../layer/BaseTile.js").default} LayerType
-     */
-    /**
-     * @classdesc
-     * WebGL renderer for vector tile layers. Experimental.
-     * @extends {WebGLBaseTileLayerRenderer<LayerType>}
-     */
     ZOOM: string;
     GLOBAL_ALPHA: string;
     PROJECTION_MATRIX: string;
@@ -34,7 +16,7 @@ export namespace Attributes {
     let POSITION: string;
 }
 export default WebGLVectorTileLayerRenderer;
-export type VectorStyle = import('../../render/webgl/VectorStyleRenderer.js').VectorStyle;
+export type VectorStyle = import("../../render/webgl/VectorStyleRenderer.js").VectorStyle;
 export type Options = {
     /**
      * Vector style as literal style or shaders; can also accept an array of styles
@@ -74,7 +56,7 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      * @param {LayerType} tileLayer Tile layer.
      * @param {Options} options Options.
      */
-    constructor(tileLayer: import("../../layer/BaseTile.js").default<any, any>, options: Options);
+    constructor(tileLayer: LayerType, options: Options);
     /**
      * @type {boolean}
      * @private

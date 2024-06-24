@@ -25,6 +25,6 @@ export function createHitDetectionImageData(size: import("../../size.js").Size, 
  * @return {Array<F>} Features.
  * @template {import("../../Feature.js").FeatureLike} F
  */
-export function hitDetect<F extends import("../../Feature.js").FeatureLike>(pixel: import("../../pixel").Pixel, features: F[], imageData: ImageData): F[];
+export function hitDetect<F extends import("../../Feature.js").FeatureLike>(pixel: import("../../pixel").Pixel, features: Array<F>, imageData: ImageData): Array<F>;
 export const HIT_DETECT_RESOLUTION: 0.5;
 //# sourceMappingURL=hitdetect.d.ts.map

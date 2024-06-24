@@ -55,7 +55,7 @@ declare class LineString extends SimpleGeometry {
      * @template T,S
      * @api
      */
-    forEachSegment<T, S>(callback: (this: S, arg1: import("../coordinate.js").Coordinate, arg2: import("../coordinate.js").Coordinate) => T): boolean | T;
+    forEachSegment<T, S>(callback: (this: S, arg1: import("../coordinate.js").Coordinate, arg2: import("../coordinate.js").Coordinate) => T): T | boolean;
     /**
      * Returns the coordinate at `m` using linear interpolation, or `null` if no
      * such coordinate exists.

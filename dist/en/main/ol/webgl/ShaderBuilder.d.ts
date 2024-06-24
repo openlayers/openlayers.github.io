@@ -156,7 +156,7 @@ export class ShaderBuilder {
      * @param {string} expression Expression used to assign a value to the varying.
      * @return {ShaderBuilder} the builder object
      */
-    addVarying(name: string, type: 'float' | 'vec2' | 'vec3' | 'vec4', expression: string): ShaderBuilder;
+    addVarying(name: string, type: "float" | "vec2" | "vec3" | "vec4", expression: string): ShaderBuilder;
     /**
      * Sets an expression to compute the size of the shape.
      * This expression can use all the uniforms and attributes available

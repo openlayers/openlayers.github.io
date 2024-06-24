@@ -17,7 +17,7 @@ declare class CanvasImageLayerRenderer extends CanvasLayerRenderer<any> {
     /**
      * @return {import('../../DataTile.js').ImageLike} Image.
      */
-    getImage(): import('../../DataTile.js').ImageLike;
+    getImage(): import("../../DataTile.js").ImageLike;
     /**
      * @param {import("../../pixel.js").Pixel} pixel Pixel.
      * @return {Uint8ClampedArray} Data at the pixel location.

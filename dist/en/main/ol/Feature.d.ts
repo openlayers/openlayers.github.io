@@ -13,7 +13,7 @@ export type FeatureLike = Feature | import("./render/Feature.js").default;
 /**
  * *
  */
-export type FeatureOnSignature<Return> = import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return> & import("./Observable").OnSignature<import("./ObjectEventType").Types | 'change:geometry', import("./Object").ObjectEvent, Return> & import("./Observable").CombinedOnSignature<import("./Observable").EventTypes | import("./ObjectEventType").Types | 'change:geometry', Return>;
+export type FeatureOnSignature<Return> = import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return> & import("./Observable").OnSignature<import("./ObjectEventType").Types | "change:geometry", import("./Object").ObjectEvent, Return> & import("./Observable").CombinedOnSignature<import("./Observable").EventTypes | import("./ObjectEventType").Types | "change:geometry", Return>;
 /**
  * *
  */

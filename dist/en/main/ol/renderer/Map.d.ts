@@ -83,7 +83,7 @@ declare class MapRenderer extends Disposable {
      * @return {boolean} Is there a feature at the given coordinate?
      * @template U
      */
-    hasFeatureAtCoordinate<U_1>(coordinate: import("../coordinate.js").Coordinate, frameState: import("../Map.js").FrameState, hitTolerance: number, checkWrapped: boolean, layerFilter: (this: U_1, arg1: import("../layer/Layer.js").default) => boolean, thisArg: U_1): boolean;
+    hasFeatureAtCoordinate<U>(coordinate: import("../coordinate.js").Coordinate, frameState: import("../Map.js").FrameState, hitTolerance: number, checkWrapped: boolean, layerFilter: (this: U, arg1: import("../layer/Layer.js").default) => boolean, thisArg: U): boolean;
     /**
      * @return {import("../Map.js").default} Map.
      */

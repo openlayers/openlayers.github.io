@@ -2,7 +2,7 @@ export default Source;
 /**
  * State of the source, one of 'undefined', 'loading', 'ready' or 'error'.
  */
-export type State = 'undefined' | 'loading' | 'ready' | 'error';
+export type State = "undefined" | "loading" | "ready" | "error";
 /**
  * A function that takes a {@link import ("../View.js").ViewStateLayerStateExtent} and returns a string or
  * an array of strings representing source attributions.

@@ -8,7 +8,7 @@ export default CanvasLayerRenderer;
  * @template {import("../../layer/Layer.js").default} LayerType
  * @extends {LayerRenderer<LayerType>}
  */
-declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js").default<import("../../source.js").Source, LayerRenderer<any>>> extends LayerRenderer<LayerType> {
+declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js").default> extends LayerRenderer<LayerType> {
     /**
      * @protected
      * @type {HTMLElement}
@@ -69,12 +69,12 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      * @param {number} row The row index.
      * @return {Uint8ClampedArray|null} The image data.
      */
-    getImageData(image: import('../../DataTile.js').ImageLike, col: number, row: number): Uint8ClampedArray | null;
+    getImageData(image: import("../../DataTile.js").ImageLike, col: number, row: number): Uint8ClampedArray | null;
     /**
      * @param {import('../../Map.js').FrameState} frameState Frame state.
      * @return {string} Background color.
      */
-    getBackground(frameState: import('../../Map.js').FrameState): string;
+    getBackground(frameState: import("../../Map.js").FrameState): string;
     /**
      * Get a rendering container from an existing target, if compatible.
      * @param {HTMLElement} target Potential render target.
@@ -122,7 +122,7 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @return {import('../../render/canvas/ZIndexContext.js').ZIndexContextProxy} Context.
      */
-    getRenderContext(frameState: import("../../Map.js").FrameState): import('../../render/canvas/ZIndexContext.js').ZIndexContextProxy;
+    getRenderContext(frameState: import("../../Map.js").FrameState): import("../../render/canvas/ZIndexContext.js").ZIndexContextProxy;
     /**
      * Creates a transform for rendering to an element that will be rotated after rendering.
      * @param {import("../../coordinate.js").Coordinate} center Center.

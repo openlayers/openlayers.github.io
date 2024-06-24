@@ -8,5 +8,5 @@ declare namespace _default {
     let FEATURESLOADERROR: string;
 }
 export default _default;
-export type VectorSourceEventTypes = 'addfeature' | 'changefeature' | 'clear' | 'removefeature' | 'featuresloadstart' | 'featuresloadend' | 'featuresloaderror';
+export type VectorSourceEventTypes = "addfeature" | "changefeature" | "clear" | "removefeature" | "featuresloadstart" | "featuresloadend" | "featuresloaderror";
 //# sourceMappingURL=VectorEventType.d.ts.map

@@ -8,7 +8,7 @@
 export function inView(layerState: State, viewState: import("../View.js").State): boolean;
 export default Layer;
 export type RenderFunction = (arg0: import("../Map.js").FrameState) => HTMLElement;
-export type LayerEventType = 'sourceready' | 'change:source';
+export type LayerEventType = "sourceready" | "change:source";
 /**
  * *
  */
@@ -323,7 +323,7 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      * When the renderer follows a layout -> render approach, do the final rendering here.
      * @param {import('../Map.js').FrameState} frameState Frame state
      */
-    renderDeferred(frameState: import('../Map.js').FrameState): void;
+    renderDeferred(frameState: import("../Map.js").FrameState): void;
     /**
      * For use inside the library only.
      * @param {import("../Map.js").default|null} map Map.

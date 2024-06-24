@@ -9,12 +9,12 @@ export default Observable;
 /**
  * *
  */
-export type OnSignature<Type extends string, EventClass extends import("./events/Event.js").default | Event, Return> = (type: Type, listener: (event: EventClass) => unknown) => Return;
+export type OnSignature<Type extends string, EventClass extends Event | import("./events/Event.js").default, Return> = (type: Type, listener: (event: EventClass) => unknown) => Return;
 /**
  * *
  */
 export type CombinedOnSignature<Type extends string, Return> = (type: Type[], listener: (event: Event | import("./events/Event").default) => unknown) => Return extends void ? void : Return[];
-export type EventTypes = 'change' | 'error';
+export type EventTypes = "change" | "error";
 /**
  * *
  */

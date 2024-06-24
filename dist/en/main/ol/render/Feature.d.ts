@@ -22,7 +22,7 @@ export default RenderFeature;
  * The geometry type.  One of `'Point'`, `'LineString'`, `'LinearRing'`,
  * `'Polygon'`, `'MultiPoint'` or 'MultiLineString'`.
  */
-export type Type = 'Point' | 'LineString' | 'LinearRing' | 'Polygon' | 'MultiPoint' | 'MultiLineString';
+export type Type = "Point" | "LineString" | "LinearRing" | "Polygon" | "MultiPoint" | "MultiLineString";
 /**
  * Lightweight, read-only, {@link module:ol/Feature~Feature} and {@link module:ol/geom/Geometry~Geometry} like
  * structure, optimized for vector tile rendering and styling. Geometry access
@@ -180,7 +180,7 @@ declare class RenderFeature {
     /**
      * @return {import('../style/Style.js').StyleFunction|undefined} Style
      */
-    getStyleFunction(): import('../style/Style.js').StyleFunction | undefined;
+    getStyleFunction(): import("../style/Style.js").StyleFunction | undefined;
     /**
      * Get the type of this feature's geometry.
      * @return {Type} Geometry type.

@@ -4,5 +4,5 @@ declare namespace _default {
     let TILELOADERROR: string;
 }
 export default _default;
-export type TileSourceEventTypes = 'tileloadstart' | 'tileloadend' | 'tileloaderror';
+export type TileSourceEventTypes = "tileloadstart" | "tileloadend" | "tileloaderror";
 //# sourceMappingURL=TileEventType.d.ts.map

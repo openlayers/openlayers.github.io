@@ -1,5 +1,5 @@
 export default DataTileSource;
-export type CrossOriginAttribute = 'anonymous' | 'use-credentials';
+export type CrossOriginAttribute = "anonymous" | "use-credentials";
 export type LoaderOptions = {
     /**
      * An abort controller signal.
@@ -205,7 +205,7 @@ declare class DataTileSource<TileType extends import("../Tile.js").default = Dat
      * @protected
      * @param {Array<import('../size.js').Size>} tileSizes An array of tile sizes.
      */
-    protected setTileSizes(tileSizes: Array<import('../size.js').Size>): void;
+    protected setTileSizes(tileSizes: Array<import("../size.js").Size>): void;
     /**
      * Get the source tile size at the given zoom level.  This may be different than the rendered tile
      * size.
@@ -213,7 +213,7 @@ declare class DataTileSource<TileType extends import("../Tile.js").default = Dat
      * @param {number} z Tile zoom level.
      * @return {import('../size.js').Size} The source tile size.
      */
-    protected getTileSize(z: number): import('../size.js').Size;
+    protected getTileSize(z: number): import("../size.js").Size;
     /**
      * @param {Loader} loader The data loader.
      * @protected

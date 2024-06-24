@@ -13,7 +13,7 @@ export const Uniforms: {
     HIT_DETECTION: string;
 };
 export default WebGLVectorLayerRenderer;
-export type VectorStyle = import('../../render/webgl/VectorStyleRenderer.js').VectorStyle;
+export type VectorStyle = import("../../render/webgl/VectorStyleRenderer.js").VectorStyle;
 export type Options = {
     /**
      * A CSS class name to set to the canvas element.

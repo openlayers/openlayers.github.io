@@ -4,7 +4,7 @@
  * @param {function():any} errorHandler Error callback function.
  * @return {function():void} Callback to stop listening.
  */
-export function listenImage(image: import('./DataTile.js').ImageLike, loadHandler: () => any, errorHandler: () => any): () => void;
+export function listenImage(image: import("./DataTile.js").ImageLike, loadHandler: () => any, errorHandler: () => any): () => void;
 /**
  * Loads an image.
  * @param {HTMLImageElement} image Image, not yet loaded.
@@ -62,7 +62,7 @@ export type ImageObject = {
     /**
      * Image.
      */
-    image: import('./DataTile.js').ImageLike;
+    image: import("./DataTile.js").ImageLike;
 };
 /**
  * Loader function used for image sources. Receives extent, resolution and pixel ratio as arguments.
@@ -174,7 +174,7 @@ declare class ImageWrapper extends EventTarget {
     /**
      * @return {import('./DataTile.js').ImageLike} Image.
      */
-    getImage(): import('./DataTile.js').ImageLike;
+    getImage(): import("./DataTile.js").ImageLike;
     /**
      * @return {number} PixelRatio.
      */
@@ -194,7 +194,7 @@ declare class ImageWrapper extends EventTarget {
     /**
      * @param {import('./DataTile.js').ImageLike} image The image.
      */
-    setImage(image: import('./DataTile.js').ImageLike): void;
+    setImage(image: import("./DataTile.js").ImageLike): void;
     /**
      * @param {number|Array<number>} resolution Resolution.
      */

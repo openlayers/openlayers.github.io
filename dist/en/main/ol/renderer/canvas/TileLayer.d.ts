@@ -19,7 +19,7 @@ export type Options = {
  * @template {import("../../layer/Tile.js").default|import("../../layer/VectorTile.js").default} [LayerType=import("../../layer/Tile.js").default<import("../../source/Tile.js").default>|import("../../layer/VectorTile.js").default]
  * @extends {CanvasLayerRenderer<LayerType>}
  */
-declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile.js").default<import("../../source/Tile.js").default<import("../../Tile.js").default>> | import("../../layer/VectorTile.js").default<import("../../source.js").VectorTile<any>, any> = import("../../layer/Tile.js").default<import("../../source/Tile.js").default<import("../../Tile.js").default>> | import("../../layer/VectorTile.js").default<import("../../source.js").VectorTile<any>, any>> extends CanvasLayerRenderer<LayerType> {
+declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile.js").default | import("../../layer/VectorTile.js").default = import("../../layer/Tile.js").default<import("../../source/Tile.js").default<import("../../Tile.js").default>> | import("../../layer/VectorTile.js").default<import("../../source.js").VectorTile<any>, any>> extends CanvasLayerRenderer<LayerType> {
     /**
      * @param {LayerType} tileLayer Tile layer.
      * @param {Options} [options] Options.
@@ -200,7 +200,7 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
         [x: string]: {
             [x: string]: boolean;
         };
-    }, tileSource: import("../../source/Tile.js").default, tile: import('../../Tile.js').default): void;
+    }, tileSource: import("../../source/Tile.js").default, tile: import("../../Tile.js").default): void;
 }
 import CanvasLayerRenderer from './Layer.js';
 import LRUCache from '../../structs/LRUCache.js';

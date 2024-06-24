@@ -143,7 +143,7 @@ export type MapOptionsInternal = {
         [x: string]: any;
     };
 };
-export type MapObjectEventTypes = import("./ObjectEventType").Types | 'change:layergroup' | 'change:size' | 'change:target' | 'change:view';
+export type MapObjectEventTypes = import("./ObjectEventType").Types | "change:layergroup" | "change:size" | "change:target" | "change:view";
 /**
  * *
  */

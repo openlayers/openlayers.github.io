@@ -23,7 +23,7 @@ export type Options = {
     global?: boolean | undefined;
     /**
      * The meters per unit for the SRS.
-     * If not provided, the `units` are used to get the meters per unit from the {@link METERS_PER_UNIT }lookup table.
+     * If not provided, the `units` are used to get the meters per unit from the {@link METERS_PER_UNIT}lookup table.
      */
     metersPerUnit?: number | undefined;
     /**

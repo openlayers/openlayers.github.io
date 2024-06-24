@@ -5,7 +5,7 @@
  * @param {WriteOptions|ReadOptions} [options] Options.
  * @return {T} Transformed geometry.
  */
-export function transformGeometryWithOptions<T extends import("../geom.js").Geometry | RenderFeature>(geometry: T, write: boolean, options?: ReadOptions | WriteOptions | undefined): T;
+export function transformGeometryWithOptions<T extends import("../geom/Geometry.js").default | RenderFeature>(geometry: T, write: boolean, options?: ReadOptions | WriteOptions | undefined): T;
 /**
  * @param {import("../extent.js").Extent} extent Extent.
  * @param {ReadOptions} [options] Read options.
@@ -83,12 +83,12 @@ export type WriteOptions = {
      */
     decimals?: number | undefined;
 };
-export type Type = 'arraybuffer' | 'json' | 'text' | 'xml';
+export type Type = "arraybuffer" | "json" | "text" | "xml";
 export type SimpleGeometryObject = {
     /**
      * Type.
      */
-    type: import('../geom/Geometry.js').Type;
+    type: import("../geom/Geometry.js").Type;
     /**
      * Flat coordinates.
      */
@@ -103,7 +103,7 @@ export type SimpleGeometryObject = {
     layout?: import("../geom/Geometry.js").GeometryLayout | undefined;
 };
 export type GeometryCollectionObject = Array<GeometryObject>;
-export type GeometryObject = SimpleGeometryObject | GeometryObject[];
+export type GeometryObject = SimpleGeometryObject | GeometryCollectionObject;
 export type FeatureObject = {
     /**
      * Id.

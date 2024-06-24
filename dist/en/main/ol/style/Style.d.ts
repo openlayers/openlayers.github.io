@@ -36,7 +36,7 @@ export type DeclutterMode = "declutter" | "obstacle" | "none";
  */
 export type StyleFunction = (arg0: import("../Feature.js").FeatureLike, arg1: number) => (Style | Array<Style> | void);
 /**
- * A {@link Style }, an array of {@link Style }, or a {@link StyleFunction }.
+ * A {@link Style}, an array of {@link Style}, or a {@link StyleFunction}.
  */
 export type StyleLike = Style | Array<Style> | StyleFunction;
 /**

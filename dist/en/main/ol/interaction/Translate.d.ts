@@ -111,7 +111,7 @@ export type Options = {
 /**
  * *
  */
-export type TranslateOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | 'change:active', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<'translateend' | 'translatestart' | 'translating', TranslateEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | 'change:active' | 'translateend' | 'translatestart' | 'translating', Return>;
+export type TranslateOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"translateend" | "translatestart" | "translating", TranslateEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "translateend" | "translatestart" | "translating", Return>;
 import Event from '../events/Event.js';
 import Collection from '../Collection.js';
 import Feature from '../Feature.js';

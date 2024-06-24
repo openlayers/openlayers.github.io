@@ -175,7 +175,7 @@ export type Options = {
 /**
  * *
  */
-export type ModifyOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | 'change:active', import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<'modifyend' | 'modifystart', ModifyEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | 'change:active' | 'modifyend' | 'modifystart', Return>;
+export type ModifyOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"modifyend" | "modifystart", ModifyEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "modifyend" | "modifystart", Return>;
 import Event from '../events/Event.js';
 import Collection from '../Collection.js';
 import Feature from '../Feature.js';

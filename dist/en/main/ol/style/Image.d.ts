@@ -23,7 +23,7 @@ export type Options = {
     /**
      * Declutter mode: `declutter`, `obstacle`, `none`.
      */
-    declutterMode: import('../style/Style.js').DeclutterMode;
+    declutterMode: import("../style/Style.js").DeclutterMode;
 };
 /**
  * @typedef {Object} Options
@@ -142,12 +142,12 @@ declare class ImageStyle {
      * @param {number} pixelRatio Pixel ratio.
      * @return {import('../DataTile.js').ImageLike} Image element.
      */
-    getImage(pixelRatio: number): import('../DataTile.js').ImageLike;
+    getImage(pixelRatio: number): import("../DataTile.js").ImageLike;
     /**
      * @abstract
      * @return {import('../DataTile.js').ImageLike} Image element.
      */
-    getHitDetectionImage(): import('../DataTile.js').ImageLike;
+    getHitDetectionImage(): import("../DataTile.js").ImageLike;
     /**
      * Get the image pixel ratio.
      * @param {number} pixelRatio Pixel ratio.
