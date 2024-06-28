@@ -180,6 +180,11 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @param {number} worldWidth the width of the worlds being rendered
      */
     renderWorlds(frameState: import("../../Map.js").FrameState, forHitDetection: boolean, startWorld: number, endWorld: number, worldWidth: number): void;
+    /**
+     * Will release a set of Webgl buffers
+     * @param {import('../../render/webgl/VectorStyleRenderer.js').WebGLBuffers} buffers Buffers
+     */
+    disposeBuffers(buffers: import("../../render/webgl/VectorStyleRenderer.js").WebGLBuffers): void;
 }
 import WebGLLayerRenderer from './Layer.js';
 //# sourceMappingURL=VectorLayer.d.ts.map
