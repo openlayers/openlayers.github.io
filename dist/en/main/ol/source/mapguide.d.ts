@@ -9,7 +9,7 @@ export type LoaderOptions = {
     /**
      * The mapagent url.
      */
-    url?: string | undefined;
+    url: string;
     /**
      * The `crossOrigin` attribute for loaded images.  Note that
      * you must provide a `crossOrigin` value if you want to access pixel data with the Canvas renderer.
