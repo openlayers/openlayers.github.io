@@ -1,11 +1,4 @@
 /**
- * @param {Uint8ClampedArray} data Image data.
- * @param {number} width Number of columns.
- * @param {number} height Number of rows.
- * @return {ImageData} Image data.
- */
-export function newImageData(data: Uint8ClampedArray, width: number, height: number): ImageData;
-/**
  * @typedef {function(Error, ImageData, (Object|Array<Object>)): void} JobCallback
  */
 /**
