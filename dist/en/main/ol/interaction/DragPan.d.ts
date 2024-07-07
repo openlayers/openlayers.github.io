@@ -46,12 +46,14 @@ declare class DragPan extends PointerInteraction {
     lastCentroid: import("../pixel.js").Pixel;
     /**
      * @type {number}
+     * @private
      */
-    lastPointersCount_: number;
+    private lastPointersCount_;
     /**
      * @type {boolean}
+     * @private
      */
-    panning_: boolean;
+    private panning_;
     /**
      * @private
      * @type {import("../events/condition.js").Condition}

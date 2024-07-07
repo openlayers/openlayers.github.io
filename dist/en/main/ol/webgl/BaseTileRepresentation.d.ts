@@ -49,12 +49,12 @@ declare class BaseTileRepresentation<TileType extends import("../Tile.js").defau
      * @type {number}
      * @protected
      */
-    protected gutter_: number;
+    protected gutter: number;
     /**
      * @type {import("../webgl/Helper.js").default}
      * @protected
      */
-    protected helper_: import("../webgl/Helper.js").default;
+    protected helper: import("../webgl/Helper.js").default;
     loaded: boolean;
     ready: boolean;
     /**

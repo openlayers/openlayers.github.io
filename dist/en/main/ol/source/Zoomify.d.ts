@@ -18,9 +18,10 @@ export class CustomTile extends ImageTile {
      */
     private zoomifyImage_;
     /**
+     * @private
      * @type {import("../size.js").Size}
      */
-    tileSize_: import("../size.js").Size;
+    private tileSize_;
 }
 export default Zoomify;
 export type TierSizeCalculation = "default" | "truncated";

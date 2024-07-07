@@ -78,8 +78,14 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @private
      */
     private hitRenderTarget_;
-    sourceRevision_: number;
-    previousExtent_: import("../../extent.js").Extent;
+    /**
+     * @private
+     */
+    private sourceRevision_;
+    /**
+     * @private
+     */
+    private previousExtent_;
     /**
      * This transform is updated on every frame and is the composition of:
      * - invert of the world->screen transform that was used when rebuilding buffers (see `this.renderTransform_`)
@@ -88,9 +94,18 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @private
      */
     private currentTransform_;
-    tmpCoords_: number[];
-    tmpTransform_: number[];
-    tmpMat4_: number[];
+    /**
+     * @private
+     */
+    private tmpCoords_;
+    /**
+     * @private
+     */
+    private tmpTransform_;
+    /**
+     * @private
+     */
+    private tmpMat4_;
     /**
      * @type {import("../../transform.js").Transform}
      * @private

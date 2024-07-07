@@ -53,7 +53,10 @@ declare class MapBrowserEventHandler extends Target {
      * @private
      */
     private trackedTouches_;
-    element_: HTMLElement;
+    /**
+     * @private
+     */
+    private element_;
     /**
      * @type {?import("./events.js").EventsKey}
      * @private

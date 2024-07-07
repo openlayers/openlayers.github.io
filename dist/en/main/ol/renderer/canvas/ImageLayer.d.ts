@@ -13,7 +13,7 @@ declare class CanvasImageLayerRenderer extends CanvasLayerRenderer<any> {
      * @protected
      * @type {?import("../../Image.js").default}
      */
-    protected image_: import("../../Image.js").default | null;
+    protected image: import("../../Image.js").default | null;
     /**
      * @return {import('../../DataTile.js').ImageLike} Image.
      */

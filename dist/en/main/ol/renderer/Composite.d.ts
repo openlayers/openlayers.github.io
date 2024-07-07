@@ -6,9 +6,10 @@ export default CompositeMapRenderer;
  */
 declare class CompositeMapRenderer extends MapRenderer {
     /**
+     * @private
      * @type {import("../events.js").EventsKey}
      */
-    fontChangeListenerKey_: import("../events.js").EventsKey;
+    private fontChangeListenerKey_;
     /**
      * @private
      * @type {HTMLDivElement}

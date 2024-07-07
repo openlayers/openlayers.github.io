@@ -15,10 +15,10 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
     /** @private */
     private boundHandleImageChange_;
     /**
-     * @protected
+     * @private
      * @type {LayerType}
      */
-    protected layer_: LayerType;
+    private layer_;
     /**
      * @type {import("../render/canvas/ExecutorGroup").default}
      */

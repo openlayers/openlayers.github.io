@@ -402,9 +402,10 @@ declare class Map extends BaseObject {
      */
     private targetElement_;
     /**
+     * @private
      * @type {ResizeObserver}
      */
-    resizeObserver_: ResizeObserver;
+    private resizeObserver_;
     /**
      * @type {Collection<import("./control/Control.js").default>}
      * @protected

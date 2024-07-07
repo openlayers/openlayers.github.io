@@ -106,18 +106,54 @@ declare class WebGLPostProcessingPass {
      * @param {Options} options Options.
      */
     constructor(options: Options);
-    gl_: WebGLRenderingContext;
-    scaleRatio_: number;
-    renderTargetTexture_: WebGLTexture | null;
-    renderTargetTextureSize_: number[] | null;
-    frameBuffer_: WebGLFramebuffer | null;
-    depthBuffer_: WebGLRenderbuffer | null;
-    renderTargetProgram_: WebGLProgram | null;
-    renderTargetVerticesBuffer_: WebGLBuffer | null;
-    renderTargetAttribLocation_: number;
-    renderTargetUniformLocation_: WebGLUniformLocation | null;
-    renderTargetOpacityLocation_: WebGLUniformLocation | null;
-    renderTargetTextureLocation_: WebGLUniformLocation | null;
+    /**
+     * @private
+     */
+    private gl_;
+    /**
+     * @private
+     */
+    private scaleRatio_;
+    /**
+     * @private
+     */
+    private renderTargetTexture_;
+    /**
+     * @private
+     */
+    private renderTargetTextureSize_;
+    /**
+     * @private
+     */
+    private frameBuffer_;
+    /**
+     * @private
+     */
+    private depthBuffer_;
+    /**
+     * @private
+     */
+    private renderTargetProgram_;
+    /**
+     * @private
+     */
+    private renderTargetVerticesBuffer_;
+    /**
+     * @private
+     */
+    private renderTargetAttribLocation_;
+    /**
+     * @private
+     */
+    private renderTargetUniformLocation_;
+    /**
+     * @private
+     */
+    private renderTargetOpacityLocation_;
+    /**
+     * @private
+     */
+    private renderTargetTextureLocation_;
     /**
      * Holds info about custom uniforms used in the post processing pass
      * @type {Array<UniformInternalDescription>}

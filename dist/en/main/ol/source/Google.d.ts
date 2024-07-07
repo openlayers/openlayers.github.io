@@ -223,8 +223,9 @@ declare class Google extends TileImage {
     private apiKey_;
     /**
      * @type {Error|null}
+     * @private
      */
-    error_: Error | null;
+    private error_;
     /**
      * @type {SessionTokenRequest}
      * @private

@@ -12,13 +12,15 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     /** @private */
     private boundHandleStyleImageChange_;
     /**
+     * @private
      * @type {boolean}
      */
-    animatingOrInteracting_: boolean;
+    private animatingOrInteracting_;
     /**
+     * @private
      * @type {ImageData|null}
      */
-    hitDetectionImageData_: ImageData | null;
+    private hitDetectionImageData_;
     /**
      * @private
      * @type {boolean}

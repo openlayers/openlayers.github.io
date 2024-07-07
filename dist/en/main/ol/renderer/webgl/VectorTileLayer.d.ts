@@ -80,8 +80,14 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      * @private
      */
     private currentFrameStateTransform_;
-    tmpTransform_: number[];
-    tmpMat4_: number[];
+    /**
+     * @private
+     */
+    private tmpTransform_;
+    /**
+     * @private
+     */
+    private tmpMat4_;
     /**
      * @type {WebGLRenderTarget}
      * @private
@@ -98,8 +104,9 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
     private tileMaskAttributes_;
     /**
      * @type {WebGLProgram}
+     * @private
      */
-    tileMaskProgram_: WebGLProgram;
+    private tileMaskProgram_;
     /**
      * @param {Options} options Options.
      */

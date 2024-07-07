@@ -86,13 +86,15 @@ declare class RenderFeature {
      */
     private properties_;
     /**
+     * @private
      * @type {number}
      */
-    squaredTolerance_: number;
+    private squaredTolerance_;
     /**
+     * @private
      * @type {number}
      */
-    stride_: number;
+    private stride_;
     /**
      * @private
      * @type {RenderFeature}

@@ -16,9 +16,10 @@ declare class GeometryCollection extends Geometry {
      */
     private geometries_;
     /**
+     * @private
      * @type {Array<import("../events.js").EventsKey>}
      */
-    changeEventsKeys_: Array<import("../events.js").EventsKey>;
+    private changeEventsKeys_;
     /**
      * @private
      */

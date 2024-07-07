@@ -85,11 +85,10 @@ declare class ExecutorGroup {
      */
     private renderedContext_;
     /**
+     * @private
      * @type {Object<number, Array<import("./ZIndexContext.js").default>>}
      */
-    deferredZIndexContexts_: {
-        [x: number]: Array<import("./ZIndexContext.js").default>;
-    };
+    private deferredZIndexContexts_;
     /**
      * @param {CanvasRenderingContext2D} context Context.
      * @param {import("../../transform.js").Transform} transform Transform.

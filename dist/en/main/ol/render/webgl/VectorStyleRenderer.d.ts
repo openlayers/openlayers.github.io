@@ -161,47 +161,73 @@ declare class VectorStyleRenderer {
      * @param {boolean} enableHitDetection Whether to enable the hit detection (needs compatible shader)
      */
     constructor(styleOrShaders: VectorStyle, helper: import("../../webgl/Helper.js").default, enableHitDetection: boolean);
-    helper_: import("../../webgl/Helper.js").default;
-    hitDetectionEnabled_: boolean;
+    /**
+     * @private
+     */
+    private helper_;
+    /**
+     * @private
+     */
+    private hitDetectionEnabled_;
     /**
      * @type {boolean}
      * @private
      */
     private hasFill_;
-    fillVertexShader_: string | null | undefined;
-    fillFragmentShader_: string | null | undefined;
-    fillProgram_: WebGLProgram | undefined;
+    /**
+     * @private
+     */
+    private fillVertexShader_;
+    /**
+     * @private
+     */
+    private fillFragmentShader_;
+    /**
+     * @private
+     */
+    private fillProgram_;
     /**
      * @type {boolean}
      * @private
      */
     private hasStroke_;
-    strokeVertexShader_: string | null | undefined;
-    strokeFragmentShader_: string | null | undefined;
-    strokeProgram_: WebGLProgram | undefined;
+    /**
+     * @private
+     */
+    private strokeVertexShader_;
+    /**
+     * @private
+     */
+    private strokeFragmentShader_;
+    /**
+     * @private
+     */
+    private strokeProgram_;
     /**
      * @type {boolean}
      * @private
      */
     private hasSymbol_;
-    symbolVertexShader_: string | null | undefined;
-    symbolFragmentShader_: string | null | undefined;
-    symbolProgram_: WebGLProgram | undefined;
-    customAttributes_: ({
-        hitColor: {
-            callback(): number[];
-            size: number;
-        };
-    } & {
-        [x: string]: AttributeDefinition;
-    }) | ({
-        hitColor?: undefined;
-    } & {
-        [x: string]: AttributeDefinition;
-    });
-    uniforms_: {
-        [x: string]: import("../../webgl/Helper.js").UniformValue;
-    } | undefined;
+    /**
+     * @private
+     */
+    private symbolVertexShader_;
+    /**
+     * @private
+     */
+    private symbolFragmentShader_;
+    /**
+     * @private
+     */
+    private symbolProgram_;
+    /**
+     * @private
+     */
+    private customAttributes_;
+    /**
+     * @private
+     */
+    private uniforms_;
     /**
      * @type {Array<import('../../webgl/Helper.js').AttributeDescription>}
      * @private

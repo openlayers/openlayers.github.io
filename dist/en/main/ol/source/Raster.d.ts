@@ -31,25 +31,41 @@ export class Processor extends Disposable {
      * @param {ProcessorOptions} config Configuration.
      */
     constructor(config: ProcessorOptions);
-    _imageOps: boolean;
-    _workers: Worker[];
+    /**
+     * @type {boolean}
+     * @private
+     */
+    private imageOps_;
+    /**
+     * @type {Array<Worker>}
+     * @private
+     */
+    private workers_;
     /**
      * @type {Array<Job>}
      * @private
      */
-    private _queue;
-    _maxQueueLength: number;
-    _running: number;
+    private queue_;
+    /**
+     * @type {number}
+     * @private
+     */
+    private maxQueueLength_;
+    /**
+     * @type {number}
+     * @private
+     */
+    private running_;
     /**
      * @type {Object<number, any>}
      * @private
      */
-    private _dataLookup;
+    private dataLookup_;
     /**
-     * @type {Job}
+     * @type {Job|null}
      * @private
      */
-    private _job;
+    private job_;
     /**
      * Run operation on input data.
      * @param {Array<ImageData>} inputs Array of image data.
@@ -64,22 +80,22 @@ export class Processor extends Disposable {
      * Add a job to the queue.
      * @param {Job} job The job.
      */
-    _enqueue(job: Job): void;
+    enqueue_(job: Job): void;
     /**
      * Dispatch a job.
      */
-    _dispatch(): void;
+    dispatch_(): void;
     /**
      * Handle messages from the worker.
      * @param {number} index The worker index.
      * @param {MessageEvent} event The message event.
      */
-    _onWorkerMessage(index: number, event: MessageEvent): void;
+    onWorkerMessage_(index: number, event: MessageEvent): void;
     /**
      * Resolve a job.  If there are no more worker threads, the processor callback
      * will be called.
      */
-    _resolveJob(): void;
+    resolveJob_(): void;
 }
 /**
  * @typedef {'pixel' | 'image'} RasterOperationType
@@ -332,8 +348,11 @@ declare class RasterSource extends ImageSource {
      * @type {Array<import("../layer/Layer.js").default>}
      */
     private layers_;
-    /** @type {boolean} */
-    useResolutions_: boolean;
+    /**
+     * @private
+     * @type {boolean}
+     */
+    private useResolutions_;
     /**
      * @private
      * @type {import("../TileQueue.js").default}
@@ -354,8 +373,9 @@ declare class RasterSource extends ImageSource {
     /**
      * The most recently rendered revision.
      * @type {number}
+     * @private
      */
-    renderedRevision_: number;
+    private renderedRevision_;
     /**
      * @private
      * @type {import("../Map.js").FrameState}

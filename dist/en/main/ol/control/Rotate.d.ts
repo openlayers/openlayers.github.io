@@ -75,7 +75,10 @@ declare class Rotate extends Control {
      * @private
      */
     private label_;
-    callResetNorth_: (() => void) | undefined;
+    /**
+     * @private
+     */
+    private callResetNorth_;
     /**
      * @type {number}
      * @private

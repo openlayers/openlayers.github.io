@@ -155,7 +155,7 @@ declare class RegularShape extends ImageStyle {
      * @protected
      * @type {number}
      */
-    protected radius_: number;
+    protected radius: number;
     /**
      * @private
      * @type {number|undefined}
@@ -181,7 +181,10 @@ declare class RegularShape extends ImageStyle {
      * @type {RenderOptions}
      */
     private renderOptions_;
-    imageState_: number;
+    /**
+     * @private
+     */
+    private imageState_;
     /**
      * Clones the style.
      * @return {RegularShape} The cloned style.

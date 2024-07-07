@@ -97,7 +97,10 @@ declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = 
      * @type {HTMLCanvasElement}
      */
     private gradient_;
-    weightFunction_: (feature: any) => any;
+    /**
+     * @private
+     */
+    private weightFunction_;
     /**
      * Return the blur size in pixels.
      * @return {number} Blur size in pixels.

@@ -284,8 +284,9 @@ declare class Graticule extends VectorLayer<VectorSource<Feature<import("../geom
     constructor(options?: Options | undefined);
     /**
      * @type {import("../proj/Projection.js").default}
+     * @private
      */
-    projection_: import("../proj/Projection.js").default;
+    private projection_;
     /**
      * @type {number}
      * @private

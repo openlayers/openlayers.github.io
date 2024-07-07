@@ -22,9 +22,10 @@ declare class ZIndexContext {
      */
     private offset_;
     /**
+     * @private
      * @type {ZIndexContextProxy}
      */
-    context_: ZIndexContextProxy;
+    private context_;
     /**
      * @private
      * @param {...*} args Args.

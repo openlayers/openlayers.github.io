@@ -150,7 +150,10 @@ export type PointGeometryBatch = {
  * the WebGL buffers.
  */
 declare class MixedGeometryBatch {
-    globalCounter_: number;
+    /**
+     * @private
+     */
+    private globalCounter_;
     /**
      * Refs are used as keys for hit detection.
      * @type {Map<number, Feature|RenderFeature>}
