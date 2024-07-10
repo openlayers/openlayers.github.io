@@ -1,55 +1,33 @@
 export default RBush;
-export type Entry = {
-    /**
-     * MinX.
-     */
-    minX: number;
-    /**
-     * MinY.
-     */
-    minY: number;
-    /**
-     * MaxX.
-     */
-    maxX: number;
-    /**
-     * MaxY.
-     */
-    maxY: number;
-    /**
-     * Value.
-     */
-    value?: any;
+export type Entry<T> = import("rbush").BBox & {
+    value: T;
 };
 /**
- * @typedef {Object} Entry
- * @property {number} minX MinX.
- * @property {number} minY MinY.
- * @property {number} maxX MaxX.
- * @property {number} maxY MaxY.
- * @property {Object} [value] Value.
+ * @typedef {import("rbush").BBox & {value: T}} Entry
+ * @template T
  */
 /**
  * @classdesc
  * Wrapper around the RBush by Vladimir Agafonkin.
  * See https://github.com/mourner/rbush.
  *
- * @template T
+ * @template {Object} T
  */
-declare class RBush<T> {
+declare class RBush<T extends unknown> {
     /**
      * @param {number} [maxEntries] Max entries.
      */
     constructor(maxEntries?: number | undefined);
     /**
      * @private
+     * @type {RBush_<Entry<T>>}
      */
     private rbush_;
     /**
      * A mapping between the objects added to this rbush wrapper
      * and the objects that are actually added to the internal rbush.
      * @private
-     * @type {Object<string, Entry>}
+     * @type {Object<string, Entry<T>>}
      */
     private items_;
     /**
@@ -123,8 +101,8 @@ declare class RBush<T> {
      */
     getExtent(extent?: import("../extent.js").Extent | undefined): import("../extent.js").Extent;
     /**
-     * @param {RBush} rbush R-Tree.
+     * @param {RBush<T>} rbush R-Tree.
      */
-    concat(rbush: RBush<any>): void;
+    concat(rbush: RBush<T>): void;
 }
 //# sourceMappingURL=RBush.d.ts.map

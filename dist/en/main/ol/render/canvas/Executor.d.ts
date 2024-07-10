@@ -1,26 +1,5 @@
 export default Executor;
-export type BBox = {
-    /**
-     * Minimal x.
-     */
-    minX: number;
-    /**
-     * Minimal y.
-     */
-    minY: number;
-    /**
-     * Maximal x.
-     */
-    maxX: number;
-    /**
-     * Maximal y
-     */
-    maxY: number;
-    /**
-     * Value.
-     */
-    value: any;
-};
+export type DeclutterEntry = import("../../structs/RBush.js").Entry<import("../../Feature.js").FeatureLike>;
 export type ImageOrLabelDimensions = {
     /**
      * DrawImageX.
@@ -53,7 +32,7 @@ export type ImageOrLabelDimensions = {
     /**
      * DeclutterBox.
      */
-    declutterBox: BBox;
+    declutterBox: DeclutterEntry;
     /**
      * CanvasTransform.
      */
@@ -252,7 +231,7 @@ declare class Executor {
      * @param {FeatureCallback<T>} [featureCallback] Feature callback.
      * @param {import("../../extent.js").Extent} [hitExtent] Only check
      *     features that intersect this extent.
-     * @param {import("rbush").default} [declutterTree] Declutter tree.
+     * @param {import("rbush").default<DeclutterEntry>} [declutterTree] Declutter tree.
      * @return {T|undefined} Callback result.
      * @template T
      */
@@ -263,9 +242,9 @@ declare class Executor {
      * @param {import("../../transform.js").Transform} transform Transform.
      * @param {number} viewRotation View rotation.
      * @param {boolean} snapToPixel Snap point symbols and text to integer pixels.
-     * @param {import("rbush").default} [declutterTree] Declutter tree.
+     * @param {import("rbush").default<DeclutterEntry>} [declutterTree] Declutter tree.
      */
-    execute(context: CanvasRenderingContext2D, scaledCanvasSize: import("../../size.js").Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, declutterTree?: any): void;
+    execute(context: CanvasRenderingContext2D, scaledCanvasSize: import("../../size.js").Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, declutterTree?: import("rbush").default<DeclutterEntry> | undefined): void;
     /**
      * @param {CanvasRenderingContext2D} context Context.
      * @param {import("../../transform.js").Transform} transform Transform.

@@ -29,7 +29,7 @@ export type FrameState = {
      * When null, no decluttering is needed because no layers have decluttering enabled.
      */
     declutter: {
-        [x: string]: any;
+        [x: string]: import("rbush").default<import("./render/canvas/Executor.js").DeclutterEntry>;
     } | null;
     /**
      * Extent (in view projection coordinates).
