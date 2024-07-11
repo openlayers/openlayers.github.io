@@ -111,7 +111,6 @@ declare namespace ol {
         export { _ol_dom$outerWidth as outerWidth };
         export { _ol_dom$releaseCanvas as releaseCanvas };
         export { _ol_dom$removeChildren as removeChildren };
-        export { _ol_dom$removeNode as removeNode };
         export { _ol_dom$replaceChildren as replaceChildren };
         export { _ol_dom$replaceNode as replaceNode };
     }
@@ -1081,7 +1080,6 @@ import { outerHeight as _ol_dom$outerHeight } from '../../ol/dom.js';
 import { outerWidth as _ol_dom$outerWidth } from '../../ol/dom.js';
 import { releaseCanvas as _ol_dom$releaseCanvas } from '../../ol/dom.js';
 import { removeChildren as _ol_dom$removeChildren } from '../../ol/dom.js';
-import { removeNode as _ol_dom$removeNode } from '../../ol/dom.js';
 import { replaceChildren as _ol_dom$replaceChildren } from '../../ol/dom.js';
 import { replaceNode as _ol_dom$replaceNode } from '../../ol/dom.js';
 import { easeIn as _ol_easing$easeIn } from '../../ol/easing.js';

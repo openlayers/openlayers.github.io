@@ -54,11 +54,6 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      */
     containerReused: boolean;
     /**
-     * @private
-     * @type {CanvasRenderingContext2D}
-     */
-    private pixelContext_;
-    /**
      * @protected
      * @type {import("../../Map.js").FrameState|null}
      */

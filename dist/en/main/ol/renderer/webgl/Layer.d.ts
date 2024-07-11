@@ -67,11 +67,6 @@ declare class WebGLLayerRenderer<LayerType extends import("../../layer/Layer.js"
     private inversePixelTransform_;
     /**
      * @private
-     * @type {CanvasRenderingContext2D}
-     */
-    private pixelContext_;
-    /**
-     * @private
      */
     private postProcesses_;
     /**

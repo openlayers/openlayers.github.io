@@ -20,10 +20,6 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
      */
     private layer_;
     /**
-     * @type {import("../render/canvas/ExecutorGroup").default}
-     */
-    declutterExecutorGroup: import("../render/canvas/ExecutorGroup").default;
-    /**
      * @type {Array<string>}
      * @private
      */

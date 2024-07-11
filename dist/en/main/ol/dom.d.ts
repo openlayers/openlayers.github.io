@@ -42,11 +42,6 @@ export function outerHeight(element: HTMLElement): number;
  */
 export function replaceNode(newNode: Node, oldNode: Node): void;
 /**
- * @param {Node} node The node to remove.
- * @return {Node|null} The node that was removed or null.
- */
-export function removeNode(node: Node): Node | null;
-/**
  * @param {Node} node The node to remove the children from.
  */
 export function removeChildren(node: Node): void;
