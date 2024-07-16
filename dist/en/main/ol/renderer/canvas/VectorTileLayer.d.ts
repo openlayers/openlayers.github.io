@@ -55,10 +55,6 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
      */
     drawTile(tile: import("../../VectorRenderTile.js").default, frameState: import("../../Map.js").FrameState, x: number, y: number, w: number, h: number, gutter: number, transition: boolean): void;
     /**
-     * @inheritDoc
-     */
-    getTileImage(tile: any): any;
-    /**
      * @param {import("../../VectorRenderTile.js").default} tile Tile.
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../../proj/Projection.js").default} projection Projection.
