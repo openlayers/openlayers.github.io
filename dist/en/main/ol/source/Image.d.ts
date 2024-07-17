@@ -169,8 +169,9 @@ declare class ImageSource extends Source {
     private wantedProjection_;
     /**
      * @return {Array<number>|null} Resolutions.
+     * @override
      */
-    getResolutions(): Array<number> | null;
+    override getResolutions(): Array<number> | null;
     /**
      * @param {Array<number>|null} resolutions Resolutions.
      */

@@ -172,8 +172,9 @@ declare class Icon extends ImageStyle {
      * Clones the style. The underlying Image/HTMLCanvasElement is not cloned.
      * @return {Icon} The cloned style.
      * @api
+     * @override
      */
-    clone(): Icon;
+    override clone(): Icon;
     /**
      * Set the anchor point. The anchor determines the center point for the
      * symbolizer.
@@ -194,12 +195,14 @@ declare class Icon extends ImageStyle {
      * @return {HTMLImageElement|HTMLCanvasElement|ImageBitmap} Image or Canvas element. If the Icon
      * style was configured with `src` or with a not let loaded `img`, an `ImageBitmap` will be returned.
      * @api
+     * @override
      */
-    getImage(pixelRatio: number): HTMLImageElement | HTMLCanvasElement | ImageBitmap;
+    override getImage(pixelRatio: number): HTMLImageElement | HTMLCanvasElement | ImageBitmap;
     /**
      * @return {HTMLImageElement|HTMLCanvasElement|ImageBitmap} Image element.
+     * @override
      */
-    getHitDetectionImage(): HTMLImageElement | HTMLCanvasElement | ImageBitmap;
+    override getHitDetectionImage(): HTMLImageElement | HTMLCanvasElement | ImageBitmap;
     /**
      * Get the image URL.
      * @return {string|undefined} Image src.

@@ -209,8 +209,9 @@ declare class TileImage extends UrlTile {
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
      * @return {!(ImageTile|ReprojTile)} Tile.
+     * @override
      */
-    getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): (ImageTile | ReprojTile);
+    override getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): (ImageTile | ReprojTile);
     /**
      * @param {number} z Tile coordinate z.
      * @param {number} x Tile coordinate x.

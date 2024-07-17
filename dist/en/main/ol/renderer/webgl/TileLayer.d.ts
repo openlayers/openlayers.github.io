@@ -116,16 +116,27 @@ declare class WebGLTileLayerRenderer extends WebGLBaseTileLayerRenderer<import("
     private paletteTextures_;
     /**
      * @param {Options} options Options.
+     * @override
      */
-    reset(options: Options): void;
-    createTileRepresentation(options: any): TileTexture;
-    beforeTilesRender(frameState: any, tilesWithAlpha: any): void;
-    renderTile(tileTexture: any, tileTransform: any, frameState: any, renderExtent: any, tileResolution: any, tileSize: any, tileOrigin: any, tileExtent: any, depth: any, gutter: any, alpha: any): void;
+    override reset(options: Options): void;
+    /**
+     * @override
+     */
+    override createTileRepresentation(options: any): TileTexture;
+    /**
+     * @override
+     */
+    override beforeTilesRender(frameState: any, tilesWithAlpha: any): void;
+    /**
+     * @override
+     */
+    override renderTile(tileTexture: any, tileTransform: any, frameState: any, renderExtent: any, tileResolution: any, tileSize: any, tileOrigin: any, tileExtent: any, depth: any, gutter: any, alpha: any): void;
     /**
      * @param {import("../../pixel.js").Pixel} pixel Pixel.
      * @return {Uint8ClampedArray|Uint8Array|Float32Array|DataView} Data at the pixel location.
+     * @override
      */
-    getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray | Uint8Array | Float32Array | DataView;
+    override getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray | Uint8Array | Float32Array | DataView;
 }
 import TileTexture from '../../webgl/TileTexture.js';
 import WebGLBaseTileLayerRenderer from './TileLayerBase.js';

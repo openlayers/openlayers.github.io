@@ -290,8 +290,9 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
      * Render the layer.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @return {HTMLElement} The rendered element.
+     * @override
      */
-    renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
+    override renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
     /**
      * Rebuild internal webgl buffers based on current view extent; costly, should not be called too much
      * @param {import("../../Map").FrameState} frameState Frame state.

@@ -127,8 +127,9 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileTy
     private projection_;
     /**
      * @param {Options} options Options.
+     * @override
      */
-    reset(options: Options): void;
+    override reset(options: Options): void;
     /**
      * @abstract
      * @param {import("../../webgl/BaseTileRepresentation.js").TileRepresentationOptions<TileType>} options tile representation options
@@ -184,8 +185,9 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileTy
      * Render the layer.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @return {HTMLElement} The rendered element.
+     * @override
      */
-    renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
+    override renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
     /**
      * Look for tiles covering the provided tile coordinate at an alternate
      * zoom level.  Loaded tiles will be added to the provided tile representation lookup.

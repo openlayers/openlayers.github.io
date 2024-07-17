@@ -154,7 +154,10 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @private
      */
     private createRenderers_;
-    reset(options: any): void;
+    /**
+     * @override
+     */
+    override reset(options: any): void;
     /**
      * @param {import("../../proj.js").TransformFunction} projectionTransform Transform function.
      * @param {import("../../source/Vector.js").VectorSourceEvent} event Event.
@@ -184,8 +187,9 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * Render the layer.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @return {HTMLElement} The rendered element.
+     * @override
      */
-    renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
+    override renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
     /**
      * Render the world, either to the main framebuffer or to the hit framebuffer
      * @param {import("../../Map.js").FrameState} frameState current frame state

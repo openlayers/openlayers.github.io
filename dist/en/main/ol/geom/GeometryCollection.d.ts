@@ -32,8 +32,9 @@ declare class GeometryCollection extends Geometry {
      * Make a complete copy of the geometry.
      * @return {!GeometryCollection} Clone.
      * @api
+     * @override
      */
-    clone(): GeometryCollection;
+    override clone(): GeometryCollection;
     /**
      * Return the geometries that make up this geometry collection.
      * @return {Array<Geometry>} Geometries.
@@ -52,8 +53,9 @@ declare class GeometryCollection extends Geometry {
      * Create a simplified version of this geometry using the Douglas Peucker algorithm.
      * @param {number} squaredTolerance Squared tolerance.
      * @return {GeometryCollection} Simplified GeometryCollection.
+     * @override
      */
-    getSimplifiedGeometry(squaredTolerance: number): GeometryCollection;
+    override getSimplifiedGeometry(squaredTolerance: number): GeometryCollection;
     /**
      * @return {boolean} Is empty.
      */

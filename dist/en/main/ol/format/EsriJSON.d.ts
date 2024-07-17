@@ -60,15 +60,17 @@ declare class EsriJSON extends JSONFeature<Feature<import("../geom/Geometry.js")
      * @param {string} [idField] Name of the field where to get the id from.
      * @protected
      * @return {import("../Feature.js").default} Feature.
+     * @override
      */
-    protected readFeatureFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined, idField?: string | undefined): import("../Feature.js").default;
+    protected override readFeatureFromObject(object: any, options?: import("./Feature.js").ReadOptions | undefined, idField?: string | undefined): import("../Feature.js").default;
     /**
      * @param {EsriJSONGeometry} object Object.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @protected
      * @return {import("../geom/Geometry.js").default} Geometry.
+     * @override
      */
-    protected readGeometryFromObject(object: EsriJSONGeometry, options?: import("./Feature.js").ReadOptions | undefined): import("../geom/Geometry.js").default;
+    protected override readGeometryFromObject(object: EsriJSONGeometry, options?: import("./Feature.js").ReadOptions | undefined): import("../geom/Geometry.js").default;
     /**
      * Encode a geometry as a EsriJSON object.
      *
@@ -76,8 +78,9 @@ declare class EsriJSON extends JSONFeature<Feature<import("../geom/Geometry.js")
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
      * @return {EsriJSONGeometry} Object.
      * @api
+     * @override
      */
-    writeGeometryObject(geometry: import("../geom/Geometry.js").default, options?: import("./Feature.js").WriteOptions | undefined): EsriJSONGeometry;
+    override writeGeometryObject(geometry: import("../geom/Geometry.js").default, options?: import("./Feature.js").WriteOptions | undefined): EsriJSONGeometry;
     /**
      * Encode an array of features as a EsriJSON object.
      *
@@ -85,8 +88,9 @@ declare class EsriJSON extends JSONFeature<Feature<import("../geom/Geometry.js")
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
      * @return {EsriJSONFeatureSet} EsriJSON Object.
      * @api
+     * @override
      */
-    writeFeaturesObject(features: Array<import("../Feature.js").default>, options?: import("./Feature.js").WriteOptions | undefined): EsriJSONFeatureSet;
+    override writeFeaturesObject(features: Array<import("../Feature.js").default>, options?: import("./Feature.js").WriteOptions | undefined): EsriJSONFeatureSet;
 }
 import Feature from '../Feature.js';
 import JSONFeature from './JSONFeature.js';

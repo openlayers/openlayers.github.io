@@ -21,8 +21,9 @@ declare class XMLFeature extends FeatureFormat<import("../Feature.js").default<i
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @return {import("../Feature.js").default} Feature.
      * @api
+     * @override
      */
-    readFeature(source: Document | Element | any | string, options?: import("../format/Feature.js").ReadOptions | undefined): import("../Feature.js").default;
+    override readFeature(source: Document | Element | any | string, options?: import("../format/Feature.js").ReadOptions | undefined): import("../Feature.js").default;
     /**
      * @param {Document} doc Document.
      * @param {import("./Feature.js").ReadOptions} [options] Options.
@@ -70,8 +71,9 @@ declare class XMLFeature extends FeatureFormat<import("../Feature.js").default<i
      * @param {Document|Element|Object|string} source Source.
      * @return {import("../proj/Projection.js").default} Projection.
      * @api
+     * @override
      */
-    readProjection(source: Document | Element | any | string): import("../proj/Projection.js").default;
+    override readProjection(source: Document | Element | any | string): import("../proj/Projection.js").default;
     /**
      * @param {Document} doc Document.
      * @protected
@@ -90,8 +92,9 @@ declare class XMLFeature extends FeatureFormat<import("../Feature.js").default<i
      * @param {import("../Feature.js").default} feature Feature.
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
      * @return {string} Encoded feature.
+     * @override
      */
-    writeFeature(feature: import("../Feature.js").default, options?: import("../format/Feature.js").WriteOptions | undefined): string;
+    override writeFeature(feature: import("../Feature.js").default, options?: import("../format/Feature.js").WriteOptions | undefined): string;
     /**
      * @param {import("../Feature.js").default} feature Feature.
      * @param {import("./Feature.js").WriteOptions} [options] Options.
@@ -106,8 +109,9 @@ declare class XMLFeature extends FeatureFormat<import("../Feature.js").default<i
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
      * @return {string} Result.
      * @api
+     * @override
      */
-    writeFeatures(features: Array<import("../Feature.js").default>, options?: import("../format/Feature.js").WriteOptions | undefined): string;
+    override writeFeatures(features: Array<import("../Feature.js").default>, options?: import("../format/Feature.js").WriteOptions | undefined): string;
     /**
      * @param {Array<import("../Feature.js").default>} features Features.
      * @param {import("./Feature.js").WriteOptions} [options] Options.
@@ -120,8 +124,9 @@ declare class XMLFeature extends FeatureFormat<import("../Feature.js").default<i
      * @param {import("../geom/Geometry.js").default} geometry Geometry.
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
      * @return {string} Encoded geometry.
+     * @override
      */
-    writeGeometry(geometry: import("../geom/Geometry.js").default, options?: import("../format/Feature.js").WriteOptions | undefined): string;
+    override writeGeometry(geometry: import("../geom/Geometry.js").default, options?: import("../format/Feature.js").WriteOptions | undefined): string;
     /**
      * @param {import("../geom/Geometry.js").default} geometry Geometry.
      * @param {import("./Feature.js").WriteOptions} [options] Options.

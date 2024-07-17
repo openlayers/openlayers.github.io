@@ -16,7 +16,10 @@ declare class TileLayer<TileSourceType extends import("../source/Tile.js").defau
      * @param {import("./BaseTile.js").Options<TileSourceType>} [options] Tile layer options.
      */
     constructor(options?: import("./BaseTile.js").Options<TileSourceType> | undefined);
-    createRenderer(): CanvasTileLayerRenderer<this>;
+    /**
+     * @override
+     */
+    override createRenderer(): CanvasTileLayerRenderer<this>;
 }
 import CanvasTileLayerRenderer from '../renderer/canvas/TileLayer.js';
 import BaseTileLayer from './BaseTile.js';

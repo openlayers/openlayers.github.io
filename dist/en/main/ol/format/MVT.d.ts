@@ -96,16 +96,18 @@ declare class MVT<FeatureType extends import("../Feature.js").FeatureLike = Rend
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @return {Array<FeatureType>} Features.
      * @api
+     * @override
      */
-    readFeatures(source: ArrayBuffer, options?: import("./Feature.js").ReadOptions | undefined): Array<FeatureType>;
+    override readFeatures(source: ArrayBuffer, options?: import("./Feature.js").ReadOptions | undefined): Array<FeatureType>;
     /**
      * Read the projection from the source.
      *
      * @param {Document|Element|Object|string} source Source.
      * @return {import("../proj/Projection.js").default} Projection.
      * @api
+     * @override
      */
-    readProjection(source: Document | Element | any | string): import("../proj/Projection.js").default;
+    override readProjection(source: Document | Element | any | string): import("../proj/Projection.js").default;
     /**
      * Sets the layers that features will be read from.
      * @param {Array<string>} layers Layers.

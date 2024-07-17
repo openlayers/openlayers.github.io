@@ -257,8 +257,9 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
      * @return {!VectorRenderTile} Tile.
+     * @override
      */
-    getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): VectorRenderTile;
+    override getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): VectorRenderTile;
 }
 import Tile from '../VectorTile.js';
 import TileGrid from '../tilegrid/TileGrid.js';

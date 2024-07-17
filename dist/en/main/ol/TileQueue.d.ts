@@ -38,8 +38,9 @@ declare class TileQueue extends PriorityQueue<any> {
     /**
      * @param {Array} element Element.
      * @return {boolean} The element was added to the queue.
+     * @override
      */
-    enqueue(element: any[]): boolean;
+    override enqueue(element: any[]): boolean;
     /**
      * @return {number} Number of tiles loading.
      */

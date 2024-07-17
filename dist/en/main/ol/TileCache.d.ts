@@ -3,8 +3,9 @@ declare class TileCache extends LRUCache<any> {
     constructor(highWaterMark?: number | undefined);
     /**
      * @param {!Object<string, boolean>} usedTiles Used tiles.
+     * @override
      */
-    expireCache(usedTiles: {
+    override expireCache(usedTiles: {
         [x: string]: boolean;
     }): void;
     /**

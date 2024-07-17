@@ -109,8 +109,9 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
     private tileMaskProgram_;
     /**
      * @param {Options} options Options.
+     * @override
      */
-    reset(options: Options): void;
+    override reset(options: Options): void;
     /**
      * @param {Options} options Options.
      * @private
@@ -124,10 +125,22 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      * @private
      */
     private initTileMask_;
-    createTileRepresentation(options: any): TileGeometry;
-    beforeTilesRender(frameState: any, tilesWithAlpha: any): void;
-    beforeTilesMaskRender(frameState: any): boolean;
-    renderTileMask(tileRepresentation: any, tileZ: any, extent: any, depth: any): void;
+    /**
+     * @override
+     */
+    override createTileRepresentation(options: any): TileGeometry;
+    /**
+     * @override
+     */
+    override beforeTilesRender(frameState: any, tilesWithAlpha: any): void;
+    /**
+     * @override
+     */
+    override beforeTilesMaskRender(frameState: any): boolean;
+    /**
+     * @override
+     */
+    override renderTileMask(tileRepresentation: any, tileZ: any, extent: any, depth: any): void;
     /**
      * @param {number} alpha Alpha value of the tile
      * @param {import("../../extent.js").Extent} renderExtent Which extent to restrict drawing to
@@ -137,7 +150,10 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      * @private
      */
     private applyUniforms_;
-    renderTile(tileRepresentation: any, tileTransform: any, frameState: any, renderExtent: any, tileResolution: any, tileSize: any, tileOrigin: any, tileExtent: any, depth: any, gutter: any, alpha: any): void;
+    /**
+     * @override
+     */
+    override renderTile(tileRepresentation: any, tileTransform: any, frameState: any, renderExtent: any, tileResolution: any, tileSize: any, tileOrigin: any, tileExtent: any, depth: any, gutter: any, alpha: any): void;
     /**
      * Render declutter items for this layer
      * @param {import("../../Map.js").FrameState} frameState Frame state.

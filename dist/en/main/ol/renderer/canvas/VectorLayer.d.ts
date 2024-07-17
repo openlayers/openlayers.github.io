@@ -131,8 +131,9 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
      * @param {import("../../pixel.js").Pixel} pixel Pixel.
      * @return {Promise<Array<import("../../Feature").default>>} Promise
      * that resolves with an array of features.
+     * @override
      */
-    getFeatures(pixel: import("../../pixel.js").Pixel): Promise<Array<import("../../Feature").default>>;
+    override getFeatures(pixel: import("../../pixel.js").Pixel): Promise<Array<import("../../Feature").default>>;
     /**
      * Handle changes in image style state.
      * @param {import("../../events/Event.js").default} event Image style change event.

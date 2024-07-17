@@ -39,8 +39,9 @@ declare class MultiLineString extends SimpleGeometry {
      * Make a complete copy of the geometry.
      * @return {!MultiLineString} Clone.
      * @api
+     * @override
      */
-    clone(): MultiLineString;
+    override clone(): MultiLineString;
     /**
      * Returns the coordinate at `m` using linear interpolation, or `null` if no
      * such coordinate exists.
@@ -68,8 +69,9 @@ declare class MultiLineString extends SimpleGeometry {
      * Return the coordinates of the multilinestring.
      * @return {Array<Array<import("../coordinate.js").Coordinate>>} Coordinates.
      * @api
+     * @override
      */
-    getCoordinates(): Array<Array<import("../coordinate.js").Coordinate>>;
+    override getCoordinates(): Array<Array<import("../coordinate.js").Coordinate>>;
     /**
      * @return {Array<number>} Ends.
      */
@@ -95,15 +97,17 @@ declare class MultiLineString extends SimpleGeometry {
      * @param {number} squaredTolerance Squared tolerance.
      * @return {MultiLineString} Simplified MultiLineString.
      * @protected
+     * @override
      */
-    protected getSimplifiedGeometryInternal(squaredTolerance: number): MultiLineString;
+    protected override getSimplifiedGeometryInternal(squaredTolerance: number): MultiLineString;
     /**
      * Set the coordinates of the multilinestring.
      * @param {!Array<Array<import("../coordinate.js").Coordinate>>} coordinates Coordinates.
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      * @api
+     * @override
      */
-    setCoordinates(coordinates: Array<Array<import("../coordinate.js").Coordinate>>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
+    override setCoordinates(coordinates: Array<Array<import("../coordinate.js").Coordinate>>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
 }
 import SimpleGeometry from './SimpleGeometry.js';
 import LineString from './LineString.js';

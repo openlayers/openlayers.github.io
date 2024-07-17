@@ -71,8 +71,9 @@ declare class SimpleGeometry extends Geometry {
      * Create a simplified version of this geometry using the Douglas Peucker algorithm.
      * @param {number} squaredTolerance Squared tolerance.
      * @return {SimpleGeometry} Simplified geometry.
+     * @override
      */
-    getSimplifiedGeometry(squaredTolerance: number): SimpleGeometry;
+    override getSimplifiedGeometry(squaredTolerance: number): SimpleGeometry;
     /**
      * @param {number} squaredTolerance Squared tolerance.
      * @return {SimpleGeometry} Simplified geometry.

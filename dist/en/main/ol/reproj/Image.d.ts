@@ -72,8 +72,9 @@ declare class ReprojImage extends ImageWrapper {
     private sourceListenerKey_;
     /**
      * @return {HTMLCanvasElement} Image.
+     * @override
      */
-    getImage(): HTMLCanvasElement;
+    override getImage(): HTMLCanvasElement;
     /**
      * @return {import("../proj/Projection.js").default} Projection.
      */

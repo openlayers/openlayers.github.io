@@ -53,8 +53,9 @@ declare class ImageCanvas extends ImageWrapper {
     private handleLoad_;
     /**
      * @return {HTMLCanvasElement} Canvas element.
+     * @override
      */
-    getImage(): HTMLCanvasElement;
+    override getImage(): HTMLCanvasElement;
 }
 import ImageWrapper from './Image.js';
 //# sourceMappingURL=ImageCanvas.d.ts.map

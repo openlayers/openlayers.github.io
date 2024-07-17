@@ -27,8 +27,9 @@ declare class LinearRing extends SimpleGeometry {
      * Make a complete copy of the geometry.
      * @return {!LinearRing} Clone.
      * @api
+     * @override
      */
-    clone(): LinearRing;
+    override clone(): LinearRing;
     /**
      * Return the area of the linear ring on projected plane.
      * @return {number} Area (on projected plane).
@@ -39,21 +40,24 @@ declare class LinearRing extends SimpleGeometry {
      * Return the coordinates of the linear ring.
      * @return {Array<import("../coordinate.js").Coordinate>} Coordinates.
      * @api
+     * @override
      */
-    getCoordinates(): Array<import("../coordinate.js").Coordinate>;
+    override getCoordinates(): Array<import("../coordinate.js").Coordinate>;
     /**
      * @param {number} squaredTolerance Squared tolerance.
      * @return {LinearRing} Simplified LinearRing.
      * @protected
+     * @override
      */
-    protected getSimplifiedGeometryInternal(squaredTolerance: number): LinearRing;
+    protected override getSimplifiedGeometryInternal(squaredTolerance: number): LinearRing;
     /**
      * Set the coordinates of the linear ring.
      * @param {!Array<import("../coordinate.js").Coordinate>} coordinates Coordinates.
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      * @api
+     * @override
      */
-    setCoordinates(coordinates: Array<import("../coordinate.js").Coordinate>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
+    override setCoordinates(coordinates: Array<import("../coordinate.js").Coordinate>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
 }
 import SimpleGeometry from './SimpleGeometry.js';
 //# sourceMappingURL=LinearRing.d.ts.map

@@ -403,8 +403,9 @@ declare class RasterSource extends ImageSource {
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
      * @return {import("../ImageCanvas.js").default} Single image.
+     * @override
      */
-    getImage(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../ImageCanvas.js").default;
+    override getImage(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../ImageCanvas.js").default;
     /**
      * Start processing source data.
      * @private
@@ -422,8 +423,9 @@ declare class RasterSource extends ImageSource {
     /**
      * @param {import("../proj/Projection").default} [projection] Projection.
      * @return {Array<number>|null} Resolutions.
+     * @override
      */
-    getResolutions(projection?: import("../proj/Projection.js").default | undefined): Array<number> | null;
+    override getResolutions(projection?: import("../proj/Projection.js").default | undefined): Array<number> | null;
 }
 import ImageSource from './Image.js';
 //# sourceMappingURL=Raster.d.ts.map

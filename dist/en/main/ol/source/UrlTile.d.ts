@@ -187,8 +187,9 @@ declare class UrlTile extends TileSource<import("../Tile.js").default> {
      * @param {number} z Tile coordinate z.
      * @param {number} x Tile coordinate x.
      * @param {number} y Tile coordinate y.
+     * @override
      */
-    useTile(z: number, x: number, y: number): void;
+    override useTile(z: number, x: number, y: number): void;
 }
 import TileSource from './Tile.js';
 //# sourceMappingURL=UrlTile.d.ts.map

@@ -64,8 +64,9 @@ declare class CircleStyle extends RegularShape {
      * Clones the style.
      * @return {CircleStyle} The cloned style.
      * @api
+     * @override
      */
-    clone(): CircleStyle;
+    override clone(): CircleStyle;
     /**
      * Set the circle radius.
      *

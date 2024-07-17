@@ -203,8 +203,9 @@ declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js
     getSources(extent: import("../extent.js").Extent, resolution: number): Array<SourceType>;
     /**
      * @return {SourceType} The source being rendered.
+     * @override
      */
-    getRenderSource(): SourceType;
+    override getRenderSource(): SourceType;
     /**
      * @private
      */
@@ -225,8 +226,9 @@ declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js
      * @param {HTMLElement} target Target which the renderer may (but need not) use
      * for rendering its content.
      * @return {HTMLElement} The rendered element.
+     * @override
      */
-    render(frameState: import("../Map.js").FrameState | null, target: HTMLElement): HTMLElement;
+    override render(frameState: import("../Map.js").FrameState | null, target: HTMLElement): HTMLElement;
     /**
      * Update the layer style.  The `updateStyleVariables` function is a more efficient
      * way to update layer rendering.  In cases where the whole style needs to be updated,

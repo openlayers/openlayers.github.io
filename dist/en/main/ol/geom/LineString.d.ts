@@ -42,8 +42,9 @@ declare class LineString extends SimpleGeometry {
      * Make a complete copy of the geometry.
      * @return {!LineString} Clone.
      * @api
+     * @override
      */
-    clone(): LineString;
+    override clone(): LineString;
     /**
      * Iterate over each segment, calling the provided callback.
      * If the callback returns a truthy value the function returns that
@@ -75,8 +76,9 @@ declare class LineString extends SimpleGeometry {
      * Return the coordinates of the linestring.
      * @return {Array<import("../coordinate.js").Coordinate>} Coordinates.
      * @api
+     * @override
      */
-    getCoordinates(): Array<import("../coordinate.js").Coordinate>;
+    override getCoordinates(): Array<import("../coordinate.js").Coordinate>;
     /**
      * Return the coordinate at the provided fraction along the linestring.
      * The `fraction` is a number between 0 and 1, where 0 is the start of the
@@ -102,15 +104,17 @@ declare class LineString extends SimpleGeometry {
      * @param {number} squaredTolerance Squared tolerance.
      * @return {LineString} Simplified LineString.
      * @protected
+     * @override
      */
-    protected getSimplifiedGeometryInternal(squaredTolerance: number): LineString;
+    protected override getSimplifiedGeometryInternal(squaredTolerance: number): LineString;
     /**
      * Set the coordinates of the linestring.
      * @param {!Array<import("../coordinate.js").Coordinate>} coordinates Coordinates.
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      * @api
+     * @override
      */
-    setCoordinates(coordinates: Array<import("../coordinate.js").Coordinate>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
+    override setCoordinates(coordinates: Array<import("../coordinate.js").Coordinate>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
 }
 import SimpleGeometry from './SimpleGeometry.js';
 //# sourceMappingURL=LineString.d.ts.map

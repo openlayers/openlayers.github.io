@@ -117,8 +117,9 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
     /**
      * @param {import("../../pixel.js").Pixel} pixel Pixel.
      * @return {Uint8ClampedArray} Data at the pixel location.
+     * @override
      */
-    getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray;
+    override getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray;
     renderedRevision_: any;
     /**
      * @param {import("../../Map.js").FrameState} frameState Frame state.
@@ -160,8 +161,9 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @param {HTMLElement} target Target that may be used to render content to.
      * @return {HTMLElement} The rendered element.
+     * @override
      */
-    renderFrame(frameState: import("../../Map.js").FrameState, target: HTMLElement): HTMLElement;
+    override renderFrame(frameState: import("../../Map.js").FrameState, target: HTMLElement): HTMLElement;
     /**
      * Increases the cache size if needed
      * @param {number} tileCount Minimum number of tiles needed.

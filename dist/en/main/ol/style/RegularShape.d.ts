@@ -189,8 +189,9 @@ declare class RegularShape extends ImageStyle {
      * Clones the style.
      * @return {RegularShape} The cloned style.
      * @api
+     * @override
      */
-    clone(): RegularShape;
+    override clone(): RegularShape;
     /**
      * Get the angle used in generating the shape.
      * @return {number} Shape's rotation in radians.
@@ -211,15 +212,17 @@ declare class RegularShape extends ImageStyle {
     setFill(fill: import("./Fill.js").default | null): void;
     /**
      * @return {HTMLCanvasElement} Image element.
+     * @override
      */
-    getHitDetectionImage(): HTMLCanvasElement;
+    override getHitDetectionImage(): HTMLCanvasElement;
     /**
      * Get the image icon.
      * @param {number} pixelRatio Pixel ratio.
      * @return {HTMLCanvasElement} Image or Canvas element.
      * @api
+     * @override
      */
-    getImage(pixelRatio: number): HTMLCanvasElement;
+    override getImage(pixelRatio: number): HTMLCanvasElement;
     /**
      * Get the number of points for generating the shape.
      * @return {number} Number of points for stars and regular polygons.

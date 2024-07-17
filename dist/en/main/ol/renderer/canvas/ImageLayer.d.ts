@@ -21,15 +21,17 @@ declare class CanvasImageLayerRenderer extends CanvasLayerRenderer<any> {
     /**
      * @param {import("../../pixel.js").Pixel} pixel Pixel.
      * @return {Uint8ClampedArray} Data at the pixel location.
+     * @override
      */
-    getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray;
+    override getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray;
     /**
      * Render the layer.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @param {HTMLElement} target Target that may be used to render content to.
      * @return {HTMLElement} The rendered element.
+     * @override
      */
-    renderFrame(frameState: import("../../Map.js").FrameState, target: HTMLElement): HTMLElement;
+    override renderFrame(frameState: import("../../Map.js").FrameState, target: HTMLElement): HTMLElement;
 }
 import CanvasLayerRenderer from './Layer.js';
 //# sourceMappingURL=ImageLayer.d.ts.map

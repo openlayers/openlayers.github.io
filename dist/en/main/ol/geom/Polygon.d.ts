@@ -102,8 +102,9 @@ declare class Polygon extends SimpleGeometry {
      * Make a complete copy of the geometry.
      * @return {!Polygon} Clone.
      * @api
+     * @override
      */
-    clone(): Polygon;
+    override clone(): Polygon;
     /**
      * Return the area of the polygon on projected plane.
      * @return {number} Area (on projected plane).
@@ -122,8 +123,9 @@ declare class Polygon extends SimpleGeometry {
      *     constructed.
      * @return {Array<Array<import("../coordinate.js").Coordinate>>} Coordinates.
      * @api
+     * @override
      */
-    getCoordinates(right?: boolean | undefined): Array<Array<import("../coordinate.js").Coordinate>>;
+    override getCoordinates(right?: boolean | undefined): Array<Array<import("../coordinate.js").Coordinate>>;
     /**
      * @return {Array<number>} Ends.
      */
@@ -172,15 +174,17 @@ declare class Polygon extends SimpleGeometry {
      * @param {number} squaredTolerance Squared tolerance.
      * @return {Polygon} Simplified Polygon.
      * @protected
+     * @override
      */
-    protected getSimplifiedGeometryInternal(squaredTolerance: number): Polygon;
+    protected override getSimplifiedGeometryInternal(squaredTolerance: number): Polygon;
     /**
      * Set the coordinates of the polygon.
      * @param {!Array<Array<import("../coordinate.js").Coordinate>>} coordinates Coordinates.
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      * @api
+     * @override
      */
-    setCoordinates(coordinates: Array<Array<import("../coordinate.js").Coordinate>>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
+    override setCoordinates(coordinates: Array<Array<import("../coordinate.js").Coordinate>>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
 }
 import SimpleGeometry from './SimpleGeometry.js';
 import LinearRing from './LinearRing.js';

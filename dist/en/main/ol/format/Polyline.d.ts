@@ -136,22 +136,25 @@ declare class Polyline extends TextFeature {
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
      * @protected
      * @return {string} Text.
+     * @override
      */
-    protected writeFeatureText(feature: import("../Feature.js").default<LineString>, options?: import("./Feature.js").WriteOptions | undefined): string;
+    protected override writeFeatureText(feature: import("../Feature.js").default<LineString>, options?: import("./Feature.js").WriteOptions | undefined): string;
     /**
      * @param {Array<import("../Feature.js").default<LineString>>} features Features.
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
      * @protected
      * @return {string} Text.
+     * @override
      */
-    protected writeFeaturesText(features: Array<import("../Feature.js").default<LineString>>, options?: import("./Feature.js").WriteOptions | undefined): string;
+    protected override writeFeaturesText(features: Array<import("../Feature.js").default<LineString>>, options?: import("./Feature.js").WriteOptions | undefined): string;
     /**
      * @param {LineString} geometry Geometry.
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
      * @protected
      * @return {string} Text.
+     * @override
      */
-    protected writeGeometryText(geometry: LineString, options?: import("./Feature.js").WriteOptions | undefined): string;
+    protected override writeGeometryText(geometry: LineString, options?: import("./Feature.js").WriteOptions | undefined): string;
 }
 import TextFeature from './TextFeature.js';
 import LineString from '../geom/LineString.js';

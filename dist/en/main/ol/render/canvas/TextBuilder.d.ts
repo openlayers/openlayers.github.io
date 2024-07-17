@@ -117,8 +117,9 @@ declare class CanvasTextBuilder extends CanvasBuilder {
     /**
      * @param {import("../../style/Text.js").default} textStyle Text style.
      * @param {Object} [sharedData] Shared data.
+     * @override
      */
-    setTextStyle(textStyle: import("../../style/Text.js").default, sharedData?: any): void;
+    override setTextStyle(textStyle: import("../../style/Text.js").default, sharedData?: any): void;
 }
 import CanvasBuilder from './Builder.js';
 //# sourceMappingURL=TextBuilder.d.ts.map

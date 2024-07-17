@@ -16,8 +16,9 @@ declare class TextFeature extends FeatureFormat<import("../Feature.js").default<
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @return {import("../Feature.js").default} Feature.
      * @api
+     * @override
      */
-    readFeature(source: Document | Element | any | string, options?: import("../format/Feature.js").ReadOptions | undefined): import("../Feature.js").default;
+    override readFeature(source: Document | Element | any | string, options?: import("../format/Feature.js").ReadOptions | undefined): import("../Feature.js").default;
     /**
      * @abstract
      * @param {string} text Text.
@@ -55,8 +56,9 @@ declare class TextFeature extends FeatureFormat<import("../Feature.js").default<
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
      * @return {string} Encoded feature.
      * @api
+     * @override
      */
-    writeFeature(feature: import("../Feature.js").default, options?: import("../format/Feature.js").WriteOptions | undefined): string;
+    override writeFeature(feature: import("../Feature.js").default, options?: import("../format/Feature.js").WriteOptions | undefined): string;
     /**
      * @abstract
      * @param {import("../Feature.js").default} feature Features.
@@ -72,8 +74,9 @@ declare class TextFeature extends FeatureFormat<import("../Feature.js").default<
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
      * @return {string} Encoded features.
      * @api
+     * @override
      */
-    writeFeatures(features: Array<import("../Feature.js").default>, options?: import("../format/Feature.js").WriteOptions | undefined): string;
+    override writeFeatures(features: Array<import("../Feature.js").default>, options?: import("../format/Feature.js").WriteOptions | undefined): string;
     /**
      * @abstract
      * @param {Array<import("../Feature.js").default>} features Features.
@@ -89,8 +92,9 @@ declare class TextFeature extends FeatureFormat<import("../Feature.js").default<
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
      * @return {string} Geometry.
      * @api
+     * @override
      */
-    writeGeometry(geometry: import("../geom/Geometry.js").default, options?: import("../format/Feature.js").WriteOptions | undefined): string;
+    override writeGeometry(geometry: import("../geom/Geometry.js").default, options?: import("../format/Feature.js").WriteOptions | undefined): string;
     /**
      * @abstract
      * @param {import("../geom/Geometry.js").default} geometry Geometry.
