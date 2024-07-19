@@ -846,7 +846,6 @@ declare namespace ol {
     }
     export namespace structs {
         export { $ol$structs$LRUCache as LRUCache };
-        export { $ol$structs$LinkedList as LinkedList };
         export { $ol$structs$PriorityQueue as PriorityQueue };
         export { $ol$structs$RBush as RBush };
     }
@@ -1654,7 +1653,6 @@ import { offset as _ol_sphere$offset } from '../../ol/sphere.js';
 import { compareVersions as _ol_string$compareVersions } from '../../ol/string.js';
 import { padNumber as _ol_string$padNumber } from '../../ol/string.js';
 import $ol$structs$LRUCache from '../../ol/structs/LRUCache.js';
-import $ol$structs$LinkedList from '../../ol/structs/LinkedList.js';
 import $ol$structs$PriorityQueue from '../../ol/structs/PriorityQueue.js';
 import $ol$structs$RBush from '../../ol/structs/RBush.js';
 import $ol$style$Circle from '../../ol/style/Circle.js';
