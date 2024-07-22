@@ -77,6 +77,7 @@
             <li data-name="getattributions"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getAttributions">getAttributions</a>
             <li data-name="getbackground"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getBackground">getBackground</a>
             <li data-name="getextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getExtent">getExtent</a>
+            <li data-name="getfeaturesinextent"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getFeaturesInExtent">getFeaturesInExtent</a>
             <li data-name="getkeys"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getKeys">getKeys</a>
             <li data-name="getmaxresolution"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getMaxResolution">getMaxResolution</a>
             <li data-name="getmaxzoom"><a href="module-ol_layer_VectorTile-VectorTileLayer.html#getMaxZoom">getMaxZoom</a>
@@ -2030,6 +2031,145 @@ The layer extent.
             
 <dt class="">
     
+    <div class="nameContainer">
+        <div class="anchor" id="getFeaturesInExtent">
+        </div>
+        <h4 class="name">
+            getFeaturesInExtent<span class="signature">(extent)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;FeatureType>}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L216">line 216</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get features whose bounding box intersects the provided extent. Only features for cached
+tiles for the last rendered zoom level are available in the source. So this method is only
+suitable for requesting tiles for extents that are currently rendered.</p>
+<p>Features are returned in random tile order and as they are included in the tiles. This means
+they can be clipped, duplicated across tiles, and simplified to the render resolution.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>extent</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Extent.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Features.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
     <div class="nameContainer inherited">
         <div class="anchor" id="getKeys">
         </div>
@@ -2598,7 +2738,7 @@ The opacity of the layer.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L219">line 219</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L235">line 235</a>
         </div>
         
     </div>
@@ -3150,7 +3290,7 @@ Layer style function.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L229">line 229</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L245">line 245</a>
         </div>
         
     </div>
@@ -5115,7 +5255,7 @@ view zoom level, which may be different from a tile source zoom level.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L241">line 241</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L257">line 257</a>
         </div>
         
     </div>
@@ -5672,7 +5812,7 @@ literals instead of using the <code>Style</code> and symbolizer constructors (<c
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js">layer/VectorTile.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L251">line 251</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/VectorTile.js#L267">line 267</a>
         </div>
         
     </div>

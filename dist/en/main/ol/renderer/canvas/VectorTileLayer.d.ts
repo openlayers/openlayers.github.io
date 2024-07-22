@@ -63,6 +63,11 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
      */
     private updateExecutorGroup_;
     /**
+     * @param {import("../../extent.js").Extent} extent Extent.
+     * @return {Array<import('../../Feature.js').FeatureLike>} Features.
+     */
+    getFeaturesInExtent(extent: import("../../extent.js").Extent): Array<import("../../Feature.js").FeatureLike>;
+    /**
      * Handle changes in image style state.
      * @param {import("../../events/Event.js").default} event Image style change event.
      * @private
