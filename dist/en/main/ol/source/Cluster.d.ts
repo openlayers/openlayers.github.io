@@ -31,7 +31,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
      * See {@link module :ol/geom/Polygon~Polygon#getInteriorPoint} for a way to get a cluster
      * calculation point for polygons.
      */
-    geometryFunction?: ((arg0: FeatureType) => (Point)) | undefined;
+    geometryFunction?: ((arg0: FeatureType) => (Point | null)) | undefined;
     /**
      * Function that takes the cluster's center {@link module :ol/geom/Point~Point} and an array
      * of {@link module :ol/Feature~Feature} included in this cluster. Must return a
@@ -66,7 +66,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
  * By default no minimum distance is guaranteed. This config can be used to avoid
  * overlapping icons. As a tradoff, the cluster feature's position will no longer be
  * the center of all its features.
- * @property {function(FeatureType):(Point)} [geometryFunction]
+ * @property {function(FeatureType):(Point|null)} [geometryFunction]
  * Function that takes a {@link module:ol/Feature~Feature} as argument and returns a
  * {@link module:ol/geom/Point~Point} as cluster calculation point for the feature. When a
  * feature should not be considered for clustering, the function should return
@@ -142,7 +142,7 @@ declare class Cluster<FeatureType extends import("../Feature.js").FeatureLike> e
      * @return {Point} Cluster calculation point.
      * @protected
      */
-    protected geometryFunction: (arg0: FeatureType) => (Point);
+    protected geometryFunction: (arg0: FeatureType) => (Point | null);
     /**
      * @type {function(Point, Array<FeatureType>):Feature}
      * @private
