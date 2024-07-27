@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>OpenLayers v10.0.0 API - Module: ol/source/ImageTile</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
+  </head>
+  <body>
+    <header class="navbar navbar-expand-sm navbar-dark mb-3 px-3 py-0 fixed-top" role="navigation">
+      <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- menu items that get hidden below 768px width -->
+      <nav class="collapse navbar-collapse" id="olmenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="docdropdown">
+              <a class="dropdown-item" href="/doc/">Docs</a>
+              <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw me-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw me-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw me-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw me-2 fa-lg"></i>Workshop</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw me-2"></i>Ask a Question</a>
+            </div>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
+          <li class="nav-item active"><a class="nav-link" href="../apidoc/"><i class="fa fa-sitemap me-1"></i>API</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="codedropdown">
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw me-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw me-2 fa-lg"></i>Download</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="container-fluid">
+      <div id="wrap" class="row">
+        <div class="navigation col-md-4 col-lg-3">
+          <div class="search-wrapper">
+            <div class="search">
+              <input id="search" type="text" autocomplete="off" class="form-control input-sm" placeholder="Search Documentation">
+            </div>
+          </div>
+          <div class="navigation-list-wrapper">
+            <ul class="navigation-list search-empty">
+<li class="item item-module toggle-manual toggle-manual-show" data-longname="module:ol/source/ImageTile" data-name="ol/source/imagetile">
+    <span class="title toggle">
+        <span class="fa fa-plus me-2 mt-1"></span>
+        <span><a href="module-ol_source_ImageTile.html">ol​/source​/ImageTile</a></span>
+    </span>
+    <div class="member-list" data-type="typedefs">
+        <span class="subtitle">Typedefs</span>
+        <ul>
+            <li data-name="loader"><a href="module-ol_source_ImageTile.html#~Loader">Loader</a>
+            <li data-name="options"><a href="module-ol_source_ImageTile.html#~Options">Options</a>
+            <li data-name="urlgetter"><a href="module-ol_source_ImageTile.html#~UrlGetter">UrlGetter</a>
+            <li data-name="urllike"><a href="module-ol_source_ImageTile.html#~UrlLike">UrlLike</a>
+        </ul>
+    </div>
+              <li class="loading">Loading …
+            </ul>
+          </div>
+        </div>
+
+        <div class="main col-md-8 col-lg-9">
+          <h1 class="page-title" data-filename="module-ol_source_ImageTile.html">Module: ol/source/ImageTile</h1>
+          <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+            <button id="latest-dismiss" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            This documentation is for OpenLayers v<span id="package-version">10.0.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          </div>
+          
+
+
+
+<section class="content">
+
+<header>
+    <h2 class="my-3">ol/source/ImageTile
+    </h2>
+    <br>
+    
+      
+      
+    
+    <div class="row p-3 ">
+      <div id="ad" class="col-lg-5 order-2 align-self-center border rounded bg-light ">
+        <script async type="text/javascript" src="https://cdn.carbonads.com/carbon.js?serve=CE7DV53U&placement=openlayersorg" id="_carbonads_js"></script>
+      </div>
+    
+    </div>
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+
+        
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="module-ol_source_ImageTile-ImageTileSource.html">ImageTileSource</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl>
+                
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="~Loader">
+        </div>
+        <h4 class="name">
+            Loader<span class="signature">()</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/ImageTile.js">source/ImageTile.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/ImageTile.js#L7">line 7</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Image tile loading function.  The function is called with z, x, and y tile coordinates and
+returns an <a href="module-ol_DataTile.html#~ImageLike"><code>image</code></a> or a promise for the same.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~Options">
+        </div>
+        <h4 class="name">
+            Options<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_ImageTile.html#~UrlLike">UrlLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The image URL template.  In addition to a single URL template, an array of URL templates or a function
+can be provided.  If a function is provided, it will be called with z, x, y tile coordinates and loader options and should
+return a URL.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>loader</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_ImageTile.html#~Loader">Loader</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Data loader.  Called with z, x, and y tile coordinates.
+Returns an <a href="module-ol_DataTile.html#~ImageLike"><code>image</code></a> for a tile or a promise for the same.
+The promise should not resolve until the image is loaded.  If the <code>url</code> option is provided, a loader will be created.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>attributions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">AttributionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Attributions.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>attributionsCollapsible</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    <br>(defaults to true)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Attributions are collapsible.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>maxZoom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    <br>(defaults to 42)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Optional max zoom level. Not used if <code>tileGrid</code> is provided.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>minZoom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    <br>(defaults to 0)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Optional min zoom level. Not used if <code>tileGrid</code> is provided.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>tileSize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
+
+
+                
+                    <br>(defaults to [256, 256])
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The pixel width and height of the source tiles.
+This may be different than the rendered pixel size if a <code>tileGrid</code> is provided.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>gutter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    <br>(defaults to 0)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The size in pixels of the gutter around data tiles to ignore.
+This allows artifacts of rendering at tile edges to be ignored.
+Supported data should be wider and taller than the tile size by a value of <code>2 x gutter</code>.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>maxResolution</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Optional tile grid resolution at level zero. Not used if <code>tileGrid</code> is provided.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>projection</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+
+                
+                    <br>(defaults to 'EPSG:3857')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Tile projection.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>tileGrid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_tilegrid_TileGrid-TileGrid.html">TileGrid</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Tile grid.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>state</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_Source.html#~State">State</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The source state.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>wrapX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    <br>(defaults to true)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Render tiles beyond the antimeridian.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>transition</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Transition time when fading in new tiles (in miliseconds).</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>interpolate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    <br>(defaults to true)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Use interpolated values when resampling.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>crossOrigin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_DataTile.html#~CrossOriginAttribute">CrossOriginAttribute</a></span>
+
+
+                
+                    <br>(defaults to 'anonymous')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The crossOrigin property to pass to loaders for image data.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="~UrlGetter">
+        </div>
+        <h4 class="name">
+            UrlGetter<span class="signature">()</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/ImageTile.js">source/ImageTile.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/ImageTile.js#L14">line 14</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~UrlLike">
+        </div>
+        <h4 class="name">
+            UrlLike<span class="type-signature type string">{string}</span> <span class="type-signature type array.<string>">{Array.&lt;string>}</span> <span class="type-signature type module:ol/source/imagetile~urlgetter">{<a href="module-ol_source_ImageTile.html#~UrlGetter">UrlGetter</a>}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            </dl>
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script>prettyPrint();</script>
+    <script src="scripts/linenumber.js"></script>
+    <script src="scripts/main.js"></script>
+  </body>
+</html>

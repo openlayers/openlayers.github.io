@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7981],{38680:function(e,n,t){var s=t(41564),o=t(28e3),c=t(12185),a=t(87240),l=t(536),i=t(76825);const r=new l.A({collapsible:!1}),u=new s.A({layers:[new c.A({source:new o.A})],controls:(0,i.N)({attribution:!1}).extend([r]),target:"map",view:new a.Ay({center:[0,0],zoom:2})});function w(){const e=u.getSize()[0]<600;r.setCollapsible(e),r.setCollapsed(e)}u.on("change:size",w),w()}},function(e){var n;n=38680,e(e.s=n)}]);
+//# sourceMappingURL=attributions.js.map

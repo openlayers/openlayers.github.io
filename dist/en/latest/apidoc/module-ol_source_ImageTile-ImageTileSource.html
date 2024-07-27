@@ -1,0 +1,3284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>OpenLayers v10.0.0 API - Class: ImageTileSource</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
+  </head>
+  <body>
+    <header class="navbar navbar-expand-sm navbar-dark mb-3 px-3 py-0 fixed-top" role="navigation">
+      <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- menu items that get hidden below 768px width -->
+      <nav class="collapse navbar-collapse" id="olmenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="docdropdown">
+              <a class="dropdown-item" href="/doc/">Docs</a>
+              <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw me-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw me-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw me-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw me-2 fa-lg"></i>Workshop</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw me-2"></i>Ask a Question</a>
+            </div>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
+          <li class="nav-item active"><a class="nav-link" href="../apidoc/"><i class="fa fa-sitemap me-1"></i>API</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="codedropdown">
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw me-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw me-2 fa-lg"></i>Download</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="container-fluid">
+      <div id="wrap" class="row">
+        <div class="navigation col-md-4 col-lg-3">
+          <div class="search-wrapper">
+            <div class="search">
+              <input id="search" type="text" autocomplete="off" class="form-control input-sm" placeholder="Search Documentation">
+            </div>
+          </div>
+          <div class="navigation-list-wrapper">
+            <ul class="navigation-list search-empty">
+<li class="item item-class toggle-manual toggle-manual-show" data-longname="module:ol/source/ImageTile~ImageTileSource" data-name="ol/source/imagetile">
+    <span class="title toggle">
+        <span class="fa fa-chevron-right me-2 mt-1"></span>
+        <span><a href="module-ol_source_ImageTile-ImageTileSource.html">ol​/source​/ImageTile</a></span>
+    </span>
+    <div class="member-list" data-type="methods">
+        <span class="subtitle">Methods</span>
+        <ul>
+            <li data-name="changed"><a href="module-ol_source_ImageTile-ImageTileSource.html#changed">changed</a>
+            <li data-name="dispatchevent"><a href="module-ol_source_ImageTile-ImageTileSource.html#dispatchEvent">dispatchEvent</a>
+            <li data-name="get"><a href="module-ol_source_ImageTile-ImageTileSource.html#get">get</a>
+            <li data-name="getattributions"><a href="module-ol_source_ImageTile-ImageTileSource.html#getAttributions">getAttributions</a>
+            <li data-name="getattributionscollapsible"><a href="module-ol_source_ImageTile-ImageTileSource.html#getAttributionsCollapsible">getAttributionsCollapsible</a>
+            <li data-name="getkeys"><a href="module-ol_source_ImageTile-ImageTileSource.html#getKeys">getKeys</a>
+            <li data-name="getprojection"><a href="module-ol_source_ImageTile-ImageTileSource.html#getProjection">getProjection</a>
+            <li data-name="getproperties"><a href="module-ol_source_ImageTile-ImageTileSource.html#getProperties">getProperties</a>
+            <li data-name="getrevision"><a href="module-ol_source_ImageTile-ImageTileSource.html#getRevision">getRevision</a>
+            <li data-name="getstate"><a href="module-ol_source_ImageTile-ImageTileSource.html#getState">getState</a>
+            <li data-name="gettilegrid"><a href="module-ol_source_ImageTile-ImageTileSource.html#getTileGrid">getTileGrid</a>
+            <li data-name="on"><a href="module-ol_source_ImageTile-ImageTileSource.html#on">on</a>
+            <li data-name="once"><a href="module-ol_source_ImageTile-ImageTileSource.html#once">once</a>
+            <li data-name="set"><a href="module-ol_source_ImageTile-ImageTileSource.html#set">set</a>
+            <li data-name="setattributions"><a href="module-ol_source_ImageTile-ImageTileSource.html#setAttributions">setAttributions</a>
+            <li data-name="setproperties"><a href="module-ol_source_ImageTile-ImageTileSource.html#setProperties">setProperties</a>
+            <li data-name="settilegridforprojection"><a href="module-ol_source_ImageTile-ImageTileSource.html#setTileGridForProjection">setTileGridForProjection</a>
+            <li data-name="seturl"><a href="module-ol_source_ImageTile-ImageTileSource.html#setUrl">setUrl</a>
+            <li data-name="un"><a href="module-ol_source_ImageTile-ImageTileSource.html#un">un</a>
+            <li data-name="unset"><a href="module-ol_source_ImageTile-ImageTileSource.html#unset">unset</a>
+        </ul>
+    </div>
+    <div class="member-list" data-type="fires">
+        <span class="subtitle">Fires</span>
+        <ul>
+            <li data-name="change"><a href="module-ol_events_Event-BaseEvent.html#event:change">change</a>
+            <li data-name="error"><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a>
+            <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
+            <li data-name="tileloadend"><a href="module-ol_source_Tile.TileSourceEvent.html#event:tileloadend">tileloadend</a>
+            <li data-name="tileloaderror"><a href="module-ol_source_Tile.TileSourceEvent.html#event:tileloaderror">tileloaderror</a>
+            <li data-name="tileloadstart"><a href="module-ol_source_Tile.TileSourceEvent.html#event:tileloadstart">tileloadstart</a>
+        </ul>
+    </div>
+              <li class="loading">Loading …
+            </ul>
+          </div>
+        </div>
+
+        <div class="main col-md-8 col-lg-9">
+          <h1 class="page-title" data-filename="module-ol_source_ImageTile-ImageTileSource.html">Class: ImageTileSource</h1>
+          <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+            <button id="latest-dismiss" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            This documentation is for OpenLayers v<span id="package-version">10.0.0</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          </div>
+          
+
+
+
+<section class="content">
+
+<header>
+    <h2 class="my-3">
+        <span class="ancestors"><a href="module-ol_source_ImageTile.html">ol/source/ImageTile</a>~</span>ImageTileSource
+    </h2>
+    <br>
+    
+      
+      
+        <pre class="prettyprint source"><code>import ImageTileSource from '<a href="module-ol_source_ImageTile.html">ol/source/ImageTile</a>.js';</code></pre>
+      
+    
+    <div class="row p-3 ">
+      <div id="ad" class="col-lg-5 order-2 align-self-center border rounded bg-light ">
+        <script async type="text/javascript" src="https://cdn.carbonads.com/carbon.js?serve=CE7DV53U&placement=openlayersorg" id="_carbonads_js"></script>
+      </div>
+    
+      <div class="class-description col-lg-7 align-self-center ps-0"><p>A source for typed array data tiles.</p></div>
+    
+    </div>
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        <dl>
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="ImageTileSource">
+        </div>
+        <h4 class="name">
+            new ImageTileSource<span class="signature">(<span class="optional">options</span>)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/ImageTile.js">source/ImageTile.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/ImageTile.js#L143">line 143</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>url</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_ImageTile.html#~UrlLike">UrlLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The image URL template.  In addition to a single URL template, an array of URL templates or a function
+can be provided.  If a function is provided, it will be called with z, x, y tile coordinates and loader options and should
+return a URL.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>loader</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_ImageTile.html#~Loader">Loader</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Data loader.  Called with z, x, and y tile coordinates.
+Returns an <a href="module-ol_DataTile.html#~ImageLike"><code>image</code></a> for a tile or a promise for the same.
+The promise should not resolve until the image is loaded.  If the <code>url</code> option is provided, a loader will be created.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>attributions</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">AttributionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Attributions.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>attributionsCollapsible</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    (defaults to true)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Attributions are collapsible.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>maxZoom</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    (defaults to 42)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Optional max zoom level. Not used if <code>tileGrid</code> is provided.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>minZoom</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    (defaults to 0)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Optional min zoom level. Not used if <code>tileGrid</code> is provided.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>tileSize</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
+
+
+                
+                    (defaults to [256, 256])
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The pixel width and height of the source tiles.
+This may be different than the rendered pixel size if a <code>tileGrid</code> is provided.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>gutter</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+                    (defaults to 0)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The size in pixels of the gutter around data tiles to ignore.
+This allows artifacts of rendering at tile edges to be ignored.
+Supported data should be wider and taller than the tile size by a value of <code>2 x gutter</code>.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>maxResolution</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Optional tile grid resolution at level zero. Not used if <code>tileGrid</code> is provided.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>projection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+
+                
+                    (defaults to 'EPSG:3857')
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Tile projection.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>tileGrid</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_tilegrid_TileGrid-TileGrid.html">TileGrid</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Tile grid.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>state</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_Source.html#~State">State</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The source state.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>wrapX</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    (defaults to true)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Render tiles beyond the antimeridian.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>transition</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Transition time when fading in new tiles (in miliseconds).</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>interpolate</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    (defaults to true)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Use interpolated values when resampling.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>crossOrigin</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_DataTile.html#~CrossOriginAttribute">CrossOriginAttribute</a></span>
+
+
+                
+                    (defaults to 'anonymous')
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The crossOrigin property to pass to loaders for image data.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+    <h5>Fires:</h5>
+    <ul>
+        <li class="">
+            <code><a href="module-ol_events_Event-BaseEvent.html#event:change">change</a></code>
+            
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
+            
+            
+
+             -
+            Generic change event. Triggered when the revision counter is increased.
+            
+        </li>
+    
+        <li class="">
+            <code><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a></code>
+            
+              (<a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a>)
+            
+            
+
+             -
+            Generic error event. Triggered when an error occurs.
+            
+        </li>
+    
+        <li class="">
+            <code><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a></code>
+            
+              (<a href="module-ol_Object.ObjectEvent.html">ObjectEvent</a>)
+            
+            
+
+             -
+            Triggered when a property is changed.
+            
+        </li>
+    
+        <li class="">
+            <code><a href="module-ol_source_Tile.TileSourceEvent.html#event:tileloadend">tileloadend</a></code>
+            
+              (<a href="module-ol_source_Tile.TileSourceEvent.html">TileSourceEvent</a>)
+            
+            
+
+             -
+            Triggered when a tile finishes loading, either when its data is loaded,
+or when loading was aborted because the tile is no longer needed.
+            
+        </li>
+    
+        <li class="">
+            <code><a href="module-ol_source_Tile.TileSourceEvent.html#event:tileloaderror">tileloaderror</a></code>
+            
+              (<a href="module-ol_source_Tile.TileSourceEvent.html">TileSourceEvent</a>)
+            
+            
+
+             -
+            Triggered if tile loading results in an error. Note that this is not the
+right place to re-fetch tiles. See <a href="module-ol_ImageTile-ImageTile.html#load"><code>load</code></a>
+for details.
+            
+        </li>
+    
+        <li class="">
+            <code><a href="module-ol_source_Tile.TileSourceEvent.html#event:tileloadstart">tileloadstart</a></code>
+            
+              (<a href="module-ol_source_Tile.TileSourceEvent.html">TileSourceEvent</a>)
+            
+            
+
+             -
+            Triggered when a tile starts loading.
+            
+        </li>
+    </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+    </div>
+
+    
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        <ul>
+            <li><a href="module-ol_source_DataTile-DataTileSource.html">DataTileSource</a></li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="changed">
+        </div>
+        <h4 class="name">
+            changed<span class="signature">()</span>
+            
+                <span class="inherited"><a href="module-ol_Observable-Observable.html#changed">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Observable.js">Observable.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Observable.js#L68">line 68</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Increases the revision counter and dispatches a 'change' event.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="dispatchEvent">
+        </div>
+        <h4 class="name">
+            dispatchEvent<span class="signature">(event)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean | undefined}</span>
+            
+                <span class="inherited"><a href="module-ol_events_Target-Target.html#dispatchEvent">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/events/Target.js">events/Target.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/events/Target.js#L85">line 85</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Dispatches an event and calls all listeners listening for events
+of this type. The event parameter can either be a string or an
+Object with a <code>type</code> property.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>event</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_events_Event-BaseEvent.html">BaseEvent</a></span>
+|
+
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Event object.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+<code>false</code> if anyone called preventDefault on the
+    event object or if any of the listeners returned false.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="get">
+        </div>
+        <h4 class="name">
+            get<span class="signature">(key)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{*}</span>
+            
+                <span class="inherited"><a href="module-ol_Object-BaseObject.html#get">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Object.js">Object.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Object.js#L135">line 135</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Gets a value.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>key</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Key name.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Value.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getAttributions">
+        </div>
+        <h4 class="name">
+            getAttributions<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_source_Source.html#~Attribution">Attribution</a>}</span>
+            
+                <span class="inherited"><a href="module-ol_source_Source-Source.html#getAttributions">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/Source.js">source/Source.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/Source.js#L129">line 129</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the attribution function for the source.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Attribution function.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getAttributionsCollapsible">
+        </div>
+        <h4 class="name">
+            getAttributionsCollapsible<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
+            
+                <span class="inherited"><a href="module-ol_source_Source-Source.html#getAttributionsCollapsible">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/Source.js">source/Source.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/Source.js#L137">line 137</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Attributions are collapsible.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getKeys">
+        </div>
+        <h4 class="name">
+            getKeys<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;string>}</span>
+            
+                <span class="inherited"><a href="module-ol_Object-BaseObject.html#getKeys">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Object.js">Object.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Object.js#L148">line 148</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get a list of object property names.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+List of property names.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getProjection">
+        </div>
+        <h4 class="name">
+            getProjection<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_proj_Projection-Projection.html">Projection</a> | null}</span>
+            
+                <span class="inherited"><a href="module-ol_source_Source-Source.html#getProjection">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/Source.js">source/Source.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/Source.js#L146">line 146</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the projection of the source.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Projection.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getProperties">
+        </div>
+        <h4 class="name">
+            getProperties<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Object.&lt;string, *>}</span>
+            
+                <span class="inherited"><a href="module-ol_Object-BaseObject.html#getProperties">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Object.js">Object.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Object.js#L157">line 157</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get an object of all property names and values.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Object.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getRevision">
+        </div>
+        <h4 class="name">
+            getRevision<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number}</span>
+            
+                <span class="inherited"><a href="module-ol_Observable-Observable.html#getRevision">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Observable.js">Observable.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Observable.js#L79">line 79</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the version number for this object.  Each time the object is modified,
+its version number will be incremented.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Revision.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getState">
+        </div>
+        <h4 class="name">
+            getState<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_source_Source.html#~State">State</a>}</span>
+            
+                <span class="inherited"><a href="module-ol_source_Source-Source.html#getState">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/Source.js">source/Source.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/Source.js#L170">line 170</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the state of the source, see <a href="module-ol_source_Source.html#~State"><code>State</code></a> for possible states.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+State.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getTileGrid">
+        </div>
+        <h4 class="name">
+            getTileGrid<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_tilegrid_TileGrid-TileGrid.html">TileGrid</a> | null}</span>
+            
+                <span class="inherited"><a href="module-ol_source_Tile-TileSource.html#getTileGrid">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/Tile.js">source/Tile.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/Tile.js#L215">line 215</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Return the tile grid of the tile source.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Tile grid.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="on">
+        </div>
+        <h4 class="name">
+            on<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array&lt;<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
+            
+                <span class="inherited"><a href="module-ol_Observable-Observable.html#on">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Observable.js">Observable.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Observable.js#L152">line 152</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Listen for a certain type of event.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>type</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The event type or array of event types.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>listener</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The listener function.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Unique key for the listener. If
+    called with an array of event types as the first argument, the return
+    will be an array of keys.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="once">
+        </div>
+        <h4 class="name">
+            once<span class="signature">(type, listener)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_events.html#~EventsKey">EventsKey</a> | Array&lt;<a href="module-ol_events.html#~EventsKey">EventsKey</a>>}</span>
+            
+                <span class="inherited"><a href="module-ol_Observable-Observable.html#once">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Observable.js">Observable.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Observable.js#L164">line 164</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Listen once for a certain type of event.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>type</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The event type or array of event types.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>listener</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The listener function.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Unique key for the listener. If
+    called with an array of event types as the first argument, the return
+    will be an array of keys.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="set">
+        </div>
+        <h4 class="name">
+            set<span class="signature">(key, value, <span class="optional">silent</span>)</span>
+            
+                <span class="inherited"><a href="module-ol_Object-BaseObject.html#set">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Object.js">Object.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Object.js#L215">line 215</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Sets a value.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>key</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Key name.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>value</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Value.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>silent</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Update without triggering an event.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="setAttributions">
+        </div>
+        <h4 class="name">
+            setAttributions<span class="signature">(attributions)</span>
+            
+                <span class="inherited"><a href="module-ol_source_Source-Source.html#setAttributions">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/Source.js">source/Source.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/Source.js#L203">line 203</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Set the attributions of the source.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>attributions</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_Source.html#~AttributionLike">AttributionLike</a></span>
+|
+
+<span class="param-type">undefined</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Attributions.
+    Can be passed as <code>string</code>, <code>Array&lt;string&gt;</code>, <a href="module-ol_source_Source.html#~Attribution"><code>Attribution</code></a>,
+    or <code>undefined</code>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="setProperties">
+        </div>
+        <h4 class="name">
+            setProperties<span class="signature">(values, <span class="optional">silent</span>)</span>
+            
+                <span class="inherited"><a href="module-ol_Object-BaseObject.html#setProperties">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Object.js">Object.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Object.js#L235">line 235</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Sets a collection of key-value pairs.  Note that this changes any existing
+properties and adds new ones (it does not remove any existing properties).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>values</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, *></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Values.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>silent</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Update without triggering an event.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="setTileGridForProjection">
+        </div>
+        <h4 class="name">
+            setTileGridForProjection<span class="signature">(projection, tilegrid)</span>
+            
+                <span class="inherited"><a href="module-ol_source_DataTile-DataTileSource.html#setTileGridForProjection">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/DataTile.js">source/DataTile.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/DataTile.js#L408">line 408</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Sets the tile grid to use when reprojecting the tiles to the given
+projection instead of the default tile grid for the projection.</p>
+<p>This can be useful when the default tile grid cannot be created
+(e.g. projection has no extent defined) or
+for optimization reasons (custom tile size, resolutions, ...).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>projection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>tilegrid</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_tilegrid_TileGrid-TileGrid.html">TileGrid</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Tile grid to use for the projection.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="setUrl">
+        </div>
+        <h4 class="name">
+            setUrl<span class="signature">(url)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/ImageTile.js">source/ImageTile.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/source/ImageTile.js#L196">line 196</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>url</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_ImageTile.html#~UrlLike">UrlLike</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The new URL.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="un">
+        </div>
+        <h4 class="name">
+            un<span class="signature">(type, listener)</span>
+            
+                <span class="inherited"><a href="module-ol_Observable-Observable.html#un">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Observable.js">Observable.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Observable.js#L173">line 173</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Unlisten for a certain type of event.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>type</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The event type or array of event types.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>listener</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The listener function.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="unset">
+        </div>
+        <h4 class="name">
+            unset<span class="signature">(key, <span class="optional">silent</span>)</span>
+            
+                <span class="inherited"><a href="module-ol_Object-BaseObject.html#unset">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Object.js">Object.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/v10.0.0/src/ol/Object.js#L259">line 259</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Unsets a property.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>key</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Key name.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>silent</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Unset without triggering an event.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script>prettyPrint();</script>
+    <script src="scripts/linenumber.js"></script>
+    <script src="scripts/main.js"></script>
+  </body>
+</html>
