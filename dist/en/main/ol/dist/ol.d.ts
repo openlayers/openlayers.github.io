@@ -43,6 +43,7 @@ declare namespace ol {
         export { _ol_centerconstraint$none as none };
     }
     export namespace color {
+        export { _ol_color$NO_COLOR as NO_COLOR };
         export { _ol_color$asArray as asArray };
         export { _ol_color$asString as asString };
         export { _ol_color$fromString as fromString };
@@ -1025,6 +1026,7 @@ import { stableSort as _ol_array$stableSort } from '../../ol/array.js';
 import { assert as _ol_asserts$assert } from '../../ol/asserts.js';
 import { createExtent as _ol_centerconstraint$createExtent } from '../../ol/centerconstraint.js';
 import { none as _ol_centerconstraint$none } from '../../ol/centerconstraint.js';
+import { NO_COLOR as _ol_color$NO_COLOR } from '../../ol/color.js';
 import { asArray as _ol_color$asArray } from '../../ol/color.js';
 import { asString as _ol_color$asString } from '../../ol/color.js';
 import { fromString as _ol_color$fromString } from '../../ol/color.js';

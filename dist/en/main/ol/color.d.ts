@@ -1,12 +1,4 @@
 /**
- * A color represented as a short array [red, green, blue, alpha].
- * red, green, and blue should be integers in the range 0..255 inclusive.
- * alpha should be a float in the range 0..1 inclusive. If no alpha value is
- * given then `1` will be used.
- * @typedef {Array<number>} Color
- * @api
- */
-/**
  * Return the color as an rgba string.
  * @param {Color|string} color Color.
  * @return {string} Rgba string.
@@ -59,6 +51,20 @@ export function toString(color: Color): string;
  * @return {boolean} Whether the string is actually a valid color
  */
 export function isStringColor(s: string): boolean;
+/**
+ * A color represented as a short array [red, green, blue, alpha].
+ * red, green, and blue should be integers in the range 0..255 inclusive.
+ * alpha should be a float in the range 0..1 inclusive. If no alpha value is
+ * given then `1` will be used.
+ * @typedef {Array<number>} Color
+ * @api
+ */
+/**
+ * Color to indicate that no color should be rendered. This is meant to be used for per-reference
+ * comparisons only.
+ * @type {Color}
+ */
+export const NO_COLOR: Color;
 /**
  * A color represented as a short array [red, green, blue, alpha].
  * red, green, and blue should be integers in the range 0..255 inclusive.
