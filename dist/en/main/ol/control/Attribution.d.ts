@@ -53,6 +53,11 @@ export type Options = {
      * callback.
      */
     render?: ((arg0: import("../MapEvent.js").default) => void) | undefined;
+    /**
+     * Optional attribution(s) that will always be
+     * displayed regardless of the layers rendered
+     */
+    attributions?: string | Array<string> | undefined;
 };
 /**
  * @typedef {Object} Options
@@ -79,6 +84,8 @@ export type Options = {
  * @property {function(import("../MapEvent.js").default):void} [render] Function called when
  * the control should be re-rendered. This is called in a `requestAnimationFrame`
  * callback.
+ * @property {string|Array<string>|undefined} [attributions] Optional attribution(s) that will always be
+ * displayed regardless of the layers rendered
  */
 /**
  * @classdesc
@@ -119,6 +126,11 @@ declare class Attribution extends Control {
      * @type {boolean}
      */
     private collapsible_;
+    /**
+     * @private
+     * @type {string | Array<string> | undefined}
+     */
+    private attributions_;
     /**
      * @private
      * @type {HTMLElement}
