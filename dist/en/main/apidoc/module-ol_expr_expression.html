@@ -187,7 +187,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L590">line 590</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L594">line 594</a>
         </div>
         
     </div>
@@ -445,6 +445,8 @@ An example would be to provide a default value for get: <code>['coalesce', ['get
 <li><code>['!', value1]</code> returns <code>false</code> if <code>value1</code> is <code>true</code> or greater than <code>0</code>, or <code>true</code> otherwise.</li>
 <li><code>['all', value1, value2, ...]</code> returns <code>true</code> if all the inputs are <code>true</code>, <code>false</code> otherwise.</li>
 <li><code>['any', value1, value2, ...]</code> returns <code>true</code> if any of the inputs are <code>true</code>, <code>false</code> otherwise.</li>
+<li><code>['has', attributeName, keyOrArrayIndex, ...]</code> returns <code>true</code> if feature properties include the (nested) key <code>attributeName</code>,
+<code>false</code> otherwise.</li>
 <li><code>['between', value1, value2, value3]</code> returns <code>true</code> if <code>value1</code> is contained between <code>value2</code> and <code>value3</code>
 (inclusively), or <code>false</code> otherwise.</li>
 <li><code>['in', needle, haystack]</code> returns <code>true</code> if <code>needle</code> is found in <code>haystack</code>, and
@@ -579,7 +581,7 @@ Literal values can be of the following types:</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L419">line 419</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L422">line 422</a>
         </div>
         
     </div>
