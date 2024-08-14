@@ -1,4 +1,4 @@
-export const COMMON_HEADER: "#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_screenToWorldMatrix;\nuniform vec2 u_viewportSizePx;\nuniform float u_pixelRatio;\nuniform float u_globalAlpha;\nuniform float u_time;\nuniform float u_zoom;\nuniform float u_resolution;\nuniform float u_rotation;\nuniform vec4 u_renderExtent;\nuniform vec2 u_patternOrigin;\nuniform float u_depth;\nuniform mediump int u_hitDetection;\n\nconst float PI = 3.141592653589793238;\nconst float TWO_PI = 2.0 * PI;\n\n// this used to produce an alpha-premultiplied color from a texture\nvec4 samplePremultiplied(sampler2D sampler, vec2 texCoord) {\n  vec4 color = texture2D(sampler, texCoord);\n  return vec4(color.rgb * color.a, color.a);\n}\n";
+export const COMMON_HEADER: "#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_screenToWorldMatrix;\nuniform vec2 u_viewportSizePx;\nuniform float u_pixelRatio;\nuniform float u_globalAlpha;\nuniform float u_time;\nuniform float u_zoom;\nuniform float u_resolution;\nuniform float u_rotation;\nuniform vec4 u_renderExtent;\nuniform vec2 u_patternOrigin;\nuniform float u_depth;\nuniform mediump int u_hitDetection;\n\nconst float PI = 3.141592653589793238;\nconst float TWO_PI = 2.0 * PI;\n";
 /**
  * @typedef {Object} VaryingDescription
  * @property {string} name Varying name, as will be declared in the header.
@@ -19,6 +19,10 @@ export const COMMON_HEADER: "#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp 
  *   .setSymbolSizeExpression('...')
  *   .getSymbolFragmentShader();
  * ```
+ *
+ * A note on [alpha premultiplication](https://en.wikipedia.org/wiki/Alpha_compositing#Straight_versus_premultiplied):
+ * The ShaderBuilder class expects all colors to **not having been alpha-premultiplied!** This is because alpha
+ * premultiplication is done at the end of each fragment shader.
  */
 export class ShaderBuilder {
     /**
