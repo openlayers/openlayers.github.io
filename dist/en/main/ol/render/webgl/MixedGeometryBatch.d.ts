@@ -226,6 +226,7 @@ declare class MixedGeometryBatch {
      * @param {Feature|RenderFeature} feature Feature
      * @param {string} featureUid Feature uid
      * @param {number} stride Stride
+     * @param {import('../../geom/Geometry.js').GeometryLayout} [layout] Layout
      * @private
      */
     private addCoordinates_;

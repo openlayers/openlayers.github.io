@@ -8,6 +8,8 @@ export namespace Attributes {
     let INDEX: string;
     let SEGMENT_START: string;
     let SEGMENT_END: string;
+    let MEASURE_START: string;
+    let MEASURE_END: string;
     let PARAMETERS: string;
     let JOIN_ANGLES: string;
     let DISTANCE: string;

@@ -8,9 +8,10 @@
  * @param {number} stride Stride.
  * @param {import("../../transform.js").Transform} transform Transform.
  * @param {Array<number>} [dest] Destination.
+ * @param {number} [destinationStride] Stride of destination coordinates; if unspecified, assumed to be 2.
  * @return {Array<number>} Transformed coordinates.
  */
-export function transform2D(flatCoordinates: Array<number>, offset: number, end: number, stride: number, transform: import("../../transform.js").Transform, dest?: number[] | undefined): Array<number>;
+export function transform2D(flatCoordinates: Array<number>, offset: number, end: number, stride: number, transform: import("../../transform.js").Transform, dest?: number[] | undefined, destinationStride?: number | undefined): Array<number>;
 /**
  * @param {Array<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.

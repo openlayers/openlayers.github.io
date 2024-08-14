@@ -187,7 +187,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L594">line 594</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L599">line 599</a>
         </div>
         
     </div>
@@ -385,6 +385,9 @@ feature property. The result is <code>undefined</code> when there is nothing at 
 <li><code>['time']</code> The time in seconds since the creation of the layer (WebGL only).</li>
 <li><code>['var', 'varName']</code> fetches a value from the style variables; will throw an error if that variable is undefined</li>
 <li><code>['zoom']</code> The current zoom level (WebGL only).</li>
+<li><code>['line-metric']</code> returns the M component of the current point on a line (WebGL only); in case where the geometry layout of the line
+ does not contain an M component (e.g. XY or XYZ), 0 is returned; 0 is also returned for geometries other than lines.
+ Please note that the M component will be linearly interpolated between the two points composing a segment.</li>
 </ul>
 </li>
 <li><p>Math operators:</p>
@@ -581,7 +584,7 @@ Literal values can be of the following types:</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L422">line 422</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L426">line 426</a>
         </div>
         
     </div>
