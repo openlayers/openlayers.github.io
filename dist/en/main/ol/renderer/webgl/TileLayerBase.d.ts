@@ -200,7 +200,6 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileTy
      * @private
      */
     private findAltTiles_;
-    clearCache(): void;
 }
 import WebGLLayerRenderer from './Layer.js';
 //# sourceMappingURL=TileLayerBase.d.ts.map

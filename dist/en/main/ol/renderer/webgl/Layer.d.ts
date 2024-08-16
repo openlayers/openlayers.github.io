@@ -78,6 +78,7 @@ declare class WebGLLayerRenderer<LayerType extends import("../../layer/Layer.js"
      * @protected
      */
     protected helper: WebGLHelper;
+    onMapChanged_: () => void;
     /**
      * @param {WebGLRenderingContext} context The WebGL rendering context.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
@@ -110,6 +111,10 @@ declare class WebGLLayerRenderer<LayerType extends import("../../layer/Layer.js"
      * @protected
      */
     protected prepareFrameInternal(frameState: import("../../Map.js").FrameState): boolean;
+    /**
+     * @protected
+     */
+    protected clearCache(): void;
     /**
      * @param {import("../../render/EventType.js").default} type Event type.
      * @param {WebGLRenderingContext} context The rendering context.

@@ -67,6 +67,10 @@ declare class BaseTileRepresentation<TileType extends import("../Tile.js").defau
      */
     protected uploadTile(): void;
     setReady(): void;
+    /**
+     * @param {import("./Helper.js").default} helper The WebGL helper.
+     */
+    setHelper(helper: import("./Helper.js").default): void;
 }
 import EventTarget from '../events/Target.js';
 //# sourceMappingURL=BaseTileRepresentation.d.ts.map
