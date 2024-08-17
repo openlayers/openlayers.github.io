@@ -165,12 +165,28 @@ declare class VectorStyleRenderer {
     constructor(styleOrShaders: VectorStyle, helper: import("../../webgl/Helper.js").default, enableHitDetection: boolean);
     /**
      * @private
+     * @type {import('../../webgl/Helper.js').default}
      */
     private helper_;
     /**
      * @private
      */
     private hitDetectionEnabled_;
+    /**
+     * @private
+     * @type {WebGLProgram}
+     */
+    private fillProgram_;
+    /**
+     * @private
+     * @type {WebGLProgram}
+     */
+    private strokeProgram_;
+    /**
+     * @private
+     * @type {WebGLProgram}
+     */
+    private symbolProgram_;
     /**
      * @type {boolean}
      * @private
@@ -185,10 +201,6 @@ declare class VectorStyleRenderer {
      */
     private fillFragmentShader_;
     /**
-     * @private
-     */
-    private fillProgram_;
-    /**
      * @type {boolean}
      * @private
      */
@@ -202,10 +214,6 @@ declare class VectorStyleRenderer {
      */
     private strokeFragmentShader_;
     /**
-     * @private
-     */
-    private strokeProgram_;
-    /**
      * @type {boolean}
      * @private
      */
@@ -218,10 +226,6 @@ declare class VectorStyleRenderer {
      * @private
      */
     private symbolFragmentShader_;
-    /**
-     * @private
-     */
-    private symbolProgram_;
     /**
      * @private
      */
@@ -283,6 +287,11 @@ declare class VectorStyleRenderer {
      * @private
      */
     private renderInternal_;
+    /**
+     * @param {import('../../webgl/Helper.js').default} helper Helper
+     * @param {WebGLBuffers} buffers WebGL Buffers to reload if any
+     */
+    setHelper(helper: import("../../webgl/Helper.js").default, buffers?: WebGLBuffers): void;
 }
 import WebGLArrayBuffer from '../../webgl/Buffer.js';
 //# sourceMappingURL=VectorStyleRenderer.d.ts.map
