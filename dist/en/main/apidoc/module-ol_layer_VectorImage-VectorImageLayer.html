@@ -76,6 +76,7 @@
             <li data-name="get"><a href="module-ol_layer_VectorImage-VectorImageLayer.html#get">get</a>
             <li data-name="getattributions"><a href="module-ol_layer_VectorImage-VectorImageLayer.html#getAttributions">getAttributions</a>
             <li data-name="getextent"><a href="module-ol_layer_VectorImage-VectorImageLayer.html#getExtent">getExtent</a>
+            <li data-name="getfeatures"><a href="module-ol_layer_VectorImage-VectorImageLayer.html#getFeatures">getFeatures</a>
             <li data-name="getkeys"><a href="module-ol_layer_VectorImage-VectorImageLayer.html#getKeys">getKeys</a>
             <li data-name="getmaxresolution"><a href="module-ol_layer_VectorImage-VectorImageLayer.html#getMaxResolution">getMaxResolution</a>
             <li data-name="getmaxzoom"><a href="module-ol_layer_VectorImage-VectorImageLayer.html#getMaxZoom">getMaxZoom</a>
@@ -1727,6 +1728,149 @@ will be visible regardless of extent.</p>
 
 <h5>Returns:</h5>
 The layer extent.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getFeatures">
+        </div>
+        <h4 class="name">
+            getFeatures<span class="signature">(pixel)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Promise&lt;Array&lt;<a href="module-ol_Feature.html#~FeatureLike">FeatureLike</a>>>}</span>
+            
+                <span class="inherited"><a href="module-ol_layer_BaseVector-BaseVectorLayer.html#getFeatures">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js">layer/BaseVector.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseVector.js#L173">line 173</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the topmost feature that intersects the given pixel on the viewport. Returns a promise
+that resolves with an array of features. The array will either contain the topmost feature
+when a hit was detected, or it will be empty.</p>
+<p>The hit detection algorithm used for this method is optimized for performance, but is less
+accurate than the one used in <a href="module-ol_Map-Map.html#getFeaturesAtPixel"><code>map.getFeaturesAtPixel()</code></a>.
+Text is not considered, and icons are only represented by their bounding box instead of the exact
+image.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>pixel</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_pixel.html#~Pixel">Pixel</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Pixel.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Promise that resolves with an array of features.
 <br />
 
     

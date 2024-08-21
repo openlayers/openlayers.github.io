@@ -68,6 +68,18 @@
         <span class="fa fa-chevron-right me-2 mt-1"></span>
         <span><a href="module-ol_format_Polyline-Polyline.html">ol​/format​/Polyline</a></span>
     </span>
+    <div class="member-list" data-type="methods">
+        <span class="subtitle">Methods</span>
+        <ul>
+            <li data-name="readfeature"><a href="module-ol_format_Polyline-Polyline.html#readFeature">readFeature</a>
+            <li data-name="readfeatures"><a href="module-ol_format_Polyline-Polyline.html#readFeatures">readFeatures</a>
+            <li data-name="readgeometry"><a href="module-ol_format_Polyline-Polyline.html#readGeometry">readGeometry</a>
+            <li data-name="readprojection"><a href="module-ol_format_Polyline-Polyline.html#readProjection">readProjection</a>
+            <li data-name="writefeature"><a href="module-ol_format_Polyline-Polyline.html#writeFeature">writeFeature</a>
+            <li data-name="writefeatures"><a href="module-ol_format_Polyline-Polyline.html#writeFeatures">writeFeatures</a>
+            <li data-name="writegeometry"><a href="module-ol_format_Polyline-Polyline.html#writeGeometry">writeGeometry</a>
+        </ul>
+    </div>
               <li class="loading">Loading …
             </ul>
           </div>
@@ -106,7 +118,7 @@ Polyline Algorithm Format.</p>
 <p>When reading features, the coordinates are assumed to be in two dimensions
 and in [latitude, longitude] order.</p>
 <p>As Polyline sources contain a single feature,
-<code>readFeatures</code> will return the
+<a href="module-ol_format_Polyline-Polyline.html#readFeatures"><code>readFeatures</code></a> will return the
 feature in an array.</p></div>
     
     </div>
@@ -294,6 +306,1812 @@ feature geometries created by the format reader.</p></td>
 
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="readFeature">
+        </div>
+        <h4 class="name">
+            readFeature<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_Feature-Feature.html">Feature</a>}</span>
+            
+                <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#readFeature">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js">format/TextFeature.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js#L37">line 37</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Read the feature from the source.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>source</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">Element</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Source.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+
+            
+
+            <td colspan=2 class="description last">
+                
+                <p>Read options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>dataProjection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection of the data we are reading.
+If not provided, the projection will be derived from the data (where possible) or
+the <code>dataProjection</code> of the format is assigned (where set). If the projection
+can not be derived from the data and if no <code>dataProjection</code> is set for a format,
+the features will not be reprojected.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>extent</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Tile extent in map units of the tile being read.
+This is only required when reading data with tile pixels as geometry units. When configured,
+a <code>dataProjection</code> with <code>TILE_PIXELS</code> as <code>units</code> and the tile's pixel extent as <code>extent</code> needs to be
+provided.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>featureProjection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection of the feature geometries
+created by the format reader. If not provided, features will be returned in the
+<code>dataProjection</code>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Feature.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="readFeatures">
+        </div>
+        <h4 class="name">
+            readFeatures<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array&lt;<a href="module-ol_Feature-Feature.html">Feature</a>>}</span>
+            
+                <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#readFeatures">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js">format/TextFeature.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js#L64">line 64</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Read the features from the source.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>source</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">Element</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Source.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+
+            
+
+            <td colspan=2 class="description last">
+                
+                <p>Read options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>dataProjection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection of the data we are reading.
+If not provided, the projection will be derived from the data (where possible) or
+the <code>dataProjection</code> of the format is assigned (where set). If the projection
+can not be derived from the data and if no <code>dataProjection</code> is set for a format,
+the features will not be reprojected.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>extent</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Tile extent in map units of the tile being read.
+This is only required when reading data with tile pixels as geometry units. When configured,
+a <code>dataProjection</code> with <code>TILE_PIXELS</code> as <code>units</code> and the tile's pixel extent as <code>extent</code> needs to be
+provided.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>featureProjection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection of the feature geometries
+created by the format reader. If not provided, features will be returned in the
+<code>dataProjection</code>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Features.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="readGeometry">
+        </div>
+        <h4 class="name">
+            readGeometry<span class="signature">(source, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_geom_Geometry-Geometry.html">Geometry</a>}</span>
+            
+                <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#readGeometry">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js">format/TextFeature.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js#L91">line 91</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Read the geometry from the source.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>source</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">Element</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Source.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+
+            
+
+            <td colspan=2 class="description last">
+                
+                <p>Read options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>dataProjection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection of the data we are reading.
+If not provided, the projection will be derived from the data (where possible) or
+the <code>dataProjection</code> of the format is assigned (where set). If the projection
+can not be derived from the data and if no <code>dataProjection</code> is set for a format,
+the features will not be reprojected.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>extent</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Tile extent in map units of the tile being read.
+This is only required when reading data with tile pixels as geometry units. When configured,
+a <code>dataProjection</code> with <code>TILE_PIXELS</code> as <code>units</code> and the tile's pixel extent as <code>extent</code> needs to be
+provided.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>featureProjection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection of the feature geometries
+created by the format reader. If not provided, features will be returned in the
+<code>dataProjection</code>.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Geometry.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="readProjection">
+        </div>
+        <h4 class="name">
+            readProjection<span class="signature">(source)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_proj_Projection-Projection.html">Projection</a> | undefined}</span>
+            
+                <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#readProjection">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js">format/TextFeature.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js#L117">line 117</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Read the projection from the source.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>source</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+|
+
+<span class="param-type">Element</span>
+|
+
+<span class="param-type">Object</span>
+|
+
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Source.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Projection.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="writeFeature">
+        </div>
+        <h4 class="name">
+            writeFeature<span class="signature">(feature, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
+            
+                <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#writeFeature">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js">format/TextFeature.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js#L139">line 139</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Encode a feature as a string.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>feature</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Feature.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+
+            
+
+            <td colspan=2 class="description last">
+                
+                <p>Write options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>dataProjection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection of the data we are writing.
+If not provided, the <code>dataProjection</code> of the format is assigned (where set).
+If no <code>dataProjection</code> is set for a format, the features will be returned
+in the <code>featureProjection</code>.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>featureProjection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection of the feature geometries
+that will be serialized by the format writer. If not provided, geometries are assumed
+to be in the <code>dataProjection</code> if that is set; in other words, they are not transformed.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>rightHanded</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>When writing geometries, follow the right-hand
+rule for linear ring orientation.  This means that polygons will have counter-clockwise
+exterior rings and clockwise interior rings.  By default, coordinates are serialized
+as they are provided at construction.  If <code>true</code>, the right-hand rule will
+be applied.  If <code>false</code>, the left-hand rule will be applied (clockwise for
+exterior and counter-clockwise for interior rings).  Note that not all
+formats support this.  The GeoJSON format does use this property when writing
+geometries.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>decimals</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Maximum number of decimal places for coordinates.
+Coordinates are stored internally as floats, but floating-point arithmetic can create
+coordinates with a large number of decimal places, not generally wanted on output.
+Set a number here to round coordinates. Can also be used to ensure that
+coordinates read in can be written back out with the same number of decimals.
+Default is no rounding.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Encoded feature.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="writeFeatures">
+        </div>
+        <h4 class="name">
+            writeFeatures<span class="signature">(features, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
+            
+                <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#writeFeatures">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js">format/TextFeature.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js#L163">line 163</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Encode an array of features as string.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>features</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array&lt;<a href="module-ol_Feature-Feature.html">Feature</a>></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Features.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+
+            
+
+            <td colspan=2 class="description last">
+                
+                <p>Write options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>dataProjection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection of the data we are writing.
+If not provided, the <code>dataProjection</code> of the format is assigned (where set).
+If no <code>dataProjection</code> is set for a format, the features will be returned
+in the <code>featureProjection</code>.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>featureProjection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection of the feature geometries
+that will be serialized by the format writer. If not provided, geometries are assumed
+to be in the <code>dataProjection</code> if that is set; in other words, they are not transformed.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>rightHanded</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>When writing geometries, follow the right-hand
+rule for linear ring orientation.  This means that polygons will have counter-clockwise
+exterior rings and clockwise interior rings.  By default, coordinates are serialized
+as they are provided at construction.  If <code>true</code>, the right-hand rule will
+be applied.  If <code>false</code>, the left-hand rule will be applied (clockwise for
+exterior and counter-clockwise for interior rings).  Note that not all
+formats support this.  The GeoJSON format does use this property when writing
+geometries.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>decimals</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Maximum number of decimal places for coordinates.
+Coordinates are stored internally as floats, but floating-point arithmetic can create
+coordinates with a large number of decimal places, not generally wanted on output.
+Set a number here to round coordinates. Can also be used to ensure that
+coordinates read in can be written back out with the same number of decimals.
+Default is no rounding.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Encoded features.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="writeGeometry">
+        </div>
+        <h4 class="name">
+            writeGeometry<span class="signature">(geometry, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{string}</span>
+            
+                <span class="inherited"><a href="module-ol_format_TextFeature-TextFeature.html#writeGeometry">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js">format/TextFeature.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/format/TextFeature.js#L187">line 187</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Write a single geometry.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>geometry</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_geom_Geometry-Geometry.html">Geometry</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Geometry.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+
+            
+
+            <td colspan=2 class="description last">
+                
+                <p>Write options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>dataProjection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection of the data we are writing.
+If not provided, the <code>dataProjection</code> of the format is assigned (where set).
+If no <code>dataProjection</code> is set for a format, the features will be returned
+in the <code>featureProjection</code>.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>featureProjection</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Projection of the feature geometries
+that will be serialized by the format writer. If not provided, geometries are assumed
+to be in the <code>dataProjection</code> if that is set; in other words, they are not transformed.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>rightHanded</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>When writing geometries, follow the right-hand
+rule for linear ring orientation.  This means that polygons will have counter-clockwise
+exterior rings and clockwise interior rings.  By default, coordinates are serialized
+as they are provided at construction.  If <code>true</code>, the right-hand rule will
+be applied.  If <code>false</code>, the left-hand rule will be applied (clockwise for
+exterior and counter-clockwise for interior rings).  Note that not all
+formats support this.  The GeoJSON format does use this property when writing
+geometries.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>decimals</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Maximum number of decimal places for coordinates.
+Coordinates are stored internally as floats, but floating-point arithmetic can create
+coordinates with a large number of decimal places, not generally wanted on output.
+Set a number here to round coordinates. Can also be used to ensure that
+coordinates read in can be written back out with the same number of decimals.
+Default is no rounding.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Geometry.
+<br />
+
+    
+
+    
+</dd>
+
+        </dl>
     
 
     

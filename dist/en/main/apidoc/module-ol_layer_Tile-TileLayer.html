@@ -75,6 +75,7 @@
             <li data-name="dispatchevent"><a href="module-ol_layer_Tile-TileLayer.html#dispatchEvent">dispatchEvent</a>
             <li data-name="get"><a href="module-ol_layer_Tile-TileLayer.html#get">get</a>
             <li data-name="getattributions"><a href="module-ol_layer_Tile-TileLayer.html#getAttributions">getAttributions</a>
+            <li data-name="getdata"><a href="module-ol_layer_Tile-TileLayer.html#getData">getData</a>
             <li data-name="getextent"><a href="module-ol_layer_Tile-TileLayer.html#getExtent">getExtent</a>
             <li data-name="getkeys"><a href="module-ol_layer_Tile-TileLayer.html#getKeys">getKeys</a>
             <li data-name="getmaxresolution"><a href="module-ol_layer_Tile-TileLayer.html#getMaxResolution">getMaxResolution</a>
@@ -1590,6 +1591,150 @@ Only required when the layer is not added to a map.</p></td>
 
 <h5>Returns:</h5>
 Attributions for this layer at the given view.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getData">
+        </div>
+        <h4 class="name">
+            getData<span class="signature">(pixel)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Uint8ClampedArray | Uint8Array | Float32Array | DataView | null}</span>
+            
+                <span class="inherited"><a href="module-ol_layer_BaseTile-BaseTileLayer.html#getData">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseTile.js">layer/BaseTile.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/BaseTile.js#L175">line 175</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get data for a pixel location.  The return type depends on the source data.  For image tiles,
+a four element RGBA array will be returned.  For data tiles, the array length will match the
+number of bands in the dataset.  For requests outside the layer extent, <code>null</code> will be returned.
+Data for a image tiles can only be retrieved if the source's <code>crossOrigin</code> property is set.</p>
+<pre class="prettyprint source lang-js"><code>// display layer data on every pointer move
+map.on('pointermove', (event) => {
+  console.log(layer.getData(event.pixel));
+});</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>pixel</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_pixel.html#~Pixel">Pixel</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Pixel.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Pixel data.
 <br />
 
     

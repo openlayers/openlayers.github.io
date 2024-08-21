@@ -71,17 +71,22 @@
     <div class="member-list" data-type="methods">
         <span class="subtitle">Methods</span>
         <ul>
+            <li data-name="clone"><a href="module-ol_style_Circle-CircleStyle.html#clone">clone</a>
+            <li data-name="getanchor"><a href="module-ol_style_Circle-CircleStyle.html#getAnchor">getAnchor</a>
             <li data-name="getangle"><a href="module-ol_style_Circle-CircleStyle.html#getAngle">getAngle</a>
             <li data-name="getdecluttermode"><a href="module-ol_style_Circle-CircleStyle.html#getDeclutterMode">getDeclutterMode</a>
             <li data-name="getdisplacement"><a href="module-ol_style_Circle-CircleStyle.html#getDisplacement">getDisplacement</a>
             <li data-name="getfill"><a href="module-ol_style_Circle-CircleStyle.html#getFill">getFill</a>
+            <li data-name="getimage"><a href="module-ol_style_Circle-CircleStyle.html#getImage">getImage</a>
             <li data-name="getopacity"><a href="module-ol_style_Circle-CircleStyle.html#getOpacity">getOpacity</a>
+            <li data-name="getorigin"><a href="module-ol_style_Circle-CircleStyle.html#getOrigin">getOrigin</a>
             <li data-name="getpoints"><a href="module-ol_style_Circle-CircleStyle.html#getPoints">getPoints</a>
             <li data-name="getradius"><a href="module-ol_style_Circle-CircleStyle.html#getRadius">getRadius</a>
             <li data-name="getradius2"><a href="module-ol_style_Circle-CircleStyle.html#getRadius2">getRadius2</a>
             <li data-name="getrotatewithview"><a href="module-ol_style_Circle-CircleStyle.html#getRotateWithView">getRotateWithView</a>
             <li data-name="getrotation"><a href="module-ol_style_Circle-CircleStyle.html#getRotation">getRotation</a>
             <li data-name="getscale"><a href="module-ol_style_Circle-CircleStyle.html#getScale">getScale</a>
+            <li data-name="getsize"><a href="module-ol_style_Circle-CircleStyle.html#getSize">getSize</a>
             <li data-name="getstroke"><a href="module-ol_style_Circle-CircleStyle.html#getStroke">getStroke</a>
             <li data-name="setdisplacement"><a href="module-ol_style_Circle-CircleStyle.html#setDisplacement">setDisplacement</a>
             <li data-name="setfill"><a href="module-ol_style_Circle-CircleStyle.html#setFill">setFill</a>
@@ -480,6 +485,189 @@ Unless two dimensional scaling is required a better result may be obtained with 
             
 <dt class="">
     
+    <div class="nameContainer">
+        <div class="anchor" id="clone">
+        </div>
+        <h4 class="name">
+            clone<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_style_Circle-CircleStyle.html">CircleStyle</a>}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Circle.js">style/Circle.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Circle.js#L55">line 55</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Clones the style.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The cloned style.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getAnchor">
+        </div>
+        <h4 class="name">
+            getAnchor<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;number>}</span>
+            
+                <span class="inherited"><a href="module-ol_style_RegularShape-RegularShape.html#getAnchor">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L184">line 184</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the anchor point in pixels. The anchor determines the center point for the
+symbolizer.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Anchor.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
     <div class="nameContainer inherited">
         <div class="anchor" id="getAngle">
         </div>
@@ -849,6 +1037,143 @@ Fill style.
 <dt class="">
     
     <div class="nameContainer inherited">
+        <div class="anchor" id="getImage">
+        </div>
+        <h4 class="name">
+            getImage<span class="signature">(pixelRatio)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{HTMLCanvasElement}</span>
+            
+                <span class="inherited"><a href="module-ol_style_RegularShape-RegularShape.html#getImage">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L244">line 244</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the image icon.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>pixelRatio</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Pixel ratio.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Image or Canvas element.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
         <div class="anchor" id="getOpacity">
         </div>
         <h4 class="name">
@@ -928,6 +1253,98 @@ Fill style.
 
 <h5>Returns:</h5>
 Opacity.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getOrigin">
+        </div>
+        <h4 class="name">
+            getOrigin<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;number>}</span>
+            
+                <span class="inherited"><a href="module-ol_style_RegularShape-RegularShape.html#getOrigin">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L292">line 292</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the origin of the symbolizer.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Origin.
 <br />
 
     
@@ -1480,6 +1897,98 @@ Rotation.
 
 <h5>Returns:</h5>
 Scale.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getSize">
+        </div>
+        <h4 class="name">
+            getSize<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_size.html#~Size">Size</a>}</span>
+            
+                <span class="inherited"><a href="module-ol_style_RegularShape-RegularShape.html#getSize">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L329">line 329</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the size of the symbolizer (in pixels).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Size.
 <br />
 
     

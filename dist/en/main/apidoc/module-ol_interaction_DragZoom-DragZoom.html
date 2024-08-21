@@ -81,9 +81,11 @@
             <li data-name="getpointercount"><a href="module-ol_interaction_DragZoom-DragZoom.html#getPointerCount">getPointerCount</a>
             <li data-name="getproperties"><a href="module-ol_interaction_DragZoom-DragZoom.html#getProperties">getProperties</a>
             <li data-name="getrevision"><a href="module-ol_interaction_DragZoom-DragZoom.html#getRevision">getRevision</a>
+            <li data-name="handleevent"><a href="module-ol_interaction_DragZoom-DragZoom.html#handleEvent">handleEvent</a>
             <li data-name="on"><a href="module-ol_interaction_DragZoom-DragZoom.html#on">on</a>
             <li data-name="once"><a href="module-ol_interaction_DragZoom-DragZoom.html#once">once</a>
             <li data-name="set"><a href="module-ol_interaction_DragZoom-DragZoom.html#set">set</a>
+            <li data-name="setactive"><a href="module-ol_interaction_DragZoom-DragZoom.html#setActive">setActive</a>
             <li data-name="setproperties"><a href="module-ol_interaction_DragZoom-DragZoom.html#setProperties">setProperties</a>
             <li data-name="un"><a href="module-ol_interaction_DragZoom-DragZoom.html#un">un</a>
             <li data-name="unset"><a href="module-ol_interaction_DragZoom-DragZoom.html#unset">unset</a>
@@ -1561,6 +1563,145 @@ Revision.
 <dt class="">
     
     <div class="nameContainer inherited">
+        <div class="anchor" id="handleEvent">
+        </div>
+        <h4 class="name">
+            handleEvent<span class="signature">(mapBrowserEvent)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
+            
+                <span class="inherited"><a href="module-ol_interaction_Pointer-PointerInteraction.html#handleEvent">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Pointer.js">interaction/Pointer.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Pointer.js#L125">line 125</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Handles the <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>map browser event</code></a> and may call into
+other functions, if event sequences like e.g. 'drag' or 'down-up' etc. are
+detected.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>mapBrowserEvent</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_MapBrowserEvent-MapBrowserEvent.html">MapBrowserEvent</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Map browser event.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+<code>false</code> to stop event propagation.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
         <div class="anchor" id="on">
         </div>
         <h4 class="name">
@@ -2020,6 +2161,134 @@ Unique key for the listener. If
             <td  class="description last">
                 
                 <p>Update without triggering an event.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="setActive">
+        </div>
+        <h4 class="name">
+            setActive<span class="signature">(active)</span>
+            
+                <span class="inherited"><a href="module-ol_interaction_DragBox-DragBox.html#setActive">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/DragBox.js">interaction/DragBox.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/DragBox.js#L292">line 292</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Activate or deactivate the interaction.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>active</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Active.</p></td>
         </tr>
 
 	
