@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6568],{26595:function(e,n,r){var s=r(41564),a=r(28e3),c=r(12185),o=r(6848),t=r(87240);const u=[new c.A({source:new a.A}),new c.A({source:new o.A({url:"https://ahocevar.com/geoserver/ne/wms",params:{LAYERS:"ne:ne_10m_admin_0_countries",TILED:!0},serverType:"geoserver"})})];new s.A({layers:u,target:"map",view:new t.Ay({center:[0,0],zoom:1})})}},function(e){var n;n=26595,e(e.s=n)}]);
+//# sourceMappingURL=wms-tiled-wrap-180.js.map
