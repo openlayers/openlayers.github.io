@@ -164,7 +164,7 @@ export type ParsedStyle = {
  * @fires import("../render/Event.js").RenderEvent
  * @api
  */
-declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js").default<import("../DataTile.js").default | import("../ImageTile.js").default>, WebGLTileLayerRenderer> {
+declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js").default<import("../DataTile.js").default | import("../ImageTile.js").default>, WebGLTileLayerRenderer<any>> {
     /**
      * @param {Options} options Tile layer options.
      */
@@ -215,6 +215,10 @@ declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js
      * @return {number} The number of source bands.
      */
     private getSourceBandCount_;
+    /**
+     * @override
+     */
+    override createRenderer(): WebGLTileLayerRenderer<this>;
     /**
      * @param {import("../Map").FrameState} frameState Frame state.
      * @param {Array<SourceType>} sources Sources.

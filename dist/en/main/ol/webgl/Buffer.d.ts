@@ -37,7 +37,7 @@ declare class WebGLArrayBuffer {
     /**
      * @param {number} type Buffer type, either ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER.
      * @param {number} [usage] Intended usage, either `STATIC_DRAW`, `STREAM_DRAW` or `DYNAMIC_DRAW`.
-     * Default is `DYNAMIC_DRAW`.
+     * Default is `STATIC_DRAW`.
      */
     constructor(type: number, usage?: number | undefined);
     /**
@@ -83,6 +83,10 @@ declare class WebGLArrayBuffer {
      * @return {Float32Array|Uint32Array|null} Array.
      */
     getArray(): Float32Array | Uint32Array | null;
+    /**
+     * @param {Float32Array|Uint32Array} array Array.
+     */
+    setArray(array: Float32Array | Uint32Array): void;
     /**
      * @return {number} Usage.
      */

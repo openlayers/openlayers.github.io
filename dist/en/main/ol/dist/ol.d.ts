@@ -510,6 +510,7 @@ declare namespace ol {
         export { $ol$layer$BaseImage as BaseImage };
         export { $ol$layer$BaseTile as BaseTile };
         export { $ol$layer$BaseVector as BaseVector };
+        export { $ol$layer$Flow as Flow };
         export { $ol$layer$Graticule as Graticule };
         export { $ol$layer$Group as Group };
         export { $ol$layer$Heatmap as Heatmap };
@@ -727,6 +728,7 @@ declare namespace ol {
             export { _ol_renderer_vector$renderFeature as renderFeature };
         }
         export namespace webgl {
+            export { $ol$renderer$webgl$FlowLayer as FlowLayer };
             export { $ol$renderer$webgl$Layer as Layer };
             export { $ol$renderer$webgl$PointsLayer as PointsLayer };
             export { $ol$renderer$webgl$TileLayer as TileLayer };
@@ -1397,6 +1399,7 @@ import $ol$layer$Base from '../../ol/layer/Base.js';
 import $ol$layer$BaseImage from '../../ol/layer/BaseImage.js';
 import $ol$layer$BaseTile from '../../ol/layer/BaseTile.js';
 import $ol$layer$BaseVector from '../../ol/layer/BaseVector.js';
+import $ol$layer$Flow from '../../ol/layer/Flow.js';
 import $ol$layer$Graticule from '../../ol/layer/Graticule.js';
 import $ol$layer$Group from '../../ol/layer/Group.js';
 import $ol$layer$Heatmap from '../../ol/layer/Heatmap.js';
@@ -1569,6 +1572,7 @@ import { defaultOrder as _ol_renderer_vector$defaultOrder } from '../../ol/rende
 import { getSquaredTolerance as _ol_renderer_vector$getSquaredTolerance } from '../../ol/renderer/vector.js';
 import { getTolerance as _ol_renderer_vector$getTolerance } from '../../ol/renderer/vector.js';
 import { renderFeature as _ol_renderer_vector$renderFeature } from '../../ol/renderer/vector.js';
+import $ol$renderer$webgl$FlowLayer from '../../ol/renderer/webgl/FlowLayer.js';
 import $ol$renderer$webgl$Layer from '../../ol/renderer/webgl/Layer.js';
 import $ol$renderer$webgl$PointsLayer from '../../ol/renderer/webgl/PointsLayer.js';
 import $ol$renderer$webgl$TileLayer from '../../ol/renderer/webgl/TileLayer.js';

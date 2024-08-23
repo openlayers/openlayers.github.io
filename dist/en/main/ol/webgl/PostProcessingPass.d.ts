@@ -115,10 +115,12 @@ declare class WebGLPostProcessingPass {
      */
     private scaleRatio_;
     /**
+     * @type {WebGLTexture}
      * @private
      */
     private renderTargetTexture_;
     /**
+     * @type {import('../size.js').Size|null}
      * @private
      */
     private renderTargetTextureSize_;
@@ -160,6 +162,7 @@ declare class WebGLPostProcessingPass {
      * @private
      */
     private uniforms_;
+    getRenderTargetTexture(): WebGLTexture;
     /**
      * Get the WebGL rendering context
      * @return {WebGLRenderingContext} The rendering context.

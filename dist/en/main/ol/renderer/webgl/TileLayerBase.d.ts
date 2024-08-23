@@ -189,6 +189,11 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileTy
      */
     override renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
     /**
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @protected
+     */
+    protected beforeFinalize(frameState: import("../../Map.js").FrameState): void;
+    /**
      * Look for tiles covering the provided tile coordinate at an alternate
      * zoom level.  Loaded tiles will be added to the provided tile representation lookup.
      * @param {import("../../tilegrid/TileGrid.js").default} tileGrid The tile grid.

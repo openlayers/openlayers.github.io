@@ -409,12 +409,28 @@ declare class WebGLHelper extends Disposable {
      */
     prepareDraw(frameState: import("../Map.js").FrameState, disableAlphaBlend?: boolean | undefined, enableDepth?: boolean | undefined): void;
     /**
+     * @param {WebGLFramebuffer|null} frameBuffer The frame buffer.
+     * @param {WebGLTexture} [texture] The texture.
+     */
+    bindFrameBuffer(frameBuffer: WebGLFramebuffer | null, texture?: WebGLTexture | undefined): void;
+    /**
+     * Bind the frame buffer from the initial render.
+     */
+    bindInitialFrameBuffer(): void;
+    /**
      * Prepare a program to use a texture.
      * @param {WebGLTexture} texture The texture.
      * @param {number} slot The texture slot.
      * @param {string} uniformName The corresponding uniform name.
      */
     bindTexture(texture: WebGLTexture, slot: number, uniformName: string): void;
+    /**
+     * Set up an attribute array buffer for use in the vertex shader.
+     * @param {import("./Buffer").default} buffer The buffer.
+     * @param {string} attributeName The attribute name.
+     * @param {number} size The number of components per attribute vertex.
+     */
+    bindAttribute(buffer: import("./Buffer").default, attributeName: string, size: number): void;
     /**
      * Clear the render target & bind it for future draw operations.
      * This is similar to `prepareDraw`, only post processes will not be applied.
@@ -466,9 +482,9 @@ declare class WebGLHelper extends Disposable {
      * Set up a program for use. The program will be set as the current one. Then, the uniforms used
      * in the program will be set based on the current frame state and the helper configuration.
      * @param {WebGLProgram} program Program.
-     * @param {import("../Map.js").FrameState} frameState Frame state.
+     * @param {import("../Map.js").FrameState} [frameState] Frame state.
      */
-    useProgram(program: WebGLProgram, frameState: import("../Map.js").FrameState): void;
+    useProgram(program: WebGLProgram, frameState?: import("../Map.js").FrameState | undefined): void;
     /**
      * Will attempt to compile a vertex or fragment shader based on source
      * On error, the shader will be returned but
@@ -567,14 +583,15 @@ declare class WebGLHelper extends Disposable {
     /**
      * Will create or reuse a given webgl texture and apply the given size. If no image data
      * specified, the texture will be empty, otherwise image data will be used and the `size`
-     * parameter will be ignored.
+     * parameter will be ignored.  If a Uint8Array is provided for data, a size must also be provided.
      * Note: wrap parameters are set to clamp to edge, min filter is set to linear.
      * @param {Array<number>} size Expected size of the texture
-     * @param {ImageData|HTMLImageElement|HTMLCanvasElement} [data] Image data/object to bind to the texture
+     * @param {ImageData|HTMLImageElement|HTMLCanvasElement|Uint8Array|null} data Image data/object to bind to the texture
      * @param {WebGLTexture} [texture] Existing texture to reuse
+     * @param {boolean} [nearest] Use gl.NEAREST for min/mag filter.
      * @return {WebGLTexture} The generated texture
      */
-    createTexture(size: Array<number>, data?: HTMLCanvasElement | HTMLImageElement | ImageData | undefined, texture?: WebGLTexture | undefined): WebGLTexture;
+    createTexture(size: Array<number>, data: ImageData | HTMLImageElement | HTMLCanvasElement | Uint8Array | null, texture?: WebGLTexture | undefined, nearest?: boolean | undefined): WebGLTexture;
 }
 import Disposable from '../Disposable.js';
 //# sourceMappingURL=Helper.d.ts.map
