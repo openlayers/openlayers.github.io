@@ -27,7 +27,7 @@ export type InteractionOptions = {
      * prevented (this includes functions with no explicit return). The interactions
      * are traversed in reverse order of the interactions collection of the map.
      */
-    handleEvent: (arg0: import("../MapBrowserEvent.js").default<any>) => boolean;
+    handleEvent?: ((arg0: import("../MapBrowserEvent.js").default<any>) => boolean) | undefined;
 };
 /***
  * @template Return
@@ -40,7 +40,7 @@ export type InteractionOptions = {
 /**
  * Object literal with config options for interactions.
  * @typedef {Object} InteractionOptions
- * @property {function(import("../MapBrowserEvent.js").default):boolean} handleEvent
+ * @property {function(import("../MapBrowserEvent.js").default):boolean} [handleEvent]
  * Method called by the map to notify the interaction that a browser event was
  * dispatched to the map. If the function returns a falsy value, propagation of
  * the event to other interactions in the map's interactions chain will be
