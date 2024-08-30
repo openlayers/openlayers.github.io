@@ -91,6 +91,11 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      */
     private tileCache_;
     /**
+     * @private
+     * @type {import("../../proj/Projection.js").default}
+     */
+    private renderedProjection_;
+    /**
      * @return {LRUCache} Tile cache.
      */
     getTileCache(): LRUCache<any>;

@@ -124,7 +124,7 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileTy
      * @private
      * @type {import("../../proj/Projection.js").default}
      */
-    private projection_;
+    private renderedProjection_;
     /**
      * @param {Options} options Options.
      * @override
