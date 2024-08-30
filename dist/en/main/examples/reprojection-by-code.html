@@ -265,6 +265,8 @@ import {applyTransform} from &#x27;ol/extent.js&#x27;;
 import {get as getProjection, getTransform} from &#x27;ol/proj.js&#x27;;
 import {register} from &#x27;ol/proj/proj4.js&#x27;;
 
+const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
+
 const osmSource &#x3D; new OSM();
 
 const debugLayer &#x3D; new TileLayer({
@@ -349,7 +351,7 @@ function setProjection(code, name, proj4def, bbox) {
 function search(query) {
   resultSpan.innerHTML &#x3D; &#x27;Searching ...&#x27;;
   fetch(
-    &#x60;https://api.maptiler.com/coordinates/search/${query}.json?exports&#x3D;true&amp;key&#x3D;Get your own API key at https://www.maptiler.com/cloud/&#x60;,
+    &#x60;https://api.maptiler.com/coordinates/search/${query}.json?exports&#x3D;true&amp;key&#x3D;${key}&#x60;,
   )
     .then(function (response) {
       return response.json();
