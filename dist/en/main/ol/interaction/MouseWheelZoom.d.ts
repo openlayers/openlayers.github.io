@@ -111,7 +111,7 @@ declare class MouseWheelZoom extends Interaction {
     private condition_;
     /**
      * @private
-     * @type {?import("../coordinate.js").Coordinate}
+     * @type {?import("../pixel.js").Pixel}
      */
     private lastAnchor_;
     /**
