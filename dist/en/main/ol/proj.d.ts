@@ -314,7 +314,7 @@ export type ProjectionLike = Projection | string | undefined;
  * transforms the input coordinate values, populates the output array, and
  * returns the output array.
  */
-export type TransformFunction = (arg0: Array<number>, arg1: Array<number> | undefined, arg2: number | undefined, arg3: number | undefined) => Array<number>;
+export type TransformFunction = (input: Array<number>, output?: number[] | undefined, dimension?: number | undefined, stride?: number | undefined) => Array<number>;
 import Projection from './proj/Projection.js';
 import { METERS_PER_UNIT } from './proj/Units.js';
 export { METERS_PER_UNIT, Projection };
