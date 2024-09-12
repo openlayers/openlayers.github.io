@@ -131,8 +131,9 @@ declare class TileSource<TileType extends import("../Tile.js").default = import(
     private tilePixelRatio_;
     /**
      * @type {import("../tilegrid/TileGrid.js").default|null}
+     * @protected
      */
-    tileGrid: import("../tilegrid/TileGrid.js").default | null;
+    protected tileGrid: import("../tilegrid/TileGrid.js").default | null;
     /**
      * @protected
      * @type {import("../TileCache.js").default}
