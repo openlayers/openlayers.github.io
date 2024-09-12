@@ -95,7 +95,7 @@ map.setView(new View({
 <p>To get remote data for a layer, OpenLayers uses <code>ol/source/Source</code> subclasses. These are available for free and commercial map tile services like OpenStreetMap or Bing, for OGC sources like WMS or WMTS, and for vector data in formats like GeoJSON or KML.</p>
 <pre><code class="language-js">import OSM from &#39;ol/source/OSM.js&#39;;
 
-const source = OSM();
+const source = new OSM();
 </code></pre>
 <h2 id="layer">Layer</h2>
 <p>A layer is a visual representation of data from a source. OpenLayers has four basic types of layers:</p>
