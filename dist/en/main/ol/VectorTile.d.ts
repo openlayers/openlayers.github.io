@@ -53,6 +53,10 @@ declare class VectorTile<FeatureType extends import("./Feature.js").FeatureLike>
      */
     private url_;
     /**
+     * @return {string} Tile url.
+     */
+    getTileUrl(): string;
+    /**
      * Get the feature format assigned for reading this tile's features.
      * @return {import("./format/Feature.js").default<FeatureType>} Feature format.
      * @api

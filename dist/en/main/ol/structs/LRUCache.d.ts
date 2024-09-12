@@ -69,7 +69,8 @@ declare class LRUCache<T> {
      */
     canExpireCache(): boolean;
     /**
-     * Expire the cache.
+     * Expire the cache. When the cache entry is a {@link module:ol/Disposable~Disposable},
+     * the entry will be disposed.
      * @param {!Object<string, boolean>} [keep] Keys to keep. To be implemented by subclasses.
      */
     expireCache(keep?: {

@@ -43,7 +43,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
      */
     state?: import("./Source.js").State | undefined;
     /**
-     * Class used to instantiate image tiles.
+     * Class used to instantiate tiles.
      * Default is {@link module :ol/VectorTile~VectorTile}.
      */
     tileClass?: typeof Tile | undefined;
@@ -144,7 +144,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
  * stroke operations.
  * @property {import("../proj.js").ProjectionLike} [projection='EPSG:3857'] Projection of the tile grid.
  * @property {import("./Source.js").State} [state] Source state.
- * @property {typeof import("../VectorTile.js").default} [tileClass] Class used to instantiate image tiles.
+ * @property {typeof import("../VectorTile.js").default} [tileClass] Class used to instantiate tiles.
  * Default is {@link module:ol/VectorTile~VectorTile}.
  * @property {number} [maxZoom=22] Optional max zoom level. Not used if `tileGrid` is provided.
  * @property {number} [minZoom] Optional min zoom level. Not used if `tileGrid` is provided.
@@ -220,10 +220,16 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
      */
     private format_;
     /**
+     * @type {Object<string, Array<string>>}
      * @private
-     * @type {TileCache}
      */
-    private sourceTileCache_;
+    private tileKeysBySourceTileUrl_;
+    /**
+     @type {Object<string, Tile<FeatureType>>}
+     */
+    sourceTiles_: {
+        [x: string]: Tile<FeatureType>;
+    };
     /**
      * @private
      * @type {boolean}
@@ -246,10 +252,14 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
     /**
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection").default} projection Projection.
-     * @param {VectorRenderTile} tile Vector image tile.
+     * @param {VectorRenderTile} tile Vector render tile.
      * @return {Array<import("../VectorTile").default>} Tile keys.
      */
     getSourceTiles(pixelRatio: number, projection: import("../proj/Projection").default, tile: VectorRenderTile): Array<Tile<any>>;
+    /**
+     * @param {VectorRenderTile} tile Vector render tile.
+     */
+    removeSourceTiles(tile: VectorRenderTile): void;
     /**
      * @param {number} z Tile coordinate z.
      * @param {number} x Tile coordinate x.
