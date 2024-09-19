@@ -136,11 +136,6 @@ declare class TileSource<TileType extends import("../Tile.js").default = import(
     protected tileGrid: import("../tilegrid/TileGrid.js").default | null;
     /**
      * @protected
-     * @type {import("../TileCache.js").default}
-     */
-    protected tileCache: import("../TileCache.js").default;
-    /**
-     * @protected
      * @type {import("../size.js").Size}
      */
     protected tmpSize: import("../size.js").Size;
@@ -242,19 +237,10 @@ declare class TileSource<TileType extends import("../Tile.js").default = import(
      */
     getTileCoordForTileUrlFunction(tileCoord: import("../tilecoord.js").TileCoord, projection?: import("../proj.js").Projection | undefined): import("../tilecoord.js").TileCoord;
     /**
-     * Remove all cached tiles from the source. The next render cycle will fetch new tiles.
+     * Remove all cached reprojected tiles from the source. The next render cycle will create new tiles.
      * @api
      */
     clear(): void;
-    /**
-     * Marks a tile coord as being used, without triggering a load.
-     * @abstract
-     * @param {number} z Tile coordinate z.
-     * @param {number} x Tile coordinate x.
-     * @param {number} y Tile coordinate y.
-     * @param {import("../proj/Projection.js").default} projection Projection.
-     */
-    useTile(z: number, x: number, y: number, projection: import("../proj/Projection.js").default): void;
 }
 import Source from './Source.js';
 //# sourceMappingURL=Tile.d.ts.map

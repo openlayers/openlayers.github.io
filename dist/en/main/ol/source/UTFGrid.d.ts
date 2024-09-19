@@ -242,14 +242,6 @@ declare class UTFGrid extends TileSource<Tile> {
      * @override
      */
     override getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): CustomTile;
-    /**
-     * Marks a tile coord as being used, without triggering a load.
-     * @param {number} z Tile coordinate z.
-     * @param {number} x Tile coordinate x.
-     * @param {number} y Tile coordinate y.
-     * @override
-     */
-    override useTile(z: number, x: number, y: number): void;
 }
 import TileSource from './Tile.js';
 //# sourceMappingURL=UTFGrid.d.ts.map
