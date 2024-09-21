@@ -991,6 +991,10 @@ declare namespace ol {
         export { _ol_xml$registerXMLSerializer as registerXMLSerializer };
         export { _ol_xml$serialize as serialize };
     }
+    import VERSION = util.VERSION;
+    export { VERSION };
+    import getUid = util.getUid;
+    export { getUid };
 }
 import $ol$Collection from '../../ol/Collection.js';
 import $ol$DataTile from '../../ol/DataTile.js';
