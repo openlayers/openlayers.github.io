@@ -347,6 +347,11 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      */
     setMap(map: import("../Map.js").default | null): void;
     /**
+     * @param {import("../events/Event.js").default} renderEvent Render event
+     * @private
+     */
+    private handlePrecompose_;
+    /**
      * Set the layer source.
      * @param {SourceType|null} source The layer source.
      * @observable
