@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6138],{52981:function(e,t,r){var n=r(96256),a=r(41564),p=r(15264),s=r(87240);new a.A({target:"map",layers:[new n.A({source:new p.A({url:"https://tile.openstreetmap.org/{z}/{x}/{y}.png",attributions:'&#169; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors.'})})],view:new s.Ay({center:[0,0],zoom:0})})}},function(e){var t;t=52981,e(e.s=t)}]);
+//# sourceMappingURL=webgl-tiles.js.map
