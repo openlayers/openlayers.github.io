@@ -135,7 +135,10 @@
       <div class="row-fluid">
         <div class="span12">
           <p id="shortdesc">Cropping a WebGL tile layer</p>
-          <div id="docs"><p>The <code>prerender</code> and <code>postrender</code> events on a WebGL tile layer can be used to manipulate the WebGL context before and after rendering.  In this case, the  <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/scissor"><code>gl.scissor()</code></a> method is called to clip the top layer based on the position of a slider.</p>
+          <div id="docs"><p>The <code>prerender</code> and <code>postrender</code> events on a WebGL tile layer can be used to manipulate the WebGL context before and after rendering.  In this case, the  <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/scissor"><code>gl.scissor()</code></a> method is called to clip the top layer based on the position of a slider. <p><b>Note: </b>This example is minimalist and works as there is only one WebGL layer rendered. That might works as well if the layers are drawn to different contexts. This does not apply to
+  to several layers drawn to a single context, such as set with the &#39;className&#39; property to &#39;canvas3d&#39; on multiple layers. In such case, it&#39;s would be wise 
+  adapt your code using &#39;gl.clear&#39; and other tweaks to the prerender/postrender event.</p>
+</p>
 </div>
         </div>
       </div>
