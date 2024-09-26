@@ -191,11 +191,6 @@ declare class DataTileSource<TileType extends import("../Tile.js").default = Dat
     private tileGridForProjection_;
     /**
      * @private
-     * @type {!Object<string, import("../TileCache.js").default>}
-     */
-    private tileCacheForProjection_;
-    /**
-     * @private
      * @type {CrossOriginAttribute}
      */
     private crossOrigin_;

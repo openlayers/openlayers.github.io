@@ -165,13 +165,6 @@ declare class TileImage extends UrlTile {
     protected tileClass: typeof ImageTile;
     /**
      * @protected
-     * @type {!Object<string, TileCache>}
-     */
-    protected tileCacheForProjection: {
-        [x: string]: TileCache;
-    };
-    /**
-     * @protected
      * @type {!Object<string, import("../tilegrid/TileGrid.js").default>}
      */
     protected tileGridForProjection: {
@@ -244,6 +237,5 @@ declare class TileImage extends UrlTile {
 }
 import ImageTile from '../ImageTile.js';
 import UrlTile from './UrlTile.js';
-import TileCache from '../TileCache.js';
 import ReprojTile from '../reproj/Tile.js';
 //# sourceMappingURL=TileImage.d.ts.map

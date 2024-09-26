@@ -158,17 +158,6 @@ declare class TileSource<TileType extends import("../Tile.js").default = import(
      */
     zDirection: number | import("../array.js").NearestDirectionFunction;
     /**
-     * @return {boolean} Can expire cache.
-     */
-    canExpireCache(): boolean;
-    /**
-     * @param {import("../proj/Projection.js").default} projection Projection.
-     * @param {!Object<string, boolean>} usedTiles Used tiles.
-     */
-    expireCache(projection: import("../proj/Projection.js").default, usedTiles: {
-        [x: string]: boolean;
-    }): void;
-    /**
      * @param {import("../proj/Projection.js").default} projection Projection.
      * @return {number} Gutter.
      */
@@ -205,12 +194,6 @@ declare class TileSource<TileType extends import("../Tile.js").default = import(
      * @return {!import("../tilegrid/TileGrid.js").default} Tile grid.
      */
     getTileGridForProjection(projection: import("../proj/Projection.js").default): import("../tilegrid/TileGrid.js").default;
-    /**
-     * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {import("../TileCache.js").default} Tile cache.
-     * @protected
-     */
-    protected getTileCacheForProjection(projection: import("../proj/Projection.js").default): import("../TileCache.js").default;
     /**
      * Get the tile pixel ratio for this source. Subclasses may override this
      * method, which is meant to return a supported pixel ratio that matches the
