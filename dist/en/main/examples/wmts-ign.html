@@ -210,11 +210,8 @@ const tileGrid &#x3D; new WMTSTileGrid({
   matrixIds: matrixIds,
 });
 
-// For more information about the IGN API key see
-// https://geoservices.ign.fr/blog/2021/01/29/Maj_Cles_Geoservices.html
-
 const ign_source &#x3D; new WMTS({
-  url: &#x27;https://wxs.ign.fr/choisirgeoportail/geoportail/wmts&#x27;,
+  url: &#x27;https://data.geopf.fr/wmts&#x27;,
   layer: &#x27;GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&#x27;,
   matrixSet: &#x27;PM&#x27;,
   format: &#x27;image/png&#x27;,
@@ -223,7 +220,7 @@ const ign_source &#x3D; new WMTS({
   style: &#x27;normal&#x27;,
   attributions:
     &#x27;&lt;a href&#x3D;&quot;https://www.ign.fr/&quot; target&#x3D;&quot;_blank&quot;&gt;&#x27; +
-    &#x27;&lt;img src&#x3D;&quot;https://wxs.ign.fr/static/logos/IGN/IGN.gif&quot; title&#x3D;&quot;Institut national de l\&#x27;&#x27; +
+    &#x27;&lt;img src&#x3D;&quot;https://data.geopf.fr/annexes/ressources/logos/ign.gif&quot; title&#x3D;&quot;Institut national de l\&#x27;&#x27; +
     &#x27;information géographique et forestière&quot; alt&#x3D;&quot;IGN&quot;&gt;&lt;/a&gt;&#x27;,
 });
 
