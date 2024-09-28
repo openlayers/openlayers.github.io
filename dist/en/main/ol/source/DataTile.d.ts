@@ -95,6 +95,11 @@ export type Options = {
      * Key for use in caching tiles.
      */
     key?: string | undefined;
+    /**
+     * Choose whether to use tiles with a higher or lower zoom level when between integer
+     * zoom levels. See {@link module :ol/tilegrid/TileGrid~TileGrid#getZForResolution}.
+     */
+    zDirection?: number | import("../array.js").NearestDirectionFunction | undefined;
 };
 /**
  * @typedef {'anonymous'|'use-credentials'} CrossOriginAttribute
@@ -136,6 +141,9 @@ export type Options = {
  * the nearest neighbor is used when resampling.
  * @property {CrossOriginAttribute} [crossOrigin='anonymous'] The crossOrigin property to pass to loaders for image data.
  * @property {string} [key] Key for use in caching tiles.
+ * @property {number|import("../array.js").NearestDirectionFunction} [zDirection=0]
+ * Choose whether to use tiles with a higher or lower zoom level when between integer
+ * zoom levels. See {@link module:ol/tilegrid/TileGrid~TileGrid#getZForResolution}.
  */
 /**
  * @classdesc

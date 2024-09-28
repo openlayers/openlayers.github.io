@@ -78,6 +78,11 @@ export type Options = {
      * The crossOrigin property to pass to loaders for image data.
      */
     crossOrigin?: import("./DataTile.js").CrossOriginAttribute | undefined;
+    /**
+     * Choose whether to use tiles with a higher or lower zoom level when between integer
+     * zoom levels. See {@link module :ol/tilegrid/TileGrid~TileGrid#getZForResolution}.
+     */
+    zDirection?: number | import("../array.js").NearestDirectionFunction | undefined;
 };
 /**
  * @classdesc
