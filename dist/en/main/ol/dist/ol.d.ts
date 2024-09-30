@@ -748,6 +748,12 @@ declare namespace ol {
         export namespace common {
             export { _ol_reproj_common$ERROR_THRESHOLD as ERROR_THRESHOLD };
         }
+        export namespace glreproj {
+            export { _ol_reproj_glreproj$canvasGLPool as canvasGLPool };
+            export { _ol_reproj_glreproj$createCanvasContextWebGL as createCanvasContextWebGL };
+            export { _ol_reproj_glreproj$releaseGLCanvas as releaseGLCanvas };
+            export { _ol_reproj_glreproj$render as render };
+        }
         export { _ol_reproj$render as render };
     }
     export namespace resolution {
@@ -930,12 +936,20 @@ declare namespace ol {
         namespace mat4 {
             export { _ol_vec_mat4$create as create };
             export { _ol_vec_mat4$fromTransform as fromTransform };
+            export { _ol_vec_mat4$orthographic as orthographic };
+            export { _ol_vec_mat4$scale as scale };
+            export { _ol_vec_mat4$translate as translate };
+            export { _ol_vec_mat4$translation as translation };
         }
     }
     export namespace webgl {
         export { _ol_webgl$ARRAY_BUFFER as ARRAY_BUFFER };
         export { $ol$webgl$BaseTileRepresentation as BaseTileRepresentation };
         export { $ol$webgl$Buffer as Buffer };
+        export namespace Canvas {
+            export { _ol_webgl_Canvas$Canvas as Canvas };
+            export { _ol_webgl_Canvas$createProgram as createProgram };
+        }
         export { _ol_webgl$DYNAMIC_DRAW as DYNAMIC_DRAW };
         export { _ol_webgl$ELEMENT_ARRAY_BUFFER as ELEMENT_ARRAY_BUFFER };
         export { _ol_webgl$FLOAT as FLOAT };
@@ -1591,6 +1605,10 @@ import { calculateSourceExtentResolution as _ol_reproj$calculateSourceExtentReso
 import { calculateSourceResolution as _ol_reproj$calculateSourceResolution } from '../../ol/reproj.js';
 import { canvasPool as _ol_reproj$canvasPool } from '../../ol/reproj.js';
 import { ERROR_THRESHOLD as _ol_reproj_common$ERROR_THRESHOLD } from '../../ol/reproj/common.js';
+import { canvasGLPool as _ol_reproj_glreproj$canvasGLPool } from '../../ol/reproj/glreproj.js';
+import { createCanvasContextWebGL as _ol_reproj_glreproj$createCanvasContextWebGL } from '../../ol/reproj/glreproj.js';
+import { releaseGLCanvas as _ol_reproj_glreproj$releaseGLCanvas } from '../../ol/reproj/glreproj.js';
+import { render as _ol_reproj_glreproj$render } from '../../ol/reproj/glreproj.js';
 import { render as _ol_reproj$render } from '../../ol/reproj.js';
 import { fromResolutionLike as _ol_resolution$fromResolutionLike } from '../../ol/resolution.js';
 import { createMinMaxResolution as _ol_resolutionconstraint$createMinMaxResolution } from '../../ol/resolutionconstraint.js';
@@ -1723,9 +1741,15 @@ import { abstract as _ol_util$abstract } from '../../ol/util.js';
 import { getUid as _ol_util$getUid } from '../../ol/util.js';
 import { create as _ol_vec_mat4$create } from '../../ol/vec/mat4.js';
 import { fromTransform as _ol_vec_mat4$fromTransform } from '../../ol/vec/mat4.js';
+import { orthographic as _ol_vec_mat4$orthographic } from '../../ol/vec/mat4.js';
+import { scale as _ol_vec_mat4$scale } from '../../ol/vec/mat4.js';
+import { translate as _ol_vec_mat4$translate } from '../../ol/vec/mat4.js';
+import { translation as _ol_vec_mat4$translation } from '../../ol/vec/mat4.js';
 import { ARRAY_BUFFER as _ol_webgl$ARRAY_BUFFER } from '../../ol/webgl.js';
 import $ol$webgl$BaseTileRepresentation from '../../ol/webgl/BaseTileRepresentation.js';
 import $ol$webgl$Buffer from '../../ol/webgl/Buffer.js';
+import { Canvas as _ol_webgl_Canvas$Canvas } from '../../ol/webgl/Canvas.js';
+import { createProgram as _ol_webgl_Canvas$createProgram } from '../../ol/webgl/Canvas.js';
 import { DYNAMIC_DRAW as _ol_webgl$DYNAMIC_DRAW } from '../../ol/webgl.js';
 import { ELEMENT_ARRAY_BUFFER as _ol_webgl$ELEMENT_ARRAY_BUFFER } from '../../ol/webgl.js';
 import { FLOAT as _ol_webgl$FLOAT } from '../../ol/webgl.js';

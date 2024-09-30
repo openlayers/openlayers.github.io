@@ -61,6 +61,10 @@ export type Options = {
      * transitions in milliseconds. A duration of 0 disables the opacity transition.
      */
     transition?: number | undefined;
+    /**
+     * Render reprojection edges.
+     */
+    renderEdges?: boolean | undefined;
 };
 /**
  * @typedef {function(number, number, number, number) : import("../DataTile.js").default} TileGetter
@@ -86,6 +90,7 @@ export type Options = {
  * @property {number} [errorThreshold] Acceptable reprojection error (in px).
  * @property {number} [transition=250] A duration for tile opacity
  * transitions in milliseconds. A duration of 0 disables the opacity transition.
+ * @property {boolean} [renderEdges] Render reprojection edges.
  */
 /**
  * @classdesc
@@ -98,6 +103,11 @@ declare class ReprojDataTile extends DataTile {
      * @param {Options} options Tile options.
      */
     constructor(options: Options);
+    /**
+     * @private
+     * @type {boolean | Array<number>}
+     */
+    private renderEdges_;
     /**
      * @private
      * @type {number}
