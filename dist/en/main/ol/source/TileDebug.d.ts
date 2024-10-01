@@ -43,11 +43,11 @@ export type Options = {
  * each tile. See examples/canvas-tiles for an example.
  * @api
  */
-declare class TileDebug extends XYZ {
+declare class TileDebug extends ImageTile {
     /**
      * @param {Options} [options] Debug tile options.
      */
     constructor(options?: Options | undefined);
 }
-import XYZ from './XYZ.js';
+import ImageTile from './ImageTile.js';
 //# sourceMappingURL=TileDebug.d.ts.map
