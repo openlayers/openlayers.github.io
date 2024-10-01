@@ -270,6 +270,10 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
      * @override
      */
     override getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): VectorRenderTile;
+    /**
+     * @param {boolean} overlaps The source has overlapping geometries.
+     */
+    setOverlaps(overlaps: boolean): void;
 }
 import Tile from '../VectorTile.js';
 import TileGrid from '../tilegrid/TileGrid.js';

@@ -651,6 +651,10 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      * @api
      */
     setUrl(url: string | import("../featureloader.js").FeatureUrlFunction): void;
+    /**
+     * @param {boolean} overlaps The source can have overlapping geometries.
+     */
+    setOverlaps(overlaps: boolean): void;
 }
 import RenderFeature from '../render/Feature.js';
 import Collection from '../Collection.js';
