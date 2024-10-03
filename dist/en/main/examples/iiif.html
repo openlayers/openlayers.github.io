@@ -60,66 +60,65 @@
         <a href="#" id="codepen-button" class="btn btn-link float-end">
           <i class="fab fa-codepen fa-lg"></i> Edit
         </a>
-        <div class="span12">
-          <h4 id="title">IIIF Image API</h4>
-          <p class="tags">
-            <span class="badge-group">
-              <a
-                href="./index.html?q=IIIF" class="badge badge-info">IIIF</a
-              ><a
-                class="badge badge-info tag-modal-toggle"
-                data-bs-toggle="modal"
-                data-bs-target="#tag-example-list"
-                data-title="IIIF"
-                data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./iiif.html&quot;&gt;IIIF Image API&lt;/a&gt;
-                  &lt;/ul&gt;"
-                tabindex="0"
-                >1</a>
-            </span>
-            <span class="badge-group">
-              <a
-                href="./index.html?q=IIIFImageAPI" class="badge badge-info">IIIFImageAPI</a
-              ><a
-                class="badge badge-info tag-modal-toggle"
-                data-bs-toggle="modal"
-                data-bs-target="#tag-example-list"
-                data-title="IIIFImageAPI"
-                data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./iiif.html&quot;&gt;IIIF Image API&lt;/a&gt;
-                  &lt;/ul&gt;"
-                tabindex="0"
-                >1</a>
-            </span>
-            <span class="badge-group">
-              <a
-                href="./index.html?q=tilesource" class="badge badge-info">tilesource</a
-              ><a
-                class="badge badge-info tag-modal-toggle"
-                data-bs-toggle="modal"
-                data-bs-target="#tag-example-list"
-                data-title="tilesource"
-                data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./iiif.html&quot;&gt;IIIF Image API&lt;/a&gt;
-                  &lt;/ul&gt;"
-                tabindex="0"
-                >1</a>
-            </span>
-          </p>
-          <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="tag-example-title"></h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <div class="list-group"></div>
-                </div>
+        <h4 id="title">IIIF Image API</h4>
+        <p class="tags">
+          <span class="badge-group">
+            <a
+              href="./index.html?q=IIIF" class="badge badge-info">IIIF</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="IIIF"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./iiif.html&quot;&gt;IIIF Image API&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >1</a>
+          </span>
+          <span class="badge-group">
+            <a
+              href="./index.html?q=IIIFImageAPI" class="badge badge-info">IIIFImageAPI</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="IIIFImageAPI"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./iiif.html&quot;&gt;IIIF Image API&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >1</a>
+          </span>
+          <span class="badge-group">
+            <a
+              href="./index.html?q=tilesource" class="badge badge-info">tilesource</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="tilesource"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./iiif.html&quot;&gt;IIIF Image API&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >1</a>
+          </span>
+        </p>
+        <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="tag-example-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="list-group"></div>
               </div>
             </div>
           </div>
-          <div id="map" class="map"></div>
+        </div>
+        <div id="map" class="map"></div>
 <div class="controls">
   <div id="iiif-notification">&nbsp;</div>
   <label for="imageInfoUrl">Enter <code>info.json</code> URL:</label>
@@ -127,18 +126,15 @@
   <button id="display">Display image</button>
 </div>
 
-        </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
           <input id="codesandbox-params" type="hidden" name="parameters">
         </form>
       </div>
 
       <div class="row-fluid">
-        <div class="span12">
-          <p id="shortdesc">Example of a IIIF Image API source.</p>
-          <div id="docs"><p>Example of a tile source for an International Image Interoperability Framework (IIIF) Image Service. Try any Image API version 1 or 2 service.</p>
+        <p id="shortdesc">Example of a IIIF Image API source.</p>
+        <div id="docs"><p>Example of a tile source for an International Image Interoperability Framework (IIIF) Image Service. Try any Image API version 1 or 2 service.</p>
 </div>
-        </div>
       </div>
 
       <div class="row-fluid">

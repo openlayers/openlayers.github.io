@@ -61,58 +61,54 @@
         <a href="#" id="codepen-button" class="btn btn-link float-end">
           <i class="fab fa-codepen fa-lg"></i> Edit
         </a>
-        <div class="span12">
-          <h4 id="title">Geographic Coordinates</h4>
-          <p class="tags">
-            <span class="badge-group">
-              <a
-                href="./index.html?q=geographic" class="badge badge-info">geographic</a
-              ><a
-                class="badge badge-info tag-modal-toggle"
-                data-bs-toggle="modal"
-                data-bs-target="#tag-example-list"
-                data-title="geographic"
-                data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./geographic.html&quot;&gt;Geographic Coordinates&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./edit-geographic.html&quot;&gt;Geographic Editing&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./immediate-geographic.html&quot;&gt;Immediate Rendering (Geographic)&lt;/a&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-geographic.html&quot;&gt;WFS with geographic coordinates&lt;/a&gt;
-                  &lt;/ul&gt;"
-                tabindex="0"
-                >4</a>
-            </span>
-          </p>
-          <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="tag-example-title"></h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <div class="list-group"></div>
-                </div>
+        <h4 id="title">Geographic Coordinates</h4>
+        <p class="tags">
+          <span class="badge-group">
+            <a
+              href="./index.html?q=geographic" class="badge badge-info">geographic</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="geographic"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./geographic.html&quot;&gt;Geographic Coordinates&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./edit-geographic.html&quot;&gt;Geographic Editing&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./immediate-geographic.html&quot;&gt;Immediate Rendering (Geographic)&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./vector-wfs-geographic.html&quot;&gt;WFS with geographic coordinates&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >4</a>
+          </span>
+        </p>
+        <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="tag-example-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="list-group"></div>
               </div>
             </div>
           </div>
-          <div id="map" class="map">
+        </div>
+        <div id="map" class="map">
   <div id="popup"></div>
 </div>
 <div id="info"></div>
 
 
-        </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
           <input id="codesandbox-params" type="hidden" name="parameters">
         </form>
       </div>
 
       <div class="row-fluid">
-        <div class="span12">
-          <p id="shortdesc">Using geographic coordinates for the map view.</p>
-          <div id="docs"><p>Calling the <code>useGeographic</code> function in the <code>'ol/proj'</code> module makes it so the map view uses geographic coordinates (even if the view projection is not geographic).</p>
+        <p id="shortdesc">Using geographic coordinates for the map view.</p>
+        <div id="docs"><p>Calling the <code>useGeographic</code> function in the <code>'ol/proj'</code> module makes it so the map view uses geographic coordinates (even if the view projection is not geographic).</p>
 </div>
-        </div>
       </div>
 
       <div class="row-fluid">

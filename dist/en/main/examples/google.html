@@ -60,38 +60,37 @@
         <a href="#" id="codepen-button" class="btn btn-link float-end">
           <i class="fab fa-codepen fa-lg"></i> Edit
         </a>
-        <div class="span12">
-          <h4 id="title">Google Maps</h4>
-          <p class="tags">
-            <span class="badge-group">
-              <a
-                href="./index.html?q=google" class="badge badge-info">google</a
-              ><a
-                class="badge badge-info tag-modal-toggle"
-                data-bs-toggle="modal"
-                data-bs-target="#tag-example-list"
-                data-title="google"
-                data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                  &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./google.html&quot;&gt;Google Maps&lt;/a&gt;
-                  &lt;/ul&gt;"
-                tabindex="0"
-                >1</a>
-            </span>
-          </p>
-          <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="tag-example-title"></h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <div class="list-group"></div>
-                </div>
+        <h4 id="title">Google Maps</h4>
+        <p class="tags">
+          <span class="badge-group">
+            <a
+              href="./index.html?q=google" class="badge badge-info">google</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="google"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./google.html&quot;&gt;Google Maps&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >1</a>
+          </span>
+        </p>
+        <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="tag-example-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="list-group"></div>
               </div>
             </div>
           </div>
-          <div id="map" class="map">
+        </div>
+        <div id="map" class="map">
   <dialog open>
     <form method="dialog" id="key-form">
       <label>Your API key
@@ -103,18 +102,15 @@
 </div>
 
 
-        </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
           <input id="codesandbox-params" type="hidden" name="parameters">
         </form>
       </div>
 
       <div class="row-fluid">
-        <div class="span12">
-          <p id="shortdesc">Map with tiles from Google Maps</p>
-          <div id="docs"><p>This example demonstrates how to display tiles from Google&#39;s Map Tiles API in a map.  To use the Google Map Tiles API, you need to set up a Google Cloud project and create an API key for your application.  See the <a href="https://developers.google.com/maps/documentation/tile/overview">Map Tiles API documentation</a> for instructions.<br> The <code>ol/source/Google</code> source can be used with a tile layer and is configured by passing properties to the constructor that are used in creating the <a href="https://developers.google.com/maps/documentation/tile/session_tokens">session token request</a> for accessing the tiles.  The <code>mapType</code> defaults to <code>&#39;roadmap&#39;</code> and can be changed to any of the <a href="https://developers.google.com/maps/documentation/tile/session_tokens#required_fields">supported map types</a>.<br>  When using the Google source, please make sure you comply with the Google <a href="https://developers.google.com/maps/documentation/tile/policies">Map Tiles API Policies</a>, by adding the <a href="https://developers.google.com/maps/documentation/tile/policies#logo">Google logo</a> in the bottom-left corner of the map. You can add the logo as a static image by using a custom OpenLayers control, as shown in the example below.</p>
+        <p id="shortdesc">Map with tiles from Google Maps</p>
+        <div id="docs"><p>This example demonstrates how to display tiles from Google&#39;s Map Tiles API in a map.  To use the Google Map Tiles API, you need to set up a Google Cloud project and create an API key for your application.  See the <a href="https://developers.google.com/maps/documentation/tile/overview">Map Tiles API documentation</a> for instructions.<br> The <code>ol/source/Google</code> source can be used with a tile layer and is configured by passing properties to the constructor that are used in creating the <a href="https://developers.google.com/maps/documentation/tile/session_tokens">session token request</a> for accessing the tiles.  The <code>mapType</code> defaults to <code>&#39;roadmap&#39;</code> and can be changed to any of the <a href="https://developers.google.com/maps/documentation/tile/session_tokens#required_fields">supported map types</a>.<br>  When using the Google source, please make sure you comply with the Google <a href="https://developers.google.com/maps/documentation/tile/policies">Map Tiles API Policies</a>, by adding the <a href="https://developers.google.com/maps/documentation/tile/policies#logo">Google logo</a> in the bottom-left corner of the map. You can add the logo as a static image by using a custom OpenLayers control, as shown in the example below.</p>
 </div>
-        </div>
       </div>
 
       <div class="row-fluid">

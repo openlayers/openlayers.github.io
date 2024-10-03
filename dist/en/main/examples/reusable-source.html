@@ -60,41 +60,37 @@
         <a href="#" id="codepen-button" class="btn btn-link float-end">
           <i class="fab fa-codepen fa-lg"></i> Edit
         </a>
-        <div class="span12">
-          <h4 id="title">Reusable Source</h4>
-          <p class="tags">
-          </p>
-          <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="tag-example-title"></h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <div class="list-group"></div>
-                </div>
+        <h4 id="title">Reusable Source</h4>
+        <p class="tags">
+        </p>
+        <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="tag-example-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="list-group"></div>
               </div>
             </div>
           </div>
-          <div id="map" class="map"></div>
+        </div>
+        <div id="map" class="map"></div>
 <button class="switcher" value="0">January</button>
 <button class="switcher" value="1">January (with bathymetry)</button>
 <button class="switcher" value="2">July</button>
 <button class="switcher" value="3">July (with bathymetry)</button>
 
-        </div>
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
           <input id="codesandbox-params" type="hidden" name="parameters">
         </form>
       </div>
 
       <div class="row-fluid">
-        <div class="span12">
-          <p id="shortdesc">Updating a tile source by changing the URL.</p>
-          <div id="docs"><p>You can call <code>source.setUrl()</code> to update the URL for a tile source.  Note that when you change the URL for a tile source, existing tiles will not be replaced until new tiles are loaded.  If you are interested instead in clearing currently rendered tiles, you can call the <code>source.refresh()</code> method.  Alternatively, you can use two separate sources if you want to remove rendered tiles and start over loading new tiles.</p>
+        <p id="shortdesc">Updating a tile source by changing the URL.</p>
+        <div id="docs"><p>You can call <code>source.setUrl()</code> to update the URL for a tile source.  Note that when you change the URL for a tile source, existing tiles will not be replaced until new tiles are loaded.  If you are interested instead in clearing currently rendered tiles, you can call the <code>source.refresh()</code> method.  Alternatively, you can use two separate sources if you want to remove rendered tiles and start over loading new tiles.</p>
 </div>
-        </div>
       </div>
 
       <div class="row-fluid">
