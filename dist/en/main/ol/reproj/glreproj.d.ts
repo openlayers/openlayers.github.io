@@ -16,6 +16,7 @@ export function releaseGLCanvas(gl: WebGLRenderingContext): void;
 /**
  * @typedef {Object} ImageExtent
  * @property {import("../extent.js").Extent} extent Extent.
+ * @property {import("../extent.js").Extent} [clipExtent] Clip extent.
  * @property {WebGLTexture} texture Texture.
  * @property {number} width Width of texture.
  * @property {number} height Height of texture.
@@ -37,9 +38,10 @@ export function releaseGLCanvas(gl: WebGLRenderingContext): void;
  * TODO: Allow setting renderEdges value in the data as this is done in "data-space".
  * @param {boolean | Array<number>} [renderEdges] Render reprojection edges.
  * @param {boolean} [interpolate] Use linear interpolation when resampling.
+ * @param {boolean} [drawSingle] Draw single source images directly without stitchTexture.
  * @return {{framebuffer: WebGLFramebuffer, width: number, height: number, texture: WebGLTexture}} Canvas with reprojected data.
  */
-export function render(gl: WebGLRenderingContext, width_: number, height_: number, pixelRatio: number, sourceResolution: number, targetResolution: number, targetExtent: import("../extent.js").Extent, triangulation: import("../reproj/Triangulation.js").default, sources: Array<ImageExtent>, gutter: number, dataType: number, renderEdges?: boolean | number[] | undefined, interpolate?: boolean | undefined): {
+export function render(gl: WebGLRenderingContext, width_: number, height_: number, pixelRatio: number, sourceResolution: number, targetResolution: number, targetExtent: import("../extent.js").Extent, triangulation: import("../reproj/Triangulation.js").default, sources: Array<ImageExtent>, gutter: number, dataType: number, renderEdges?: boolean | number[] | undefined, interpolate?: boolean | undefined, drawSingle?: boolean | undefined): {
     framebuffer: WebGLFramebuffer;
     width: number;
     height: number;
@@ -54,6 +56,10 @@ export type ImageExtent = {
      * Extent.
      */
     extent: import("../extent.js").Extent;
+    /**
+     * Clip extent.
+     */
+    clipExtent?: import("../extent.js").Extent | undefined;
     /**
      * Texture.
      */
