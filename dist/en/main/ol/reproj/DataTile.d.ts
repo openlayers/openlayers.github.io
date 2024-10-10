@@ -62,6 +62,10 @@ export type Options = {
      */
     transition?: number | undefined;
     /**
+     * Source transform matrix.
+     */
+    transformMatrix?: number[] | undefined;
+    /**
      * Render reprojection edges.
      */
     renderEdges?: boolean | undefined;
@@ -90,6 +94,7 @@ export type Options = {
  * @property {number} [errorThreshold] Acceptable reprojection error (in px).
  * @property {number} [transition=250] A duration for tile opacity
  * transitions in milliseconds. A duration of 0 disables the opacity transition.
+ * @property {import("../transform.js").Transform} [transformMatrix] Source transform matrix.
  * @property {boolean} [renderEdges] Render reprojection edges.
  */
 /**

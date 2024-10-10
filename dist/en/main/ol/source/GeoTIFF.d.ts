@@ -309,6 +309,13 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
      */
     determineProjection(sources: Array<Array<GeoTIFFImage>>): void;
     /**
+     * Determine any transform matrix for the images in this GeoTIFF.
+     *
+     * @param {Array<Array<GeoTIFFImage>>} sources Each source is a list of images
+     * from a single GeoTIFF.
+     */
+    determineTransformMatrix(sources: Array<Array<GeoTIFFImage>>): void;
+    /**
      * Configure the tile grid based on images within the source GeoTIFFs.  Each GeoTIFF
      * must have the same internal tiled structure.
      * @param {Array<Array<GeoTIFFImage>>} sources Each source is a list of images

@@ -203,6 +203,11 @@ declare class DataTileSource<TileType extends import("../Tile.js").default = Dat
      */
     private crossOrigin_;
     /**
+     * @protected
+     * @type {import("../transform.js").Transform}
+     */
+    protected transformMatrix: import("../transform.js").Transform;
+    /**
      * Set the source tile sizes.  The length of the array is expected to match the number of
      * levels in the tile grid.
      * @protected
@@ -231,6 +236,16 @@ declare class DataTileSource<TileType extends import("../Tile.js").default = Dat
      * @return {!TileType} Tile.
      */
     getReprojTile_(z: number, x: number, y: number, targetProj: import("../proj/Projection.js").default, sourceProj: import("../proj/Projection.js").default): TileType;
+    /**
+     * @param {number} z Tile coordinate z.
+     * @param {number} x Tile coordinate x.
+     * @param {number} y Tile coordinate y.
+     * @param {number} pixelRatio Pixel ratio.
+     * @param {import("../proj/Projection.js").default} [projection] Projection.
+     * @return {TileType|null} Tile (or null if outside source extent).
+     * @override
+     */
+    override getTile(z: number, x: number, y: number, pixelRatio: number, projection?: import("../proj.js").Projection | undefined): TileType | null;
     /**
      * Sets the tile grid to use when reprojecting the tiles to the given
      * projection instead of the default tile grid for the projection.

@@ -25,8 +25,9 @@ declare class Triangulation {
      * @param {import("../extent.js").Extent} maxSourceExtent Maximal source extent that can be used.
      * @param {number} errorThreshold Acceptable error (in source units).
      * @param {?number} destinationResolution The (optional) resolution of the destination.
+     * @param {import("../transform.js").Transform} [sourceMatrix] Source transform matrix.
      */
-    constructor(sourceProj: import("../proj/Projection.js").default, targetProj: import("../proj/Projection.js").default, targetExtent: import("../extent.js").Extent, maxSourceExtent: import("../extent.js").Extent, errorThreshold: number, destinationResolution: number | null);
+    constructor(sourceProj: import("../proj/Projection.js").default, targetProj: import("../proj/Projection.js").default, targetExtent: import("../extent.js").Extent, maxSourceExtent: import("../extent.js").Extent, errorThreshold: number, destinationResolution: number | null, sourceMatrix?: number[] | undefined);
     /**
      * @type {import("../proj/Projection.js").default}
      * @private
