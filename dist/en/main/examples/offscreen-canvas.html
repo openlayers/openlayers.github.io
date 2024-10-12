@@ -569,6 +569,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
     layer.renderDeclutter(frameState, layer.getLayerState());
     layer.renderDeferred(frameState);
   });
+  frameState.postRenderFunctions.forEach((fn) &#x3D;&gt; fn(null, frameState));
   if (tileQueue.getTilesLoading() &lt; maxTotalLoading) {
     tileQueue.reprioritize();
     tileQueue.loadMoreTiles(maxTotalLoading, maxNewLoads);
