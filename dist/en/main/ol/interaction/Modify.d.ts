@@ -8,6 +8,9 @@
  * @property {Array<SegmentData>} [featureSegments] FeatureSegments.
  */
 /**
+ * @typedef {[SegmentData, number]} DragSegment
+ */
+/**
  * @typedef {Object} Options
  * @property {import("../events/condition.js").Condition} [condition] A function that
  * takes a {@link module:ol/MapBrowserEvent~MapBrowserEvent} and returns a
@@ -29,7 +32,8 @@
  * Style used for the modification point or vertex. For linestrings and polygons, this will
  * be the affected vertex, for circles a point along the circle, and for points the actual
  * point. If not configured, the default edit style is used (see {@link module:ol/style/Style~Style}).
- * When using a style function, the point feature passed to the function will have a `features`
+ * When using a style function, the point feature passed to the function will have an `existing` property -
+ * indicating whether there is an existing vertex underneath or not, a `features`
  * property - an array whose entries are the features that are being modified, and a `geometries`
  * property - an array whose entries are the geometries that are being modified. Both arrays are
  * in the same order. The `geometries` are only useful when modifying geometry collections, where
@@ -103,6 +107,7 @@ export type SegmentData = {
      */
     featureSegments?: SegmentData[] | undefined;
 };
+export type DragSegment = [SegmentData, number];
 export type Options = {
     /**
      * A function that
@@ -136,7 +141,8 @@ export type Options = {
      * Style used for the modification point or vertex. For linestrings and polygons, this will
      * be the affected vertex, for circles a point along the circle, and for points the actual
      * point. If not configured, the default edit style is used (see {@link module :ol/style/Style~Style}).
-     * When using a style function, the point feature passed to the function will have a `features`
+     * When using a style function, the point feature passed to the function will have an `existing` property -
+     * indicating whether there is an existing vertex underneath or not, a `features`
      * property - an array whose entries are the features that are being modified, and a `geometries`
      * property - an array whose entries are the geometries that are being modified. Both arrays are
      * in the same order. The `geometries` are only useful when modifying geometry collections, where
@@ -307,7 +313,7 @@ declare class Modify extends PointerInteraction {
      */
     private changingFeature_;
     /**
-     * @type {Array}
+     * @type {Array<DragSegment>}
      * @private
      */
     private dragSegments_;
@@ -360,7 +366,7 @@ declare class Modify extends PointerInteraction {
     private addFeature_;
     /**
      * @param {import("../MapBrowserEvent.js").default} evt Map browser event.
-     * @param {Array<Array<SegmentData>>} segments The segments subject to modification.
+     * @param {Array<SegmentData>} segments The segments subject to modification.
      * @private
      */
     private willModifyFeatures_;
@@ -471,40 +477,71 @@ declare class Modify extends PointerInteraction {
      * @param {import("../coordinate.js").Coordinate} coordinates Coordinates.
      * @param {Array<Feature>} features The features being modified.
      * @param {Array<import("../geom/SimpleGeometry.js").default>} geometries The geometries being modified.
+     * @param {boolean} existing The vertex represents an existing vertex.
      * @return {Feature} Vertex feature.
      * @private
      */
     private createOrUpdateVertexFeature_;
+    findInsertVerticesAndUpdateDragSegments_(pixelCoordinate: any): SegmentData[] | undefined;
     /**
      * @param {import("../MapBrowserEvent.js").default} evt Event.
      * @private
      */
     private handlePointerMove_;
     /**
-     * @param {import("../pixel.js").Pixel} pixel Pixel
-     * @param {import("../Map.js").default} map Map.
-     * @param {import("../coordinate.js").Coordinate} [coordinate] The pixel Coordinate.
+     * @param {import("../coordinate.js").Coordinate} pixelCoordinate The pixel Coordinate.
      * @private
      */
     private handlePointerAtPixel_;
     /**
      * @param {SegmentData} segmentData Segment data.
      * @param {import("../coordinate.js").Coordinate} vertex Vertex.
+     * @return {boolean} A vertex was inserted.
      * @private
      */
     private insertVertex_;
+    updatePointer_(coordinate: any): import("../coordinate.js").Coordinate;
     /**
-     * Removes the vertex currently being pointed.
+     * Get the current pointer position.
+     * @return {import("../coordinate.js").Coordinate | null} The current pointer coordinate.
+     */
+    getPoint(): import("../coordinate.js").Coordinate | null;
+    /**
+     * Check if a point can be removed from the current linestring or polygon at the current
+     * pointer position.
+     * @return {boolean} A point can be deleted at the current pointer position.
+     * @api
+     */
+    canRemovePoint(): boolean;
+    /**
+     * Removes the vertex currently being pointed from the current linestring or polygon.
+     * @param {import('../coordinate.js').Coordinate} [coordinate] If provided, the pointer
+     * will be set to the provided coordinate. If not, the current pointer coordinate will be used.
      * @return {boolean} True when a vertex was removed.
      * @api
      */
-    removePoint(): boolean;
+    removePoint(coordinate?: import("../coordinate.js").Coordinate | undefined): boolean;
     /**
      * Removes a vertex from all matching features.
      * @return {boolean} True when a vertex was removed.
      * @private
      */
     private removeVertex_;
+    /**
+     * Check if a point can be inserted to the current linestring or polygon at the current
+     * pointer position.
+     * @return {boolean} A point can be inserted at the current pointer position.
+     * @api
+     */
+    canInsertPoint(): boolean;
+    /**
+     * Inserts the vertex currently being pointed to the current linestring or polygon.
+     * @param {import('../coordinate.js').Coordinate} [coordinate] If provided, the pointer
+     * will be set to the provided coordinate. If not, the current pointer coordinate will be used.
+     * @return {boolean} A vertex was inserted.
+     * @api
+     */
+    insertPoint(coordinate?: import("../coordinate.js").Coordinate | undefined): boolean;
     /**
      * @param {import("../geom/SimpleGeometry.js").default} geometry Geometry.
      * @param {Array} coordinates Coordinates.

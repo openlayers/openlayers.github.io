@@ -71,6 +71,8 @@
     <div class="member-list" data-type="methods">
         <span class="subtitle">Methods</span>
         <ul>
+            <li data-name="caninsertpoint"><a href="module-ol_interaction_Modify-Modify.html#canInsertPoint">canInsertPoint</a>
+            <li data-name="canremovepoint"><a href="module-ol_interaction_Modify-Modify.html#canRemovePoint">canRemovePoint</a>
             <li data-name="changed"><a href="module-ol_interaction_Modify-Modify.html#changed">changed</a>
             <li data-name="dispatchevent"><a href="module-ol_interaction_Modify-Modify.html#dispatchEvent">dispatchEvent</a>
             <li data-name="get"><a href="module-ol_interaction_Modify-Modify.html#get">get</a>
@@ -81,6 +83,7 @@
             <li data-name="getpointercount"><a href="module-ol_interaction_Modify-Modify.html#getPointerCount">getPointerCount</a>
             <li data-name="getproperties"><a href="module-ol_interaction_Modify-Modify.html#getProperties">getProperties</a>
             <li data-name="getrevision"><a href="module-ol_interaction_Modify-Modify.html#getRevision">getRevision</a>
+            <li data-name="insertpoint"><a href="module-ol_interaction_Modify-Modify.html#insertPoint">insertPoint</a>
             <li data-name="on"><a href="module-ol_interaction_Modify-Modify.html#on">on</a>
             <li data-name="once"><a href="module-ol_interaction_Modify-Modify.html#once">once</a>
             <li data-name="removepoint"><a href="module-ol_interaction_Modify-Modify.html#removePoint">removePoint</a>
@@ -174,7 +177,7 @@ for deletion, use the <code>deleteCondition</code> option.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js">interaction/Modify.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L197">line 197</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L202">line 202</a>
         </div>
         
     </div>
@@ -351,7 +354,8 @@ pointer close enough to a segment or vertex for editing.</p></td>
                 <p>Style used for the modification point or vertex. For linestrings and polygons, this will
 be the affected vertex, for circles a point along the circle, and for points the actual
 point. If not configured, the default edit style is used (see <a href="module-ol_style_Style-Style.html"><code>Style</code></a>).
-When using a style function, the point feature passed to the function will have a <code>features</code>
+When using a style function, the point feature passed to the function will have an <code>existing</code> property -
+indicating whether there is an existing vertex underneath or not, a <code>features</code>
 property - an array whose entries are the features that are being modified, and a <code>geometries</code>
 property - an array whose entries are the geometries that are being modified. Both arrays are
 in the same order. The <code>geometries</code> are only useful when modifying geometry collections, where
@@ -683,6 +687,188 @@ pointer coordinate when clicked within the <code>pixelTolerance</code>.</p></td>
         <h3 class="subsection-title">Methods</h3>
 
         <dl>
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="canInsertPoint">
+        </div>
+        <h4 class="name">
+            canInsertPoint<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js">interaction/Modify.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L1618">line 1618</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Check if a point can be inserted to the current linestring or polygon at the current
+pointer position.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+A point can be inserted at the current pointer position.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="canRemovePoint">
+        </div>
+        <h4 class="name">
+            canRemovePoint<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js">interaction/Modify.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L1426">line 1426</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Check if a point can be removed from the current linestring or polygon at the current
+pointer position.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+A point can be deleted at the current pointer position.
+<br />
+
+    
+
+    
+</dd>
+
+        
             
             
 <dt class="">
@@ -1338,7 +1524,7 @@ Map.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js">interaction/Modify.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L557">line 557</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L559">line 559</a>
         </div>
         
     </div>
@@ -1694,6 +1880,142 @@ Revision.
             
 <dt class="">
     
+    <div class="nameContainer">
+        <div class="anchor" id="insertPoint">
+        </div>
+        <h4 class="name">
+            insertPoint<span class="signature">(<span class="optional">coordinate</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js">interaction/Modify.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L1651">line 1651</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Inserts the vertex currently being pointed to the current linestring or polygon.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>coordinate</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>If provided, the pointer
+will be set to the provided coordinate. If not, the current pointer coordinate will be used.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+A vertex was inserted.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
     <div class="nameContainer inherited">
         <div class="anchor" id="on">
         </div>
@@ -2032,7 +2354,7 @@ Unique key for the listener. If
         <div class="anchor" id="removePoint">
         </div>
         <h4 class="name">
-            removePoint<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
+            removePoint<span class="signature">(<span class="optional">coordinate</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
             
             
 
@@ -2040,7 +2362,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js">interaction/Modify.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L1383">line 1383</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L1457">line 1457</a>
         </div>
         
     </div>
@@ -2053,7 +2375,7 @@ Unique key for the listener. If
 
     
     <div class="description">
-        <p>Removes the vertex currently being pointed.</p>
+        <p>Removes the vertex currently being pointed from the current linestring or polygon.</p>
     </div>
     
 
@@ -2062,6 +2384,52 @@ Unique key for the listener. If
     
 
     
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>coordinate</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>If provided, the pointer
+will be set to the provided coordinate. If not, the current pointer coordinate will be used.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
     
     
 
@@ -2308,7 +2676,7 @@ True when a vertex was removed.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js">interaction/Modify.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L532">line 532</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L534">line 534</a>
         </div>
         
     </div>

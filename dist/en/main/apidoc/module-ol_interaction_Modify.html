@@ -63,6 +63,19 @@
           </div>
           <div class="navigation-list-wrapper">
             <ul class="navigation-list search-empty">
+<li class="item item-module toggle-manual toggle-manual-show" data-longname="module:ol/interaction/Modify" data-name="ol/interaction/modify">
+    <span class="title toggle">
+        <span class="fa fa-plus me-2 mt-1"></span>
+        <span><a href="module-ol_interaction_Modify.html">ol​/interaction​/Modify</a></span>
+    </span>
+    <div class="member-list" data-type="typedefs">
+        <span class="subtitle">Typedefs</span>
+        <ul>
+            <li data-name="dragsegment"><a href="module-ol_interaction_Modify.html#~DragSegment">DragSegment</a>
+            <li data-name="options"><a href="module-ol_interaction_Modify.html#~Options">Options</a>
+            <li data-name="segmentdata"><a href="module-ol_interaction_Modify.html#~SegmentData">SegmentData</a>
+        </ul>
+    </div>
               <li class="loading">Loading …
             </ul>
           </div>
@@ -165,6 +178,52 @@
         <h3 class="subsection-title">Type Definitions</h3>
 
         <dl>
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~DragSegment">
+        </div>
+        <h4 class="name">
+            DragSegment<span class="type-signature type array">{Array}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
                 
 <dt class="">
     <div class="nameContainer">
@@ -333,7 +392,8 @@ pointer close enough to a segment or vertex for editing.</p>
                 <p>Style used for the modification point or vertex. For linestrings and polygons, this will
 be the affected vertex, for circles a point along the circle, and for points the actual
 point. If not configured, the default edit style is used (see <a href="module-ol_style_Style-Style.html"><code>Style</code></a>).
-When using a style function, the point feature passed to the function will have a <code>features</code>
+When using a style function, the point feature passed to the function will have an <code>existing</code> property -
+indicating whether there is an existing vertex underneath or not, a <code>features</code>
 property - an array whose entries are the features that are being modified, and a <code>geometries</code>
 property - an array whose entries are the geometries that are being modified. Both arrays are
 in the same order. The <code>geometries</code> are only useful when modifying geometry collections, where
