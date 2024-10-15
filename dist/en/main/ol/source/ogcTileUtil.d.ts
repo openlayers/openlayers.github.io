@@ -1,6 +1,7 @@
 /**
  * @typedef {Object} TileSetInfo
  * @property {string} urlTemplate The tile URL template.
+ * @property {import("../proj/Projection.js").default} projection The source projection.
  * @property {import("../tilegrid/TileGrid.js").default} grid The tile grid.
  * @property {import("../Tile.js").UrlFunction} urlFunction The tile URL function.
  */
@@ -44,6 +45,10 @@ export type TileSetInfo = {
      * The tile URL template.
      */
     urlTemplate: string;
+    /**
+     * The source projection.
+     */
+    projection: import("../proj/Projection.js").default;
     /**
      * The tile grid.
      */
