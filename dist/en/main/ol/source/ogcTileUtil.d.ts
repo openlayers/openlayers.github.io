@@ -147,7 +147,7 @@ export type TileMatrixSet = {
     /**
      * The coordinate reference system.
      */
-    crs: string;
+    crs: string | CrsUri | CrsWkt | CrsReferenceSystem;
     /**
      * Axis order.
      */
@@ -156,6 +156,24 @@ export type TileMatrixSet = {
      * Array of tile matrices.
      */
     tileMatrices: Array<TileMatrix>;
+};
+export type CrsUri = {
+    /**
+     * Reference to one coordinate reference system (CRS).
+     */
+    uri: string;
+};
+export type CrsWkt = {
+    /**
+     * JSON encoding for WKT representation of CRS 2.0.
+     */
+    wkt: any;
+};
+export type CrsReferenceSystem = {
+    /**
+     * Data structure as defined in the MD_ReferenceSystem of the ISO 19115.
+     */
+    referenceSystem: any;
 };
 export type TileMatrix = {
     /**
