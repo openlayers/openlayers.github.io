@@ -10,7 +10,12 @@
  * @return {TileRepresentationLookup} A new tile representation lookup.
  */
 export function newTileRepresentationLookup(): TileRepresentationLookup;
-export function getCacheKey(source: any, tileCoord: any): string;
+/**
+ * @param {import("../../source/Tile.js").default} source The source.
+ * @param {import('../../tilecoord.js').TileCoord} tileCoord The tile coordinate.
+ * @return {string} The cache key.
+ */
+export function getCacheKey(source: import("../../source/Tile.js").default, tileCoord: import("../../tilecoord.js").TileCoord): string;
 export namespace Uniforms {
     let TILE_TRANSFORM: string;
     let TRANSITION_ALPHA: string;

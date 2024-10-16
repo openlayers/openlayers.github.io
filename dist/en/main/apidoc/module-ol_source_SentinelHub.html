@@ -1,0 +1,4077 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>OpenLayers v10.2.2-dev API - Module: ol/source/SentinelHub</title>
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles/prettify-tomorrow.css">
+    <link rel="stylesheet" type="text/css" href="styles/jaguar.css">
+    <link rel="stylesheet" type="text/css" href="styles/carbon.css">
+    <link rel="stylesheet" type="text/css" href="/theme/ol.css">
+    <link rel="stylesheet" type="text/css" href="/theme/site.css">
+  </head>
+  <body>
+    <header class="navbar navbar-expand-sm navbar-dark mb-3 px-3 py-0 fixed-top" role="navigation">
+      <a class="navbar-brand" href="/"><img src="/theme/img/logo-dark.svg" width="70" height="70" alt="">&nbsp;OpenLayers</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#olmenu" aria-controls="olmenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- menu items that get hidden below 768px width -->
+      <nav class="collapse navbar-collapse" id="olmenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="docdropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Docs</a>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="docdropdown">
+              <a class="dropdown-item" href="/doc/">Docs</a>
+              <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/doc/quickstart.html"><i class="fa fa-check fa-fw me-2 fa-lg"></i>Quick Start</a>
+                <a class="dropdown-item" href="/doc/faq.html"><i class="fa fa-question fa-fw me-2 fa-lg"></i>FAQ</a>
+                <a class="dropdown-item" href="/doc/tutorials/"><i class="fa fa-book fa-fw me-2 fa-lg"></i>Tutorials</a>
+                <a class="dropdown-item" href="/workshop/"><i class="fa fa-graduation-cap fa-fw me-2 fa-lg"></i>Workshop</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="https://stackoverflow.com/questions/tagged/openlayers"><i class="fab fa-stack-overflow fa-fw me-2"></i>Ask a Question</a>
+            </div>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="../examples/">Examples</a></li>
+          <li class="nav-item active"><a class="nav-link" href="../apidoc/"><i class="fa fa-sitemap me-1"></i>API</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="codedropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Code</a>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="codedropdown">
+              <a class="dropdown-item" href="https://github.com/openlayers/openlayers"><i class="fab fa-github fa-fw me-2 fa-lg"></i>Repository</a>
+              <a class="dropdown-item" href="/download/"><i class="fa fa-download fa-fw me-2 fa-lg"></i>Download</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="container-fluid">
+      <div id="wrap" class="row">
+        <div class="navigation col-md-4 col-lg-3">
+          <div class="search-wrapper">
+            <div class="search">
+              <input id="search" type="text" autocomplete="off" class="form-control input-sm" placeholder="Search Documentation">
+            </div>
+          </div>
+          <div class="navigation-list-wrapper">
+            <ul class="navigation-list search-empty">
+<li class="item item-module toggle-manual toggle-manual-show" data-longname="module:ol/source/SentinelHub" data-name="ol/source/sentinelhub">
+    <span class="title toggle">
+        <span class="fa fa-plus me-2 mt-1"></span>
+        <span><a href="module-ol_source_SentinelHub.html">ol​/source​/SentinelHub</a></span>
+    </span>
+    <div class="member-list" data-type="typedefs">
+        <span class="subtitle">Typedefs</span>
+        <ul>
+            <li data-name="accesstokenclaims"><a href="module-ol_source_SentinelHub.html#~AccessTokenClaims">AccessTokenClaims</a>
+            <li data-name="authconfig"><a href="module-ol_source_SentinelHub.html#~AuthConfig">AuthConfig</a>
+            <li data-name="collections"><a href="module-ol_source_SentinelHub.html#~Collections">Collections</a>
+            <li data-name="customdata"><a href="module-ol_source_SentinelHub.html#~CustomData">CustomData</a>
+            <li data-name="datafilter"><a href="module-ol_source_SentinelHub.html#~DataFilter">DataFilter</a>
+            <li data-name="evalscript"><a href="module-ol_source_SentinelHub.html#~Evalscript">Evalscript</a>
+            <li data-name="evaluatepixel"><a href="module-ol_source_SentinelHub.html#~EvaluatePixel">EvaluatePixel</a>
+            <li data-name="inputdescription"><a href="module-ol_source_SentinelHub.html#~InputDescription">InputDescription</a>
+            <li data-name="inputmetadata"><a href="module-ol_source_SentinelHub.html#~InputMetadata">InputMetadata</a>
+            <li data-name="options"><a href="module-ol_source_SentinelHub.html#~Options">Options</a>
+            <li data-name="orbit"><a href="module-ol_source_SentinelHub.html#~Orbit">Orbit</a>
+            <li data-name="outputdescription"><a href="module-ol_source_SentinelHub.html#~OutputDescription">OutputDescription</a>
+            <li data-name="outputmetadata"><a href="module-ol_source_SentinelHub.html#~OutputMetadata">OutputMetadata</a>
+            <li data-name="outputvalues"><a href="module-ol_source_SentinelHub.html#~OutputValues">OutputValues</a>
+            <li data-name="processrequest"><a href="module-ol_source_SentinelHub.html#~ProcessRequest">ProcessRequest</a>
+            <li data-name="processrequestinput"><a href="module-ol_source_SentinelHub.html#~ProcessRequestInput">ProcessRequestInput</a>
+            <li data-name="processrequestinputbounds"><a href="module-ol_source_SentinelHub.html#~ProcessRequestInputBounds">ProcessRequestInputBounds</a>
+            <li data-name="processrequestinputboundsproperties"><a href="module-ol_source_SentinelHub.html#~ProcessRequestInputBoundsProperties">ProcessRequestInputBoundsProperties</a>
+            <li data-name="processrequestinputdataitem"><a href="module-ol_source_SentinelHub.html#~ProcessRequestInputDataItem">ProcessRequestInputDataItem</a>
+            <li data-name="processrequestoutput"><a href="module-ol_source_SentinelHub.html#~ProcessRequestOutput">ProcessRequestOutput</a>
+            <li data-name="processrequestoutputformat"><a href="module-ol_source_SentinelHub.html#~ProcessRequestOutputFormat">ProcessRequestOutputFormat</a>
+            <li data-name="processrequestoutputresponse"><a href="module-ol_source_SentinelHub.html#~ProcessRequestOutputResponse">ProcessRequestOutputResponse</a>
+            <li data-name="sample"><a href="module-ol_source_SentinelHub.html#~Sample">Sample</a>
+            <li data-name="sampletype"><a href="module-ol_source_SentinelHub.html#~SampleType">SampleType</a>
+            <li data-name="scenes"><a href="module-ol_source_SentinelHub.html#~Scenes">Scenes</a>
+            <li data-name="setup"><a href="module-ol_source_SentinelHub.html#~Setup">Setup</a>
+            <li data-name="setupresult"><a href="module-ol_source_SentinelHub.html#~SetupResult">SetupResult</a>
+            <li data-name="tile"><a href="module-ol_source_SentinelHub.html#~Tile">Tile</a>
+            <li data-name="timerange"><a href="module-ol_source_SentinelHub.html#~TimeRange">TimeRange</a>
+            <li data-name="updateoutput"><a href="module-ol_source_SentinelHub.html#~UpdateOutput">UpdateOutput</a>
+            <li data-name="updateoutputmetadata"><a href="module-ol_source_SentinelHub.html#~UpdateOutputMetadata">UpdateOutputMetadata</a>
+            <li data-name="updatedoutputdescription"><a href="module-ol_source_SentinelHub.html#~UpdatedOutputDescription">UpdatedOutputDescription</a>
+        </ul>
+    </div>
+              <li class="loading">Loading …
+            </ul>
+          </div>
+        </div>
+
+        <div class="main col-md-8 col-lg-9">
+          <h1 class="page-title" data-filename="module-ol_source_SentinelHub.html">Module: ol/source/SentinelHub</h1>
+          <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
+            <button id="latest-dismiss" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            This documentation is for OpenLayers v<span id="package-version">10.2.2-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+          </div>
+          
+
+
+
+<section class="content">
+
+<header>
+    <h2 class="my-3">ol/source/SentinelHub
+    </h2>
+    <br>
+    
+      
+      
+    
+    <div class="row p-3 ">
+      <div id="ad" class="col-lg-5 order-2 align-self-center border rounded bg-light ">
+        <script async type="text/javascript" src="https://cdn.carbonads.com/carbon.js?serve=CE7DV53U&placement=openlayersorg" id="_carbonads_js"></script>
+      </div>
+    
+    </div>
+</header>
+
+<article>
+    <div class="container-overview">
+    
+
+    
+        
+
+        
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="module-ol_source_SentinelHub-SentinelHub.html">SentinelHub</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        <dl>
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~AccessTokenClaims">
+        </div>
+        <h4 class="name">
+            AccessTokenClaims<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>exp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The expiration time of the token (in seconds).</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~AuthConfig">
+        </div>
+        <h4 class="name">
+            AuthConfig<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>tokenUrl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+                    <br>(defaults to 'https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The URL to get the authentication token.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>clientId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The client ID.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>clientSecret</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The client secret.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~Collections">
+        </div>
+        <h4 class="name">
+            Collections<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>from</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>For 'ORBIT' mosaicking, this will be the start of the search interval.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>to</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>For 'ORBIT' mosaicking, this will be the end of the search interval.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>scenes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~Scenes">Scenes</a></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The scenes in the collection.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~CustomData">
+        </div>
+        <h4 class="name">
+            CustomData<span class="type-signature type object.<string, unknown>">{Object.&lt;string, unknown>}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~DataFilter">
+        </div>
+        <h4 class="name">
+            DataFilter<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>timeRange</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~TimeRange">TimeRange</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The data time range.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>maxCloudCoverage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The maximum cloud coverage (0-100).</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~Evalscript">
+        </div>
+        <h4 class="name">
+            Evalscript<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>setup</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~Setup">Setup</a></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The setup function.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>evaluatePixel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~EvaluatePixel">EvaluatePixel</a></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The function to transform input samples into output values.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>updateOutput</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~UpdateOutput">UpdateOutput</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Optional function to adjust the output bands.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>updateOutputMetadata</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~UpdateOutputMetadata">UpdateOutputMetadata</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Optional function to update the output metadata.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>preProcessScenes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~Collections">Collections</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Optional function called before processing.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>version</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+                    <br>(defaults to '3')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The Evalscript version.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="~EvaluatePixel">
+        </div>
+        <h4 class="name">
+            EvaluatePixel<span class="signature">()</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js">source/SentinelHub.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L52">line 52</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~InputDescription">
+        </div>
+        <h4 class="name">
+            InputDescription<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>bands</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Input band identifiers.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>units</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Input band units.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>metadata</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Properties to include in the input metadata.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~InputMetadata">
+        </div>
+        <h4 class="name">
+            InputMetadata<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>serviceVersion</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The version of the service used for processing.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>normalizationFactor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The factor used to convert digital number (DN) values to reflectance.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~Options">
+        </div>
+        <h4 class="name">
+            Options<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>auth</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~AuthConfig">AuthConfig</a></span>
+|
+
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The authentication configuration with <code>clientId</code> and <code>clientSecret</code> or an access token.
+See <a href="https://docs.sentinel-hub.com/api/latest/api/overview/authentication/">Sentinel Hub authentication</a>
+for details.  If not provided in the constructor, the source will not be rendered until <a href="module-ol_source_SentinelHub-SentinelHub.html#setAuth"><code>setAuth</code></a>
+is called.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array&lt;<a href="module-ol_source_SentinelHub.html#~ProcessRequestInputDataItem">ProcessRequestInputDataItem</a>></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The input data configuration.  If not provided in the constructor,
+the source will not be rendered until <a href="module-ol_source_SentinelHub-SentinelHub.html#setData"><code>setData</code></a> is called.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>evalscript</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~Evalscript">Evalscript</a></span>
+|
+
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The process applied to the input data.  If not provided in the constructor,
+the source will not be rendered until <a href="module-ol_source_SentinelHub-SentinelHub.html#setEvalscript"><code>setEvalscript</code></a> is called.  See the
+<code>setEvalscript</code> documentation for details on the restrictions when passing process functions.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>tileSize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
+
+
+                
+                    <br>(defaults to [512, 512])
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The pixel width and height of the source tiles.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+                    <br>(defaults to 'https://services.sentinel-hub.com/api/v1/process')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The Sentinel Hub Processing API URL.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>projection</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_proj.html#~ProjectionLike">ProjectionLike</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Projection. Default is the view projection.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>attributionsCollapsible</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    <br>(defaults to true)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Allow the attributions to be collapsed.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>interpolate</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    <br>(defaults to true)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Use interpolated values when resampling.  By default,
+linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>wrapX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    <br>(defaults to true)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Wrap the world horizontally.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>transition</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Duration of the opacity transition for rendering.
+To disable the opacity transition, pass <code>transition: 0</code>.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~Orbit">
+        </div>
+        <h4 class="name">
+            Orbit<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>dateFrom</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The earliest date for all scenes included in the tile.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>dateTo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The latest date for scenes included in the tile.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>tiles</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Metadata for each tile.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~OutputDescription">
+        </div>
+        <h4 class="name">
+            OutputDescription<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+                    <br>(defaults to 'default')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Output identifier.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>bands</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Number of output bands.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>sampleType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~SampleType">SampleType</a></span>
+
+
+                
+                    <br>(defaults to 'AUTO')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Output sample type.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>nodataValue</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Output nodata value.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~OutputMetadata">
+        </div>
+        <h4 class="name">
+            OutputMetadata<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>userData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Arbitrary user data.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~OutputValues">
+        </div>
+        <h4 class="name">
+            OutputValues<span class="type-signature type object.<string, array.<number>>">{Object.&lt;string, Array.&lt;number>>}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~ProcessRequest">
+        </div>
+        <h4 class="name">
+            ProcessRequest<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~ProcessRequestInput">ProcessRequestInput</a></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Input data configuration.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>evalscript</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The Evalscript used for processing.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>output</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~ProcessRequestOutput">ProcessRequestOutput</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The output configuration.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~ProcessRequestInput">
+        </div>
+        <h4 class="name">
+            ProcessRequestInput<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>bounds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~ProcessRequestInputBounds">ProcessRequestInputBounds</a></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The bounding box of the input data.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array&lt;<a href="module-ol_source_SentinelHub.html#~ProcessRequestInputDataItem">ProcessRequestInputDataItem</a>></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The intput data.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~ProcessRequestInputBounds">
+        </div>
+        <h4 class="name">
+            ProcessRequestInputBounds<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>bbox</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The bounding box of the input data.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>properties</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~ProcessRequestInputBoundsProperties">ProcessRequestInputBoundsProperties</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The properties of the bounding box.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>geometry</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">module:geojson~Geometry</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The geometry of the bounding box.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~ProcessRequestInputBoundsProperties">
+        </div>
+        <h4 class="name">
+            ProcessRequestInputBoundsProperties<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>crs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The coordinate reference system of the bounding box.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~ProcessRequestInputDataItem">
+        </div>
+        <h4 class="name">
+            ProcessRequestInputDataItem<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The type of the input data.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The identifier of the input data.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>dataFilter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~DataFilter">DataFilter</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The filter to apply to the input data.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>processing</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, unknown></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The processing to apply to the input data.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~ProcessRequestOutput">
+        </div>
+        <h4 class="name">
+            ProcessRequestOutput<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Image width in pixels.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Image height in pixels.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>resx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Spatial resolution in the x direction.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>resy</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Spatial resolution in the y direction.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>responses</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array&lt;<a href="module-ol_source_SentinelHub.html#~ProcessRequestOutputResponse">ProcessRequestOutputResponse</a>></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Response configuration.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~ProcessRequestOutputFormat">
+        </div>
+        <h4 class="name">
+            ProcessRequestOutputFormat<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The output format type.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~ProcessRequestOutputResponse">
+        </div>
+        <h4 class="name">
+            ProcessRequestOutputResponse<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>identifier</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Identifier used to connect results to outputs from the setup.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_SentinelHub.html#~ProcessRequestOutputFormat">ProcessRequestOutputFormat</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Response format.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~Sample">
+        </div>
+        <h4 class="name">
+            Sample<span class="type-signature type object.<string, number>">{Object.&lt;string, number>}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~SampleType">
+        </div>
+        <h4 class="name">
+            SampleType<span class="type-signature type 'int8'">{'INT8'}</span> <span class="type-signature type 'uint8'">{'UINT8'}</span> <span class="type-signature type 'int16'">{'INT16'}</span> <span class="type-signature type 'uint16'">{'UINT16'}</span> <span class="type-signature type 'float32'">{'FLOAT32'}</span> <span class="type-signature type 'auto'">{'AUTO'}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~Scenes">
+        </div>
+        <h4 class="name">
+            Scenes<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>orbit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array&lt;<a href="module-ol_source_SentinelHub.html#~Orbit">Orbit</a>></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Information about scenes included in the tile when 'mosaicking' is 'ORBIT'.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>tiles</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array&lt;<a href="module-ol_source_SentinelHub.html#~Tile">Tile</a>></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Information about scenes included in the tile when 'mosaicking' is 'TILE'.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="~Setup">
+        </div>
+        <h4 class="name">
+            Setup<span class="signature">()</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js">source/SentinelHub.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L48">line 48</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~SetupResult">
+        </div>
+        <h4 class="name">
+            SetupResult<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+|
+
+<span class="param-type">Array&lt;<a href="module-ol_source_SentinelHub.html#~InputDescription">InputDescription</a>></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Description of the input data.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>output</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">OutputDescription</span>
+|
+
+<span class="param-type">Array&lt;<a href="module-ol_source_SentinelHub.html#~OutputDescription">OutputDescription</a>></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Description of the output data.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>mosaicking</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">'SIMPLE'</span>
+|
+
+<span class="param-type">'ORBIT'</span>
+|
+
+<span class="param-type">'TILE'</span>
+
+
+                
+                    <br>(defaults to 'SIMPLE')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Control how samples from input scenes are composed.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~Tile">
+        </div>
+        <h4 class="name">
+            Tile<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The date of scene used in the tile.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>cloudCoverage</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The estimated percentage of pixels obscured by clouds in the scene.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>dataPath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The path to the data in storage.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>shId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The internal identifier for the scene.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~TimeRange">
+        </div>
+        <h4 class="name">
+            TimeRange<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>from</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The start time (inclusive).</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>to</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The end time (inclusive).</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="~UpdateOutput">
+        </div>
+        <h4 class="name">
+            UpdateOutput<span class="signature">()</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js">source/SentinelHub.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L56">line 56</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="~UpdateOutputMetadata">
+        </div>
+        <h4 class="name">
+            UpdateOutputMetadata<span class="signature">()</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js">source/SentinelHub.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L60">line 60</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~UpdatedOutputDescription">
+        </div>
+        <h4 class="name">
+            UpdatedOutputDescription<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>bands</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Number of output bands.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            </dl>
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+        </div>
+      </div>
+    </div>
+    <script>prettyPrint();</script>
+    <script src="scripts/linenumber.js"></script>
+    <script src="scripts/main.js"></script>
+  </body>
+</html>

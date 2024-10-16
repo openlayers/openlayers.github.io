@@ -795,6 +795,7 @@ declare namespace ol {
         export { $ol$source$OGCVectorTile as OGCVectorTile };
         export { $ol$source$OSM as OSM };
         export { $ol$source$Raster as Raster };
+        export { $ol$source$SentinelHub as SentinelHub };
         export { $ol$source$Source as Source };
         export { $ol$source$StadiaMaps as StadiaMaps };
         export { $ol$source$Tile as Tile };
@@ -1640,6 +1641,7 @@ import $ol$source$OGCMapTile from '../../ol/source/OGCMapTile.js';
 import $ol$source$OGCVectorTile from '../../ol/source/OGCVectorTile.js';
 import $ol$source$OSM from '../../ol/source/OSM.js';
 import $ol$source$Raster from '../../ol/source/Raster.js';
+import $ol$source$SentinelHub from '../../ol/source/SentinelHub.js';
 import $ol$source$Source from '../../ol/source/Source.js';
 import $ol$source$StadiaMaps from '../../ol/source/StadiaMaps.js';
 import $ol$source$Tile from '../../ol/source/Tile.js';
