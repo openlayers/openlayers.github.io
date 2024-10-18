@@ -81,7 +81,8 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
  * property on the layer object; for example, setting `title: 'My Title'` in the
  * options means that `title` is observable, and has get/set accessors.
  *
- * @fires import("../render/Event.js").RenderEvent
+ * @fires import("../render/Event.js").RenderEvent#prerender
+ * @fires import("../render/Event.js").RenderEvent#postrender
  * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
  * @template {import("../source/Vector.js").default<FeatureType>} [VectorSourceType=import("../source/Vector.js").default<FeatureType>]
  * @extends {BaseVector<FeatureType, VectorSourceType, WebGLPointsLayerRenderer>}

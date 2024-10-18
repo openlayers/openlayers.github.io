@@ -143,7 +143,8 @@ export type Options = {
  * Experimental layer that renders particles moving through a vector field.
  *
  * @extends BaseTileLayer<SourceType, FlowLayerRenderer>
- * @fires import("../render/Event.js").RenderEvent
+ * @fires import("../render/Event.js").RenderEvent#prerender
+ * @fires import("../render/Event.js").RenderEvent#postrender
  */
 declare class FlowLayer extends BaseTileLayer<import("../source/DataTile.js").default<import("../DataTile.js").default>, FlowLayerRenderer> {
     /**

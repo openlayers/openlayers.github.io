@@ -133,12 +133,9 @@
             <li data-name="change:visible">change:visible
             <li data-name="change:zindex">change:zIndex
             <li data-name="error"><a href="module-ol_events_Event-BaseEvent.html#event:error">error</a>
-            <li data-name="postcompose"><a href="module-ol_render_Event-RenderEvent.html#event:postcompose">postcompose</a>
             <li data-name="postrender"><a href="module-ol_render_Event-RenderEvent.html#event:postrender">postrender</a>
-            <li data-name="precompose"><a href="module-ol_render_Event-RenderEvent.html#event:precompose">precompose</a>
             <li data-name="prerender"><a href="module-ol_render_Event-RenderEvent.html#event:prerender">prerender</a>
             <li data-name="propertychange"><a href="module-ol_Object.ObjectEvent.html#event:propertychange">propertychange</a>
-            <li data-name="rendercomplete"><a href="module-ol_render_Event-RenderEvent.html#event:rendercomplete">rendercomplete</a>
             <li data-name="sourceready">sourceready
         </ul>
     </div>
@@ -204,7 +201,7 @@ options means that <code>title</code> is observable, and has get/set accessors.<
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L71">line 71</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L72">line 72</a>
         </div>
         
     </div>
@@ -822,20 +819,6 @@ should range from 0 to 1 (and values outside will be clamped to that range).</p>
         </li>
     
         <li class="">
-            <code><a href="module-ol_render_Event-RenderEvent.html#event:postcompose">postcompose</a></code>
-            
-              (<a href="module-ol_render_Event-RenderEvent.html">RenderEvent</a>)
-            
-            
-
-             -
-            Triggered after layers are composed.  When dispatched by the map, the event object will not have
-a context set.  When dispatched by a layer, the event object will have a context set.  Only
-WebGL layers currently dispatch this event.
-            
-        </li>
-    
-        <li class="">
             <code><a href="module-ol_render_Event-RenderEvent.html#event:postrender">postrender</a></code>
             
               (<a href="module-ol_render_Event-RenderEvent.html">RenderEvent</a>)
@@ -844,20 +827,6 @@ WebGL layers currently dispatch this event.
 
              -
             Triggered after a layer is rendered.
-            
-        </li>
-    
-        <li class="">
-            <code><a href="module-ol_render_Event-RenderEvent.html#event:precompose">precompose</a></code>
-            
-              (<a href="module-ol_render_Event-RenderEvent.html">RenderEvent</a>)
-            
-            
-
-             -
-            Triggered before layers are composed.  When dispatched by the map, the event object will not have
-a context set.  When dispatched by a layer, the event object will have a context set.  Only
-WebGL layers currently dispatch this event.
             
         </li>
     
@@ -882,20 +851,6 @@ WebGL layers currently dispatch this event.
 
              -
             Triggered when a property is changed.
-            
-        </li>
-    
-        <li class="">
-            <code><a href="module-ol_render_Event-RenderEvent.html#event:rendercomplete">rendercomplete</a></code>
-            
-              (<a href="module-ol_render_Event-RenderEvent.html">RenderEvent</a>)
-            
-            
-
-             -
-            Triggered when rendering is complete, i.e. all sources and tiles have
-finished loading for the current viewport, and all tiles are faded in.
-The event object will not have a context set.
             
         </li>
     
@@ -1694,7 +1649,7 @@ Attributions for this layer at the given view.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L125">line 125</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L126">line 126</a>
         </div>
         
     </div>
@@ -2020,7 +1975,7 @@ Promise that resolves with an array of features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L135">line 135</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L136">line 136</a>
         </div>
         
     </div>
@@ -2758,7 +2713,7 @@ Object.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L145">line 145</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L146">line 146</a>
         </div>
         
     </div>
@@ -4059,7 +4014,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L162">line 162</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L163">line 163</a>
         </div>
         
     </div>
@@ -4317,7 +4272,7 @@ will be visible at all extents.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L172">line 172</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L173">line 173</a>
         </div>
         
     </div>
@@ -5377,7 +5332,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L182">line 182</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L183">line 183</a>
         </div>
         
     </div>

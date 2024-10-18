@@ -161,7 +161,8 @@ export type ParsedStyle = {
  * options means that `title` is observable, and has get/set accessors.
  *
  * @extends BaseTileLayer<SourceType, WebGLTileLayerRenderer>
- * @fires import("../render/Event.js").RenderEvent
+ * @fires import("../render/Event.js").RenderEvent#prerender
+ * @fires import("../render/Event.js").RenderEvent#postrender
  * @api
  */
 declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js").default<import("../DataTile.js").default | import("../ImageTile.js").default>, WebGLTileLayerRenderer<any>> {

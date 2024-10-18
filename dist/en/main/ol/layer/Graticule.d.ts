@@ -273,7 +273,8 @@ export type Options = {
  * Layer that renders a grid for a coordinate system (currently only EPSG:4326 is supported).
  * Note that the view projection must define both extent and worldExtent.
  *
- * @fires import("../render/Event.js").RenderEvent
+ * @fires import("../render/Event.js").RenderEvent#prerender
+ * @fires import("../render/Event.js").RenderEvent#postrender
  * @extends {VectorLayer<VectorSource<Feature>>}
  * @api
  */
