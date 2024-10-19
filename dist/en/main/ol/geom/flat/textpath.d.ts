@@ -11,6 +11,7 @@
  * @param {string} font The font.
  * @param {Object<string, number>} cache A cache of measured widths.
  * @param {number} rotation Rotation to apply to the flatCoordinates to determine whether text needs to be reversed.
+ * @param {boolean} keepUpright Whether the text needs to be kept upright
  * @return {Array<Array<*>>|null} The result array (or null if `maxAngle` was
  * exceeded). Entries of the array are x, y, anchorX, angle, chunk.
  */
@@ -18,5 +19,5 @@ export function drawTextOnPath(flatCoordinates: Array<number>, offset: number, e
     [x: string]: number;
 }) => number, font: string, cache: {
     [x: string]: number;
-}, rotation: number): Array<Array<any>> | null;
+}, rotation: number, keepUpright?: boolean): Array<Array<any>> | null;
 //# sourceMappingURL=textpath.d.ts.map

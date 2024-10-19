@@ -49,6 +49,10 @@ export type Options = {
      */
     rotateWithView?: boolean | undefined;
     /**
+     * Whether the text can be rotated 180° to prevent being rendered upside down.
+     */
+    keepUpright?: boolean | undefined;
+    /**
      * Rotation in radians (positive rotation clockwise).
      */
     rotation?: number | undefined;
@@ -121,6 +125,7 @@ export type Options = {
  * the distance between two text anchors in pixels. Only available when `placement` is set to `'line'`. Overrides 'textAlign'.
  * @property {number|import("../size.js").Size} [scale] Scale.
  * @property {boolean} [rotateWithView=false] Whether to rotate the text with the view.
+ * @property {boolean} [keepUpright=true] Whether the text can be rotated 180° to prevent being rendered upside down.
  * @property {number} [rotation=0] Rotation in radians (positive rotation clockwise).
  * @property {string|Array<string>} [text] Text content or rich text content. For plain text provide a string, which can
  * contain line breaks (`\n`). For rich text provide an array of text/font tuples. A tuple consists of the text to
@@ -171,6 +176,11 @@ declare class Text {
      * @type {boolean|undefined}
      */
     private rotateWithView_;
+    /**
+     * @private
+     * @type {boolean|undefined}
+     */
+    private keepUpright_;
     /**
      * @private
      * @type {number|import("../size.js").Size|undefined}
@@ -322,6 +332,12 @@ declare class Text {
      */
     getRotateWithView(): boolean | undefined;
     /**
+     * Determine whether the text can be rendered upside down.
+     * @return {boolean|undefined} Keep text upright.
+     * @api
+     */
+    getKeepUpright(): boolean | undefined;
+    /**
      * Get the text rotation.
      * @return {number|undefined} Rotation.
      * @api
@@ -447,6 +463,13 @@ declare class Text {
      * @api
      */
     setRotateWithView(rotateWithView: boolean): void;
+    /**
+     * Set whether the text can be rendered upside down.
+     *
+     * @param {boolean} keepUpright Keep text upright.
+     * @api
+     */
+    setKeepUpright(keepUpright: boolean): void;
     /**
      * Set the fill.
      *

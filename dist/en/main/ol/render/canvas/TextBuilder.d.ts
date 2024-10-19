@@ -42,6 +42,11 @@ declare class CanvasTextBuilder extends CanvasBuilder {
     private textRotateWithView_;
     /**
      * @private
+     * @type {boolean|undefined}
+     */
+    private textKeepUpright_;
+    /**
+     * @private
      * @type {number}
      */
     private textRotation_;
