@@ -47,9 +47,9 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
     protected renderedPixelRatio: number;
     /**
      * @protected
-     * @type {import("../../proj/Projection.js").default}
+     * @type {import("../../proj/Projection.js").default|null}
      */
-    protected renderedProjection: import("../../proj/Projection.js").default;
+    protected renderedProjection: import("../../proj/Projection.js").default | null;
     /**
      * @protected
      * @type {number}
@@ -90,11 +90,6 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      * @private
      */
     private tileCache_;
-    /**
-     * @private
-     * @type {import("../../proj/Projection.js").default}
-     */
-    private renderedProjection_;
     /**
      * @return {LRUCache} Tile cache.
      */
