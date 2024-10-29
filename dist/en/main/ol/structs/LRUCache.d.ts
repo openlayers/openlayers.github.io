@@ -64,6 +64,7 @@ declare class LRUCache<T> {
      * @type {?Entry}
      */
     private newest_;
+    deleteOldest(): void;
     /**
      * @return {boolean} Can expire cache.
      */
