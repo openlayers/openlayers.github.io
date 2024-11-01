@@ -72,10 +72,11 @@
               data-bs-target="#tag-example-list"
               data-title="pmtiles"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./pmtiles-image.html&quot;&gt;PMTiles Image Tiles&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./pmtiles-elevation.html&quot;&gt;PMTiles Shaded Relief&lt;/a&gt;
                 &lt;/ul&gt;"
               tabindex="0"
-              >1</a>
+              >2</a>
           </span>
           <span class="badge-group">
             <a
@@ -160,16 +161,16 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">/* global pmtiles */
-import DataTile from &#x27;ol/source/DataTile.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import DataTile from &#x27;ol/source/DataTile.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
+import {PMTiles} from &#x27;pmtiles&#x27;;
 import {useGeographic} from &#x27;ol/proj.js&#x27;;
 
 useGeographic();
 
-const tiles &#x3D; new pmtiles.PMTiles(
+const tiles &#x3D; new PMTiles(
   &#x27;https://pub-9288c68512ed46eca46ddcade307709b.r2.dev/protomaps-sample-datasets/terrarium_z9.pmtiles&#x27;,
 );
 
@@ -182,8 +183,8 @@ function loadImage(src) {
   });
 }
 
-async function loader(z, x, y) {
-  const response &#x3D; await tiles.getZxy(z, x, y);
+async function loader(z, x, y, {signal}) {
+  const response &#x3D; await tiles.getZxy(z, x, y, signal);
   const blob &#x3D; new Blob([response.data]);
   const src &#x3D; URL.createObjectURL(blob);
   const image &#x3D; await loadImage(src);
@@ -349,7 +350,6 @@ map.on([&#x27;pointermove&#x27;, &#x27;click&#x27;], displayPixelValue);
       &lt;/tr&gt;
     &lt;/table&gt;
 
-    &lt;script src="https://unpkg.com/pmtiles@2.4.0/dist/index.js"&gt;&lt;/script&gt;
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -360,7 +360,8 @@ map.on([&#x27;pointermove&#x27;, &#x27;click&#x27;], displayPixelValue);
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;pmtiles-elevation&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;10.2.2-dev&quot;
+    &quot;ol&quot;: &quot;10.2.2-dev&quot;,
+    &quot;pmtiles&quot;: &quot;^3.2.1&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;vite&quot;: &quot;^3.2.3&quot;
@@ -374,7 +375,6 @@ map.on([&#x27;pointermove&#x27;, &#x27;click&#x27;], displayPixelValue);
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/pmtiles@2.4.0/dist/index.js"></script>
     <script src="common.js"></script>
     <script src="pmtiles-elevation.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js"></script>
