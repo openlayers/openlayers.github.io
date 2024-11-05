@@ -69,22 +69,25 @@ declare class RBush<T extends unknown> {
      * Calls a callback function with each value in the tree.
      * If the callback returns a truthy value, this value is returned without
      * checking the rest of the tree.
-     * @param {function(T): *} callback Callback.
-     * @return {*} Callback return value.
+     * @param {function(T): R} callback Callback.
+     * @return {R|undefined} Callback return value.
+     * @template R
      */
-    forEach(callback: (arg0: T) => any): any;
+    forEach<R>(callback: (arg0: T) => R): R | undefined;
     /**
      * Calls a callback function with each value in the provided extent.
      * @param {import("../extent.js").Extent} extent Extent.
-     * @param {function(T): *} callback Callback.
-     * @return {*} Callback return value.
+     * @param {function(T): R} callback Callback.
+     * @return {R|undefined} Callback return value.
+     * @template R
      */
-    forEachInExtent(extent: import("../extent.js").Extent, callback: (arg0: T) => any): any;
+    forEachInExtent<R>(extent: import("../extent.js").Extent, callback: (arg0: T) => R): R | undefined;
     /**
      * @param {Array<T>} values Values.
-     * @param {function(T): *} callback Callback.
+     * @param {function(T): R} callback Callback.
+     * @return {R|undefined} Callback return value.
+     * @template R
      * @private
-     * @return {*} Callback return value.
      */
     private forEach_;
     /**
