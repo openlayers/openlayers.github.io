@@ -25,7 +25,7 @@ export function remove(source: import("./Projection.js").default, destination: i
  * Get a transform given a source code and a destination code.
  * @param {string} sourceCode The code for the source projection.
  * @param {string} destinationCode The code for the destination projection.
- * @return {import("../proj.js").TransformFunction|undefined} The transform function (if found).
+ * @return {import("../proj.js").TransformFunction|null} The transform function (if found).
  */
-export function get(sourceCode: string, destinationCode: string): import("../proj.js").TransformFunction | undefined;
+export function get(sourceCode: string, destinationCode: string): import("../proj.js").TransformFunction | null;
 //# sourceMappingURL=transforms.d.ts.map

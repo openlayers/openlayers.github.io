@@ -156,12 +156,12 @@ export function equivalent(projection1: Projection, projection2: Projection): bo
  * Searches in the list of transform functions for the function for converting
  * coordinates from the source projection to the destination projection.
  *
- * @param {Projection} sourceProjection Source Projection object.
- * @param {Projection} destinationProjection Destination Projection
+ * @param {Projection} source Source Projection object.
+ * @param {Projection} destination Destination Projection
  *     object.
- * @return {TransformFunction} Transform function.
+ * @return {TransformFunction|null} Transform function.
  */
-export function getTransformFromProjections(sourceProjection: Projection, destinationProjection: Projection): TransformFunction;
+export function getTransformFromProjections(source: Projection, destination: Projection): TransformFunction | null;
 /**
  * Given the projection-like objects, searches for a transformation
  * function to convert a coordinates array from the source projection to the
@@ -175,7 +175,9 @@ export function getTransformFromProjections(sourceProjection: Projection, destin
 export function getTransform(source: ProjectionLike, destination: ProjectionLike): TransformFunction;
 /**
  * Transforms a coordinate from source projection to destination projection.
- * This returns a new coordinate (and does not modify the original).
+ * This returns a new coordinate (and does not modify the original). If there
+ * is no available transform between the two projection, the function will throw
+ * an error.
  *
  * See {@link module:ol/proj.transformExtent} for extent transformation.
  * See the transform method of {@link module:ol/geom/Geometry~Geometry} and its
@@ -308,6 +310,16 @@ export function addCommon(): void;
  * string or undefined.
  */
 export type ProjectionLike = Projection | string | undefined;
+export type Transforms = {
+    /**
+     * The forward transform (from geographic).
+     */
+    forward: TransformFunction;
+    /**
+     * The inverse transform (to geographic).
+     */
+    inverse: TransformFunction;
+};
 /**
  * A transform function accepts an array of input coordinate values, an optional
  * output array, and an optional dimension (default should be 2).  The function

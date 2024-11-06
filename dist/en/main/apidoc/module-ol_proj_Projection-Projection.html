@@ -117,27 +117,28 @@
         <script async type="text/javascript" src="https://cdn.carbonads.com/carbon.js?serve=CE7DV53U&placement=openlayersorg" id="_carbonads_js"></script>
       </div>
     
-      <div class="class-description col-lg-7 align-self-center ps-0"><p>Projection definition class. One of these is created for each projection
-supported in the application and stored in the <a href="module-ol_proj.html"><code>ol/proj</code></a> namespace.
-You can use these in applications, but this is not required, as API params
-and options use <a href="module-ol_proj.html#~ProjectionLike"><code>ProjectionLike</code></a> which means the simple string
-code will suffice.</p>
-<p>You can use <a href="module-ol_proj.html#.get"><code>get</code></a> to retrieve the object for a particular
-projection.</p>
-<p>The library includes definitions for <code>EPSG:4326</code> and <code>EPSG:3857</code>, together
-with the following aliases:</p>
+      <div class="class-description col-lg-7 align-self-center ps-0"><p>In most cases, you should not need to create instances of this class.
+Instead, where projection information is required, you can use a string
+projection code or identifier (e.g. <code>EPSG:4326</code>) instead of a projection
+instance.</p>
+<p>The library includes support for transforming coordinates between the following
+projections:</p>
 <ul>
-<li><code>EPSG:4326</code>: CRS:84, urn:ogc:def:crs:EPSG:6.6:4326,
-  urn:ogc:def:crs:OGC:1.3:CRS84, urn:ogc:def:crs:OGC:2:84,
-  <a href="http://www.opengis.net/gml/srs/epsg.xml#4326">http://www.opengis.net/gml/srs/epsg.xml#4326</a>,
-  urn:x-ogc:def:crs:EPSG:4326</li>
-<li><code>EPSG:3857</code>: EPSG:102100, EPSG:102113, EPSG:900913,
-  urn:ogc:def:crs:EPSG:6.18:3:3857,
-  <a href="http://www.opengis.net/gml/srs/epsg.xml#3857">http://www.opengis.net/gml/srs/epsg.xml#3857</a></li>
+<li>WGS 84 / Geographic - Using codes <code>EPSG:4326</code>, <code>CRS:84</code>, <code>urn:ogc:def:crs:EPSG:6.6:4326</code>,
+<code>urn:ogc:def:crs:OGC:1.3:CRS84</code>, <code>urn:ogc:def:crs:OGC:2:84</code>, <code>http://www.opengis.net/gml/srs/epsg.xml#4326</code>,
+or <code>urn:x-ogc:def:crs:EPSG:4326</code></li>
+<li>WGS 84 / Spherical Mercator - Using codes <code>EPSG:3857</code>, <code>EPSG:102100</code>, <code>EPSG:102113</code>, <code>EPSG:900913</code>,
+<code>urn:ogc:def:crs:EPSG:6.18:3:3857</code>, or <code>http://www.opengis.net/gml/srs/epsg.xml#3857</code></li>
+<li>WGS 84 / UTM zones - Using codes <code>EPSG:32601</code> through <code>EPSG:32660</code> for northern zones
+and <code>EPSG:32701</code> through <code>EPSG:32760</code> for southern zones. Note that the built-in UTM transforms
+are lower accuracy (with errors on the order of 0.1 m) than those that you might get in a
+library like <a href="https://github.com/proj4js/proj4js">proj4js</a>.</li>
 </ul>
-<p>If you use <a href="https://github.com/proj4js/proj4js">proj4js</a>, aliases can
-be added using <code>proj4.defs()</code>. After all required projection definitions are
-added, call the <a href="module-ol_proj_proj4.html#.register"><code>register</code></a> function.</p></div>
+<p>For additional projection support, or to use higher accuracy transforms than the built-in ones, you can use
+the <a href="https://github.com/proj4js/proj4js">proj4js</a> library. With <code>proj4js</code>, after adding any new projection
+definitions, call the <a href="module-ol_proj_proj4.html#.register"><code>register</code></a> function.</p>
+<p>You can use the <a href="module-ol_proj.html#.get"><code>get</code></a> function to retrieve a projection instance
+for one of the registered projections.</p></div>
     
     </div>
 </header>
@@ -163,7 +164,7 @@ added, call the <a href="module-ol_proj_proj4.html#.register"><code>register</co
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js">proj/Projection.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L52">line 52</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L54">line 54</a>
         </div>
         
     </div>
@@ -493,7 +494,7 @@ the default <a href="module-ol_proj.html#.getPointResolution"><code>getPointReso
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js">proj/Projection.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L194">line 194</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L196">line 196</a>
         </div>
         
     </div>
@@ -589,7 +590,7 @@ Axis orientation.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js">proj/Projection.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L141">line 141</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L143">line 143</a>
         </div>
         
     </div>
@@ -679,7 +680,7 @@ Code.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js">proj/Projection.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L150">line 150</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L152">line 152</a>
         </div>
         
     </div>
@@ -769,7 +770,7 @@ Extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js">proj/Projection.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L170">line 170</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L172">line 172</a>
         </div>
         
     </div>
@@ -861,7 +862,7 @@ Meters.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js">proj/Projection.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L159">line 159</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L161">line 161</a>
         </div>
         
     </div>
@@ -951,7 +952,7 @@ Units.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js">proj/Projection.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L179">line 179</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L181">line 181</a>
         </div>
         
     </div>
@@ -1041,7 +1042,7 @@ Extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js">proj/Projection.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L203">line 203</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L205">line 205</a>
         </div>
         
     </div>
@@ -1131,7 +1132,7 @@ Whether the projection is global.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js">proj/Projection.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L236">line 236</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L238">line 238</a>
         </div>
         
     </div>
@@ -1257,7 +1258,7 @@ Whether the projection is global.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js">proj/Projection.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L257">line 257</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L259">line 259</a>
         </div>
         
     </div>
@@ -1384,7 +1385,7 @@ for this projection.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js">proj/Projection.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L212">line 212</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L214">line 214</a>
         </div>
         
     </div>
@@ -1510,7 +1511,7 @@ for this projection.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js">proj/Projection.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L247">line 247</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/Projection.js#L249">line 249</a>
         </div>
         
     </div>

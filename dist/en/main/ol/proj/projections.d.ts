@@ -5,9 +5,9 @@ export function clear(): void;
 /**
  * Get a cached projection by code.
  * @param {string} code The code for the projection.
- * @return {import("./Projection.js").default} The projection (if cached).
+ * @return {import("./Projection.js").default|null} The projection (if cached).
  */
-export function get(code: string): import("./Projection.js").default;
+export function get(code: string): import("./Projection.js").default | null;
 /**
  * Add a projection to the cache.
  * @param {string} code The projection code.

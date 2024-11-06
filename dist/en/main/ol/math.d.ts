@@ -101,4 +101,12 @@ export function floor(n: number, decimals: number): number;
  * @return {number} The next bigger integer.
  */
 export function ceil(n: number, decimals: number): number;
+/**
+ * Wraps a number between some minimum and maximum values.
+ * @param {number} n The number to wrap.
+ * @param {number} min The minimum of the range (inclusive).
+ * @param {number} max The maximum of the range (exclusive).
+ * @return {number} The wrapped number.
+ */
+export function wrap(n: number, min: number, max: number): number;
 //# sourceMappingURL=math.d.ts.map

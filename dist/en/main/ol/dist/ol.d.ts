@@ -541,6 +541,7 @@ declare namespace ol {
         export { _ol_math$toDegrees as toDegrees };
         export { _ol_math$toFixed as toFixed };
         export { _ol_math$toRadians as toRadians };
+        export { _ol_math$wrap as wrap };
     }
     export namespace net {
         export { _ol_net$ClientError as ClientError };
@@ -630,6 +631,11 @@ declare namespace ol {
             export { _ol_proj_transforms$remove as remove };
         }
         export { _ol_proj$useGeographic as useGeographic };
+        export namespace utm {
+            export { _ol_proj_utm$makeProjection as makeProjection };
+            export { _ol_proj_utm$makeTransforms as makeTransforms };
+            export { _ol_proj_utm$zoneFromCode as zoneFromCode };
+        }
     }
     export namespace render {
         export { $ol$render$Box as Box };
@@ -1445,6 +1451,7 @@ import { squaredSegmentDistance as _ol_math$squaredSegmentDistance } from '../..
 import { toDegrees as _ol_math$toDegrees } from '../../ol/math.js';
 import { toFixed as _ol_math$toFixed } from '../../ol/math.js';
 import { toRadians as _ol_math$toRadians } from '../../ol/math.js';
+import { wrap as _ol_math$wrap } from '../../ol/math.js';
 import { ClientError as _ol_net$ClientError } from '../../ol/net.js';
 import { ResponseError as _ol_net$ResponseError } from '../../ol/net.js';
 import { getJSON as _ol_net$getJSON } from '../../ol/net.js';
@@ -1516,6 +1523,9 @@ import { clear as _ol_proj_transforms$clear } from '../../ol/proj/transforms.js'
 import { get as _ol_proj_transforms$get } from '../../ol/proj/transforms.js';
 import { remove as _ol_proj_transforms$remove } from '../../ol/proj/transforms.js';
 import { useGeographic as _ol_proj$useGeographic } from '../../ol/proj.js';
+import { makeProjection as _ol_proj_utm$makeProjection } from '../../ol/proj/utm.js';
+import { makeTransforms as _ol_proj_utm$makeTransforms } from '../../ol/proj/utm.js';
+import { zoneFromCode as _ol_proj_utm$zoneFromCode } from '../../ol/proj/utm.js';
 import $ol$render$Box from '../../ol/render/Box.js';
 import $ol$render$Event from '../../ol/render/Event.js';
 import $ol$render$Feature from '../../ol/render/Feature.js';
