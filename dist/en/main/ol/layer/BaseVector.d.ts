@@ -1,4 +1,8 @@
 export default BaseVectorLayer;
+/**
+ * *
+ */
+export type ExtractedFeatureType<T> = T extends import("../source/Vector.js").default<infer U extends import("../Feature.js").FeatureLike> ? U : never;
 export type Options<FeatureType extends import("../Feature").FeatureLike, VectorSourceType extends import("../source/Vector.js").default<FeatureType> | import("../source/VectorTile.js").default<FeatureType>> = {
     /**
      * A CSS class name to set to the layer element.

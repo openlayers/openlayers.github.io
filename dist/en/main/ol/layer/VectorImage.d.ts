@@ -1,5 +1,5 @@
 export default VectorImageLayer;
-export type Options<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> = {
+export type Options<VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<any>, FeatureType extends import("../Feature.js").FeatureLike = import("./BaseVector.js").ExtractedFeatureType<VectorSourceType>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -99,8 +99,8 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
     } | undefined;
 };
 /**
- * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
- * @template {import("../source/Vector.js").default<FeatureType>} [VectorSourceType=import("../source/Vector.js").default<FeatureType>]
+ * @template {import("../source/Vector.js").default<FeatureType>} [VectorSourceType=import("../source/Vector.js").default<*>]
+ * @template {import('../Feature.js').FeatureLike} [FeatureType=import("./BaseVector.js").ExtractedFeatureType<VectorSourceType>]
  * @typedef {Object} Options
  * @property {string} [className='ol-layer'] A CSS class name to set to the layer element.
  * @property {number} [opacity=1] Opacity (0, 1).
@@ -155,16 +155,16 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
  * property on the layer object; for example, setting `title: 'My Title'` in the
  * options means that `title` is observable, and has get/set accessors.
  *
- * @template {import("../Feature.js").default} [FeatureType=import("../Feature.js").default]
- * @template {import("../source/Vector.js").default<FeatureType>} [VectorSourceType=import("../source/Vector.js").default<FeatureType>]
+ * @template {import("../source/Vector.js").default<FeatureType>} [VectorSourceType=import("../source/Vector.js").default<*>]
+ * @template {import('../Feature.js').FeatureLike} [FeatureType=import("./BaseVector.js").ExtractedFeatureType<VectorSourceType>]
  * @extends {BaseVectorLayer<FeatureType, VectorSourceType, CanvasVectorImageLayerRenderer>}
  * @api
  */
-declare class VectorImageLayer<FeatureType extends import("../Feature.js").default = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> extends BaseVectorLayer<FeatureType, VectorSourceType, CanvasVectorImageLayerRenderer> {
+declare class VectorImageLayer<VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<any>, FeatureType extends import("../Feature.js").FeatureLike = import("./BaseVector.js").ExtractedFeatureType<VectorSourceType>> extends BaseVectorLayer<FeatureType, VectorSourceType, CanvasVectorImageLayerRenderer> {
     /**
-     * @param {Options<FeatureType, VectorSourceType>} [options] Options.
+     * @param {Options<VectorSourceType, FeatureType>} [options] Options.
      */
-    constructor(options?: Options<FeatureType, VectorSourceType> | undefined);
+    constructor(options?: Options<VectorSourceType, FeatureType> | undefined);
     /**
      * @type {number}
      * @private
