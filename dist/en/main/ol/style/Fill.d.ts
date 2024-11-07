@@ -57,6 +57,10 @@ declare class Fill {
      */
     setColor(color: import("../color.js").Color | import("../colorlike.js").ColorLike | import("../colorlike.js").PatternDescriptor | null): void;
     /**
+     * @return {string} Key of the fill for cache lookup.
+     */
+    getKey(): string;
+    /**
      * @return {boolean} The fill style is loading an image pattern.
      */
     loading(): boolean;

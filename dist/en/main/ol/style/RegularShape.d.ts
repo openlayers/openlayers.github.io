@@ -128,11 +128,6 @@ declare class RegularShape extends ImageStyle {
     constructor(options: Options);
     /**
      * @private
-     * @type {Object<number, HTMLCanvasElement>}
-     */
-    private canvases_;
-    /**
-     * @private
      * @type {HTMLCanvasElement|null}
      */
     private hitDetectionCanvas_;
