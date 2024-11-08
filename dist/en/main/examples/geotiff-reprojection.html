@@ -218,7 +218,7 @@ const map &#x3D; new Map({
 });
 
 // after GeoTIFF metadata has been read, recenter the map to show the image
-source.getView().then(async (sourceView) &#x3D;&gt; {
+source.getView().then((sourceView) &#x3D;&gt; {
   const view &#x3D; map.getView();
 
   // transform the image center to view coorindates
