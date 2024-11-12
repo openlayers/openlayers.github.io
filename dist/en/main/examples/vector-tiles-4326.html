@@ -238,7 +238,7 @@ const layer &#x3D; new VectorTileLayer({
     tileGrid: tileGrid,
   }),
 });
-applyStyle(layer, url, &#x27;&#x27;, {resolutions: tileGrid.getResolutions()});
+applyStyle(layer, url, {resolutions: tileGrid.getResolutions()});
 applyBackground(layer, url);
 
 const map &#x3D; new Map({
