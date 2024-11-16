@@ -65,6 +65,11 @@ export type Options<TileSourceType extends import("../source/Tile.js").default> 
      */
     map?: import("../Map.js").default | undefined;
     /**
+     * Background color for the layer. If not specified, no background
+     * will be rendered.
+     */
+    background?: import("./Base").BackgroundColor | undefined;
+    /**
      * Deprecated.  Use interim tiles on error.
      */
     useInterimTilesOnError?: boolean | undefined;
@@ -116,6 +121,8 @@ export type Options<TileSourceType extends import("../source/Tile.js").default> 
  * this layer in its layers collection, and the layer will be rendered on top. This is useful for
  * temporary layers. The standard way to add a layer to a map and have it managed by the map is to
  * use {@link import("../Map.js").default#addLayer map.addLayer()}.
+ * @property {import("./Base.js").BackgroundColor} [background] Background color for the layer. If not specified, no background
+ * will be rendered.
  * @property {boolean} [useInterimTilesOnError=true] Deprecated.  Use interim tiles on error.
  * @property {Object<string, *>} [properties] Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
  * @property {number} [cacheSize=512] The internal tile cache size.  This needs to be large enough to render
