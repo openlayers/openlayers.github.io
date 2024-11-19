@@ -218,6 +218,11 @@ declare class BaseVectorLayer<FeatureType extends import("../Feature").FeatureLi
      * @api
      */
     setStyle(style?: import("../style/Style.js").StyleLike | import("../style/flat.js").FlatStyleLike | null | undefined): void;
+    /**
+     * @param {boolean|string|number} declutter Declutter images and text.
+     * @api
+     */
+    setDeclutter(declutter: boolean | string | number): void;
 }
 import Layer from './Layer.js';
 //# sourceMappingURL=BaseVector.d.ts.map
