@@ -304,8 +304,7 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
     currentFeature &#x3D; undefined;
     return;
   }
-  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
-  displayFeatureInfo(pixel, evt.frameState.size[0]);
+  displayFeatureInfo(evt.pixel, evt.frameState.size[0]);
 });
 
 map.on(&#x27;click&#x27;, function (evt) {

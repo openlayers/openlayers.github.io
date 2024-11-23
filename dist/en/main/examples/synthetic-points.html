@@ -306,8 +306,7 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
   if (evt.dragging) {
     return;
   }
-  const pixel &#x3D; map.getEventPixel(evt.originalEvent);
-  const hit &#x3D; map.hasFeatureAtPixel(pixel);
+  const hit &#x3D; map.hasFeatureAtPixel(evt.pixel);
   if (hit) {
     map.getTarget().style.cursor &#x3D; &#x27;pointer&#x27;;
   } else {

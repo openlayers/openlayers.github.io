@@ -210,7 +210,7 @@ document.addEventListener(&#x27;keydown&#x27;, function (evt) {
 let mousePosition &#x3D; null;
 
 container.addEventListener(&#x27;mousemove&#x27;, function (event) {
-  mousePosition &#x3D; map.getEventPixel(event);
+  mousePosition &#x3D; event.pixel;
   map.render();
 });
 
