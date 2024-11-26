@@ -6,13 +6,6 @@ export type BaseProps = {
      * point will be displayed. If undefined, all points will show.
      */
     filter?: import("../expr/expression.js").ExpressionValue | undefined;
-    /**
-     * Style variables; each variable must hold a number.
-     * Note: **this object is meant to be mutated**: changes to the values will immediately be visible on the rendered features
-     */
-    variables?: {
-        [x: string]: string | number | boolean | number[];
-    } | undefined;
 };
 export type FillProps = {
     /**

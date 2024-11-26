@@ -373,6 +373,10 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      * @protected
      */
     protected createRenderer(): RendererType;
+    /**
+     * This will clear the renderer so that a new one can be created next time it is needed
+     */
+    clearRenderer(): void;
 }
 import BaseLayer from './Base.js';
 import View from '../View.js';

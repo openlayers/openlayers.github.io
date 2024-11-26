@@ -309,17 +309,13 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import IGC from &#x27;ol/format/IGC.js&#x27;;
-import Layer from &#x27;ol/layer/Layer.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import WebGLVectorLayerRenderer from &#x27;ol/renderer/webgl/VectorLayer.js&#x27;;
+import WebGLVectorLayer from &#x27;ol/layer/WebGLVector.js&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
 
 const lineStyle &#x3D; {
-  variables: {
-    timestamp: 1303240000,
-  },
   &#x27;stroke-width&#x27;: 4,
   &#x27;stroke-color&#x27;: [
     &#x27;interpolate&#x27;,
@@ -332,15 +328,6 @@ const lineStyle &#x3D; {
   ],
   filter: [&#x27;&lt;&#x3D;&#x27;, [&#x27;line-metric&#x27;], [&#x27;var&#x27;, &#x27;timestamp&#x27;]],
 };
-
-class WebGLLayer extends Layer {
-  createRenderer() {
-    return new WebGLVectorLayerRenderer(this, {
-      className: this.getClassName(),
-      style: lineStyle,
-    });
-  }
-}
 
 const igcUrls &#x3D; [
   &#x27;data/igc/Clement-Latour.igc&#x27;,
@@ -366,8 +353,13 @@ for (let i &#x3D; 0; i &lt; igcUrls.length; ++i) {
     });
 }
 
-const vectorLayer &#x3D; new WebGLLayer({
+let timestamp &#x3D; 1303240000;
+const vectorLayer &#x3D; new WebGLVectorLayer({
   source,
+  style: lineStyle,
+  variables: {
+    timestamp,
+  },
 });
 
 const map &#x3D; new Map({
@@ -385,11 +377,12 @@ const map &#x3D; new Map({
 });
 
 function showTime() {
-  const time &#x3D; new Date(lineStyle.variables.timestamp * 1000);
-  document.getElementById(&#x27;time-value&#x27;).textContent &#x3D; time.toUTCString();
+  const dateTime &#x3D; new Date(timestamp * 1000);
+  document.getElementById(&#x27;time-value&#x27;).textContent &#x3D; dateTime.toUTCString();
 }
 document.getElementById(&#x27;time-input&#x27;).addEventListener(&#x27;input&#x27;, (event) &#x3D;&gt; {
-  lineStyle.variables.timestamp &#x3D; parseFloat(event.target.value);
+  timestamp &#x3D; parseFloat(event.target.value);
+  vectorLayer.updateStyleVariables({timestamp});
   showTime();
   map.render();
 });

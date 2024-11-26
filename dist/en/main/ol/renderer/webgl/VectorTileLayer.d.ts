@@ -23,6 +23,14 @@ export type Options = {
      */
     style: VectorStyle | Array<VectorStyle>;
     /**
+     * Style variables. Each variable must hold a literal value (not
+     * an expression). These variables can be used as {@link import ("../../expr/expression.js").ExpressionValue expressions} in the styles properties
+     * using the `['var', 'varName']` operator.
+     */
+    variables?: {
+        [x: string]: string | number | boolean | number[];
+    } | undefined;
+    /**
      * Setting this to true will provide a slight performance boost, but will
      * prevent all hit detection on the layer.
      */
@@ -39,6 +47,9 @@ export type LayerType = import("../../layer/BaseTile.js").default<any, any>;
 /**
  * @typedef {Object} Options
  * @property {VectorStyle|Array<VectorStyle>} style Vector style as literal style or shaders; can also accept an array of styles
+ * @property {import('../../style/flat.js').StyleVariables} [variables] Style variables. Each variable must hold a literal value (not
+ * an expression). These variables can be used as {@link import("../../expr/expression.js").ExpressionValue expressions} in the styles properties
+ * using the `['var', 'varName']` operator.
  * @property {boolean} [disableHitDetection=false] Setting this to true will provide a slight performance boost, but will
  * prevent all hit detection on the layer.
  * @property {number} [cacheSize=512] The vector tile cache size.
@@ -67,6 +78,11 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      * @private
      */
     private styles_;
+    /**
+     * @type {import('../../style/flat.js').StyleVariables}
+     * @private
+     */
+    private styleVariables_;
     /**
      * @type {Array<VectorStyleRenderer>}
      * @private

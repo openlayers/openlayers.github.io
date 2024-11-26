@@ -34,9 +34,10 @@ export function computeHash(input: any | string): string;
  * {@link module:ol/renderer/webgl/PointsLayer~WebGLPointsLayerRenderer}.
  *
  * @param {import("../style/webgl.js").WebGLStyle} style Literal style.
+ * @param {import('../style/flat.js').StyleVariables} variables Style variables.
  * @return {StyleParseResult} Result containing shader params, attributes and uniforms.
  */
-export function parseLiteralStyle(style: import("../style/webgl.js").WebGLStyle): StyleParseResult;
+export function parseLiteralStyle(style: import("../style/webgl.js").WebGLStyle, variables: import("../style/flat.js").StyleVariables): StyleParseResult;
 export type StyleParseResult = {
     /**
      * Shader builder pre-configured according to a given style

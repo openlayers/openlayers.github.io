@@ -243,39 +243,39 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
-import Layer from &#x27;ol/layer/Layer.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import WebGLVectorLayerRenderer from &#x27;ol/renderer/webgl/VectorLayer.js&#x27;;
+import WebGLVectorLayer from &#x27;ol/layer/WebGLVector.js&#x27;;
 
 /** @type {import(&#x27;ol/style/webgl.js&#x27;).WebGLStyle} */
 const style &#x3D; {
-  &#x27;stroke-color&#x27;: [&#x27;*&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], [220, 220, 220]],
-  &#x27;stroke-width&#x27;: 2,
+  &#x27;stroke-color&#x27;: [
+    &#x27;case&#x27;,
+    [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;highlightedId&#x27;], [&#x27;id&#x27;]],
+    &#x27;white&#x27;,
+    [&#x27;*&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], [220, 220, 220]],
+  ],
+  &#x27;stroke-width&#x27;: [&#x27;case&#x27;, [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;highlightedId&#x27;], [&#x27;id&#x27;]], 3, 2],
   &#x27;stroke-offset&#x27;: -1,
   &#x27;fill-color&#x27;: [&#x27;*&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], [255, 255, 255, 0.6]],
 };
-
-class WebGLLayer extends Layer {
-  createRenderer() {
-    return new WebGLVectorLayerRenderer(this, {
-      style,
-    });
-  }
-}
 
 const osm &#x3D; new TileLayer({
   source: new OSM(),
 });
 
-const vectorLayer &#x3D; new WebGLLayer({
+const vectorLayer &#x3D; new WebGLVectorLayer({
   source: new VectorSource({
     url: &#x27;https://openlayers.org/data/vector/ecoregions.json&#x27;,
     format: new GeoJSON(),
   }),
+  style,
+  variables: {
+    highlightedId: -1,
+  },
 });
 
 const map &#x3D; new Map({
@@ -287,16 +287,7 @@ const map &#x3D; new Map({
   }),
 });
 
-const featureOverlay &#x3D; new WebGLLayer({
-  source: new VectorSource(),
-  map: map,
-  style: {
-    &#x27;stroke-color&#x27;: &#x27;rgba(255, 255, 255, 0.7)&#x27;,
-    &#x27;stroke-width&#x27;: 1,
-  },
-});
-
-let highlight;
+let highlightedId &#x3D; -1;
 const displayFeatureInfo &#x3D; function (pixel) {
   const feature &#x3D; map.forEachFeatureAtPixel(pixel, function (feature) {
     return feature;
@@ -309,14 +300,10 @@ const displayFeatureInfo &#x3D; function (pixel) {
     info.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
   }
 
-  if (feature !&#x3D;&#x3D; highlight) {
-    if (highlight) {
-      featureOverlay.getSource().removeFeature(highlight);
-    }
-    if (feature) {
-      featureOverlay.getSource().addFeature(feature);
-    }
-    highlight &#x3D; feature;
+  const id &#x3D; feature ? feature.getId() : -1;
+  if (id !&#x3D;&#x3D; highlightedId) {
+    highlightedId &#x3D; id;
+    vectorLayer.updateStyleVariables({highlightedId});
   }
 };
 

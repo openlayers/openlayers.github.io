@@ -87,6 +87,7 @@
             <li data-name="rule"><a href="module-ol_style_flat.html#~Rule">Rule</a>
             <li data-name="sizeexpression"><a href="module-ol_style_flat.html#~SizeExpression">SizeExpression</a>
             <li data-name="stringexpression"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a>
+            <li data-name="stylevariables"><a href="module-ol_style_flat.html#~StyleVariables">StyleVariables</a>
         </ul>
     </div>
               <li class="loading">Loading …
@@ -3784,6 +3785,58 @@ If the else rule also has a filter, the rule will not apply if the filter does n
     
     <div class="description">
         <p>A literal string (e.g. <code>'hello'</code>) or an expression that evaluates to a string (e.g. <code>['get', 'greeting']</code>).</p>
+    </div>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~StyleVariables">
+        </div>
+        <h4 class="name">
+            StyleVariables<span class="type-signature type object.<string, (number|array.<number>|string|boolean)>">{Object.&lt;string, (number|Array.&lt;number>|string|boolean)>}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Style variables are provided as an object. The variables can be read in a <a href="module-ol_expr_expression.html#~ExpressionValue"><code>style expression</code></a>
+using the <code>['var', 'varName']</code> operator.
+Each variable must hold a literal value (not an expression).</p>
     </div>
     
 

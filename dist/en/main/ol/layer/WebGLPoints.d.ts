@@ -5,6 +5,15 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
      */
     style: import("../style/webgl.js").WebGLStyle;
     /**
+     * Style variables. Each variable must hold a literal value (not
+     * an expression). These variables can be used as {@link import ("../expr/expression.js").ExpressionValue expressions} in the styles properties
+     * using the `['var', 'varName']` operator.
+     * To update style variables, use the {@link import ("./WebGLPoints.js").default#updateStyleVariables} method.
+     */
+    variables?: {
+        [x: string]: string | number | boolean | number[];
+    } | undefined;
+    /**
      * A CSS class name to set to the layer element.
      */
     className?: string | undefined;
@@ -68,6 +77,10 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
  * @template {import("../source/Vector.js").default<import('../Feature').FeatureLike>} VectorSourceType
  * @typedef {Object} Options
  * @property {import('../style/webgl.js').WebGLStyle} style Literal style to apply to the layer features.
+ * @property {import('../style/flat.js').StyleVariables} [variables] Style variables. Each variable must hold a literal value (not
+ * an expression). These variables can be used as {@link import("../expr/expression.js").ExpressionValue expressions} in the styles properties
+ * using the `['var', 'varName']` operator.
+ * To update style variables, use the {@link import("./WebGLPoints.js").default#updateStyleVariables} method.
  * @property {string} [className='ol-layer'] A CSS class name to set to the layer element.
  * @property {number} [opacity=1] Opacity (0, 1).
  * @property {boolean} [visible=true] Visibility.
@@ -131,15 +144,15 @@ declare class WebGLPointsLayer<VectorSourceType extends import("../source/Vector
      */
     constructor(options: Options<VectorSourceType>);
     /**
+     * @type {import('../style/flat.js').StyleVariables}
+     * @private
+     */
+    private styleVariables_;
+    /**
      * @private
      * @type {import('../webgl/styleparser.js').StyleParseResult}
      */
     private parseResult_;
-    /**
-     * @type {Object<string, (string|number|Array<number>|boolean)>}
-     * @private
-     */
-    private styleVariables_;
     /**
      * @private
      * @type {boolean}

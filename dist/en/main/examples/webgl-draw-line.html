@@ -353,10 +353,9 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
-import Layer from &#x27;ol/layer/Layer.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import WebGLVectorLayerRenderer from &#x27;ol/renderer/webgl/VectorLayer.js&#x27;;
+import WebGLVectorLayer from &#x27;ol/layer/WebGLVector.js&#x27;;
 import {Draw, Modify, Snap} from &#x27;ol/interaction.js&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
@@ -367,14 +366,22 @@ import {fromLonLat} from &#x27;ol/proj.js&#x27;;
  */
 let style;
 
-class WebGLLayer extends Layer {
-  createRenderer() {
-    return new WebGLVectorLayerRenderer(this, {
-      className: this.getClassName(),
-      style,
-    });
-  }
-}
+/**
+ * @type {import(&#x27;ol/style/flat.js&#x27;).StyleVariables}
+ */
+const styleVariables &#x3D; {
+  width: 12,
+  offset: 0,
+  capType: &#x27;butt&#x27;,
+  joinType: &#x27;miter&#x27;,
+  miterLimit: 10, // ratio
+  dashLength1: 25,
+  dashLength2: 15,
+  dashLength3: 15,
+  dashLength4: 15,
+  dashOffset: 0,
+  patternSpacing: 0,
+};
 
 const source &#x3D; new VectorSource({
   url: &#x27;data/geojson/switzerland.geojson&#x27;,
@@ -388,21 +395,6 @@ const source &#x3D; new VectorSource({
  */
 const getStyle &#x3D; (dash, pattern) &#x3D;&gt; {
   let newStyle &#x3D; {
-    variables: style
-      ? style.variables
-      : {
-          width: 12,
-          offset: 0,
-          capType: &#x27;butt&#x27;,
-          joinType: &#x27;miter&#x27;,
-          miterLimit: 10, // ratio
-          dashLength1: 25,
-          dashLength2: 15,
-          dashLength3: 15,
-          dashLength4: 15,
-          dashOffset: 0,
-          patternSpacing: 0,
-        },
     &#x27;stroke-width&#x27;: [&#x27;var&#x27;, &#x27;width&#x27;],
     &#x27;stroke-color&#x27;: &#x27;rgba(24,86,34,0.7)&#x27;,
     &#x27;stroke-offset&#x27;: [&#x27;var&#x27;, &#x27;offset&#x27;],
@@ -435,8 +427,10 @@ const getStyle &#x3D; (dash, pattern) &#x3D;&gt; {
 
 style &#x3D; getStyle(false, false);
 
-let vector &#x3D; new WebGLLayer({
+let vector &#x3D; new WebGLVectorLayer({
   source,
+  style,
+  variables: {...styleVariables},
 });
 
 const map &#x3D; new Map({
@@ -458,8 +452,10 @@ const rebuildStyle &#x3D; () &#x3D;&gt; {
   const pattern &#x3D; document.getElementById(&#x27;patternEnable&#x27;).checked;
   style &#x3D; getStyle(dash, pattern);
   map.removeLayer(vector);
-  vector &#x3D; new WebGLLayer({
+  vector &#x3D; new WebGLVectorLayer({
     source,
+    style,
+    variables: {...styleVariables},
   });
   map.addLayer(vector);
 };
@@ -482,16 +478,16 @@ function addInteractions() {
 addInteractions();
 
 const inputListener &#x3D; (event) &#x3D;&gt; {
-  const variables &#x3D; style.variables;
   const variableName &#x3D; event.target.name;
   if (event.target.type &#x3D;&#x3D;&#x3D; &#x27;radio&#x27;) {
-    variables[variableName] &#x3D; event.target.value;
+    styleVariables[variableName] &#x3D; event.target.value;
   } else {
-    variables[variableName] &#x3D; parseFloat(event.target.value);
+    styleVariables[variableName] &#x3D; parseFloat(event.target.value);
   }
+  vector.updateStyleVariables(styleVariables);
   const valueSpan &#x3D; document.getElementById(&#x60;value-${variableName}&#x60;);
   if (valueSpan) {
-    valueSpan.textContent &#x3D; variables[variableName];
+    valueSpan.textContent &#x3D; styleVariables[variableName];
   }
   map.render();
 };

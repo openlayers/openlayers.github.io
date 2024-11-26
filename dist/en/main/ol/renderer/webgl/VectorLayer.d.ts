@@ -24,6 +24,12 @@ export type Options = {
      */
     style: VectorStyle | Array<VectorStyle>;
     /**
+     * Style variables
+     */
+    variables: {
+        [x: string]: number | Array<number> | string | boolean;
+    };
+    /**
      * Setting this to true will provide a slight performance boost, but will
      * prevent all hit detection on the layer.
      */
@@ -40,6 +46,7 @@ export type Options = {
  * @typedef {Object} Options
  * @property {string} [className='ol-layer'] A CSS class name to set to the canvas element.
  * @property {VectorStyle|Array<VectorStyle>} style Vector style as literal style or shaders; can also accept an array of styles
+ * @property {Object<string, number|Array<number>|string|boolean>} variables Style variables
  * @property {boolean} [disableHitDetection=false] Setting this to true will provide a slight performance boost, but will
  * prevent all hit detection on the layer.
  * @property {Array<import("./Layer").PostProcessesOptions>} [postProcesses] Post-processes definitions
@@ -111,6 +118,11 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @private
      */
     private currentFrameStateTransform_;
+    /**
+     * @type {import('../../style/flat.js').StyleVariables}
+     * @private
+     */
+    private styleVariables_;
     /**
      * @type {Array<VectorStyle>}
      * @private

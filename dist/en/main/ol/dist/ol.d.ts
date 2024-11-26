@@ -181,6 +181,8 @@ declare namespace ol {
             export { _ol_expr_expression$typeName as typeName };
         }
         namespace gpu {
+            export { _ol_expr_gpu$FEATURE_ID_PROPERTY_NAME as FEATURE_ID_PROPERTY_NAME };
+            export { _ol_expr_gpu$GEOMETRY_TYPE_PROPERTY_NAME as GEOMETRY_TYPE_PROPERTY_NAME };
             export { _ol_expr_gpu$PALETTE_TEXTURE_ARRAY as PALETTE_TEXTURE_ARRAY };
             export { _ol_expr_gpu$arrayToGlsl as arrayToGlsl };
             export { _ol_expr_gpu$buildExpression as buildExpression };
@@ -522,6 +524,7 @@ declare namespace ol {
         export { $ol$layer$VectorTile as VectorTile };
         export { $ol$layer$WebGLPoints as WebGLPoints };
         export { $ol$layer$WebGLTile as WebGLTile };
+        export { $ol$layer$WebGLVector as WebGLVector };
     }
     export namespace loadingstrategy {
         export { _ol_loadingstrategy$all as all };
@@ -1162,6 +1165,8 @@ import { newParsingContext as _ol_expr_expression$newParsingContext } from '../.
 import { overlapsType as _ol_expr_expression$overlapsType } from '../../ol/expr/expression.js';
 import { parse as _ol_expr_expression$parse } from '../../ol/expr/expression.js';
 import { typeName as _ol_expr_expression$typeName } from '../../ol/expr/expression.js';
+import { FEATURE_ID_PROPERTY_NAME as _ol_expr_gpu$FEATURE_ID_PROPERTY_NAME } from '../../ol/expr/gpu.js';
+import { GEOMETRY_TYPE_PROPERTY_NAME as _ol_expr_gpu$GEOMETRY_TYPE_PROPERTY_NAME } from '../../ol/expr/gpu.js';
 import { PALETTE_TEXTURE_ARRAY as _ol_expr_gpu$PALETTE_TEXTURE_ARRAY } from '../../ol/expr/gpu.js';
 import { arrayToGlsl as _ol_expr_gpu$arrayToGlsl } from '../../ol/expr/gpu.js';
 import { buildExpression as _ol_expr_gpu$buildExpression } from '../../ol/expr/gpu.js';
@@ -1436,6 +1441,7 @@ import $ol$layer$VectorImage from '../../ol/layer/VectorImage.js';
 import $ol$layer$VectorTile from '../../ol/layer/VectorTile.js';
 import $ol$layer$WebGLPoints from '../../ol/layer/WebGLPoints.js';
 import $ol$layer$WebGLTile from '../../ol/layer/WebGLTile.js';
+import $ol$layer$WebGLVector from '../../ol/layer/WebGLVector.js';
 import { all as _ol_loadingstrategy$all } from '../../ol/loadingstrategy.js';
 import { bbox as _ol_loadingstrategy$bbox } from '../../ol/loadingstrategy.js';
 import { tile as _ol_loadingstrategy$tile } from '../../ol/loadingstrategy.js';

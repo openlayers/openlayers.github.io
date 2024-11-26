@@ -159,10 +159,11 @@ export type VectorStyle = import("../../style/webgl.js").WebGLStyle | StyleShade
 declare class VectorStyleRenderer {
     /**
      * @param {VectorStyle} styleOrShaders Literal style or custom shaders
+     * @param {import('../../style/flat.js').StyleVariables} variables Style variables
      * @param {import('../../webgl/Helper.js').default} helper Helper
      * @param {boolean} enableHitDetection Whether to enable the hit detection (needs compatible shader)
      */
-    constructor(styleOrShaders: VectorStyle, helper: import("../../webgl/Helper.js").default, enableHitDetection: boolean);
+    constructor(styleOrShaders: VectorStyle, variables: import("../../style/flat.js").StyleVariables, helper: import("../../webgl/Helper.js").default, enableHitDetection: boolean);
     /**
      * @private
      * @type {import('../../webgl/Helper.js').default}

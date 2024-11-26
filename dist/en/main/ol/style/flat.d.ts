@@ -798,4 +798,12 @@ export type Rule = {
      */
     else?: boolean | undefined;
 };
+/**
+ * Style variables are provided as an object. The variables can be read in a {@link import ("../expr/expression.js").ExpressionValue style expression}
+ * using the `['var', 'varName']` operator.
+ * Each variable must hold a literal value (not an expression).
+ */
+export type StyleVariables = {
+    [x: string]: number | Array<number> | string | boolean;
+};
 //# sourceMappingURL=flat.d.ts.map

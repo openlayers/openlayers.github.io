@@ -59,13 +59,11 @@ export function uniformNameForVariable(variableName: string): string;
  * @typedef {Object} CompilationContextProperty
  * @property {string} name Name
  * @property {number} type Resolved property type
- * @property {function(import("../Feature.js").FeatureLike): *} [evaluator] Function used for evaluating the value;
  */
 /**
  * @typedef {Object} CompilationContextVariable
  * @property {string} name Name
  * @property {number} type Resolved variable type
- * @property {function(Object): *} [evaluator] Function used for evaluating the value; argument is the style variables object
  */
 /**
  * @typedef {Object} CompilationContext
@@ -75,7 +73,8 @@ export function uniformNameForVariable(variableName: string): string;
  * @property {Object<string, string>} functions Lookup of functions used by the style.
  * @property {number} [bandCount] Number of bands per pixel.
  * @property {Array<PaletteTexture>} [paletteTextures] List of palettes used by the style.
- * @property {import("../style/webgl.js").WebGLStyle} style Literal style.
+ * @property {boolean} featureId Whether the feature ID is used in the expression
+ * @property {boolean} geometryType Whether the geometry type is used in the expression
  */
 /**
  * @return {CompilationContext} A new compilation context.
@@ -97,6 +96,8 @@ export function newCompilationContext(): CompilationContext;
  */
 export function buildExpression(encoded: import("./expression.js").EncodedExpression, type: number, parsingContext: import("./expression.js").ParsingContext, compilationContext: CompilationContext): CompiledExpression;
 export const PALETTE_TEXTURE_ARRAY: "u_paletteTextures";
+export const FEATURE_ID_PROPERTY_NAME: "featureId";
+export const GEOMETRY_TYPE_PROPERTY_NAME: "geometryType";
 export type ParsingContext = import("./expression.js").ParsingContext;
 export type Expression = import("./expression.js").Expression;
 export type LiteralExpression = import("./expression.js").LiteralExpression;
@@ -109,10 +110,6 @@ export type CompilationContextProperty = {
      * Resolved property type
      */
     type: number;
-    /**
-     * Function used for evaluating the value;
-     */
-    evaluator?: ((arg0: import("../Feature.js").FeatureLike) => any) | undefined;
 };
 export type CompilationContextVariable = {
     /**
@@ -123,10 +120,6 @@ export type CompilationContextVariable = {
      * Resolved variable type
      */
     type: number;
-    /**
-     * Function used for evaluating the value; argument is the style variables object
-     */
-    evaluator?: ((arg0: any) => any) | undefined;
 };
 export type CompilationContext = {
     /**
@@ -160,9 +153,13 @@ export type CompilationContext = {
      */
     paletteTextures?: PaletteTexture[] | undefined;
     /**
-     * Literal style.
+     * Whether the feature ID is used in the expression
      */
-    style: import("../style/webgl.js").WebGLStyle;
+    featureId: boolean;
+    /**
+     * Whether the geometry type is used in the expression
+     */
+    geometryType: boolean;
 };
 export type CompiledExpression = string;
 /**
