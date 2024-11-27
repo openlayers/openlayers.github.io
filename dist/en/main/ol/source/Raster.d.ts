@@ -425,7 +425,7 @@ declare class RasterSource extends ImageSource {
      * @return {Array<number>|null} Resolutions.
      * @override
      */
-    override getResolutions(projection?: import("../proj/Projection.js").default | undefined): Array<number> | null;
+    override getResolutions(projection?: import("../proj/Projection").default): Array<number> | null;
 }
 import ImageSource from './Image.js';
 //# sourceMappingURL=Raster.d.ts.map

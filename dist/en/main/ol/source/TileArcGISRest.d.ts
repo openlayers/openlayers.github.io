@@ -149,7 +149,7 @@ declare class TileArcGISRest extends TileImage {
     /**
      * @param {Options} [options] Tile ArcGIS Rest options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {!Object}

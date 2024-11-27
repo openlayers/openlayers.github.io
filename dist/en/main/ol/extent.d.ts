@@ -23,7 +23,7 @@ export function boundingExtent(coordinates: Array<import("./coordinate.js").Coor
  * @return {Extent} Extent.
  * @api
  */
-export function buffer(extent: Extent, value: number, dest?: Extent | undefined): Extent;
+export function buffer(extent: Extent, value: number, dest?: Extent): Extent;
 /**
  * Creates a clone of an extent.
  *
@@ -31,7 +31,7 @@ export function buffer(extent: Extent, value: number, dest?: Extent | undefined)
  * @param {Extent} [dest] Extent.
  * @return {Extent} The clone.
  */
-export function clone(extent: Extent, dest?: Extent | undefined): Extent;
+export function clone(extent: Extent, dest?: Extent): Extent;
 /**
  * @param {Extent} extent Extent.
  * @param {number} x X.
@@ -94,25 +94,25 @@ export function createEmpty(): Extent;
  * @param {Extent} [dest] Destination extent.
  * @return {Extent} Extent.
  */
-export function createOrUpdate(minX: number, minY: number, maxX: number, maxY: number, dest?: Extent | undefined): Extent;
+export function createOrUpdate(minX: number, minY: number, maxX: number, maxY: number, dest?: Extent): Extent;
 /**
  * Create a new empty extent or make the provided one empty.
  * @param {Extent} [dest] Extent.
  * @return {Extent} Extent.
  */
-export function createOrUpdateEmpty(dest?: Extent | undefined): Extent;
+export function createOrUpdateEmpty(dest?: Extent): Extent;
 /**
  * @param {import("./coordinate.js").Coordinate} coordinate Coordinate.
  * @param {Extent} [dest] Extent.
  * @return {Extent} Extent.
  */
-export function createOrUpdateFromCoordinate(coordinate: import("./coordinate.js").Coordinate, dest?: Extent | undefined): Extent;
+export function createOrUpdateFromCoordinate(coordinate: import("./coordinate.js").Coordinate, dest?: Extent): Extent;
 /**
  * @param {Array<import("./coordinate.js").Coordinate>} coordinates Coordinates.
  * @param {Extent} [dest] Extent.
  * @return {Extent} Extent.
  */
-export function createOrUpdateFromCoordinates(coordinates: Array<import("./coordinate.js").Coordinate>, dest?: Extent | undefined): Extent;
+export function createOrUpdateFromCoordinates(coordinates: Array<import("./coordinate.js").Coordinate>, dest?: Extent): Extent;
 /**
  * @param {Array<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.
@@ -121,13 +121,13 @@ export function createOrUpdateFromCoordinates(coordinates: Array<import("./coord
  * @param {Extent} [dest] Extent.
  * @return {Extent} Extent.
  */
-export function createOrUpdateFromFlatCoordinates(flatCoordinates: Array<number>, offset: number, end: number, stride: number, dest?: Extent | undefined): Extent;
+export function createOrUpdateFromFlatCoordinates(flatCoordinates: Array<number>, offset: number, end: number, stride: number, dest?: Extent): Extent;
 /**
  * @param {Array<Array<import("./coordinate.js").Coordinate>>} rings Rings.
  * @param {Extent} [dest] Extent.
  * @return {Extent} Extent.
  */
-export function createOrUpdateFromRings(rings: Array<Array<import("./coordinate.js").Coordinate>>, dest?: Extent | undefined): Extent;
+export function createOrUpdateFromRings(rings: Array<Array<import("./coordinate.js").Coordinate>>, dest?: Extent): Extent;
 /**
  * Determine if two extents are equivalent.
  * @param {Extent} extent1 Extent 1.
@@ -243,7 +243,7 @@ export function getEnlargedArea(extent1: Extent, extent2: Extent): number;
  * @param {Extent} [dest] Destination extent.
  * @return {Extent} Extent.
  */
-export function getForViewAndSize(center: import("./coordinate.js").Coordinate, resolution: number, rotation: number, size: import("./size.js").Size, dest?: Extent | undefined): Extent;
+export function getForViewAndSize(center: import("./coordinate.js").Coordinate, resolution: number, rotation: number, size: import("./size.js").Size, dest?: Extent): Extent;
 /**
  * @param {import("./coordinate.js").Coordinate} center Center.
  * @param {number} resolution Resolution.
@@ -273,7 +273,7 @@ export function getIntersectionArea(extent1: Extent, extent2: Extent): number;
  * @return {Extent} Intersecting extent.
  * @api
  */
-export function getIntersection(extent1: Extent, extent2: Extent, dest?: Extent | undefined): Extent;
+export function getIntersection(extent1: Extent, extent2: Extent, dest?: Extent): Extent;
 /**
  * @param {Extent} extent Extent.
  * @return {number} Margin.
@@ -327,7 +327,7 @@ export function isEmpty(extent: Extent): boolean;
  * @param {Extent} [dest] Extent.
  * @return {Extent} Extent.
  */
-export function returnOrUpdate(extent: Extent, dest?: Extent | undefined): Extent;
+export function returnOrUpdate(extent: Extent, dest?: Extent): Extent;
 /**
  * @param {Extent} extent Extent.
  * @param {number} value Value.
@@ -353,7 +353,7 @@ export function intersectsSegment(extent: Extent, start: import("./coordinate.js
  * @return {Extent} Extent.
  * @api
  */
-export function applyTransform(extent: Extent, transformFn: import("./proj.js").TransformFunction, dest?: Extent | undefined, stops?: number | undefined): Extent;
+export function applyTransform(extent: Extent, transformFn: import("./proj.js").TransformFunction, dest?: Extent, stops?: number): Extent;
 /**
  * Modifies the provided extent in-place to be within the real world
  * extent.
@@ -376,7 +376,7 @@ export function wrapX(extent: Extent, projection: import("./proj/Projection.js")
  * @param {boolean} [multiWorld] Return all worlds
  * @return {Array<Extent>} The extent within the real world extent.
  */
-export function wrapAndSliceX(extent: Extent, projection: import("./proj/Projection.js").default, multiWorld?: boolean | undefined): Array<Extent>;
+export function wrapAndSliceX(extent: Extent, projection: import("./proj/Projection.js").default, multiWorld?: boolean): Array<Extent>;
 /**
  * An array of numbers representing an extent: `[minx, miny, maxx, maxy]`.
  */

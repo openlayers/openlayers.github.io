@@ -23,7 +23,7 @@ declare class DoubleClickZoom extends Interaction {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {number}

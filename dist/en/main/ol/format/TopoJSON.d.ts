@@ -83,7 +83,7 @@ declare class TopoJSON extends JSONFeature<Feature<import("../geom/Geometry.js")
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {string|undefined}

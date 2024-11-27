@@ -245,7 +245,7 @@ declare class DataTileSource<TileType extends import("../Tile.js").default = Dat
      * @return {TileType|null} Tile (or null if outside source extent).
      * @override
      */
-    override getTile(z: number, x: number, y: number, pixelRatio: number, projection?: import("../proj.js").Projection | undefined): TileType | null;
+    override getTile(z: number, x: number, y: number, pixelRatio: number, projection?: import("../proj/Projection.js").default): TileType | null;
     /**
      * Sets the tile grid to use when reprojecting the tiles to the given
      * projection instead of the default tile grid for the projection.

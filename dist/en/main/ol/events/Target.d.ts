@@ -72,7 +72,7 @@ declare class Target extends Disposable {
      *     `true` will be returned if this event target has any listeners.
      * @return {boolean} Has listeners.
      */
-    hasListener(type?: string | undefined): boolean;
+    hasListener(type?: string): boolean;
     /**
      * @param {string} type Type.
      * @param {import("../events.js").Listener} listener Listener.

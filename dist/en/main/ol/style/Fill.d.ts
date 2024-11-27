@@ -26,7 +26,7 @@ declare class Fill {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {import("./IconImage.js").default|null}

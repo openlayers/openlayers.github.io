@@ -96,7 +96,7 @@ declare class FullScreen extends Control {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /***
      * @type {FullScreenOnSignature<import("../events").EventsKey>}
      */

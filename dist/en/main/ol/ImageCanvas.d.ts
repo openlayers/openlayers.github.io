@@ -23,7 +23,7 @@ declare class ImageCanvas extends ImageWrapper {
      * @param {Loader} [loader] Optional loader function to
      *     support asynchronous canvas drawing.
      */
-    constructor(extent: import("./extent.js").Extent, resolution: number, pixelRatio: number, canvas: HTMLCanvasElement, loader?: Loader | undefined);
+    constructor(extent: import("./extent.js").Extent, resolution: number, pixelRatio: number, canvas: HTMLCanvasElement, loader?: Loader);
     /**
      * Optional canvas loader function.
      * @type {?Loader}

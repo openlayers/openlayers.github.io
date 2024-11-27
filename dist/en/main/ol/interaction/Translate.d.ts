@@ -144,7 +144,7 @@ declare class Translate extends PointerInteraction {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /***
      * @type {TranslateOnSignature<import("../events").EventsKey>}
      */

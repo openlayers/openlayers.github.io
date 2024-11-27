@@ -6,7 +6,7 @@
  * @param {TileRange} [tileRange] TileRange.
  * @return {TileRange} Tile range.
  */
-export function createOrUpdate(minX: number, maxX: number, minY: number, maxY: number, tileRange?: TileRange | undefined): TileRange;
+export function createOrUpdate(minX: number, maxX: number, minY: number, maxY: number, tileRange?: TileRange): TileRange;
 export default TileRange;
 /**
  * @module ol/TileRange

@@ -33,7 +33,7 @@ export function not(condition: import("./filter/Filter.js").default): Not;
  * @return {!Bbox} `<BBOX>` operator.
  * @api
  */
-export function bbox(geometryName: string, extent: import("../extent.js").Extent, srsName?: string | undefined): Bbox;
+export function bbox(geometryName: string, extent: import("../extent.js").Extent, srsName?: string): Bbox;
 /**
  * Create a `<Contains>` operator to test whether a geometry-valued property
  * contains a given geometry.
@@ -45,7 +45,7 @@ export function bbox(geometryName: string, extent: import("../extent.js").Extent
  * @return {!Contains} `<Contains>` operator.
  * @api
  */
-export function contains(geometryName: string, geometry: import("../geom/Geometry.js").default, srsName?: string | undefined): Contains;
+export function contains(geometryName: string, geometry: import("../geom/Geometry.js").default, srsName?: string): Contains;
 /**
  * Create a `<Intersects>` operator to test whether a geometry-valued property
  * intersects a given geometry.
@@ -57,7 +57,7 @@ export function contains(geometryName: string, geometry: import("../geom/Geometr
  * @return {!Intersects} `<Intersects>` operator.
  * @api
  */
-export function intersects(geometryName: string, geometry: import("../geom/Geometry.js").default, srsName?: string | undefined): Intersects;
+export function intersects(geometryName: string, geometry: import("../geom/Geometry.js").default, srsName?: string): Intersects;
 /**
  * Create a `<Disjoint>` operator to test whether a geometry-valued property
  * is disjoint to a given geometry.
@@ -69,7 +69,7 @@ export function intersects(geometryName: string, geometry: import("../geom/Geome
  * @return {!Disjoint} `<Disjoint>` operator.
  * @api
  */
-export function disjoint(geometryName: string, geometry: import("../geom/Geometry.js").default, srsName?: string | undefined): Disjoint;
+export function disjoint(geometryName: string, geometry: import("../geom/Geometry.js").default, srsName?: string): Disjoint;
 /**
  * Create a `<Within>` operator to test whether a geometry-valued property
  * is within a given geometry.
@@ -81,7 +81,7 @@ export function disjoint(geometryName: string, geometry: import("../geom/Geometr
  * @return {!Within} `<Within>` operator.
  * @api
  */
-export function within(geometryName: string, geometry: import("../geom/Geometry.js").default, srsName?: string | undefined): Within;
+export function within(geometryName: string, geometry: import("../geom/Geometry.js").default, srsName?: string): Within;
 /**
  * Create a `<DWithin>` operator to test whether a geometry-valued property
  * is within a distance to a given geometry.
@@ -95,7 +95,7 @@ export function within(geometryName: string, geometry: import("../geom/Geometry.
  * @return {!DWithin} `<DWithin>` operator.
  * @api
  */
-export function dwithin(geometryName: string, geometry: import("../geom/Geometry.js").default, distance: number, unit: string, srsName?: string | undefined): DWithin;
+export function dwithin(geometryName: string, geometry: import("../geom/Geometry.js").default, distance: number, unit: string, srsName?: string): DWithin;
 /**
  * Creates a `<PropertyIsEqualTo>` comparison operator.
  *
@@ -105,7 +105,7 @@ export function dwithin(geometryName: string, geometry: import("../geom/Geometry
  * @return {!EqualTo} `<PropertyIsEqualTo>` operator.
  * @api
  */
-export function equalTo(propertyName: string, expression: (string | number), matchCase?: boolean | undefined): EqualTo;
+export function equalTo(propertyName: string, expression: (string | number), matchCase?: boolean): EqualTo;
 /**
  * Creates a `<PropertyIsNotEqualTo>` comparison operator.
  *
@@ -115,7 +115,7 @@ export function equalTo(propertyName: string, expression: (string | number), mat
  * @return {!NotEqualTo} `<PropertyIsNotEqualTo>` operator.
  * @api
  */
-export function notEqualTo(propertyName: string, expression: (string | number), matchCase?: boolean | undefined): NotEqualTo;
+export function notEqualTo(propertyName: string, expression: (string | number), matchCase?: boolean): NotEqualTo;
 /**
  * Creates a `<PropertyIsLessThan>` comparison operator.
  *
@@ -188,7 +188,7 @@ export function between(propertyName: string, lowerBoundary: number, upperBounda
  * @return {!IsLike} `<PropertyIsLike>` operator.
  * @api
  */
-export function like(propertyName: string, pattern: string, wildCard?: string | undefined, singleChar?: string | undefined, escapeChar?: string | undefined, matchCase?: boolean | undefined): IsLike;
+export function like(propertyName: string, pattern: string, wildCard?: string, singleChar?: string, escapeChar?: string, matchCase?: boolean): IsLike;
 /**
  * Create a `<During>` temporal operator.
  *

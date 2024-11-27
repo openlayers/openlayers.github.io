@@ -142,7 +142,7 @@ declare class WebGLVectorLayer<VectorSourceType extends import("../source/Vector
     /**
      * @param {Options<VectorSourceType, FeatureType>} [options] Options.
      */
-    constructor(options?: Options<VectorSourceType, FeatureType> | undefined);
+    constructor(options?: Options<VectorSourceType, FeatureType>);
     /**
      * @type {import('../style/flat.js').StyleVariables}
      * @private

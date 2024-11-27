@@ -96,7 +96,7 @@ declare class ImageTileSource extends DataTileSource<import("../ImageTile.js").d
     /**
      * @param {Options} [options] DataTile source options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @param {UrlLike} url The new URL.
      * @api

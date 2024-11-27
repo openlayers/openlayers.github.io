@@ -466,7 +466,7 @@ declare class View extends BaseObject {
     /**
      * @param {ViewOptions} [options] View options.
      */
-    constructor(options?: ViewOptions | undefined);
+    constructor(options?: ViewOptions);
     /***
      * @type {ViewOnSignature<import("./events").EventsKey>}
      */
@@ -580,7 +580,7 @@ declare class View extends BaseObject {
      * @type {Constraints}
      */
     private constraints_;
-    set padding(padding: number[] | undefined);
+    set padding(padding: Array<number> | undefined);
     /**
      * Padding (in css pixels).
      * If the map viewport is partially covered with other content (overlays) along
@@ -590,7 +590,7 @@ declare class View extends BaseObject {
      * @type {Array<number>|undefined}
      * @api
      */
-    get padding(): number[] | undefined;
+    get padding(): Array<number> | undefined;
     /**
      * Get an updated version of the view options used to construct the view.  The
      * current resolution (or zoom), center, and rotation are applied to any stored
@@ -685,7 +685,7 @@ declare class View extends BaseObject {
      * Note: the constraints are not resolved during an animation to avoid stopping it
      * @param {import("./size.js").Size} [size] Viewport size; if undefined, [100, 100] is assumed
      */
-    setViewportSize(size?: import("./size.js").Size | undefined): void;
+    setViewportSize(size?: import("./size.js").Size): void;
     /**
      * Get the view center.
      * @return {import("./coordinate.js").Coordinate|undefined} The center of the view.
@@ -710,7 +710,7 @@ declare class View extends BaseObject {
      * @param {Array<number>} [hints] Destination array.
      * @return {Array<number>} Hint.
      */
-    getHints(hints?: number[] | undefined): Array<number>;
+    getHints(hints?: Array<number>): Array<number>;
     /**
      * Calculate the extent for the current view state and the passed box size.
      * @param {import("./size.js").Size} [size] The pixel dimensions of the box
@@ -721,13 +721,13 @@ declare class View extends BaseObject {
      * @return {import("./extent.js").Extent} Extent.
      * @api
      */
-    calculateExtent(size?: import("./size.js").Size | undefined): import("./extent.js").Extent;
+    calculateExtent(size?: import("./size.js").Size): import("./extent.js").Extent;
     /**
      * @param {import("./size.js").Size} [size] Box pixel size. If not provided,
      * the map's last known viewport size will be used.
      * @return {import("./extent.js").Extent} Extent.
      */
-    calculateExtentInternal(size?: import("./size.js").Size | undefined): import("./extent.js").Extent;
+    calculateExtentInternal(size?: import("./size.js").Size): import("./extent.js").Extent;
     /**
      * Get the maximum resolution of the view.
      * @return {number} The maximum resolution of the view.
@@ -798,7 +798,7 @@ declare class View extends BaseObject {
      *     the given size.
      * @api
      */
-    getResolutionForExtent(extent: import("./extent.js").Extent, size?: import("./size.js").Size | undefined): number;
+    getResolutionForExtent(extent: import("./extent.js").Extent, size?: import("./size.js").Size): number;
     /**
      * Get the resolution for a provided extent (in map units) and size (in pixels).
      * @param {import("./extent.js").Extent} extent Extent.
@@ -806,14 +806,14 @@ declare class View extends BaseObject {
      * @return {number} The resolution at which the provided extent will render at
      *     the given size.
      */
-    getResolutionForExtentInternal(extent: import("./extent.js").Extent, size?: import("./size.js").Size | undefined): number;
+    getResolutionForExtentInternal(extent: import("./extent.js").Extent, size?: import("./size.js").Size): number;
     /**
      * Return a function that returns a value between 0 and 1 for a
      * resolution. Exponential scaling is assumed.
      * @param {number} [power] Power.
      * @return {function(number): number} Resolution for value function.
      */
-    getResolutionForValueFunction(power?: number | undefined): (arg0: number) => number;
+    getResolutionForValueFunction(power?: number): (arg0: number) => number;
     /**
      * Get the view rotation.
      * @return {number} The rotation of the view in radians.
@@ -827,7 +827,7 @@ declare class View extends BaseObject {
      * @param {number} [power] Power.
      * @return {function(number): number} Value for resolution function.
      */
-    getValueForResolutionFunction(power?: number | undefined): (arg0: number) => number;
+    getValueForResolutionFunction(power?: number): (arg0: number) => number;
     /**
      * Returns the size of the viewport minus padding.
      * @private
@@ -875,7 +875,7 @@ declare class View extends BaseObject {
      * @param {FitOptions} [options] Options.
      * @api
      */
-    fit(geometryOrExtent: import("./geom/SimpleGeometry.js").default | import("./extent.js").Extent, options?: FitOptions | undefined): void;
+    fit(geometryOrExtent: import("./geom/SimpleGeometry.js").default | import("./extent.js").Extent, options?: FitOptions): void;
     /**
      * Calculate rotated extent
      * @param {import("./geom/SimpleGeometry.js").default} geometry The geometry.
@@ -886,7 +886,7 @@ declare class View extends BaseObject {
      * @param {import("./geom/SimpleGeometry.js").default} geometry The geometry.
      * @param {FitOptions} [options] Options.
      */
-    fitInternal(geometry: import("./geom/SimpleGeometry.js").default, options?: FitOptions | undefined): void;
+    fitInternal(geometry: import("./geom/SimpleGeometry.js").default, options?: FitOptions): void;
     /**
      * Center on coordinate and view position.
      * @param {import("./coordinate.js").Coordinate} coordinate Coordinate.
@@ -932,14 +932,14 @@ declare class View extends BaseObject {
      * @param {import("./coordinate.js").Coordinate} [anchor] The origin of the transformation.
      * @api
      */
-    adjustResolution(ratio: number, anchor?: import("./coordinate.js").Coordinate | undefined): void;
+    adjustResolution(ratio: number, anchor?: import("./coordinate.js").Coordinate): void;
     /**
      * Multiply the view resolution by a ratio, optionally using an anchor. Any resolution
      * constraint will apply.
      * @param {number} ratio The ratio to apply on the view resolution.
      * @param {import("./coordinate.js").Coordinate} [anchor] The origin of the transformation.
      */
-    adjustResolutionInternal(ratio: number, anchor?: import("./coordinate.js").Coordinate | undefined): void;
+    adjustResolutionInternal(ratio: number, anchor?: import("./coordinate.js").Coordinate): void;
     /**
      * Adds a value to the view zoom level, optionally using an anchor. Any resolution
      * constraint will apply.
@@ -947,7 +947,7 @@ declare class View extends BaseObject {
      * @param {import("./coordinate.js").Coordinate} [anchor] The origin of the transformation.
      * @api
      */
-    adjustZoom(delta: number, anchor?: import("./coordinate.js").Coordinate | undefined): void;
+    adjustZoom(delta: number, anchor?: import("./coordinate.js").Coordinate): void;
     /**
      * Adds a value to the view rotation, optionally using an anchor. Any rotation
      * constraint will apply.
@@ -955,12 +955,12 @@ declare class View extends BaseObject {
      * @param {import("./coordinate.js").Coordinate} [anchor] The rotation center.
      * @api
      */
-    adjustRotation(delta: number, anchor?: import("./coordinate.js").Coordinate | undefined): void;
+    adjustRotation(delta: number, anchor?: import("./coordinate.js").Coordinate): void;
     /**
      * @param {number} delta Relative value to add to the zoom rotation, in radians.
      * @param {import("./coordinate.js").Coordinate} [anchor] The rotation center.
      */
-    adjustRotationInternal(delta: number, anchor?: import("./coordinate.js").Coordinate | undefined): void;
+    adjustRotationInternal(delta: number, anchor?: import("./coordinate.js").Coordinate): void;
     /**
      * Set the center of the current view. Any extent constraint will apply.
      * @param {import("./coordinate.js").Coordinate|undefined} center The center of the view.
@@ -1017,7 +1017,7 @@ declare class View extends BaseObject {
      * @param {number} [resolutionDirection] Which direction to zoom.
      * @param {import("./coordinate.js").Coordinate} [anchor] The origin of the transformation.
      */
-    resolveConstraints(duration?: number | undefined, resolutionDirection?: number | undefined, anchor?: import("./coordinate.js").Coordinate | undefined): void;
+    resolveConstraints(duration?: number, resolutionDirection?: number, anchor?: import("./coordinate.js").Coordinate): void;
     /**
      * Notify the View that an interaction has started.
      * The view state will be resolved to a stable one if needed
@@ -1033,7 +1033,7 @@ declare class View extends BaseObject {
      * @param {import("./coordinate.js").Coordinate} [anchor] The origin of the transformation.
      * @api
      */
-    endInteraction(duration?: number | undefined, resolutionDirection?: number | undefined, anchor?: import("./coordinate.js").Coordinate | undefined): void;
+    endInteraction(duration?: number, resolutionDirection?: number, anchor?: import("./coordinate.js").Coordinate): void;
     /**
      * Notify the View that an interaction has ended. The view state will be resolved
      * to a stable one if needed (depending on its constraints).
@@ -1041,7 +1041,7 @@ declare class View extends BaseObject {
      * @param {number} [resolutionDirection] Which direction to zoom.
      * @param {import("./coordinate.js").Coordinate} [anchor] The origin of the transformation.
      */
-    endInteractionInternal(duration?: number | undefined, resolutionDirection?: number | undefined, anchor?: import("./coordinate.js").Coordinate | undefined): void;
+    endInteractionInternal(duration?: number, resolutionDirection?: number, anchor?: import("./coordinate.js").Coordinate): void;
     /**
      * Get a valid position for the view center according to the current constraints.
      * @param {import("./coordinate.js").Coordinate|undefined} targetCenter Target center position.
@@ -1049,7 +1049,7 @@ declare class View extends BaseObject {
      * This is useful to guess a valid center position at a different zoom level.
      * @return {import("./coordinate.js").Coordinate|undefined} Valid center position.
      */
-    getConstrainedCenter(targetCenter: import("./coordinate.js").Coordinate | undefined, targetResolution?: number | undefined): import("./coordinate.js").Coordinate | undefined;
+    getConstrainedCenter(targetCenter: import("./coordinate.js").Coordinate | undefined, targetResolution?: number): import("./coordinate.js").Coordinate | undefined;
     /**
      * Get a valid zoom level according to the current view constraints.
      * @param {number|undefined} targetZoom Target zoom.
@@ -1059,7 +1059,7 @@ declare class View extends BaseObject {
      * will be used. If -1, the nearest higher resolution will be used.
      * @return {number|undefined} Valid zoom level.
      */
-    getConstrainedZoom(targetZoom: number | undefined, direction?: number | undefined): number | undefined;
+    getConstrainedZoom(targetZoom: number | undefined, direction?: number): number | undefined;
     /**
      * Get a valid resolution according to the current view constraints.
      * @param {number|undefined} targetResolution Target resolution.
@@ -1069,7 +1069,7 @@ declare class View extends BaseObject {
      * will be used. If -1, the nearest higher resolution will be used.
      * @return {number|undefined} Valid resolution.
      */
-    getConstrainedResolution(targetResolution: number | undefined, direction?: number | undefined): number | undefined;
+    getConstrainedResolution(targetResolution: number | undefined, direction?: number): number | undefined;
 }
 import BaseObject from './Object.js';
 //# sourceMappingURL=View.d.ts.map

@@ -13,7 +13,7 @@ declare class MultiLineString extends SimpleGeometry {
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      * @param {Array<number>} [ends] Flat coordinate ends for internal use.
      */
-    constructor(coordinates: Array<Array<import("../coordinate.js").Coordinate> | LineString> | Array<number>, layout?: import("./Geometry.js").GeometryLayout | undefined, ends?: number[] | undefined);
+    constructor(coordinates: Array<Array<import("../coordinate.js").Coordinate> | LineString> | Array<number>, layout?: import("./Geometry.js").GeometryLayout, ends?: Array<number>);
     /**
      * @type {Array<number>}
      * @private
@@ -64,7 +64,7 @@ declare class MultiLineString extends SimpleGeometry {
      * @return {import("../coordinate.js").Coordinate|null} Coordinate.
      * @api
      */
-    getCoordinateAtM(m: number, extrapolate?: boolean | undefined, interpolate?: boolean | undefined): import("../coordinate.js").Coordinate | null;
+    getCoordinateAtM(m: number, extrapolate?: boolean, interpolate?: boolean): import("../coordinate.js").Coordinate | null;
     /**
      * Return the coordinates of the multilinestring.
      * @return {Array<Array<import("../coordinate.js").Coordinate>>} Coordinates.
@@ -107,7 +107,7 @@ declare class MultiLineString extends SimpleGeometry {
      * @api
      * @override
      */
-    override setCoordinates(coordinates: Array<Array<import("../coordinate.js").Coordinate>>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
+    override setCoordinates(coordinates: Array<Array<import("../coordinate.js").Coordinate>>, layout?: import("./Geometry.js").GeometryLayout): void;
 }
 import SimpleGeometry from './SimpleGeometry.js';
 import LineString from './LineString.js';

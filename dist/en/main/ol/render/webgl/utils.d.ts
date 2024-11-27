@@ -11,7 +11,7 @@
  * @property {number} indexPosition New position in the index buffer where future writes should start.
  * @private
  */
-export function writePointFeatureToBuffers(instructions: Float32Array, elementIndex: number, vertexBuffer: Float32Array, indexBuffer: Uint32Array, customAttributesSize: number, bufferPositions?: BufferPositions | undefined): BufferPositions;
+export function writePointFeatureToBuffers(instructions: Float32Array, elementIndex: number, vertexBuffer: Float32Array, indexBuffer: Uint32Array, customAttributesSize: number, bufferPositions?: BufferPositions): BufferPositions;
 /**
  * Pushes a single quad to form a line segment; also includes a computation for the join angles with previous and next
  * segment, in order to be able to offset the vertices correctly in the shader.
@@ -74,7 +74,7 @@ export function getBlankImageData(): ImageData;
  * @param {Array<number>} [array] Reusable array
  * @return {Array<number>} Color array containing the encoded id
  */
-export function colorEncodeId(id: number, array?: number[] | undefined): Array<number>;
+export function colorEncodeId(id: number, array?: Array<number>): Array<number>;
 /**
  * Reads an id from a color-encoded array
  * Note: the expected range for each component is 0 to 1 with 256 steps.

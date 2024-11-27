@@ -81,7 +81,7 @@ declare class GeoJSON<FeatureType extends import("../Feature.js").FeatureLike = 
     /**
      * @param {Options<FeatureType>} [options] Options.
      */
-    constructor(options?: Options<FeatureType> | undefined);
+    constructor(options?: Options<FeatureType>);
     /**
      * Name of the geometry attribute for features.
      * @type {string|undefined}
@@ -101,7 +101,7 @@ declare class GeoJSON<FeatureType extends import("../Feature.js").FeatureLike = 
      * @return {import("../geom/Geometry.js").default} Geometry.
      * @override
      */
-    protected override readGeometryFromObject(object: GeoJSONGeometry, options?: import("./Feature.js").ReadOptions | undefined): import("../geom/Geometry.js").default;
+    protected override readGeometryFromObject(object: GeoJSONGeometry, options?: import("./Feature.js").ReadOptions): import("../geom/Geometry.js").default;
     /**
      * Encode a feature as a GeoJSON Feature object.
      *
@@ -111,7 +111,7 @@ declare class GeoJSON<FeatureType extends import("../Feature.js").FeatureLike = 
      * @api
      * @override
      */
-    override writeFeatureObject(feature: import("../Feature.js").default, options?: import("./Feature.js").WriteOptions | undefined): GeoJSONFeature;
+    override writeFeatureObject(feature: import("../Feature.js").default, options?: import("./Feature.js").WriteOptions): GeoJSONFeature;
     /**
      * Encode an array of features as a GeoJSON object.
      *
@@ -121,7 +121,7 @@ declare class GeoJSON<FeatureType extends import("../Feature.js").FeatureLike = 
      * @api
      * @override
      */
-    override writeFeaturesObject(features: Array<import("../Feature.js").default>, options?: import("./Feature.js").WriteOptions | undefined): GeoJSONFeatureCollection;
+    override writeFeaturesObject(features: Array<import("../Feature.js").default>, options?: import("./Feature.js").WriteOptions): GeoJSONFeatureCollection;
     /**
      * Encode a geometry as a GeoJSON object.
      *
@@ -131,7 +131,7 @@ declare class GeoJSON<FeatureType extends import("../Feature.js").FeatureLike = 
      * @api
      * @override
      */
-    override writeGeometryObject(geometry: import("../geom/Geometry.js").default, options?: import("./Feature.js").WriteOptions | undefined): GeoJSONGeometry | GeoJSONGeometryCollection;
+    override writeGeometryObject(geometry: import("../geom/Geometry.js").default, options?: import("./Feature.js").WriteOptions): GeoJSONGeometry | GeoJSONGeometryCollection;
 }
 import Feature from '../Feature.js';
 import JSONFeature from './JSONFeature.js';

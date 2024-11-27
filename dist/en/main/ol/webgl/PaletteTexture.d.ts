@@ -9,7 +9,7 @@ declare class PaletteTexture {
      */
     constructor(name: string, data: Uint8Array);
     name: string;
-    data: Uint8Array;
+    data: Uint8Array<ArrayBufferLike>;
     /**
      * @type {WebGLTexture|null}
      * @private

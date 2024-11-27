@@ -38,7 +38,7 @@ declare class ExecutorGroup {
      */
     constructor(maxExtent: import("../../extent.js").Extent, resolution: number, pixelRatio: number, overlaps: boolean, allInstructions: {
         [x: string]: any;
-    }, renderBuffer?: number | undefined, deferredRendering?: boolean | undefined);
+    }, renderBuffer?: number, deferredRendering?: boolean);
     /**
      * @private
      * @type {import("../../extent.js").Extent}
@@ -137,7 +137,7 @@ declare class ExecutorGroup {
      * @param {import("rbush").default<import('./Executor.js').DeclutterEntry>|null} [declutterTree] Declutter tree.
      *     When set to null, no decluttering is done, even when the executor group has a `ZIndexContext`.
      */
-    execute(targetContext: CanvasRenderingContext2D, scaledCanvasSize: import("../../size.js").Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, builderTypes?: import("../canvas.js").BuilderType[] | undefined, declutterTree?: import("rbush").default<import("./Executor.js").DeclutterEntry> | null | undefined): void;
+    execute(targetContext: CanvasRenderingContext2D, scaledCanvasSize: import("../../size.js").Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, builderTypes?: Array<import("../canvas.js").BuilderType>, declutterTree?: import("rbush").default<import("./Executor.js").DeclutterEntry> | null): void;
     getDeferredZIndexContexts(): {
         [x: number]: import("./ZIndexContext.js").default[];
     };

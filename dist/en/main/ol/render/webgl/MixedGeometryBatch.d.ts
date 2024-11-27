@@ -189,12 +189,12 @@ declare class MixedGeometryBatch {
      * @param {Array<Feature|RenderFeature>} features Array of features to add to the batch
      * @param {import("../../proj.js").TransformFunction} [projectionTransform] Projection transform.
      */
-    addFeatures(features: Array<Feature | RenderFeature>, projectionTransform?: import("../../proj.js").TransformFunction | undefined): void;
+    addFeatures(features: Array<Feature | RenderFeature>, projectionTransform?: import("../../proj.js").TransformFunction): void;
     /**
      * @param {Feature|RenderFeature} feature Feature to add to the batch
      * @param {import("../../proj.js").TransformFunction} [projectionTransform] Projection transform.
      */
-    addFeature(feature: Feature | RenderFeature, projectionTransform?: import("../../proj.js").TransformFunction | undefined): void;
+    addFeature(feature: Feature | RenderFeature, projectionTransform?: import("../../proj.js").TransformFunction): void;
     /**
      * @param {Feature|RenderFeature} feature Feature
      * @return {GeometryBatchItem|void} the cleared entry

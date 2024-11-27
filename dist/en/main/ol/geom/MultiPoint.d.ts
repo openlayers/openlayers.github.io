@@ -11,7 +11,7 @@ declare class MultiPoint extends SimpleGeometry {
      *     For internal use, flat coordinates in combination with `layout` are also accepted.
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      */
-    constructor(coordinates: Array<import("../coordinate.js").Coordinate> | Array<number>, layout?: import("./Geometry.js").GeometryLayout | undefined);
+    constructor(coordinates: Array<import("../coordinate.js").Coordinate> | Array<number>, layout?: import("./Geometry.js").GeometryLayout);
     /**
      * Append the passed point to this multipoint.
      * @param {Point} point Point.
@@ -52,7 +52,7 @@ declare class MultiPoint extends SimpleGeometry {
      * @api
      * @override
      */
-    override setCoordinates(coordinates: Array<import("../coordinate.js").Coordinate>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
+    override setCoordinates(coordinates: Array<import("../coordinate.js").Coordinate>, layout?: import("./Geometry.js").GeometryLayout): void;
 }
 import SimpleGeometry from './SimpleGeometry.js';
 import Point from './Point.js';

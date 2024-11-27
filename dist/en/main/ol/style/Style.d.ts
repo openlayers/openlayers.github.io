@@ -238,7 +238,7 @@ declare class Style {
     /**
      * @param {Options} [options] Style options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {string|import("../geom/Geometry.js").default|GeometryFunction|null}

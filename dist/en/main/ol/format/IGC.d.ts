@@ -29,7 +29,7 @@ declare class IGC extends TextFeature {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {IGCZ}

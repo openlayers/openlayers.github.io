@@ -9,7 +9,7 @@
  *     coordinates.
  * @return {Array<number>} Simplified line string.
  */
-export function simplifyLineString(flatCoordinates: Array<number>, offset: number, end: number, stride: number, squaredTolerance: number, highQuality: boolean, simplifiedFlatCoordinates?: number[] | undefined): Array<number>;
+export function simplifyLineString(flatCoordinates: Array<number>, offset: number, end: number, stride: number, squaredTolerance: number, highQuality: boolean, simplifiedFlatCoordinates?: Array<number>): Array<number>;
 /**
  * @param {Array<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.

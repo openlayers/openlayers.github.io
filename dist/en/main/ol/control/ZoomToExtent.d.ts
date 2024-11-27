@@ -46,7 +46,7 @@ declare class ZoomToExtent extends Control {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @type {?import("../extent.js").Extent|null}
      * @protected

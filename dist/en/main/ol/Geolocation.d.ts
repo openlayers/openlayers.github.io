@@ -96,7 +96,7 @@ declare class Geolocation extends BaseObject {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /***
      * @type {GeolocationOnSignature<import("./events").EventsKey>}
      */

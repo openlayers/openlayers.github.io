@@ -13,7 +13,7 @@
  * @param {Size} [dest] Optional reusable size array.
  * @return {Size} The buffered size.
  */
-export function buffer(size: Size, num: number, dest?: Size | undefined): Size;
+export function buffer(size: Size, num: number, dest?: Size): Size;
 /**
  * Determines if a size has a positive area.
  * @param {Size} size The size to test.
@@ -27,7 +27,7 @@ export function hasArea(size: Size): boolean;
  * @param {Size} [dest] Optional reusable size array.
  * @return {Size} The scaled size.
  */
-export function scale(size: Size, ratio: number, dest?: Size | undefined): Size;
+export function scale(size: Size, ratio: number, dest?: Size): Size;
 /**
  * Returns an `Size` array for the passed in number (meaning: square) or
  * `Size` array.
@@ -37,7 +37,7 @@ export function scale(size: Size, ratio: number, dest?: Size | undefined): Size;
  * @return {Size} Size.
  * @api
  */
-export function toSize(size: number | Size, dest?: Size | undefined): Size;
+export function toSize(size: number | Size, dest?: Size): Size;
 /**
  * An array of numbers representing a size: `[width, height]`.
  */

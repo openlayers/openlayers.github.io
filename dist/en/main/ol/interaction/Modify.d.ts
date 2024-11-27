@@ -520,7 +520,7 @@ declare class Modify extends PointerInteraction {
      * @return {boolean} True when a vertex was removed.
      * @api
      */
-    removePoint(coordinate?: import("../coordinate.js").Coordinate | undefined): boolean;
+    removePoint(coordinate?: import("../coordinate.js").Coordinate): boolean;
     /**
      * Removes a vertex from all matching features.
      * @return {boolean} True when a vertex was removed.
@@ -541,7 +541,7 @@ declare class Modify extends PointerInteraction {
      * @return {boolean} A vertex was inserted.
      * @api
      */
-    insertPoint(coordinate?: import("../coordinate.js").Coordinate | undefined): boolean;
+    insertPoint(coordinate?: import("../coordinate.js").Coordinate): boolean;
     /**
      * @param {import("../geom/SimpleGeometry.js").default} geometry Geometry.
      * @param {Array} coordinates Coordinates.

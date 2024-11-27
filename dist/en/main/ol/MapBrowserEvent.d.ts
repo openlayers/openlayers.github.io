@@ -14,7 +14,7 @@ declare class MapBrowserEvent<EVENT extends UIEvent> extends MapEvent {
      * @param {import("./Map.js").FrameState} [frameState] Frame state.
      * @param {Array<PointerEvent>} [activePointers] Active pointers.
      */
-    constructor(type: string, map: import("./Map.js").default, originalEvent: EVENT, dragging?: boolean | undefined, frameState?: import("./Map.js").FrameState | undefined, activePointers?: PointerEvent[] | undefined);
+    constructor(type: string, map: import("./Map.js").default, originalEvent: EVENT, dragging?: boolean, frameState?: import("./Map.js").FrameState, activePointers?: Array<PointerEvent>);
     /**
      * The original browser event.
      * @const

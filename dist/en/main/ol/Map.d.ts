@@ -274,7 +274,7 @@ declare class Map extends BaseObject {
     /**
      * @param {MapOptions} [options] Map options.
      */
-    constructor(options?: MapOptions | undefined);
+    constructor(options?: MapOptions);
     /***
      * @type {MapEventHandler<import("./events").EventsKey>}
      */
@@ -504,7 +504,7 @@ declare class Map extends BaseObject {
      * @template T
      * @api
      */
-    forEachFeatureAtPixel<T>(pixel: import("./pixel.js").Pixel, callback: (arg0: import("./Feature.js").FeatureLike, arg1: import("./layer/Layer.js").default<import("./source/Source").default>, arg2: import("./geom/SimpleGeometry.js").default) => T, options?: AtPixelOptions | undefined): T | undefined;
+    forEachFeatureAtPixel<T>(pixel: import("./pixel.js").Pixel, callback: (arg0: import("./Feature.js").FeatureLike, arg1: import("./layer/Layer.js").default<import("./source/Source").default>, arg2: import("./geom/SimpleGeometry.js").default) => T, options?: AtPixelOptions): T | undefined;
     /**
      * Get all features that intersect a pixel on the viewport.
      * @param {import("./pixel.js").Pixel} pixel Pixel.
@@ -513,7 +513,7 @@ declare class Map extends BaseObject {
      * an empty array if none were found.
      * @api
      */
-    getFeaturesAtPixel(pixel: import("./pixel.js").Pixel, options?: AtPixelOptions | undefined): Array<import("./Feature.js").FeatureLike>;
+    getFeaturesAtPixel(pixel: import("./pixel.js").Pixel, options?: AtPixelOptions): Array<import("./Feature.js").FeatureLike>;
     /**
      * Get all layers from all layer groups.
      * @return {Array<import("./layer/Layer.js").default>} Layers.
@@ -528,7 +528,7 @@ declare class Map extends BaseObject {
      * @return {boolean} Is there a feature at the given pixel?
      * @api
      */
-    hasFeatureAtPixel(pixel: import("./pixel.js").Pixel, options?: AtPixelOptions | undefined): boolean;
+    hasFeatureAtPixel(pixel: import("./pixel.js").Pixel, options?: AtPixelOptions): boolean;
     /**
      * Returns the coordinate in user projection for a browser event.
      * @param {MouseEvent} event Event.
@@ -713,7 +713,7 @@ declare class Map extends BaseObject {
      * @param {UIEvent} browserEvent Browser event.
      * @param {string} [type] Type.
      */
-    handleBrowserEvent(browserEvent: UIEvent, type?: string | undefined): void;
+    handleBrowserEvent(browserEvent: UIEvent, type?: string): void;
     /**
      * @param {MapBrowserEvent} mapBrowserEvent The event to handle.
      */
@@ -830,7 +830,7 @@ declare class Map extends BaseObject {
      * @observable
      * @api
      */
-    setTarget(target?: string | HTMLElement | undefined): void;
+    setTarget(target?: HTMLElement | string): void;
     /**
      * Set the view for this map.
      * @param {View|Promise<import("./View.js").ViewOptions>} view The view that controls this map.

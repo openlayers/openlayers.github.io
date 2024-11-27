@@ -53,7 +53,7 @@ declare class DragZoom extends DragBox {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {number}

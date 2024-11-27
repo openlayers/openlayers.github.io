@@ -77,7 +77,7 @@ declare class Extent extends PointerInteraction {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /***
      * @type {ExtentOnSignature<import("../events").EventsKey>}
      */

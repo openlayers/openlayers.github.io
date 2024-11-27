@@ -299,7 +299,7 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      * @return {boolean} The layer is visible in the map view.
      * @api
      */
-    isVisible(view?: View | import("../View.js").ViewStateLayerStateExtent | undefined): boolean;
+    isVisible(view?: View | import("../View.js").ViewStateLayerStateExtent): boolean;
     /**
      * Get the attributions of the source of this layer for the given view.
      * @param {View|import("../View.js").ViewStateLayerStateExtent} [view] View or {@link import("../Map.js").FrameState}.
@@ -307,7 +307,7 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      * @return {Array<string>} Attributions for this layer at the given view.
      * @api
      */
-    getAttributions(view?: View | import("../View.js").ViewStateLayerStateExtent | undefined): Array<string>;
+    getAttributions(view?: View | import("../View.js").ViewStateLayerStateExtent): Array<string>;
     /**
      * Called when a layer is not visible during a map render.
      */

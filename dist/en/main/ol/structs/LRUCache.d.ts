@@ -37,7 +37,7 @@ declare class LRUCache<T> {
     /**
      * @param {number} [highWaterMark] High water mark.
      */
-    constructor(highWaterMark?: number | undefined);
+    constructor(highWaterMark?: number);
     /**
      * Desired max cache size after expireCache(). If set to 0, no cache entries
      * will be pruned at all.
@@ -76,7 +76,7 @@ declare class LRUCache<T> {
      */
     expireCache(keep?: {
         [x: string]: boolean;
-    } | undefined): void;
+    }): void;
     /**
      * FIXME empty description for jsdoc
      */

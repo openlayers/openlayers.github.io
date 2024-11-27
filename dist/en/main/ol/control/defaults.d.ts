@@ -25,7 +25,7 @@
  * to be used with the {@link module:ol/Map~Map} constructor's `controls` option.
  * @api
  */
-export function defaults(options?: DefaultsOptions | undefined): Collection<import("./Control.js").default>;
+export function defaults(options?: DefaultsOptions): Collection<import("./Control.js").default>;
 export type DefaultsOptions = {
     /**
      * Include

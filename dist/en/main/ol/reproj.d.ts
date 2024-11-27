@@ -49,7 +49,7 @@ export function calculateSourceExtentResolution(sourceProj: import("./proj/Proje
  * @param {boolean} [clipExtent] Clip stitchContext to sourceExtent.
  * @return {HTMLCanvasElement} Canvas with reprojected data.
  */
-export function render(width: number, height: number, pixelRatio: number, sourceResolution: number, sourceExtent: import("./extent.js").Extent, targetResolution: number, targetExtent: import("./extent.js").Extent, triangulation: import("./reproj/Triangulation.js").default, sources: Array<ImageExtent>, gutter: number, renderEdges?: boolean | undefined, interpolate?: boolean | undefined, drawSingle?: boolean | undefined, clipExtent?: boolean | undefined): HTMLCanvasElement;
+export function render(width: number, height: number, pixelRatio: number, sourceResolution: number, sourceExtent: import("./extent.js").Extent, targetResolution: number, targetExtent: import("./extent.js").Extent, triangulation: import("./reproj/Triangulation.js").default, sources: Array<ImageExtent>, gutter: number, renderEdges?: boolean, interpolate?: boolean, drawSingle?: boolean, clipExtent?: boolean): HTMLCanvasElement;
 /**
  * @type {Array<HTMLCanvasElement>}
  */

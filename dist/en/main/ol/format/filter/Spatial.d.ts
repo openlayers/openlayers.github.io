@@ -15,7 +15,7 @@ declare class Spatial extends Filter {
      * @param {string} [srsName] SRS name. No srsName attribute will be
      *    set on geometries when this is not provided.
      */
-    constructor(tagName: string, geometryName: string, geometry: import("../../geom/Geometry.js").default, srsName?: string | undefined);
+    constructor(tagName: string, geometryName: string, geometry: import("../../geom/Geometry.js").default, srsName?: string);
     /**
      * @type {!string}
      */

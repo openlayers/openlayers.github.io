@@ -12,7 +12,7 @@ declare class LinearRing extends SimpleGeometry {
      *     For internal use, flat coordinates in combination with `layout` are also accepted.
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      */
-    constructor(coordinates: Array<import("../coordinate.js").Coordinate> | Array<number>, layout?: import("./Geometry.js").GeometryLayout | undefined);
+    constructor(coordinates: Array<import("../coordinate.js").Coordinate> | Array<number>, layout?: import("./Geometry.js").GeometryLayout);
     /**
      * @private
      * @type {number}
@@ -57,7 +57,7 @@ declare class LinearRing extends SimpleGeometry {
      * @api
      * @override
      */
-    override setCoordinates(coordinates: Array<import("../coordinate.js").Coordinate>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
+    override setCoordinates(coordinates: Array<import("../coordinate.js").Coordinate>, layout?: import("./Geometry.js").GeometryLayout): void;
 }
 import SimpleGeometry from './SimpleGeometry.js';
 //# sourceMappingURL=LinearRing.d.ts.map

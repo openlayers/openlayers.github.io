@@ -19,7 +19,7 @@ declare class PinchZoom extends PointerInteraction {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {import("../coordinate.js").Coordinate}

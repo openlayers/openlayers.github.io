@@ -24,7 +24,7 @@ export function fromTransform(mat4: Mat4, transform: import("../transform.js").T
  * @param {Mat4} [out] mat4 frustum matrix will be written into
  * @return {Mat4} out
  */
-export function orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number, out?: Mat4 | undefined): Mat4;
+export function orthographic(left: number, right: number, bottom: number, top: number, near: number, far: number, out?: Mat4): Mat4;
 /**
  * Scales the mat4 by the dimensions in the given vec3
  *
@@ -35,7 +35,7 @@ export function orthographic(left: number, right: number, bottom: number, top: n
  * @param {Mat4} [out] The matrix to write to.
  * @return {Mat4} out
  **/
-export function scale(m: Mat4, x: number, y: number, z: number, out?: Mat4 | undefined): Mat4;
+export function scale(m: Mat4, x: number, y: number, z: number, out?: Mat4): Mat4;
 /**
  * Translate a matrix.
  *
@@ -46,7 +46,7 @@ export function scale(m: Mat4, x: number, y: number, z: number, out?: Mat4 | und
  * @param {Mat4} [out] the receiving matrix
  * @return {Mat4} out
  */
-export function translate(m: Mat4, x: number, y: number, z: number, out?: Mat4 | undefined): Mat4;
+export function translate(m: Mat4, x: number, y: number, z: number, out?: Mat4): Mat4;
 /**
  * @param {number} x x translation.
  * @param {number} y y translation.
@@ -54,6 +54,6 @@ export function translate(m: Mat4, x: number, y: number, z: number, out?: Mat4 |
  * @param {Mat4} [out] optional matrix to store result
  * @return {Mat4} out
  */
-export function translation(x: number, y: number, z: number, out?: Mat4 | undefined): Mat4;
+export function translation(x: number, y: number, z: number, out?: Mat4): Mat4;
 export type Mat4 = Array<number>;
 //# sourceMappingURL=mat4.d.ts.map

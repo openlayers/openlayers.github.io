@@ -22,7 +22,7 @@ export function linearRingIsClockwise(flatCoordinates: Array<number>, offset: nu
  *     (counter-clockwise exterior ring and clockwise interior rings).
  * @return {boolean} Rings are correctly oriented.
  */
-export function linearRingsAreOriented(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, right?: boolean | undefined): boolean;
+export function linearRingsAreOriented(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, right?: boolean): boolean;
 /**
  * Determines if linear rings are oriented.  By default, left-hand orientation
  * is tested (first ring must be clockwise, remaining rings counter-clockwise).
@@ -36,7 +36,7 @@ export function linearRingsAreOriented(flatCoordinates: Array<number>, offset: n
  *     (counter-clockwise exterior ring and clockwise interior rings).
  * @return {boolean} Rings are correctly oriented.
  */
-export function linearRingssAreOriented(flatCoordinates: Array<number>, offset: number, endss: Array<Array<number>>, stride: number, right?: boolean | undefined): boolean;
+export function linearRingssAreOriented(flatCoordinates: Array<number>, offset: number, endss: Array<Array<number>>, stride: number, right?: boolean): boolean;
 /**
  * Orient coordinates in a flat array of linear rings.  By default, rings
  * are oriented following the left-hand rule (clockwise for exterior and
@@ -50,7 +50,7 @@ export function linearRingssAreOriented(flatCoordinates: Array<number>, offset: 
  * @param {boolean} [right] Follow the right-hand rule for orientation.
  * @return {number} End.
  */
-export function orientLinearRings(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, right?: boolean | undefined): number;
+export function orientLinearRings(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, right?: boolean): number;
 /**
  * Orient coordinates in a flat array of linear rings.  By default, rings
  * are oriented following the left-hand rule (clockwise for exterior and
@@ -64,7 +64,7 @@ export function orientLinearRings(flatCoordinates: Array<number>, offset: number
  * @param {boolean} [right] Follow the right-hand rule for orientation.
  * @return {number} End.
  */
-export function orientLinearRingsArray(flatCoordinates: Array<number>, offset: number, endss: Array<Array<number>>, stride: number, right?: boolean | undefined): number;
+export function orientLinearRingsArray(flatCoordinates: Array<number>, offset: number, endss: Array<Array<number>>, stride: number, right?: boolean): number;
 /**
  * Return a two-dimensional endss
  * @param {Array<number>} flatCoordinates Flat coordinates

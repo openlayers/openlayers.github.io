@@ -126,7 +126,7 @@ declare class BaseVectorLayer<FeatureType extends import("../Feature").FeatureLi
     /**
      * @param {Options<FeatureType, VectorSourceType>} [options] Options.
      */
-    constructor(options?: Options<FeatureType, VectorSourceType> | undefined);
+    constructor(options?: Options<FeatureType, VectorSourceType>);
     /**
      * @private
      * @type {string}
@@ -217,7 +217,7 @@ declare class BaseVectorLayer<FeatureType extends import("../Feature").FeatureLi
      * @param {import("../style/Style.js").StyleLike|import("../style/flat.js").FlatStyleLike|null} [style] Layer style.
      * @api
      */
-    setStyle(style?: import("../style/Style.js").StyleLike | import("../style/flat.js").FlatStyleLike | null | undefined): void;
+    setStyle(style?: import("../style/Style.js").StyleLike | import("../style/flat.js").FlatStyleLike | null): void;
     /**
      * @param {boolean|string|number} declutter Declutter images and text.
      * @api

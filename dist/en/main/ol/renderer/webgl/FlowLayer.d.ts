@@ -223,7 +223,7 @@ declare class FlowLayerRenderer extends WebGLTileLayerRenderer<import("../../lay
      * @private
      */
     private renderedHeight_;
-    framebuffer_: WebGLFramebuffer | null | undefined;
+    framebuffer_: WebGLFramebuffer | undefined;
     createSizeDependentTextures_(): void;
     /**
      * @param {import("../../Map.js").FrameState} frameState Frame state.

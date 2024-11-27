@@ -205,7 +205,7 @@ export type OutputMetadata = {
     userData: any;
 };
 export type OutputValues = {
-    [x: string]: Array<number>;
+    [x: string]: number[];
 };
 export type ProcessRequest = {
     /**
@@ -416,7 +416,7 @@ declare class SentinelHub extends DataTileSource<import("../DataTile.js").defaul
     /**
      * @param {Options} [options] Sentinel Hub options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @type {Error|null}
      */

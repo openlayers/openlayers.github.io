@@ -10,7 +10,7 @@
  * @return {WMTSTileGrid} WMTS tileGrid instance.
  * @api
  */
-export function createFromCapabilitiesMatrixSet(matrixSet: any, extent?: import("../extent.js").Extent | undefined, matrixLimits?: any[] | undefined): WMTSTileGrid;
+export function createFromCapabilitiesMatrixSet(matrixSet: any, extent?: import("../extent.js").Extent, matrixLimits?: Array<any>): WMTSTileGrid;
 export default WMTSTileGrid;
 export type Options = {
     /**

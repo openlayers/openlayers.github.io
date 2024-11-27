@@ -57,7 +57,7 @@ declare class WebGLLayerRenderer<LayerType extends import("../../layer/Layer.js"
      * @param {LayerType} layer Layer.
      * @param {Options} [options] Options.
      */
-    constructor(layer: LayerType, options?: Options | undefined);
+    constructor(layer: LayerType, options?: Options);
     /**
      * The transform for viewport CSS pixels to rendered pixels.  This transform is only
      * set before dispatching rendering events.

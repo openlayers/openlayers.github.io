@@ -295,7 +295,7 @@ declare class Overlay extends BaseObject {
      * @param {PanIntoViewOptions} [panIntoViewOptions] Options for the pan action
      * @api
      */
-    panIntoView(panIntoViewOptions?: PanIntoViewOptions | undefined): void;
+    panIntoView(panIntoViewOptions?: PanIntoViewOptions): void;
     /**
      * Get the extent of an element relative to the document
      * @param {HTMLElement} element The element.

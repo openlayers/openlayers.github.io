@@ -39,7 +39,7 @@ export type TileRepresentationLookup = {
      * Tile representations by zoom level.
      */
     representationsByZ: {
-        [x: number]: Set<AbstractTileRepresentation>;
+        [x: number]: Set<import("../../webgl/BaseTileRepresentation.js").default<import("../../Tile.js").default>>;
     };
 };
 export type Options = {

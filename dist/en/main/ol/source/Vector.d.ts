@@ -18,7 +18,7 @@ export class VectorSourceEvent<FeatureType extends import("../Feature.js").Featu
      * @param {FeatureType} [feature] Feature.
      * @param {Array<FeatureType>} [features] Features.
      */
-    constructor(type: string, feature?: FeatureType | undefined, features?: FeatureType[] | undefined);
+    constructor(type: string, feature?: FeatureType, features?: Array<FeatureType>);
     /**
      * The added or removed feature for the `ADDFEATURE` and `REMOVEFEATURE` events, `undefined` otherwise.
      * @type {FeatureType|undefined}
@@ -279,7 +279,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     /**
      * @param {Options<FeatureType>} [options] Vector source options.
      */
-    constructor(options?: Options<FeatureType> | undefined);
+    constructor(options?: Options<FeatureType>);
     /***
      * @type {VectorSourceOnSignature<import("../events").EventsKey, FeatureType>}
      */
@@ -414,7 +414,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      * @param {boolean} [fast] Skip dispatching of {@link module:ol/source/Vector.VectorSourceEvent#event:removefeature} events.
      * @api
      */
-    clear(fast?: boolean | undefined): void;
+    clear(fast?: boolean): void;
     /**
      * Iterate through all features on the source, calling the provided callback
      * with each one.  If the callback returns any "truthy" value, iteration will
@@ -516,7 +516,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      * @return {Array<FeatureType>} Features.
      * @api
      */
-    getFeaturesInExtent(extent: import("../extent.js").Extent, projection?: import("../proj/Projection.js").default | undefined): Array<FeatureType>;
+    getFeaturesInExtent(extent: import("../extent.js").Extent, projection?: import("../proj/Projection.js").default): Array<FeatureType>;
     /**
      * Get the closest feature to the provided coordinate.
      *
@@ -530,7 +530,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      * @return {FeatureType} Closest feature.
      * @api
      */
-    getClosestFeatureToCoordinate(coordinate: import("../coordinate.js").Coordinate, filter?: ((arg0: FeatureType) => boolean) | undefined): FeatureType;
+    getClosestFeatureToCoordinate(coordinate: import("../coordinate.js").Coordinate, filter?: (arg0: FeatureType) => boolean): FeatureType;
     /**
      * Get the extent of the features currently in the source.
      *
@@ -541,7 +541,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      * @return {import("../extent.js").Extent} Extent.
      * @api
      */
-    getExtent(extent?: import("../extent.js").Extent | undefined): import("../extent.js").Extent;
+    getExtent(extent?: import("../extent.js").Extent): import("../extent.js").Extent;
     /**
      * Get a feature by its identifier (the value returned by feature.getId()). When `RenderFeature`s
      * are used, `getFeatureById()` can return an array of `RenderFeature`s. This allows for handling

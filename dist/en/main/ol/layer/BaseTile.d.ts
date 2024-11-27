@@ -145,7 +145,7 @@ declare class BaseTileLayer<TileSourceType extends import("../source/Tile.js").d
     /**
      * @param {Options<TileSourceType>} [options] Tile layer options.
      */
-    constructor(options?: Options<TileSourceType> | undefined);
+    constructor(options?: Options<TileSourceType>);
     /***
      * @type {BaseTileLayerOnSignature<import("../events").EventsKey>}
      */

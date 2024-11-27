@@ -79,7 +79,7 @@ export function closestOnSegment(coordinate: Coordinate, segment: Array<Coordina
  * @return {CoordinateFormat} Coordinate format.
  * @api
  */
-export function createStringXY(fractionDigits?: number | undefined): CoordinateFormat;
+export function createStringXY(fractionDigits?: number): CoordinateFormat;
 /**
  * @param {string} hemispheres Hemispheres.
  * @param {number} degrees Degrees.
@@ -87,7 +87,7 @@ export function createStringXY(fractionDigits?: number | undefined): CoordinateF
  *    after the decimal point. Default is `0`.
  * @return {string} String.
  */
-export function degreesToStringHDMS(hemispheres: string, degrees: number, fractionDigits?: number | undefined): string;
+export function degreesToStringHDMS(hemispheres: string, degrees: number, fractionDigits?: number): string;
 /**
  * Transforms the given {@link module:ol/coordinate~Coordinate} to a string
  * using the given string template. The strings `{x}` and `{y}` in the template
@@ -119,7 +119,7 @@ export function degreesToStringHDMS(hemispheres: string, degrees: number, fracti
  * @return {string} Formatted coordinate.
  * @api
  */
-export function format(coordinate: Coordinate, template: string, fractionDigits?: number | undefined): string;
+export function format(coordinate: Coordinate, template: string, fractionDigits?: number): string;
 /**
  * @param {Coordinate} coordinate1 First coordinate.
  * @param {Coordinate} coordinate2 Second coordinate.
@@ -210,7 +210,7 @@ export function squaredDistanceToSegment(coordinate: Coordinate, segment: Array<
  * @return {string} Hemisphere, degrees, minutes and seconds.
  * @api
  */
-export function toStringHDMS(coordinate: Coordinate, fractionDigits?: number | undefined): string;
+export function toStringHDMS(coordinate: Coordinate, fractionDigits?: number): string;
 /**
  * Format a coordinate as a comma delimited string.
  *
@@ -236,7 +236,7 @@ export function toStringHDMS(coordinate: Coordinate, fractionDigits?: number | u
  * @return {string} XY.
  * @api
  */
-export function toStringXY(coordinate: Coordinate, fractionDigits?: number | undefined): string;
+export function toStringXY(coordinate: Coordinate, fractionDigits?: number): string;
 /**
  * Modifies the provided coordinate in-place to be within the real world
  * extent. The lower projection extent boundary is inclusive, the upper one
@@ -253,7 +253,7 @@ export function wrapX(coordinate: Coordinate, projection: import("./proj/Project
  * @param {number} [sourceExtentWidth] Width of the source extent.
  * @return {number} Offset in world widths.
  */
-export function getWorldsAway(coordinate: Coordinate, projection: import("./proj/Projection.js").default, sourceExtentWidth?: number | undefined): number;
+export function getWorldsAway(coordinate: Coordinate, projection: import("./proj/Projection.js").default, sourceExtentWidth?: number): number;
 /**
  * An array of numbers representing an `xy`, `xyz` or `xyzm` coordinate.
  * Example: `[16, 48]`.

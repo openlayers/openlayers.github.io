@@ -9,7 +9,7 @@
  * @param {string} [callbackParam] Custom query parameter for the JSONP
  *     callback. Default is 'callback'.
  */
-export function jsonp(url: string, callback: Function, errback?: Function | undefined, callbackParam?: string | undefined): void;
+export function jsonp(url: string, callback: Function, errback?: Function, callbackParam?: string): void;
 /**
  * @param {string} url The URL.
  * @return {Promise<Object>} A promise that resolves to the JSON response.

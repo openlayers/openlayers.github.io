@@ -84,7 +84,7 @@ declare class BaseObject extends Observable {
      */
     constructor(values?: {
         [x: string]: any;
-    } | undefined);
+    });
     /***
      * @type {ObjectOnSignature<import("./events").EventsKey>}
      */
@@ -156,7 +156,7 @@ declare class BaseObject extends Observable {
      * @param {boolean} [silent] Update without triggering an event.
      * @api
      */
-    set(key: string, value: any, silent?: boolean | undefined): void;
+    set(key: string, value: any, silent?: boolean): void;
     /**
      * Sets a collection of key-value pairs.  Note that this changes any existing
      * properties and adds new ones (it does not remove any existing properties).
@@ -166,7 +166,7 @@ declare class BaseObject extends Observable {
      */
     setProperties(values: {
         [x: string]: any;
-    }, silent?: boolean | undefined): void;
+    }, silent?: boolean): void;
     /**
      * Apply any properties from another object without triggering events.
      * @param {BaseObject} source The source object.
@@ -179,7 +179,7 @@ declare class BaseObject extends Observable {
      * @param {boolean} [silent] Unset without triggering an event.
      * @api
      */
-    unset(key: string, silent?: boolean | undefined): void;
+    unset(key: string, silent?: boolean): void;
 }
 import Observable from './Observable.js';
 //# sourceMappingURL=Object.d.ts.map

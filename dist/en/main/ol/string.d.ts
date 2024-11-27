@@ -7,7 +7,7 @@
  * @param {number} [precision] Precision of the output string (i.e. number of decimal places)
  * @return {string} Formatted string
  */
-export function padNumber(number: number, width: number, precision?: number | undefined): string;
+export function padNumber(number: number, width: number, precision?: number): string;
 /**
  * Adapted from https://github.com/omichelsen/compare-versions/blob/master/index.js
  * @param {string|number} v1 First version

@@ -27,7 +27,7 @@ export function getTolerance(resolution: number, pixelRatio: number): number;
  * @param {number} [index] Render order index..
  * @return {boolean} `true` if style is loading.
  */
-export function renderFeature(replayGroup: import("../render/canvas/BuilderGroup.js").default, feature: import("../Feature.js").FeatureLike, style: import("../style/Style.js").default, squaredTolerance: number, listener: (arg0: import("../events/Event.js").default) => void, transform?: import("../proj.js").TransformFunction | undefined, declutter?: boolean | undefined, index?: number | undefined): boolean;
+export function renderFeature(replayGroup: import("../render/canvas/BuilderGroup.js").default, feature: import("../Feature.js").FeatureLike, style: import("../style/Style.js").default, squaredTolerance: number, listener: (arg0: import("../events/Event.js").default) => void, transform?: import("../proj.js").TransformFunction, declutter?: boolean, index?: number): boolean;
 /**
  * Feature callback. The callback will be called with three arguments. The first
  * argument is one {@link module :ol/Feature~Feature feature} or {@link module :ol/render/Feature~RenderFeature render feature}

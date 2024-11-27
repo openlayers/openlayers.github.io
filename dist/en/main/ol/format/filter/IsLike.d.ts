@@ -17,7 +17,7 @@ declare class IsLike extends Comparison {
      *    the pattern characters. Default is '!'.
      * @param {boolean} [matchCase] Case-sensitive?
      */
-    constructor(propertyName: string, pattern: string, wildCard?: string | undefined, singleChar?: string | undefined, escapeChar?: string | undefined, matchCase?: boolean | undefined);
+    constructor(propertyName: string, pattern: string, wildCard?: string, singleChar?: string, escapeChar?: string, matchCase?: boolean);
     /**
      * @type {!string}
      */

@@ -126,7 +126,7 @@ declare class Tile extends EventTarget {
      * @param {import("./TileState.js").default} state State.
      * @param {Options} [options] Tile options.
      */
-    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, options?: Options | undefined);
+    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, options?: Options);
     /**
      * @type {import("./tilecoord.js").TileCoord}
      */

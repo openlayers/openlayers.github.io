@@ -11,7 +11,7 @@
  * @return {GeometryFunction} Function that draws a polygon.
  * @api
  */
-export function createRegularPolygon(sides?: number | undefined, angle?: number | undefined): GeometryFunction;
+export function createRegularPolygon(sides?: number, angle?: number): GeometryFunction;
 /**
  * Create a `geometryFunction` that will create a box-shaped polygon (aligned
  * with the coordinate system axes).  Use this with the draw interaction and

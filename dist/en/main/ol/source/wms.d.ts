@@ -86,7 +86,7 @@ export function getFeatureInfoUrl(options: LoaderOptions, coordinate: import("..
  * @return {string|undefined} GetLegendGraphic URL.
  * @api
  */
-export function getLegendUrl(options: LoaderOptions, resolution?: number | undefined): string | undefined;
+export function getLegendUrl(options: LoaderOptions, resolution?: number): string | undefined;
 /**
  * Default WMS version.
  * @type {string}

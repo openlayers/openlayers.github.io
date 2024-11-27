@@ -6,7 +6,7 @@
  * @param {WebGLContextAttributes} [settings] CanvasRenderingContext2DSettings
  * @return {WebGLRenderingContext} The context.
  */
-export function createCanvasContextWebGL(width?: number | undefined, height?: number | undefined, canvasPool?: (HTMLCanvasElement | OffscreenCanvas)[] | undefined, settings?: WebGLContextAttributes | undefined): WebGLRenderingContext;
+export function createCanvasContextWebGL(width?: number, height?: number, canvasPool?: Array<HTMLCanvasElement | OffscreenCanvas>, settings?: WebGLContextAttributes): WebGLRenderingContext;
 /**
  * Releases canvas memory to avoid exceeding memory limits in Safari.
  * See https://pqina.nl/blog/total-canvas-memory-use-exceeds-the-maximum-limit/
@@ -41,7 +41,7 @@ export function releaseGLCanvas(gl: WebGLRenderingContext): void;
  * @param {boolean} [drawSingle] Draw single source images directly without stitchTexture.
  * @return {{framebuffer: WebGLFramebuffer, width: number, height: number, texture: WebGLTexture}} Canvas with reprojected data.
  */
-export function render(gl: WebGLRenderingContext, width_: number, height_: number, pixelRatio: number, sourceResolution: number, targetResolution: number, targetExtent: import("../extent.js").Extent, triangulation: import("../reproj/Triangulation.js").default, sources: Array<ImageExtent>, gutter: number, dataType: number, renderEdges?: boolean | number[] | undefined, interpolate?: boolean | undefined, drawSingle?: boolean | undefined): {
+export function render(gl: WebGLRenderingContext, width_: number, height_: number, pixelRatio: number, sourceResolution: number, targetResolution: number, targetExtent: import("../extent.js").Extent, triangulation: import("../reproj/Triangulation.js").default, sources: Array<ImageExtent>, gutter: number, dataType: number, renderEdges?: boolean | Array<number>, interpolate?: boolean, drawSingle?: boolean): {
     framebuffer: WebGLFramebuffer;
     width: number;
     height: number;

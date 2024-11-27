@@ -59,7 +59,7 @@ declare class CircleStyle extends RegularShape {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * Clones the style.
      * @return {CircleStyle} The cloned style.

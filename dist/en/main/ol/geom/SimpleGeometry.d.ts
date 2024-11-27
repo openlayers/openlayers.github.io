@@ -14,7 +14,7 @@ export function getStrideForLayout(layout: import("./Geometry.js").GeometryLayou
  * @param {Array<number>} [dest] Destination.
  * @return {Array<number>} Transformed flat coordinates.
  */
-export function transformGeom2D(simpleGeometry: SimpleGeometry, transform: import("../transform.js").Transform, dest?: number[] | undefined): Array<number>;
+export function transformGeom2D(simpleGeometry: SimpleGeometry, transform: import("../transform.js").Transform, dest?: Array<number>): Array<number>;
 export default SimpleGeometry;
 /**
  * @classdesc
@@ -94,7 +94,7 @@ declare class SimpleGeometry extends Geometry {
      * @param {!Array<*>} coordinates Coordinates.
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      */
-    setCoordinates(coordinates: Array<any>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
+    setCoordinates(coordinates: Array<any>, layout?: import("./Geometry.js").GeometryLayout): void;
     /**
      * @param {import("./Geometry.js").GeometryLayout|undefined} layout Layout.
      * @param {Array<*>} coordinates Coordinates.

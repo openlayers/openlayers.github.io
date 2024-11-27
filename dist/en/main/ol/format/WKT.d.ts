@@ -31,7 +31,7 @@ declare class WKT extends TextFeature {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * Split GeometryCollection into multiple features.
      * @type {boolean}

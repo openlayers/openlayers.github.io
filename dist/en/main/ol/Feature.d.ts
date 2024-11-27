@@ -91,7 +91,7 @@ declare class Feature<Geometry extends import("./geom/Geometry.js").default = im
      *     properties. If you pass an object literal, you may include a Geometry
      *     associated with a `geometry` key.
      */
-    constructor(geometryOrProperties?: Geometry | ObjectWithGeometry<Geometry> | undefined);
+    constructor(geometryOrProperties?: Geometry | ObjectWithGeometry<Geometry>);
     /***
      * @type {FeatureOnSignature<import("./events").EventsKey>}
      */
@@ -201,7 +201,7 @@ declare class Feature<Geometry extends import("./geom/Geometry.js").default = im
      * @api
      * @fires module:ol/events/Event~BaseEvent#event:change
      */
-    setStyle(style?: import("./style/Style.js").StyleLike | undefined): void;
+    setStyle(style?: import("./style/Style.js").StyleLike): void;
     /**
      * Set the feature id.  The feature id is considered stable and may be used when
      * requesting features or comparing identifiers returned from a remote source.

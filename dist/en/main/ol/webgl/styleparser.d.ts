@@ -6,7 +6,7 @@
  * @param {number} [expectedType] Expected final type (can be several types combined)
  * @return {string} GLSL-compatible output
  */
-export function expressionToGlsl(compilationContext: import("../expr/gpu.js").CompilationContext, value: import("../expr/expression.js").EncodedExpression, expectedType?: number | undefined): string;
+export function expressionToGlsl(compilationContext: import("../expr/gpu.js").CompilationContext, value: import("../expr/expression.js").EncodedExpression, expectedType?: number): string;
 /**
  * Packs all components of a color into a two-floats array
  * @param {import("../color.js").Color|string} color Color as array of numbers or string

@@ -48,7 +48,7 @@ declare class Link extends Interaction {
     /**
      * @param {Options} [options] Link options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @type {import('../View.js').AnimationOptions|null}
      * @private

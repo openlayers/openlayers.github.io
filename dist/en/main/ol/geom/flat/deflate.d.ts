@@ -25,7 +25,7 @@ export function deflateCoordinates(flatCoordinates: Array<number>, offset: numbe
  * @param {Array<number>} [ends] Ends.
  * @return {Array<number>} Ends.
  */
-export function deflateCoordinatesArray(flatCoordinates: Array<number>, offset: number, coordinatess: Array<Array<import("../../coordinate.js").Coordinate>>, stride: number, ends?: number[] | undefined): Array<number>;
+export function deflateCoordinatesArray(flatCoordinates: Array<number>, offset: number, coordinatess: Array<Array<import("../../coordinate.js").Coordinate>>, stride: number, ends?: Array<number>): Array<number>;
 /**
  * @param {Array<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.
@@ -34,5 +34,5 @@ export function deflateCoordinatesArray(flatCoordinates: Array<number>, offset: 
  * @param {Array<Array<number>>} [endss] Endss.
  * @return {Array<Array<number>>} Endss.
  */
-export function deflateMultiCoordinatesArray(flatCoordinates: Array<number>, offset: number, coordinatesss: Array<Array<Array<import("../../coordinate.js").Coordinate>>>, stride: number, endss?: number[][] | undefined): Array<Array<number>>;
+export function deflateMultiCoordinatesArray(flatCoordinates: Array<number>, offset: number, coordinatesss: Array<Array<Array<import("../../coordinate.js").Coordinate>>>, stride: number, endss?: Array<Array<number>>): Array<Array<number>>;
 //# sourceMappingURL=deflate.d.ts.map

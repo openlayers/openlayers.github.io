@@ -11,7 +11,7 @@ export class CustomTile extends ImageTile {
      * @param {import("../Tile.js").LoadFunction} tileLoadFunction Tile load function.
      * @param {import("../Tile.js").Options} [options] Tile options.
      */
-    constructor(tileSize: import("../size.js").Size, tileCoord: import("../tilecoord.js").TileCoord, state: any, src: string, crossOrigin: string | null, tileLoadFunction: import("../Tile.js").LoadFunction, options?: import("../Tile.js").Options | undefined);
+    constructor(tileSize: import("../size.js").Size, tileCoord: import("../tilecoord.js").TileCoord, state: any, src: string, crossOrigin: string | null, tileLoadFunction: import("../Tile.js").LoadFunction, options?: import("../Tile.js").Options);
     /**
      * @private
      * @type {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement}

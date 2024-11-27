@@ -56,7 +56,7 @@ declare class Executor {
      * @param {import("../canvas.js").SerializableInstructions} instructions The serializable instructions.
      * @param {boolean} [deferredRendering] Enable deferred rendering.
      */
-    constructor(resolution: number, pixelRatio: number, overlaps: boolean, instructions: import("../canvas.js").SerializableInstructions, deferredRendering?: boolean | undefined);
+    constructor(resolution: number, pixelRatio: number, overlaps: boolean, instructions: import("../canvas.js").SerializableInstructions, deferredRendering?: boolean);
     /**
      * @protected
      * @type {boolean}
@@ -244,7 +244,7 @@ declare class Executor {
      * @param {boolean} snapToPixel Snap point symbols and text to integer pixels.
      * @param {import("rbush").default<DeclutterEntry>} [declutterTree] Declutter tree.
      */
-    execute(context: CanvasRenderingContext2D, scaledCanvasSize: import("../../size.js").Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, declutterTree?: import("rbush").default<DeclutterEntry> | undefined): void;
+    execute(context: CanvasRenderingContext2D, scaledCanvasSize: import("../../size.js").Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, declutterTree?: import("rbush").default<DeclutterEntry>): void;
     /**
      * @param {CanvasRenderingContext2D} context Context.
      * @param {import("../../transform.js").Transform} transform Transform.
@@ -255,7 +255,7 @@ declare class Executor {
      * @return {T|undefined} Callback result.
      * @template T
      */
-    executeHitDetection<T>(context: CanvasRenderingContext2D, transform: import("../../transform.js").Transform, viewRotation: number, featureCallback?: FeatureCallback<T> | undefined, hitExtent?: import("../../extent.js").Extent | undefined): T | undefined;
+    executeHitDetection<T>(context: CanvasRenderingContext2D, transform: import("../../transform.js").Transform, viewRotation: number, featureCallback?: FeatureCallback<T>, hitExtent?: import("../../extent.js").Extent): T | undefined;
 }
 import ZIndexContext from '../canvas/ZIndexContext.js';
 //# sourceMappingURL=Executor.d.ts.map

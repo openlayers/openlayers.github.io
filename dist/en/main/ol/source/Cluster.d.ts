@@ -111,7 +111,7 @@ declare class Cluster<FeatureType extends import("../Feature.js").FeatureLike> e
     /**
      * @param {Options<FeatureType>} [options] Cluster options.
      */
-    constructor(options?: Options<FeatureType> | undefined);
+    constructor(options?: Options<FeatureType>);
     /**
      * @type {number|undefined}
      * @protected

@@ -17,7 +17,7 @@ declare class RBush<T extends unknown> {
     /**
      * @param {number} [maxEntries] Max entries.
      */
-    constructor(maxEntries?: number | undefined);
+    constructor(maxEntries?: number);
     /**
      * @private
      * @type {RBush_<Entry<T>>}
@@ -102,7 +102,7 @@ declare class RBush<T extends unknown> {
      * @param {import("../extent.js").Extent} [extent] Extent.
      * @return {import("../extent.js").Extent} Extent.
      */
-    getExtent(extent?: import("../extent.js").Extent | undefined): import("../extent.js").Extent;
+    getExtent(extent?: import("../extent.js").Extent): import("../extent.js").Extent;
     /**
      * @param {RBush<T>} rbush R-Tree.
      */

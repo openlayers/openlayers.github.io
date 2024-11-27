@@ -164,7 +164,7 @@ declare class VectorImageLayer<VectorSourceType extends import("../source/Vector
     /**
      * @param {Options<VectorSourceType, FeatureType>} [options] Options.
      */
-    constructor(options?: Options<VectorSourceType, FeatureType> | undefined);
+    constructor(options?: Options<VectorSourceType, FeatureType>);
     /**
      * @type {number}
      * @private

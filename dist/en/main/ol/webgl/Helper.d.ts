@@ -273,7 +273,7 @@ declare class WebGLHelper extends Disposable {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /** @private */
     private boundHandleWebGLContextLost_;
     /** @private */
@@ -407,12 +407,12 @@ declare class WebGLHelper extends Disposable {
      * @param {boolean} [disableAlphaBlend] If true, no alpha blending will happen.
      * @param {boolean} [enableDepth] If true, enables depth testing.
      */
-    prepareDraw(frameState: import("../Map.js").FrameState, disableAlphaBlend?: boolean | undefined, enableDepth?: boolean | undefined): void;
+    prepareDraw(frameState: import("../Map.js").FrameState, disableAlphaBlend?: boolean, enableDepth?: boolean): void;
     /**
      * @param {WebGLFramebuffer|null} frameBuffer The frame buffer.
      * @param {WebGLTexture} [texture] The texture.
      */
-    bindFrameBuffer(frameBuffer: WebGLFramebuffer | null, texture?: WebGLTexture | undefined): void;
+    bindFrameBuffer(frameBuffer: WebGLFramebuffer | null, texture?: WebGLTexture): void;
     /**
      * Bind the frame buffer from the initial render.
      */
@@ -440,7 +440,7 @@ declare class WebGLHelper extends Disposable {
      * @param {boolean} [disableAlphaBlend] If true, no alpha blending will happen.
      * @param {boolean} [enableDepth] If true, enables depth testing.
      */
-    prepareDrawToRenderTarget(frameState: import("../Map.js").FrameState, renderTarget: import("./RenderTarget.js").default, disableAlphaBlend?: boolean | undefined, enableDepth?: boolean | undefined): void;
+    prepareDrawToRenderTarget(frameState: import("../Map.js").FrameState, renderTarget: import("./RenderTarget.js").default, disableAlphaBlend?: boolean, enableDepth?: boolean): void;
     /**
      * Execute a draw call based on the currently bound program, texture, buffers, attributes.
      * @param {number} start Start index.
@@ -453,7 +453,7 @@ declare class WebGLHelper extends Disposable {
      * @param {function(WebGLRenderingContext, import("../Map.js").FrameState):void} [preCompose] Called before composing.
      * @param {function(WebGLRenderingContext, import("../Map.js").FrameState):void} [postCompose] Called before composing.
      */
-    finalizeDraw(frameState: import("../Map.js").FrameState, preCompose?: ((arg0: WebGLRenderingContext, arg1: import("../Map.js").FrameState) => void) | undefined, postCompose?: ((arg0: WebGLRenderingContext, arg1: import("../Map.js").FrameState) => void) | undefined): void;
+    finalizeDraw(frameState: import("../Map.js").FrameState, preCompose?: (arg0: WebGLRenderingContext, arg1: import("../Map.js").FrameState) => void, postCompose?: (arg0: WebGLRenderingContext, arg1: import("../Map.js").FrameState) => void): void;
     /**
      * @return {HTMLCanvasElement} Canvas.
      */
@@ -484,7 +484,7 @@ declare class WebGLHelper extends Disposable {
      * @param {WebGLProgram} program Program.
      * @param {import("../Map.js").FrameState} [frameState] Frame state.
      */
-    useProgram(program: WebGLProgram, frameState?: import("../Map.js").FrameState | undefined): void;
+    useProgram(program: WebGLProgram, frameState?: import("../Map.js").FrameState): void;
     /**
      * Will attempt to compile a vertex or fragment shader based on source
      * On error, the shader will be returned but
@@ -591,7 +591,7 @@ declare class WebGLHelper extends Disposable {
      * @param {boolean} [nearest] Use gl.NEAREST for min/mag filter.
      * @return {WebGLTexture} The generated texture
      */
-    createTexture(size: Array<number>, data: ImageData | HTMLImageElement | HTMLCanvasElement | Uint8Array | null, texture?: WebGLTexture | undefined, nearest?: boolean | undefined): WebGLTexture;
+    createTexture(size: Array<number>, data: ImageData | HTMLImageElement | HTMLCanvasElement | Uint8Array | null, texture?: WebGLTexture, nearest?: boolean): WebGLTexture;
 }
 import Disposable from '../Disposable.js';
 //# sourceMappingURL=Helper.d.ts.map

@@ -18,7 +18,7 @@ declare class CanvasImmediateRenderer extends VectorContext {
      * @param {number} [squaredTolerance] Optional squared tolerance for simplification.
      * @param {import("../../proj.js").TransformFunction} [userTransform] Transform from user to view projection.
      */
-    constructor(context: CanvasRenderingContext2D, pixelRatio: number, extent: import("../../extent.js").Extent, transform: import("../../transform.js").Transform, viewRotation: number, squaredTolerance?: number | undefined, userTransform?: import("../../proj.js").TransformFunction | undefined);
+    constructor(context: CanvasRenderingContext2D, pixelRatio: number, extent: import("../../extent.js").Extent, transform: import("../../transform.js").Transform, viewRotation: number, squaredTolerance?: number, userTransform?: import("../../proj.js").TransformFunction);
     /**
      * @private
      * @type {CanvasRenderingContext2D}

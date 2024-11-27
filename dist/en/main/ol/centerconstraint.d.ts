@@ -13,6 +13,6 @@ export function createExtent(extent: import("./extent.js").Extent, onlyCenter: b
  * @param {import("./coordinate.js").Coordinate} [center] Center.
  * @return {import("./coordinate.js").Coordinate|undefined} Center.
  */
-export function none(center?: import("./coordinate.js").Coordinate | undefined): import("./coordinate.js").Coordinate | undefined;
+export function none(center?: import("./coordinate.js").Coordinate): import("./coordinate.js").Coordinate | undefined;
 export type Type = (arg0: (import("./coordinate.js").Coordinate | undefined), arg1: number, arg2: import("./size.js").Size, arg3: boolean | undefined, arg4: Array<number> | undefined) => (import("./coordinate.js").Coordinate | undefined);
 //# sourceMappingURL=centerconstraint.d.ts.map

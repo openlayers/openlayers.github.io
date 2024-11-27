@@ -7,7 +7,7 @@
  * @param {boolean} [pattern] Also cache a `repeat` pattern with the icon image.
  * @return {IconImage} Icon image.
  */
-export function get(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap | null, cacheKey: string | undefined, crossOrigin: string | null, imageState: any | undefined, color: import("../color.js").Color | string | null, pattern?: boolean | undefined): IconImage;
+export function get(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap | null, cacheKey: string | undefined, crossOrigin: string | null, imageState: any | undefined, color: import("../color.js").Color | string | null, pattern?: boolean): IconImage;
 export default IconImage;
 declare class IconImage extends EventTarget {
     /**

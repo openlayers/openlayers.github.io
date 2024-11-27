@@ -10,5 +10,5 @@
  * @param {number} [destOffset] Destination offset.
  * @return {Array<number>} Flat coordinates.
  */
-export function flipXY(flatCoordinates: Array<number>, offset: number, end: number, stride: number, dest?: number[] | undefined, destOffset?: number | undefined): Array<number>;
+export function flipXY(flatCoordinates: Array<number>, offset: number, end: number, stride: number, dest?: Array<number>, destOffset?: number): Array<number>;
 //# sourceMappingURL=flip.d.ts.map

@@ -134,7 +134,7 @@ declare class KML extends XMLFeature {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {Array<Style>}

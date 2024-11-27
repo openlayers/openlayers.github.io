@@ -8,7 +8,7 @@
  * @param {number} [dimension] Destination dimension (default is `2`)
  * @return {Array<number>} Destination.
  */
-export function interpolatePoint(flatCoordinates: Array<number>, offset: number, end: number, stride: number, fraction: number, dest?: number[] | undefined, dimension?: number | undefined): Array<number>;
+export function interpolatePoint(flatCoordinates: Array<number>, offset: number, end: number, stride: number, fraction: number, dest?: Array<number>, dimension?: number): Array<number>;
 /**
  * @param {Array<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.

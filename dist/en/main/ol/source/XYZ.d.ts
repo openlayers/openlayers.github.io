@@ -175,7 +175,7 @@ declare class XYZ extends TileImage {
     /**
      * @param {Options} [options] XYZ options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {number}

@@ -89,7 +89,7 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
      * @param {number} [index] Render order index.
      * @return {boolean} `true` if an image is loading.
      */
-    renderFeature(feature: import("../../Feature.js").FeatureLike, squaredTolerance: number, styles: import("../../style/Style.js").default | Array<import("../../style/Style.js").default>, builderGroup: import("../../render/canvas/BuilderGroup.js").default, declutter?: boolean | undefined, index?: number | undefined): boolean;
+    renderFeature(feature: import("../../Feature.js").FeatureLike, squaredTolerance: number, styles: import("../../style/Style.js").default | Array<import("../../style/Style.js").default>, builderGroup: import("../../render/canvas/BuilderGroup.js").default, declutter?: boolean, index?: number): boolean;
     /**
      * @param {import("../../VectorRenderTile.js").default} tile Tile.
      * @return {boolean} A new tile image was rendered.

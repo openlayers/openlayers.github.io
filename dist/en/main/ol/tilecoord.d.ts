@@ -14,7 +14,7 @@
  * @param {TileCoord} [tileCoord] Tile coordinate.
  * @return {TileCoord} Tile coordinate.
  */
-export function createOrUpdate(z: number, x: number, y: number, tileCoord?: TileCoord | undefined): TileCoord;
+export function createOrUpdate(z: number, x: number, y: number, tileCoord?: TileCoord): TileCoord;
 /**
  * @param {number} z Z.
  * @param {number} x X.

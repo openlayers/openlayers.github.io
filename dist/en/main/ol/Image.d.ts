@@ -12,13 +12,13 @@ export function listenImage(image: import("./DataTile.js").ImageLike, loadHandle
  * @return {Promise<HTMLImageElement>} Promise resolving to an `HTMLImageElement`.
  * @api
  */
-export function load(image: HTMLImageElement, src?: string | undefined): Promise<HTMLImageElement>;
+export function load(image: HTMLImageElement, src?: string): Promise<HTMLImageElement>;
 /**
  * @param {HTMLImageElement} image Image, not yet loaded.
  * @param {string} [src] `src` attribute of the image. Optional, not required if already present.
  * @return {Promise<HTMLImageElement>} Promise resolving to an `HTMLImageElement`.
  */
-export function decodeFallback(image: HTMLImageElement, src?: string | undefined): Promise<HTMLImageElement>;
+export function decodeFallback(image: HTMLImageElement, src?: string): Promise<HTMLImageElement>;
 /**
  * Loads an image and decodes it to an `ImageBitmap` if `createImageBitmap()` is supported. Returns
  * the loaded image otherwise.
@@ -28,7 +28,7 @@ export function decodeFallback(image: HTMLImageElement, src?: string | undefined
  * `HTMLImageElement` if `createImageBitmap()` is not supported.
  * @api
  */
-export function decode(image: HTMLImageElement, src?: string | undefined): Promise<ImageBitmap | HTMLImageElement>;
+export function decode(image: HTMLImageElement, src?: string): Promise<ImageBitmap | HTMLImageElement>;
 export default ImageWrapper;
 /**
  * A function that takes an {@link module :ol/Image~ImageWrapper} for the image and a

@@ -91,7 +91,7 @@ declare class Snap extends PointerInteraction {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /***
      * @type {SnapOnSignature<import("../events").EventsKey>}
      */
@@ -173,7 +173,7 @@ declare class Snap extends PointerInteraction {
      *     Defaults to `true`.
      * @api
      */
-    addFeature(feature: import("../Feature.js").default, register?: boolean | undefined): void;
+    addFeature(feature: import("../Feature.js").default, register?: boolean): void;
     /**
      * @return {import("../Collection.js").default<import("../Feature.js").default>|Array<import("../Feature.js").default>} Features.
      * @private
@@ -201,7 +201,7 @@ declare class Snap extends PointerInteraction {
      *     or not. Defaults to `true`.
      * @api
      */
-    removeFeature(feature: import("../Feature.js").default, unlisten?: boolean | undefined): void;
+    removeFeature(feature: import("../Feature.js").default, unlisten?: boolean): void;
     /**
      * Remove the interaction from its current map and attach it to the new map.
      * Subclasses may set up event handlers to get notified about changes to

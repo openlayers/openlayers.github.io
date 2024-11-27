@@ -1,6 +1,6 @@
 export default TileCache;
 declare class TileCache extends LRUCache<any> {
-    constructor(highWaterMark?: number | undefined);
+    constructor(highWaterMark?: number);
     /**
      * @param {!Object<string, boolean>} usedTiles Used tiles.
      * @override

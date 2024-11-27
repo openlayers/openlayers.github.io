@@ -162,21 +162,21 @@ declare class BaseLayer extends BaseObject {
      * @param {boolean} [managed] Layer is managed.
      * @return {import("./Layer.js").State} Layer state.
      */
-    getLayerState(managed?: boolean | undefined): import("./Layer.js").State;
+    getLayerState(managed?: boolean): import("./Layer.js").State;
     /**
      * @abstract
      * @param {Array<import("./Layer.js").default>} [array] Array of layers (to be
      *     modified in place).
      * @return {Array<import("./Layer.js").default>} Array of layers.
      */
-    getLayersArray(array?: import("./Layer.js").default<import("../source/Source.js").default, import("../renderer/Layer.js").default<any>>[] | undefined): Array<import("./Layer.js").default>;
+    getLayersArray(array?: Array<import("./Layer.js").default>): Array<import("./Layer.js").default>;
     /**
      * @abstract
      * @param {Array<import("./Layer.js").State>} [states] Optional list of layer
      *     states (to be modified in place).
      * @return {Array<import("./Layer.js").State>} List of layer states.
      */
-    getLayerStatesArray(states?: import("./Layer.js").State[] | undefined): Array<import("./Layer.js").State>;
+    getLayerStatesArray(states?: Array<import("./Layer.js").State>): Array<import("./Layer.js").State>;
     /**
      * Return the {@link module:ol/extent~Extent extent} of the layer or `undefined` if it
      * will be visible regardless of extent.
@@ -249,7 +249,7 @@ declare class BaseLayer extends BaseObject {
      * Sets the background color.
      * @param {BackgroundColor} [background] Background color.
      */
-    setBackground(background?: BackgroundColor | undefined): void;
+    setBackground(background?: BackgroundColor): void;
     /**
      * Set the extent at which the layer is visible.  If `undefined`, the layer
      * will be visible at all extents.

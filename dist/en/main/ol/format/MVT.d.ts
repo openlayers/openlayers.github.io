@@ -50,7 +50,7 @@ declare class MVT<FeatureType extends import("../Feature.js").FeatureLike = Rend
     /**
      * @param {Options<FeatureType>} [options] Options.
      */
-    constructor(options?: Options<FeatureType> | undefined);
+    constructor(options?: Options<FeatureType>);
     /**
      * @private
      * @type {string|undefined}
@@ -98,7 +98,7 @@ declare class MVT<FeatureType extends import("../Feature.js").FeatureLike = Rend
      * @api
      * @override
      */
-    override readFeatures(source: ArrayBuffer, options?: import("./Feature.js").ReadOptions | undefined): Array<FeatureType>;
+    override readFeatures(source: ArrayBuffer, options?: import("./Feature.js").ReadOptions): Array<FeatureType>;
     /**
      * Read the projection from the source.
      *

@@ -34,7 +34,7 @@ declare class DragPan extends PointerInteraction {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {import("../Kinetic.js").default|undefined}

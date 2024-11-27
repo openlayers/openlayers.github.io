@@ -83,7 +83,7 @@ declare class MousePosition extends Control {
     /**
      * @param {Options} [options] Mouse position options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /***
      * @type {MousePositionOnSignature<import("../events").EventsKey>}
      */

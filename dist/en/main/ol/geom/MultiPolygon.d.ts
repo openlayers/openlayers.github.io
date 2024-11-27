@@ -12,7 +12,7 @@ declare class MultiPolygon extends SimpleGeometry {
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      * @param {Array<Array<number>>} [endss] Array of ends for internal use with flat coordinates.
      */
-    constructor(coordinates: Array<Array<Array<import("../coordinate.js").Coordinate>> | Polygon> | Array<number>, layout?: import("./Geometry.js").GeometryLayout | undefined, endss?: number[][] | undefined);
+    constructor(coordinates: Array<Array<Array<import("../coordinate.js").Coordinate>> | Polygon> | Array<number>, layout?: import("./Geometry.js").GeometryLayout, endss?: Array<Array<number>>);
     /**
      * @type {Array<Array<number>>}
      * @private
@@ -81,7 +81,7 @@ declare class MultiPolygon extends SimpleGeometry {
      * @api
      * @override
      */
-    override getCoordinates(right?: boolean | undefined): Array<Array<Array<import("../coordinate.js").Coordinate>>>;
+    override getCoordinates(right?: boolean): Array<Array<Array<import("../coordinate.js").Coordinate>>>;
     /**
      * @return {Array<Array<number>>} Endss.
      */
@@ -128,7 +128,7 @@ declare class MultiPolygon extends SimpleGeometry {
      * @api
      * @override
      */
-    override setCoordinates(coordinates: Array<Array<Array<import("../coordinate.js").Coordinate>>>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
+    override setCoordinates(coordinates: Array<Array<Array<import("../coordinate.js").Coordinate>>>, layout?: import("./Geometry.js").GeometryLayout): void;
 }
 import SimpleGeometry from './SimpleGeometry.js';
 import Polygon from './Polygon.js';

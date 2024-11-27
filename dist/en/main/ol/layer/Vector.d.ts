@@ -175,7 +175,7 @@ declare class VectorLayer<VectorSourceType extends import("../source/Vector.js")
     /**
      * @param {Options<VectorSourceType, FeatureType>} [options] Options.
      */
-    constructor(options?: Options<VectorSourceType, FeatureType> | undefined);
+    constructor(options?: Options<VectorSourceType, FeatureType>);
 }
 import CanvasVectorLayerRenderer from '../renderer/canvas/VectorLayer.js';
 import BaseVectorLayer from './BaseVector.js';

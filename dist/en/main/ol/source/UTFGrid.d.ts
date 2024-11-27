@@ -68,7 +68,7 @@ export class CustomTile extends Tile {
      * @param {boolean} [request] If `true` the callback is always async.
      *                               The tile data is requested if not yet loaded.
      */
-    forDataAtCoordinate(coordinate: import("../coordinate.js").Coordinate, callback: (arg0: any) => void, request?: boolean | undefined): void;
+    forDataAtCoordinate(coordinate: import("../coordinate.js").Coordinate, callback: (arg0: any) => void, request?: boolean): void;
     /**
      * @private
      */
@@ -221,7 +221,7 @@ declare class UTFGrid extends TileSource<Tile> {
      *                               The tile data is requested if not yet loaded.
      * @api
      */
-    forDataAtCoordinateAndResolution(coordinate: import("../coordinate.js").Coordinate, resolution: number, callback: (arg0: any) => void, request?: boolean | undefined): void;
+    forDataAtCoordinateAndResolution(coordinate: import("../coordinate.js").Coordinate, resolution: number, callback: (arg0: any) => void, request?: boolean): void;
     /**
      * @protected
      */

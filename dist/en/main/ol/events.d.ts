@@ -35,7 +35,7 @@
  * @param {boolean} [once] If true, add the listener as one-off listener.
  * @return {EventsKey} Unique key for the listener.
  */
-export function listen(target: import("./events/Target.js").EventTargetLike, type: string, listener: ListenerFunction, thisArg?: any, once?: boolean | undefined): EventsKey;
+export function listen(target: import("./events/Target.js").EventTargetLike, type: string, listener: ListenerFunction, thisArg?: any, once?: boolean): EventsKey;
 /**
  * Registers a one-off event listener on an event target. Inspired by
  * https://google.github.io/closure-library/api/source/closure/goog/events/events.js.src.html

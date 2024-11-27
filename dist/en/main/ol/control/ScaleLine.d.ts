@@ -107,7 +107,7 @@ declare class ScaleLine extends Control {
     /**
      * @param {Options} [options] Scale line options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /***
      * @type {ScaleLineOnSignature<import("../events").EventsKey>}
      */

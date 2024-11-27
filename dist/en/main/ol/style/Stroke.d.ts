@@ -58,7 +58,7 @@ declare class Stroke {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {import("../color.js").Color|import("../colorlike.js").ColorLike}

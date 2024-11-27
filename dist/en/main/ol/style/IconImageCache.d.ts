@@ -70,7 +70,7 @@ declare class IconImageCache {
      * @param {import("./IconImage.js").default|null} iconImage Icon image.
      * @param {boolean} [pattern] Also cache a `'repeat'` pattern with this `iconImage`.
      */
-    set(src: string, crossOrigin: string | null, color: import("../color.js").Color | string | null, iconImage: import("./IconImage.js").default | null, pattern?: boolean | undefined): void;
+    set(src: string, crossOrigin: string | null, color: import("../color.js").Color | string | null, iconImage: import("./IconImage.js").default | null, pattern?: boolean): void;
     /**
      * Set the cache size of the icon cache. Default is `1024`. Change this value when
      * your map uses more than 1024 different icon images and you are not caching icon

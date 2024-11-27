@@ -92,7 +92,7 @@ declare class ImageCanvasSource extends ImageSource {
     /**
      * @param {Options} [options] ImageCanvas options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {FunctionType}

@@ -46,7 +46,7 @@ declare class KeyboardPan extends Interaction {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Browser event.

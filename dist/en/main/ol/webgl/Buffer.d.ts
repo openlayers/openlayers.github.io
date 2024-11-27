@@ -39,7 +39,7 @@ declare class WebGLArrayBuffer {
      * @param {number} [usage] Intended usage, either `STATIC_DRAW`, `STREAM_DRAW` or `DYNAMIC_DRAW`.
      * Default is `STATIC_DRAW`.
      */
-    constructor(type: number, usage?: number | undefined);
+    constructor(type: number, usage?: number);
     /**
      * @private
      * @type {Float32Array|Uint32Array|null}

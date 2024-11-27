@@ -69,7 +69,7 @@ declare class Collection<T> extends BaseObject {
      * @param {Array<T>} [array] Array.
      * @param {Options} [options] Collection options.
      */
-    constructor(array?: T[] | undefined, options?: Options | undefined);
+    constructor(array?: Array<T>, options?: Options);
     /***
      * @type {CollectionOnSignature<T, import("./events").EventsKey>}
      */

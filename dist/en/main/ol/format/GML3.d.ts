@@ -287,7 +287,7 @@ declare class GML3 extends GMLBase {
      * @api
      * @override
      */
-    override writeFeaturesNode(features: Array<import("../Feature.js").default>, options?: import("./Feature.js").WriteOptions | undefined): Element;
+    override writeFeaturesNode(features: Array<import("../Feature.js").default>, options?: import("./Feature.js").WriteOptions): Element;
     /**
      * @const
      * @type {Object<string, Object<string, import("../xml.js").Parser>>}

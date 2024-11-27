@@ -238,7 +238,7 @@ declare class VectorTileLayer<VectorTileSourceType extends import("../source/Vec
     /**
      * @param {Options<VectorTileSourceType, FeatureType>} [options] Options.
      */
-    constructor(options?: Options<VectorTileSourceType, FeatureType> | undefined);
+    constructor(options?: Options<VectorTileSourceType, FeatureType>);
     /***
      * @type {VectorTileLayerOnSignature<import("../events").EventsKey>}
      */

@@ -47,7 +47,7 @@ declare class TileDebug extends ImageTile {
     /**
      * @param {Options} [options] Debug tile options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
 }
 import ImageTile from './ImageTile.js';
 //# sourceMappingURL=TileDebug.d.ts.map

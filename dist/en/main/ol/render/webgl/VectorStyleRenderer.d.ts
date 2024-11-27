@@ -35,7 +35,7 @@ export type AttributeDefinitions = {
     [x: string]: AttributeDefinition;
 };
 export type UniformDefinitions = {
-    [x: string]: import("../../webgl/Helper").UniformValue;
+    [x: string]: import("../../webgl/Helper.js").UniformValue;
 };
 export type WebGLBuffers = {
     /**

@@ -100,7 +100,7 @@ declare class Attribution extends Control {
     /**
      * @param {Options} [options] Attribution options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {HTMLElement}

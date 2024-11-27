@@ -112,7 +112,7 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
      * @param {boolean} [declutterable] `true` to only render declutterable items,
      *     `false` to only render non-declutterable items, `undefined` to render all.
      */
-    renderWorlds(executorGroup: ExecutorGroup, frameState: import("../../Map.js").FrameState, declutterable?: boolean | undefined): void;
+    renderWorlds(executorGroup: ExecutorGroup, frameState: import("../../Map.js").FrameState, declutterable?: boolean): void;
     /**
      * @private
      */
@@ -150,7 +150,7 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
      * @param {number} [index] Render order index.
      * @return {boolean} `true` if an image is loading.
      */
-    renderFeature(feature: import("../../Feature.js").default, squaredTolerance: number, styles: import("../../style/Style.js").default | Array<import("../../style/Style.js").default>, builderGroup: import("../../render/canvas/BuilderGroup.js").default, transform?: import("../../proj.js").TransformFunction | undefined, declutter?: boolean | undefined, index?: number | undefined): boolean;
+    renderFeature(feature: import("../../Feature.js").default, squaredTolerance: number, styles: import("../../style/Style.js").default | Array<import("../../style/Style.js").default>, builderGroup: import("../../render/canvas/BuilderGroup.js").default, transform?: import("../../proj.js").TransformFunction, declutter?: boolean, index?: number): boolean;
 }
 import CanvasLayerRenderer from './Layer.js';
 import ExecutorGroup from '../../render/canvas/ExecutorGroup.js';

@@ -168,7 +168,7 @@ declare class UrlTile extends TileSource<import("../Tile.js").default> {
      * @param {string} [key] Optional new tile key for the source.
      * @api
      */
-    setTileUrlFunction(tileUrlFunction: import("../Tile.js").UrlFunction, key?: string | undefined): void;
+    setTileUrlFunction(tileUrlFunction: import("../Tile.js").UrlFunction, key?: string): void;
     /**
      * Set the URL to use for requests.
      * @param {string} url URL.

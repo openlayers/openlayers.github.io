@@ -85,7 +85,7 @@ declare class PointerInteraction extends Interaction {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * Handle pointer down events.
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Event.

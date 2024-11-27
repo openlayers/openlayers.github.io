@@ -101,7 +101,7 @@ declare class OSM extends XYZ {
     /**
      * @param {Options} [options] Open Street Map options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
 }
 import XYZ from './XYZ.js';
 //# sourceMappingURL=OSM.d.ts.map

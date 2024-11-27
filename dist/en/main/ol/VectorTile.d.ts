@@ -11,7 +11,7 @@ declare class VectorTile<FeatureType extends import("./Feature.js").FeatureLike>
      * @param {import("./Tile.js").LoadFunction} tileLoadFunction Tile load function.
      * @param {import("./Tile.js").Options} [options] Tile options.
      */
-    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, src: string, format: import("./format/Feature.js").default<FeatureType>, tileLoadFunction: import("./Tile.js").LoadFunction, options?: import("./Tile.js").Options | undefined);
+    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, src: string, format: import("./format/Feature.js").default<FeatureType>, tileLoadFunction: import("./Tile.js").LoadFunction, options?: import("./Tile.js").Options);
     /**
      * Extent of this tile; set by the source.
      * @type {import("./extent.js").Extent}

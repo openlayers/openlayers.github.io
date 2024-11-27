@@ -10,7 +10,7 @@ declare class MapEvent extends Event {
      * @param {import("./Map.js").default} map Map.
      * @param {?import("./Map.js").FrameState} [frameState] Frame state.
      */
-    constructor(type: string, map: import("./Map.js").default, frameState?: import("./Map.js").FrameState | null | undefined);
+    constructor(type: string, map: import("./Map.js").default, frameState?: import("./Map.js").FrameState | null);
     /**
      * The map where the event occurred.
      * @type {import("./Map.js").default}

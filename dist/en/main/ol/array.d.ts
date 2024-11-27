@@ -10,7 +10,7 @@
  * @param {Function} [comparator] Comparator function.
  * @return {number} The index of the item if found, -1 if not.
  */
-export function binarySearch(haystack: Array<any>, needle: any, comparator?: Function | undefined): number;
+export function binarySearch(haystack: Array<any>, needle: any, comparator?: Function): number;
 /**
  * Compare function sorting arrays in ascending order.  Safe to use for numeric values.
  * @param {*} a The first object to be compared.
@@ -89,7 +89,7 @@ export function stableSort(arr: Array<any>, compareFnc: (arg0: any, arg1: any) =
  * @param {boolean} [strict] Strictly sorted (default false).
  * @return {boolean} Return index.
  */
-export function isSorted(arr: Array<any>, func?: Function | undefined, strict?: boolean | undefined): boolean;
+export function isSorted(arr: Array<any>, func?: Function, strict?: boolean): boolean;
 /**
  * {@link module :ol/tilegrid/TileGrid~TileGrid#getZForResolution} can use a function
  * of this type to determine which nearest resolution to use.

@@ -46,7 +46,7 @@ declare class KeyboardZoom extends Interaction {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {import("../events/condition.js").Condition}

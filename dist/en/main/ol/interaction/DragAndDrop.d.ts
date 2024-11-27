@@ -10,7 +10,7 @@ export class DragAndDropEvent extends Event {
      * @param {Array<import("../Feature.js").default>} [features] Features.
      * @param {import("../proj/Projection.js").default} [projection] Projection.
      */
-    constructor(type: DragAndDropEventType, file: File, features?: import("../Feature.js").default<import("../geom.js").Geometry>[] | undefined, projection?: import("../proj.js").Projection | undefined);
+    constructor(type: DragAndDropEventType, file: File, features?: Array<import("../Feature.js").default>, projection?: import("../proj/Projection.js").default);
     /**
      * The features parsed from dropped data.
      * @type {Array<import("../Feature.js").FeatureLike>|undefined}
@@ -84,7 +84,7 @@ declare class DragAndDrop extends Interaction {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /***
      * @type {DragAndDropOnSignature<import("../events").EventsKey>}
      */

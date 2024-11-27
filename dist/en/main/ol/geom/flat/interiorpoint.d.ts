@@ -11,7 +11,7 @@
  * @return {Array<number>} Destination point as XYM coordinate, where M is the
  * length of the horizontal intersection that the point belongs to.
  */
-export function getInteriorPointOfArray(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, flatCenters: Array<number>, flatCentersOffset: number, dest?: number[] | undefined): Array<number>;
+export function getInteriorPointOfArray(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, flatCenters: Array<number>, flatCentersOffset: number, dest?: Array<number>): Array<number>;
 /**
  * @param {Array<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.

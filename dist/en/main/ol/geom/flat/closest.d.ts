@@ -41,7 +41,7 @@ export function multiArrayMaxSquaredDelta(flatCoordinates: Array<number>, offset
  * @param {Array<number>} [tmpPoint] Temporary point object.
  * @return {number} Minimum squared distance.
  */
-export function assignClosestPoint(flatCoordinates: Array<number>, offset: number, end: number, stride: number, maxDelta: number, isRing: boolean, x: number, y: number, closestPoint: Array<number>, minSquaredDistance: number, tmpPoint?: number[] | undefined): number;
+export function assignClosestPoint(flatCoordinates: Array<number>, offset: number, end: number, stride: number, maxDelta: number, isRing: boolean, x: number, y: number, closestPoint: Array<number>, minSquaredDistance: number, tmpPoint?: Array<number>): number;
 /**
  * @param {Array<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.
@@ -56,7 +56,7 @@ export function assignClosestPoint(flatCoordinates: Array<number>, offset: numbe
  * @param {Array<number>} [tmpPoint] Temporary point object.
  * @return {number} Minimum squared distance.
  */
-export function assignClosestArrayPoint(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, maxDelta: number, isRing: boolean, x: number, y: number, closestPoint: Array<number>, minSquaredDistance: number, tmpPoint?: number[] | undefined): number;
+export function assignClosestArrayPoint(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, maxDelta: number, isRing: boolean, x: number, y: number, closestPoint: Array<number>, minSquaredDistance: number, tmpPoint?: Array<number>): number;
 /**
  * @param {Array<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.
@@ -71,5 +71,5 @@ export function assignClosestArrayPoint(flatCoordinates: Array<number>, offset: 
  * @param {Array<number>} [tmpPoint] Temporary point object.
  * @return {number} Minimum squared distance.
  */
-export function assignClosestMultiArrayPoint(flatCoordinates: Array<number>, offset: number, endss: Array<Array<number>>, stride: number, maxDelta: number, isRing: boolean, x: number, y: number, closestPoint: Array<number>, minSquaredDistance: number, tmpPoint?: number[] | undefined): number;
+export function assignClosestMultiArrayPoint(flatCoordinates: Array<number>, offset: number, endss: Array<Array<number>>, stride: number, maxDelta: number, isRing: boolean, x: number, y: number, closestPoint: Array<number>, minSquaredDistance: number, tmpPoint?: Array<number>): number;
 //# sourceMappingURL=closest.d.ts.map

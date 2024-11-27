@@ -126,7 +126,7 @@ declare class GPX extends XMLFeature {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @type {function(Feature, Node): void|undefined}
      * @private

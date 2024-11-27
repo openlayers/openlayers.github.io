@@ -5,25 +5,25 @@
  * @param {WriteOptions|ReadOptions} [options] Options.
  * @return {T} Transformed geometry.
  */
-export function transformGeometryWithOptions<T extends import("../geom/Geometry.js").default | RenderFeature>(geometry: T, write: boolean, options?: ReadOptions | WriteOptions | undefined): T;
+export function transformGeometryWithOptions<T extends import("../geom/Geometry.js").default | RenderFeature>(geometry: T, write: boolean, options?: WriteOptions | ReadOptions): T;
 /**
  * @param {import("../extent.js").Extent} extent Extent.
  * @param {ReadOptions} [options] Read options.
  * @return {import("../extent.js").Extent} Transformed extent.
  */
-export function transformExtentWithOptions(extent: import("../extent.js").Extent, options?: ReadOptions | undefined): import("../extent.js").Extent;
+export function transformExtentWithOptions(extent: import("../extent.js").Extent, options?: ReadOptions): import("../extent.js").Extent;
 /**
  * @param {FeatureObject} object Feature object.
  * @param {WriteOptions|ReadOptions} [options] Options.
  * @return {RenderFeature|Array<RenderFeature>} Render feature.
  */
-export function createRenderFeature(object: FeatureObject, options?: ReadOptions | WriteOptions | undefined): RenderFeature | Array<RenderFeature>;
+export function createRenderFeature(object: FeatureObject, options?: WriteOptions | ReadOptions): RenderFeature | Array<RenderFeature>;
 /**
  * @param {GeometryObject|null} object Geometry object.
  * @param {WriteOptions|ReadOptions} [options] Options.
  * @return {import("../geom/Geometry.js").default} Geometry.
  */
-export function createGeometry(object: GeometryObject | null, options?: ReadOptions | WriteOptions | undefined): import("../geom/Geometry.js").default;
+export function createGeometry(object: GeometryObject | null, options?: WriteOptions | ReadOptions): import("../geom/Geometry.js").default;
 export default FeatureFormat;
 export type ReadOptions = {
     /**
@@ -239,7 +239,7 @@ declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureL
      * @return {ReadOptions|undefined} Options.
      * @protected
      */
-    protected getReadOptions(source: Document | Element | any | string, options?: ReadOptions | undefined): ReadOptions | undefined;
+    protected getReadOptions(source: Document | Element | any | string, options?: ReadOptions): ReadOptions | undefined;
     /**
      * Sets the `dataProjection` on the options, if no `dataProjection`
      * is set.
@@ -263,7 +263,7 @@ declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureL
      * @param {ReadOptions} [options] Read options.
      * @return {FeatureType|Array<FeatureType>} Feature.
      */
-    readFeature(source: Document | Element | any | string, options?: ReadOptions | undefined): FeatureType | Array<FeatureType>;
+    readFeature(source: Document | Element | any | string, options?: ReadOptions): FeatureType | Array<FeatureType>;
     /**
      * Read all features from a source.
      *
@@ -272,7 +272,7 @@ declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureL
      * @param {ReadOptions} [options] Read options.
      * @return {Array<FeatureType>} Features.
      */
-    readFeatures(source: Document | Element | ArrayBuffer | any | string, options?: ReadOptions | undefined): Array<FeatureType>;
+    readFeatures(source: Document | Element | ArrayBuffer | any | string, options?: ReadOptions): Array<FeatureType>;
     /**
      * Read a single geometry from a source.
      *
@@ -281,7 +281,7 @@ declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureL
      * @param {ReadOptions} [options] Read options.
      * @return {import("../geom/Geometry.js").default} Geometry.
      */
-    readGeometry(source: Document | Element | any | string, options?: ReadOptions | undefined): import("../geom/Geometry.js").default;
+    readGeometry(source: Document | Element | any | string, options?: ReadOptions): import("../geom/Geometry.js").default;
     /**
      * Read the projection from a source.
      *
@@ -298,7 +298,7 @@ declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureL
      * @param {WriteOptions} [options] Write options.
      * @return {string|ArrayBuffer} Result.
      */
-    writeFeature(feature: Feature, options?: WriteOptions | undefined): string | ArrayBuffer;
+    writeFeature(feature: Feature, options?: WriteOptions): string | ArrayBuffer;
     /**
      * Encode an array of features in this format.
      *
@@ -307,7 +307,7 @@ declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureL
      * @param {WriteOptions} [options] Write options.
      * @return {string|ArrayBuffer} Result.
      */
-    writeFeatures(features: Array<Feature>, options?: WriteOptions | undefined): string | ArrayBuffer;
+    writeFeatures(features: Array<Feature>, options?: WriteOptions): string | ArrayBuffer;
     /**
      * Write a single geometry in this format.
      *
@@ -316,7 +316,7 @@ declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureL
      * @param {WriteOptions} [options] Write options.
      * @return {string|ArrayBuffer} Result.
      */
-    writeGeometry(geometry: import("../geom/Geometry.js").default, options?: WriteOptions | undefined): string | ArrayBuffer;
+    writeGeometry(geometry: import("../geom/Geometry.js").default, options?: WriteOptions): string | ArrayBuffer;
 }
 import Feature from '../Feature.js';
 //# sourceMappingURL=Feature.d.ts.map

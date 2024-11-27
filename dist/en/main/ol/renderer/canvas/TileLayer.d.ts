@@ -24,7 +24,7 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      * @param {LayerType} tileLayer Tile layer.
      * @param {Options} [options] Options.
      */
-    constructor(tileLayer: LayerType, options?: Options | undefined);
+    constructor(tileLayer: LayerType, options?: Options);
     /**
      * Rendered extent has changed since the previous `renderFrame()` call
      * @type {boolean}

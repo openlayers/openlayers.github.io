@@ -77,9 +77,9 @@ export type IiifProfile = {
     maxWidth?: number | undefined;
 };
 export type ImageInformationResponse = {
-    [x: string]: string | number | Array<number | string | IiifProfile | {
+    [x: string]: string | number | (string | number | IiifProfile | {
         [x: string]: number;
-    } | TileInfo>;
+    } | TileInfo)[];
 };
 /**
  * @classdesc
@@ -127,6 +127,6 @@ declare class IIIFInfo {
      * @return {import("../source/IIIF.js").Options|undefined} IIIF tile source ready constructor options.
      * @api
      */
-    getTileSourceOptions(preferredOptions?: PreferredOptions | undefined): import("../source/IIIF.js").Options | undefined;
+    getTileSourceOptions(preferredOptions?: PreferredOptions): import("../source/IIIF.js").Options | undefined;
 }
 //# sourceMappingURL=IIIFInfo.d.ts.map

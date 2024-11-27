@@ -7,7 +7,7 @@
  * @return {number} The great circle distance between the points (in meters).
  * @api
  */
-export function getDistance(c1: any[], c2: any[], radius?: number | undefined): number;
+export function getDistance(c1: any[], c2: any[], radius?: number): number;
 /**
  * Get the spherical length of a geometry.  This length is the sum of the
  * great circle distances between coordinates.  For polygons, the length is
@@ -20,7 +20,7 @@ export function getDistance(c1: any[], c2: any[], radius?: number | undefined): 
  * @return {number} The spherical length (in meters).
  * @api
  */
-export function getLength(geometry: import("./geom/Geometry.js").default, options?: SphereMetricOptions | undefined): number;
+export function getLength(geometry: import("./geom/Geometry.js").default, options?: SphereMetricOptions): number;
 /**
  * Get the spherical area of a geometry.  This is the area (in meters) assuming
  * that polygon edges are segments of great circles on a sphere.
@@ -31,7 +31,7 @@ export function getLength(geometry: import("./geom/Geometry.js").default, option
  * @return {number} The spherical area (in square meters).
  * @api
  */
-export function getArea(geometry: import("./geom/Geometry.js").default, options?: SphereMetricOptions | undefined): number;
+export function getArea(geometry: import("./geom/Geometry.js").default, options?: SphereMetricOptions): number;
 /**
  * Returns the coordinate at the given distance and bearing from `c1`.
  *
@@ -43,7 +43,7 @@ export function getArea(geometry: import("./geom/Geometry.js").default, options?
  *     mean radius using the WGS84 ellipsoid.
  * @return {import("./coordinate.js").Coordinate} The target point.
  */
-export function offset(c1: import("./coordinate.js").Coordinate, distance: number, bearing: number, radius?: number | undefined): import("./coordinate.js").Coordinate;
+export function offset(c1: import("./coordinate.js").Coordinate, distance: number, bearing: number, radius?: number): import("./coordinate.js").Coordinate;
 /**
  * Object literal with options for the {@link getLength} or {@link getArea}
  * functions.

@@ -92,7 +92,7 @@ declare class LayerGroup extends BaseLayer {
     /**
      * @param {Options} [options] Layer options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /***
      * @type {GroupOnSignature<import("../events").EventsKey>}
      */

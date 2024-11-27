@@ -29,9 +29,9 @@ export class Canvas {
     matrixLocation: WebGLUniformLocation | null;
     textureMatrixLocation: WebGLUniformLocation | null;
     textureLocation: WebGLUniformLocation | null;
-    positionBuffer: WebGLBuffer | null;
+    positionBuffer: WebGLBuffer;
     positions: number[];
-    texcoordBuffer: WebGLBuffer | null;
+    texcoordBuffer: WebGLBuffer;
     texcoords: number[];
     /**
      * 2dContext drawImage call implemented in webgl.
@@ -52,7 +52,7 @@ export class Canvas {
      * @param {number} [width] Width of canvas.
      * @param {number} [height] Height of canvas.
      */
-    drawImage(tex: WebGLTexture, texWidth: number, texHeight: number, srcX: number, srcY: number, srcWidth?: number | undefined, srcHeight?: number | undefined, dstX?: number | undefined, dstY?: number | undefined, dstWidth?: number | undefined, dstHeight?: number | undefined, width?: number | undefined, height?: number | undefined): void;
+    drawImage(tex: WebGLTexture, texWidth: number, texHeight: number, srcX: number, srcY: number, srcWidth?: number, srcHeight?: number, dstX?: number, dstY?: number, dstWidth?: number, dstHeight?: number, width?: number, height?: number): void;
 }
 export type Matrix = import("../transform.js").Transform;
 //# sourceMappingURL=Canvas.d.ts.map

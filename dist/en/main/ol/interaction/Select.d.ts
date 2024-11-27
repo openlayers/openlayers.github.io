@@ -213,7 +213,7 @@ declare class Select extends Interaction {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /***
      * @type {SelectOnSignature<import("../events").EventsKey>}
      */

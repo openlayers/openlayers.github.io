@@ -804,6 +804,6 @@ export type Rule = {
  * Each variable must hold a literal value (not an expression).
  */
 export type StyleVariables = {
-    [x: string]: number | Array<number> | string | boolean;
+    [x: string]: string | number | boolean | number[];
 };
 //# sourceMappingURL=flat.d.ts.map

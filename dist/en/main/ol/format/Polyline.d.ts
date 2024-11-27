@@ -11,7 +11,7 @@
  * @return {string} The encoded string.
  * @api
  */
-export function encodeDeltas(numbers: Array<number>, stride: number, factor?: number | undefined): string;
+export function encodeDeltas(numbers: Array<number>, stride: number, factor?: number): string;
 /**
  * Decode a list of n-dimensional points from an encoded string
  *
@@ -23,7 +23,7 @@ export function encodeDeltas(numbers: Array<number>, stride: number, factor?: nu
  * @return {Array<number>} A list of n-dimensional points.
  * @api
  */
-export function decodeDeltas(encoded: string, stride: number, factor?: number | undefined): Array<number>;
+export function decodeDeltas(encoded: string, stride: number, factor?: number): Array<number>;
 /**
  * Encode a list of floating point numbers and return an encoded string
  *
@@ -36,7 +36,7 @@ export function decodeDeltas(encoded: string, stride: number, factor?: number | 
  * @return {string} The encoded string.
  * @api
  */
-export function encodeFloats(numbers: Array<number>, factor?: number | undefined): string;
+export function encodeFloats(numbers: Array<number>, factor?: number): string;
 /**
  * Decode a list of floating point numbers from an encoded string
  *
@@ -46,7 +46,7 @@ export function encodeFloats(numbers: Array<number>, factor?: number | undefined
  * @return {Array<number>} A list of floating point numbers.
  * @api
  */
-export function decodeFloats(encoded: string, factor?: number | undefined): Array<number>;
+export function decodeFloats(encoded: string, factor?: number): Array<number>;
 /**
  * Encode a list of signed integers and return an encoded string
  *
@@ -120,7 +120,7 @@ declare class Polyline extends TextFeature {
     /**
      * @param {Options} [options] Optional configuration object.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {number}
@@ -138,7 +138,7 @@ declare class Polyline extends TextFeature {
      * @return {string} Text.
      * @override
      */
-    protected override writeFeatureText(feature: import("../Feature.js").default<LineString>, options?: import("./Feature.js").WriteOptions | undefined): string;
+    protected override writeFeatureText(feature: import("../Feature.js").default<LineString>, options?: import("./Feature.js").WriteOptions): string;
     /**
      * @param {Array<import("../Feature.js").default<LineString>>} features Features.
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
@@ -146,7 +146,7 @@ declare class Polyline extends TextFeature {
      * @return {string} Text.
      * @override
      */
-    protected override writeFeaturesText(features: Array<import("../Feature.js").default<LineString>>, options?: import("./Feature.js").WriteOptions | undefined): string;
+    protected override writeFeaturesText(features: Array<import("../Feature.js").default<LineString>>, options?: import("./Feature.js").WriteOptions): string;
     /**
      * @param {LineString} geometry Geometry.
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
@@ -154,7 +154,7 @@ declare class Polyline extends TextFeature {
      * @return {string} Text.
      * @override
      */
-    protected override writeGeometryText(geometry: LineString, options?: import("./Feature.js").WriteOptions | undefined): string;
+    protected override writeGeometryText(geometry: LineString, options?: import("./Feature.js").WriteOptions): string;
 }
 import TextFeature from './TextFeature.js';
 import LineString from '../geom/LineString.js';

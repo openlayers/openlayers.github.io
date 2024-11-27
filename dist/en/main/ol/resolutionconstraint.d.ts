@@ -5,7 +5,7 @@
  * @param {boolean} [showFullExtent] If true, allows us to show the full extent. Default: false.
  * @return {Type} Zoom function.
  */
-export function createSnapToResolutions(resolutions: Array<number>, smooth?: boolean | undefined, maxExtent?: import("./extent.js").Extent | undefined, showFullExtent?: boolean | undefined): Type;
+export function createSnapToResolutions(resolutions: Array<number>, smooth?: boolean, maxExtent?: import("./extent.js").Extent, showFullExtent?: boolean): Type;
 /**
  * @param {number} power Power.
  * @param {number} maxResolution Maximum resolution.
@@ -15,7 +15,7 @@ export function createSnapToResolutions(resolutions: Array<number>, smooth?: boo
  * @param {boolean} [showFullExtent] If true, allows us to show the full extent. Default: false.
  * @return {Type} Zoom function.
  */
-export function createSnapToPower(power: number, maxResolution: number, minResolution?: number | undefined, smooth?: boolean | undefined, maxExtent?: import("./extent.js").Extent | undefined, showFullExtent?: boolean | undefined): Type;
+export function createSnapToPower(power: number, maxResolution: number, minResolution?: number, smooth?: boolean, maxExtent?: import("./extent.js").Extent, showFullExtent?: boolean): Type;
 /**
  * @param {number} maxResolution Max resolution.
  * @param {number} minResolution Min resolution.
@@ -24,6 +24,6 @@ export function createSnapToPower(power: number, maxResolution: number, minResol
  * @param {boolean} [showFullExtent] If true, allows us to show the full extent. Default: false.
  * @return {Type} Zoom function.
  */
-export function createMinMaxResolution(maxResolution: number, minResolution: number, smooth?: boolean | undefined, maxExtent?: import("./extent.js").Extent | undefined, showFullExtent?: boolean | undefined): Type;
+export function createMinMaxResolution(maxResolution: number, minResolution: number, smooth?: boolean, maxExtent?: import("./extent.js").Extent, showFullExtent?: boolean): Type;
 export type Type = (arg0: (number | undefined), arg1: number, arg2: import("./size.js").Size, arg3: boolean | undefined) => (number | undefined);
 //# sourceMappingURL=resolutionconstraint.d.ts.map

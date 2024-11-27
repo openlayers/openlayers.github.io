@@ -106,7 +106,7 @@ declare class BaseImageLayer<ImageSourceType extends import("../source/Image.js"
     /**
      * @param {Options<ImageSourceType>} [options] Layer options.
      */
-    constructor(options?: Options<ImageSourceType> | undefined);
+    constructor(options?: Options<ImageSourceType>);
 }
 import Layer from './Layer.js';
 //# sourceMappingURL=BaseImage.d.ts.map

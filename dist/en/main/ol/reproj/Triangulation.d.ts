@@ -27,7 +27,7 @@ declare class Triangulation {
      * @param {?number} destinationResolution The (optional) resolution of the destination.
      * @param {import("../transform.js").Transform} [sourceMatrix] Source transform matrix.
      */
-    constructor(sourceProj: import("../proj/Projection.js").default, targetProj: import("../proj/Projection.js").default, targetExtent: import("../extent.js").Extent, maxSourceExtent: import("../extent.js").Extent, errorThreshold: number, destinationResolution: number | null, sourceMatrix?: number[] | undefined);
+    constructor(sourceProj: import("../proj/Projection.js").default, targetProj: import("../proj/Projection.js").default, targetExtent: import("../extent.js").Extent, maxSourceExtent: import("../extent.js").Extent, errorThreshold: number, destinationResolution: number | null, sourceMatrix?: import("../transform.js").Transform);
     /**
      * @type {import("../proj/Projection.js").default}
      * @private

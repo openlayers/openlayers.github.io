@@ -10,7 +10,7 @@ declare class Point extends SimpleGeometry {
      * @param {import("../coordinate.js").Coordinate} coordinates Coordinates.
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      */
-    constructor(coordinates: import("../coordinate.js").Coordinate, layout?: import("./Geometry.js").GeometryLayout | undefined);
+    constructor(coordinates: import("../coordinate.js").Coordinate, layout?: import("./Geometry.js").GeometryLayout);
     /**
      * Make a complete copy of the geometry.
      * @return {!Point} Clone.

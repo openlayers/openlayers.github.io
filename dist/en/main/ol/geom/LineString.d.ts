@@ -11,7 +11,7 @@ declare class LineString extends SimpleGeometry {
      *     For internal use, flat coordinates in combination with `layout` are also accepted.
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      */
-    constructor(coordinates: Array<import("../coordinate.js").Coordinate> | Array<number>, layout?: import("./Geometry.js").GeometryLayout | undefined);
+    constructor(coordinates: Array<import("../coordinate.js").Coordinate> | Array<number>, layout?: import("./Geometry.js").GeometryLayout);
     /**
      * @private
      * @type {import("../coordinate.js").Coordinate|null}
@@ -71,7 +71,7 @@ declare class LineString extends SimpleGeometry {
      * @return {import("../coordinate.js").Coordinate|null} Coordinate.
      * @api
      */
-    getCoordinateAtM(m: number, extrapolate?: boolean | undefined): import("../coordinate.js").Coordinate | null;
+    getCoordinateAtM(m: number, extrapolate?: boolean): import("../coordinate.js").Coordinate | null;
     /**
      * Return the coordinates of the linestring.
      * @return {Array<import("../coordinate.js").Coordinate>} Coordinates.
@@ -89,7 +89,7 @@ declare class LineString extends SimpleGeometry {
      * @return {import("../coordinate.js").Coordinate} Coordinate of the interpolated point.
      * @api
      */
-    getCoordinateAt(fraction: number, dest?: import("../coordinate.js").Coordinate | undefined): import("../coordinate.js").Coordinate;
+    getCoordinateAt(fraction: number, dest?: import("../coordinate.js").Coordinate): import("../coordinate.js").Coordinate;
     /**
      * Return the length of the linestring on projected plane.
      * @return {number} Length (on projected plane).
@@ -114,7 +114,7 @@ declare class LineString extends SimpleGeometry {
      * @api
      * @override
      */
-    override setCoordinates(coordinates: Array<import("../coordinate.js").Coordinate>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
+    override setCoordinates(coordinates: Array<import("../coordinate.js").Coordinate>, layout?: import("./Geometry.js").GeometryLayout): void;
 }
 import SimpleGeometry from './SimpleGeometry.js';
 //# sourceMappingURL=LineString.d.ts.map

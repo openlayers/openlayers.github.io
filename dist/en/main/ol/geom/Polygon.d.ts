@@ -10,7 +10,7 @@
  * @return {Polygon} The "circular" polygon.
  * @api
  */
-export function circular(center: import("../coordinate.js").Coordinate, radius: number, n?: number | undefined, sphereRadius?: number | undefined): Polygon;
+export function circular(center: import("../coordinate.js").Coordinate, radius: number, n?: number, sphereRadius?: number): Polygon;
 /**
  * Create a polygon from an extent. The layout used is `XY`.
  * @param {import("../extent.js").Extent} extent The extent.
@@ -27,7 +27,7 @@ export function fromExtent(extent: import("../extent.js").Extent): Polygon;
  * @return {Polygon} Polygon geometry.
  * @api
  */
-export function fromCircle(circle: import("./Circle.js").default, sides?: number | undefined, angle?: number | undefined): Polygon;
+export function fromCircle(circle: import("./Circle.js").default, sides?: number, angle?: number): Polygon;
 /**
  * Modify the coordinates of a polygon to make it a regular polygon.
  * @param {Polygon} polygon Polygon geometry.
@@ -36,7 +36,7 @@ export function fromCircle(circle: import("./Circle.js").default, sides?: number
  * @param {number} [angle] Start angle for the first vertex of the polygon in
  *     counter-clockwise radians. 0 means East. Default is 0.
  */
-export function makeRegular(polygon: Polygon, center: import("../coordinate.js").Coordinate, radius: number, angle?: number | undefined): void;
+export function makeRegular(polygon: Polygon, center: import("../coordinate.js").Coordinate, radius: number, angle?: number): void;
 export default Polygon;
 /**
  * @classdesc
@@ -56,7 +56,7 @@ declare class Polygon extends SimpleGeometry {
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      * @param {Array<number>} [ends] Ends (for internal use with flat coordinates).
      */
-    constructor(coordinates: Array<Array<import("../coordinate.js").Coordinate>> | Array<number>, layout?: import("./Geometry.js").GeometryLayout | undefined, ends?: number[] | undefined);
+    constructor(coordinates: Array<Array<import("../coordinate.js").Coordinate>> | Array<number>, layout?: import("./Geometry.js").GeometryLayout, ends?: Array<number>);
     /**
      * @type {Array<number>}
      * @private
@@ -125,7 +125,7 @@ declare class Polygon extends SimpleGeometry {
      * @api
      * @override
      */
-    override getCoordinates(right?: boolean | undefined): Array<Array<import("../coordinate.js").Coordinate>>;
+    override getCoordinates(right?: boolean): Array<Array<import("../coordinate.js").Coordinate>>;
     /**
      * @return {Array<number>} Ends.
      */
@@ -184,7 +184,7 @@ declare class Polygon extends SimpleGeometry {
      * @api
      * @override
      */
-    override setCoordinates(coordinates: Array<Array<import("../coordinate.js").Coordinate>>, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
+    override setCoordinates(coordinates: Array<Array<import("../coordinate.js").Coordinate>>, layout?: import("./Geometry.js").GeometryLayout): void;
 }
 import SimpleGeometry from './SimpleGeometry.js';
 import LinearRing from './LinearRing.js';

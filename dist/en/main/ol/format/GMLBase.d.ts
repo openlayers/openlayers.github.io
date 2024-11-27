@@ -109,7 +109,7 @@ declare class GMLBase extends XMLFeature {
     /**
      * @param {Options} [options] Optional configuration object.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @protected
      * @type {Array<string>|string|undefined}

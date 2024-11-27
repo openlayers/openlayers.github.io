@@ -32,7 +32,7 @@ declare class DblClickDragZoom extends Interaction {
     /**
      * @param {Options} [opt_options] Options.
      */
-    constructor(opt_options?: Options | undefined);
+    constructor(opt_options?: Options);
     /**
      * This function is used to determine if "down" events should be propagated
      * to other interactions or should be stopped.

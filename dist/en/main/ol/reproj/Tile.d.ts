@@ -40,7 +40,7 @@ declare class ReprojTile extends Tile {
      * @param {boolean} [renderEdges] Render reprojection edges.
      * @param {import("../Tile.js").Options} [options] Tile options.
      */
-    constructor(sourceProj: import("../proj/Projection.js").default, sourceTileGrid: import("../tilegrid/TileGrid.js").default, targetProj: import("../proj/Projection.js").default, targetTileGrid: import("../tilegrid/TileGrid.js").default, tileCoord: import("../tilecoord.js").TileCoord, wrappedTileCoord: import("../tilecoord.js").TileCoord, pixelRatio: number, gutter: number, getTileFunction: FunctionType, errorThreshold?: number | undefined, renderEdges?: boolean | undefined, options?: import("../Tile.js").Options | undefined);
+    constructor(sourceProj: import("../proj/Projection.js").default, sourceTileGrid: import("../tilegrid/TileGrid.js").default, targetProj: import("../proj/Projection.js").default, targetTileGrid: import("../tilegrid/TileGrid.js").default, tileCoord: import("../tilecoord.js").TileCoord, wrappedTileCoord: import("../tilecoord.js").TileCoord, pixelRatio: number, gutter: number, getTileFunction: FunctionType, errorThreshold?: number, renderEdges?: boolean, options?: import("../Tile.js").Options);
     /**
      * @private
      * @type {boolean}

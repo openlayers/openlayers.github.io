@@ -72,7 +72,7 @@ declare class Zoom extends Control {
     /**
      * @param {Options} [options] Zoom options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @type {number}
      * @private

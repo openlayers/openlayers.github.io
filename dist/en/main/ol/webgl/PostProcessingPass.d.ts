@@ -182,7 +182,7 @@ declare class WebGLPostProcessingPass {
      * @param {function(WebGLRenderingContext, import("../Map.js").FrameState):void} [preCompose] Called before composing.
      * @param {function(WebGLRenderingContext, import("../Map.js").FrameState):void} [postCompose] Called before composing.
      */
-    apply(frameState: import("../Map.js").FrameState, nextPass?: WebGLPostProcessingPass | undefined, preCompose?: ((arg0: WebGLRenderingContext, arg1: import("../Map.js").FrameState) => void) | undefined, postCompose?: ((arg0: WebGLRenderingContext, arg1: import("../Map.js").FrameState) => void) | undefined): void;
+    apply(frameState: import("../Map.js").FrameState, nextPass?: WebGLPostProcessingPass, preCompose?: (arg0: WebGLRenderingContext, arg1: import("../Map.js").FrameState) => void, postCompose?: (arg0: WebGLRenderingContext, arg1: import("../Map.js").FrameState) => void): void;
     /**
      * @return {WebGLFramebuffer} Frame buffer
      */

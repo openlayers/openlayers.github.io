@@ -13,7 +13,7 @@ declare class Circle extends SimpleGeometry {
      * @param {number} [radius] Radius in units of the projection.
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      */
-    constructor(center: import("../coordinate.js").Coordinate, radius?: number | undefined, layout?: import("./Geometry.js").GeometryLayout | undefined);
+    constructor(center: import("../coordinate.js").Coordinate, radius?: number, layout?: import("./Geometry.js").GeometryLayout);
     /**
      * Make a complete copy of the geometry.
      * @return {!Circle} Clone.
@@ -52,7 +52,7 @@ declare class Circle extends SimpleGeometry {
      * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      * @api
      */
-    setCenterAndRadius(center: import("../coordinate.js").Coordinate, radius: number, layout?: import("./Geometry.js").GeometryLayout | undefined): void;
+    setCenterAndRadius(center: import("../coordinate.js").Coordinate, radius: number, layout?: import("./Geometry.js").GeometryLayout): void;
     /**
      * @override
      */

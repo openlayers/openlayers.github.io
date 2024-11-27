@@ -89,7 +89,7 @@ declare class DragBox extends PointerInteraction {
     /**
      * @param {Options} [options] Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /***
      * @type {DragBoxOnSignature<import("../events").EventsKey>}
      */

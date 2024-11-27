@@ -18,7 +18,7 @@ declare class VectorContext {
      * @param {Function} hitDetectionRenderer Renderer.
      * @param {number} [index] Render order index.
      */
-    drawCustom(geometry: import("../geom/SimpleGeometry.js").default, feature: import("../Feature.js").FeatureLike, renderer: Function, hitDetectionRenderer: Function, index?: number | undefined): void;
+    drawCustom(geometry: import("../geom/SimpleGeometry.js").default, feature: import("../Feature.js").FeatureLike, renderer: Function, hitDetectionRenderer: Function, index?: number): void;
     /**
      * Render a geometry.
      *
@@ -36,61 +36,61 @@ declare class VectorContext {
      * @param {import("../Feature.js").default} feature Feature.
      * @param {number} [index] Render order index.
      */
-    drawCircle(circleGeometry: import("../geom/Circle.js").default, feature: import("../Feature.js").default, index?: number | undefined): void;
+    drawCircle(circleGeometry: import("../geom/Circle.js").default, feature: import("../Feature.js").default, index?: number): void;
     /**
      * @param {import("../Feature.js").default} feature Feature.
      * @param {import("../style/Style.js").default} style Style.
      * @param {number} [index] Render order index.
      */
-    drawFeature(feature: import("../Feature.js").default, style: import("../style/Style.js").default, index?: number | undefined): void;
+    drawFeature(feature: import("../Feature.js").default, style: import("../style/Style.js").default, index?: number): void;
     /**
      * @param {import("../geom/GeometryCollection.js").default} geometryCollectionGeometry Geometry collection.
      * @param {import("../Feature.js").default} feature Feature.
      * @param {number} [index] Render order index.
      */
-    drawGeometryCollection(geometryCollectionGeometry: import("../geom/GeometryCollection.js").default, feature: import("../Feature.js").default, index?: number | undefined): void;
+    drawGeometryCollection(geometryCollectionGeometry: import("../geom/GeometryCollection.js").default, feature: import("../Feature.js").default, index?: number): void;
     /**
      * @param {import("../geom/LineString.js").default|import("./Feature.js").default} lineStringGeometry Line string geometry.
      * @param {import("../Feature.js").FeatureLike} feature Feature.
      * @param {number} [index] Render order index.
      */
-    drawLineString(lineStringGeometry: import("../geom/LineString.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number | undefined): void;
+    drawLineString(lineStringGeometry: import("../geom/LineString.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number): void;
     /**
      * @param {import("../geom/MultiLineString.js").default|import("./Feature.js").default} multiLineStringGeometry MultiLineString geometry.
      * @param {import("../Feature.js").FeatureLike} feature Feature.
      * @param {number} [index] Render order index.
      */
-    drawMultiLineString(multiLineStringGeometry: import("../geom/MultiLineString.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number | undefined): void;
+    drawMultiLineString(multiLineStringGeometry: import("../geom/MultiLineString.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number): void;
     /**
      * @param {import("../geom/MultiPoint.js").default|import("./Feature.js").default} multiPointGeometry MultiPoint geometry.
      * @param {import("../Feature.js").FeatureLike} feature Feature.
      * @param {number} [index] Render order index.
      */
-    drawMultiPoint(multiPointGeometry: import("../geom/MultiPoint.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number | undefined): void;
+    drawMultiPoint(multiPointGeometry: import("../geom/MultiPoint.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number): void;
     /**
      * @param {import("../geom/MultiPolygon.js").default} multiPolygonGeometry MultiPolygon geometry.
      * @param {import("../Feature.js").FeatureLike} feature Feature.
      * @param {number} [index] Render order index.
      */
-    drawMultiPolygon(multiPolygonGeometry: import("../geom/MultiPolygon.js").default, feature: import("../Feature.js").FeatureLike, index?: number | undefined): void;
+    drawMultiPolygon(multiPolygonGeometry: import("../geom/MultiPolygon.js").default, feature: import("../Feature.js").FeatureLike, index?: number): void;
     /**
      * @param {import("../geom/Point.js").default|import("./Feature.js").default} pointGeometry Point geometry.
      * @param {import("../Feature.js").FeatureLike} feature Feature.
      * @param {number} [index] Render order index.
      */
-    drawPoint(pointGeometry: import("../geom/Point.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number | undefined): void;
+    drawPoint(pointGeometry: import("../geom/Point.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number): void;
     /**
      * @param {import("../geom/Polygon.js").default|import("./Feature.js").default} polygonGeometry Polygon geometry.
      * @param {import("../Feature.js").FeatureLike} feature Feature.
      * @param {number} [index] Render order index.
      */
-    drawPolygon(polygonGeometry: import("../geom/Polygon.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number | undefined): void;
+    drawPolygon(polygonGeometry: import("../geom/Polygon.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number): void;
     /**
      * @param {import("../geom/SimpleGeometry.js").default|import("./Feature.js").default} geometry Geometry.
      * @param {import("../Feature.js").FeatureLike} feature Feature.
      * @param {number} [index] Render order index.
      */
-    drawText(geometry: import("../geom/SimpleGeometry.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number | undefined): void;
+    drawText(geometry: import("../geom/SimpleGeometry.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number): void;
     /**
      * @param {import("../style/Fill.js").default} fillStyle Fill style.
      * @param {import("../style/Stroke.js").default} strokeStyle Stroke style.
@@ -100,15 +100,11 @@ declare class VectorContext {
      * @param {import("../style/Image.js").default} imageStyle Image style.
      * @param {import("../render/canvas.js").DeclutterImageWithText} [declutterImageWithText] Shared data for combined decluttering with a text style.
      */
-    setImageStyle(imageStyle: import("../style/Image.js").default, declutterImageWithText?: {
-        [x: number]: import("./canvas/Executor.js").ReplayImageOrLabelArgs;
-    } | undefined): void;
+    setImageStyle(imageStyle: import("../style/Image.js").default, declutterImageWithText?: import("../render/canvas.js").DeclutterImageWithText): void;
     /**
      * @param {import("../style/Text.js").default} textStyle Text style.
      * @param {import("../render/canvas.js").DeclutterImageWithText} [declutterImageWithText] Shared data for combined decluttering with an image style.
      */
-    setTextStyle(textStyle: import("../style/Text.js").default, declutterImageWithText?: {
-        [x: number]: import("./canvas/Executor.js").ReplayImageOrLabelArgs;
-    } | undefined): void;
+    setTextStyle(textStyle: import("../style/Text.js").default, declutterImageWithText?: import("../render/canvas.js").DeclutterImageWithText): void;
 }
 //# sourceMappingURL=VectorContext.d.ts.map

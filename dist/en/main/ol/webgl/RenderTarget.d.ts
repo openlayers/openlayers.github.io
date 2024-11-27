@@ -9,7 +9,7 @@ declare class WebGLRenderTarget {
      * @param {import("./Helper.js").default} helper WebGL helper; mandatory.
      * @param {Array<number>} [size] Expected size of the render target texture; note: this can be changed later on.
      */
-    constructor(helper: import("./Helper.js").default, size?: number[] | undefined);
+    constructor(helper: import("./Helper.js").default, size?: Array<number>);
     /**
      * @private
      * @type {import("./Helper.js").default}

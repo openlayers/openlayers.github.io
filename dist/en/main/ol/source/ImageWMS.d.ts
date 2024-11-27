@@ -94,7 +94,7 @@ declare class ImageWMS extends ImageSource {
     /**
      * @param {Options} [options] ImageWMS options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {?string}
@@ -169,7 +169,7 @@ declare class ImageWMS extends ImageSource {
      * @return {string|undefined} GetLegendGraphic URL.
      * @api
      */
-    getLegendUrl(resolution?: number | undefined, params?: any): string | undefined;
+    getLegendUrl(resolution?: number, params?: any): string | undefined;
     /**
      * Get the user-provided params, i.e. those passed to the constructor through
      * the "params" option, and possibly updated using the updateParams method.

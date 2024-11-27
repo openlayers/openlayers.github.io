@@ -16,7 +16,7 @@ export function toGeometry(renderFeature: RenderFeature): Point | MultiPoint | L
  * geometry, and id copied over.
  * @api
  */
-export function toFeature(renderFeature: RenderFeature, geometryName?: string | undefined): Feature;
+export function toFeature(renderFeature: RenderFeature, geometryName?: string): Feature;
 export default RenderFeature;
 /**
  * The geometry type.  One of `'Point'`, `'LineString'`, `'LinearRing'`,
@@ -158,7 +158,7 @@ declare class RenderFeature {
      * @param {import("../proj.js").TransformFunction} [transform] Optional transform function.
      * @return {RenderFeature} Simplified geometry.
      */
-    simplifyTransformed(squaredTolerance: number, transform?: import("../proj.js").TransformFunction | undefined): RenderFeature;
+    simplifyTransformed(squaredTolerance: number, transform?: import("../proj.js").TransformFunction): RenderFeature;
     /**
      * Get the feature properties.
      * @return {Object<string, *>} Feature properties.

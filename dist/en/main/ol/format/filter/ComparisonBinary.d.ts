@@ -13,7 +13,7 @@ declare class ComparisonBinary extends Comparison {
      * @param {!(string|number)} expression The value to compare.
      * @param {boolean} [matchCase] Case-sensitive?
      */
-    constructor(tagName: string, propertyName: string, expression: (string | number), matchCase?: boolean | undefined);
+    constructor(tagName: string, propertyName: string, expression: (string | number), matchCase?: boolean);
     /**
      * @type {!(string|number)}
      */

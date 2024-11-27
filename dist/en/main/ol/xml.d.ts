@@ -50,7 +50,7 @@ export function parse(xml: string): Document;
  * @return {Parser} Parser.
  * @template T
  */
-export function makeArrayExtender<T>(valueReader: (this: T, arg1: Node, arg2: Array<any>) => (Array<any> | undefined), thisArg?: T | undefined): Parser;
+export function makeArrayExtender<T>(valueReader: (this: T, arg1: Node, arg2: Array<any>) => (Array<any> | undefined), thisArg?: T): Parser;
 /**
  * Make an array pusher function for pushing to the array at the top of the
  * object stack.
@@ -59,7 +59,7 @@ export function makeArrayExtender<T>(valueReader: (this: T, arg1: Node, arg2: Ar
  * @return {Parser} Parser.
  * @template T
  */
-export function makeArrayPusher<T>(valueReader: (this: T, arg1: Element, arg2: Array<any>) => any, thisArg?: T | undefined): Parser;
+export function makeArrayPusher<T>(valueReader: (this: T, arg1: Element, arg2: Array<any>) => any, thisArg?: T): Parser;
 /**
  * Make an object stack replacer function for replacing the object at the
  * top of the stack.
@@ -68,7 +68,7 @@ export function makeArrayPusher<T>(valueReader: (this: T, arg1: Element, arg2: A
  * @return {Parser} Parser.
  * @template T
  */
-export function makeReplacer<T>(valueReader: (this: T, arg1: Node, arg2: Array<any>) => any, thisArg?: T | undefined): Parser;
+export function makeReplacer<T>(valueReader: (this: T, arg1: Node, arg2: Array<any>) => any, thisArg?: T): Parser;
 /**
  * Make an object property pusher function for adding a property to the
  * object at the top of the stack.
@@ -78,7 +78,7 @@ export function makeReplacer<T>(valueReader: (this: T, arg1: Node, arg2: Array<a
  * @return {Parser} Parser.
  * @template T
  */
-export function makeObjectPropertyPusher<T>(valueReader: (this: T, arg1: Element, arg2: Array<any>) => any, property?: string | undefined, thisArg?: T | undefined): Parser;
+export function makeObjectPropertyPusher<T>(valueReader: (this: T, arg1: Element, arg2: Array<any>) => any, property?: string, thisArg?: T): Parser;
 /**
  * Make an object property setter function.
  * @param {function(this: T, Element, Array<*>): *} valueReader Value reader.
@@ -87,7 +87,7 @@ export function makeObjectPropertyPusher<T>(valueReader: (this: T, arg1: Element
  * @return {Parser} Parser.
  * @template T
  */
-export function makeObjectPropertySetter<T>(valueReader: (this: T, arg1: Element, arg2: Array<any>) => any, property?: string | undefined, thisArg?: T | undefined): Parser;
+export function makeObjectPropertySetter<T>(valueReader: (this: T, arg1: Element, arg2: Array<any>) => any, property?: string, thisArg?: T): Parser;
 /**
  * Create a serializer that appends nodes written by its `nodeWriter` to its
  * designated parent. The parent is the `node` of the
@@ -97,7 +97,7 @@ export function makeObjectPropertySetter<T>(valueReader: (this: T, arg1: Element
  * @return {Serializer} Serializer.
  * @template T, V
  */
-export function makeChildAppender<T, V>(nodeWriter: (this: T, arg1: Node, arg2: V, arg3: Array<any>) => void, thisArg?: T | undefined): Serializer;
+export function makeChildAppender<T, V>(nodeWriter: (this: T, arg1: Node, arg2: V, arg3: Array<any>) => void, thisArg?: T): Serializer;
 /**
  * Create a serializer that calls the provided `nodeWriter` from
  * {@link module:ol/xml.serialize}. This can be used by the parent writer to have the
@@ -110,7 +110,7 @@ export function makeChildAppender<T, V>(nodeWriter: (this: T, arg1: Node, arg2: 
  * @return {Serializer} Serializer.
  * @template T, V
  */
-export function makeArraySerializer<T, V>(nodeWriter: (this: T, arg1: Element, arg2: V, arg3: Array<any>) => void, thisArg?: T | undefined): Serializer;
+export function makeArraySerializer<T, V>(nodeWriter: (this: T, arg1: Element, arg2: V, arg3: Array<any>) => void, thisArg?: T): Serializer;
 /**
  * Create a node factory which can use the `keys` passed to
  * {@link module:ol/xml.serialize} or {@link module:ol/xml.pushSerializeAndPop} as node names,
@@ -124,7 +124,7 @@ export function makeArraySerializer<T, V>(nodeWriter: (this: T, arg1: Element, a
  *     be used.
  * @return {function(*, Array<*>, string=): (Node|undefined)} Node factory.
  */
-export function makeSimpleNodeFactory(fixedNodeName?: string | undefined, fixedNamespaceURI?: string | undefined): (arg0: any, arg1: Array<any>, arg2: string | undefined) => (Node | undefined);
+export function makeSimpleNodeFactory(fixedNodeName?: string, fixedNamespaceURI?: string): (arg0: any, arg1: Array<any>, arg2: string | undefined) => (Node | undefined);
 /**
  * Create an array of `values` to be used with {@link module:ol/xml.serialize} or
  * {@link module:ol/xml.pushSerializeAndPop}, where `orderedKeys` has to be provided as
@@ -151,7 +151,7 @@ export function makeSequence(object: {
  */
 export function makeStructureNS<T>(namespaceURIs: Array<string>, structure: T, structureNS?: {
     [x: string]: T;
-} | undefined): {
+}): {
     [x: string]: T;
 };
 /**
@@ -209,7 +209,7 @@ export function serialize<T>(serializersNS: {
     [x: string]: {
         [x: string]: Serializer;
     };
-}, nodeFactory: (this: T, arg1: any, arg2: Array<any>, arg3: (string | undefined)) => (Node | undefined), values: Array<any>, objectStack: Array<any>, keys?: string[] | undefined, thisArg?: T | undefined): void;
+}, nodeFactory: (this: T, arg1: any, arg2: Array<any>, arg3: (string | undefined)) => (Node | undefined), values: Array<any>, objectStack: Array<any>, keys?: Array<string>, thisArg?: T): void;
 /**
  * @param {O} object Object.
  * @param {Object<string, Object<string, Serializer>>} serializersNS
@@ -237,7 +237,7 @@ export function pushSerializeAndPop<O, T>(object: O, serializersNS: {
     [x: string]: {
         [x: string]: Serializer;
     };
-}, nodeFactory: (this: T, arg1: any, arg2: Array<any>, arg3: (string | undefined)) => (Node | undefined), values: Array<any>, objectStack: Array<any>, keys?: string[] | undefined, thisArg?: T | undefined): O | undefined;
+}, nodeFactory: (this: T, arg1: any, arg2: Array<any>, arg3: (string | undefined)) => (Node | undefined), values: Array<any>, objectStack: Array<any>, keys?: Array<string>, thisArg?: T): O | undefined;
 /**
  * Register a XMLSerializer. Can be used  to inject a XMLSerializer
  * where there is no globally available implementation.

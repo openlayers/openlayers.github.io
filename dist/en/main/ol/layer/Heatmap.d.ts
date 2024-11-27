@@ -92,7 +92,7 @@ declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = 
     /**
      * @param {Options<FeatureType, VectorSourceType>} [options] Options.
      */
-    constructor(options?: Options<FeatureType, VectorSourceType> | undefined);
+    constructor(options?: Options<FeatureType, VectorSourceType>);
     /**
      * @private
      * @type {HTMLCanvasElement}

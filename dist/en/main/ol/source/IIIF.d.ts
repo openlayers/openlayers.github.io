@@ -107,7 +107,7 @@ declare class IIIF extends TileImage {
      * to parse Image API service information responses into constructor options.
      * @api
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
 }
 import TileImage from './TileImage.js';
 //# sourceMappingURL=IIIF.d.ts.map

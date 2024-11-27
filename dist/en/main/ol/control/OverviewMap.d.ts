@@ -80,7 +80,7 @@ declare class OverviewMap extends Control {
     /**
      * @param {Options} [options] OverviewMap options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      */

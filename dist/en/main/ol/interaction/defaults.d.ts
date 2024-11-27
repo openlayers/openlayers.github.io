@@ -44,7 +44,7 @@
  * constructor's `interactions` option.
  * @api
  */
-export function defaults(options?: DefaultsOptions | undefined): Collection<import("./Interaction.js").default>;
+export function defaults(options?: DefaultsOptions): Collection<import("./Interaction.js").default>;
 export type DefaultsOptions = {
     /**
      * Whether Alt-Shift-drag rotate is

@@ -16,7 +16,7 @@ export function appendParams(uri: string, params: any): string;
  * @param {number} [maxY] The maximum y coordinate at the given z level.
  * @return {string} The URL.
  */
-export function renderXYZTemplate(template: string, z: number, x: number, y: number, maxY?: number | undefined): string;
+export function renderXYZTemplate(template: string, z: number, x: number, y: number, maxY?: number): string;
 /**
  * @param {Array<string>} urls List of URLs.
  * @param {number} z The tile z coordinate.

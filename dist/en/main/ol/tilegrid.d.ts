@@ -20,7 +20,7 @@ export function wrapX(tileGrid: TileGrid, tileCoord: import("./tilecoord.js").Ti
  * @param {import("./extent.js").Corner} [corner] Extent corner (default is `'top-left'`).
  * @return {!TileGrid} TileGrid instance.
  */
-export function createForExtent(extent: import("./extent.js").Extent, maxZoom?: number | undefined, tileSize?: number | import("./size.js").Size | undefined, corner?: import("./extent.js").Corner | undefined): TileGrid;
+export function createForExtent(extent: import("./extent.js").Extent, maxZoom?: number, tileSize?: number | import("./size.js").Size, corner?: import("./extent.js").Corner): TileGrid;
 /**
  * @typedef {Object} XYZOptions
  * @property {import("./extent.js").Extent} [extent] Extent for the tile grid. The origin for an XYZ tile grid is the
@@ -38,7 +38,7 @@ export function createForExtent(extent: import("./extent.js").Extent, maxZoom?: 
  * @return {!TileGrid} Tile grid instance.
  * @api
  */
-export function createXYZ(options?: XYZOptions | undefined): TileGrid;
+export function createXYZ(options?: XYZOptions): TileGrid;
 /**
  * @param {import("./proj.js").ProjectionLike} projection Projection.
  * @param {number} [maxZoom] Maximum zoom level (default is
@@ -48,7 +48,7 @@ export function createXYZ(options?: XYZOptions | undefined): TileGrid;
  * @param {import("./extent.js").Corner} [corner] Extent corner (default is `'top-left'`).
  * @return {!TileGrid} TileGrid instance.
  */
-export function createForProjection(projection: import("./proj.js").ProjectionLike, maxZoom?: number | undefined, tileSize?: number | import("./size.js").Size | undefined, corner?: import("./extent.js").Corner | undefined): TileGrid;
+export function createForProjection(projection: import("./proj.js").ProjectionLike, maxZoom?: number, tileSize?: number | import("./size.js").Size, corner?: import("./extent.js").Corner): TileGrid;
 /**
  * Generate a tile grid extent from a projection.  If the projection has an
  * extent, it is used.  If not, a global extent is assumed.

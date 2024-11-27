@@ -7,7 +7,7 @@ declare class RenderEvent extends Event {
      * @param {import("../Map.js").FrameState} [frameState] Frame state.
      * @param {?(CanvasRenderingContext2D|WebGLRenderingContext)} [context] Context.
      */
-    constructor(type: any, inversePixelTransform?: number[] | undefined, frameState?: import("../Map.js").FrameState | undefined, context?: CanvasRenderingContext2D | WebGLRenderingContext | null | undefined);
+    constructor(type: any, inversePixelTransform?: import("../transform.js").Transform, frameState?: import("../Map.js").FrameState, context?: (CanvasRenderingContext2D | WebGLRenderingContext) | null);
     /**
      * Transform from CSS pixels (relative to the top-left corner of the map viewport)
      * to rendered pixels on this event's `context`. Only available when a Canvas renderer is used, null otherwise.

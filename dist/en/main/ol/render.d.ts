@@ -51,7 +51,7 @@
  * @return {CanvasImmediateRenderer} Canvas Immediate.
  * @api
  */
-export function toContext(context: CanvasRenderingContext2D, options?: ToContextOptions | undefined): CanvasImmediateRenderer;
+export function toContext(context: CanvasRenderingContext2D, options?: ToContextOptions): CanvasImmediateRenderer;
 /**
  * Gets a vector context for drawing to the event's canvas.
  * @param {import("./render/Event.js").default} event Render event.

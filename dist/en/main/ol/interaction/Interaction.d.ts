@@ -3,14 +3,14 @@
  * @param {import("../coordinate.js").Coordinate} delta Delta.
  * @param {number} [duration] Duration.
  */
-export function pan(view: import("../View.js").default, delta: import("../coordinate.js").Coordinate, duration?: number | undefined): void;
+export function pan(view: import("../View.js").default, delta: import("../coordinate.js").Coordinate, duration?: number): void;
 /**
  * @param {import("../View.js").default} view View.
  * @param {number} delta Delta from previous zoom level.
  * @param {import("../coordinate.js").Coordinate} [anchor] Anchor coordinate in the user projection.
  * @param {number} [duration] Duration.
  */
-export function zoomByDelta(view: import("../View.js").default, delta: number, anchor?: import("../coordinate.js").Coordinate | undefined, duration?: number | undefined): void;
+export function zoomByDelta(view: import("../View.js").default, delta: number, anchor?: import("../coordinate.js").Coordinate, duration?: number): void;
 export default Interaction;
 /**
  * *
@@ -64,7 +64,7 @@ declare class Interaction extends BaseObject {
     /**
      * @param {InteractionOptions} [options] Options.
      */
-    constructor(options?: InteractionOptions | undefined);
+    constructor(options?: InteractionOptions);
     /***
      * @type {InteractionOnSignature<import("../events").EventsKey>}
      */

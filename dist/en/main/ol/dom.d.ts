@@ -9,7 +9,7 @@
  * @param {CanvasRenderingContext2DSettings} [settings] CanvasRenderingContext2DSettings
  * @return {CanvasRenderingContext2D} The context.
  */
-export function createCanvasContext2D(width?: number | undefined, height?: number | undefined, canvasPool?: HTMLCanvasElement[] | undefined, settings?: CanvasRenderingContext2DSettings | undefined): CanvasRenderingContext2D;
+export function createCanvasContext2D(width?: number, height?: number, canvasPool?: Array<HTMLCanvasElement>, settings?: CanvasRenderingContext2DSettings): CanvasRenderingContext2D;
 /**
  * @return {CanvasRenderingContext2D} Shared canvas context.
  */

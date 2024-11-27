@@ -26,7 +26,7 @@ export function appendCollectionsQueryParam(tileUrlTemplate: string, collections
  * @param {Array<string>} [collections] Optional collections to append the URL with.
  * @return {string} The tile URL template.
  */
-export function getMapTileUrlTemplate(links: Array<Link>, mediaType?: string | undefined, collections?: string[] | undefined): string;
+export function getMapTileUrlTemplate(links: Array<Link>, mediaType?: string, collections?: Array<string>): string;
 /**
  * @param {Array<Link>} links Tileset links.
  * @param {string} [mediaType] The preferred media type.
@@ -34,7 +34,7 @@ export function getMapTileUrlTemplate(links: Array<Link>, mediaType?: string | u
  * @param {Array<string>} [collections] Optional collections to append the URL with.
  * @return {string} The tile URL template.
  */
-export function getVectorTileUrlTemplate(links: Array<Link>, mediaType?: string | undefined, supportedMediaTypes?: string[] | undefined, collections?: string[] | undefined): string;
+export function getVectorTileUrlTemplate(links: Array<Link>, mediaType?: string, supportedMediaTypes?: Array<string>, collections?: Array<string>): string;
 /**
  * @param {SourceInfo} sourceInfo Source info.
  * @return {Promise<TileSetInfo>} Tile set info.

@@ -27,7 +27,7 @@ export type Options = {
      * Style variables
      */
     variables: {
-        [x: string]: number | Array<number> | string | boolean;
+        [x: string]: string | number | boolean | number[];
     };
     /**
      * Setting this to true will provide a slight performance boost, but will

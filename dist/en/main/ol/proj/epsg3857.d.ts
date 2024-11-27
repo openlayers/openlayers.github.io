@@ -7,7 +7,7 @@
  * @param {number} [stride] Stride (default is `dimension`).
  * @return {Array<number>} Output array of coordinate values.
  */
-export function fromEPSG4326(input: Array<number>, output?: number[] | undefined, dimension?: number | undefined, stride?: number | undefined): Array<number>;
+export function fromEPSG4326(input: Array<number>, output?: Array<number>, dimension?: number, stride?: number): Array<number>;
 /**
  * Transformation from EPSG:3857 to EPSG:4326.
  *
@@ -17,7 +17,7 @@ export function fromEPSG4326(input: Array<number>, output?: number[] | undefined
  * @param {number} [stride] Stride (default is `dimension`).
  * @return {Array<number>} Output array of coordinate values.
  */
-export function toEPSG4326(input: Array<number>, output?: number[] | undefined, dimension?: number | undefined, stride?: number | undefined): Array<number>;
+export function toEPSG4326(input: Array<number>, output?: Array<number>, dimension?: number, stride?: number): Array<number>;
 /**
  * Radius of WGS84 sphere
  *

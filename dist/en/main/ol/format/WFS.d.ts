@@ -211,7 +211,7 @@ declare class WFS extends XMLFeature {
     /**
      * @param {Options} [options] Optional configuration object.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {string}
@@ -302,7 +302,7 @@ declare class WFS extends XMLFeature {
      * @param {import("./filter/Filter.js").default} [filter] Filter condition.
      * @return {import("./filter/Filter.js").default} The filter.
      */
-    combineBboxAndFilter(geometryName: string, extent: import("../extent.js").Extent, srsName?: string | undefined, filter?: import("./filter/Filter.js").default | undefined): import("./filter/Filter.js").default;
+    combineBboxAndFilter(geometryName: string, extent: import("../extent.js").Extent, srsName?: string, filter?: import("./filter/Filter.js").default): import("./filter/Filter.js").default;
     /**
      * Encode format as WFS `Transaction` and return the Node.
      *

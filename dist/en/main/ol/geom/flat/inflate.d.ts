@@ -9,7 +9,7 @@
  * @param {Array<import("../../coordinate.js").Coordinate>} [coordinates] Coordinates.
  * @return {Array<import("../../coordinate.js").Coordinate>} Coordinates.
  */
-export function inflateCoordinates(flatCoordinates: Array<number>, offset: number, end: number, stride: number, coordinates?: import("../../coordinate.js").Coordinate[] | undefined): Array<import("../../coordinate.js").Coordinate>;
+export function inflateCoordinates(flatCoordinates: Array<number>, offset: number, end: number, stride: number, coordinates?: Array<import("../../coordinate.js").Coordinate>): Array<import("../../coordinate.js").Coordinate>;
 /**
  * @param {Array<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.
@@ -18,7 +18,7 @@ export function inflateCoordinates(flatCoordinates: Array<number>, offset: numbe
  * @param {Array<Array<import("../../coordinate.js").Coordinate>>} [coordinatess] Coordinatess.
  * @return {Array<Array<import("../../coordinate.js").Coordinate>>} Coordinatess.
  */
-export function inflateCoordinatesArray(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, coordinatess?: import("../../coordinate.js").Coordinate[][] | undefined): Array<Array<import("../../coordinate.js").Coordinate>>;
+export function inflateCoordinatesArray(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, coordinatess?: Array<Array<import("../../coordinate.js").Coordinate>>): Array<Array<import("../../coordinate.js").Coordinate>>;
 /**
  * @param {Array<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.
@@ -28,5 +28,5 @@ export function inflateCoordinatesArray(flatCoordinates: Array<number>, offset: 
  *     Coordinatesss.
  * @return {Array<Array<Array<import("../../coordinate.js").Coordinate>>>} Coordinatesss.
  */
-export function inflateMultiCoordinatesArray(flatCoordinates: Array<number>, offset: number, endss: Array<Array<number>>, stride: number, coordinatesss?: import("../../coordinate.js").Coordinate[][][] | undefined): Array<Array<Array<import("../../coordinate.js").Coordinate>>>;
+export function inflateMultiCoordinatesArray(flatCoordinates: Array<number>, offset: number, endss: Array<Array<number>>, stride: number, coordinatesss?: Array<Array<Array<import("../../coordinate.js").Coordinate>>>): Array<Array<Array<import("../../coordinate.js").Coordinate>>>;
 //# sourceMappingURL=inflate.d.ts.map

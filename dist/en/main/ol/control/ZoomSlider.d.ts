@@ -42,7 +42,7 @@ declare class ZoomSlider extends Control {
     /**
      * @param {Options} [options] Zoom slider options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @type {!Array<import("../events.js").EventsKey>}
      * @private

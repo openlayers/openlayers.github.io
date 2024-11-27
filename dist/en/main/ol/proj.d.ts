@@ -1,20 +1,20 @@
 /**
  * @param {boolean} [disable = true] Disable console info about `useGeographic()`
  */
-export function disableCoordinateWarning(disable?: boolean | undefined): void;
+export function disableCoordinateWarning(disable?: boolean): void;
 /**
  * @param {Array<number>} input Input coordinate array.
  * @param {Array<number>} [output] Output array of coordinate values.
  * @return {Array<number>} Output coordinate array (new array, same coordinate
  *     values).
  */
-export function cloneTransform(input: Array<number>, output?: number[] | undefined): Array<number>;
+export function cloneTransform(input: Array<number>, output?: Array<number>): Array<number>;
 /**
  * @param {Array<number>} input Input coordinate array.
  * @param {Array<number>} [output] Output array of coordinate values.
  * @return {Array<number>} Input coordinate array (same array as input).
  */
-export function identityTransform(input: Array<number>, output?: number[] | undefined): Array<number>;
+export function identityTransform(input: Array<number>, output?: Array<number>): Array<number>;
 /**
  * Add a Projection object to the list of supported projections that can be
  * looked up by their code.
@@ -57,7 +57,7 @@ export function get(projectionLike: ProjectionLike): Projection | null;
  * @return {number} Point resolution.
  * @api
  */
-export function getPointResolution(projection: ProjectionLike, resolution: number, point: import("./coordinate.js").Coordinate, units?: import("./proj/Units.js").Units | undefined): number;
+export function getPointResolution(projection: ProjectionLike, resolution: number, point: import("./coordinate.js").Coordinate, units?: import("./proj/Units.js").Units): number;
 /**
  * Registers transformation functions that don't alter coordinates. Those allow
  * to transform between projections with equal meaning.
@@ -202,7 +202,7 @@ export function transform(coordinate: import("./coordinate.js").Coordinate, sour
  * @return {import("./extent.js").Extent} The transformed extent.
  * @api
  */
-export function transformExtent(extent: import("./extent.js").Extent, source: ProjectionLike, destination: ProjectionLike, stops?: number | undefined): import("./extent.js").Extent;
+export function transformExtent(extent: import("./extent.js").Extent, source: ProjectionLike, destination: ProjectionLike, stops?: number): import("./extent.js").Extent;
 /**
  * Transforms the given point to the destination projection.
  *

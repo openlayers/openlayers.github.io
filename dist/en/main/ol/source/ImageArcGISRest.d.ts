@@ -102,7 +102,7 @@ declare class ImageArcGISRest extends ImageSource {
     /**
      * @param {Options} [options] Image ArcGIS Rest Options.
      */
-    constructor(options?: Options | undefined);
+    constructor(options?: Options);
     /**
      * @private
      * @type {?string}
