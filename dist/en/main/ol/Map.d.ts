@@ -98,7 +98,7 @@ export type FrameState = {
         [x: string]: boolean;
     };
 };
-export type PostRenderFunction = (arg0: Map, arg1: FrameState | null) => any;
+export type PostRenderFunction = (arg0: Map, arg1: FrameState) => any;
 export type AtPixelOptions = {
     /**
      * Layer filter
