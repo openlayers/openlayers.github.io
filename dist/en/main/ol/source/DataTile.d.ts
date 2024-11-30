@@ -203,10 +203,9 @@ declare class DataTileSource<TileType extends import("../Tile.js").default = Dat
      */
     private crossOrigin_;
     /**
-     * @protected
-     * @type {import("../transform.js").Transform}
+     * @type {import("../transform.js").Transform|null}
      */
-    protected transformMatrix: import("../transform.js").Transform;
+    transformMatrix: import("../transform.js").Transform | null;
     /**
      * Set the source tile sizes.  The length of the array is expected to match the number of
      * levels in the tile grid.

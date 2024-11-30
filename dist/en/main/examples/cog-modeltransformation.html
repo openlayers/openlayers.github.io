@@ -145,6 +145,12 @@
           </div>
         </div>
         <div id="map" class="map"></div>
+<form>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" id="show-tiles" checked />
+    <label class="form-check-label" for="show-tiles">Show source tile coordinates</label><br>
+  </div>
+</form>
 
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
           <input id="codesandbox-params" type="hidden" name="parameters">
@@ -153,7 +159,7 @@
 
       <div class="row-fluid">
         <p id="shortdesc">COG with ModelTransformation.</p>
-        <div id="docs"><p>Example of using a COG with ModelTransformation. A ModelTransformation may rotate or skew the tile grid relative to the reported projection. This can be reprojected to that or any other supported projection.</p>
+        <div id="docs"><p>Example of using a COG with ModelTransformation. A ModelTransformation may rotate or skew the tile grid relative to the reported projection. This can be reprojected to that or any other supported projection. To apply the ModelTransformation to <code>ol/source/TileDebug</code> use the <code>source</code> option.</p>
 </div>
       </div>
 
@@ -162,6 +168,7 @@
         <pre><code id="example-js-source" class="language-js">import GeoTIFF from &#x27;ol/source/GeoTIFF.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
+import TileDebug from &#x27;ol/source/TileDebug.js&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import proj4 from &#x27;proj4&#x27;;
@@ -173,9 +180,20 @@ register(proj4);
 const cogSource &#x3D; new GeoTIFF({
   sources: [
     {
-      url: &#x27;https://umbra-open-data-catalog.s3.amazonaws.com/sar-data/tasks/Tanna%20Island,%20Vanuatu/9c76a918-9247-42bf-b9f6-3b4f672bc148/2023-02-12-21-33-56_UMBRA-04/2023-02-12-21-33-56_UMBRA-04_GEC.tif&#x27;,
+      url:
+        &#x27;https://umbra-open-data-catalog.s3.amazonaws.com/sar-data/tasks/Tanna%20Island,%20Vanuatu/&#x27; +
+        &#x27;9c76a918-9247-42bf-b9f6-3b4f672bc148/2023-02-12-21-33-56_UMBRA-04/2023-02-12-21-33-56_UMBRA-04_GEC.tif&#x27;,
     },
   ],
+});
+
+const showTilesCheckbox &#x3D; document.getElementById(&#x27;show-tiles&#x27;);
+const debugLayer &#x3D; new TileLayer({
+  source: new TileDebug({source: cogSource}),
+  visible: showTilesCheckbox.checked,
+});
+showTilesCheckbox.addEventListener(&#x27;change&#x27;, () &#x3D;&gt; {
+  debugLayer.setVisible(showTilesCheckbox.checked);
 });
 
 const map &#x3D; new Map({
@@ -188,6 +206,7 @@ const map &#x3D; new Map({
       source: cogSource,
       opacity: 0.8,
     }),
+    debugLayer,
   ],
   view: new View(),
 });
@@ -224,6 +243,12 @@ cogSource.getView().then((viewConfig) &#x3D;&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;form&gt;
+      &lt;div class&#x3D;&quot;form-check&quot;&gt;
+        &lt;input class&#x3D;&quot;form-check-input&quot; type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;show-tiles&quot; checked /&gt;
+        &lt;label class&#x3D;&quot;form-check-label&quot; for&#x3D;&quot;show-tiles&quot;&gt;Show source tile coordinates&lt;/label&gt;&lt;br&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
 
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
