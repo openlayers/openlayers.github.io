@@ -79,7 +79,12 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
      * @param {import("../../layer/Layer.js").State} layerState Layer state.
      */
     renderDeclutter(frameState: import("../../Map.js").FrameState, layerState: import("../../layer/Layer.js").State): void;
-    getTileRenderTransform(tile: any, frameState: any): number[];
+    /**
+     * @param {import("../../VectorRenderTile.js").default} tile The tile
+     * @param {import('../../Map.js').FrameState} frameState Current frame state
+     * @return {import('../../transform.js').Transform} Transform to use to render this tile
+     */
+    getTileRenderTransform(tile: import("../../VectorRenderTile.js").default, frameState: import("../../Map.js").FrameState): import("../../transform.js").Transform;
     /**
      * @param {import("../../Feature.js").FeatureLike} feature Feature.
      * @param {number} squaredTolerance Squared tolerance.
