@@ -311,9 +311,11 @@
         <pre><code id="example-js-source" class="language-js">import IGC from &#x27;ol/format/IGC.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import WebGLVectorLayer from &#x27;ol/layer/WebGLVector.js&#x27;;
 import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
-import {Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
+import {
+  Tile as TileLayer,
+  WebGLVector as WebGLVectorLayer,
+} from &#x27;ol/layer.js&#x27;;
 
 const lineStyle &#x3D; {
   &#x27;stroke-width&#x27;: 4,
