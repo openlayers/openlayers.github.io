@@ -498,10 +498,10 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     /**
      * Get all features whose geometry intersects the provided coordinate.
      * @param {import("../coordinate.js").Coordinate} coordinate Coordinate.
-     * @return {Array<import("../Feature.js").default>} Features.
+     * @return {Array<FeatureType>} Features.
      * @api
      */
-    getFeaturesAtCoordinate(coordinate: import("../coordinate.js").Coordinate): Array<import("../Feature.js").default>;
+    getFeaturesAtCoordinate(coordinate: import("../coordinate.js").Coordinate): Array<FeatureType>;
     /**
      * Get all features whose bounding box intersects the provided extent.  Note that this returns an array of
      * all features intersecting the given extent in random order (so it may include
