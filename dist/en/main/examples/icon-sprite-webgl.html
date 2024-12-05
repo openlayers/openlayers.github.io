@@ -239,9 +239,6 @@ const oldColor &#x3D; [255, 160, 110];
 const newColor &#x3D; [180, 255, 200];
 
 const style &#x3D; {
-  variables: {
-    filterShape: &#x27;all&#x27;,
-  },
   filter: [
     &#x27;any&#x27;,
     [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;filterShape&#x27;], &#x27;all&#x27;],
@@ -282,9 +279,20 @@ const style &#x3D; {
   &#x27;icon-scale&#x27;: 0.5,
 };
 
+const pointsLayer &#x3D; new WebGLPointsLayer({
+  variables: {
+    filterShape: &#x27;all&#x27;,
+  },
+  source: new VectorSource({
+    features: [],
+    attributions: &#x27;National UFO Reporting Center&#x27;,
+  }),
+  style: style,
+});
+
 const shapeSelect &#x3D; document.getElementById(&#x27;shape-filter&#x27;);
 shapeSelect.addEventListener(&#x27;input&#x27;, function () {
-  style.variables.filterShape &#x3D; shapeSelect.value;
+  pointsLayer.updateStyleVariables({filterShape: shapeSelect.value});
   map.render();
 });
 function fillShapeSelect(shapeTypes) {
@@ -332,15 +340,8 @@ client.addEventListener(&#x27;load&#x27;, function () {
     );
   }
   shapeTypes[&#x27;all&#x27;] &#x3D; features.length;
-  map.addLayer(
-    new WebGLPointsLayer({
-      source: new VectorSource({
-        features: features,
-        attributions: &#x27;National UFO Reporting Center&#x27;,
-      }),
-      style: style,
-    }),
-  );
+  pointsLayer.getSource().addFeatures(features);
+  map.addLayer(pointsLayer);
   fillShapeSelect(shapeTypes);
 });
 client.send();

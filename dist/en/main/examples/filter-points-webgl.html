@@ -254,10 +254,6 @@ const animRatio &#x3D; [
 ];
 
 const style &#x3D; {
-  variables: {
-    minYear: 1850,
-    maxYear: 2015,
-  },
   filter: [&#x27;between&#x27;, [&#x27;get&#x27;, &#x27;year&#x27;], [&#x27;var&#x27;, &#x27;minYear&#x27;], [&#x27;var&#x27;, &#x27;maxYear&#x27;]],
   &#x27;circle-radius&#x27;: [
     &#x27;*&#x27;,
@@ -276,6 +272,16 @@ const style &#x3D; {
   &#x27;circle-opacity&#x27;: [&#x27;-&#x27;, 1.0, [&#x27;*&#x27;, animRatio, 0.75]],
 };
 
+const pointsLayer &#x3D; new WebGLPointsLayer({
+  variables: {
+    minYear: 1850,
+    maxYear: 2015,
+  },
+  style: style,
+  source: vectorSource,
+  disableHitDetection: true,
+});
+
 // handle input values &amp; events
 const minYearInput &#x3D; document.getElementById(&#x27;min-year&#x27;);
 const maxYearInput &#x3D; document.getElementById(&#x27;max-year&#x27;);
@@ -287,11 +293,11 @@ function updateStatusText() {
 }
 
 minYearInput.addEventListener(&#x27;input&#x27;, function () {
-  style.variables.minYear &#x3D; parseInt(minYearInput.value);
+  pointsLayer.updateStyleVariables({minYear: parseInt(minYearInput.value)});
   updateStatusText();
 });
 maxYearInput.addEventListener(&#x27;input&#x27;, function () {
-  style.variables.maxYear &#x3D; parseInt(maxYearInput.value);
+  pointsLayer.updateStyleVariables({maxYear: parseInt(minYearInput.value)});
   updateStatusText();
 });
 updateStatusText();
@@ -336,11 +342,7 @@ const map &#x3D; new Map({
         layer: &#x27;stamen_toner&#x27;,
       }),
     }),
-    new WebGLPointsLayer({
-      style: style,
-      source: vectorSource,
-      disableHitDetection: true,
-    }),
+    pointsLayer,
   ],
   target: document.getElementById(&#x27;map&#x27;),
   view: new View({
