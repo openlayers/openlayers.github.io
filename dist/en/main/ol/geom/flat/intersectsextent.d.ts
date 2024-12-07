@@ -4,9 +4,10 @@
  * @param {number} end End.
  * @param {number} stride Stride.
  * @param {import("../../extent.js").Extent} extent Extent.
+ * @param {import('../../extent.js').Extent} [coordinatesExtent] Coordinates extent
  * @return {boolean} True if the geometry and the extent intersect.
  */
-export function intersectsLineString(flatCoordinates: Array<number>, offset: number, end: number, stride: number, extent: import("../../extent.js").Extent): boolean;
+export function intersectsLineString(flatCoordinates: Array<number>, offset: number, end: number, stride: number, extent: import("../../extent.js").Extent, coordinatesExtent?: import("../../extent.js").Extent): boolean;
 /**
  * @param {Array<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.
