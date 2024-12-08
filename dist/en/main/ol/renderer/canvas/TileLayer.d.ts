@@ -51,10 +51,10 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      */
     protected renderedProjection: import("../../proj/Projection.js").default | null;
     /**
-     * @protected
+     * @private
      * @type {number}
      */
-    protected renderedRevision: number;
+    private renderedRevision_;
     /**
      * @protected
      * @type {!Array<import("../../Tile.js").default>}
@@ -120,7 +120,6 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      * @override
      */
     override getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray;
-    renderedRevision_: any;
     /**
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @param {import("../../extent.js").Extent} extent The extent to be rendered.
