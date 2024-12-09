@@ -25,9 +25,9 @@ import { DYNAMIC_DRAW } from '../webgl.js';
  * the buffer type (ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER) and available extensions.
  *
  * To populate the array, you can either use:
- * * A size using `#ofSize(buffer)`
- * * An `ArrayBuffer` object using `#fromArrayBuffer(buffer)`
- * * A plain array using `#fromArray(array)`
+ * A size using `#ofSize(buffer)`
+ * An `ArrayBuffer` object using `#fromArrayBuffer(buffer)`
+ * A plain array using `#fromArray(array)`
  *
  * Note:
  * See the documentation of [WebGLRenderingContext.bufferData](https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/bufferData)

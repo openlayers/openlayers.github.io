@@ -294,12 +294,12 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import KML from &#x27;ol/format/KML.js&#x27;;
-import Map from &#x27;ol/Map.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
+import KML from &#x27;ol/format/KML.js&#x27;;
+import {Heatmap as HeatmapLayer, Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
 import StadiaMaps from &#x27;ol/source/StadiaMaps.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
-import {Heatmap as HeatmapLayer, Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
 
 const blur &#x3D; document.getElementById(&#x27;blur&#x27;);
 const radius &#x3D; document.getElementById(&#x27;radius&#x27;);

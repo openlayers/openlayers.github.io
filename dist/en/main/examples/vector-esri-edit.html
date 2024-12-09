@@ -375,11 +375,9 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import $ from &#x27;jquery&#x27;;
-import EsriJSON from &#x27;ol/format/EsriJSON.js&#x27;;
-import ImageTile from &#x27;ol/source/ImageTile.js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
-import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
+import EsriJSON from &#x27;ol/format/EsriJSON.js&#x27;;
 import {
   Draw,
   Modify,
@@ -387,9 +385,11 @@ import {
   defaults as defaultInteractions,
 } from &#x27;ol/interaction.js&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import {createXYZ} from &#x27;ol/tilegrid.js&#x27;;
-import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 import {tile as tileStrategy} from &#x27;ol/loadingstrategy.js&#x27;;
+import {fromLonLat} from &#x27;ol/proj.js&#x27;;
+import ImageTile from &#x27;ol/source/ImageTile.js&#x27;;
+import VectorSource from &#x27;ol/source/Vector.js&#x27;;
+import {createXYZ} from &#x27;ol/tilegrid.js&#x27;;
 
 const serviceUrl &#x3D;
   &#x27;https://sampleserver6.arcgisonline.com/arcgis/rest/services/Wildfire/FeatureServer/&#x27;;

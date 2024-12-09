@@ -154,14 +154,14 @@ import { FLOAT } from '../webgl.js';
  *
  * ### Define custom shaders and uniforms
  *
- *   *Shaders* are low-level programs executed on the GPU and written in GLSL. There are two types of shaders:
+ *   Shaders* are low-level programs executed on the GPU and written in GLSL. There are two types of shaders:
  *
  *   Vertex shaders are used to manipulate the position and attribute of *vertices* of rendered primitives (ie. corners of a square).
  *   Outputs are:
  *
- *   * `gl_Position`: position of the vertex in screen space
+ *   `gl_Position`: position of the vertex in screen space
  *
- *   * Varyings usually prefixed with `v_` are passed on to the fragment shader
+ *   Varyings usually prefixed with `v_` are passed on to the fragment shader
  *
  *   Fragment shaders are used to control the actual color of the pixels drawn on screen. Their only output is `gl_FragColor`.
  *
@@ -187,16 +187,16 @@ import { FLOAT } from '../webgl.js';
  *
  * ### Defining post processing passes
  *
- *   *Post processing* describes the act of rendering primitives to a texture, and then rendering this texture to the final canvas
+ *   Post processing* describes the act of rendering primitives to a texture, and then rendering this texture to the final canvas
  *   while applying special effects in screen space.
  *   Typical uses are: blurring, color manipulation, depth of field, filtering...
  *
  *   The `WebGLHelper` class offers the possibility to define post processes at creation time using the `postProcesses` option.
  *   A post process step accepts the following options:
  *
- *   * `fragmentShader` and `vertexShader`: text literals in GLSL language that will be compiled and used in the post processing step.
- *   * `uniforms`: uniforms can be defined for the post processing steps just like for the main render.
- *   * `scaleRatio`: allows using an intermediate texture smaller or higher than the final canvas in the post processing step.
+ *   `fragmentShader` and `vertexShader`: text literals in GLSL language that will be compiled and used in the post processing step.
+ *   `uniforms`: uniforms can be defined for the post processing steps just like for the main render.
+ *   `scaleRatio`: allows using an intermediate texture smaller or higher than the final canvas in the post processing step.
  *     This is typically used in blur steps to reduce the performance overhead by using an already downsampled texture as input.
  *
  *   The {@link module:ol/webgl/PostProcessingPass~WebGLPostProcessingPass} class is used internally, refer to its documentation for more info.
@@ -305,7 +305,7 @@ declare class WebGLHelper extends Disposable {
     private currentProgram_;
     /**
      * @private
-     * @type boolean
+     * @type {boolean}
      */
     private needsToBeRecreated_;
     /**

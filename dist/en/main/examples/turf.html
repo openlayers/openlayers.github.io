@@ -226,14 +226,14 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import {along} from &#x27;@turf/along&#x27;;
+import {length} from &#x27;@turf/length&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import {along} from &#x27;@turf/along&#x27;;
 import {fromLonLat} from &#x27;ol/proj.js&#x27;;
-import {length} from &#x27;@turf/length&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 
 const source &#x3D; new VectorSource();
 fetch(&#x27;data/geojson/roads-seoul.geojson&#x27;)

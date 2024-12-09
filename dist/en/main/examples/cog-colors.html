@@ -151,10 +151,10 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import GeoTIFF from &#x27;ol/source/GeoTIFF.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import {scale as chromaScale} from &#x27;chroma-js&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
-import chroma from &#x27;chroma-js&#x27;;
+import GeoTIFF from &#x27;ol/source/GeoTIFF.js&#x27;;
 
 const segments &#x3D; 10;
 
@@ -183,7 +183,7 @@ function getVariables() {
 
   const minColor &#x3D; minColorInput.value;
   const maxColor &#x3D; maxColorInput.value;
-  const scale &#x3D; chroma.scale([minColor, maxColor]).mode(&#x27;lab&#x27;);
+  const scale &#x3D; chromaScale([minColor, maxColor]).mode(&#x27;lab&#x27;);
 
   const minValue &#x3D; parseFloat(minValueInput.value);
   const maxValue &#x3D; parseFloat(maxValueInput.value);

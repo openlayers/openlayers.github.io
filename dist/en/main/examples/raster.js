@@ -1952,18 +1952,6 @@ selection/* default */.Ay.prototype.transition = selection_transition;
 
 
 
-// EXTERNAL MODULE: ../src/ol/source/ImageTile.js
-var ImageTile = __webpack_require__(15264);
-// EXTERNAL MODULE: ../src/ol/Map.js + 3 modules
-var Map = __webpack_require__(41564);
-// EXTERNAL MODULE: ../src/ol/source/Raster.js
-var Raster = __webpack_require__(54272);
-// EXTERNAL MODULE: ../src/ol/View.js + 2 modules
-var View = __webpack_require__(87240);
-// EXTERNAL MODULE: ../src/ol/layer/Tile.js
-var Tile = __webpack_require__(12185);
-// EXTERNAL MODULE: ../src/ol/layer/Image.js + 1 modules
-var Image = __webpack_require__(47085);
 ;// ../node_modules/d3-array/src/max.js
 function max(values, valueof) {
   let max;
@@ -2893,6 +2881,18 @@ function linear_linear() {
 
 // EXTERNAL MODULE: ../node_modules/d3-selection/src/select.js
 var src_select = __webpack_require__(59469);
+// EXTERNAL MODULE: ../src/ol/Map.js + 3 modules
+var Map = __webpack_require__(41564);
+// EXTERNAL MODULE: ../src/ol/View.js + 2 modules
+var View = __webpack_require__(87240);
+// EXTERNAL MODULE: ../src/ol/layer/Tile.js
+var Tile = __webpack_require__(12185);
+// EXTERNAL MODULE: ../src/ol/layer/Image.js + 1 modules
+var Image = __webpack_require__(47085);
+// EXTERNAL MODULE: ../src/ol/source/ImageTile.js
+var ImageTile = __webpack_require__(15264);
+// EXTERNAL MODULE: ../src/ol/source/Raster.js
+var Raster = __webpack_require__(54272);
 ;// ./raster.js
 
 
@@ -2923,7 +2923,7 @@ function vgi(pixel) {
 
 /**
  * Summarize values for a histogram.
- * @param {numver} value A VGI value.
+ * @param {number} value A VGI value.
  * @param {Object} counts An object for keeping track of VGI counts.
  */
 function summarize(value, counts) {

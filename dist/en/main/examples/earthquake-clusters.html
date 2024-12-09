@@ -276,9 +276,16 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import KML from &#x27;ol/format/KML.js&#x27;;
-import Map from &#x27;ol/Map.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
+import {createEmpty, extend, getHeight, getWidth} from &#x27;ol/extent.js&#x27;;
+import KML from &#x27;ol/format/KML.js&#x27;;
+import {
+  Select,
+  defaults as defaultInteractions,
+} from &#x27;ol/interaction.js&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+import {Cluster, StadiaMaps, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 import {
   Circle as CircleStyle,
   Fill,
@@ -287,13 +294,6 @@ import {
   Style,
   Text,
 } from &#x27;ol/style.js&#x27;;
-import {Cluster, StadiaMaps, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
-import {
-  Select,
-  defaults as defaultInteractions,
-} from &#x27;ol/interaction.js&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import {createEmpty, extend, getHeight, getWidth} from &#x27;ol/extent.js&#x27;;
 
 const earthquakeFill &#x3D; new Fill({
   color: &#x27;rgba(255, 153, 0, 0.8)&#x27;,

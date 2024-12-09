@@ -168,13 +168,13 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
-import OSM from &#x27;ol/source/OSM.js&#x27;;
-import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
+import {getTopLeft, getWidth} from &#x27;ol/extent.js&#x27;;
+import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
+import {get as getProjection} from &#x27;ol/proj.js&#x27;;
+import OSM from &#x27;ol/source/OSM.js&#x27;;
 import WMTS from &#x27;ol/source/WMTS.js&#x27;;
 import WMTSTileGrid from &#x27;ol/tilegrid/WMTS.js&#x27;;
-import {get as getProjection} from &#x27;ol/proj.js&#x27;;
-import {getTopLeft, getWidth} from &#x27;ol/extent.js&#x27;;
 
 // create the WMTS tile grid in the google projection
 const projection &#x3D; getProjection(&#x27;EPSG:3857&#x27;);

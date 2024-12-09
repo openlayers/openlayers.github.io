@@ -159,12 +159,12 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
-import OSM from &#x27;ol/source/OSM.js&#x27;;
 import Overlay from &#x27;ol/Overlay.js&#x27;;
-import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import {fromLonLat, toLonLat} from &#x27;ol/proj.js&#x27;;
 import {toStringHDMS} from &#x27;ol/coordinate.js&#x27;;
+import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
+import {fromLonLat, toLonLat} from &#x27;ol/proj.js&#x27;;
+import OSM from &#x27;ol/source/OSM.js&#x27;;
 
 const layer &#x3D; new TileLayer({
   source: new OSM(),

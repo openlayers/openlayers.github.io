@@ -140,13 +140,12 @@ Start by drawing on the map. Once you finish a drawing, the feature&#39;s geomet
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import Draw from &#x27;ol/interaction/Draw.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import smooth from &#x27;chaikin-smooth&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+import Draw from &#x27;ol/interaction/Draw.js&#x27;;
 import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-
-import smooth from &#x27;chaikin-smooth&#x27;;
+import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 
 function makeSmooth(path, numIterations) {
   numIterations &#x3D; Math.min(Math.max(numIterations, 1), 10);

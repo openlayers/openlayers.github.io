@@ -68,7 +68,7 @@ export type UniformInternalDescription = {
  *
  * Default shaders are shown hereafter:
  *
- * * Vertex shader:
+ * Vertex shader:
  *
  *   ```
  *   precision mediump float;
@@ -86,7 +86,7 @@ export type UniformInternalDescription = {
  *   }
  *   ```
  *
- * * Fragment shader:
+ * Fragment shader:
  *
  *   ```
  *   precision mediump float;

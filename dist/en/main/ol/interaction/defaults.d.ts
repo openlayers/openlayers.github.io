@@ -28,15 +28,15 @@
  * before creating your {@link module:ol/Map~Map} instance. Changing the order can
  * be of interest if the event propagation needs to be stopped at a point.
  * The default set of interactions, in sequence, is:
- * * {@link module:ol/interaction/DragRotate~DragRotate}
- * * {@link module:ol/interaction/DoubleClickZoom~DoubleClickZoom}
- * * {@link module:ol/interaction/DragPan~DragPan}
- * * {@link module:ol/interaction/PinchRotate~PinchRotate}
- * * {@link module:ol/interaction/PinchZoom~PinchZoom}
- * * {@link module:ol/interaction/KeyboardPan~KeyboardPan}
- * * {@link module:ol/interaction/KeyboardZoom~KeyboardZoom}
- * * {@link module:ol/interaction/MouseWheelZoom~MouseWheelZoom}
- * * {@link module:ol/interaction/DragZoom~DragZoom}
+ * {@link module:ol/interaction/DragRotate~DragRotate}
+ * {@link module:ol/interaction/DoubleClickZoom~DoubleClickZoom}
+ * {@link module:ol/interaction/DragPan~DragPan}
+ * {@link module:ol/interaction/PinchRotate~PinchRotate}
+ * {@link module:ol/interaction/PinchZoom~PinchZoom}
+ * {@link module:ol/interaction/KeyboardPan~KeyboardPan}
+ * {@link module:ol/interaction/KeyboardZoom~KeyboardZoom}
+ * {@link module:ol/interaction/MouseWheelZoom~MouseWheelZoom}
+ * {@link module:ol/interaction/DragZoom~DragZoom}
  *
  * @param {DefaultsOptions} [options] Defaults options.
  * @return {Collection<import("./Interaction.js").default>}

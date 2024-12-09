@@ -34,7 +34,7 @@ export function orthographic(left: number, right: number, bottom: number, top: n
  * @param {number} z How much to scale in the z direction.
  * @param {Mat4} [out] The matrix to write to.
  * @return {Mat4} out
- **/
+ */
 export function scale(m: Mat4, x: number, y: number, z: number, out?: Mat4): Mat4;
 /**
  * Translate a matrix.

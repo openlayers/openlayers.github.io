@@ -21,10 +21,10 @@ export function createEditingStyle(): any;
 export default Style;
 /**
  * Defines how symbols and text are decluttered on layers ith `declutter` set to `true`
- * * **declutter**: Overlapping symbols and text are decluttered.
- * * **obstacle**: Symbols and text are rendered, but serve as obstacle for subsequent attempts
+ * **declutter**: Overlapping symbols and text are decluttered.
+ * **obstacle**: Symbols and text are rendered, but serve as obstacle for subsequent attempts
  *   to place a symbol or text at the same location.
- * * **none**: No decluttering is done.
+ * **none**: No decluttering is done.
  */
 export type DeclutterMode = "declutter" | "obstacle" | "none";
 /**
@@ -90,10 +90,10 @@ export type Options = {
 };
 /**
  * Defines how symbols and text are decluttered on layers ith `declutter` set to `true`
- * * **declutter**: Overlapping symbols and text are decluttered.
- * * **obstacle**: Symbols and text are rendered, but serve as obstacle for subsequent attempts
+ * **declutter**: Overlapping symbols and text are decluttered.
+ * **obstacle**: Symbols and text are rendered, but serve as obstacle for subsequent attempts
  *   to place a symbol or text at the same location.
- * * **none**: No decluttering is done.
+ * **none**: No decluttering is done.
  *
  * @typedef {"declutter"|"obstacle"|"none"} DeclutterMode
  */

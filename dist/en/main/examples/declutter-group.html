@@ -251,13 +251,13 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import {Feature, Map, View} from &#x27;ol/index.js&#x27;;
-import {Group as LayerGroup, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import {Point} from &#x27;ol/geom.js&#x27;;
-import {Vector as VectorSource} from &#x27;ol/source.js&#x27;;
-import {apply} from &#x27;ol-mapbox-style&#x27;;
-import {fromExtent} from &#x27;ol/geom/Polygon.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import {apply} from &#x27;ol-mapbox-style&#x27;;
 import {getCenter} from &#x27;ol/extent.js&#x27;;
+import {fromExtent} from &#x27;ol/geom/Polygon.js&#x27;;
+import {Point} from &#x27;ol/geom.js&#x27;;
+import {Feature, Map, View} from &#x27;ol/index.js&#x27;;
+import {Group as LayerGroup, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+import {Vector as VectorSource} from &#x27;ol/source.js&#x27;;
 
 const square &#x3D; [-12e6, 3.5e6, -10e6, 5.5e6];
 const overlay &#x3D; new VectorLayer({

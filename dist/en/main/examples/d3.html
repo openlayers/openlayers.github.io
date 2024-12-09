@@ -106,16 +106,16 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
-import StadiaMaps from &#x27;ol/source/StadiaMaps.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
-import {Layer, Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
-import {feature} from &#x27;topojson-client&#x27;;
-import {fromLonLat, toLonLat} from &#x27;ol/proj.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import {json} from &#x27;d3-fetch&#x27;;
 import {geoBounds, geoMercator, geoPath} from &#x27;d3-geo&#x27;;
-import {getCenter, getWidth} from &#x27;ol/extent.js&#x27;;
-import {json} from &#x27;d3-fetch&#x27;;
 import {select} from &#x27;d3-selection&#x27;;
+import {feature} from &#x27;topojson-client&#x27;;
+import Map from &#x27;ol/Map.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
+import {getCenter, getWidth} from &#x27;ol/extent.js&#x27;;
+import {Layer, Tile as TileLayer} from &#x27;ol/layer.js&#x27;;
+import {fromLonLat, toLonLat} from &#x27;ol/proj.js&#x27;;
+import StadiaMaps from &#x27;ol/source/StadiaMaps.js&#x27;;
 
 class CanvasLayer extends Layer {
   constructor(options) {
@@ -241,10 +241,10 @@ json(&#x27;data/topojson/us.json&#x27;).then(function (us) {
   &quot;name&quot;: &quot;d3&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;10.3.2-dev&quot;,
-    &quot;topojson-client&quot;: &quot;^3.1.0&quot;,
-    &quot;d3-geo&quot;: &quot;^3.1.1&quot;,
     &quot;d3-fetch&quot;: &quot;^3.0.1&quot;,
-    &quot;d3-selection&quot;: &quot;^3.0.0&quot;
+    &quot;d3-geo&quot;: &quot;^3.1.1&quot;,
+    &quot;d3-selection&quot;: &quot;^3.0.0&quot;,
+    &quot;topojson-client&quot;: &quot;^3.1.0&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;vite&quot;: &quot;^3.2.3&quot;

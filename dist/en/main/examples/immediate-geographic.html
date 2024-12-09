@@ -122,14 +122,14 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import StadiaMaps from &#x27;ol/source/StadiaMaps.js&#x27;;
-import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
-import {Circle, Fill, Style} from &#x27;ol/style.js&#x27;;
-import {Map, View} from &#x27;ol/index.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import {upAndDown} from &#x27;ol/easing.js&#x27;;
 import {Point} from &#x27;ol/geom.js&#x27;;
-import {getVectorContext} from &#x27;ol/render.js&#x27;;
-import {upAndDown} from &#x27;ol/easing.js&#x27;;
+import {Map, View} from &#x27;ol/index.js&#x27;;
+import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import {useGeographic} from &#x27;ol/proj.js&#x27;;
+import {getVectorContext} from &#x27;ol/render.js&#x27;;
+import StadiaMaps from &#x27;ol/source/StadiaMaps.js&#x27;;
+import {Circle, Fill, Style} from &#x27;ol/style.js&#x27;;
 
 useGeographic();
 

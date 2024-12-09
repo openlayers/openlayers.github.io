@@ -44,8 +44,8 @@ export type Options = {
     /**
      * These attributes will be read from the features in the source and then
      * passed to the GPU. The `name` property of each attribute will serve as its identifier:
-     * * In the vertex shader as an `attribute` by prefixing it with `a_`
-     * * In the fragment shader as a `varying` by prefixing it with `v_`
+     * In the vertex shader as an `attribute` by prefixing it with `a_`
+     * In the fragment shader as a `varying` by prefixing it with `v_`
      * Please note that these can only be numerical values.
      */
     attributes?: CustomAttribute[] | undefined;
@@ -92,8 +92,8 @@ export type Options = {
  * @property {string} [className='ol-layer'] A CSS class name to set to the canvas element.
  * @property {Array<CustomAttribute>} [attributes] These attributes will be read from the features in the source and then
  * passed to the GPU. The `name` property of each attribute will serve as its identifier:
- *  * In the vertex shader as an `attribute` by prefixing it with `a_`
- *  * In the fragment shader as a `varying` by prefixing it with `v_`
+ *  In the vertex shader as an `attribute` by prefixing it with `a_`
+ *  In the fragment shader as a `varying` by prefixing it with `v_`
  * Please note that these can only be numerical values.
  * @property {string} vertexShader Vertex shader source, mandatory.
  * @property {string} fragmentShader Fragment shader source, mandatory.

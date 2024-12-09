@@ -1053,7 +1053,7 @@ declare class View extends BaseObject {
     /**
      * Get a valid zoom level according to the current view constraints.
      * @param {number|undefined} targetZoom Target zoom.
-     * @param {number} [direction=0] Indicate which resolution should be used
+     * @param {number} [direction] Indicate which resolution should be used
      * by a renderer if the view resolution does not match any resolution of the tile source.
      * If 0, the nearest resolution will be used. If 1, the nearest lower resolution
      * will be used. If -1, the nearest higher resolution will be used.
@@ -1063,7 +1063,7 @@ declare class View extends BaseObject {
     /**
      * Get a valid resolution according to the current view constraints.
      * @param {number|undefined} targetResolution Target resolution.
-     * @param {number} [direction=0] Indicate which resolution should be used
+     * @param {number} [direction] Indicate which resolution should be used
      * by a renderer if the view resolution does not match any resolution of the tile source.
      * If 0, the nearest resolution will be used. If 1, the nearest lower resolution
      * will be used. If -1, the nearest higher resolution will be used.

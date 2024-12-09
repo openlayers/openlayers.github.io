@@ -123,17 +123,15 @@ projection code or identifier (e.g. <code>EPSG:4326</code>) instead of a project
 instance.</p>
 <p>The library includes support for transforming coordinates between the following
 projections:</p>
-<ul>
-<li>WGS 84 / Geographic - Using codes <code>EPSG:4326</code>, <code>CRS:84</code>, <code>urn:ogc:def:crs:EPSG:6.6:4326</code>,
-<code>urn:ogc:def:crs:OGC:1.3:CRS84</code>, <code>urn:ogc:def:crs:OGC:2:84</code>, <code>http://www.opengis.net/gml/srs/epsg.xml#4326</code>,
-or <code>urn:x-ogc:def:crs:EPSG:4326</code></li>
-<li>WGS 84 / Spherical Mercator - Using codes <code>EPSG:3857</code>, <code>EPSG:102100</code>, <code>EPSG:102113</code>, <code>EPSG:900913</code>,
-<code>urn:ogc:def:crs:EPSG:6.18:3:3857</code>, or <code>http://www.opengis.net/gml/srs/epsg.xml#3857</code></li>
-<li>WGS 84 / UTM zones - Using codes <code>EPSG:32601</code> through <code>EPSG:32660</code> for northern zones
-and <code>EPSG:32701</code> through <code>EPSG:32760</code> for southern zones. Note that the built-in UTM transforms
-are lower accuracy (with errors on the order of 0.1 m) than those that you might get in a
-library like <a href="https://github.com/proj4js/proj4js">proj4js</a>.</li>
-</ul>
+<p> WGS 84 / Geographic - Using codes <code>EPSG:4326</code>, <code>CRS:84</code>, <code>urn:ogc:def:crs:EPSG:6.6:4326</code>,
+   <code>urn:ogc:def:crs:OGC:1.3:CRS84</code>, <code>urn:ogc:def:crs:OGC:2:84</code>, <code>http://www.opengis.net/gml/srs/epsg.xml#4326</code>,
+   or <code>urn:x-ogc:def:crs:EPSG:4326</code>
+ WGS 84 / Spherical Mercator - Using codes <code>EPSG:3857</code>, <code>EPSG:102100</code>, <code>EPSG:102113</code>, <code>EPSG:900913</code>,
+   <code>urn:ogc:def:crs:EPSG:6.18:3:3857</code>, or <code>http://www.opengis.net/gml/srs/epsg.xml#3857</code>
+ WGS 84 / UTM zones - Using codes <code>EPSG:32601</code> through <code>EPSG:32660</code> for northern zones
+   and <code>EPSG:32701</code> through <code>EPSG:32760</code> for southern zones. Note that the built-in UTM transforms
+   are lower accuracy (with errors on the order of 0.1 m) than those that you might get in a
+   library like <a href="https://github.com/proj4js/proj4js">proj4js</a>.</p>
 <p>For additional projection support, or to use higher accuracy transforms than the built-in ones, you can use
 the <a href="https://github.com/proj4js/proj4js">proj4js</a> library. With <code>proj4js</code>, after adding any new projection
 definitions, call the <a href="module-ol_proj_proj4.html#.register"><code>register</code></a> function.</p>

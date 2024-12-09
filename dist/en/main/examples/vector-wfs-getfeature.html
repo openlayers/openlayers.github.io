@@ -269,18 +269,18 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import ImageTile from &#x27;ol/source/ImageTile.js&#x27;;
-import Map from &#x27;ol/Map.js&#x27;;
-import VectorSource from &#x27;ol/source/Vector.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import {GeoJSON, WFS} from &#x27;ol/format.js&#x27;;
-import {Stroke, Style} from &#x27;ol/style.js&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
 import {
   and as andFilter,
   equalTo as equalToFilter,
   like as likeFilter,
 } from &#x27;ol/format/filter.js&#x27;;
+import {GeoJSON, WFS} from &#x27;ol/format.js&#x27;;
+import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
+import ImageTile from &#x27;ol/source/ImageTile.js&#x27;;
+import VectorSource from &#x27;ol/source/Vector.js&#x27;;
+import {Stroke, Style} from &#x27;ol/style.js&#x27;;
 
 const vectorSource &#x3D; new VectorSource();
 const vector &#x3D; new VectorLayer({

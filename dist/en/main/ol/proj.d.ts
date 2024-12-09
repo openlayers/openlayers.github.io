@@ -1,5 +1,5 @@
 /**
- * @param {boolean} [disable = true] Disable console info about `useGeographic()`
+ * @param {boolean} [disable] Disable console info about `useGeographic()`
  */
 export function disableCoordinateWarning(disable?: boolean): void;
 /**

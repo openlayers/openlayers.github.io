@@ -156,13 +156,13 @@ See the <a href="./sentinel-hub.html">basic Sentinel Hub example</a> for details
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
-import SentinelHub from &#x27;ol/source/SentinelHub.js&#x27;;
-import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
-import View from &#x27;ol/View.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import {javascript} from &#x27;@codemirror/lang-javascript&#x27;;
 import {EditorView, basicSetup} from &#x27;codemirror&#x27;;
-import {javascript} from &#x27;@codemirror/lang-javascript&#x27;;
+import Map from &#x27;ol/Map.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
+import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
 import {useGeographic} from &#x27;ol/proj.js&#x27;;
+import SentinelHub from &#x27;ol/source/SentinelHub.js&#x27;;
 
 useGeographic();
 
@@ -321,8 +321,8 @@ source.on(&#x27;change&#x27;, () &#x3D;&gt; {
   &quot;name&quot;: &quot;sentinel-hub-custom-script&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;10.3.2-dev&quot;,
-    &quot;codemirror&quot;: &quot;^6.0.1&quot;,
-    &quot;@codemirror/lang-javascript&quot;: &quot;^6.2.2&quot;
+    &quot;@codemirror/lang-javascript&quot;: &quot;^6.2.2&quot;,
+    &quot;codemirror&quot;: &quot;^6.0.1&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;vite&quot;: &quot;^3.2.3&quot;
