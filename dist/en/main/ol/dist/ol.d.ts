@@ -17,7 +17,6 @@ declare namespace ol {
     export { $ol$Observable as Observable };
     export { $ol$Overlay as Overlay };
     export { $ol$Tile as Tile };
-    export { $ol$TileCache as TileCache };
     export { $ol$TileQueue as TileQueue };
     export { $ol$TileRange as TileRange };
     export { $ol$VectorRenderTile as VectorRenderTile };
@@ -1037,7 +1036,6 @@ import $ol$Object from '../../ol/Object.js';
 import $ol$Observable from '../../ol/Observable.js';
 import $ol$Overlay from '../../ol/Overlay.js';
 import $ol$Tile from '../../ol/Tile.js';
-import $ol$TileCache from '../../ol/TileCache.js';
 import $ol$TileQueue from '../../ol/TileQueue.js';
 import $ol$TileRange from '../../ol/TileRange.js';
 import $ol$VectorRenderTile from '../../ol/VectorRenderTile.js';
