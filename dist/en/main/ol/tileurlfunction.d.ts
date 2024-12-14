@@ -22,5 +22,4 @@ export function createFromTileUrlFunctions(tileUrlFunctions: Array<import("./Til
  * @return {string|undefined} Tile URL.
  */
 export function nullTileUrlFunction(tileCoord: import("./tilecoord.js").TileCoord, pixelRatio: number, projection: import("./proj/Projection.js").default): string | undefined;
-export { expandUrl } from "./uri.js";
 //# sourceMappingURL=tileurlfunction.d.ts.map
