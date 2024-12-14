@@ -352,17 +352,17 @@
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import {GPX, GeoJSON, IGC, KML, TopoJSON} from &#x27;ol/format.js&#x27;;
-import {
-  DragAndDrop,
-  defaults as defaultInteractions,
-} from &#x27;ol/interaction.js&#x27;;
-import {
-  Tile as TileLayer,
-  VectorImage as VectorImageLayer,
-} from &#x27;ol/layer.js&#x27;;
+import GPX from &#x27;ol/format/GPX.js&#x27;;
+import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
+import IGC from &#x27;ol/format/IGC.js&#x27;;
+import KML from &#x27;ol/format/KML.js&#x27;;
+import TopoJSON from &#x27;ol/format/TopoJSON.js&#x27;;
+import DragAndDrop from &#x27;ol/interaction/DragAndDrop.js&#x27;;
+import {defaults as defaultInteractions} from &#x27;ol/interaction/defaults.js&#x27;;
+import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
+import VectorImageLayer from &#x27;ol/layer/VectorImage.js&#x27;;
 import ImageTile from &#x27;ol/source/ImageTile.js&#x27;;
-import {Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 
 const dragAndDropInteraction &#x3D; new DragAndDrop({
   formatConstructors: [GPX, GeoJSON, IGC, KML, TopoJSON],

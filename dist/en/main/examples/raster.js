@@ -2885,15 +2885,16 @@ var src_select = __webpack_require__(59469);
 var Map = __webpack_require__(41564);
 // EXTERNAL MODULE: ../src/ol/View.js + 2 modules
 var View = __webpack_require__(87240);
-// EXTERNAL MODULE: ../src/ol/layer/Tile.js
-var Tile = __webpack_require__(12185);
 // EXTERNAL MODULE: ../src/ol/layer/Image.js + 1 modules
 var Image = __webpack_require__(47085);
+// EXTERNAL MODULE: ../src/ol/layer/Tile.js
+var Tile = __webpack_require__(12185);
 // EXTERNAL MODULE: ../src/ol/source/ImageTile.js
 var ImageTile = __webpack_require__(15264);
 // EXTERNAL MODULE: ../src/ol/source/Raster.js
 var Raster = __webpack_require__(54272);
 ;// ./raster.js
+
 
 
 

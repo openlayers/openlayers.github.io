@@ -171,8 +171,10 @@
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
+import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
+import OSM from &#x27;ol/source/OSM.js&#x27;;
+import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 
 const source &#x3D; new VectorSource({
   url: &#x27;data/geojson/switzerland.geojson&#x27;,

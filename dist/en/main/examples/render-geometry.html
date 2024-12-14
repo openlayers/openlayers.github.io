@@ -143,9 +143,14 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import {LineString, Point, Polygon} from &#x27;ol/geom.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import LineString from &#x27;ol/geom/LineString.js&#x27;;
+import Point from &#x27;ol/geom/Point.js&#x27;;
+import Polygon from &#x27;ol/geom/Polygon.js&#x27;;
 import {toContext} from &#x27;ol/render.js&#x27;;
-import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
+import CircleStyle from &#x27;ol/style/Circle.js&#x27;;
+import Fill from &#x27;ol/style/Fill.js&#x27;;
+import Stroke from &#x27;ol/style/Stroke.js&#x27;;
+import Style from &#x27;ol/style/Style.js&#x27;;
 
 const canvas &#x3D; document.getElementById(&#x27;canvas&#x27;);
 const vectorContext &#x3D; toContext(canvas.getContext(&#x27;2d&#x27;), {size: [100, 100]});

@@ -7,8 +7,9 @@
 /* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(41564);
 /* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(87240);
 /* harmony import */ var _src_ol_layer_Image_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(47085);
-/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(54272);
-/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9226);
+/* harmony import */ var _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(54272);
+/* harmony import */ var _src_ol_source_StadiaMaps_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9226);
+
 
 
 
@@ -110,9 +111,9 @@ function xyz2rgb(x) {
   );
 }
 
-const raster = new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay({
+const raster = new _src_ol_source_Raster_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Ay({
   sources: [
-    new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .A({
+    new _src_ol_source_StadiaMaps_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .A({
       layer: 'stamen_watercolor',
     }),
   ],

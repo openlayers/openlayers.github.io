@@ -152,13 +152,17 @@
         <pre><code id="example-js-source" class="language-js">import {unzipSync} from &#x27;fflate&#x27;;
 import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import {GPX, GeoJSON, IGC, KML, TopoJSON} from &#x27;ol/format.js&#x27;;
-import {
-  DragAndDrop,
-  defaults as defaultInteractions,
-} from &#x27;ol/interaction.js&#x27;;
-import {Tile as TileLayer, Vector as VectorLayer} from &#x27;ol/layer.js&#x27;;
-import {OSM, Vector as VectorSource} from &#x27;ol/source.js&#x27;;
+import GPX from &#x27;ol/format/GPX.js&#x27;;
+import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
+import IGC from &#x27;ol/format/IGC.js&#x27;;
+import KML from &#x27;ol/format/KML.js&#x27;;
+import TopoJSON from &#x27;ol/format/TopoJSON.js&#x27;;
+import DragAndDrop from &#x27;ol/interaction/DragAndDrop.js&#x27;;
+import {defaults as defaultInteractions} from &#x27;ol/interaction/defaults.js&#x27;;
+import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
+import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
+import OSM from &#x27;ol/source/OSM.js&#x27;;
+import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 
 // Create functions to extract KML and icons from KMZ array buffer,
 // which must be done synchronously.

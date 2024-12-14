@@ -107,11 +107,15 @@
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import {MultiPoint, Point} from &#x27;ol/geom.js&#x27;;
+import MultiPoint from &#x27;ol/geom/MultiPoint.js&#x27;;
+import Point from &#x27;ol/geom/Point.js&#x27;;
 import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import {getVectorContext} from &#x27;ol/render.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
-import {Circle as CircleStyle, Fill, Stroke, Style} from &#x27;ol/style.js&#x27;;
+import CircleStyle from &#x27;ol/style/Circle.js&#x27;;
+import Fill from &#x27;ol/style/Fill.js&#x27;;
+import Stroke from &#x27;ol/style/Stroke.js&#x27;;
+import Style from &#x27;ol/style/Style.js&#x27;;
 
 const tileLayer &#x3D; new TileLayer({
   source: new OSM(),
