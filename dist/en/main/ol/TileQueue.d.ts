@@ -8,11 +8,18 @@
  */
 export function getTilePriority(frameState: import("./Map.js").FrameState, tile: import("./Tile.js").default, tileSourceKey: string, tileCenter: import("./coordinate.js").Coordinate, tileResolution: number): number;
 export default TileQueue;
-export type PriorityFunction = (arg0: import("./Tile.js").default, arg1: string, arg2: import("./coordinate.js").Coordinate, arg3: number) => number;
+export type PriorityFunction = (arg0: import("./Tile.js").default, arg1: string, arg2: import("./tilecoord.js").TileCoord, arg3: number) => number;
+export type TileQueueElement = [import("./Tile.js").default, string, import("./tilecoord.js").TileCoord, number];
 /**
- * @typedef {function(import("./Tile.js").default, string, import("./coordinate.js").Coordinate, number): number} PriorityFunction
+ * @typedef {function(import("./Tile.js").default, string, import('./tilecoord.js').TileCoord, number): number} PriorityFunction
  */
-declare class TileQueue extends PriorityQueue<any> {
+/**
+ * @typedef {[import('./Tile.js').default, string, import('./tilecoord.js').TileCoord, number]} TileQueueElement
+ */
+/**
+ * @extends PriorityQueue<TileQueueElement>}
+ */
+declare class TileQueue extends PriorityQueue<TileQueueElement> {
     /**
      * @param {PriorityFunction} tilePriorityFunction Tile priority function.
      * @param {function(): ?} tileChangeCallback Function called on each tile change event.
@@ -35,12 +42,6 @@ declare class TileQueue extends PriorityQueue<any> {
      * @type {!Object<string,boolean>}
      */
     private tilesLoadingKeys_;
-    /**
-     * @param {Array} element Element.
-     * @return {boolean} The element was added to the queue.
-     * @override
-     */
-    override enqueue(element: any[]): boolean;
     /**
      * @return {number} Number of tiles loading.
      */
