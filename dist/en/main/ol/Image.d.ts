@@ -79,7 +79,7 @@ export type Loader = (arg0: import("./extent.js").Extent, arg1: number, arg2: nu
  * Loader function used for image sources. Receives extent, resolution and pixel ratio as arguments.
  * The function returns a promise for an  {@link import ("./Image.js").ImageObject image object}.
  */
-export type ImageObjectPromiseLoader = (arg0: import("./extent.js").Extent, arg1: number, arg2: number, arg3: ((arg0: HTMLImageElement, arg1: string) => void) | undefined) => import("./DataTile.js").ImageLike | ImageObject | Promise<import("./DataTile.js").ImageLike | ImageObject>;
+export type ImageObjectPromiseLoader = (arg0: import("./extent.js").Extent, arg1: number, arg2: number, arg3: ((arg0: HTMLImageElement, arg1: string) => void) | undefined) => Promise<import("./DataTile.js").ImageLike | ImageObject>;
 /**
  * A function that takes an {@link module:ol/Image~ImageWrapper} for the image and a
  * `{string}` for the src as arguments. It is supposed to make it so the
@@ -122,7 +122,7 @@ export type ImageObjectPromiseLoader = (arg0: import("./extent.js").Extent, arg1
  * Loader function used for image sources. Receives extent, resolution and pixel ratio as arguments.
  * The function returns a promise for an  {@link import("./Image.js").ImageObject image object}.
  *
- * @typedef {function(import("./extent.js").Extent, number, number, (function(HTMLImageElement, string): void)=): import("./DataTile.js").ImageLike|ImageObject|Promise<import("./DataTile.js").ImageLike|ImageObject>} ImageObjectPromiseLoader
+ * @typedef {function(import("./extent.js").Extent, number, number, (function(HTMLImageElement, string): void)=): Promise<import("./DataTile.js").ImageLike|ImageObject>} ImageObjectPromiseLoader
  */
 declare class ImageWrapper extends EventTarget {
     /**
@@ -130,9 +130,9 @@ declare class ImageWrapper extends EventTarget {
      * @param {number|Array<number>|undefined} resolution Resolution. If provided as array, x and y
      * resolution will be assumed.
      * @param {number} pixelRatio Pixel ratio.
-     * @param {import("./ImageState.js").default|import("./Image.js").Loader} stateOrLoader State.
+     * @param {import("./ImageState.js").default|Loader} stateOrLoader State.
      */
-    constructor(extent: import("./extent.js").Extent, resolution: number | Array<number> | undefined, pixelRatio: number, stateOrLoader: any | import("./Image.js").Loader);
+    constructor(extent: import("./extent.js").Extent, resolution: number | Array<number> | undefined, pixelRatio: number, stateOrLoader: any | Loader);
     /**
      * @protected
      * @type {import("./extent.js").Extent}
@@ -160,9 +160,9 @@ declare class ImageWrapper extends EventTarget {
     private image_;
     /**
      * @protected
-     * @type {import("./Image.js").Loader}
+     * @type {Loader|null}
      */
-    protected loader: import("./Image.js").Loader;
+    protected loader: Loader | null;
     /**
      * @protected
      */
