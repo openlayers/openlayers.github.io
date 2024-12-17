@@ -50,11 +50,15 @@ export type Options = {
      */
     wrapX?: boolean | undefined;
 };
+export type PointerHandler = (arg0: import("../coordinate.js").Coordinate) => import("../extent.js").Extent;
 /**
  * *
  */
 export type ExtentOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"extentchanged", ExtentEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "extentchanged", Return>;
 import Event from '../events/Event.js';
+/**
+ * @typedef {function (import("../coordinate.js").Coordinate): import("../extent.js").Extent} PointerHandler
+ */
 /***
  * @template Return
  * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
@@ -104,7 +108,7 @@ declare class Extent extends PointerInteraction {
     private extent_;
     /**
      * Handler for pointer move events
-     * @type {function (import("../coordinate.js").Coordinate): import("../extent.js").Extent|null}
+     * @type {PointerHandler|null}
      * @private
      */
     private pointerHandler_;

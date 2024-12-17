@@ -92,6 +92,7 @@ export type LayoutOptions = {
      */
     hasM?: boolean | undefined;
 };
+export type ReadExtensions = (arg0: Feature, arg1: Node) => void;
 /**
  * @typedef {Object} Options
  * @property {function(Feature, Node):void} [readExtensions] Callback function
@@ -105,6 +106,9 @@ export type LayoutOptions = {
  * @typedef {Object} LayoutOptions
  * @property {boolean} [hasZ] HasZ.
  * @property {boolean} [hasM] HasM.
+ */
+/**
+ * @typedef {function(Feature, Node): void} ReadExtensions
  */
 /**
  * @classdesc
@@ -128,7 +132,7 @@ declare class GPX extends XMLFeature {
      */
     constructor(options?: Options);
     /**
-     * @type {function(Feature, Node): void|undefined}
+     * @type {ReadExtensions|undefined}
      * @private
      */
     private readExtensions_;

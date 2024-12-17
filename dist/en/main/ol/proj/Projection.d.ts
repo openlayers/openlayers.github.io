@@ -1,4 +1,10 @@
 export default Projection;
+/**
+ * The function is called with a `number` view resolution and a
+ * {@link module :ol/coordinate~Coordinate} as arguments, and returns the `number` resolution
+ * in projection units at the passed coordinate.
+ */
+export type GetPointResolution = (arg0: number, arg1: import("../coordinate.js").Coordinate) => number;
 export type Options = {
     /**
      * The SRS identifier code, e.g. `EPSG:4326`.
@@ -36,8 +42,15 @@ export type Options = {
      * the `number` resolution in projection units at the passed coordinate. If this is `undefined`,
      * the default {@link module :ol/proj.getPointResolution} function will be used.
      */
-    getPointResolution?: ((arg0: number, arg1: import("../coordinate.js").Coordinate) => number) | undefined;
+    getPointResolution?: GetPointResolution | undefined;
 };
+/**
+ * The function is called with a `number` view resolution and a
+ * {@link module:ol/coordinate~Coordinate} as arguments, and returns the `number` resolution
+ * in projection units at the passed coordinate.
+ * @typedef {function(number, import("../coordinate.js").Coordinate):number} GetPointResolution
+ * @api
+ */
 /**
  * @typedef {Object} Options
  * @property {string} code The SRS identifier code, e.g. `EPSG:4326`.
@@ -50,7 +63,7 @@ export type Options = {
  * If not provided, the `units` are used to get the meters per unit from the {@link METERS_PER_UNIT}
  * lookup table.
  * @property {import("../extent.js").Extent} [worldExtent] The world extent for the SRS.
- * @property {function(number, import("../coordinate.js").Coordinate):number} [getPointResolution]
+ * @property {GetPointResolution} [getPointResolution]
  * Function to determine resolution at a point. The function is called with a
  * `number` view resolution and a {@link module:ol/coordinate~Coordinate} as arguments, and returns
  * the `number` resolution in projection units at the passed coordinate. If this is `undefined`,
@@ -136,7 +149,7 @@ declare class Projection {
     private canWrapX_;
     /**
      * @private
-     * @type {function(number, import("../coordinate.js").Coordinate):number|undefined}
+     * @type {GetPointResolution|undefined}
      */
     private getPointResolutionFunc_;
     /**
@@ -239,9 +252,9 @@ declare class Projection {
     setGetPointResolution(func: (arg0: number, arg1: import("../coordinate.js").Coordinate) => number): void;
     /**
      * Get the custom point resolution function for this projection (if set).
-     * @return {function(number, import("../coordinate.js").Coordinate):number|undefined} The custom point
+     * @return {GetPointResolution|undefined} The custom point
      * resolution function (if set).
      */
-    getPointResolutionFunc(): (arg0: number, arg1: import("../coordinate.js").Coordinate) => number | undefined;
+    getPointResolutionFunc(): GetPointResolution | undefined;
 }
 //# sourceMappingURL=Projection.d.ts.map

@@ -164,10 +164,9 @@ declare class BaseVectorLayer<FeatureType extends import("../Feature").FeatureLi
      */
     getRenderBuffer(): number | undefined;
     /**
-     * @return {function(import("../Feature.js").default, import("../Feature.js").default): number|null|undefined} Render
-     *     order.
+     * @return {import("../render.js").OrderFunction|null|undefined} Render order.
      */
-    getRenderOrder(): (arg0: import("../Feature.js").default, arg1: import("../Feature.js").default) => number | null | undefined;
+    getRenderOrder(): import("../render.js").OrderFunction | null | undefined;
     /**
      * Get the style for features.  This returns whatever was passed to the `style`
      * option at construction or to the `setStyle` method.
