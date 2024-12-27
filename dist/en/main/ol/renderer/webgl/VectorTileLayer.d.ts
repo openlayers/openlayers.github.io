@@ -16,12 +16,13 @@ export namespace Attributes {
     let POSITION: string;
 }
 export default WebGLVectorTileLayerRenderer;
-export type VectorStyle = import("../../render/webgl/VectorStyleRenderer.js").VectorStyle;
+export type StyleAsShaders = import("../../render/webgl/VectorStyleRenderer.js").AsShaders;
+export type StyleAsRule = import("../../render/webgl/VectorStyleRenderer.js").AsRule;
 export type Options = {
     /**
-     * Vector style as literal style or shaders; can also accept an array of styles
+     * Flat vector style; also accepts shaders
      */
-    style: VectorStyle | Array<VectorStyle>;
+    style: import("../../style/flat.js").FlatStyleLike | Array<StyleAsShaders> | StyleAsShaders;
     /**
      * Style variables. Each variable must hold a literal value (not
      * an expression). These variables can be used as {@link import ("../../expr/expression.js").ExpressionValue expressions} in the styles properties
@@ -42,11 +43,14 @@ export type Options = {
 };
 export type LayerType = import("../../layer/BaseTile.js").default<any, any>;
 /**
- * @typedef {import('../../render/webgl/VectorStyleRenderer.js').VectorStyle} VectorStyle
+ * @typedef {import('../../render/webgl/VectorStyleRenderer.js').AsShaders} StyleAsShaders
+ */
+/**
+ * @typedef {import('../../render/webgl/VectorStyleRenderer.js').AsRule} StyleAsRule
  */
 /**
  * @typedef {Object} Options
- * @property {VectorStyle|Array<VectorStyle>} style Vector style as literal style or shaders; can also accept an array of styles
+ * @property {import('../../style/flat.js').FlatStyleLike | Array<StyleAsShaders> | StyleAsShaders} style Flat vector style; also accepts shaders
  * @property {import('../../style/flat.js').StyleVariables} [variables] Style variables. Each variable must hold a literal value (not
  * an expression). These variables can be used as {@link import("../../expr/expression.js").ExpressionValue expressions} in the styles properties
  * using the `['var', 'varName']` operator.
@@ -74,7 +78,7 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      */
     private hitDetectionEnabled_;
     /**
-     * @type {Array<VectorStyle>}
+     * @type {Array<StyleAsRule | StyleAsShaders>}
      * @private
      */
     private styles_;

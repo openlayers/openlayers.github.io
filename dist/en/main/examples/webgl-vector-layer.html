@@ -250,18 +250,27 @@ import WebGLVectorLayer from &#x27;ol/layer/WebGLVector.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 
-/** @type {import(&#x27;ol/style/webgl.js&#x27;).WebGLStyle} */
-const style &#x3D; {
-  &#x27;stroke-color&#x27;: [
-    &#x27;case&#x27;,
-    [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;highlightedId&#x27;], [&#x27;id&#x27;]],
-    &#x27;white&#x27;,
-    [&#x27;*&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], [220, 220, 220]],
-  ],
-  &#x27;stroke-width&#x27;: [&#x27;case&#x27;, [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;highlightedId&#x27;], [&#x27;id&#x27;]], 3, 2],
-  &#x27;stroke-offset&#x27;: -1,
-  &#x27;fill-color&#x27;: [&#x27;*&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], [255, 255, 255, 0.6]],
-};
+/** @type {import(&#x27;ol/style/flat.js&#x27;).FlatStyleLike} */
+const style &#x3D; [
+  {
+    filter: [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;highlightedId&#x27;], [&#x27;id&#x27;]],
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;white&#x27;,
+      &#x27;stroke-width&#x27;: 3,
+      &#x27;stroke-offset&#x27;: -1,
+      &#x27;fill-color&#x27;: [255, 255, 255, 0.4],
+    },
+  },
+  {
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: [&#x27;*&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], [220, 220, 220]],
+      &#x27;stroke-width&#x27;: 2,
+      &#x27;stroke-offset&#x27;: -1,
+      &#x27;fill-color&#x27;: [&#x27;*&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], [255, 255, 255, 0.6]],
+    },
+  },
+];
 
 const osm &#x3D; new TileLayer({
   source: new OSM(),

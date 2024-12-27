@@ -365,7 +365,7 @@ import OSM from &#x27;ol/source/OSM.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 
 /**
- * @type {import(&#x27;ol/style/webgl.js&#x27;).WebGLStyle}
+ * @type {import(&#x27;ol/style/flat.js&#x27;).FlatStyle}
  */
 let style;
 
@@ -394,7 +394,7 @@ const source &#x3D; new VectorSource({
 /**
  * @param {boolean} dash Include line dash
  * @param {boolean} pattern Include image pattern
- * @return {import(&#x27;ol/style/webgl.js&#x27;).WebGLStyle} Generated style
+ * @return {import(&#x27;ol/style/flat.js&#x27;).FlatStyle} Generated style
  */
 const getStyle &#x3D; (dash, pattern) &#x3D;&gt; {
   let newStyle &#x3D; {

@@ -295,7 +295,7 @@ import {packColor, parseLiteralStyle} from &#x27;ol/webgl/styleparser.js&#x27;;
 const key &#x3D;
   &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
-const result &#x3D; parseLiteralStyle({
+const parsedStyleResult &#x3D; parseLiteralStyle({
   &#x27;fill-color&#x27;: [&#x27;get&#x27;, &#x27;fillColor&#x27;],
   &#x27;stroke-color&#x27;: [&#x27;get&#x27;, &#x27;strokeColor&#x27;],
   &#x27;stroke-width&#x27;: [&#x27;get&#x27;, &#x27;strokeWidth&#x27;],
@@ -307,9 +307,9 @@ class WebGLVectorTileLayer extends VectorTile {
   createRenderer() {
     return new WebGLVectorTileLayerRenderer(this, {
       style: {
-        builder: result.builder,
+        builder: parsedStyleResult.builder,
         attributes: {
-          fillColor: {
+          prop_fillColor: {
             size: 2,
             callback: (feature) &#x3D;&gt; {
               const style &#x3D; this.getStyle()(feature, 1)[0];
@@ -317,7 +317,7 @@ class WebGLVectorTileLayer extends VectorTile {
               return packColor(color);
             },
           },
-          strokeColor: {
+          prop_strokeColor: {
             size: 2,
             callback: (feature) &#x3D;&gt; {
               const style &#x3D; this.getStyle()(feature, 1)[0];
@@ -325,7 +325,7 @@ class WebGLVectorTileLayer extends VectorTile {
               return packColor(color);
             },
           },
-          strokeWidth: {
+          prop_strokeWidth: {
             size: 1,
             callback: (feature) &#x3D;&gt; {
               const style &#x3D; this.getStyle()(feature, 1)[0];

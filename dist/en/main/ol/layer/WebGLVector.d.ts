@@ -56,7 +56,7 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
     /**
      * Layer style.
      */
-    style: import("../style/webgl.js").WebGLStyle;
+    style: import("../style/flat.js").FlatStyleLike;
     /**
      * Style variables. Each variable must hold a literal value (not
      * an expression). These variables can be used as {@link import ("../expr/expression.js").ExpressionValue expressions} in the styles properties
@@ -111,7 +111,7 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
  * @property {number} [maxZoom] The maximum view zoom level (inclusive) at which this layer will
  * be visible.
  * @property {VectorSourceType} [source] Source.
- * @property {import('../style/webgl.js').WebGLStyle} style Layer style.
+ * @property {import('../style/flat.js').FlatStyleLike} style Layer style.
  * @property {import('../style/flat.js').StyleVariables} [variables] Style variables. Each variable must hold a literal value (not
  * an expression). These variables can be used as {@link import("../expr/expression.js").ExpressionValue expressions} in the styles properties
  * using the `['var', 'varName']` operator.
@@ -163,10 +163,10 @@ declare class WebGLVectorLayer<VectorSourceType extends import("../source/Vector
     updateStyleVariables(variables: import("../style/flat.js").StyleVariables): void;
     /**
      * Set the layer style.
-     * @param {import('../style/webgl.js').WebGLStyle} style Layer style.
+     * @param {import('../style/flat.js').FlatStyleLike} style Layer style.
      */
-    setStyle(style: import("../style/webgl.js").WebGLStyle): void;
-    style: import("../style/webgl.js").WebGLStyle | undefined;
+    setStyle(style: import("../style/flat.js").FlatStyleLike): void;
+    style: import("../style/flat.js").FlatStyleLike | undefined;
 }
 import WebGLVectorLayerRenderer from '../renderer/webgl/VectorLayer.js';
 import Layer from './Layer.js';

@@ -26,18 +26,19 @@ export function computeHash(input: any | string): string;
  * @property {import("../render/webgl/VectorStyleRenderer.js").AttributeDefinitions} attributes Attribute definitions
  */
 /**
- * Parses a {@link import("../style/webgl.js").WebGLStyle} object and returns a {@link ShaderBuilder}
+ * Parses a {@link import("../style/flat.js").FlatStyle} object and returns a {@link ShaderBuilder}
  * object that has been configured according to the given style, as well as `attributes` and `uniforms`
  * arrays to be fed to the `WebGLPointsRenderer` class.
  *
  * Also returns `uniforms` and `attributes` properties as expected by the
  * {@link module:ol/renderer/webgl/PointsLayer~WebGLPointsLayerRenderer}.
  *
- * @param {import("../style/webgl.js").WebGLStyle} style Literal style.
- * @param {import('../style/flat.js').StyleVariables} variables Style variables.
+ * @param {import("../style/flat.js").FlatStyle} style Flat style.
+ * @param {import('../style/flat.js').StyleVariables} [variables] Style variables.
+ * @param {import("../expr/expression.js").EncodedExpression} [filter] Filter (if any)
  * @return {StyleParseResult} Result containing shader params, attributes and uniforms.
  */
-export function parseLiteralStyle(style: import("../style/webgl.js").WebGLStyle, variables: import("../style/flat.js").StyleVariables): StyleParseResult;
+export function parseLiteralStyle(style: import("../style/flat.js").FlatStyle, variables?: import("../style/flat.js").StyleVariables, filter?: import("../expr/expression.js").EncodedExpression): StyleParseResult;
 export type StyleParseResult = {
     /**
      * Shader builder pre-configured according to a given style

@@ -239,11 +239,6 @@ const oldColor &#x3D; [255, 160, 110];
 const newColor &#x3D; [180, 255, 200];
 
 const style &#x3D; {
-  filter: [
-    &#x27;any&#x27;,
-    [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;filterShape&#x27;], &#x27;all&#x27;],
-    [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;filterShape&#x27;], [&#x27;get&#x27;, &#x27;shape&#x27;]],
-  ],
   &#x27;icon-src&#x27;: &#x27;data/ufo_shapes.png&#x27;,
   &#x27;icon-width&#x27;: 128,
   &#x27;icon-height&#x27;: 64,
@@ -287,7 +282,12 @@ const pointsLayer &#x3D; new WebGLPointsLayer({
     features: [],
     attributions: &#x27;National UFO Reporting Center&#x27;,
   }),
-  style: style,
+  style,
+  filter: [
+    &#x27;any&#x27;,
+    [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;filterShape&#x27;], &#x27;all&#x27;],
+    [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;filterShape&#x27;], [&#x27;get&#x27;, &#x27;shape&#x27;]],
+  ],
 });
 
 const shapeSelect &#x3D; document.getElementById(&#x27;shape-filter&#x27;);

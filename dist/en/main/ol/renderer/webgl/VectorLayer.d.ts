@@ -13,16 +13,17 @@ export const Uniforms: {
     HIT_DETECTION: string;
 };
 export default WebGLVectorLayerRenderer;
-export type VectorStyle = import("../../render/webgl/VectorStyleRenderer.js").VectorStyle;
+export type StyleAsShaders = import("../../render/webgl/VectorStyleRenderer.js").AsShaders;
+export type StyleAsRule = import("../../render/webgl/VectorStyleRenderer.js").AsRule;
 export type Options = {
     /**
      * A CSS class name to set to the canvas element.
      */
     className?: string | undefined;
     /**
-     * Vector style as literal style or shaders; can also accept an array of styles
+     * Flat vector style; also accepts shaders
      */
-    style: VectorStyle | Array<VectorStyle>;
+    style: import("../../style/flat.js").FlatStyleLike | Array<StyleAsShaders> | StyleAsShaders;
     /**
      * Style variables
      */
@@ -40,12 +41,15 @@ export type Options = {
     postProcesses?: import("./Layer.js").PostProcessesOptions[] | undefined;
 };
 /**
- * @typedef {import('../../render/webgl/VectorStyleRenderer.js').VectorStyle} VectorStyle
+ * @typedef {import('../../render/webgl/VectorStyleRenderer.js').AsShaders} StyleAsShaders
+ */
+/**
+ * @typedef {import('../../render/webgl/VectorStyleRenderer.js').AsRule} StyleAsRule
  */
 /**
  * @typedef {Object} Options
  * @property {string} [className='ol-layer'] A CSS class name to set to the canvas element.
- * @property {VectorStyle|Array<VectorStyle>} style Vector style as literal style or shaders; can also accept an array of styles
+ * @property {import('../../style/flat.js').FlatStyleLike | Array<StyleAsShaders> | StyleAsShaders} style Flat vector style; also accepts shaders
  * @property {Object<string, number|Array<number>|string|boolean>} variables Style variables
  * @property {boolean} [disableHitDetection=false] Setting this to true will provide a slight performance boost, but will
  * prevent all hit detection on the layer.
@@ -124,7 +128,7 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      */
     private styleVariables_;
     /**
-     * @type {Array<VectorStyle>}
+     * @type {Array<StyleAsRule | StyleAsShaders>}
      * @private
      */
     private styles_;

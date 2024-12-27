@@ -254,7 +254,6 @@ const animRatio &#x3D; [
 ];
 
 const style &#x3D; {
-  filter: [&#x27;between&#x27;, [&#x27;get&#x27;, &#x27;year&#x27;], [&#x27;var&#x27;, &#x27;minYear&#x27;], [&#x27;var&#x27;, &#x27;maxYear&#x27;]],
   &#x27;circle-radius&#x27;: [
     &#x27;*&#x27;,
     [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;get&#x27;, &#x27;mass&#x27;], 0, 4, 200000, 13],
@@ -277,7 +276,8 @@ const pointsLayer &#x3D; new WebGLPointsLayer({
     minYear: 1850,
     maxYear: 2015,
   },
-  style: style,
+  style,
+  filter: [&#x27;between&#x27;, [&#x27;get&#x27;, &#x27;year&#x27;], [&#x27;var&#x27;, &#x27;minYear&#x27;], [&#x27;var&#x27;, &#x27;maxYear&#x27;]],
   source: vectorSource,
   disableHitDetection: true,
 });

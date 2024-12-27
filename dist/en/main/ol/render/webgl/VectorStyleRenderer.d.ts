@@ -82,7 +82,7 @@ export type ShaderProgram = {
      */
     fragment: string;
 };
-export type StyleShaders = {
+export type AsShaders = {
     /**
      * Shader builder with the appropriate presets.
      */
@@ -101,7 +101,17 @@ export type StyleShaders = {
         [x: string]: import("../../webgl/Helper.js").UniformValue;
     } | undefined;
 };
-export type VectorStyle = import("../../style/webgl.js").WebGLStyle | StyleShaders;
+export type AsRule = {
+    /**
+     * Style
+     */
+    style: import("../../style/flat.js").FlatStyle;
+    /**
+     * Filter
+     */
+    filter?: import("../../expr/expression.js").EncodedExpression | undefined;
+};
+export type VectorStyle = AsRule | AsShaders;
 /**
  * @typedef {Object} AttributeDefinition A description of a custom attribute to be passed on to the GPU, with a value different
  * for each feature.
@@ -133,14 +143,19 @@ export type VectorStyle = import("../../style/webgl.js").WebGLStyle | StyleShade
  * @property {string} fragment Fragment shader source
  */
 /**
- * @typedef {Object} StyleShaders
+ * @typedef {Object} AsShaders
  * @property {import("../../webgl/ShaderBuilder.js").ShaderBuilder} builder Shader builder with the appropriate presets.
  * @property {AttributeDefinitions} [attributes] Custom attributes made available in the vertex shaders.
  * Default shaders rely on the attributes in {@link Attributes}.
  * @property {UniformDefinitions} [uniforms] Additional uniforms usable in shaders.
  */
 /**
- * @typedef {import('../../style/webgl.js').WebGLStyle|StyleShaders} VectorStyle
+ * @typedef {Object} AsRule
+ * @property {import('../../style/flat.js').FlatStyle} style Style
+ * @property {import("../../expr/expression.js").EncodedExpression} [filter] Filter
+ */
+/**
+ * @typedef {AsRule|AsShaders} VectorStyle
  */
 /**
  * @classdesc This class is responsible for:
@@ -161,9 +176,9 @@ declare class VectorStyleRenderer {
      * @param {VectorStyle} styleOrShaders Literal style or custom shaders
      * @param {import('../../style/flat.js').StyleVariables} variables Style variables
      * @param {import('../../webgl/Helper.js').default} helper Helper
-     * @param {boolean} enableHitDetection Whether to enable the hit detection (needs compatible shader)
+     * @param {boolean} [enableHitDetection] Whether to enable the hit detection (needs compatible shader)
      */
-    constructor(styleOrShaders: VectorStyle, variables: import("../../style/flat.js").StyleVariables, helper: import("../../webgl/Helper.js").default, enableHitDetection: boolean);
+    constructor(styleOrShaders: VectorStyle, variables: import("../../style/flat.js").StyleVariables, helper: import("../../webgl/Helper.js").default, enableHitDetection?: boolean);
     /**
      * @private
      * @type {import('../../webgl/Helper.js').default}

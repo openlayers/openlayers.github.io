@@ -708,6 +708,7 @@ declare namespace ol {
             }
             export namespace utils {
                 export { _ol_render_webgl_utils$LINESTRING_ANGLE_COSINE_CUTOFF as LINESTRING_ANGLE_COSINE_CUTOFF };
+                export { _ol_render_webgl_utils$breakDownFlatStyle as breakDownFlatStyle };
                 export { _ol_render_webgl_utils$colorDecodeId as colorDecodeId };
                 export { _ol_render_webgl_utils$colorEncodeId as colorEncodeId };
                 export { _ol_render_webgl_utils$getBlankImageData as getBlankImageData };
@@ -1586,6 +1587,7 @@ import { generatePointRenderInstructions as _ol_render_webgl_renderinstructions$
 import { generatePolygonRenderInstructions as _ol_render_webgl_renderinstructions$generatePolygonRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { getCustomAttributesSize as _ol_render_webgl_renderinstructions$getCustomAttributesSize } from '../../ol/render/webgl/renderinstructions.js';
 import { LINESTRING_ANGLE_COSINE_CUTOFF as _ol_render_webgl_utils$LINESTRING_ANGLE_COSINE_CUTOFF } from '../../ol/render/webgl/utils.js';
+import { breakDownFlatStyle as _ol_render_webgl_utils$breakDownFlatStyle } from '../../ol/render/webgl/utils.js';
 import { colorDecodeId as _ol_render_webgl_utils$colorDecodeId } from '../../ol/render/webgl/utils.js';
 import { colorEncodeId as _ol_render_webgl_utils$colorEncodeId } from '../../ol/render/webgl/utils.js';
 import { getBlankImageData as _ol_render_webgl_utils$getBlankImageData } from '../../ol/render/webgl/utils.js';

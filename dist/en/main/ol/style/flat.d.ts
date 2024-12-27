@@ -89,15 +89,19 @@
  * Fill style properties applied to polygon features.
  *
  * @typedef {Object} FlatFill
- * @property {ColorExpression} [fill-color] The fill color. `'none'` means no fill and no hit detection.
- * @property {StringExpression} [fill-pattern-src] Fill pattern image URL.
+ * @property {ColorExpression} [fill-color] The fill color. `'none'` means no fill and no hit detection (applies to Canvas only).
+ * @property {StringExpression} [fill-pattern-src] Fill pattern image source URI. If `fill-color` is defined as well,
+ * it will be used to tint this image. (Expressions only in Canvas)
  * @property {SizeExpression} [fill-pattern-size] Fill pattern image size in pixels.
  * Can be used together with `fill-pattern-offset` to define the sub-rectangle to use
  * from a fill pattern image sprite sheet.
- * @property {SizeExpression} [fill-pattern-offset] Fill pattern image offset in pixels.
+ * @property {SizeExpression} [fill-pattern-offset=[0, 0]] Offset, which, together with the size and the offset origin, define the
+ * sub-rectangle to use from the original fill pattern image.
+ * @property {import("./Icon.js").IconOrigin} [fill-pattern-offset-origin='top-left'] Origin of the offset: `bottom-left`, `bottom-right`,
+ * `top-left` or `top-right`. (WebGL only)
  */
 /**
- * Stroke style properties applied to line strings and polygon boundaries.  To apply a stroke, at least one of
+ * Stroke style properties applied to line strings and polygon boundaries. To apply a stroke, at least one of
  * `stroke-color` or `stroke-width` must be provided.
  *
  * @typedef {Object} FlatStroke
@@ -108,10 +112,22 @@
  * @property {NumberArrayExpression} [stroke-line-dash] Line dash pattern.
  * @property {NumberExpression} [stroke-line-dash-offset=0] Line dash offset.
  * @property {NumberExpression} [stroke-miter-limit=10] Miter limit.
+ * @property {NumberExpression} [stroke-offset] Stroke offset in pixel. A positive value offsets the line to the right,
+ * relative to the direction of the line. (WebGL only)
+ * @property {string} [stroke-pattern-src] Stroke pattern image source URI. If `stroke-color` is defined as well,
+ * it will be used to tint this image. (WebGL only)
+ * @property {SizeExpression} [stroke-pattern-offset=[0, 0]] Offset, which, together with the size and the offset origin,
+ * define the sub-rectangle to use from the original fill pattern image. (WebGL only)
+ * @property {import("./Icon.js").IconOrigin} [stroke-pattern-offset-origin='top-left'] Origin of the offset: `bottom-left`, `bottom-right`,
+ * `top-left` or `top-right`. (WebGL only)
+ * @property {SizeExpression} [stroke-pattern-size] Stroke pattern image size in pixel. Can be used together with `stroke-pattern-offset` to define the
+ * sub-rectangle to use from the origin (sprite) fill pattern image. (WebGL only)
+ * @property {NumberExpression} [stroke-pattern-spacing] Spacing between each pattern occurrence in pixels; 0 if undefined.
  * @property {NumberExpression} [z-index] The zIndex of the style.
  */
 /**
- * Label style properties applied to all features.  At a minimum, a `text-value` must be provided.
+ * Label style properties applied to all features. At a minimum, a `text-value` must be provided.
+ * Note: text style is currently not supported in WebGL layers
  *
  * @typedef {Object} FlatText
  * @property {StringExpression} [text-value] Text content (with `\n` for line breaks).
@@ -173,76 +189,78 @@
  * @property {import("./Icon.js").IconAnchorUnits} [icon-anchor-y-units='fraction'] Units in which the anchor y value is
  * specified. A value of `'fraction'` indicates the y value is a fraction of the icon. A value of `'pixels'` indicates
  * the y value in pixels.
- * @property {import("../color.js").Color|string} [icon-color] Color to tint the icon. If not specified,
+ * @property {ColorExpression} [icon-color] Color to tint the icon. If not specified,
  * the icon will be left as is.
  * @property {null|string} [icon-cross-origin] The `crossOrigin` attribute for loaded images. Note that you must provide a
  * `icon-cross-origin` value if you want to access pixel data with the Canvas renderer.
  * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
- * @property {Array<number>} [icon-offset=[0, 0]] Offset, which, together with the size and the offset origin, define the
+ * @property {SizeExpression} [icon-offset=[0, 0]] Offset, which, together with the size and the offset origin, define the
  * sub-rectangle to use from the original icon image.
  * @property {NumberArrayExpression} [icon-displacement=[0,0]] Displacement of the icon.
  * @property {import("./Icon.js").IconOrigin} [icon-offset-origin='top-left'] Origin of the offset: `bottom-left`, `bottom-right`,
  * `top-left` or `top-right`.
  * @property {NumberExpression} [icon-opacity=1] Opacity of the icon.
  * @property {SizeExpression} [icon-scale=1] Scale.
- * @property {number} [icon-width] Width of the icon. If not specified, the actual image width will be used. Cannot be combined
- * with `scale`.
- * @property {number} [icon-height] Height of the icon. If not specified, the actual image height will be used. Cannot be combined
- * with `scale`.
+ * @property {NumberExpression} [icon-width] Width of the icon. If not specified, the actual image width will be used. Cannot be combined
+ * with `scale`. (Expressions only in WebGL)
+ * @property {NumberExpression} [icon-height] Height of the icon. If not specified, the actual image height will be used. Cannot be combined
+ * with `scale`. (Expressions only in WebGL)
  * @property {NumberExpression} [icon-rotation=0] Rotation in radians (positive rotation clockwise).
- * @property {BooleanExpression} [icon-rotate-with-view=false] Whether to rotate the icon with the view.
- * @property {import("../size.js").Size} [icon-size] Icon size in pixel. Can be used together with `icon-offset` to define the
- * sub-rectangle to use from the origin (sprite) icon image.
- * @property {import("./Style.js").DeclutterMode} [icon-declutter-mode] Declutter mode
- * @property {NumberExpression} [z-index] The zIndex of the style.
+ * @property {BooleanExpression} [icon-rotate-with-view=false] Whether to rotate the icon with the view. (Expressions only supported in Canvas)
+ * @property {SizeExpression} [icon-size] Icon size in pixel. Can be used together with `icon-offset` to define the
+ * sub-rectangle to use from the origin (sprite) icon image. (Expressions only in WebGL)
+ * @property {import("./Style.js").DeclutterMode} [icon-declutter-mode] Declutter mode (Canvas only)
+ * @property {NumberExpression} [z-index] The zIndex of the style. (Canvas only)
  */
 /**
- * Regular shape style properties for rendering point features.  At least `shape-points` must be provided.
+ * Regular shape style properties for rendering point features. At least `shape-points` must be provided.
  *
  * @typedef {Object} FlatShape
- * @property {number} [shape-points] Number of points for stars and regular polygons. In case of a polygon, the number of points
- * is the number of sides.
+ * @property {NumberExpression} [shape-points] Number of points for stars and regular polygons. In case of a polygon, the number of points
+ * is the number of sides. (Expressions only in WebGL)
  * @property {ColorExpression} [shape-fill-color] The fill color. `'none'` means no fill and no hit detection.
  * @property {ColorExpression} [shape-stroke-color] The stroke color.
  * @property {NumberExpression} [shape-stroke-width] Stroke pixel width.
- * @property {StringExpression} [shape-stroke-line-cap='round'] Line cap style: `butt`, `round`, or `square`.
- * @property {StringExpression} [shape-stroke-line-join='round'] Line join style: `bevel`, `round`, or `miter`.
- * @property {NumberArrayExpression} [shape-stroke-line-dash] Line dash pattern.
- * @property {NumberExpression} [shape-stroke-line-dash-offset=0] Line dash offset.
- * @property {NumberExpression} [shape-stroke-miter-limit=10] Miter limit.
- * @property {number} [shape-radius] Radius of a regular polygon.
- * @property {number} [shape-radius2] Second radius to make a star instead of a regular polygon.
- * @property {number} [shape-angle=0] Shape's angle in radians. A value of 0 will have one of the shape's point facing up.
+ * @property {StringExpression} [shape-stroke-line-cap='round'] Line cap style: `butt`, `round`, or `square`. (Canvas only)
+ * @property {StringExpression} [shape-stroke-line-join='round'] Line join style: `bevel`, `round`, or `miter`. (Canvas only)
+ * @property {NumberArrayExpression} [shape-stroke-line-dash] Line dash pattern. (Canvas only)
+ * @property {NumberExpression} [shape-stroke-line-dash-offset=0] Line dash offset. (Canvas only)
+ * @property {NumberExpression} [shape-stroke-miter-limit=10] Miter limit. (Canvas only)
+ * @property {NumberExpression} [shape-radius] Radius of a regular polygon. (Expressions only in WebGL)
+ * @property {NumberExpression} [shape-radius2] Second radius to make a star instead of a regular polygon. (Expressions only in WebGL)
+ * @property {NumberExpression} [shape-angle=0] Shape's angle in radians. A value of 0 will have one of the shape's point facing up. (Expressions only in WebGL)
  * @property {NumberArrayExpression} [shape-displacement=[0,0]] Displacement of the shape
+ * @property {NumberExpression} [shape-opacity] Shape opacity. (WebGL only)
  * @property {NumberExpression} [shape-rotation=0] Rotation in radians (positive rotation clockwise).
- * @property {BooleanExpression} [shape-rotate-with-view=false] Whether to rotate the shape with the view.
- * @property {SizeExpression} [shape-scale=1] Scale. Unless two dimensional scaling is required a better
+ * @property {BooleanExpression} [shape-rotate-with-view=false] Whether to rotate the shape with the view. (Expression only supported in Canvas)
+ * @property {SizeExpression} [shape-scale=1] Scale. Unless two-dimensional scaling is required a better
  * result may be obtained with appropriate settings for `shape-radius` and `shape-radius2`.
- * @property {import("./Style.js").DeclutterMode} [shape-declutter-mode] Declutter mode.
- * @property {NumberExpression} [z-index] The zIndex of the style.
+ * @property {import("./Style.js").DeclutterMode} [shape-declutter-mode] Declutter mode. (Canvas only)
+ * @property {NumberExpression} [z-index] The zIndex of the style. (Canvas only)
  */
 /**
- * Circle style properties for rendering point features.  At least `circle-radius` must be provided.
+ * Circle style properties for rendering point features. At least `circle-radius` must be provided.
  *
  * @typedef {Object} FlatCircle
- * @property {number} [circle-radius] Circle radius.
+ * @property {NumberExpression} [circle-radius] Circle radius.
  * @property {ColorExpression} [circle-fill-color] The fill color. `'none'` means no fill and no hit detection.
  * @property {ColorExpression} [circle-stroke-color] The stroke color.
  * @property {NumberExpression} [circle-stroke-width] Stroke pixel width.
- * @property {StringExpression} [circle-stroke-line-cap='round'] Line cap style: `butt`, `round`, or `square`.
- * @property {StringExpression} [circle-stroke-line-join='round'] Line join style: `bevel`, `round`, or `miter`.
- * @property {NumberArrayExpression} [circle-stroke-line-dash] Line dash pattern.
- * @property {NumberExpression} [circle-stroke-line-dash-offset=0] Line dash offset.
- * @property {NumberExpression} [circle-stroke-miter-limit=10] Miter limit.
+ * @property {StringExpression} [circle-stroke-line-cap='round'] Line cap style: `butt`, `round`, or `square`. (Canvas only)
+ * @property {StringExpression} [circle-stroke-line-join='round'] Line join style: `bevel`, `round`, or `miter`. (Canvas only)
+ * @property {NumberArrayExpression} [circle-stroke-line-dash] Line dash pattern. (Canvas only)
+ * @property {NumberExpression} [circle-stroke-line-dash-offset=0] Line dash offset. (Canvas only)
+ * @property {NumberExpression} [circle-stroke-miter-limit=10] Miter limit. (Canvas only)
  * @property {NumberArrayExpression} [circle-displacement=[0,0]] displacement
- * @property {SizeExpression} [circle-scale=1] Scale. A two dimensional scale will produce an ellipse.
- * Unless two dimensional scaling is required a better result may be obtained with an appropriate setting for `circle-radius`.
+ * @property {SizeExpression} [circle-scale=1] Scale. A two-dimensional scale will produce an ellipse.
+ * Unless two-dimensional scaling is required a better result may be obtained with an appropriate setting for `circle-radius`.
+ * @property {NumberExpression} [circle-opacity] Circle opacity. (WebGL only)
  * @property {NumberExpression} [circle-rotation=0] Rotation in radians
- * (positive rotation clockwise, meaningful only when used in conjunction with a two dimensional scale).
- * @property {BooleanExpression} [circle-rotate-with-view=false] Whether to rotate the shape with the view
- * (meaningful only when used in conjunction with a two dimensional scale).
- * @property {import("./Style.js").DeclutterMode} [circle-declutter-mode] Declutter mode
- * @property {NumberExpression} [z-index] The zIndex of the style.
+ * (positive rotation clockwise, meaningful only when used in conjunction with a two-dimensional scale).
+ * @property {BooleanExpression} [circle-rotate-with-view=false] Whether to rotate the shape with the view (Expression only supported in Canvas)
+ * (meaningful only when used in conjunction with a two-dimensional scale).
+ * @property {import("./Style.js").DeclutterMode} [circle-declutter-mode] Declutter mode (Canvas only)
+ * @property {NumberExpression} [z-index] The zIndex of the style. (Canvas only)
  */
 /**
  * These default style properties are applied when no other style is given.
@@ -299,11 +317,12 @@ export type FlatStyleLike = FlatStyle | Array<FlatStyle> | Array<Rule>;
  */
 export type FlatFill = {
     /**
-     * The fill color. `'none'` means no fill and no hit detection.
+     * The fill color. `'none'` means no fill and no hit detection (applies to Canvas only).
      */
     "fill-color"?: ColorExpression | undefined;
     /**
-     * Fill pattern image URL.
+     * Fill pattern image source URI. If `fill-color` is defined as well,
+     * it will be used to tint this image. (Expressions only in Canvas)
      */
     "fill-pattern-src"?: StringExpression | undefined;
     /**
@@ -313,12 +332,18 @@ export type FlatFill = {
      */
     "fill-pattern-size"?: SizeExpression | undefined;
     /**
-     * Fill pattern image offset in pixels.
+     * Offset, which, together with the size and the offset origin, define the
+     * sub-rectangle to use from the original fill pattern image.
      */
     "fill-pattern-offset"?: SizeExpression | undefined;
+    /**
+     * Origin of the offset: `bottom-left`, `bottom-right`,
+     * `top-left` or `top-right`. (WebGL only)
+     */
+    "fill-pattern-offset-origin"?: import("./Icon.js").IconOrigin | undefined;
 };
 /**
- * Stroke style properties applied to line strings and polygon boundaries.  To apply a stroke, at least one of
+ * Stroke style properties applied to line strings and polygon boundaries. To apply a stroke, at least one of
  * `stroke-color` or `stroke-width` must be provided.
  */
 export type FlatStroke = {
@@ -351,12 +376,42 @@ export type FlatStroke = {
      */
     "stroke-miter-limit"?: NumberExpression | undefined;
     /**
+     * Stroke offset in pixel. A positive value offsets the line to the right,
+     * relative to the direction of the line. (WebGL only)
+     */
+    "stroke-offset"?: NumberExpression | undefined;
+    /**
+     * Stroke pattern image source URI. If `stroke-color` is defined as well,
+     * it will be used to tint this image. (WebGL only)
+     */
+    "stroke-pattern-src"?: string | undefined;
+    /**
+     * Offset, which, together with the size and the offset origin,
+     * define the sub-rectangle to use from the original fill pattern image. (WebGL only)
+     */
+    "stroke-pattern-offset"?: SizeExpression | undefined;
+    /**
+     * Origin of the offset: `bottom-left`, `bottom-right`,
+     * `top-left` or `top-right`. (WebGL only)
+     */
+    "stroke-pattern-offset-origin"?: import("./Icon.js").IconOrigin | undefined;
+    /**
+     * Stroke pattern image size in pixel. Can be used together with `stroke-pattern-offset` to define the
+     * sub-rectangle to use from the origin (sprite) fill pattern image. (WebGL only)
+     */
+    "stroke-pattern-size"?: SizeExpression | undefined;
+    /**
+     * Spacing between each pattern occurrence in pixels; 0 if undefined.
+     */
+    "stroke-pattern-spacing"?: NumberExpression | undefined;
+    /**
      * The zIndex of the style.
      */
     "z-index"?: NumberExpression | undefined;
 };
 /**
- * Label style properties applied to all features.  At a minimum, a `text-value` must be provided.
+ * Label style properties applied to all features. At a minimum, a `text-value` must be provided.
+ * Note: text style is currently not supported in WebGL layers
  */
 export type FlatText = {
     /**
@@ -536,7 +591,7 @@ export type FlatIcon = {
      * Color to tint the icon. If not specified,
      * the icon will be left as is.
      */
-    "icon-color"?: string | import("../color.js").Color | undefined;
+    "icon-color"?: ColorExpression | undefined;
     /**
      * The `crossOrigin` attribute for loaded images. Note that you must provide a
      * `icon-cross-origin` value if you want to access pixel data with the Canvas renderer.
@@ -547,7 +602,7 @@ export type FlatIcon = {
      * Offset, which, together with the size and the offset origin, define the
      * sub-rectangle to use from the original icon image.
      */
-    "icon-offset"?: number[] | undefined;
+    "icon-offset"?: SizeExpression | undefined;
     /**
      * Displacement of the icon.
      */
@@ -567,45 +622,45 @@ export type FlatIcon = {
     "icon-scale"?: SizeExpression | undefined;
     /**
      * Width of the icon. If not specified, the actual image width will be used. Cannot be combined
-     * with `scale`.
+     * with `scale`. (Expressions only in WebGL)
      */
-    "icon-width"?: number | undefined;
+    "icon-width"?: NumberExpression | undefined;
     /**
      * Height of the icon. If not specified, the actual image height will be used. Cannot be combined
-     * with `scale`.
+     * with `scale`. (Expressions only in WebGL)
      */
-    "icon-height"?: number | undefined;
+    "icon-height"?: NumberExpression | undefined;
     /**
      * Rotation in radians (positive rotation clockwise).
      */
     "icon-rotation"?: NumberExpression | undefined;
     /**
-     * Whether to rotate the icon with the view.
+     * Whether to rotate the icon with the view. (Expressions only supported in Canvas)
      */
     "icon-rotate-with-view"?: BooleanExpression | undefined;
     /**
      * Icon size in pixel. Can be used together with `icon-offset` to define the
-     * sub-rectangle to use from the origin (sprite) icon image.
+     * sub-rectangle to use from the origin (sprite) icon image. (Expressions only in WebGL)
      */
-    "icon-size"?: import("../size.js").Size | undefined;
+    "icon-size"?: SizeExpression | undefined;
     /**
-     * Declutter mode
+     * Declutter mode (Canvas only)
      */
     "icon-declutter-mode"?: import("./Style.js").DeclutterMode | undefined;
     /**
-     * The zIndex of the style.
+     * The zIndex of the style. (Canvas only)
      */
     "z-index"?: NumberExpression | undefined;
 };
 /**
- * Regular shape style properties for rendering point features.  At least `shape-points` must be provided.
+ * Regular shape style properties for rendering point features. At least `shape-points` must be provided.
  */
 export type FlatShape = {
     /**
      * Number of points for stars and regular polygons. In case of a polygon, the number of points
-     * is the number of sides.
+     * is the number of sides. (Expressions only in WebGL)
      */
-    "shape-points"?: number | undefined;
+    "shape-points"?: NumberExpression | undefined;
     /**
      * The fill color. `'none'` means no fill and no hit detection.
      */
@@ -619,71 +674,75 @@ export type FlatShape = {
      */
     "shape-stroke-width"?: NumberExpression | undefined;
     /**
-     * Line cap style: `butt`, `round`, or `square`.
+     * Line cap style: `butt`, `round`, or `square`. (Canvas only)
      */
     "shape-stroke-line-cap"?: StringExpression | undefined;
     /**
-     * Line join style: `bevel`, `round`, or `miter`.
+     * Line join style: `bevel`, `round`, or `miter`. (Canvas only)
      */
     "shape-stroke-line-join"?: StringExpression | undefined;
     /**
-     * Line dash pattern.
+     * Line dash pattern. (Canvas only)
      */
     "shape-stroke-line-dash"?: NumberArrayExpression | undefined;
     /**
-     * Line dash offset.
+     * Line dash offset. (Canvas only)
      */
     "shape-stroke-line-dash-offset"?: NumberExpression | undefined;
     /**
-     * Miter limit.
+     * Miter limit. (Canvas only)
      */
     "shape-stroke-miter-limit"?: NumberExpression | undefined;
     /**
-     * Radius of a regular polygon.
+     * Radius of a regular polygon. (Expressions only in WebGL)
      */
-    "shape-radius"?: number | undefined;
+    "shape-radius"?: NumberExpression | undefined;
     /**
-     * Second radius to make a star instead of a regular polygon.
+     * Second radius to make a star instead of a regular polygon. (Expressions only in WebGL)
      */
-    "shape-radius2"?: number | undefined;
+    "shape-radius2"?: NumberExpression | undefined;
     /**
-     * Shape's angle in radians. A value of 0 will have one of the shape's point facing up.
+     * Shape's angle in radians. A value of 0 will have one of the shape's point facing up. (Expressions only in WebGL)
      */
-    "shape-angle"?: number | undefined;
+    "shape-angle"?: NumberExpression | undefined;
     /**
      * Displacement of the shape
      */
     "shape-displacement"?: NumberArrayExpression | undefined;
     /**
+     * Shape opacity. (WebGL only)
+     */
+    "shape-opacity"?: NumberExpression | undefined;
+    /**
      * Rotation in radians (positive rotation clockwise).
      */
     "shape-rotation"?: NumberExpression | undefined;
     /**
-     * Whether to rotate the shape with the view.
+     * Whether to rotate the shape with the view. (Expression only supported in Canvas)
      */
     "shape-rotate-with-view"?: BooleanExpression | undefined;
     /**
-     * Scale. Unless two dimensional scaling is required a better
+     * Scale. Unless two-dimensional scaling is required a better
      * result may be obtained with appropriate settings for `shape-radius` and `shape-radius2`.
      */
     "shape-scale"?: SizeExpression | undefined;
     /**
-     * Declutter mode.
+     * Declutter mode. (Canvas only)
      */
     "shape-declutter-mode"?: import("./Style.js").DeclutterMode | undefined;
     /**
-     * The zIndex of the style.
+     * The zIndex of the style. (Canvas only)
      */
     "z-index"?: NumberExpression | undefined;
 };
 /**
- * Circle style properties for rendering point features.  At least `circle-radius` must be provided.
+ * Circle style properties for rendering point features. At least `circle-radius` must be provided.
  */
 export type FlatCircle = {
     /**
      * Circle radius.
      */
-    "circle-radius"?: number | undefined;
+    "circle-radius"?: NumberExpression | undefined;
     /**
      * The fill color. `'none'` means no fill and no hit detection.
      */
@@ -697,23 +756,23 @@ export type FlatCircle = {
      */
     "circle-stroke-width"?: NumberExpression | undefined;
     /**
-     * Line cap style: `butt`, `round`, or `square`.
+     * Line cap style: `butt`, `round`, or `square`. (Canvas only)
      */
     "circle-stroke-line-cap"?: StringExpression | undefined;
     /**
-     * Line join style: `bevel`, `round`, or `miter`.
+     * Line join style: `bevel`, `round`, or `miter`. (Canvas only)
      */
     "circle-stroke-line-join"?: StringExpression | undefined;
     /**
-     * Line dash pattern.
+     * Line dash pattern. (Canvas only)
      */
     "circle-stroke-line-dash"?: NumberArrayExpression | undefined;
     /**
-     * Line dash offset.
+     * Line dash offset. (Canvas only)
      */
     "circle-stroke-line-dash-offset"?: NumberExpression | undefined;
     /**
-     * Miter limit.
+     * Miter limit. (Canvas only)
      */
     "circle-stroke-miter-limit"?: NumberExpression | undefined;
     /**
@@ -721,26 +780,30 @@ export type FlatCircle = {
      */
     "circle-displacement"?: NumberArrayExpression | undefined;
     /**
-     * Scale. A two dimensional scale will produce an ellipse.
-     * Unless two dimensional scaling is required a better result may be obtained with an appropriate setting for `circle-radius`.
+     * Scale. A two-dimensional scale will produce an ellipse.
+     * Unless two-dimensional scaling is required a better result may be obtained with an appropriate setting for `circle-radius`.
      */
     "circle-scale"?: SizeExpression | undefined;
     /**
+     * Circle opacity. (WebGL only)
+     */
+    "circle-opacity"?: NumberExpression | undefined;
+    /**
      * Rotation in radians
-     * (positive rotation clockwise, meaningful only when used in conjunction with a two dimensional scale).
+     * (positive rotation clockwise, meaningful only when used in conjunction with a two-dimensional scale).
      */
     "circle-rotation"?: NumberExpression | undefined;
     /**
-     * Whether to rotate the shape with the view
-     * (meaningful only when used in conjunction with a two dimensional scale).
+     * Whether to rotate the shape with the view (Expression only supported in Canvas)
+     * (meaningful only when used in conjunction with a two-dimensional scale).
      */
     "circle-rotate-with-view"?: BooleanExpression | undefined;
     /**
-     * Declutter mode
+     * Declutter mode (Canvas only)
      */
     "circle-declutter-mode"?: import("./Style.js").DeclutterMode | undefined;
     /**
-     * The zIndex of the style.
+     * The zIndex of the style. (Canvas only)
      */
     "z-index"?: NumberExpression | undefined;
 };
@@ -778,7 +841,7 @@ export type DefaultStyle = {
     "circle-stroke-color": string;
 };
 /**
- * A rule is used to conditionally apply a style.  If the rule's filter evaluates to true,
+ * A rule is used to conditionally apply a style. If the rule's filter evaluates to true,
  * the style will be applied.
  */
 export type Rule = {
@@ -788,7 +851,7 @@ export type Rule = {
     style: FlatStyle | Array<FlatStyle>;
     /**
      * The filter used
-     * to determine if a style applies.  If no filter is included, the rule always applies
+     * to determine if a style applies. If no filter is included, the rule always applies
      * (unless it is an else rule).
      */
     filter?: import("../expr/expression.js").EncodedExpression | undefined;

@@ -3,7 +3,12 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
     /**
      * Literal style to apply to the layer features.
      */
-    style: import("../style/webgl.js").WebGLStyle;
+    style: import("../style/flat.js").FlatStyle;
+    /**
+     * The filter used
+     * to determine if a style applies. If no filter is included, the rule always applies.
+     */
+    filter?: import("../expr/expression.js").EncodedExpression | undefined;
     /**
      * Style variables. Each variable must hold a literal value (not
      * an expression). These variables can be used as {@link import ("../expr/expression.js").ExpressionValue expressions} in the styles properties
@@ -76,7 +81,9 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
 /**
  * @template {import("../source/Vector.js").default<import('../Feature').FeatureLike>} VectorSourceType
  * @typedef {Object} Options
- * @property {import('../style/webgl.js').WebGLStyle} style Literal style to apply to the layer features.
+ * @property {import('../style/flat.js').FlatStyle} style Literal style to apply to the layer features.
+ * @property {import("../expr/expression.js").EncodedExpression} [filter] The filter used
+ * to determine if a style applies. If no filter is included, the rule always applies.
  * @property {import('../style/flat.js').StyleVariables} [variables] Style variables. Each variable must hold a literal value (not
  * an expression). These variables can be used as {@link import("../expr/expression.js").ExpressionValue expressions} in the styles properties
  * using the `['var', 'varName']` operator.

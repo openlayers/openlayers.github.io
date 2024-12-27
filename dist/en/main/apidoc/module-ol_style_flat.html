@@ -568,7 +568,7 @@ a smaller blue circle otherwise:</p>
 <dd class="">
     
     <div class="description">
-        <p>Circle style properties for rendering point features.  At least <code>circle-radius</code> must be provided.</p>
+        <p>Circle style properties for rendering point features. At least <code>circle-radius</code> must be provided.</p>
     </div>
     
 
@@ -604,7 +604,7 @@ a smaller blue circle otherwise:</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
  | undefined
                 
@@ -706,7 +706,7 @@ a smaller blue circle otherwise:</p>
             </td>
 
             <td class="description last">
-                <p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p>
+                <p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -731,7 +731,7 @@ a smaller blue circle otherwise:</p>
             </td>
 
             <td class="description last">
-                <p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p>
+                <p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -754,7 +754,7 @@ a smaller blue circle otherwise:</p>
             </td>
 
             <td class="description last">
-                <p>Line dash pattern.</p>
+                <p>Line dash pattern. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -779,7 +779,7 @@ a smaller blue circle otherwise:</p>
             </td>
 
             <td class="description last">
-                <p>Line dash offset.</p>
+                <p>Line dash offset. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -804,7 +804,7 @@ a smaller blue circle otherwise:</p>
             </td>
 
             <td class="description last">
-                <p>Miter limit.</p>
+                <p>Miter limit. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -854,8 +854,31 @@ a smaller blue circle otherwise:</p>
             </td>
 
             <td class="description last">
-                <p>Scale. A two dimensional scale will produce an ellipse.
-Unless two dimensional scaling is required a better result may be obtained with an appropriate setting for <code>circle-radius</code>.</p>
+                <p>Scale. A two-dimensional scale will produce an ellipse.
+Unless two-dimensional scaling is required a better result may be obtained with an appropriate setting for <code>circle-radius</code>.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>circle-opacity</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Circle opacity. (WebGL only)</p>
                 
             </td>
         </tr>
@@ -881,7 +904,7 @@ Unless two dimensional scaling is required a better result may be obtained with 
 
             <td class="description last">
                 <p>Rotation in radians
-(positive rotation clockwise, meaningful only when used in conjunction with a two dimensional scale).</p>
+(positive rotation clockwise, meaningful only when used in conjunction with a two-dimensional scale).</p>
                 
             </td>
         </tr>
@@ -906,8 +929,8 @@ Unless two dimensional scaling is required a better result may be obtained with 
             </td>
 
             <td class="description last">
-                <p>Whether to rotate the shape with the view
-(meaningful only when used in conjunction with a two dimensional scale).</p>
+                <p>Whether to rotate the shape with the view (Expression only supported in Canvas)
+(meaningful only when used in conjunction with a two-dimensional scale).</p>
                 
             </td>
         </tr>
@@ -930,7 +953,7 @@ Unless two dimensional scaling is required a better result may be obtained with 
             </td>
 
             <td class="description last">
-                <p>Declutter mode</p>
+                <p>Declutter mode (Canvas only)</p>
                 
             </td>
         </tr>
@@ -953,7 +976,7 @@ Unless two dimensional scaling is required a better result may be obtained with 
             </td>
 
             <td class="description last">
-                <p>The zIndex of the style.</p>
+                <p>The zIndex of the style. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -1050,7 +1073,7 @@ Unless two dimensional scaling is required a better result may be obtained with 
             </td>
 
             <td class="description last">
-                <p>The fill color. <code>'none'</code> means no fill and no hit detection.</p>
+                <p>The fill color. <code>'none'</code> means no fill and no hit detection (applies to Canvas only).</p>
                 
             </td>
         </tr>
@@ -1073,7 +1096,8 @@ Unless two dimensional scaling is required a better result may be obtained with 
             </td>
 
             <td class="description last">
-                <p>Fill pattern image URL.</p>
+                <p>Fill pattern image source URI. If <code>fill-color</code> is defined as well,
+it will be used to tint this image. (Expressions only in Canvas)</p>
                 
             </td>
         </tr>
@@ -1115,13 +1139,42 @@ from a fill pattern image sprite sheet.</p>
                 
 <span class="param-type"><a href="module-ol_style_flat.html#~SizeExpression">SizeExpression</a></span>
 
- | undefined
+
+                
+                    <br>(defaults to [0, 0])
                 
             
             </td>
 
             <td class="description last">
-                <p>Fill pattern image offset in pixels.</p>
+                <p>Offset, which, together with the size and the offset origin, define the
+sub-rectangle to use from the original fill pattern image.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>fill-pattern-offset-origin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_Icon.html#~IconOrigin">IconOrigin</a></span>
+
+
+                
+                    <br>(defaults to 'top-left')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Origin of the offset: <code>bottom-left</code>, <code>bottom-right</code>,
+<code>top-left</code> or <code>top-right</code>. (WebGL only)</p>
                 
             </td>
         </tr>
@@ -1339,10 +1392,7 @@ the y value in pixels.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_color.html#~Color">Color</a></span>
-|
-
-<span class="param-type">string</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~ColorExpression">ColorExpression</a></span>
 
  | undefined
                 
@@ -1394,7 +1444,7 @@ See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_imag
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~SizeExpression">SizeExpression</a></span>
 
 
                 
@@ -1521,7 +1571,7 @@ sub-rectangle to use from the original icon image.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
  | undefined
                 
@@ -1530,7 +1580,7 @@ sub-rectangle to use from the original icon image.</p>
 
             <td class="description last">
                 <p>Width of the icon. If not specified, the actual image width will be used. Cannot be combined
-with <code>scale</code>.</p>
+with <code>scale</code>. (Expressions only in WebGL)</p>
                 
             </td>
         </tr>
@@ -1545,7 +1595,7 @@ with <code>scale</code>.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
  | undefined
                 
@@ -1554,7 +1604,7 @@ with <code>scale</code>.</p>
 
             <td class="description last">
                 <p>Height of the icon. If not specified, the actual image height will be used. Cannot be combined
-with <code>scale</code>.</p>
+with <code>scale</code>. (Expressions only in WebGL)</p>
                 
             </td>
         </tr>
@@ -1604,7 +1654,7 @@ with <code>scale</code>.</p>
             </td>
 
             <td class="description last">
-                <p>Whether to rotate the icon with the view.</p>
+                <p>Whether to rotate the icon with the view. (Expressions only supported in Canvas)</p>
                 
             </td>
         </tr>
@@ -1619,7 +1669,7 @@ with <code>scale</code>.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_size.html#~Size">Size</a></span>
+<span class="param-type"><a href="module-ol_style_flat.html#~SizeExpression">SizeExpression</a></span>
 
  | undefined
                 
@@ -1628,7 +1678,7 @@ with <code>scale</code>.</p>
 
             <td class="description last">
                 <p>Icon size in pixel. Can be used together with <code>icon-offset</code> to define the
-sub-rectangle to use from the origin (sprite) icon image.</p>
+sub-rectangle to use from the origin (sprite) icon image. (Expressions only in WebGL)</p>
                 
             </td>
         </tr>
@@ -1651,7 +1701,7 @@ sub-rectangle to use from the origin (sprite) icon image.</p>
             </td>
 
             <td class="description last">
-                <p>Declutter mode</p>
+                <p>Declutter mode (Canvas only)</p>
                 
             </td>
         </tr>
@@ -1674,7 +1724,7 @@ sub-rectangle to use from the origin (sprite) icon image.</p>
             </td>
 
             <td class="description last">
-                <p>The zIndex of the style.</p>
+                <p>The zIndex of the style. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -1727,7 +1777,7 @@ sub-rectangle to use from the origin (sprite) icon image.</p>
 <dd class="">
     
     <div class="description">
-        <p>Regular shape style properties for rendering point features.  At least <code>shape-points</code> must be provided.</p>
+        <p>Regular shape style properties for rendering point features. At least <code>shape-points</code> must be provided.</p>
     </div>
     
 
@@ -1763,7 +1813,7 @@ sub-rectangle to use from the origin (sprite) icon image.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
  | undefined
                 
@@ -1772,7 +1822,7 @@ sub-rectangle to use from the origin (sprite) icon image.</p>
 
             <td class="description last">
                 <p>Number of points for stars and regular polygons. In case of a polygon, the number of points
-is the number of sides.</p>
+is the number of sides. (Expressions only in WebGL)</p>
                 
             </td>
         </tr>
@@ -1866,7 +1916,7 @@ is the number of sides.</p>
             </td>
 
             <td class="description last">
-                <p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>.</p>
+                <p>Line cap style: <code>butt</code>, <code>round</code>, or <code>square</code>. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -1891,7 +1941,7 @@ is the number of sides.</p>
             </td>
 
             <td class="description last">
-                <p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>.</p>
+                <p>Line join style: <code>bevel</code>, <code>round</code>, or <code>miter</code>. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -1914,7 +1964,7 @@ is the number of sides.</p>
             </td>
 
             <td class="description last">
-                <p>Line dash pattern.</p>
+                <p>Line dash pattern. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -1939,7 +1989,7 @@ is the number of sides.</p>
             </td>
 
             <td class="description last">
-                <p>Line dash offset.</p>
+                <p>Line dash offset. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -1964,7 +2014,7 @@ is the number of sides.</p>
             </td>
 
             <td class="description last">
-                <p>Miter limit.</p>
+                <p>Miter limit. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -1979,7 +2029,7 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
  | undefined
                 
@@ -1987,7 +2037,7 @@ is the number of sides.</p>
             </td>
 
             <td class="description last">
-                <p>Radius of a regular polygon.</p>
+                <p>Radius of a regular polygon. (Expressions only in WebGL)</p>
                 
             </td>
         </tr>
@@ -2002,7 +2052,7 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
  | undefined
                 
@@ -2010,7 +2060,7 @@ is the number of sides.</p>
             </td>
 
             <td class="description last">
-                <p>Second radius to make a star instead of a regular polygon.</p>
+                <p>Second radius to make a star instead of a regular polygon. (Expressions only in WebGL)</p>
                 
             </td>
         </tr>
@@ -2025,7 +2075,7 @@ is the number of sides.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
@@ -2035,7 +2085,7 @@ is the number of sides.</p>
             </td>
 
             <td class="description last">
-                <p>Shape's angle in radians. A value of 0 will have one of the shape's point facing up.</p>
+                <p>Shape's angle in radians. A value of 0 will have one of the shape's point facing up. (Expressions only in WebGL)</p>
                 
             </td>
         </tr>
@@ -2061,6 +2111,29 @@ is the number of sides.</p>
 
             <td class="description last">
                 <p>Displacement of the shape</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>shape-opacity</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Shape opacity. (WebGL only)</p>
                 
             </td>
         </tr>
@@ -2110,7 +2183,7 @@ is the number of sides.</p>
             </td>
 
             <td class="description last">
-                <p>Whether to rotate the shape with the view.</p>
+                <p>Whether to rotate the shape with the view. (Expression only supported in Canvas)</p>
                 
             </td>
         </tr>
@@ -2135,7 +2208,7 @@ is the number of sides.</p>
             </td>
 
             <td class="description last">
-                <p>Scale. Unless two dimensional scaling is required a better
+                <p>Scale. Unless two-dimensional scaling is required a better
 result may be obtained with appropriate settings for <code>shape-radius</code> and <code>shape-radius2</code>.</p>
                 
             </td>
@@ -2159,7 +2232,7 @@ result may be obtained with appropriate settings for <code>shape-radius</code> a
             </td>
 
             <td class="description last">
-                <p>Declutter mode.</p>
+                <p>Declutter mode. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -2182,7 +2255,7 @@ result may be obtained with appropriate settings for <code>shape-radius</code> a
             </td>
 
             <td class="description last">
-                <p>The zIndex of the style.</p>
+                <p>The zIndex of the style. (Canvas only)</p>
                 
             </td>
         </tr>
@@ -2235,7 +2308,7 @@ result may be obtained with appropriate settings for <code>shape-radius</code> a
 <dd class="">
     
     <div class="description">
-        <p>Stroke style properties applied to line strings and polygon boundaries.  To apply a stroke, at least one of
+        <p>Stroke style properties applied to line strings and polygon boundaries. To apply a stroke, at least one of
 <code>stroke-color</code> or <code>stroke-width</code> must be provided.</p>
     </div>
     
@@ -2435,6 +2508,153 @@ result may be obtained with appropriate settings for <code>shape-radius</code> a
 
         <tr>
             
+                <td class="name"><code>stroke-offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Stroke offset in pixel. A positive value offsets the line to the right,
+relative to the direction of the line. (WebGL only)</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stroke-pattern-src</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Stroke pattern image source URI. If <code>stroke-color</code> is defined as well,
+it will be used to tint this image. (WebGL only)</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stroke-pattern-offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~SizeExpression">SizeExpression</a></span>
+
+
+                
+                    <br>(defaults to [0, 0])
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Offset, which, together with the size and the offset origin,
+define the sub-rectangle to use from the original fill pattern image. (WebGL only)</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stroke-pattern-offset-origin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_Icon.html#~IconOrigin">IconOrigin</a></span>
+
+
+                
+                    <br>(defaults to 'top-left')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Origin of the offset: <code>bottom-left</code>, <code>bottom-right</code>,
+<code>top-left</code> or <code>top-right</code>. (WebGL only)</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stroke-pattern-size</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~SizeExpression">SizeExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Stroke pattern image size in pixel. Can be used together with <code>stroke-pattern-offset</code> to define the
+sub-rectangle to use from the origin (sprite) fill pattern image. (WebGL only)</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stroke-pattern-spacing</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Spacing between each pattern occurrence in pixels; 0 if undefined.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
                 <td class="name"><code>z-index</code></td>
             
 
@@ -2603,7 +2823,8 @@ can be called with an object literal that has fill, stroke, text, icon, regular 
 <dd class="">
     
     <div class="description">
-        <p>Label style properties applied to all features.  At a minimum, a <code>text-value</code> must be provided.</p>
+        <p>Label style properties applied to all features. At a minimum, a <code>text-value</code> must be provided.
+Note: text style is currently not supported in WebGL layers</p>
     </div>
     
 
@@ -3582,7 +3803,7 @@ values in the array is <code>[top, right, bottom, left]</code>.</p>
 <dd class="">
     
     <div class="description">
-        <p>A rule is used to conditionally apply a style.  If the rule's filter evaluates to true,
+        <p>A rule is used to conditionally apply a style. If the rule's filter evaluates to true,
 the style will be applied.</p>
     </div>
     
@@ -3654,7 +3875,7 @@ the style will be applied.</p>
 
             <td class="description last">
                 <p>The filter used
-to determine if a style applies.  If no filter is included, the rule always applies
+to determine if a style applies. If no filter is included, the rule always applies
 (unless it is an else rule).</p>
                 
             </td>

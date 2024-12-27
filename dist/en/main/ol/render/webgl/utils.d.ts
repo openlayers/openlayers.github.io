@@ -82,7 +82,22 @@ export function colorEncodeId(id: number, array?: Array<number>): Array<number>;
  * @return {number} Decoded id
  */
 export function colorDecodeId(color: Array<number>): number;
+/**
+ * @typedef {import('./VectorStyleRenderer.js').AsShaders} StyleAsShaders
+ */
+/**
+ * @typedef {import('./VectorStyleRenderer.js').AsRule} StyleAsRule
+ */
+/**
+ * Takes in either a Flat Style or an array of shaders (used as input for the webgl vector layer classes)
+ * and breaks it down into separate styles to be used by the VectorStyleRenderer class.
+ * @param {import('../../style/flat.js').FlatStyleLike | Array<StyleAsShaders> | StyleAsShaders} style Flat style or shaders
+ * @return {Array<StyleAsShaders | StyleAsRule>} Separate styles as shaders or rules with a single flat style and a filter
+ */
+export function breakDownFlatStyle(style: import("../../style/flat.js").FlatStyleLike | Array<StyleAsShaders> | StyleAsShaders): Array<StyleAsShaders | StyleAsRule>;
 export const LINESTRING_ANGLE_COSINE_CUTOFF: 0.985;
+export type StyleAsShaders = import("./VectorStyleRenderer.js").AsShaders;
+export type StyleAsRule = import("./VectorStyleRenderer.js").AsRule;
 /**
  * An object holding positions both in an index and a vertex buffer.
  */
