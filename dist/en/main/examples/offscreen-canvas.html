@@ -554,10 +554,13 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
   frameState.layerStatesArray &#x3D; layers.map((l) &#x3D;&gt; l.getLayerState());
   layers.forEach((layer) &#x3D;&gt; {
     if (inView(layer.getLayerState(), frameState.viewState)) {
+      const renderer &#x3D; layer.getRenderer();
+      if (!renderer.prepareFrame(frameState)) {
+        return;
+      }
       if (layer.getDeclutter() &amp;&amp; !frameState.declutterTree) {
         frameState.declutter &#x3D; {};
       }
-      const renderer &#x3D; layer.getRenderer();
       renderer.renderFrame(frameState, canvas);
     }
   });
