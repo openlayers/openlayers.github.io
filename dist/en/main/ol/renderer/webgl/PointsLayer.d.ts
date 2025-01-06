@@ -1,4 +1,6 @@
 export default WebGLPointsLayerRenderer;
+export type Point = import("../../geom/Point.js").default;
+export type PointFeature = import("../../Feature").default<Point>;
 /**
  * A description of a custom attribute to be passed on to the GPU, with a value different
  * for each feature.
@@ -12,7 +14,7 @@ export type CustomAttribute = {
      * This callback computes the numerical value of the
      * attribute for a given feature (properties are available as 2nd arg for quicker access).
      */
-    callback: (arg0: import("../../Feature").default, arg1: {
+    callback: (arg0: PointFeature, arg1: {
         [x: string]: any;
     }) => number;
 };
@@ -24,7 +26,7 @@ export type FeatureCacheItem = {
     /**
      * Feature
      */
-    feature: import("../../Feature").default;
+    feature: PointFeature;
     /**
      * Feature properties
      */
@@ -32,9 +34,9 @@ export type FeatureCacheItem = {
         [x: string]: any;
     };
     /**
-     * Feature geometry
+     * Point coordinates
      */
-    geometry: import("../../geom").Geometry;
+    flatCoordinates: import("../../coordinate.js").Coordinate;
 };
 export type Options = {
     /**
@@ -73,19 +75,21 @@ export type Options = {
      */
     postProcesses?: import("./Layer.js").PostProcessesOptions[] | undefined;
 };
+/** @typedef {import("../../geom/Point.js").default} Point */
+/** @typedef {import("../../Feature").default<Point>} PointFeature */
 /**
  * @typedef {Object} CustomAttribute A description of a custom attribute to be passed on to the GPU, with a value different
  * for each feature.
  * @property {string} name Attribute name.
- * @property {function(import("../../Feature").default, Object<string, *>):number} callback This callback computes the numerical value of the
+ * @property {function(PointFeature, Object<string, *>):number} callback This callback computes the numerical value of the
  * attribute for a given feature (properties are available as 2nd arg for quicker access).
  */
 /**
  * @typedef {Object} FeatureCacheItem Object that holds a reference to a feature, its geometry and properties. Used to optimize
  * rebuildBuffers by accessing these objects quicker.
- * @property {import("../../Feature").default} feature Feature
+ * @property {PointFeature} feature Feature
  * @property {Object<string, *>} properties Feature properties
- * @property {import("../../geom").Geometry} geometry Feature geometry
+ * @property {import("../../coordinate.js").Coordinate} flatCoordinates Point coordinates
  */
 /**
  * @typedef {Object} Options
