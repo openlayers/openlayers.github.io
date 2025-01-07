@@ -208,7 +208,7 @@ Choose a predefined style from the list below or edit it as JSON manually.
 import View from &#x27;ol/View.js&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
 import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
-import WebGLPointsLayer from &#x27;ol/layer/WebGLPoints.js&#x27;;
+import WebGLVectorLayer from &#x27;ol/layer/WebGLVector.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
 import Vector from &#x27;ol/source/Vector.js&#x27;;
 
@@ -366,7 +366,7 @@ map.on(&#x27;pointermove&#x27;, function (ev) {
 
 function refreshLayer(newStyle) {
   const previousLayer &#x3D; pointsLayer;
-  pointsLayer &#x3D; new WebGLPointsLayer({
+  pointsLayer &#x3D; new WebGLVectorLayer({
     source: vectorSource,
     style: newStyle,
   });

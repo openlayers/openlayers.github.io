@@ -206,12 +206,12 @@
 
       <div class="row-fluid">
         <p id="shortdesc">Using WebGL to filter large quantities of features</p>
-        <div id="docs"><p>This example shows how to use <code>ol/layer/WebGLPoints</code> with a literal style to dynamically filter a large amount
+        <div id="docs"><p>This example shows how to use <code>ol/layer/WebGLVector</code> with a literal style to dynamically filter a large amount
   of point geometries. The above map is based on a dataset from the NASA containing 45k recorded meteorite
   landing sites. Each meteorite is marked by a circle on the map (the bigger the circle, the heavier
   the object). A pulse effect has been added, which is slightly offset by the year of the impact.</p>
 <p>Adjusting the sliders causes the objects outside of the date range to be filtered out of the map. This is done
-  by mutating the variables in the <code>style</code> object provided to the WebGL layer. Also note that the last snippet
+  by mutating the variables used by the <code>style</code> object provided to the WebGL layer. Also note that the last snippet
   of code is necessary to make sure the map refreshes itself every frame.</p>
 </div>
       </div>
@@ -223,7 +223,7 @@ import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import Point from &#x27;ol/geom/Point.js&#x27;;
 import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
-import WebGLPointsLayer from &#x27;ol/layer/WebGLPoints.js&#x27;;
+import WebGLVectorLayer from &#x27;ol/layer/WebGLVector.js&#x27;;
 import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 import StadiaMaps from &#x27;ol/source/StadiaMaps.js&#x27;;
 import Vector from &#x27;ol/source/Vector.js&#x27;;
@@ -271,17 +271,6 @@ const style &#x3D; {
   &#x27;circle-opacity&#x27;: [&#x27;-&#x27;, 1.0, [&#x27;*&#x27;, animRatio, 0.75]],
 };
 
-const pointsLayer &#x3D; new WebGLPointsLayer({
-  variables: {
-    minYear: 1850,
-    maxYear: 2015,
-  },
-  style,
-  filter: [&#x27;between&#x27;, [&#x27;get&#x27;, &#x27;year&#x27;], [&#x27;var&#x27;, &#x27;minYear&#x27;], [&#x27;var&#x27;, &#x27;maxYear&#x27;]],
-  source: vectorSource,
-  disableHitDetection: true,
-});
-
 // handle input values &amp; events
 const minYearInput &#x3D; document.getElementById(&#x27;min-year&#x27;);
 const maxYearInput &#x3D; document.getElementById(&#x27;max-year&#x27;);
@@ -292,12 +281,30 @@ function updateStatusText() {
   div.querySelector(&#x27;span.max-year&#x27;).textContent &#x3D; maxYearInput.value;
 }
 
+const pointsLayer &#x3D; new WebGLVectorLayer({
+  variables: {
+    minYear: parseInt(minYearInput.value),
+    maxYear: parseInt(maxYearInput.value),
+  },
+  style: {
+    style,
+    filter: [
+      &#x27;between&#x27;,
+      [&#x27;get&#x27;, &#x27;year&#x27;],
+      [&#x27;var&#x27;, &#x27;minYear&#x27;],
+      [&#x27;var&#x27;, &#x27;maxYear&#x27;],
+    ],
+  },
+  source: vectorSource,
+  disableHitDetection: true,
+});
+
 minYearInput.addEventListener(&#x27;input&#x27;, function () {
   pointsLayer.updateStyleVariables({minYear: parseInt(minYearInput.value)});
   updateStatusText();
 });
 maxYearInput.addEventListener(&#x27;input&#x27;, function () {
-  pointsLayer.updateStyleVariables({maxYear: parseInt(minYearInput.value)});
+  pointsLayer.updateStyleVariables({maxYear: parseInt(maxYearInput.value)});
   updateStatusText();
 });
 updateStatusText();
