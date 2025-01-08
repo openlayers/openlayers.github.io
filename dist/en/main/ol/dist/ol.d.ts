@@ -524,6 +524,7 @@ declare namespace ol {
         export { $ol$layer$WebGLPoints as WebGLPoints };
         export { $ol$layer$WebGLTile as WebGLTile };
         export { $ol$layer$WebGLVector as WebGLVector };
+        export { $ol$layer$WebGLVectorTile as WebGLVectorTile };
     }
     export namespace loadingstrategy {
         export { _ol_loadingstrategy$all as all };
@@ -1441,6 +1442,7 @@ import $ol$layer$VectorTile from '../../ol/layer/VectorTile.js';
 import $ol$layer$WebGLPoints from '../../ol/layer/WebGLPoints.js';
 import $ol$layer$WebGLTile from '../../ol/layer/WebGLTile.js';
 import $ol$layer$WebGLVector from '../../ol/layer/WebGLVector.js';
+import $ol$layer$WebGLVectorTile from '../../ol/layer/WebGLVectorTile.js';
 import { all as _ol_loadingstrategy$all } from '../../ol/loadingstrategy.js';
 import { bbox as _ol_loadingstrategy$bbox } from '../../ol/loadingstrategy.js';
 import { tile as _ol_loadingstrategy$tile } from '../../ol/loadingstrategy.js';
