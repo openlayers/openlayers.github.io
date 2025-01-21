@@ -123,6 +123,18 @@ declare class CanvasBuilder extends VectorContext {
      */
     reverseHitDetectionInstructions(): void;
     /**
+     * @param {import("../../style/Fill.js").default} fillStyle Fill style.
+     * @param {import('../canvas.js').FillStrokeState} [state] State.
+     * @return {import('../canvas.js').FillStrokeState} State.
+     */
+    fillStyleToState(fillStyle: import("../../style/Fill.js").default, state?: import("../canvas.js").FillStrokeState): import("../canvas.js").FillStrokeState;
+    /**
+     * @param {import("../../style/Stroke.js").default} strokeStyle Stroke style.
+     * @param {import("../canvas.js").FillStrokeState} state State.
+     * @return {import("../canvas.js").FillStrokeState} State.
+     */
+    strokeStyleToState(strokeStyle: import("../../style/Stroke.js").default, state?: import("../canvas.js").FillStrokeState): import("../canvas.js").FillStrokeState;
+    /**
      * @param {import("../canvas.js").FillStrokeState} state State.
      * @return {Array<*>} Fill instruction.
      */
