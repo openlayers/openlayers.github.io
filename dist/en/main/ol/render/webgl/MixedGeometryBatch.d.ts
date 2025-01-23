@@ -168,7 +168,7 @@ declare class MixedGeometryBatch {
     private uidToRef_;
     /**
      * The precision in WebGL shaders is limited.
-     * To keep the refs as small as possible we maintain an array of returned references.
+     * To keep the refs as small as possible we maintain an array of freed up references.
      * @type {Array<number>}
      * @private
      */
@@ -259,6 +259,14 @@ declare class MixedGeometryBatch {
      * @return {Feature|RenderFeature} feature
      */
     getFeatureFromRef(ref: number): Feature | RenderFeature;
+    isEmpty(): boolean;
+    /**
+     * Will return a new instance of this class that only contains the features
+     * for which the provided callback returned true
+     * @param {function((Feature|RenderFeature)): boolean} featureFilter Feature filter callback
+     * @return {MixedGeometryBatch} Filtered geometry batch
+     */
+    filter(featureFilter: (arg0: (Feature | RenderFeature)) => boolean): MixedGeometryBatch;
 }
 import RenderFeature from '../../render/Feature.js';
 //# sourceMappingURL=MixedGeometryBatch.d.ts.map

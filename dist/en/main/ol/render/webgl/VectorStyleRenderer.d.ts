@@ -177,8 +177,9 @@ declare class VectorStyleRenderer {
      * @param {import('../../style/flat.js').StyleVariables} variables Style variables
      * @param {import('../../webgl/Helper.js').default} helper Helper
      * @param {boolean} [enableHitDetection] Whether to enable the hit detection (needs compatible shader)
+     * @param {import("../../expr/expression.js").ExpressionValue} [filter] Optional filter expression
      */
-    constructor(styleOrShaders: VectorStyle, variables: import("../../style/flat.js").StyleVariables, helper: import("../../webgl/Helper.js").default, enableHitDetection?: boolean);
+    constructor(styleOrShaders: VectorStyle, variables: import("../../style/flat.js").StyleVariables, helper: import("../../webgl/Helper.js").default, enableHitDetection?: boolean, filter?: import("../../expr/expression.js").ExpressionValue);
     /**
      * @private
      * @type {import('../../webgl/Helper.js').default}
@@ -243,6 +244,11 @@ declare class VectorStyleRenderer {
      */
     private symbolFragmentShader_;
     /**
+     * @type {function(import('../../Feature.js').FeatureLike): boolean}
+     * @private
+     */
+    private featureFilter_;
+    /**
      * @private
      */
     private customAttributes_;
@@ -266,11 +272,18 @@ declare class VectorStyleRenderer {
      */
     private pointAttributesDesc_;
     /**
+     * Will apply the style filter when generating geometry batches (if it can be evaluated outside a map context)
+     * @param {import("../../expr/expression.js").ExpressionValue} filter Style filter
+     * @return {function(import('../../Feature.js').FeatureLike): boolean} Feature filter
+     * @private
+     */
+    private computeFeatureFilter;
+    /**
      * @param {import('./MixedGeometryBatch.js').default} geometryBatch Geometry batch
      * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
-     * @return {Promise<WebGLBuffers>} A promise resolving to WebGL buffers
+     * @return {Promise<WebGLBuffers|null>} A promise resolving to WebGL buffers; returns null if buffers are empty
      */
-    generateBuffers(geometryBatch: import("./MixedGeometryBatch.js").default, transform: import("../../transform.js").Transform): Promise<WebGLBuffers>;
+    generateBuffers(geometryBatch: import("./MixedGeometryBatch.js").default, transform: import("../../transform.js").Transform): Promise<WebGLBuffers | null>;
     /**
      * @param {import('./MixedGeometryBatch.js').default} geometryBatch Geometry batch
      * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates

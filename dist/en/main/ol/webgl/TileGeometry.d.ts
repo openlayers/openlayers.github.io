@@ -34,6 +34,11 @@ declare class TileGeometry extends BaseTileRepresentation<import("../VectorRende
      * @private
      */
     private generateMaskBuffer_;
+    /**
+     * Will release a set of Webgl buffers
+     * @param {import('../render/webgl/VectorStyleRenderer.js').WebGLBuffers} buffers Buffers
+     */
+    disposeBuffers(buffers: import("../render/webgl/VectorStyleRenderer.js").WebGLBuffers): void;
 }
 import BaseTileRepresentation from './BaseTileRepresentation.js';
 import WebGLArrayBuffer from './Buffer.js';
