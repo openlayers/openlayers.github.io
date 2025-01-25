@@ -29,7 +29,7 @@ declare class VectorTile<FeatureType extends import("./Feature.js").FeatureLike>
     private features_;
     /**
      * @private
-     * @type {import("./featureloader.js").FeatureLoader<FeatureType>}
+     * @type {import("./featureloader.js").FeatureLoader}
      */
     private loader_;
     /**

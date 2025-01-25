@@ -294,7 +294,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     un: VectorSourceOnSignature<void>;
     /**
      * @private
-     * @type {import("../featureloader.js").FeatureLoader<FeatureType>}
+     * @type {import("../featureloader.js").FeatureLoader<import("../Feature.js").FeatureLike>}
      */
     private loader_;
     /**
@@ -641,10 +641,10 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     /**
      * Set the new loader of the source. The next render cycle will use the
      * new loader.
-     * @param {import("../featureloader.js").FeatureLoader<FeatureType>} loader The loader to set.
+     * @param {import("../featureloader.js").FeatureLoader} loader The loader to set.
      * @api
      */
-    setLoader(loader: import("../featureloader.js").FeatureLoader<FeatureType>): void;
+    setLoader(loader: import("../featureloader.js").FeatureLoader): void;
     /**
      * Points the source to a new url. The next render cycle will use the new url.
      * @param {string|import("../featureloader.js").FeatureUrlFunction} url Url.

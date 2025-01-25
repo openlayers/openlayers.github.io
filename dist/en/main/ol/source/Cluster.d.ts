@@ -1,5 +1,6 @@
 export default Cluster;
-export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
+export type GeometryFunction<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").FeatureLike> = (feature: FeatureType) => (Point | null);
+export type Options<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom/Geometry.js").default>> = {
     /**
      * Attributions.
      */
@@ -31,7 +32,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
      * See {@link module :ol/geom/Polygon~Polygon#getInteriorPoint} for a way to get a cluster
      * calculation point for polygons.
      */
-    geometryFunction?: ((arg0: FeatureType) => (Point | null)) | undefined;
+    geometryFunction?: GeometryFunction<FeatureType> | undefined;
     /**
      * Function that takes the cluster's center {@link module :ol/geom/Point~Point} and an array
      * of {@link module :ol/Feature~Feature} included in this cluster. Must return a
@@ -56,7 +57,11 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
     wrapX?: boolean | undefined;
 };
 /**
- * @template {import("../Feature.js").FeatureLike} FeatureType
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").FeatureLike]
+ * @typedef {(feature: FeatureType) => (Point|null)} GeometryFunction
+ */
+/**
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
  * @typedef {Object} Options
  * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
  * @property {number} [distance=20] Distance in pixels within which features will
@@ -66,7 +71,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
  * By default no minimum distance is guaranteed. This config can be used to avoid
  * overlapping icons. As a tradoff, the cluster feature's position will no longer be
  * the center of all its features.
- * @property {function(FeatureType):(Point|null)} [geometryFunction]
+ * @property {GeometryFunction<FeatureType>} [geometryFunction]
  * Function that takes a {@link module:ol/Feature~Feature} as argument and returns a
  * {@link module:ol/geom/Point~Point} as cluster calculation point for the feature. When a
  * feature should not be considered for clustering, the function should return
@@ -104,10 +109,10 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike> = {
  * source `setSource(null)` has to be called to remove the listener reference
  * from the wrapped source.
  * @api
- * @template {import('../Feature.js').FeatureLike} FeatureType
+ * @template {import('../Feature.js').FeatureLike} [FeatureType=import('../Feature.js').default]
  * @extends {VectorSource<Feature<import("../geom/Geometry.js").default>>}
  */
-declare class Cluster<FeatureType extends import("../Feature.js").FeatureLike> extends VectorSource<Feature<import("../geom/Geometry.js").default>> {
+declare class Cluster<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom/Geometry.js").default>> extends VectorSource<Feature<import("../geom/Geometry.js").default>> {
     /**
      * @param {Options<FeatureType>} [options] Cluster options.
      */
@@ -138,11 +143,10 @@ declare class Cluster<FeatureType extends import("../Feature.js").FeatureLike> e
      */
     protected features: Array<Feature>;
     /**
-     * @param {FeatureType} feature Feature.
-     * @return {Point} Cluster calculation point.
+     * @type {GeometryFunction<import("../Feature.js").FeatureLike>}
      * @protected
      */
-    protected geometryFunction: (arg0: FeatureType) => (Point | null);
+    protected geometryFunction: GeometryFunction<import("../Feature.js").FeatureLike>;
     /**
      * @type {function(Point, Array<FeatureType>):Feature}
      * @private
