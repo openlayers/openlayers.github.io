@@ -832,6 +832,9 @@ declare namespace ol {
         export namespace mapguide {
             export { _ol_source_mapguide$createLoader as createLoader };
         }
+        export namespace mapserver {
+            export { _ol_source_mapserver$createLoader as createLoader };
+        }
         export namespace ogcTileUtil {
             export { _ol_source_ogcTileUtil$appendCollectionsQueryParam as appendCollectionsQueryParam };
             export { _ol_source_ogcTileUtil$getMapTileUrlTemplate as getMapTileUrlTemplate };
@@ -1680,6 +1683,7 @@ import { getRequestUrl as _ol_source_arcgisRest$getRequestUrl } from '../../ol/s
 import { DECIMALS as _ol_source_common$DECIMALS } from '../../ol/source/common.js';
 import { DEFAULT_WMS_VERSION as _ol_source_common$DEFAULT_WMS_VERSION } from '../../ol/source/common.js';
 import { createLoader as _ol_source_mapguide$createLoader } from '../../ol/source/mapguide.js';
+import { createLoader as _ol_source_mapserver$createLoader } from '../../ol/source/mapserver.js';
 import { appendCollectionsQueryParam as _ol_source_ogcTileUtil$appendCollectionsQueryParam } from '../../ol/source/ogcTileUtil.js';
 import { getMapTileUrlTemplate as _ol_source_ogcTileUtil$getMapTileUrlTemplate } from '../../ol/source/ogcTileUtil.js';
 import { getTileSetInfo as _ol_source_ogcTileUtil$getTileSetInfo } from '../../ol/source/ogcTileUtil.js';
