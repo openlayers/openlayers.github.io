@@ -51,6 +51,27 @@ export type Options = {
     source?: import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>> | undefined;
 };
 /**
+ * Information about the last snapped state.
+ */
+export type SnappedInfo = {
+    /**
+     * - The snapped vertex.
+     */
+    vertex: import("../coordinate.js").Coordinate | null;
+    /**
+     * - The pixel of the snapped vertex.
+     */
+    vertexPixel: import("../coordinate.js").Coordinate | null;
+    /**
+     * - The feature being snapped.
+     */
+    feature: import("../Feature.js").default | null;
+    /**
+     * - Segment, or `null` if snapped to a vertex.
+     */
+    segment: Array<import("../coordinate.js").Coordinate> | null;
+};
+/**
  * *
  */
 export type SnapOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"snap", SnapEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "snap", Return>;
@@ -161,6 +182,12 @@ declare class Snap extends PointerInteraction {
      */
     private rBush_;
     /**
+     * Holds information about the last snapped state.
+     * @type {SnappedInfo|null}
+     * @private
+     */
+    private snapped_;
+    /**
      * @const
      * @private
      * @type {Object<string, function(Array<Array<import('../coordinate.js').Coordinate>>, import("../geom/Geometry.js").default): void>}
@@ -179,6 +206,16 @@ declare class Snap extends PointerInteraction {
      * @private
      */
     private getFeatures_;
+    /**
+     * Checks if two snap data sets are equal.
+     * Compares the segment and the feature.
+     *
+     * @param {SnappedInfo} data1 The first snap data set.
+     * @param {SnappedInfo} data2 The second snap data set.
+     * @return {boolean} `true` if the data sets are equal, otherwise `false`.
+     * @private
+     */
+    private areSnapDataEqual_;
     /**
      * @param {import("../source/Vector.js").VectorSourceEvent|import("../Collection.js").CollectionEvent<import("../Feature.js").default>} evt Event.
      * @private

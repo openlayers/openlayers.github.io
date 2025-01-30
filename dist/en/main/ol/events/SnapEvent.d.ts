@@ -1,6 +1,7 @@
 export type SnapEventType = string;
 export namespace SnapEventType {
     let SNAP: string;
+    let UNSNAP: string;
 }
 /**
  * @classdesc

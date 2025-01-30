@@ -260,6 +260,7 @@
           </div>
         </div>
         <div id="map" class="map"></div>
+<span id="snapped">Snapped: false</span>
 <form id="options-form" autocomplete="off">
   <div class="radio">
     <label>
@@ -432,6 +433,19 @@ ExampleModify.setActive(false);
 const snap &#x3D; new Snap({
   source: vector.getSource(),
 });
+
+const snappedElement &#x3D; document.getElementById(&#x27;snapped&#x27;);
+
+snap.on(&#x27;snap&#x27;, () &#x3D;&gt; {
+  document.getElementById(&#x27;map&#x27;).style.cursor &#x3D; &#x27;grabbing&#x27;;
+  snappedElement.innerHTML &#x3D; &#x27;Snapped: true&#x27;;
+});
+
+snap.on(&#x27;unsnap&#x27;, () &#x3D;&gt; {
+  document.getElementById(&#x27;map&#x27;).style.cursor &#x3D; &#x27;default&#x27;;
+  snappedElement.innerHTML &#x3D; &#x27;Snapped: false&#x27;;
+});
+
 map.addInteraction(snap);
 </code></pre>
       </div>
@@ -453,6 +467,7 @@ map.addInteraction(snap);
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
+    &lt;span id&#x3D;&quot;snapped&quot;&gt;Snapped: false&lt;/span&gt;
     &lt;form id&#x3D;&quot;options-form&quot; autocomplete&#x3D;&quot;off&quot;&gt;
       &lt;div class&#x3D;&quot;radio&quot;&gt;
         &lt;label&gt;
