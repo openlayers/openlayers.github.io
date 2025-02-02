@@ -36,12 +36,6 @@ export function fromString(s: string): Color;
  */
 export function asArray(color: Color | string): Color;
 /**
- * Exported for the tests.
- * @param {Color} color Color.
- * @return {Color} Clamped color.
- */
-export function normalize(color: Color): Color;
-/**
  * @param {Color} color Color.
  * @return {string} String.
  */

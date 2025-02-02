@@ -48,7 +48,6 @@ declare namespace ol {
         export { _ol_color$fromString as fromString };
         export { _ol_color$isStringColor as isStringColor };
         export { _ol_color$lchaToRgba as lchaToRgba };
-        export { _ol_color$normalize as normalize };
         export { _ol_color$rgbaToLcha as rgbaToLcha };
         export { _ol_color$toString as toString };
         export { _ol_color$withAlpha as withAlpha };
@@ -1065,7 +1064,6 @@ import { asString as _ol_color$asString } from '../../ol/color.js';
 import { fromString as _ol_color$fromString } from '../../ol/color.js';
 import { isStringColor as _ol_color$isStringColor } from '../../ol/color.js';
 import { lchaToRgba as _ol_color$lchaToRgba } from '../../ol/color.js';
-import { normalize as _ol_color$normalize } from '../../ol/color.js';
 import { rgbaToLcha as _ol_color$rgbaToLcha } from '../../ol/color.js';
 import { toString as _ol_color$toString } from '../../ol/color.js';
 import { withAlpha as _ol_color$withAlpha } from '../../ol/color.js';
