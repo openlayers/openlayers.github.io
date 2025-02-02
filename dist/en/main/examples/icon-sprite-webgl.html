@@ -282,11 +282,15 @@ const pointsLayer &#x3D; new WebGLVectorLayer({
     features: [],
     attributions: &#x27;National UFO Reporting Center&#x27;,
   }),
-  style,
-  filter: [
-    &#x27;any&#x27;,
-    [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;filterShape&#x27;], &#x27;all&#x27;],
-    [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;filterShape&#x27;], [&#x27;get&#x27;, &#x27;shape&#x27;]],
+  style: [
+    {
+      style,
+      filter: [
+        &#x27;any&#x27;,
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;filterShape&#x27;], &#x27;all&#x27;],
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;var&#x27;, &#x27;filterShape&#x27;], [&#x27;get&#x27;, &#x27;shape&#x27;]],
+      ],
+    },
   ],
 });
 

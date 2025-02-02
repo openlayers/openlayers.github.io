@@ -286,15 +286,17 @@ const pointsLayer &#x3D; new WebGLVectorLayer({
     minYear: parseInt(minYearInput.value),
     maxYear: parseInt(maxYearInput.value),
   },
-  style: {
-    style,
-    filter: [
-      &#x27;between&#x27;,
-      [&#x27;get&#x27;, &#x27;year&#x27;],
-      [&#x27;var&#x27;, &#x27;minYear&#x27;],
-      [&#x27;var&#x27;, &#x27;maxYear&#x27;],
-    ],
-  },
+  style: [
+    {
+      style,
+      filter: [
+        &#x27;between&#x27;,
+        [&#x27;get&#x27;, &#x27;year&#x27;],
+        [&#x27;var&#x27;, &#x27;minYear&#x27;],
+        [&#x27;var&#x27;, &#x27;maxYear&#x27;],
+      ],
+    },
+  ],
   source: vectorSource,
   disableHitDetection: true,
 });

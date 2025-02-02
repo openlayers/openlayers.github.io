@@ -121,6 +121,7 @@
         </div>
         <div id="map" class="map"></div>
 <p>
+  <div id="unsupported" style="background-color: lightcoral; text-align: center;"></div>
   <div>α : <code id="alpha"></code></div>
   <div>β : <code id="beta"></code></div>
   <div>γ : <code id="gamma"></code></div>
@@ -165,24 +166,30 @@ function el(id) {
 
 const gn &#x3D; new GyroNorm();
 
-gn.init().then(function () {
-  gn.start(function (event) {
-    const center &#x3D; view.getCenter();
-    const resolution &#x3D; view.getResolution();
-    const alpha &#x3D; toRadians(event.do.alpha);
-    const beta &#x3D; toRadians(event.do.beta);
-    const gamma &#x3D; toRadians(event.do.gamma);
+gn.init().then(
+  function () {
+    gn.start(function (event) {
+      const center &#x3D; view.getCenter();
+      const resolution &#x3D; view.getResolution();
+      const alpha &#x3D; toRadians(event.do.alpha);
+      const beta &#x3D; toRadians(event.do.beta);
+      const gamma &#x3D; toRadians(event.do.gamma);
 
-    el(&#x27;alpha&#x27;).innerText &#x3D; alpha + &#x27; [rad]&#x27;;
-    el(&#x27;beta&#x27;).innerText &#x3D; beta + &#x27; [rad]&#x27;;
-    el(&#x27;gamma&#x27;).innerText &#x3D; gamma + &#x27; [rad]&#x27;;
+      el(&#x27;alpha&#x27;).innerText &#x3D; alpha + &#x27; [rad]&#x27;;
+      el(&#x27;beta&#x27;).innerText &#x3D; beta + &#x27; [rad]&#x27;;
+      el(&#x27;gamma&#x27;).innerText &#x3D; gamma + &#x27; [rad]&#x27;;
 
-    center[0] -&#x3D; resolution * gamma * 25;
-    center[1] +&#x3D; resolution * beta * 25;
+      center[0] -&#x3D; resolution * gamma * 25;
+      center[1] +&#x3D; resolution * beta * 25;
 
-    view.setCenter(center);
-  });
-});
+      view.setCenter(center);
+    });
+  },
+  function (e) {
+    el(&#x27;unsupported&#x27;).innerText &#x3D;
+      typeof e &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? e : &#x27;Could not initialize sensors&#x27;;
+  },
+);
 </code></pre>
       </div>
 
@@ -204,6 +211,7 @@ gn.init().then(function () {
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
     &lt;p&gt;
+      &lt;div id&#x3D;&quot;unsupported&quot; style&#x3D;&quot;background-color: lightcoral; text-align: center;&quot;&gt;&lt;/div&gt;
       &lt;div&gt;α : &lt;code id&#x3D;&quot;alpha&quot;&gt;&lt;/code&gt;&lt;/div&gt;
       &lt;div&gt;β : &lt;code id&#x3D;&quot;beta&quot;&gt;&lt;/code&gt;&lt;/div&gt;
       &lt;div&gt;γ : &lt;code id&#x3D;&quot;gamma&quot;&gt;&lt;/code&gt;&lt;/div&gt;
