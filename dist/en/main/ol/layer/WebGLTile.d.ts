@@ -167,9 +167,9 @@ export type ParsedStyle = {
  */
 declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js").default<import("../DataTile.js").default | import("../ImageTile.js").default>, WebGLTileLayerRenderer<any>> {
     /**
-     * @param {Options} options Tile layer options.
+     * @param {Options} [options] Tile layer options.
      */
-    constructor(options: Options);
+    constructor(options?: Options);
     /**
      * @type {Array<SourceType>|function(import("../extent.js").Extent, number):Array<SourceType>}
      * @private

@@ -98,11 +98,12 @@ export type Options<VectorTileSourceType extends import("../source/VectorTile.js
      */
     declutter?: string | number | boolean | undefined;
     /**
-     * Layer style. When set to `null`, only
+     * Layer
+     * style. When set to `null`, only
      * features that have their own style will be rendered. See {@link module :ol/style/Style~Style} for the default style
      * which will be used if this is not set.
      */
-    style?: import("../style/Style.js").StyleLike | null | undefined;
+    style?: import("../style/Style.js").StyleLike | import("../style/flat.js").FlatStyleLike | null | undefined;
     /**
      * Background color for the layer. If not specified, no
      * background will be rendered.
@@ -204,7 +205,8 @@ export type Options<VectorTileSourceType extends import("../source/VectorTile.js
  * same `declutter` value will be decluttered together. The priority is determined by the drawing order of the
  * layers with the same `declutter` value. Higher in the layer stack means higher priority. To declutter distinct
  * layers or groups of layers separately, use different truthy values for `declutter`.
- * @property {import("../style/Style.js").StyleLike|null} [style] Layer style. When set to `null`, only
+ * @property {import("../style/Style.js").StyleLike|import("../style/flat.js").FlatStyleLike|null} [style] Layer
+ * style. When set to `null`, only
  * features that have their own style will be rendered. See {@link module:ol/style/Style~Style} for the default style
  * which will be used if this is not set.
  * @property {import("./Base.js").BackgroundColor} [background] Background color for the layer. If not specified, no
