@@ -298,7 +298,7 @@ const vector &#x3D; new VectorLayer({
 
 /**
  * Currently drawn feature.
- * @type {import(&quot;../src/ol/Feature.js&quot;).default}
+ * @type {import(&#x27;ol/Feature.js&#x27;).default}
  */
 let sketch;
 
@@ -340,7 +340,7 @@ const continueLineMsg &#x3D; &#x27;Click to continue drawing the line&#x27;;
 
 /**
  * Handle pointer move.
- * @param {import(&quot;../src/ol/MapBrowserEvent&quot;).default} evt The event.
+ * @param {import(&#x27;../src/ol/MapBrowserEvent&#x27;).default} evt The event.
  */
 const pointerMoveHandler &#x3D; function (evt) {
   if (evt.dragging) {
@@ -457,7 +457,7 @@ function addInteraction() {
     // set sketch
     sketch &#x3D; evt.feature;
 
-    /** @type {import(&quot;../src/ol/coordinate.js&quot;).Coordinate|undefined} */
+    /** @type {import(&#x27;ol/coordinate.js&#x27;).Coordinate|undefined} */
     let tooltipCoord &#x3D; evt.coordinate;
 
     listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function (evt) {

@@ -343,7 +343,7 @@ control.addEventListener(&#x27;input&#x27;, function () {
   const m &#x3D; time.start + time.duration * value;
   vectorSource.forEachFeature(function (feature) {
     const geometry &#x3D;
-      /** @type {import(&quot;../src/ol/geom/LineString.js&quot;).default} */ (
+      /** @type {import(&#x27;ol/geom/LineString.js&#x27;).default} */ (
         feature.getGeometry()
       );
     const coordinate &#x3D; geometry.getCoordinateAtM(m, true);
