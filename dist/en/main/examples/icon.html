@@ -370,7 +370,7 @@ map.on(&#x27;click&#x27;, function (evt) {
 // change mouse cursor when over marker
 map.on(&#x27;pointermove&#x27;, function (e) {
   const hit &#x3D; map.hasFeatureAtPixel(e.pixel);
-  map.getTarget().style.cursor &#x3D; hit ? &#x27;pointer&#x27; : &#x27;&#x27;;
+  map.getTargetElement().style.cursor &#x3D; hit ? &#x27;pointer&#x27; : &#x27;&#x27;;
 });
 // Close the popup when the map is moved
 map.on(&#x27;movestart&#x27;, disposePopover);

@@ -458,7 +458,7 @@ function addInteraction() {
     sketch &#x3D; evt.feature;
 
     /** @type {import(&#x27;ol/coordinate.js&#x27;).Coordinate|undefined} */
-    let tooltipCoord &#x3D; evt.coordinate;
+    let tooltipCoord;
 
     listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function (evt) {
       const geom &#x3D; evt.target;

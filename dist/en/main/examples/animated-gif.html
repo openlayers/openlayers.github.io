@@ -339,7 +339,7 @@ gif.frames(
 // change mouse cursor when over icon
 map.on(&#x27;pointermove&#x27;, function (e) {
   const hit &#x3D; map.hasFeatureAtPixel(e.pixel);
-  map.getTarget().style.cursor &#x3D; hit ? &#x27;pointer&#x27; : &#x27;&#x27;;
+  map.getTargetElement().style.cursor &#x3D; hit ? &#x27;pointer&#x27; : &#x27;&#x27;;
 });
 </code></pre>
       </div>

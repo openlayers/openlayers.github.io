@@ -495,7 +495,7 @@ const inputListener &#x3D; (event) &#x3D;&gt; {
   vector.updateStyleVariables(styleVariables);
   const valueSpan &#x3D; document.getElementById(&#x60;value-${variableName}&#x60;);
   if (valueSpan) {
-    valueSpan.textContent &#x3D; styleVariables[variableName];
+    valueSpan.textContent &#x3D; String(styleVariables[variableName]);
   }
   map.render();
 };

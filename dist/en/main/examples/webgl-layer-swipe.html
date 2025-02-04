@@ -184,7 +184,9 @@ imagery.on(&#x27;prerender&#x27;, function (event) {
   const bottomLeft &#x3D; getRenderPixel(event, [0, mapSize[1]]);
   const topRight &#x3D; getRenderPixel(event, [mapSize[0], 0]);
 
-  const width &#x3D; Math.round((topRight[0] - bottomLeft[0]) * (swipe.value / 100));
+  const width &#x3D; Math.round(
+    (topRight[0] - bottomLeft[0]) * (Number(swipe.value) / 100),
+  );
   const height &#x3D; topRight[1] - bottomLeft[1];
 
   gl.scissor(bottomLeft[0], bottomLeft[1], width, height);

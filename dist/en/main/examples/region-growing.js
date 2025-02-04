@@ -100,7 +100,6 @@ const imagery = new _src_ol_layer_Tile_js__WEBPACK_IMPORTED_MODULE_1__/* ["defau
     url: 'https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=' + key,
     tileSize: 512,
     maxZoom: 20,
-    crossOrigin: '',
   }),
 });
 

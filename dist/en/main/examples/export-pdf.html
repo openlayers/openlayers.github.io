@@ -232,7 +232,7 @@ exportButton.addEventListener(
     document.body.style.cursor &#x3D; &#x27;progress&#x27;;
 
     const format &#x3D; document.getElementById(&#x27;format&#x27;).value;
-    const resolution &#x3D; document.getElementById(&#x27;resolution&#x27;).value;
+    const resolution &#x3D; Number(document.getElementById(&#x27;resolution&#x27;).value);
     const dim &#x3D; dims[format];
     const width &#x3D; Math.round((dim[0] * resolution) / 25.4);
     const height &#x3D; Math.round((dim[1] * resolution) / 25.4);

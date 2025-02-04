@@ -201,7 +201,7 @@ const map &#x3D; new Map({
  */
 json(&#x27;data/topojson/us.json&#x27;).then(function (us) {
   const layer &#x3D; new CanvasLayer({
-    features: feature(us, us.objects.counties),
+    features: feature(us, &#x27;counties&#x27;),
   });
 
   map.addLayer(layer);

@@ -254,9 +254,9 @@ fetch(&#x27;data/geojson/roads-seoul.geojson&#x27;)
     const distance &#x3D; 0.2;
 
     // get the line length in kilometers
-    const lineLength &#x3D; length(turfLine, &#x27;kilometers&#x27;);
+    const lineLength &#x3D; length(turfLine, {units: &#x27;kilometers&#x27;});
     for (let i &#x3D; 1; i &lt;&#x3D; lineLength / distance; i++) {
-      const turfPoint &#x3D; along(turfLine, i * distance, &#x27;kilometers&#x27;);
+      const turfPoint &#x3D; along(turfLine, i * distance, {units: &#x27;kilometers&#x27;});
 
       // convert the generated point to a OpenLayers feature
       const marker &#x3D; format.readFeature(turfPoint);

@@ -281,8 +281,10 @@
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
+import {getBottomLeft, getTopRight} from &#x27;ol/extent.js&#x27;;
 import KML from &#x27;ol/format/KML.js&#x27;;
 import Polygon from &#x27;ol/geom/Polygon.js&#x27;;
+import {DEVICE_PIXEL_RATIO} from &#x27;ol/has.js&#x27;;
 import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
 import {toContext} from &#x27;ol/render.js&#x27;;
@@ -293,53 +295,28 @@ import Icon from &#x27;ol/style/Icon.js&#x27;;
 import Stroke from &#x27;ol/style/Stroke.js&#x27;;
 import Style from &#x27;ol/style/Style.js&#x27;;
 
-const symbol &#x3D; [
-  [0, 0],
-  [4, 2],
-  [6, 0],
-  [10, 5],
-  [6, 3],
-  [4, 5],
-  [0, 0],
-];
-let scale;
-const scaleFunction &#x3D; function (coordinate) {
-  return [coordinate[0] * scale, coordinate[1] * scale];
-};
+const getSymbolOutline &#x3D; (function () {
+  const path &#x3D; [
+    [0, 0],
+    [4, 2],
+    [6, 0],
+    [10, 5],
+    [6, 3],
+    [4, 5],
+    [0, 0],
+  ];
+  const symbolOutline &#x3D; new Polygon([path]);
+  symbolOutline.rotate(1.2, path[0]);
+  return function (scale, offset) {
+    const outline &#x3D; symbolOutline.clone();
+    outline.scale(scale, scale, path[0]);
+    const origin &#x3D; getBottomLeft(outline.getExtent());
+    outline.translate(offset - origin[0], offset - origin[1]);
+    return outline;
+  };
+})();
 
 const styleCache &#x3D; {};
-const styleFunction &#x3D; function (feature) {
-  // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
-  // standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
-  // the Placemark&#x27;s name instead.
-  const name &#x3D; feature.get(&#x27;name&#x27;);
-  const magnitude &#x3D; parseFloat(name.substr(2));
-  const size &#x3D; parseInt(10 + 40 * (magnitude - 5), 10);
-  scale &#x3D; size / 10;
-  let style &#x3D; styleCache[size];
-  if (!style) {
-    const canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
-    const vectorContext &#x3D; toContext(canvas.getContext(&#x27;2d&#x27;), {
-      size: [size, size],
-      pixelRatio: 1,
-    });
-    vectorContext.setStyle(
-      new Style({
-        fill: new Fill({color: &#x27;rgba(255, 153, 0, 0.4)&#x27;}),
-        stroke: new Stroke({color: &#x27;rgba(255, 204, 0, 0.2)&#x27;, width: 2}),
-      }),
-    );
-    vectorContext.drawGeometry(new Polygon([symbol.map(scaleFunction)]));
-    style &#x3D; new Style({
-      image: new Icon({
-        img: canvas,
-        rotation: 1.2,
-      }),
-    });
-    styleCache[size] &#x3D; style;
-  }
-  return style;
-};
 
 const vector &#x3D; new VectorLayer({
   source: new VectorSource({
@@ -348,7 +325,51 @@ const vector &#x3D; new VectorLayer({
       extractStyles: false,
     }),
   }),
-  style: styleFunction,
+  style: function (feature) {
+    const magnitude &#x3D; feature.get(&#x27;magnitude&#x27;);
+    let style &#x3D; styleCache[magnitude];
+    if (!style) {
+      const scale &#x3D; 1 + 4 * (magnitude - 5);
+      const lineWidth &#x3D; 2;
+      const outline &#x3D; getSymbolOutline(scale, Math.ceil(lineWidth / 2));
+      const canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+      const vectorContext &#x3D; toContext(canvas.getContext(&#x27;2d&#x27;), {
+        size: getTopRight(outline.getExtent()).map((n) &#x3D;&gt;
+          Math.ceil(n + lineWidth / 2),
+        ),
+        pixelRatio: DEVICE_PIXEL_RATIO,
+      });
+      vectorContext.setStyle(
+        new Style({
+          fill: new Fill({color: &#x27;rgba(255, 153, 0, 0.4)&#x27;}),
+          stroke: new Stroke({
+            color: &#x27;rgba(255, 204, 0, 0.2)&#x27;,
+            width: 2,
+          }),
+        }),
+      );
+      vectorContext.drawGeometry(outline);
+      style &#x3D; new Style({
+        image: new Icon({
+          img: canvas,
+          scale: 1 / DEVICE_PIXEL_RATIO,
+        }),
+      });
+      styleCache[magnitude] &#x3D; style;
+    }
+    return style;
+  },
+});
+// 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
+// standards-violating &lt;magnitude&gt; tag in each Placemark.  We extract it from
+// the Placemark&#x27;s name instead.
+function parseMagnitudeFromName(name) {
+  return parseFloat(name.substr(2));
+}
+vector.getSource().on(&#x27;featuresloadend&#x27;, function (evt) {
+  evt.features.forEach((f) &#x3D;&gt; {
+    f.set(&#x27;magnitude&#x27;, parseMagnitudeFromName(f.get(&#x27;name&#x27;)), true);
+  });
 });
 
 const raster &#x3D; new TileLayer({

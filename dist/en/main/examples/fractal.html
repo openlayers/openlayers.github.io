@@ -253,7 +253,7 @@ function makeFractal(depth) {
     }
   }
   const coordinates &#x3D; graphToCoords(graph);
-  document.getElementById(&#x27;count&#x27;).innerHTML &#x3D; coordinates.length;
+  document.getElementById(&#x27;count&#x27;).innerText &#x3D; String(coordinates.length);
   geometry.setCoordinates(coordinates);
   feature.setGeometry(geometry);
 }

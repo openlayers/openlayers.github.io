@@ -221,7 +221,7 @@ const swipe &#x3D; document.getElementById(&#x27;swipe&#x27;);
 aerial.on(&#x27;prerender&#x27;, function (event) {
   const ctx &#x3D; event.context;
   const mapSize &#x3D; map.getSize();
-  const width &#x3D; mapSize[0] * (swipe.value / 100);
+  const width &#x3D; mapSize[0] * (Number(swipe.value) / 100);
   const tl &#x3D; getRenderPixel(event, [width, 0]);
   const tr &#x3D; getRenderPixel(event, [mapSize[0], 0]);
   const bl &#x3D; getRenderPixel(event, [width, mapSize[1]]);

@@ -582,7 +582,7 @@ controlIds.forEach(function (id) {
   function setOutput() {
     const value &#x3D; parseFloat(control.value);
     if (control.type &#x3D;&#x3D;&#x3D; &#x27;checkbox&#x27;) {
-      output.innerText &#x3D; control.checked;
+      output.innerText &#x3D; String(control.checked);
     } else if (id &#x3D;&#x3D;&#x3D; &#x27;textAlign&#x27;) {
       output.innerText &#x3D; textAlignments[value];
     } else if (id &#x3D;&#x3D;&#x3D; &#x27;textBaseline&#x27;) {
@@ -590,7 +590,7 @@ controlIds.forEach(function (id) {
     } else {
       output.innerText &#x3D; control.step.startsWith(&#x27;0.&#x27;)
         ? value.toFixed(2)
-        : value;
+        : String(value);
     }
   }
   control.addEventListener(&#x27;input&#x27;, function () {

@@ -445,10 +445,10 @@ const displayFeatureInfo &#x3D; function (pixel) {
       &#x27;&lt;br&gt;1965 Land Use: &#x27; +
       feature.get(&#x27;LU_1965&#x27;);
     document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; info;
-    map.getTarget().style.cursor &#x3D; &#x27;pointer&#x27;;
+    map.getTargetElement().style.cursor &#x3D; &#x27;pointer&#x27;;
   } else {
     document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; &#x27;&amp;nbsp;&lt;br&gt;&amp;nbsp;&#x27;;
-    map.getTarget().style.cursor &#x3D; &#x27;&#x27;;
+    map.getTargetElement().style.cursor &#x3D; &#x27;&#x27;;
   }
 };
 

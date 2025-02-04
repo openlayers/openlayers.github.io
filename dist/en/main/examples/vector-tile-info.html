@@ -96,7 +96,7 @@
           </div>
         </div>
         <div id="map" class="map">
-  <pre id="info"/>
+  <pre id="info"></pre>
 </div>
 
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
@@ -134,19 +134,27 @@ const map &#x3D; new Map({
   ],
 });
 
-map.on(&#x27;pointermove&#x27;, showInfo);
+const mapTarget &#x3D; map.getTargetElement();
+mapTarget.addEventListener(&#x27;pointerleave&#x27;, showInfo);
+map.on(&#x27;pointermove&#x27;, (evt) &#x3D;&gt; {
+  if (evt.dragging) {
+    return;
+  }
+  showInfo(evt);
+});
 
 const info &#x3D; document.getElementById(&#x27;info&#x27;);
 function showInfo(event) {
-  const features &#x3D; map.getFeaturesAtPixel(event.pixel);
+  const features &#x3D;
+    event.type &#x3D;&#x3D;&#x3D; &#x27;pointerleave&#x27; ? [] : map.getFeaturesAtPixel(event.pixel);
   if (features.length &#x3D;&#x3D; 0) {
     info.innerText &#x3D; &#x27;&#x27;;
-    info.style.opacity &#x3D; 0;
+    info.style.opacity &#x3D; &#x27;0&#x27;;
     return;
   }
   const properties &#x3D; features[0].getProperties();
   info.innerText &#x3D; JSON.stringify(properties, null, 2);
-  info.style.opacity &#x3D; 1;
+  info.style.opacity &#x3D; &#x27;1&#x27;;
 }
 </code></pre>
       </div>
@@ -171,11 +179,12 @@ function showInfo(event) {
       #info {
         z-index: 1;
         opacity: 0;
+        pointer-events: none;
         position: absolute;
         bottom: 0;
         left: 0;
         margin: 0;
-        background: rgba(0,60,136,0.7);
+        background: rgba(0, 60, 136, 0.7);
         color: white;
         border: 0;
         transition: opacity 100ms ease-in;
@@ -184,7 +193,7 @@ function showInfo(event) {
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;
-      &lt;pre id&#x3D;&quot;info&quot;/&gt;
+      &lt;pre id&#x3D;&quot;info&quot;&gt;&lt;/pre&gt;
     &lt;/div&gt;
 
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;

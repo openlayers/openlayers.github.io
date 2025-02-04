@@ -220,7 +220,8 @@ button.addEventListener(&#x27;click&#x27;, function () {
     map.setTarget(externalMapTarget);
 
     if (timeoutKey) {
-      timeoutKey &#x3D; clearTimeout(timeoutKey);
+      clearTimeout(timeoutKey);
+      timeoutKey &#x3D; undefined;
     }
     mapWindow.addEventListener(&#x27;pagehide&#x27;, function () {
       resetMapTarget();

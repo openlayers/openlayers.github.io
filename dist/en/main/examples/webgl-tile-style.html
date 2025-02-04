@@ -224,9 +224,7 @@ for (variable in variables) {
   element.addEventListener(&#x27;input&#x27;, function (event) {
     const value &#x3D; parseFloat(event.target.value);
     document.getElementById(name + &#x27;-value&#x27;).innerText &#x3D; value.toFixed(2);
-    const updates &#x3D; {};
-    updates[name] &#x3D; value;
-    layer.updateStyleVariables(updates);
+    layer.updateStyleVariables({[name]: value});
   });
 }
 </code></pre>

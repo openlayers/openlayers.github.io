@@ -231,10 +231,10 @@ const displayFeatureInfo &#x3D; function (pixel) {
       info.push(features[i].get(&#x27;desc&#x27;));
     }
     document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; info.join(&#x27;, &#x27;) || &#x27;(unknown)&#x27;;
-    map.getTarget().style.cursor &#x3D; &#x27;pointer&#x27;;
+    map.getTargetElement().style.cursor &#x3D; &#x27;pointer&#x27;;
   } else {
     document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
-    map.getTarget().style.cursor &#x3D; &#x27;&#x27;;
+    map.getTargetElement().style.cursor &#x3D; &#x27;&#x27;;
   }
 };
 

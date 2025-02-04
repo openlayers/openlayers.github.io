@@ -241,7 +241,7 @@ fetch(&#x27;data/geojson/roads-seoul.geojson&#x27;)
       featureProjection: &#x27;EPSG:3857&#x27;,
     });
 
-    const parser &#x3D; new OL3Parser();
+    const parser &#x3D; new OL3Parser(undefined, undefined);
     parser.inject(
       Point,
       LineString,

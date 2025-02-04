@@ -369,7 +369,7 @@ clearWidthButton.addEventListener(&#x27;click&#x27;, () &#x3D;&gt; {
     }),
   );
   iconFeature.setStyle(iconStyle);
-  widthInput.value &#x3D; Math.round(iconStyle.getImage().getWidth());
+  widthInput.value &#x3D; String(Math.round(iconStyle.getImage().getWidth()));
   scaleSpan.innerText &#x3D; formatScale(iconStyle.getImage().getScale());
   iconFeature.setStyle(iconStyle);
 });
@@ -382,7 +382,7 @@ clearHeightButton.addEventListener(&#x27;click&#x27;, () &#x3D;&gt; {
     }),
   );
   iconFeature.setStyle(iconStyle);
-  heightInput.value &#x3D; Math.round(iconStyle.getImage().getHeight());
+  heightInput.value &#x3D; String(Math.round(iconStyle.getImage().getHeight()));
   iconFeature.setStyle(iconStyle);
 });
 

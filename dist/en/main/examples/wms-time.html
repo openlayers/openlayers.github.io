@@ -187,32 +187,30 @@ import {transformExtent} from &#x27;ol/proj.js&#x27;;
 import StadiaMaps from &#x27;ol/source/StadiaMaps.js&#x27;;
 import TileWMS from &#x27;ol/source/TileWMS.js&#x27;;
 
-function threeHoursAgo() {
-  return new Date(Math.round(Date.now() / 3600000) * 3600000 - 3600000 * 3);
-}
-
-const extent &#x3D; transformExtent([-126, 24, -66, 50], &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
-let startDate &#x3D; threeHoursAgo();
+const interval &#x3D; 3 * 60 * 60 * 1000;
+const step &#x3D; 15 * 60 * 1000;
 const frameRate &#x3D; 0.5; // frames per second
+const extent &#x3D; transformExtent([-126, 24, -66, 50], &#x27;EPSG:4326&#x27;, &#x27;EPSG:3857&#x27;);
+
+let wmsTime &#x3D; new Date();
 let animationId &#x3D; null;
 
-const layers &#x3D; [
-  new TileLayer({
-    source: new StadiaMaps({
-      layer: &#x27;stamen_terrain&#x27;,
-    }),
+const stadiaLayer &#x3D; new TileLayer({
+  source: new StadiaMaps({
+    layer: &#x27;stamen_terrain&#x27;,
   }),
-  new TileLayer({
-    extent: extent,
-    source: new TileWMS({
-      attributions: [&#x27;Iowa State University&#x27;],
-      url: &#x27;https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r-t.cgi&#x27;,
-      params: {&#x27;LAYERS&#x27;: &#x27;nexrad-n0r-wmst&#x27;},
-    }),
+});
+const tileWmsLayer &#x3D; new TileLayer({
+  extent: extent,
+  source: new TileWMS({
+    attributions: [&#x27;Iowa State University&#x27;],
+    url: &#x27;https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r-t.cgi&#x27;,
+    params: {&#x27;LAYERS&#x27;: &#x27;nexrad-n0r-wmst&#x27;},
   }),
-];
+});
+
 const map &#x3D; new Map({
-  layers: layers,
+  layers: [stadiaLayer, tileWmsLayer],
   target: &#x27;map&#x27;,
   view: new View({
     center: getCenter(extent),
@@ -220,18 +218,22 @@ const map &#x3D; new Map({
   }),
 });
 
-function updateInfo() {
-  const el &#x3D; document.getElementById(&#x27;info&#x27;);
-  el.innerHTML &#x3D; startDate.toISOString();
+const el &#x3D; document.getElementById(&#x27;info&#x27;);
+function updateInfo(time) {
+  el.innerHTML &#x3D; time.toISOString();
+}
+
+function threeHoursAgo() {
+  return new Date(Math.floor((Date.now() - interval) / step) * step);
 }
 
 function setTime() {
-  startDate.setMinutes(startDate.getMinutes() + 15);
-  if (startDate &gt; Date.now()) {
-    startDate &#x3D; threeHoursAgo();
+  wmsTime.setMinutes(wmsTime.getMinutes() + 15);
+  if (wmsTime.getTime() &gt; Date.now()) {
+    wmsTime &#x3D; threeHoursAgo();
   }
-  layers[1].getSource().updateParams({&#x27;TIME&#x27;: startDate.toISOString()});
-  updateInfo();
+  tileWmsLayer.getSource().updateParams({&#x27;TIME&#x27;: wmsTime.toISOString()});
+  updateInfo(wmsTime);
 }
 setTime();
 
@@ -252,8 +254,6 @@ startButton.addEventListener(&#x27;click&#x27;, play, false);
 
 const stopButton &#x3D; document.getElementById(&#x27;pause&#x27;);
 stopButton.addEventListener(&#x27;click&#x27;, stop, false);
-
-updateInfo();
 </code></pre>
       </div>
 

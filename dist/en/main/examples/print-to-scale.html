@@ -360,7 +360,7 @@ exportButton.addEventListener(
         );
         pdf.save(&#x27;map.pdf&#x27;);
         // Reset original map size
-        scaleLine.setDpi();
+        scaleLine.setDpi(undefined);
         map.getTargetElement().style.width &#x3D; &#x27;&#x27;;
         map.getTargetElement().style.height &#x3D; &#x27;&#x27;;
         map.updateSize();

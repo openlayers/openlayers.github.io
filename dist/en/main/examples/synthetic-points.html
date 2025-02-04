@@ -311,11 +311,7 @@ map.on(&#x27;pointermove&#x27;, function (evt) {
     return;
   }
   const hit &#x3D; map.hasFeatureAtPixel(evt.pixel);
-  if (hit) {
-    map.getTarget().style.cursor &#x3D; &#x27;pointer&#x27;;
-  } else {
-    map.getTarget().style.cursor &#x3D; &#x27;&#x27;;
-  }
+  map.getTargetElement().style.cursor &#x3D; hit ? &#x27;pointer&#x27; : &#x27;&#x27;;
 });
 </code></pre>
       </div>
