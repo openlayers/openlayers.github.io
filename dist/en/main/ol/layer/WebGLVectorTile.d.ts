@@ -166,7 +166,6 @@ declare class WebGLVectorTileLayer<VectorTileSourceType extends import("../sourc
      * @param {import('../style/flat.js').FlatStyleLike} style Layer style.
      */
     setStyle(style: import("../style/flat.js").FlatStyleLike): void;
-    style: import("../style/flat.js").FlatStyleLike | undefined;
 }
 import WebGLVectorTileLayerRenderer from '../renderer/webgl/VectorTileLayer.js';
 import BaseTileLayer from './BaseTile.js';

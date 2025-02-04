@@ -166,7 +166,6 @@ declare class WebGLVectorLayer<VectorSourceType extends import("../source/Vector
      * @param {import('../style/flat.js').FlatStyleLike} style Layer style.
      */
     setStyle(style: import("../style/flat.js").FlatStyleLike): void;
-    style: import("../style/flat.js").FlatStyleLike | undefined;
 }
 import WebGLVectorLayerRenderer from '../renderer/webgl/VectorLayer.js';
 import Layer from './Layer.js';
