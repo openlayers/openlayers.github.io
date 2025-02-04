@@ -437,6 +437,7 @@ declare namespace ol {
             }
             namespace segments {
                 export { _ol_geom_flat_segments$forEach as forEach };
+                export { _ol_geom_flat_segments$getIntersectionPoint as getIntersectionPoint };
             }
             namespace simplify {
                 export { _ol_geom_flat_simplify$douglasPeucker as douglasPeucker };
@@ -1377,6 +1378,7 @@ import { orientLinearRings as _ol_geom_flat_orient$orientLinearRings } from '../
 import { orientLinearRingsArray as _ol_geom_flat_orient$orientLinearRingsArray } from '../../ol/geom/flat/orient.js';
 import { coordinates as _ol_geom_flat_reverse$coordinates } from '../../ol/geom/flat/reverse.js';
 import { forEach as _ol_geom_flat_segments$forEach } from '../../ol/geom/flat/segments.js';
+import { getIntersectionPoint as _ol_geom_flat_segments$getIntersectionPoint } from '../../ol/geom/flat/segments.js';
 import { douglasPeucker as _ol_geom_flat_simplify$douglasPeucker } from '../../ol/geom/flat/simplify.js';
 import { douglasPeuckerArray as _ol_geom_flat_simplify$douglasPeuckerArray } from '../../ol/geom/flat/simplify.js';
 import { douglasPeuckerMultiArray as _ol_geom_flat_simplify$douglasPeuckerMultiArray } from '../../ol/geom/flat/simplify.js';

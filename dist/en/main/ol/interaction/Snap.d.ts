@@ -26,6 +26,10 @@ export type SegmentData = {
      * Segment.
      */
     segment: Array<import("../coordinate.js").Coordinate>;
+    /**
+     * Is intersection.
+     */
+    isIntersection?: boolean | undefined;
 };
 export type Options = {
     /**
@@ -40,6 +44,10 @@ export type Options = {
      * Snap to vertices.
      */
     vertex?: boolean | undefined;
+    /**
+     * Snap to intersections between segments.
+     */
+    intersection?: boolean | undefined;
     /**
      * Pixel tolerance for considering the pointer close enough to a segment or
      * vertex for snapping.
@@ -140,6 +148,11 @@ declare class Snap extends PointerInteraction {
      * @type {boolean}
      */
     private edge_;
+    /**
+     * @private
+     * @type {boolean}
+     */
+    private intersection_;
     /**
      * @type {import("../Collection.js").default<import("../Feature.js").default>|null}
      * @private
