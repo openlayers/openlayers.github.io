@@ -348,7 +348,7 @@ const pointerMoveHandler &#x3D; function (evt) {
   if (evt.dragging) {
     return;
   }
-  /** @type {string} */
+
   let helpMsg &#x3D; &#x27;Click to start drawing&#x27;;
 
   if (sketch) {
@@ -459,7 +459,6 @@ function addInteraction() {
     // set sketch
     sketch &#x3D; evt.feature;
 
-    /** @type {import(&#x27;ol/coordinate.js&#x27;).Coordinate|undefined} */
     let tooltipCoord;
 
     listener &#x3D; sketch.getGeometry().on(&#x27;change&#x27;, function (evt) {

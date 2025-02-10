@@ -138,8 +138,7 @@ import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import TileJSON from &#x27;ol/source/TileJSON.js&#x27;;
 import UTFGrid from &#x27;ol/source/UTFGrid.js&#x27;;
 
-const key &#x3D;
-  &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
+const key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
 
 const mapLayer &#x3D; new TileLayer({
   source: new TileJSON({
@@ -181,7 +180,7 @@ const infoOverlay &#x3D; new Overlay({
 map.addOverlay(infoOverlay);
 
 const displayCountryInfo &#x3D; function (coordinate) {
-  const viewResolution &#x3D; /** @type {number} */ (view.getResolution());
+  const viewResolution &#x3D; view.getResolution();
   gridSource.forDataAtCoordinateAndResolution(
     coordinate,
     viewResolution,

@@ -371,14 +371,6 @@ import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 
-/**
- * @type {import(&#x27;ol/style/flat.js&#x27;).FlatStyle}
- */
-let style;
-
-/**
- * @type {import(&#x27;ol/style/flat.js&#x27;).StyleVariables}
- */
 const styleVariables &#x3D; {
   width: 12,
   offset: 0,
@@ -435,7 +427,7 @@ const getStyle &#x3D; (dash, pattern) &#x3D;&gt; {
   return newStyle;
 };
 
-style &#x3D; getStyle(false, false);
+let style &#x3D; getStyle(false, false);
 
 let vector &#x3D; new WebGLVectorLayer({
   source,

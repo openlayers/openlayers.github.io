@@ -147,11 +147,7 @@ import FullScreen from &#x27;ol/control/FullScreen.js&#x27;;
 import Layer from &#x27;ol/layer/Layer.js&#x27;;
 import Source from &#x27;ol/source/Source.js&#x27;;
 import {createXYZ} from &#x27;ol/tilegrid.js&#x27;;
-import {
-  compose,
-  create,
-  toString as toTransformString,
-} from &#x27;ol/transform.js&#x27;;
+import {compose, create, toString as toTransformString} from &#x27;ol/transform.js&#x27;;
 
 const worker &#x3D; new Worker(&#x27;./worker.js&#x27;, {type: &#x27;module&#x27;});
 
@@ -400,8 +396,7 @@ function showInfo(propertiesFromFeatures) {
 
       <div class="row-fluid extra-source">
         <h5 class="source-heading">worker.js</h5>
-        <pre><code class="language-js">import {stylefunction} from &#x27;ol-mapbox-style&#x27;;
-import TileQueue, {
+        <pre><code class="language-js">import TileQueue, {
   getTilePriority as tilePriorityFunction,
 } from &#x27;ol/TileQueue.js&#x27;;
 import MVT from &#x27;ol/format/MVT.js&#x27;;
@@ -409,10 +404,10 @@ import {inView} from &#x27;ol/layer/Layer.js&#x27;;
 import VectorTileLayer from &#x27;ol/layer/VectorTile.js&#x27;;
 import {get} from &#x27;ol/proj.js&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile.js&#x27;;
+import {stylefunction} from &#x27;ol-mapbox-style&#x27;;
 
 const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
 
-/** @type {any} */
 const worker &#x3D; self;
 
 let frameState, pixelRatio, rendererTransform;

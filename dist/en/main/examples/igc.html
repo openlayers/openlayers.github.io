@@ -342,10 +342,7 @@ control.addEventListener(&#x27;input&#x27;, function () {
   const value &#x3D; parseInt(control.value, 10) / 100;
   const m &#x3D; time.start + time.duration * value;
   vectorSource.forEachFeature(function (feature) {
-    const geometry &#x3D;
-      /** @type {import(&#x27;ol/geom/LineString.js&#x27;).default} */ (
-        feature.getGeometry()
-      );
+    const geometry &#x3D; feature.getGeometry();
     const coordinate &#x3D; geometry.getCoordinateAtM(m, true);
     let highlight &#x3D; feature.get(&#x27;highlight&#x27;);
     if (highlight &#x3D;&#x3D;&#x3D; undefined) {

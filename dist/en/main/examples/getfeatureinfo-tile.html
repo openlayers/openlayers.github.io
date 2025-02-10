@@ -151,7 +151,7 @@ const map &#x3D; new Map({
 
 map.on(&#x27;singleclick&#x27;, function (evt) {
   document.getElementById(&#x27;info&#x27;).innerHTML &#x3D; &#x27;&#x27;;
-  const viewResolution &#x3D; /** @type {number} */ (view.getResolution());
+  const viewResolution &#x3D; view.getResolution();
   const url &#x3D; wmsSource.getFeatureInfoUrl(
     evt.coordinate,
     viewResolution,
