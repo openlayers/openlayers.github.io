@@ -1,22 +1,9 @@
 export default Snap;
-export type Result = {
-    /**
-     * Vertex.
-     */
-    vertex: import("../coordinate.js").Coordinate | null;
-    /**
-     * VertexPixel.
-     */
-    vertexPixel: import("../pixel.js").Pixel | null;
-    /**
-     * Feature.
-     */
-    feature: import("../Feature.js").default | null;
-    /**
-     * Segment, or `null` if snapped to a vertex.
-     */
-    segment: Array<import("../coordinate.js").Coordinate> | null;
-};
+/**
+ * An array of two coordinates representing a line segment, or an array of one
+ * coordinate representing a point.
+ */
+export type Segment = Array<import("../coordinate.js").Coordinate>;
 export type SegmentData = {
     /**
      * Feature.
@@ -25,17 +12,64 @@ export type SegmentData = {
     /**
      * Segment.
      */
-    segment: Array<import("../coordinate.js").Coordinate>;
+    segment: Segment;
     /**
      * Is intersection.
      */
     isIntersection?: boolean | undefined;
+};
+/**
+ * A function taking a {@link module :ol/geom/Geometry~Geometry} as argument and returning an array of {@link Segment}s.
+ */
+export type Segmenter<GeometryType extends import("../geom/Geometry.js").default = import("../geom/Geometry.js").default> = (geometry: GeometryType, projection?: import("../proj/Projection.js").default) => Array<Segment>;
+/**
+ * Each segmenter specified here will override the default segmenter for the
+ * corresponding geometry type. To exclude all geometries of a specific geometry type from being snapped to,
+ * set the segmenter to `null`.
+ */
+export type Segmenters = {
+    /**
+     * Point segmenter.
+     */
+    Point?: Segmenter<import("../geom/Point.js").default> | null | undefined;
+    /**
+     * LineString segmenter.
+     */
+    LineString?: Segmenter<import("../geom/LineString.js").default> | null | undefined;
+    /**
+     * Polygon segmenter.
+     */
+    Polygon?: Segmenter<import("../geom/Polygon.js").default> | null | undefined;
+    /**
+     * Circle segmenter.
+     */
+    Circle?: Segmenter<import("../geom/Circle.js").default> | null | undefined;
+    /**
+     * GeometryCollection segmenter.
+     */
+    GeometryCollection?: Segmenter<import("../geom/GeometryCollection.js").default> | null | undefined;
+    /**
+     * MultiPoint segmenter.
+     */
+    MultiPoint?: Segmenter<import("../geom/MultiPoint.js").default> | null | undefined;
+    /**
+     * MultiLineString segmenter.
+     */
+    MultiLineString?: Segmenter<import("../geom/MultiLineString.js").default> | null | undefined;
+    /**
+     * MultiPolygon segmenter.
+     */
+    MultiPolygon?: Segmenter<import("../geom/MultiPolygon.js").default> | null | undefined;
 };
 export type Options = {
     /**
      * Snap to these features. Either this option or source should be provided.
      */
     features?: import("../Collection.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>> | undefined;
+    /**
+     * Snap to features from this source. Either this option or features should be provided
+     */
+    source?: import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>> | undefined;
     /**
      * Snap to edges.
      */
@@ -54,9 +88,18 @@ export type Options = {
      */
     pixelTolerance?: number | undefined;
     /**
-     * Snap to features from this source. Either this option or features should be provided
+     * Custom segmenters by {@link module :ol/geom/Geometry~Type}. By default, the
+     * following segmenters are used:
+     * - `Point`: A one-dimensional segment (e.g. `[[10, 20]]`) representing the point.
+     * - `LineString`: One two-dimensional segment (e.g. `[[10, 20], [30, 40]]`) for each segment of the linestring.
+     * - `Polygon`: One two-dimensional segment for each segment of the exterior ring and the interior rings.
+     * - `Circle`: One two-dimensional segment for each segment of a regular polygon with 32 points representing the circle circumference.
+     * - `GeometryCollection`: All segments of the contained geometries.
+     * - `MultiPoint`: One one-dimensional segment for each point.
+     * - `MultiLineString`: One two-dimensional segment for each segment of the linestrings.
+     * - `MultiPolygon`: One two-dimensional segment for each segment of the polygons.
      */
-    source?: import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>> | undefined;
+    segmenters?: Segmenters | undefined;
 };
 /**
  * Information about the last snapped state.
@@ -69,7 +112,7 @@ export type SnappedInfo = {
     /**
      * - The pixel of the snapped vertex.
      */
-    vertexPixel: import("../coordinate.js").Coordinate | null;
+    vertexPixel: import("../pixel.js").Pixel | null;
     /**
      * - The feature being snapped.
      */
@@ -77,7 +120,7 @@ export type SnappedInfo = {
     /**
      * - Segment, or `null` if snapped to a vertex.
      */
-    segment: Array<import("../coordinate.js").Coordinate> | null;
+    segment: Segment | null;
 };
 /**
  * *
@@ -201,11 +244,10 @@ declare class Snap extends PointerInteraction {
      */
     private snapped_;
     /**
-     * @const
+     * @type {Object<string, Segmenter>}
      * @private
-     * @type {Object<string, function(Array<Array<import('../coordinate.js').Coordinate>>, import("../geom/Geometry.js").default): void>}
      */
-    private GEOMETRY_SEGMENTERS_;
+    private segmenters_;
     /**
      * Add a feature to the collection of features that we may snap to.
      * @param {import("../Feature.js").default} feature Feature.
@@ -264,62 +306,14 @@ declare class Snap extends PointerInteraction {
      * @param {import("../pixel.js").Pixel} pixel Pixel
      * @param {import("../coordinate.js").Coordinate} pixelCoordinate Coordinate
      * @param {import("../Map.js").default} map Map.
-     * @return {Result|null} Snap result
+     * @return {SnappedInfo|null} Snap result
      */
-    snapTo(pixel: import("../pixel.js").Pixel, pixelCoordinate: import("../coordinate.js").Coordinate, map: import("../Map.js").default): Result | null;
+    snapTo(pixel: import("../pixel.js").Pixel, pixelCoordinate: import("../coordinate.js").Coordinate, map: import("../Map.js").default): SnappedInfo | null;
     /**
      * @param {import("../Feature.js").default} feature Feature
      * @private
      */
     private updateFeature_;
-    /**
-     * @param {Array<Array<import('../coordinate.js').Coordinate>>} segments Segments
-     * @param {import("../geom/Circle.js").default} geometry Geometry.
-     * @private
-     */
-    private segmentCircleGeometry_;
-    /**
-     * @param {Array<Array<import('../coordinate.js').Coordinate>>} segments Segments
-     * @param {import("../geom/GeometryCollection.js").default} geometry Geometry.
-     * @private
-     */
-    private segmentGeometryCollectionGeometry_;
-    /**
-     * @param {Array<Array<import('../coordinate.js').Coordinate>>} segments Segments
-     * @param {import("../geom/LineString.js").default} geometry Geometry.
-     * @private
-     */
-    private segmentLineStringGeometry_;
-    /**
-     * @param {Array<Array<import('../coordinate.js').Coordinate>>} segments Segments
-     * @param {import("../geom/MultiLineString.js").default} geometry Geometry.
-     * @private
-     */
-    private segmentMultiLineStringGeometry_;
-    /**
-     * @param {Array<Array<import('../coordinate.js').Coordinate>>} segments Segments
-     * @param {import("../geom/MultiPoint.js").default} geometry Geometry.
-     * @private
-     */
-    private segmentMultiPointGeometry_;
-    /**
-     * @param {Array<Array<import('../coordinate.js').Coordinate>>} segments Segments
-     * @param {import("../geom/MultiPolygon.js").default} geometry Geometry.
-     * @private
-     */
-    private segmentMultiPolygonGeometry_;
-    /**
-     * @param {Array<Array<import('../coordinate.js').Coordinate>>} segments Segments
-     * @param {import("../geom/Point.js").default} geometry Geometry.
-     * @private
-     */
-    private segmentPointGeometry_;
-    /**
-     * @param {Array<Array<import('../coordinate.js').Coordinate>>} segments Segments
-     * @param {import("../geom/Polygon.js").default} geometry Geometry.
-     * @private
-     */
-    private segmentPolygonGeometry_;
 }
 import { SnapEvent } from '../events/SnapEvent.js';
 import PointerInteraction from './Pointer.js';

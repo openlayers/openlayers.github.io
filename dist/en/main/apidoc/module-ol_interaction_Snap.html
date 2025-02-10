@@ -72,8 +72,10 @@
         <span class="subtitle">Typedefs</span>
         <ul>
             <li data-name="options"><a href="module-ol_interaction_Snap.html#~Options">Options</a>
-            <li data-name="result"><a href="module-ol_interaction_Snap.html#~Result">Result</a>
+            <li data-name="segment"><a href="module-ol_interaction_Snap.html#~Segment">Segment</a>
             <li data-name="segmentdata"><a href="module-ol_interaction_Snap.html#~SegmentData">SegmentData</a>
+            <li data-name="segmenter"><a href="module-ol_interaction_Snap.html#~Segmenter">Segmenter</a>
+            <li data-name="segmenters"><a href="module-ol_interaction_Snap.html#~Segmenters">Segmenters</a>
             <li data-name="snappedinfo"><a href="module-ol_interaction_Snap.html#~SnappedInfo">SnappedInfo</a>
         </ul>
     </div>
@@ -241,6 +243,29 @@
 
         <tr>
             
+                <td class="name"><code>source</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Snap to features from this source. Either this option or features should be provided</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
                 <td class="name"><code>edge</code></td>
             
 
@@ -342,13 +367,13 @@ vertex for snapping.</p>
 
         <tr>
             
-                <td class="name"><code>source</code></td>
+                <td class="name"><code>segmenters</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a></span>
+<span class="param-type"><a href="module-ol_interaction_Snap.html#~Segmenters">Segmenters</a></span>
 
  | undefined
                 
@@ -356,7 +381,18 @@ vertex for snapping.</p>
             </td>
 
             <td class="description last">
-                <p>Snap to features from this source. Either this option or features should be provided</p>
+                <p>Custom segmenters by <a href="module-ol_geom_Geometry.html#~Type"><code>Type</code></a>. By default, the
+following segmenters are used:</p>
+<ul>
+<li><code>Point</code>: A one-dimensional segment (e.g. <code>[[10, 20]]</code>) representing the point.</li>
+<li><code>LineString</code>: One two-dimensional segment (e.g. <code>[[10, 20], [30, 40]]</code>) for each segment of the linestring.</li>
+<li><code>Polygon</code>: One two-dimensional segment for each segment of the exterior ring and the interior rings.</li>
+<li><code>Circle</code>: One two-dimensional segment for each segment of a regular polygon with 32 points representing the circle circumference.</li>
+<li><code>GeometryCollection</code>: All segments of the contained geometries.</li>
+<li><code>MultiPoint</code>: One one-dimensional segment for each point.</li>
+<li><code>MultiLineString</code>: One two-dimensional segment for each segment of the linestrings.</li>
+<li><code>MultiPolygon</code>: One two-dimensional segment for each segment of the polygons.</li>
+</ul>
                 
             </td>
         </tr>
@@ -396,10 +432,10 @@ vertex for snapping.</p>
                 
 <dt class="">
     <div class="nameContainer">
-        <div class="anchor" id="~Result">
+        <div class="anchor" id="~Segment">
         </div>
         <h4 class="name">
-            Result<span class="type-signature type object">{Object}</span> 
+            Segment<span class="type-signature type array.<module:ol/coordinate~coordinate>">{Array&lt;<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>>}</span> 
             
 
         </h4>
@@ -408,137 +444,14 @@ vertex for snapping.</p>
 </dt>
 <dd class="">
     
+    <div class="description">
+        <p>An array of two coordinates representing a line segment, or an array of one
+coordinate representing a point.</p>
+    </div>
+    
 
     
 <dl class="details">
-    
-        
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
-
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-
-		<th>Type</th>
-
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-
-	<tbody>
-	
-
-        <tr>
-            
-                <td class="name"><code>vertex</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
-|
-
-<span class="param-type">null</span>
-
-
-                
-            
-            </td>
-
-            <td class="description last">
-                <p>Vertex.</p>
-                
-            </td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>vertexPixel</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_pixel.html#~Pixel">Pixel</a></span>
-|
-
-<span class="param-type">null</span>
-
-
-                
-            
-            </td>
-
-            <td class="description last">
-                <p>VertexPixel.</p>
-                
-            </td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>feature</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a></span>
-|
-
-<span class="param-type">null</span>
-
-
-                
-            
-            </td>
-
-            <td class="description last">
-                <p>Feature.</p>
-                
-            </td>
-        </tr>
-
-	
-
-        <tr>
-            
-                <td class="name"><code>segment</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array&lt;<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>></span>
-|
-
-<span class="param-type">null</span>
-
-
-                
-            
-            </td>
-
-            <td class="description last">
-                <p>Segment, or <code>null</code> if snapped to a vertex.</p>
-                
-            </td>
-        </tr>
-
-	
-	</tbody>
-</table></dl>
-        
     
         
     
@@ -638,7 +551,7 @@ vertex for snapping.</p>
             <td class="type">
             
                 
-<span class="param-type">Array&lt;<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>></span>
+<span class="param-type"><a href="module-ol_interaction_Snap.html#~Segment">Segment</a></span>
 
 
                 
@@ -670,6 +583,370 @@ vertex for snapping.</p>
 
             <td class="description last">
                 <p>Is intersection.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="~Segmenter">
+        </div>
+        <h4 class="name">
+            Segmenter<span class="signature">()</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js">interaction/Snap.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js#L46">line 46</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>A function taking a <a href="module-ol_geom_Geometry-Geometry.html"><code>Geometry</code></a> as argument and returning an array of <a href="module-ol_interaction_Snap.html#~Segment"><code>Segment</code></a>s.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~Segmenters">
+        </div>
+        <h4 class="name">
+            Segmenters<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Each segmenter specified here will override the default segmenter for the
+corresponding geometry type. To exclude all geometries of a specific geometry type from being snapped to,
+set the segmenter to <code>null</code>.</p>
+    </div>
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>Point</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_interaction_Snap.html#~Segmenter">Segmenter</a>&lt;<a href="module-ol_geom_Point-Point.html">Point</a>></span>
+|
+
+<span class="param-type">null</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Point segmenter.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>LineString</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_interaction_Snap.html#~Segmenter">Segmenter</a>&lt;<a href="module-ol_geom_LineString-LineString.html">LineString</a>></span>
+|
+
+<span class="param-type">null</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>LineString segmenter.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>Polygon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_interaction_Snap.html#~Segmenter">Segmenter</a>&lt;<a href="module-ol_geom_Polygon-Polygon.html">Polygon</a>></span>
+|
+
+<span class="param-type">null</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Polygon segmenter.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>Circle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_interaction_Snap.html#~Segmenter">Segmenter</a>&lt;<a href="module-ol_geom_Circle-Circle.html">Circle</a>></span>
+|
+
+<span class="param-type">null</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Circle segmenter.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>GeometryCollection</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_interaction_Snap.html#~Segmenter">Segmenter</a>&lt;<a href="module-ol_geom_GeometryCollection-GeometryCollection.html">GeometryCollection</a>></span>
+|
+
+<span class="param-type">null</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>GeometryCollection segmenter.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>MultiPoint</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_interaction_Snap.html#~Segmenter">Segmenter</a>&lt;<a href="module-ol_geom_MultiPoint-MultiPoint.html">MultiPoint</a>></span>
+|
+
+<span class="param-type">null</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>MultiPoint segmenter.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>MultiLineString</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_interaction_Snap.html#~Segmenter">Segmenter</a>&lt;<a href="module-ol_geom_MultiLineString-MultiLineString.html">MultiLineString</a>></span>
+|
+
+<span class="param-type">null</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>MultiLineString segmenter.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>MultiPolygon</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_interaction_Snap.html#~Segmenter">Segmenter</a>&lt;<a href="module-ol_geom_MultiPolygon-MultiPolygon.html">MultiPolygon</a>></span>
+|
+
+<span class="param-type">null</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>MultiPolygon segmenter.</p>
                 
             </td>
         </tr>
@@ -784,7 +1061,7 @@ vertex for snapping.</p>
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
+<span class="param-type"><a href="module-ol_pixel.html#~Pixel">Pixel</a></span>
 |
 
 <span class="param-type">null</span>
@@ -836,7 +1113,7 @@ vertex for snapping.</p>
             <td class="type">
             
                 
-<span class="param-type">Array&lt;<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>></span>
+<span class="param-type"><a href="module-ol_interaction_Snap.html#~Segment">Segment</a></span>
 |
 
 <span class="param-type">null</span>

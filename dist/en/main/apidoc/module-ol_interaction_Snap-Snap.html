@@ -175,7 +175,7 @@ map.addInteraction(snap);</code></pre></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js">interaction/Snap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js#L131">line 131</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js#L319">line 319</a>
         </div>
         
     </div>
@@ -233,6 +233,31 @@ map.addInteraction(snap);</code></pre></div>
             <td  class="description last">
                 
                 <p>Snap to these features. Either this option or source should be provided.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>source</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Snap to features from this source. Either this option or features should be provided</p></td>
         </tr>
 
 	
@@ -348,14 +373,14 @@ vertex for snapping.</p></td>
 
         <tr class="">
             
-                <td class="name"><code>source</code></td>
+                <td class="name"><code>segmenters</code></td>
             
 
             
             <td class="type">
             
                 
-<span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a></span>
+<span class="param-type"><a href="module-ol_interaction_Snap.html#~Segmenters">Segmenters</a></span>
 
  | undefined
                 
@@ -366,7 +391,18 @@ vertex for snapping.</p></td>
 
             <td  class="description last">
                 
-                <p>Snap to features from this source. Either this option or features should be provided</p></td>
+                <p>Custom segmenters by <a href="module-ol_geom_Geometry.html#~Type"><code>Type</code></a>. By default, the
+following segmenters are used:</p>
+<ul>
+<li><code>Point</code>: A one-dimensional segment (e.g. <code>[[10, 20]]</code>) representing the point.</li>
+<li><code>LineString</code>: One two-dimensional segment (e.g. <code>[[10, 20], [30, 40]]</code>) for each segment of the linestring.</li>
+<li><code>Polygon</code>: One two-dimensional segment for each segment of the exterior ring and the interior rings.</li>
+<li><code>Circle</code>: One two-dimensional segment for each segment of a regular polygon with 32 points representing the circle circumference.</li>
+<li><code>GeometryCollection</code>: All segments of the contained geometries.</li>
+<li><code>MultiPoint</code>: One one-dimensional segment for each point.</li>
+<li><code>MultiLineString</code>: One two-dimensional segment for each segment of the linestrings.</li>
+<li><code>MultiPolygon</code>: One two-dimensional segment for each segment of the polygons.</li>
+</ul></td>
         </tr>
 
 	
@@ -558,7 +594,7 @@ vertex for snapping.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js">interaction/Snap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js#L273">line 273</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js#L454">line 454</a>
         </div>
         
     </div>
@@ -1627,7 +1663,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js">interaction/Snap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js#L399">line 399</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js#L581">line 581</a>
         </div>
         
     </div>
@@ -2092,7 +2128,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js">interaction/Snap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js#L487">line 487</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Snap.js#L670">line 670</a>
         </div>
         
     </div>
