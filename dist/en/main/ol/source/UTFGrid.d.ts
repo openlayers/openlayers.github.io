@@ -196,6 +196,11 @@ declare class UTFGrid extends TileSource<Tile> {
     private jsonp_;
     /**
      * @private
+     * @type {LRUCache}
+     */
+    private tileCache_;
+    /**
+     * @private
      * @param {Event} event The load event.
      */
     private onXHRLoad_;
