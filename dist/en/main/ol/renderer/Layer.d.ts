@@ -61,9 +61,9 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
      * @abstract
      * @param {import("../Map.js").FrameState} frameState Frame state.
      * @param {HTMLElement|null} target Target that may be used to render content to.
-     * @return {HTMLElement|null} The rendered element.
+     * @return {HTMLElement} The rendered element.
      */
-    renderFrame(frameState: import("../Map.js").FrameState, target: HTMLElement | null): HTMLElement | null;
+    renderFrame(frameState: import("../Map.js").FrameState, target: HTMLElement | null): HTMLElement;
     /**
      * @abstract
      * @param {import("../coordinate.js").Coordinate} coordinate Coordinate.
