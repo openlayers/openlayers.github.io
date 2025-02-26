@@ -220,6 +220,7 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @param {import('../../render/webgl/VectorStyleRenderer.js').WebGLBuffers} buffers Buffers
      */
     disposeBuffers(buffers: import("../../render/webgl/VectorStyleRenderer.js").WebGLBuffers): void;
+    renderDeclutter(): void;
 }
 import WebGLLayerRenderer from './Layer.js';
 //# sourceMappingURL=VectorLayer.d.ts.map

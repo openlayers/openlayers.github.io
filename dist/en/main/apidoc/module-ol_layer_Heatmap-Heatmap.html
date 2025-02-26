@@ -100,6 +100,7 @@
             <li data-name="setblur"><a href="module-ol_layer_Heatmap-Heatmap.html#setBlur">setBlur</a>
             <li data-name="setdeclutter"><a href="module-ol_layer_Heatmap-Heatmap.html#setDeclutter">setDeclutter</a>
             <li data-name="setextent"><a href="module-ol_layer_Heatmap-Heatmap.html#setExtent">setExtent</a>
+            <li data-name="setfilter"><a href="module-ol_layer_Heatmap-Heatmap.html#setFilter">setFilter</a>
             <li data-name="setgradient"><a href="module-ol_layer_Heatmap-Heatmap.html#setGradient">setGradient</a>
             <li data-name="setmap"><a href="module-ol_layer_Heatmap-Heatmap.html#setMap">setMap</a>
             <li data-name="setmaxresolution"><a href="module-ol_layer_Heatmap-Heatmap.html#setMaxResolution">setMaxResolution</a>
@@ -112,6 +113,7 @@
             <li data-name="setsource"><a href="module-ol_layer_Heatmap-Heatmap.html#setSource">setSource</a>
             <li data-name="setstyle"><a href="module-ol_layer_Heatmap-Heatmap.html#setStyle">setStyle</a>
             <li data-name="setvisible"><a href="module-ol_layer_Heatmap-Heatmap.html#setVisible">setVisible</a>
+            <li data-name="setweight"><a href="module-ol_layer_Heatmap-Heatmap.html#setWeight">setWeight</a>
             <li data-name="setzindex"><a href="module-ol_layer_Heatmap-Heatmap.html#setZIndex">setZIndex</a>
             <li data-name="un"><a href="module-ol_layer_Heatmap-Heatmap.html#un">un</a>
             <li data-name="unset"><a href="module-ol_layer_Heatmap-Heatmap.html#unset">unset</a>
@@ -202,7 +204,7 @@ options means that <code>title</code> is observable, and has get/set accessors.<
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L72">line 72</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L88">line 88</a>
         </div>
         
     </div>
@@ -515,7 +517,7 @@ of the heatmap, specified as an array of CSS color strings.</p></td>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
@@ -528,7 +530,8 @@ of the heatmap, specified as an array of CSS color strings.</p></td>
 
             <td  class="description last">
                 
-                <p>Radius size in pixels.</p></td>
+                <p>Radius size in pixels. Note that for LineStrings,
+the width of the line will be double the radius.</p></td>
         </tr>
 
 	
@@ -542,7 +545,7 @@ of the heatmap, specified as an array of CSS color strings.</p></td>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
@@ -555,7 +558,8 @@ of the heatmap, specified as an array of CSS color strings.</p></td>
 
             <td  class="description last">
                 
-                <p>Blur size in pixels.</p></td>
+                <p>Blur size in pixels. This is added to the <code>radius</code>
+parameter above to create the final size of the blur effect.</p></td>
         </tr>
 
 	
@@ -569,10 +573,7 @@ of the heatmap, specified as an array of CSS color strings.</p></td>
             <td class="type">
             
                 
-<span class="param-type">string</span>
-|
-
-<span class="param-type">function</span>
+<span class="param-type"><a href="module-ol_layer_Heatmap.html#~WeightExpression">WeightExpression</a></span>
 
 
                 
@@ -586,8 +587,58 @@ of the heatmap, specified as an array of CSS color strings.</p></td>
             <td  class="description last">
                 
                 <p>The feature
-attribute to use for the weight or a function that returns a weight from a feature. Weight values
+attribute to use for the weight. This also supports expressions returning a number or a function that returns a weight from a feature. Weight values
 should range from 0 to 1 (and values outside will be clamped to that range).</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>filter</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~BooleanExpression">BooleanExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Optional filter expression.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>variables</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, (number|Array.&lt;number>|string|boolean)></span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Variables used in expressions (optional)</p></td>
         </tr>
 
 	
@@ -923,7 +974,7 @@ should range from 0 to 1 (and values outside will be clamped to that range).</p>
       <td class="type">
       
       
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
       
@@ -1054,7 +1105,7 @@ should range from 0 to 1 (and values outside will be clamped to that range).</p>
       <td class="type">
       
       
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
       
@@ -1642,7 +1693,7 @@ Attributions for this layer at the given view.
         <div class="anchor" id="getBlur">
         </div>
         <h4 class="name">
-            getBlur<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number}</span>
+            getBlur<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a>}</span>
             
             
 
@@ -1650,7 +1701,7 @@ Attributions for this layer at the given view.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L126">line 126</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L143">line 143</a>
         </div>
         
     </div>
@@ -1976,7 +2027,7 @@ Promise that resolves with an array of features.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L136">line 136</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L155">line 155</a>
         </div>
         
     </div>
@@ -2706,7 +2757,7 @@ Object.
         <div class="anchor" id="getRadius">
         </div>
         <h4 class="name">
-            getRadius<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number}</span>
+            getRadius<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a>}</span>
             
             
 
@@ -2714,7 +2765,7 @@ Object.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L146">line 146</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L165">line 165</a>
         </div>
         
     </div>
@@ -4015,7 +4066,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L163">line 163</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L184">line 184</a>
         </div>
         
     </div>
@@ -4065,7 +4116,7 @@ Unique key for the listener. If
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
@@ -4076,7 +4127,7 @@ Unique key for the listener. If
 
             <td  class="description last">
                 
-                <p>Blur size in pixels.</p></td>
+                <p>Blur size in pixels (supports expressions).</p></td>
         </tr>
 
 	
@@ -4392,6 +4443,132 @@ will be visible at all extents.</p>
 <dt class="">
     
     <div class="nameContainer">
+        <div class="anchor" id="setFilter">
+        </div>
+        <h4 class="name">
+            setFilter<span class="signature">(filter)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L227">line 227</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Set the filter expression</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>filter</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~BooleanExpression">BooleanExpression</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Filter expression</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
         <div class="anchor" id="setGradient">
         </div>
         <h4 class="name">
@@ -4403,7 +4580,7 @@ will be visible at all extents.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L173">line 173</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L201">line 201</a>
         </div>
         
     </div>
@@ -5463,7 +5640,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L183">line 183</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L211">line 211</a>
         </div>
         
     </div>
@@ -5513,7 +5690,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
@@ -5524,7 +5701,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
 
             <td  class="description last">
                 
-                <p>Radius size in pixel.</p></td>
+                <p>Radius size in pixel (supports expressions).</p></td>
         </tr>
 
 	
@@ -5930,6 +6107,132 @@ literals instead of using the <code>Style</code> and symbolizer constructors (<c
             <td  class="description last">
                 
                 <p>The visibility of the layer.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="setWeight">
+        </div>
+        <h4 class="name">
+            setWeight<span class="signature">(weight)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L238">line 238</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Set the weight expression</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>weight</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_layer_Heatmap.html#~WeightExpression">WeightExpression</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Weight expression</p></td>
         </tr>
 
 	

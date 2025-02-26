@@ -700,22 +700,41 @@ declare namespace ol {
         export { _ol_render$toContext as toContext };
         export namespace webgl {
             export { $ol$render$webgl$MixedGeometryBatch as MixedGeometryBatch };
+            export namespace ShaderBuilder {
+                export { _ol_render_webgl_ShaderBuilder$COMMON_HEADER as COMMON_HEADER };
+                export { _ol_render_webgl_ShaderBuilder$ShaderBuilder as ShaderBuilder };
+            }
             export { $ol$render$webgl$VectorStyleRenderer as VectorStyleRenderer };
+            export namespace bufferUtil {
+                export { _ol_render_webgl_bufferUtil$LINESTRING_ANGLE_COSINE_CUTOFF as LINESTRING_ANGLE_COSINE_CUTOFF };
+                export { _ol_render_webgl_bufferUtil$writeLineSegmentToBuffers as writeLineSegmentToBuffers };
+                export { _ol_render_webgl_bufferUtil$writePointFeatureToBuffers as writePointFeatureToBuffers };
+                export { _ol_render_webgl_bufferUtil$writePolygonTrianglesToBuffers as writePolygonTrianglesToBuffers };
+            }
+            export namespace compileUtil {
+                export { _ol_render_webgl_compileUtil$UNPACK_COLOR_FN as UNPACK_COLOR_FN };
+                export { _ol_render_webgl_compileUtil$applyContextToBuilder as applyContextToBuilder };
+                export { _ol_render_webgl_compileUtil$expressionToGlsl as expressionToGlsl };
+                export { _ol_render_webgl_compileUtil$generateAttributesFromContext as generateAttributesFromContext };
+                export { _ol_render_webgl_compileUtil$generateUniformsFromContext as generateUniformsFromContext };
+                export { _ol_render_webgl_compileUtil$getGlslSizeFromType as getGlslSizeFromType };
+                export { _ol_render_webgl_compileUtil$getGlslTypeFromType as getGlslTypeFromType };
+                export { _ol_render_webgl_compileUtil$packColor as packColor };
+            }
+            export namespace encodeUtil {
+                export { _ol_render_webgl_encodeUtil$colorDecodeId as colorDecodeId };
+                export { _ol_render_webgl_encodeUtil$colorEncodeId as colorEncodeId };
+            }
             export namespace renderinstructions {
                 export { _ol_render_webgl_renderinstructions$generateLineStringRenderInstructions as generateLineStringRenderInstructions };
                 export { _ol_render_webgl_renderinstructions$generatePointRenderInstructions as generatePointRenderInstructions };
                 export { _ol_render_webgl_renderinstructions$generatePolygonRenderInstructions as generatePolygonRenderInstructions };
                 export { _ol_render_webgl_renderinstructions$getCustomAttributesSize as getCustomAttributesSize };
             }
-            export namespace utils {
-                export { _ol_render_webgl_utils$LINESTRING_ANGLE_COSINE_CUTOFF as LINESTRING_ANGLE_COSINE_CUTOFF };
-                export { _ol_render_webgl_utils$breakDownFlatStyle as breakDownFlatStyle };
-                export { _ol_render_webgl_utils$colorDecodeId as colorDecodeId };
-                export { _ol_render_webgl_utils$colorEncodeId as colorEncodeId };
-                export { _ol_render_webgl_utils$getBlankImageData as getBlankImageData };
-                export { _ol_render_webgl_utils$writeLineSegmentToBuffers as writeLineSegmentToBuffers };
-                export { _ol_render_webgl_utils$writePointFeatureToBuffers as writePointFeatureToBuffers };
-                export { _ol_render_webgl_utils$writePolygonTrianglesToBuffers as writePolygonTrianglesToBuffers };
+            export namespace style {
+                export { _ol_render_webgl_style$breakDownFlatStyle as breakDownFlatStyle };
+                export { _ol_render_webgl_style$computeHash as computeHash };
+                export { _ol_render_webgl_style$parseLiteralStyle as parseLiteralStyle };
             }
         }
     }
@@ -973,10 +992,6 @@ declare namespace ol {
         export { $ol$webgl$RenderTarget as RenderTarget };
         export { _ol_webgl$STATIC_DRAW as STATIC_DRAW };
         export { _ol_webgl$STREAM_DRAW as STREAM_DRAW };
-        export namespace ShaderBuilder {
-            export { _ol_webgl_ShaderBuilder$COMMON_HEADER as COMMON_HEADER };
-            export { _ol_webgl_ShaderBuilder$ShaderBuilder as ShaderBuilder };
-        }
         export { $ol$webgl$TileGeometry as TileGeometry };
         export { $ol$webgl$TileTexture as TileTexture };
         export { _ol_webgl$UNSIGNED_BYTE as UNSIGNED_BYTE };
@@ -984,12 +999,6 @@ declare namespace ol {
         export { _ol_webgl$UNSIGNED_SHORT as UNSIGNED_SHORT };
         export { _ol_webgl$getContext as getContext };
         export { _ol_webgl$getSupportedExtensions as getSupportedExtensions };
-        export namespace styleparser {
-            export { _ol_webgl_styleparser$computeHash as computeHash };
-            export { _ol_webgl_styleparser$expressionToGlsl as expressionToGlsl };
-            export { _ol_webgl_styleparser$packColor as packColor };
-            export { _ol_webgl_styleparser$parseLiteralStyle as parseLiteralStyle };
-        }
     }
     export namespace xml {
         export { _ol_xml$OBJECT_PROPERTY_NODE_FACTORY as OBJECT_PROPERTY_NODE_FACTORY };
@@ -1586,19 +1595,30 @@ import { getRenderPixel as _ol_render$getRenderPixel } from '../../ol/render.js'
 import { getVectorContext as _ol_render$getVectorContext } from '../../ol/render.js';
 import { toContext as _ol_render$toContext } from '../../ol/render.js';
 import $ol$render$webgl$MixedGeometryBatch from '../../ol/render/webgl/MixedGeometryBatch.js';
+import { COMMON_HEADER as _ol_render_webgl_ShaderBuilder$COMMON_HEADER } from '../../ol/render/webgl/ShaderBuilder.js';
+import { ShaderBuilder as _ol_render_webgl_ShaderBuilder$ShaderBuilder } from '../../ol/render/webgl/ShaderBuilder.js';
 import $ol$render$webgl$VectorStyleRenderer from '../../ol/render/webgl/VectorStyleRenderer.js';
+import { LINESTRING_ANGLE_COSINE_CUTOFF as _ol_render_webgl_bufferUtil$LINESTRING_ANGLE_COSINE_CUTOFF } from '../../ol/render/webgl/bufferUtil.js';
+import { writeLineSegmentToBuffers as _ol_render_webgl_bufferUtil$writeLineSegmentToBuffers } from '../../ol/render/webgl/bufferUtil.js';
+import { writePointFeatureToBuffers as _ol_render_webgl_bufferUtil$writePointFeatureToBuffers } from '../../ol/render/webgl/bufferUtil.js';
+import { writePolygonTrianglesToBuffers as _ol_render_webgl_bufferUtil$writePolygonTrianglesToBuffers } from '../../ol/render/webgl/bufferUtil.js';
+import { UNPACK_COLOR_FN as _ol_render_webgl_compileUtil$UNPACK_COLOR_FN } from '../../ol/render/webgl/compileUtil.js';
+import { applyContextToBuilder as _ol_render_webgl_compileUtil$applyContextToBuilder } from '../../ol/render/webgl/compileUtil.js';
+import { expressionToGlsl as _ol_render_webgl_compileUtil$expressionToGlsl } from '../../ol/render/webgl/compileUtil.js';
+import { generateAttributesFromContext as _ol_render_webgl_compileUtil$generateAttributesFromContext } from '../../ol/render/webgl/compileUtil.js';
+import { generateUniformsFromContext as _ol_render_webgl_compileUtil$generateUniformsFromContext } from '../../ol/render/webgl/compileUtil.js';
+import { getGlslSizeFromType as _ol_render_webgl_compileUtil$getGlslSizeFromType } from '../../ol/render/webgl/compileUtil.js';
+import { getGlslTypeFromType as _ol_render_webgl_compileUtil$getGlslTypeFromType } from '../../ol/render/webgl/compileUtil.js';
+import { packColor as _ol_render_webgl_compileUtil$packColor } from '../../ol/render/webgl/compileUtil.js';
+import { colorDecodeId as _ol_render_webgl_encodeUtil$colorDecodeId } from '../../ol/render/webgl/encodeUtil.js';
+import { colorEncodeId as _ol_render_webgl_encodeUtil$colorEncodeId } from '../../ol/render/webgl/encodeUtil.js';
 import { generateLineStringRenderInstructions as _ol_render_webgl_renderinstructions$generateLineStringRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { generatePointRenderInstructions as _ol_render_webgl_renderinstructions$generatePointRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { generatePolygonRenderInstructions as _ol_render_webgl_renderinstructions$generatePolygonRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { getCustomAttributesSize as _ol_render_webgl_renderinstructions$getCustomAttributesSize } from '../../ol/render/webgl/renderinstructions.js';
-import { LINESTRING_ANGLE_COSINE_CUTOFF as _ol_render_webgl_utils$LINESTRING_ANGLE_COSINE_CUTOFF } from '../../ol/render/webgl/utils.js';
-import { breakDownFlatStyle as _ol_render_webgl_utils$breakDownFlatStyle } from '../../ol/render/webgl/utils.js';
-import { colorDecodeId as _ol_render_webgl_utils$colorDecodeId } from '../../ol/render/webgl/utils.js';
-import { colorEncodeId as _ol_render_webgl_utils$colorEncodeId } from '../../ol/render/webgl/utils.js';
-import { getBlankImageData as _ol_render_webgl_utils$getBlankImageData } from '../../ol/render/webgl/utils.js';
-import { writeLineSegmentToBuffers as _ol_render_webgl_utils$writeLineSegmentToBuffers } from '../../ol/render/webgl/utils.js';
-import { writePointFeatureToBuffers as _ol_render_webgl_utils$writePointFeatureToBuffers } from '../../ol/render/webgl/utils.js';
-import { writePolygonTrianglesToBuffers as _ol_render_webgl_utils$writePolygonTrianglesToBuffers } from '../../ol/render/webgl/utils.js';
+import { breakDownFlatStyle as _ol_render_webgl_style$breakDownFlatStyle } from '../../ol/render/webgl/style.js';
+import { computeHash as _ol_render_webgl_style$computeHash } from '../../ol/render/webgl/style.js';
+import { parseLiteralStyle as _ol_render_webgl_style$parseLiteralStyle } from '../../ol/render/webgl/style.js';
 import $ol$renderer$Composite from '../../ol/renderer/Composite.js';
 import $ol$renderer$Layer from '../../ol/renderer/Layer.js';
 import $ol$renderer$Map from '../../ol/renderer/Map.js';
@@ -1783,8 +1803,6 @@ import $ol$webgl$PostProcessingPass from '../../ol/webgl/PostProcessingPass.js';
 import $ol$webgl$RenderTarget from '../../ol/webgl/RenderTarget.js';
 import { STATIC_DRAW as _ol_webgl$STATIC_DRAW } from '../../ol/webgl.js';
 import { STREAM_DRAW as _ol_webgl$STREAM_DRAW } from '../../ol/webgl.js';
-import { COMMON_HEADER as _ol_webgl_ShaderBuilder$COMMON_HEADER } from '../../ol/webgl/ShaderBuilder.js';
-import { ShaderBuilder as _ol_webgl_ShaderBuilder$ShaderBuilder } from '../../ol/webgl/ShaderBuilder.js';
 import $ol$webgl$TileGeometry from '../../ol/webgl/TileGeometry.js';
 import $ol$webgl$TileTexture from '../../ol/webgl/TileTexture.js';
 import { UNSIGNED_BYTE as _ol_webgl$UNSIGNED_BYTE } from '../../ol/webgl.js';
@@ -1792,10 +1810,6 @@ import { UNSIGNED_INT as _ol_webgl$UNSIGNED_INT } from '../../ol/webgl.js';
 import { UNSIGNED_SHORT as _ol_webgl$UNSIGNED_SHORT } from '../../ol/webgl.js';
 import { getContext as _ol_webgl$getContext } from '../../ol/webgl.js';
 import { getSupportedExtensions as _ol_webgl$getSupportedExtensions } from '../../ol/webgl.js';
-import { computeHash as _ol_webgl_styleparser$computeHash } from '../../ol/webgl/styleparser.js';
-import { expressionToGlsl as _ol_webgl_styleparser$expressionToGlsl } from '../../ol/webgl/styleparser.js';
-import { packColor as _ol_webgl_styleparser$packColor } from '../../ol/webgl/styleparser.js';
-import { parseLiteralStyle as _ol_webgl_styleparser$parseLiteralStyle } from '../../ol/webgl/styleparser.js';
 import { OBJECT_PROPERTY_NODE_FACTORY as _ol_xml$OBJECT_PROPERTY_NODE_FACTORY } from '../../ol/xml.js';
 import { XML_SCHEMA_INSTANCE_URI as _ol_xml$XML_SCHEMA_INSTANCE_URI } from '../../ol/xml.js';
 import { createElementNS as _ol_xml$createElementNS } from '../../ol/xml.js';

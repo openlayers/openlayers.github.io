@@ -67,7 +67,6 @@ export function uniformNameForVariable(variableName: string): string;
  */
 /**
  * @typedef {Object} CompilationContext
- * @property {boolean} [inFragmentShader] If false, means the expression output should be made for a vertex shader
  * @property {Object<string, CompilationContextProperty>} properties The values for properties used in 'get' expressions.
  * @property {Object<string, CompilationContextVariable>} variables The values for variables used in 'var' expressions.
  * @property {Object<string, string>} functions Lookup of functions used by the style.
@@ -122,10 +121,6 @@ export type CompilationContextVariable = {
     type: number;
 };
 export type CompilationContext = {
-    /**
-     * If false, means the expression output should be made for a vertex shader
-     */
-    inFragmentShader?: boolean | undefined;
     /**
      * The values for properties used in 'get' expressions.
      */

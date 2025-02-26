@@ -63,6 +63,18 @@
           </div>
           <div class="navigation-list-wrapper">
             <ul class="navigation-list search-empty">
+<li class="item item-module toggle-manual toggle-manual-show" data-longname="module:ol/layer/Heatmap" data-name="ol/layer/heatmap">
+    <span class="title toggle">
+        <span class="fa fa-plus me-2 mt-1"></span>
+        <span><a href="module-ol_layer_Heatmap.html">ol​/layer​/Heatmap</a></span>
+    </span>
+    <div class="member-list" data-type="typedefs">
+        <span class="subtitle">Typedefs</span>
+        <ul>
+            <li data-name="options"><a href="module-ol_layer_Heatmap.html#~Options">Options</a>
+            <li data-name="weightexpression"><a href="module-ol_layer_Heatmap.html#~WeightExpression">WeightExpression</a>
+        </ul>
+    </div>
               <li class="loading">Loading …
             </ul>
           </div>
@@ -457,7 +469,7 @@ of the heatmap, specified as an array of CSS color strings.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
@@ -467,7 +479,8 @@ of the heatmap, specified as an array of CSS color strings.</p>
             </td>
 
             <td class="description last">
-                <p>Radius size in pixels.</p>
+                <p>Radius size in pixels. Note that for LineStrings,
+the width of the line will be double the radius.</p>
                 
             </td>
         </tr>
@@ -482,7 +495,7 @@ of the heatmap, specified as an array of CSS color strings.</p>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
 
 
                 
@@ -492,7 +505,8 @@ of the heatmap, specified as an array of CSS color strings.</p>
             </td>
 
             <td class="description last">
-                <p>Blur size in pixels.</p>
+                <p>Blur size in pixels. This is added to the <code>radius</code>
+parameter above to create the final size of the blur effect.</p>
                 
             </td>
         </tr>
@@ -507,10 +521,7 @@ of the heatmap, specified as an array of CSS color strings.</p>
             <td class="type">
             
                 
-<span class="param-type">string</span>
-|
-
-<span class="param-type">function</span>
+<span class="param-type"><a href="module-ol_layer_Heatmap.html#~WeightExpression">WeightExpression</a></span>
 
 
                 
@@ -521,8 +532,54 @@ of the heatmap, specified as an array of CSS color strings.</p>
 
             <td class="description last">
                 <p>The feature
-attribute to use for the weight or a function that returns a weight from a feature. Weight values
+attribute to use for the weight. This also supports expressions returning a number or a function that returns a weight from a feature. Weight values
 should range from 0 to 1 (and values outside will be clamped to that range).</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>filter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~BooleanExpression">BooleanExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Optional filter expression.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>variables</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, (number|Array.&lt;number>|string|boolean)></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Variables used in expressions (optional)</p>
                 
             </td>
         </tr>
@@ -600,6 +657,82 @@ should range from 0 to 1 (and values outside will be clamped to that range).</p>
     
 </dl>
 
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="~WeightExpression">
+        </div>
+        <h4 class="name">
+            WeightExpression<span class="signature">()</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js">layer/Heatmap.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/layer/Heatmap.js#L18">line 18</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
 
     
 </dd>

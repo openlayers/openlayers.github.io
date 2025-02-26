@@ -86,7 +86,7 @@ export type AsShaders = {
     /**
      * Shader builder with the appropriate presets.
      */
-    builder: import("../../webgl/ShaderBuilder.js").ShaderBuilder;
+    builder: import("./ShaderBuilder.js").ShaderBuilder;
     /**
      * Custom attributes made available in the vertex shaders.
      * Default shaders rely on the attributes in {@link Attributes}.
@@ -144,7 +144,7 @@ export type VectorStyle = AsRule | AsShaders;
  */
 /**
  * @typedef {Object} AsShaders
- * @property {import("../../webgl/ShaderBuilder.js").ShaderBuilder} builder Shader builder with the appropriate presets.
+ * @property {import("./ShaderBuilder.js").ShaderBuilder} builder Shader builder with the appropriate presets.
  * @property {AttributeDefinitions} [attributes] Custom attributes made available in the vertex shaders.
  * Default shaders rely on the attributes in {@link Attributes}.
  * @property {UniformDefinitions} [uniforms] Additional uniforms usable in shaders.

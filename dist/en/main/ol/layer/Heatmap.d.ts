@@ -1,4 +1,5 @@
 export default Heatmap;
+export type WeightExpression = import("../style/flat.js").NumberExpression | string | ((arg0: import("../Feature.js").default) => number);
 export type Options<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> = {
     /**
      * A CSS class name to set to the layer element.
@@ -50,19 +51,31 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
      */
     gradient?: string[] | undefined;
     /**
-     * Radius size in pixels.
+     * Radius size in pixels. Note that for LineStrings,
+     * the width of the line will be double the radius.
      */
-    radius?: number | undefined;
+    radius?: import("../style/flat.js").NumberExpression | undefined;
     /**
-     * Blur size in pixels.
+     * Blur size in pixels. This is added to the `radius`
+     * parameter above to create the final size of the blur effect.
      */
-    blur?: number | undefined;
+    blur?: import("../style/flat.js").NumberExpression | undefined;
     /**
      * The feature
-     * attribute to use for the weight or a function that returns a weight from a feature. Weight values
+     * attribute to use for the weight. This also supports expressions returning a number or a function that returns a weight from a feature. Weight values
      * should range from 0 to 1 (and values outside will be clamped to that range).
      */
-    weight?: string | ((arg0: import("../Feature.js").default) => number) | undefined;
+    weight?: WeightExpression | undefined;
+    /**
+     * Optional filter expression.
+     */
+    filter?: import("../style/flat.js").BooleanExpression | undefined;
+    /**
+     * Variables used in expressions (optional)
+     */
+    variables?: {
+        [x: string]: string | number | boolean | number[];
+    } | undefined;
     /**
      * Point source.
      */
@@ -85,14 +98,20 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
  * @fires import("../render/Event.js").RenderEvent#postrender
  * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
  * @template {import("../source/Vector.js").default<FeatureType>} [VectorSourceType=import("../source/Vector.js").default<FeatureType>]
- * @extends {BaseVector<FeatureType, VectorSourceType, WebGLPointsLayerRenderer>}
+ * @extends {BaseVector<FeatureType, VectorSourceType, WebGLVectorLayerRenderer>}
  * @api
  */
-declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> extends BaseVector<FeatureType, VectorSourceType, WebGLPointsLayerRenderer> {
+declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> extends BaseVector<FeatureType, VectorSourceType, WebGLVectorLayerRenderer> {
     /**
      * @param {Options<FeatureType, VectorSourceType>} [options] Options.
      */
     constructor(options?: Options<FeatureType, VectorSourceType>);
+    filter_: import("../style/flat.js").BooleanExpression;
+    /**
+     * @type {import('../style/flat.js').StyleVariables}
+     * @private
+     */
+    private styleVariables_;
     /**
      * @private
      * @type {HTMLCanvasElement}
@@ -101,14 +120,14 @@ declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = 
     /**
      * @private
      */
-    private weightFunction_;
+    private weight_;
     /**
      * Return the blur size in pixels.
-     * @return {number} Blur size in pixels.
+     * @return {import("../style/flat.js").NumberExpression} Blur size in pixels.
      * @api
      * @observable
      */
-    getBlur(): number;
+    getBlur(): import("../style/flat.js").NumberExpression;
     /**
      * Return the gradient colors as array of strings.
      * @return {Array<string>} Colors.
@@ -118,22 +137,22 @@ declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = 
     getGradient(): Array<string>;
     /**
      * Return the size of the radius in pixels.
-     * @return {number} Radius size in pixel.
+     * @return {import("../style/flat.js").NumberExpression} Radius size in pixel.
      * @api
      * @observable
      */
-    getRadius(): number;
+    getRadius(): import("../style/flat.js").NumberExpression;
     /**
      * @private
      */
     private handleGradientChanged_;
     /**
      * Set the blur size in pixels.
-     * @param {number} blur Blur size in pixels.
+     * @param {import("../style/flat.js").NumberExpression} blur Blur size in pixels (supports expressions).
      * @api
      * @observable
      */
-    setBlur(blur: number): void;
+    setBlur(blur: import("../style/flat.js").NumberExpression): void;
     /**
      * Set the gradient colors as array of strings.
      * @param {Array<string>} colors Gradient.
@@ -143,16 +162,33 @@ declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = 
     setGradient(colors: Array<string>): void;
     /**
      * Set the size of the radius in pixels.
-     * @param {number} radius Radius size in pixel.
+     * @param {import("../style/flat.js").NumberExpression} radius Radius size in pixel (supports expressions).
      * @api
      * @observable
      */
-    setRadius(radius: number): void;
+    setRadius(radius: import("../style/flat.js").NumberExpression): void;
+    /**
+     * Set the filter expression
+     * @param {import("../style/flat.js").BooleanExpression} filter Filter expression
+     * @api
+     */
+    setFilter(filter: import("../style/flat.js").BooleanExpression): void;
+    /**
+     * Set the weight expression
+     * @param {WeightExpression} weight Weight expression
+     * @api
+     */
+    setWeight(weight: WeightExpression): void;
+    /**
+     * Update any variables used by the layer style and trigger a re-render.
+     * @param {import('../style/flat.js').StyleVariables} variables Variables to update.
+     */
+    updateStyleVariables(variables: import("../style/flat.js").StyleVariables): void;
     /**
      * @override
      */
     override renderDeclutter(): void;
 }
-import WebGLPointsLayerRenderer from '../renderer/webgl/PointsLayer.js';
+import WebGLVectorLayerRenderer from '../renderer/webgl/VectorLayer.js';
 import BaseVector from './BaseVector.js';
 //# sourceMappingURL=Heatmap.d.ts.map
