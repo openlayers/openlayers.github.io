@@ -833,14 +833,14 @@ declare class Map extends BaseObject {
     setTarget(target?: HTMLElement | string): void;
     /**
      * Set the view for this map.
-     * @param {View|Promise<import("./View.js").ViewOptions>} view The view that controls this map.
+     * @param {View|Promise<import("./View.js").ViewOptions>|null} view The view that controls this map.
      * It is also possible to pass a promise that resolves to options for constructing a view.  This
      * alternative allows view properties to be resolved by sources or other components that load
      * view-related metadata.
      * @observable
      * @api
      */
-    setView(view: View | Promise<import("./View.js").ViewOptions>): void;
+    setView(view: View | Promise<import("./View.js").ViewOptions> | null): void;
     /**
      * Force a recalculation of the map viewport size.  This should be called when
      * third-party code changes the size of the map viewport.
