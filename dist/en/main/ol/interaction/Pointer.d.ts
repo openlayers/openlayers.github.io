@@ -12,19 +12,19 @@ export type Options = {
      * Function handling "down" events. If the function returns `true` then a drag
      * sequence is started.
      */
-    handleDownEvent?: ((arg0: import("../MapBrowserEvent.js").default<any>) => boolean) | undefined;
+    handleDownEvent?: ((arg0: import("../MapBrowserEvent.js").default) => boolean) | undefined;
     /**
      * Function handling "drag" events. This function is called on "move" events
      * during a drag sequence.
      */
-    handleDragEvent?: ((arg0: import("../MapBrowserEvent.js").default<any>) => void) | undefined;
+    handleDragEvent?: ((arg0: import("../MapBrowserEvent.js").default) => void) | undefined;
     /**
      * Method called by the map to notify the interaction that a browser event was
      * dispatched to the map. The function may return `false` to prevent the
      * propagation of the event to other interactions in the map's interactions
      * chain.
      */
-    handleEvent?: ((arg0: import("../MapBrowserEvent.js").default<any>) => boolean) | undefined;
+    handleEvent?: ((arg0: import("../MapBrowserEvent.js").default) => boolean) | undefined;
     /**
      * Function handling "move" events. This function is called on "move" events.
      * This functions is also called during a drag sequence, so during a drag
@@ -32,12 +32,12 @@ export type Options = {
      * If `handleDownEvent` is defined and it returns true this function will not
      * be called during a drag sequence.
      */
-    handleMoveEvent?: ((arg0: import("../MapBrowserEvent.js").default<any>) => void) | undefined;
+    handleMoveEvent?: ((arg0: import("../MapBrowserEvent.js").default) => void) | undefined;
     /**
      * Function handling "up" events. If the function returns `false` then the
      * current drag sequence is stopped.
      */
-    handleUpEvent?: ((arg0: import("../MapBrowserEvent.js").default<any>) => boolean) | undefined;
+    handleUpEvent?: ((arg0: import("../MapBrowserEvent.js").default) => boolean) | undefined;
     /**
      * Should the down event be propagated to other interactions, or should be
      * stopped?
@@ -92,26 +92,26 @@ declare class PointerInteraction extends Interaction {
      * @return {boolean} If the event was consumed.
      * @protected
      */
-    protected handleDownEvent(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): boolean;
+    protected handleDownEvent(mapBrowserEvent: import("../MapBrowserEvent.js").default): boolean;
     /**
      * Handle pointer drag events.
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Event.
      * @protected
      */
-    protected handleDragEvent(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): void;
+    protected handleDragEvent(mapBrowserEvent: import("../MapBrowserEvent.js").default): void;
     /**
      * Handle pointer move events.
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Event.
      * @protected
      */
-    protected handleMoveEvent(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): void;
+    protected handleMoveEvent(mapBrowserEvent: import("../MapBrowserEvent.js").default): void;
     /**
      * Handle pointer up events.
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Event.
      * @return {boolean} If the event was consumed.
      * @protected
      */
-    protected handleUpEvent(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>): boolean;
+    protected handleUpEvent(mapBrowserEvent: import("../MapBrowserEvent.js").default): boolean;
     /**
      * This function is used to determine if "down" events should be propagated
      * to other interactions or should be stopped.

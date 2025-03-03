@@ -9,7 +9,7 @@ export class DragBoxEvent extends Event {
      * @param {import("../coordinate.js").Coordinate} coordinate The event coordinate.
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Originating event.
      */
-    constructor(type: string, coordinate: import("../coordinate.js").Coordinate, mapBrowserEvent: import("../MapBrowserEvent.js").default<any>);
+    constructor(type: string, coordinate: import("../coordinate.js").Coordinate, mapBrowserEvent: import("../MapBrowserEvent.js").default);
     /**
      * The coordinate of the drag event.
      * @const
@@ -22,7 +22,7 @@ export class DragBoxEvent extends Event {
      * @type {import("../MapBrowserEvent.js").default}
      * @api
      */
-    mapBrowserEvent: import("../MapBrowserEvent.js").default<any>;
+    mapBrowserEvent: import("../MapBrowserEvent.js").default;
 }
 export default DragBox;
 /**
@@ -30,7 +30,7 @@ export default DragBox;
  * {@link module :ol/pixel~Pixel}s and returns a `{boolean}`. If the condition is met,
  * true should be returned.
  */
-export type EndCondition = (this: unknown, arg1: import("../MapBrowserEvent.js").default<any>, arg2: import("../pixel.js").Pixel, arg3: import("../pixel.js").Pixel) => boolean;
+export type EndCondition = (this: unknown, arg1: import("../MapBrowserEvent.js").default, arg2: import("../pixel.js").Pixel, arg3: import("../pixel.js").Pixel) => boolean;
 export type Options = {
     /**
      * CSS class name for styling the box.
@@ -57,7 +57,7 @@ export type Options = {
      * Code to execute just
      * before `boxend` is fired.
      */
-    onBoxEnd?: ((this: DragBox, arg1: import("../MapBrowserEvent.js").default<any>) => void) | undefined;
+    onBoxEnd?: ((this: DragBox, arg1: import("../MapBrowserEvent.js").default) => void) | undefined;
 };
 /**
  * *
@@ -116,7 +116,7 @@ declare class DragBox extends PointerInteraction {
      * Function to execute just before `onboxend` is fired
      * @param {import("../MapBrowserEvent.js").default} event Event.
      */
-    onBoxEnd(event: import("../MapBrowserEvent.js").default<any>): void;
+    onBoxEnd(event: import("../MapBrowserEvent.js").default): void;
     /**
      * @type {import("../pixel.js").Pixel}
      * @private
@@ -141,7 +141,7 @@ declare class DragBox extends PointerInteraction {
      * @param {import("../pixel.js").Pixel} endPixel The end pixel of the box.
      * @return {boolean} Whether or not the boxend condition should be fired.
      */
-    defaultBoxEndCondition(mapBrowserEvent: import("../MapBrowserEvent.js").default<any>, startPixel: import("../pixel.js").Pixel, endPixel: import("../pixel.js").Pixel): boolean;
+    defaultBoxEndCondition(mapBrowserEvent: import("../MapBrowserEvent.js").default, startPixel: import("../pixel.js").Pixel, endPixel: import("../pixel.js").Pixel): boolean;
     /**
      * Returns geometry of last drawn box.
      * @return {import("../geom/Polygon.js").default} Geometry.

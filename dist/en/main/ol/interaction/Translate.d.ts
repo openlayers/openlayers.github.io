@@ -38,7 +38,7 @@ export class TranslateEvent extends Event {
      * @param {import("../coordinate.js").Coordinate} startCoordinate The original coordinates before.translation started
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Map browser event.
      */
-    constructor(type: TranslateEventType, features: Collection<Feature>, coordinate: import("../coordinate.js").Coordinate, startCoordinate: import("../coordinate.js").Coordinate, mapBrowserEvent: import("../MapBrowserEvent.js").default<any>);
+    constructor(type: TranslateEventType, features: Collection<Feature>, coordinate: import("../coordinate.js").Coordinate, startCoordinate: import("../coordinate.js").Coordinate, mapBrowserEvent: import("../MapBrowserEvent.js").default);
     /**
      * The features being translated.
      * @type {Collection<Feature>}
@@ -64,7 +64,7 @@ export class TranslateEvent extends Event {
      * @type {import("../MapBrowserEvent.js").default}
      * @api
      */
-    mapBrowserEvent: import("../MapBrowserEvent.js").default<any>;
+    mapBrowserEvent: import("../MapBrowserEvent.js").default;
 }
 export default Translate;
 /**

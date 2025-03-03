@@ -500,6 +500,21 @@ declare class Draw extends PointerInteraction {
      */
     getOverlay(): VectorLayer;
     /**
+     * Handles the {@link module:ol/MapBrowserEvent~MapBrowserEvent map browser event} and may actually draw or finish the drawing.
+     * @param {import("../MapBrowserEvent.js").default<PointerEvent>} event Map browser event.
+     * @return {boolean} `false` to stop event propagation.
+     * @api
+     * @override
+     */
+    override handleEvent(event: import("../MapBrowserEvent.js").default<PointerEvent>): boolean;
+    /**
+     * Handle pointer down events.
+     * @param {import("../MapBrowserEvent.js").default<PointerEvent>} event Event.
+     * @return {boolean} If the event was consumed.
+     * @override
+     */
+    override handleDownEvent(event: import("../MapBrowserEvent.js").default<PointerEvent>): boolean;
+    /**
      * @private
      */
     private deactivateTrace_;
@@ -535,8 +550,15 @@ declare class Draw extends PointerInteraction {
      */
     private updateTrace_;
     /**
+     * Handle pointer up events.
+     * @param {import("../MapBrowserEvent.js").default<PointerEvent>} event Event.
+     * @return {boolean} If the event was consumed.
+     * @override
+     */
+    override handleUpEvent(event: import("../MapBrowserEvent.js").default<PointerEvent>): boolean;
+    /**
      * Handle move events.
-     * @param {import("../MapBrowserEvent.js").default} event A move event.
+     * @param {import("../MapBrowserEvent.js").default<PointerEvent>} event A move event.
      * @private
      */
     private handlePointerMove_;

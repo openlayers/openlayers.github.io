@@ -3,9 +3,9 @@ export default MapBrowserEvent;
  * @classdesc
  * Events emitted as map browser events are instances of this type.
  * See {@link module:ol/Map~Map} for which events trigger a map browser event.
- * @template {UIEvent} EVENT
+ * @template {PointerEvent|KeyboardEvent|WheelEvent} [EVENT=PointerEvent|KeyboardEvent|WheelEvent]
  */
-declare class MapBrowserEvent<EVENT extends UIEvent> extends MapEvent {
+declare class MapBrowserEvent<EVENT extends PointerEvent | KeyboardEvent | WheelEvent = KeyboardEvent | WheelEvent | PointerEvent> extends MapEvent {
     /**
      * @param {string} type Event type.
      * @param {import("./Map.js").default} map Map.

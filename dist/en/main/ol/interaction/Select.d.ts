@@ -71,7 +71,7 @@ export class SelectEvent extends Event {
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Associated
      *     {@link module:ol/MapBrowserEvent~MapBrowserEvent}.
      */
-    constructor(type: SelectEventType, selected: Array<import("../Feature.js").default>, deselected: Array<import("../Feature.js").default>, mapBrowserEvent: import("../MapBrowserEvent.js").default<any>);
+    constructor(type: SelectEventType, selected: Array<import("../Feature.js").default>, deselected: Array<import("../Feature.js").default>, mapBrowserEvent: import("../MapBrowserEvent.js").default);
     /**
      * Selected features array.
      * @type {Array<import("../Feature.js").default>}
@@ -89,7 +89,7 @@ export class SelectEvent extends Event {
      * @type {import("../MapBrowserEvent.js").default}
      * @api
      */
-    mapBrowserEvent: import("../MapBrowserEvent.js").default<any>;
+    mapBrowserEvent: import("../MapBrowserEvent.js").default;
 }
 export default Select;
 /**

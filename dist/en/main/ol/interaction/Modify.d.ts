@@ -66,7 +66,7 @@ export class ModifyEvent extends Event {
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent
      * Associated {@link module:ol/MapBrowserEvent~MapBrowserEvent}.
      */
-    constructor(type: ModifyEventType, features: Collection<Feature>, mapBrowserEvent: import("../MapBrowserEvent.js").default<any>);
+    constructor(type: ModifyEventType, features: Collection<Feature>, mapBrowserEvent: import("../MapBrowserEvent.js").default);
     /**
      * The features being modified.
      * @type {Collection<Feature>}
@@ -78,7 +78,7 @@ export class ModifyEvent extends Event {
      * @type {import("../MapBrowserEvent.js").default}
      * @api
      */
-    mapBrowserEvent: import("../MapBrowserEvent.js").default<any>;
+    mapBrowserEvent: import("../MapBrowserEvent.js").default;
 }
 export default Modify;
 export type SegmentData = {
