@@ -560,7 +560,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
       if (!renderer.prepareFrame(frameState)) {
         return;
       }
-      if (layer.getDeclutter() &amp;&amp; !frameState.declutterTree) {
+      if (layer.getDeclutter() &amp;&amp; !frameState.declutter) {
         frameState.declutter &#x3D; {};
       }
       renderer.renderFrame(frameState, canvas);
