@@ -90,6 +90,12 @@ declare class MultiLineString extends SimpleGeometry {
      */
     getLineStrings(): Array<LineString>;
     /**
+     * Return the sum of all line string lengths
+     * @return {number} Length (on projected plane).
+     * @api
+     */
+    getLength(): number;
+    /**
      * @return {Array<number>} Flat midpoints.
      */
     getFlatMidpoints(): Array<number>;
