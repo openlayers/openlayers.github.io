@@ -243,7 +243,7 @@ declare class MixedGeometryBatch {
      * @param {string} featureUid the feature uid
      * @private
      */
-    private returnRef_;
+    private removeRef_;
     /**
      * @param {Feature|RenderFeature} feature Feature
      */
