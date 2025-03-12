@@ -262,8 +262,20 @@ declare class TileWMS extends TileImage {
      */
     private getKeyForParams_;
     /**
-     * Update the user-provided params.
-     * @param {Object} params Params.
+     * @param {Object} params New URL paremeters.
+     * @private
+     */
+    private setParams_;
+    /**
+     * Set the URL parameters passed to the WMS source.
+     * @param {Object} params New URL paremeters.
+     * @api
+     */
+    setParams(params: any): void;
+    /**
+     * Update the URL parameters. This method can be used to update a subset of the WMS
+     * parameters. Call `setParams` to set all of the parameters.
+     * @param {Object} params Updated URL parameters.
      * @api
      */
     updateParams(params: any): void;

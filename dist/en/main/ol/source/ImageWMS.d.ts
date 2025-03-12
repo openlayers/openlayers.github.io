@@ -202,6 +202,12 @@ declare class ImageWMS extends ImageSource {
      */
     setUrl(url: string | undefined): void;
     /**
+     * Set the user-provided params.
+     * @param {Object} params Params.
+     * @api
+     */
+    setParams(params: any): void;
+    /**
      * Update the user-provided params.
      * @param {Object} params Params.
      * @api
