@@ -470,7 +470,6 @@ declare namespace ol {
     export namespace has {
         export { _ol_has$CREATE_IMAGE_BITMAP as CREATE_IMAGE_BITMAP };
         export { _ol_has$DEVICE_PIXEL_RATIO as DEVICE_PIXEL_RATIO };
-        export { _ol_has$FIREFOX as FIREFOX };
         export { _ol_has$IMAGE_DECODE as IMAGE_DECODE };
         export { _ol_has$MAC as MAC };
         export { _ol_has$PASSIVE_EVENT_LISTENERS as PASSIVE_EVENT_LISTENERS };
@@ -1406,7 +1405,6 @@ import { transform2D as _ol_geom_flat_transform$transform2D } from '../../ol/geo
 import { translate as _ol_geom_flat_transform$translate } from '../../ol/geom/flat/transform.js';
 import { CREATE_IMAGE_BITMAP as _ol_has$CREATE_IMAGE_BITMAP } from '../../ol/has.js';
 import { DEVICE_PIXEL_RATIO as _ol_has$DEVICE_PIXEL_RATIO } from '../../ol/has.js';
-import { FIREFOX as _ol_has$FIREFOX } from '../../ol/has.js';
 import { IMAGE_DECODE as _ol_has$IMAGE_DECODE } from '../../ol/has.js';
 import { MAC as _ol_has$MAC } from '../../ol/has.js';
 import { PASSIVE_EVENT_LISTENERS as _ol_has$PASSIVE_EVENT_LISTENERS } from '../../ol/has.js';
