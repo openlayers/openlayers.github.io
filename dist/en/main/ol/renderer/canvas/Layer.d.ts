@@ -73,7 +73,7 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
     /**
      * Get a rendering container from an existing target, if compatible.
      * @param {HTMLElement} target Potential render target.
-     * @param {string} transform CSS Transform.
+     * @param {string} transform CSS transform matrix.
      * @param {string} [backgroundColor] Background color.
      */
     useContainer(target: HTMLElement, transform: string, backgroundColor?: string): void;

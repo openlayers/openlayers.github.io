@@ -127,12 +127,19 @@ export function makeInverse(target: Transform, source: Transform): Transform;
  */
 export function determinant(mat: Transform): number;
 /**
- * A rounded string version of the transform.  This can be used
+ * A matrix string version of the transform.  This can be used
  * for CSS transforms.
  * @param {!Transform} mat Matrix.
  * @return {string} The transform as a string.
  */
 export function toString(mat: Transform): string;
+/**
+ * Compare two matrices for equality.
+ * @param {!string} cssTransform1 A CSS transform matrix string.
+ * @param {!string} cssTransform2 A CSS transform matrix string.
+ * @return {boolean} The two matrices are equal.
+ */
+export function equivalent(cssTransform1: string, cssTransform2: string): boolean;
 /**
  * An array representing an affine 2d transformation for use with
  * {@link module :ol/transform} functions. The array has 6 elements.
