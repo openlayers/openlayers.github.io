@@ -182,6 +182,7 @@ declare namespace ol {
             export { _ol_expr_gpu$FEATURE_ID_PROPERTY_NAME as FEATURE_ID_PROPERTY_NAME };
             export { _ol_expr_gpu$GEOMETRY_TYPE_PROPERTY_NAME as GEOMETRY_TYPE_PROPERTY_NAME };
             export { _ol_expr_gpu$PALETTE_TEXTURE_ARRAY as PALETTE_TEXTURE_ARRAY };
+            export { _ol_expr_gpu$UNDEFINED_PROP_VALUE as UNDEFINED_PROP_VALUE };
             export { _ol_expr_gpu$arrayToGlsl as arrayToGlsl };
             export { _ol_expr_gpu$buildExpression as buildExpression };
             export { _ol_expr_gpu$colorToGlsl as colorToGlsl };
@@ -1179,6 +1180,7 @@ import { typeName as _ol_expr_expression$typeName } from '../../ol/expr/expressi
 import { FEATURE_ID_PROPERTY_NAME as _ol_expr_gpu$FEATURE_ID_PROPERTY_NAME } from '../../ol/expr/gpu.js';
 import { GEOMETRY_TYPE_PROPERTY_NAME as _ol_expr_gpu$GEOMETRY_TYPE_PROPERTY_NAME } from '../../ol/expr/gpu.js';
 import { PALETTE_TEXTURE_ARRAY as _ol_expr_gpu$PALETTE_TEXTURE_ARRAY } from '../../ol/expr/gpu.js';
+import { UNDEFINED_PROP_VALUE as _ol_expr_gpu$UNDEFINED_PROP_VALUE } from '../../ol/expr/gpu.js';
 import { arrayToGlsl as _ol_expr_gpu$arrayToGlsl } from '../../ol/expr/gpu.js';
 import { buildExpression as _ol_expr_gpu$buildExpression } from '../../ol/expr/gpu.js';
 import { colorToGlsl as _ol_expr_gpu$colorToGlsl } from '../../ol/expr/gpu.js';

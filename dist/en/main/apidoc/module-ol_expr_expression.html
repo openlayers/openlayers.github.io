@@ -187,7 +187,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L601">line 601</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L602">line 602</a>
         </div>
         
     </div>
@@ -449,7 +449,8 @@ An example would be to provide a default value for get: <code>['coalesce', ['get
 <li><code>['all', value1, value2, ...]</code> returns <code>true</code> if all the inputs are <code>true</code>, <code>false</code> otherwise.</li>
 <li><code>['any', value1, value2, ...]</code> returns <code>true</code> if any of the inputs are <code>true</code>, <code>false</code> otherwise.</li>
 <li><code>['has', attributeName, keyOrArrayIndex, ...]</code> returns <code>true</code> if feature properties include the (nested) key <code>attributeName</code>,
-<code>false</code> otherwise.</li>
+<code>false</code> otherwise.
+Note that for WebGL layers, the hardcoded value <code>-9999999</code> is used to distinguish when a property is not defined.</li>
 <li><code>['between', value1, value2, value3]</code> returns <code>true</code> if <code>value1</code> is contained between <code>value2</code> and <code>value3</code>
 (inclusively), or <code>false</code> otherwise.</li>
 <li><code>['in', needle, haystack]</code> returns <code>true</code> if <code>needle</code> is found in <code>haystack</code>, and
@@ -584,7 +585,7 @@ Literal values can be of the following types:</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L428">line 428</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L429">line 429</a>
         </div>
         
     </div>

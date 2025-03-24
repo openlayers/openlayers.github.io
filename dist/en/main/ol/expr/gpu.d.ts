@@ -97,6 +97,10 @@ export function buildExpression(encoded: import("./expression.js").EncodedExpres
 export const PALETTE_TEXTURE_ARRAY: "u_paletteTextures";
 export const FEATURE_ID_PROPERTY_NAME: "featureId";
 export const GEOMETRY_TYPE_PROPERTY_NAME: "geometryType";
+/**
+ * The value `-9999999` will be used to indicate that a property on a feature is not defined, similar to a "no data" value.
+ */
+export const UNDEFINED_PROP_VALUE: -9999999;
 export type ParsingContext = import("./expression.js").ParsingContext;
 export type Expression = import("./expression.js").Expression;
 export type LiteralExpression = import("./expression.js").LiteralExpression;
