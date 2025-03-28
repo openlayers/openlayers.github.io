@@ -27,6 +27,11 @@ declare class ZIndexContext {
      */
     private context_;
     /**
+     * @param {...*} args Arguments to push to the instructions array.
+     * @private
+     */
+    private push_;
+    /**
      * @private
      * @param {...*} args Args.
      * @return {ZIndexContext} This.
