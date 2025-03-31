@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6176],{99115:function(e,t,n){var s=n(41564),a=n(96256),c=n(52401);fetch("data/example.tif").then((e=>e.blob())).then((e=>{const t=new c.A({sources:[{blob:e}]});new s.A({target:"map",layers:[new a.A({source:t})],view:t.getView().then((e=>(e.showFullExtent=!0,e)))})}))}},function(e){var t;t=99115,e(e.s=t)}]);
+//# sourceMappingURL=cog-blob.js.map
