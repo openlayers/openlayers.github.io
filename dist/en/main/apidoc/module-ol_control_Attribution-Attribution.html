@@ -162,7 +162,7 @@ be changed by using a css selector for <code>.ol-attribution</code>.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js">control/Attribution.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js#L49">line 49</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js#L53">line 53</a>
         </div>
         
     </div>
@@ -512,7 +512,11 @@ callback.</p></td>
             <td  class="description last">
                 
                 <p>Optional attribution(s) that will always be
-displayed regardless of the layers rendered</p></td>
+displayed regardless of the layers rendered.
+<strong>Caution:</strong> Attributions are rendered dynamically using <code>innerHTML</code>, which can lead to potential
+<a href="https://en.wikipedia.org/wiki/Cross-site_scripting"><strong>XSS (Cross-Site Scripting)</strong></a> vulnerabilities.
+Use this feature only for trusted content
+or ensure that the content is properly sanitized before inserting it.</p></td>
         </tr>
 
 	
@@ -1008,7 +1012,7 @@ Value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js">control/Attribution.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js#L332">line 332</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js#L336">line 336</a>
         </div>
         
     </div>
@@ -1099,7 +1103,7 @@ True if the widget is collapsed.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js">control/Attribution.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js#L291">line 291</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js#L295">line 295</a>
         </div>
         
     </div>
@@ -2070,7 +2074,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js">control/Attribution.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js#L318">line 318</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js#L322">line 322</a>
         </div>
         
     </div>
@@ -2198,7 +2202,7 @@ collapsed state is already the one requested.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js">control/Attribution.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js#L300">line 300</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/control/Attribution.js#L304">line 304</a>
         </div>
         
     </div>

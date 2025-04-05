@@ -491,7 +491,11 @@ callback.</p>
 
             <td class="description last">
                 <p>Optional attribution(s) that will always be
-displayed regardless of the layers rendered</p>
+displayed regardless of the layers rendered.
+<strong>Caution:</strong> Attributions are rendered dynamically using <code>innerHTML</code>, which can lead to potential
+<a href="https://en.wikipedia.org/wiki/Cross-site_scripting"><strong>XSS (Cross-Site Scripting)</strong></a> vulnerabilities.
+Use this feature only for trusted content
+or ensure that the content is properly sanitized before inserting it.</p>
                 
             </td>
         </tr>
