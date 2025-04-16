@@ -51,11 +51,6 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      */
     protected renderedProjection: import("../../proj/Projection.js").default | null;
     /**
-     * @private
-     * @type {number}
-     */
-    private renderedRevision_;
-    /**
      * @protected
      * @type {!Array<import("../../Tile.js").default>}
      */
