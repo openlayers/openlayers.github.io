@@ -1,11 +1,16 @@
 export const COMMON_HEADER: "#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_screenToWorldMatrix;\nuniform vec2 u_viewportSizePx;\nuniform float u_pixelRatio;\nuniform float u_globalAlpha;\nuniform float u_time;\nuniform float u_zoom;\nuniform float u_resolution;\nuniform float u_rotation;\nuniform vec4 u_renderExtent;\nuniform vec2 u_patternOrigin;\nuniform float u_depth;\nuniform mediump int u_hitDetection;\n\nconst float PI = 3.141592653589793238;\nconst float TWO_PI = 2.0 * PI;\nfloat currentLineMetric = 0.; // an actual value will be used in the stroke shaders\n";
 /**
  * @typedef {Object} AttributeDescription
- * @property {string} name Attribute name, as will be declared in the headers (including a_)
- * @property {string} type Attribute type, either `float`, `vec2`, `vec4`...
- * @property {string} varyingName Varying name, as will be declared in the fragment shader (including v_)
+ * @property {string} name Attribute name, as will be declared in the header of the vertex shader (including a_)
+ * @property {string} type Attribute GLSL type, either `float`, `vec2`, `vec4`...
+ * @property {string} varyingName Varying name, as will be declared in the header of both shaders (including v_)
  * @property {string} varyingType Varying type, either `float`, `vec2`, `vec4`...
- * @property {string} varyingExpression GLSL expression to assign to the varying in the vertex shader
+ * @property {string} varyingExpression GLSL expression to assign to the varying in the vertex shader (e.g. `unpackColor(a_myAttr)`)
+ */
+/**
+ * @typedef {Object} UniformDescription
+ * @property {string} name Uniform name, as will be declared in the header of the vertex shader (including u_)
+ * @property {string} type Uniform GLSL type, either `float`, `vec2`, `vec4`...
  */
 /**
  * @classdesc
@@ -14,8 +19,8 @@ export const COMMON_HEADER: "#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp 
  *
  * ```js
  * const shader = new ShaderBuilder()
- *   .addVarying('v_width', 'float', 'a_width')
- *   .addUniform('u_time')
+ *   .addAttribute('a_width', 'float')
+ *   .addUniform('u_time', 'float)
  *   .setColorExpression('...')
  *   .setSymbolSizeExpression('...')
  *   .getSymbolFragmentShader();
@@ -28,7 +33,7 @@ export const COMMON_HEADER: "#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp 
 export class ShaderBuilder {
     /**
      * Uniforms; these will be declared in the header (should include the type).
-     * @type {Array<string>}
+     * @type {Array<UniformDescription>}
      * @private
      */
     private uniforms_;
@@ -136,23 +141,24 @@ export class ShaderBuilder {
     /**
      * Adds a uniform accessible in both fragment and vertex shaders.
      * The given name should include a type, such as `sampler2D u_texture`.
-     * @param {string} name Uniform name
+     * @param {string} name Uniform name, including the `u_` prefix
+     * @param {'float'|'vec2'|'vec3'|'vec4'|'sampler2D'} type GLSL type
      * @return {ShaderBuilder} the builder object
      */
-    addUniform(name: string): ShaderBuilder;
+    addUniform(name: string, type: "float" | "vec2" | "vec3" | "vec4" | "sampler2D"): ShaderBuilder;
     /**
      * Adds an attribute accessible in the vertex shader, read from the geometry buffer.
      * The given name should include a type, such as `vec2 a_position`.
      * Attributes will also be made available under the same name in fragment shaders.
-     * @param {string} name Attribute name
-     * @param {'float'|'vec2'|'vec3'|'vec4'} type Type
-     * @param {string} [transform] Expression which will be assigned to the varying in the vertex shader, and
+     * @param {string} name Attribute name, including the `a_` prefix
+     * @param {'float'|'vec2'|'vec3'|'vec4'} type GLSL type
+     * @param {string} [varyingExpression] Expression which will be assigned to the varying in the vertex shader, and
      * passed on to the fragment shader.
-     * @param {'float'|'vec2'|'vec3'|'vec4'} [transformedType] Type of the attribute after transformation;
+     * @param {'float'|'vec2'|'vec3'|'vec4'} [varyingType] Type of the attribute after transformation;
      * e.g. `vec4` after unpacking color components
      * @return {ShaderBuilder} the builder object
      */
-    addAttribute(name: string, type: "float" | "vec2" | "vec3" | "vec4", transform?: string, transformedType?: "float" | "vec2" | "vec3" | "vec4"): ShaderBuilder;
+    addAttribute(name: string, type: "float" | "vec2" | "vec3" | "vec4", varyingExpression?: string, varyingType?: "float" | "vec2" | "vec3" | "vec4"): ShaderBuilder;
     /**
      * Sets an expression to compute the size of the shape.
      * This expression can use all the uniforms and attributes available
@@ -312,15 +318,15 @@ export class ShaderBuilder {
 }
 export type AttributeDescription = {
     /**
-     * Attribute name, as will be declared in the headers (including a_)
+     * Attribute name, as will be declared in the header of the vertex shader (including a_)
      */
     name: string;
     /**
-     * Attribute type, either `float`, `vec2`, `vec4`...
+     * Attribute GLSL type, either `float`, `vec2`, `vec4`...
      */
     type: string;
     /**
-     * Varying name, as will be declared in the fragment shader (including v_)
+     * Varying name, as will be declared in the header of both shaders (including v_)
      */
     varyingName: string;
     /**
@@ -328,8 +334,18 @@ export type AttributeDescription = {
      */
     varyingType: string;
     /**
-     * GLSL expression to assign to the varying in the vertex shader
+     * GLSL expression to assign to the varying in the vertex shader (e.g. `unpackColor(a_myAttr)`)
      */
     varyingExpression: string;
+};
+export type UniformDescription = {
+    /**
+     * Uniform name, as will be declared in the header of the vertex shader (including u_)
+     */
+    name: string;
+    /**
+     * Uniform GLSL type, either `float`, `vec2`, `vec4`...
+     */
+    type: string;
 };
 //# sourceMappingURL=ShaderBuilder.d.ts.map
