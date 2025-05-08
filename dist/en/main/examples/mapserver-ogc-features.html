@@ -3,13 +3,14 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>Select Features</title>
+    <title>MapServer OGC Features</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./theme/ol.css">
     <link rel="stylesheet" type="text/css" href="/theme/site.css">
+    <link rel="stylesheet" type="text/css" href="mapserver-ogc-features.css">
     <link rel="icon" type="image/svg+xml" href="/theme/img/logo-light.svg" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href="/theme/img/logo-dark.svg" media="(prefers-color-scheme: dark)" />
   </head>
@@ -60,24 +61,43 @@
         <a href="#" id="codepen-button" class="btn btn-link float-end">
           <i class="fab fa-codepen fa-lg"></i> Edit
         </a>
-        <h4 id="title">Select Features</h4>
+        <h4 id="title">MapServer OGC Features</h4>
         <p class="tags">
           <span class="badge-group">
             <a
-              href="./index.html?q=select" class="badge badge-info">select</a
+              href="./index.html?q=mapserver" class="badge badge-info">mapserver</a
             ><a
               class="badge badge-info tag-modal-toggle"
               data-bs-toggle="modal"
               data-bs-target="#tag-example-list"
-              data-title="select"
+              data-title="mapserver"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon-negative.html&quot;&gt;Icon Pixel Operations&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./select-features.html&quot;&gt;Select Features&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./select-hover-features.html&quot;&gt;Select Features by Hover&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./select-multiple-features.html&quot;&gt;Select multiple Features&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-custom-proj.html&quot;&gt;Custom Tiled WMS&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./mapserver-cgi.html&quot;&gt;MapServer CGI&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./mapserver-ogc-features.html&quot;&gt;MapServer OGC Features&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./mapserver-wms.html&quot;&gt;MapServer WMS&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-image-custom-proj.html&quot;&gt;Single Image WMS with Proj4js&lt;/a&gt;
                 &lt;/ul&gt;"
               tabindex="0"
-              >4</a>
+              >5</a>
+          </span>
+          <span class="badge-group">
+            <a
+              href="./index.html?q=ogc" class="badge badge-info">ogc</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="ogc"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./mapserver-ogc-features.html&quot;&gt;MapServer OGC Features&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./ogc-map-tiles.html&quot;&gt;OGC Map Tiles&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./ogc-map-tiles-geographic.html&quot;&gt;OGC Map Tiles (Geographic)&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./ogc-vector-tiles.html&quot;&gt;OGC Vector Tiles&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./ogc-vector-tiles-geographic.html&quot;&gt;OGC Vector Tiles (Geographic)&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >5</a>
           </span>
           <span class="badge-group">
             <a
@@ -127,7 +147,7 @@
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./mapbox-vector-layer.html&quot;&gt;Mapbox Vector Layer&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./mapbox-vector-tiles.html&quot;&gt;Mapbox Vector Tiles&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./mapbox-layer.html&quot;&gt;Mapbox-gl Layer&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./mapserver-ogc-features.html&quot;&gt;MapServer OGC Features&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./mapserver-ogc-features.html&quot;&gt;MapServer OGC Features&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./measure.html&quot;&gt;Measure&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./measure-style.html&quot;&gt;Measure using vector styles&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-features.html&quot;&gt;Modify Features&lt;/a&gt;
@@ -140,7 +160,7 @@
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./regularshape.html&quot;&gt;Regular Shapes&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./rich-text-labels.html&quot;&gt;Rich Text Labels&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-scale-and-rotate.html&quot;&gt;Scale and Rotate using Modify Interaction&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./select-features.html&quot;&gt;Select Features&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./select-features.html&quot;&gt;Select Features&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./select-hover-features.html&quot;&gt;Select Features by Hover&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./select-multiple-features.html&quot;&gt;Select multiple Features&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./snap.html&quot;&gt;Snap Interaction&lt;/a&gt;
@@ -190,17 +210,6 @@
           </div>
         </div>
         <div id="map" class="map"></div>
-<form>
-  <label for="type">Action type &nbsp;</label>
-  <select id="type">
-    <option value="click" selected>Click</option>
-    <option value="singleclick">Single-click</option>
-    <option value="pointermove">Hover</option>
-    <option value="altclick">Alt+Click</option>
-    <option value="none">None</option>
-  </select>
-  <span id="status">&nbsp;0 selected features</span>
-</form>
 
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
           <input id="codesandbox-params" type="hidden" name="parameters">
@@ -208,8 +217,8 @@
       </div>
 
       <div class="row-fluid">
-        <p id="shortdesc">Example of using the Select interaction.</p>
-        <div id="docs"><p>Choose between <code>Single-click</code>, <code>Click</code>, <code>Hover</code> and <code>Alt+Click</code> as the event type for selection in the combobox below. When using <code>Single-click</code> or <code>Click</code> you can hold the <code>Shift</code> key to toggle the feature in the selection.</p> <p>Note: when <code>Single-click</code> is used double-clicks won&#39;t select features. This in contrast to <code>Click</code>, where a double-click will both select the feature and zoom the map (because of the <code>DoubleClickZoom</code> interaction). Note that <code>Single-click</code> is less responsive than <code>Click</code> because of the delay it uses to detect double-clicks.</p> <p>In this example, a listener is registered for the Select interaction&#39;s <code>select</code> event in order to update the selection status above.</p>
+        <p id="shortdesc">Example of displaying features from an MapServer OGC Features API</p>
+        <div id="docs"><p>This example loads features from a <a href="https://demo.mapserver.org/cgi-bin/mapserv/localdemo/ogcapi/collections?f=html">MapServer OGC API Server</a> using the <a href="https://ogcapi.ogc.org/features/">OGC API - Features</a> specification.</p>
 </div>
       </div>
 
@@ -217,121 +226,50 @@
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
-import {altKeyOnly, click, pointerMove} from &#x27;ol/events/condition.js&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
-import Select from &#x27;ol/interaction/Select.js&#x27;;
+import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
+import {bbox as bboxStrategy} from &#x27;ol/loadingstrategy.js&#x27;;
+import OSM from &#x27;ol/source/OSM.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
-import Fill from &#x27;ol/style/Fill.js&#x27;;
-import Stroke from &#x27;ol/style/Stroke.js&#x27;;
-import Style from &#x27;ol/style/Style.js&#x27;;
 
-const style &#x3D; new Style({
-  fill: new Fill({
-    color: &#x27;#eeeeee&#x27;,
-  }),
-});
+const mapServerUrl &#x3D; &#x60;https://demo.mapserver.org/cgi-bin/mapserv/localdemo/ogcapi/collections/lakes/items&#x60;;
+const params &#x3D; &#x60;f&#x3D;json&amp;limit&#x3D;1000&#x60;;
 
-const vector &#x3D; new VectorLayer({
+const lakeStyle &#x3D; {
+  &#x27;fill-color&#x27;: &#x27;rgba(70, 130, 180, 0.6)&#x27;,
+  &#x27;stroke-color&#x27;: &#x27;rgba(25, 25, 112, 1)&#x27;,
+  &#x27;stroke-width&#x27;: 2,
+};
+
+const layer &#x3D; new VectorLayer({
+  style: lakeStyle,
   source: new VectorSource({
-    url: &#x27;https://openlayers.org/data/vector/ecoregions.json&#x27;,
+    url: function (extent) {
+      const extentString &#x3D; extent.join(&#x27;,&#x27;);
+      const url &#x3D; &#x60;${mapServerUrl}?${params}&amp;bbox&#x3D;${extentString}&#x60;;
+      return url;
+    },
+    strategy: bboxStrategy,
     format: new GeoJSON(),
   }),
-  background: &#x27;white&#x27;,
-  style: function (feature) {
-    const color &#x3D; feature.get(&#x27;COLOR&#x27;) || &#x27;#eeeeee&#x27;;
-    style.getFill().setColor(color);
-    return style;
-  },
 });
 
 const map &#x3D; new Map({
-  layers: [vector],
+  layers: [
+    new TileLayer({
+      className: &#x27;bw&#x27;,
+      source: new OSM(),
+    }),
+    layer,
+  ],
   target: &#x27;map&#x27;,
   view: new View({
+    projection: &#x27;EPSG:3857&#x27;,
     center: [0, 0],
-    zoom: 2,
+    zoom: 4,
   }),
 });
-
-let select &#x3D; null; // ref to currently selected interaction
-
-const selected &#x3D; new Style({
-  fill: new Fill({
-    color: &#x27;#eeeeee&#x27;,
-  }),
-  stroke: new Stroke({
-    color: &#x27;rgba(255, 255, 255, 0.7)&#x27;,
-    width: 2,
-  }),
-});
-
-function selectStyle(feature) {
-  const color &#x3D; feature.get(&#x27;COLOR&#x27;) || &#x27;#eeeeee&#x27;;
-  selected.getFill().setColor(color);
-  return selected;
-}
-
-// select interaction working on &quot;singleclick&quot;
-const selectSingleClick &#x3D; new Select({style: selectStyle});
-
-// select interaction working on &quot;click&quot;
-const selectClick &#x3D; new Select({
-  condition: click,
-  style: selectStyle,
-});
-
-// select interaction working on &quot;pointermove&quot;
-const selectPointerMove &#x3D; new Select({
-  condition: pointerMove,
-  style: selectStyle,
-});
-
-const selectAltClick &#x3D; new Select({
-  style: selectStyle,
-  condition: function (mapBrowserEvent) {
-    return click(mapBrowserEvent) &amp;&amp; altKeyOnly(mapBrowserEvent);
-  },
-});
-
-const selectElement &#x3D; document.getElementById(&#x27;type&#x27;);
-
-const changeInteraction &#x3D; function () {
-  if (select !&#x3D;&#x3D; null) {
-    map.removeInteraction(select);
-  }
-  const value &#x3D; selectElement.value;
-  if (value &#x3D;&#x3D; &#x27;singleclick&#x27;) {
-    select &#x3D; selectSingleClick;
-  } else if (value &#x3D;&#x3D; &#x27;click&#x27;) {
-    select &#x3D; selectClick;
-  } else if (value &#x3D;&#x3D; &#x27;pointermove&#x27;) {
-    select &#x3D; selectPointerMove;
-  } else if (value &#x3D;&#x3D; &#x27;altclick&#x27;) {
-    select &#x3D; selectAltClick;
-  } else {
-    select &#x3D; null;
-  }
-  if (select !&#x3D;&#x3D; null) {
-    map.addInteraction(select);
-    select.on(&#x27;select&#x27;, function (e) {
-      document.getElementById(&#x27;status&#x27;).innerHTML &#x3D;
-        &#x27;&amp;nbsp;&#x27; +
-        e.target.getFeatures().getLength() +
-        &#x27; selected features (last operation selected &#x27; +
-        e.selected.length +
-        &#x27; and deselected &#x27; +
-        e.deselected.length +
-        &#x27; features)&#x27;;
-    });
-  }
-};
-
-/**
- * onchange callback on the select element.
- */
-selectElement.onchange &#x3D; changeInteraction;
-changeInteraction();
 </code></pre>
       </div>
 
@@ -341,28 +279,20 @@ changeInteraction();
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;Select Features&lt;/title&gt;
+    &lt;title&gt;MapServer OGC Features&lt;/title&gt;
     &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
         height: 400px;
       }
+      .bw {
+        filter: grayscale(100%);
+      }
     &lt;/style&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;form&gt;
-      &lt;label for&#x3D;&quot;type&quot;&gt;Action type &amp;nbsp;&lt;/label&gt;
-      &lt;select id&#x3D;&quot;type&quot;&gt;
-        &lt;option value&#x3D;&quot;click&quot; selected&gt;Click&lt;/option&gt;
-        &lt;option value&#x3D;&quot;singleclick&quot;&gt;Single-click&lt;/option&gt;
-        &lt;option value&#x3D;&quot;pointermove&quot;&gt;Hover&lt;/option&gt;
-        &lt;option value&#x3D;&quot;altclick&quot;&gt;Alt+Click&lt;/option&gt;
-        &lt;option value&#x3D;&quot;none&quot;&gt;None&lt;/option&gt;
-      &lt;/select&gt;
-      &lt;span id&#x3D;&quot;status&quot;&gt;&amp;nbsp;0 selected features&lt;/span&gt;
-    &lt;/form&gt;
 
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
@@ -372,7 +302,7 @@ changeInteraction();
       <div class="row-fluid">
         <h5 class="source-heading">package.json</h5>
         <pre><code id="example-pkg-source" class="language-json">{
-  &quot;name&quot;: &quot;select-features&quot;,
+  &quot;name&quot;: &quot;mapserver-ogc-features&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;10.5.1-dev&quot;
   },
@@ -389,7 +319,7 @@ changeInteraction();
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="common.js"></script>
-    <script src="select-features.js"></script>
+    <script src="mapserver-ogc-features.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/toolbar/prism-toolbar.min.js"></script>
