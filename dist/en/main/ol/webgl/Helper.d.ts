@@ -359,6 +359,11 @@ declare class WebGLHelper extends Disposable {
      */
     private startTime_;
     /**
+     * @type {number}
+     * @private
+     */
+    private maxAttributeCount_;
+    /**
      * @param {Object<string, UniformValue>} uniforms Uniform definitions.
      */
     setUniforms(uniforms: {
@@ -546,6 +551,11 @@ declare class WebGLHelper extends Disposable {
      * @param {Array<number>} value Matrix value
      */
     setUniformMatrixValue(uniform: string, value: Array<number>): void;
+    /**
+     * Disable all vertex attributes.
+     * @private
+     */
+    private disableAllAttributes_;
     /**
      * Will set the currently bound buffer to an attribute of the shader program. Used by `#enableAttributes`
      * internally.
