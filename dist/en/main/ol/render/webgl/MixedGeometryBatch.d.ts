@@ -246,8 +246,9 @@ declare class MixedGeometryBatch {
     private removeRef_;
     /**
      * @param {Feature|RenderFeature} feature Feature
+     * @param {import("../../proj.js").TransformFunction} [projectionTransform] Projection transform.
      */
-    changeFeature(feature: Feature | RenderFeature): void;
+    changeFeature(feature: Feature | RenderFeature, projectionTransform?: import("../../proj.js").TransformFunction): void;
     /**
      * @param {Feature|RenderFeature} feature Feature
      */

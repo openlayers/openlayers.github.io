@@ -181,6 +181,7 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      */
     private handleSourceFeatureAdded_;
     /**
+     * @param {import("../../proj.js").TransformFunction} projectionTransform Transform function.
      * @param {import("../../source/Vector.js").VectorSourceEvent} event Event.
      * @private
      */
