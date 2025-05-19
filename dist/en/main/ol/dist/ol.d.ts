@@ -101,6 +101,7 @@ declare namespace ol {
         export { _ol_css$CLASS_SELECTABLE as CLASS_SELECTABLE };
         export { _ol_css$CLASS_UNSELECTABLE as CLASS_UNSELECTABLE };
         export { _ol_css$CLASS_UNSUPPORTED as CLASS_UNSUPPORTED };
+        export { _ol_css$fontWeights as fontWeights };
         export { _ol_css$getFontParameters as getFontParameters };
     }
     export namespace dom {
@@ -1116,6 +1117,7 @@ import { CLASS_HIDDEN as _ol_css$CLASS_HIDDEN } from '../../ol/css.js';
 import { CLASS_SELECTABLE as _ol_css$CLASS_SELECTABLE } from '../../ol/css.js';
 import { CLASS_UNSELECTABLE as _ol_css$CLASS_UNSELECTABLE } from '../../ol/css.js';
 import { CLASS_UNSUPPORTED as _ol_css$CLASS_UNSUPPORTED } from '../../ol/css.js';
+import { fontWeights as _ol_css$fontWeights } from '../../ol/css.js';
 import { getFontParameters as _ol_css$getFontParameters } from '../../ol/css.js';
 import { createCanvasContext2D as _ol_dom$createCanvasContext2D } from '../../ol/dom.js';
 import { getSharedCanvasContext2D as _ol_dom$getSharedCanvasContext2D } from '../../ol/dom.js';

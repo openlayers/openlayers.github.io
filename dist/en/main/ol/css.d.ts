@@ -54,6 +54,8 @@ export const CLASS_CONTROL: string;
  * @type {string}
  */
 export const CLASS_COLLAPSED: string;
+/** @type {Object<string|number, number>} */
+export const fontWeights: any;
 export function getFontParameters(fontSpec: string): FontParameters | null;
 export type FontParameters = {
     /**

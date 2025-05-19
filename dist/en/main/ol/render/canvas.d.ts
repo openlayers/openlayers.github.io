@@ -188,7 +188,7 @@ export const checkedFonts: BaseObject;
 export const textHeights: {
     [x: string]: number;
 };
-export function registerFont(fontSpec: any): void;
+export function registerFont(fontSpec: any): Promise<void>;
 export function measureTextHeight(fontSpec: any): number;
 export type BuilderType = "Circle" | "Image" | "LineString" | "Polygon" | "Text" | "Default";
 export type FillState = {
