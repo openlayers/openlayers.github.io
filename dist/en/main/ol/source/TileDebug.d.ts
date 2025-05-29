@@ -29,6 +29,10 @@ export type Options = {
      * Should include `{x}`, `{y}` or `{-y}`, and `{z}` placeholders.
      */
     template?: string | undefined;
+    /**
+     * CSS color to fill text and stroke grid lines of each tile.
+     */
+    color?: string | undefined;
 };
 /**
  * @typedef {Object} Options
@@ -44,6 +48,7 @@ export type Options = {
  * If both `source` and individual options are specified the individual options will have precedence.
  * @property {string} [template='z:{z} x:{x} y:{y}'] Template for labeling the tiles.
  * Should include `{x}`, `{y}` or `{-y}`, and `{z}` placeholders.
+ * @property {string} [color='grey'] CSS color to fill text and stroke grid lines of each tile.
  */
 /**
  * @classdesc
