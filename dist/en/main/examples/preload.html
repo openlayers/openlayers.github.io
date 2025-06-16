@@ -78,18 +78,22 @@
           </span>
           <span class="badge-group">
             <a
-              href="./index.html?q=bing" class="badge badge-info">bing</a
+              href="./index.html?q=OSM" class="badge badge-info">OSM</a
             ><a
               class="badge badge-info tag-modal-toggle"
               data-bs-toggle="modal"
               data-bs-target="#tag-example-list"
-              data-title="bing"
+              data-title="OSM"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./bing-maps.html&quot;&gt;Bing Maps&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./full-screen-source.html&quot;&gt;Full Screen Control with extended source element&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./osm-vector-tiles.html&quot;&gt;OSM Vector Tiles&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./preload.html&quot;&gt;Preload Tiles&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection.html&quot;&gt;Raster Reprojection&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./semi-transparent-layer.html&quot;&gt;Semi-Transparent Layer&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./webgl-tiles.html&quot;&gt;WebGL Tiles&lt;/a&gt;
                 &lt;/ul&gt;"
               tabindex="0"
-              >2</a>
+              >6</a>
           </span>
         </p>
         <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -124,7 +128,7 @@
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
-import BingMaps from &#x27;ol/source/BingMaps.js&#x27;;
+import OSM from &#x27;ol/source/OSM.js&#x27;;
 
 const view &#x3D; new View({
   center: [-4808600, -2620936],
@@ -135,10 +139,7 @@ const map1 &#x3D; new Map({
   layers: [
     new TileLayer({
       preload: Infinity,
-      source: new BingMaps({
-        key: &#x27;Your Bing Maps Key from https://www.bingmapsportal.com/ here&#x27;,
-        imagerySet: &#x27;Aerial&#x27;,
-      }),
+      source: new OSM({}),
     }),
   ],
   target: &#x27;map1&#x27;,
@@ -149,10 +150,7 @@ const map2 &#x3D; new Map({
   layers: [
     new TileLayer({
       preload: 0, // default value
-      source: new BingMaps({
-        key: &#x27;Your Bing Maps Key from https://www.bingmapsportal.com/ here&#x27;,
-        imagerySet: &#x27;AerialWithLabelsOnDemand&#x27;,
-      }),
+      source: new OSM({}),
     }),
   ],
   target: &#x27;map2&#x27;,
