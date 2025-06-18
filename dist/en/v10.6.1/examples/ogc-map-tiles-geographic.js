@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1419],{77662:function(e,n,s){var a=s(41564),t=s(87240),o=s(12185),r=s(28178);new a.A({target:"map",layers:[new o.A({source:new r.A({url:"https://maps.gnosis.earth/ogcapi/collections/blueMarble/map/tiles/WorldCRS84Quad"})})],view:new t.Ay({projection:"EPSG:4326",center:[0,0],zoom:1})})}},function(e){var n;n=77662,e(e.s=n)}]);
+//# sourceMappingURL=ogc-map-tiles-geographic.js.map
