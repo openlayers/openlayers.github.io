@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[453],{45893:function(n,e,o){var t=o(33156),c=o(19987),r=o(86395),u=o(29123),a=new t.Z({layers:[new r.Z({source:new c.Z})],target:"map",view:new u.ZP({center:[0,0],zoom:2})});document.getElementById("zoom-out").onclick=function(){var n=a.getView(),e=n.getZoom();n.setZoom(e-1)},document.getElementById("zoom-in").onclick=function(){var n=a.getView(),e=n.getZoom();n.setZoom(e+1)}}},function(n){var e;e=45893,n(n.s=e)}]);
-//# sourceMappingURL=accessible.js.map

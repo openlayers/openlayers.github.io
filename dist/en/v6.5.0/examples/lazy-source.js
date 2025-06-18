@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[88],{317:function(e,n,t){"use strict";t.r(n);var c=t(3),o=t(9),u=t(5),s=t(2),w=new o.b,r=new u.a;new c.a({layers:[r],target:"map",view:new s.a({center:[0,0],zoom:2})});document.getElementById("set-source").onclick=function(){r.setSource(w)},document.getElementById("unset-source").onclick=function(){r.setSource(null)}}},[[317,0]]]);
-//# sourceMappingURL=lazy-source.js.map

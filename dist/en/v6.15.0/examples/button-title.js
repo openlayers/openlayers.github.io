@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[346],{6162:function(t,e,o){var n=o(1376),a=o(9847),r=o(2010),i=o(4354);new n.Z({layers:[new r.Z({source:new a.Z})],target:"map",view:new i.ZP({center:[-873e4,593e4],rotation:Math.PI/5,zoom:8})});$(".ol-zoom-in, .ol-zoom-out").tooltip({placement:"right",container:"#map"}),$(".ol-rotate-reset, .ol-attribution button[title]").tooltip({placement:"left",container:"#map"})}},function(t){var e=function(e){return t(t.s=e)};e(9877),e(6162)}]);
-//# sourceMappingURL=button-title.js.map

@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6243],{75141:function(e,n,t){var o=t(33156),r=t(19987),s=t(86395),i=t(29123),a=t(85920),c=t(62975);new o.Z({interactions:(0,a.ce)().extend([new c.Z]),layers:[new s.Z({source:new r.Z})],target:"map",view:new i.ZP({center:[0,0],zoom:2,constrainResolution:!0})})}},function(e){var n;n=75141,e(e.s=n)}]);
-//# sourceMappingURL=pinch-zoom.js.map

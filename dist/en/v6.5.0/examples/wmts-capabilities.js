@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[186],{410:function(n,t,e){"use strict";e.r(t);var i=new(e(134).a);fetch("data/WMTSCapabilities.xml").then((function(n){return n.text()})).then((function(n){var t=i.read(n);document.getElementById("log").innerText=JSON.stringify(t,null,2)}))}},[[410,0]]]);
-//# sourceMappingURL=wmts-capabilities.js.map

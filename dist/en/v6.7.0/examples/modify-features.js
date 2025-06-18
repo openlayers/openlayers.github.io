@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2051],{4441:function(e,n,r){var o=r(13990),t=r(33156),a=r(29123),s=r(93767),w=r(5651),c=r(85920),u=r(19987),i=r(96802),f=r(86395),l=r(57356),g=new f.Z({source:new u.Z}),m=new l.Z({source:new i.Z({url:"data/geojson/countries.geojson",format:new o.Z,wrapX:!1})}),p=new s.Z({wrapX:!1}),v=new w.Z({features:p.getFeatures()});new t.Z({interactions:(0,c.ce)().extend([p,v]),layers:[g,m],target:"map",view:new a.ZP({center:[0,0],zoom:2})})}},function(e){var n;n=4441,e(e.s=n)}]);
-//# sourceMappingURL=modify-features.js.map

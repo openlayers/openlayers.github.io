@@ -1,7 +1,0 @@
-table.controls td {
-  padding: 2px 5px;
-}
-table.controls td:nth-child(3) {
-  text-align: right;
-  min-width: 3em;
-}

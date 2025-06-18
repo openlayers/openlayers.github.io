@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9177],{4472:function(e,n,s){var r=s(1376),o=s(6166),t=s(2010),u=s(4354);new r.Z({layers:[new t.Z({source:new o.Z({url:"https://a.tiles.mapbox.com/v3/aj.1x1-degrees.json?secure=1",crossOrigin:"anonymous"})})],target:"map",view:new u.ZP({center:[0,0],zoom:2})})}},function(e){var n=function(n){return e(e.s=n)};n(9877),n(4472)}]);
-//# sourceMappingURL=tilejson.js.map
