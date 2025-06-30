@@ -1,4 +1,11 @@
 /**
+ * Breaks down a vector style into an array of prebuilt shader builders with attributes and uniforms
+ * @param {FlatStyleLike|StyleShaders|Array<StyleShaders>} style Vector style
+ * @param {import('../../style/flat.js').StyleVariables} variables Style variables
+ * @return {Array<StyleShaders>} Array of style shaders
+ */
+export function convertStyleToShaders(style: FlatStyleLike | StyleShaders | Array<StyleShaders>, variables: import("../../style/flat.js").StyleVariables): Array<StyleShaders>;
+/**
  * Names of attributes made available to the vertex shader.
  * Please note: changing these *will* break custom shaders!
  */
@@ -82,36 +89,42 @@ export type ShaderProgram = {
      */
     fragment: string;
 };
-export type AsShaders = {
+export type StyleShaders = import("./style.js").StyleParseResult;
+export type FlatStyleLike = import("../../style/flat.js").FlatStyleLike;
+export type FlatStyle = import("../../style/flat.js").FlatStyle;
+export type FlatStyleRule = import("../../style/flat.js").Rule;
+export type SubRenderPass = {
     /**
-     * Shader builder with the appropriate presets.
+     * Vertex shader
      */
-    builder: import("./ShaderBuilder.js").ShaderBuilder;
+    vertexShader: string;
     /**
-     * Custom attributes made available in the vertex shaders.
-     * Default shaders rely on the attributes in {@link Attributes}.
+     * Fragment shader
      */
-    attributes?: {
-        [x: string]: AttributeDefinition;
-    } | undefined;
+    fragmentShader: string;
     /**
-     * Additional uniforms usable in shaders.
+     * Attributes description
      */
-    uniforms?: {
-        [x: string]: import("../../webgl/Helper.js").UniformValue;
-    } | undefined;
+    attributesDesc: Array<import("../../webgl/Helper.js").AttributeDescription>;
+    /**
+     * Program; this has to be recreated if the helper is lost/changed
+     */
+    program?: WebGLProgram | undefined;
 };
-export type AsRule = {
+export type RenderPass = {
     /**
-     * Style
+     * Fill render pass; undefined if no fill in pass
      */
-    style: import("../../style/flat.js").FlatStyle;
+    fillRenderPass?: SubRenderPass | undefined;
     /**
-     * Filter
+     * Stroke render pass; undefined if no stroke in pass
      */
-    filter?: import("../../expr/expression.js").EncodedExpression | undefined;
+    strokeRenderPass?: SubRenderPass | undefined;
+    /**
+     * Symbol render pass; undefined if no symbol in pass
+     */
+    symbolRenderPass?: SubRenderPass | undefined;
 };
-export type VectorStyle = AsRule | AsShaders;
 /**
  * @typedef {Object} AttributeDefinition A description of a custom attribute to be passed on to the GPU, with a value different
  * for each feature.
@@ -143,43 +156,49 @@ export type VectorStyle = AsRule | AsShaders;
  * @property {string} fragment Fragment shader source
  */
 /**
- * @typedef {Object} AsShaders
- * @property {import("./ShaderBuilder.js").ShaderBuilder} builder Shader builder with the appropriate presets.
- * @property {AttributeDefinitions} [attributes] Custom attributes made available in the vertex shaders.
- * Default shaders rely on the attributes in {@link Attributes}.
- * @property {UniformDefinitions} [uniforms] Additional uniforms usable in shaders.
+ * @typedef {import('./style.js').StyleParseResult} StyleShaders
  */
 /**
- * @typedef {Object} AsRule
- * @property {import('../../style/flat.js').FlatStyle} style Style
- * @property {import("../../expr/expression.js").EncodedExpression} [filter] Filter
+ * @typedef {import('../../style/flat.js').FlatStyleLike} FlatStyleLike
  */
 /**
- * @typedef {AsRule|AsShaders} VectorStyle
+ * @typedef {import('../../style/flat.js').FlatStyle} FlatStyle
+ */
+/**
+ * @typedef {import('../../style/flat.js').Rule} FlatStyleRule
+ */
+/**
+ * @typedef {Object} SubRenderPass
+ * @property {string} vertexShader Vertex shader
+ * @property {string} fragmentShader Fragment shader
+ * @property {Array<import('../../webgl/Helper.js').AttributeDescription>} attributesDesc Attributes description
+ * @property {WebGLProgram} [program] Program; this has to be recreated if the helper is lost/changed
+ */
+/**
+ * @typedef {Object} RenderPass
+ * @property {SubRenderPass} [fillRenderPass] Fill render pass; undefined if no fill in pass
+ * @property {SubRenderPass} [strokeRenderPass] Stroke render pass; undefined if no stroke in pass
+ * @property {SubRenderPass} [symbolRenderPass] Symbol render pass; undefined if no symbol in pass
  */
 /**
  * @classdesc This class is responsible for:
- * 1. generate WebGL buffers according to a provided style, using a MixedGeometryBatch as input
+ * 1. generating WebGL buffers according to a provided style, using a MixedGeometryBatch as input
  * 2. rendering geometries contained in said buffers
  *
- * A layer renderer will typically maintain several of these in order to have several styles rendered separately.
- *
- * A VectorStyleRenderer instance can be created either from a literal style or from shaders using either
- * `VectorStyleRenderer.fromStyle` or `VectorStyleRenderer.fromShaders`. The shaders should not be provided explicitly
- * but instead as a preconfigured ShaderBuilder instance.
+ * A VectorStyleRenderer instance can be created either from a literal style or from shaders.
+ * The shaders should not be provided explicitly but instead as a preconfigured ShaderBuilder instance.
  *
  * The `generateBuffers` method returns a promise resolving to WebGL buffers that are intended to be rendered by the
  * same renderer.
  */
 declare class VectorStyleRenderer {
     /**
-     * @param {VectorStyle} styleOrShaders Literal style or custom shaders
+     * @param {FlatStyleLike|StyleShaders|Array<StyleShaders>} styles Vector styles expressed as flat styles, flat style rules or style shaders
      * @param {import('../../style/flat.js').StyleVariables} variables Style variables
      * @param {import('../../webgl/Helper.js').default} helper Helper
      * @param {boolean} [enableHitDetection] Whether to enable the hit detection (needs compatible shader)
-     * @param {import("../../expr/expression.js").ExpressionValue} [filter] Optional filter expression
      */
-    constructor(styleOrShaders: VectorStyle, variables: import("../../style/flat.js").StyleVariables, helper: import("../../webgl/Helper.js").default, enableHitDetection?: boolean, filter?: import("../../expr/expression.js").ExpressionValue);
+    constructor(styles: FlatStyleLike | StyleShaders | Array<StyleShaders>, variables: import("../../style/flat.js").StyleVariables, helper: import("../../webgl/Helper.js").default, enableHitDetection?: boolean);
     /**
      * @private
      * @type {import('../../webgl/Helper.js').default}
@@ -190,94 +209,28 @@ declare class VectorStyleRenderer {
      */
     private hitDetectionEnabled_;
     /**
-     * @private
-     * @type {WebGLProgram}
-     */
-    private fillProgram_;
-    /**
-     * @private
-     * @type {WebGLProgram}
-     */
-    private strokeProgram_;
-    /**
-     * @private
-     * @type {WebGLProgram}
-     */
-    private symbolProgram_;
-    /**
-     * @type {boolean}
+     * @type {Array<StyleShaders>}
      * @private
      */
-    private hasFill_;
+    private styleShaders;
     /**
-     * @private
-     */
-    private fillVertexShader_;
-    /**
-     * @private
-     */
-    private fillFragmentShader_;
-    /**
-     * @type {boolean}
-     * @private
-     */
-    private hasStroke_;
-    /**
-     * @private
-     */
-    private strokeVertexShader_;
-    /**
-     * @private
-     */
-    private strokeFragmentShader_;
-    /**
-     * @type {boolean}
-     * @private
-     */
-    private hasSymbol_;
-    /**
-     * @private
-     */
-    private symbolVertexShader_;
-    /**
-     * @private
-     */
-    private symbolFragmentShader_;
-    /**
-     * @type {function(import('../../Feature.js').FeatureLike): boolean}
-     * @private
-     */
-    private featureFilter_;
-    /**
+     * @type {AttributeDefinitions}
      * @private
      */
     private customAttributes_;
     /**
+     @type {UniformDefinitions}
      * @private
      */
     private uniforms_;
     /**
-     * @type {Array<import('../../webgl/Helper.js').AttributeDescription>}
+     * @type {Array<RenderPass>}
      * @private
      */
-    private polygonAttributesDesc_;
-    /**
-     * @type {Array<import('../../webgl/Helper.js').AttributeDescription>}
-     * @private
-     */
-    private lineStringAttributesDesc_;
-    /**
-     * @type {Array<import('../../webgl/Helper.js').AttributeDescription>}
-     * @private
-     */
-    private pointAttributesDesc_;
-    /**
-     * Will apply the style filter when generating geometry batches (if it can be evaluated outside a map context)
-     * @param {import("../../expr/expression.js").ExpressionValue} filter Style filter
-     * @return {function(import('../../Feature.js').FeatureLike): boolean} Feature filter
-     * @private
-     */
-    private computeFeatureFilter;
+    private renderPasses_;
+    hasFill_: boolean;
+    hasStroke_: boolean;
+    hasSymbol_: boolean;
     /**
      * @param {import('./MixedGeometryBatch.js').default} geometryBatch Geometry batch
      * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates

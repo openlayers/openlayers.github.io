@@ -24,19 +24,6 @@ export function computeHash(input: any | string): string;
  * @return {StyleParseResult} Result containing shader params, attributes and uniforms.
  */
 export function parseLiteralStyle(style: import("../../style/flat.js").FlatStyle, variables?: import("../../style/flat.js").StyleVariables, filter?: import("../../expr/expression.js").EncodedExpression): StyleParseResult;
-/**
- * @typedef {import('./VectorStyleRenderer.js').AsShaders} StyleAsShaders
- */
-/**
- * @typedef {import('./VectorStyleRenderer.js').AsRule} StyleAsRule
- */
-/**
- * Takes in either a Flat Style or an array of shaders (used as input for the webgl vector layer classes)
- * and breaks it down into separate styles to be used by the VectorStyleRenderer class.
- * @param {import('../../style/flat.js').FlatStyleLike | Array<StyleAsShaders> | StyleAsShaders} style Flat style or shaders
- * @return {Array<StyleAsShaders | StyleAsRule>} Separate styles as shaders or rules with a single flat style and a filter
- */
-export function breakDownFlatStyle(style: import("../../style/flat.js").FlatStyleLike | Array<StyleAsShaders> | StyleAsShaders): Array<StyleAsShaders | StyleAsRule>;
 export type StyleParseResult = {
     /**
      * Shader builder pre-configured according to a given style
@@ -51,7 +38,5 @@ export type StyleParseResult = {
      */
     attributes: import("./VectorStyleRenderer.js").AttributeDefinitions;
 };
-export type StyleAsShaders = import("./VectorStyleRenderer.js").AsShaders;
-export type StyleAsRule = import("./VectorStyleRenderer.js").AsRule;
 import { ShaderBuilder } from './ShaderBuilder.js';
 //# sourceMappingURL=style.d.ts.map

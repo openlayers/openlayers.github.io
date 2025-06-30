@@ -16,13 +16,13 @@ export namespace Attributes {
     let POSITION: string;
 }
 export default WebGLVectorTileLayerRenderer;
-export type StyleAsShaders = import("../../render/webgl/VectorStyleRenderer.js").AsShaders;
-export type StyleAsRule = import("../../render/webgl/VectorStyleRenderer.js").AsRule;
+export type StyleShaders = import("../../render/webgl/VectorStyleRenderer.js").StyleShaders;
+export type LayerStyle = import("../../style/flat.js").FlatStyleLike | Array<StyleShaders> | StyleShaders;
 export type Options = {
     /**
      * Flat vector style; also accepts shaders
      */
-    style: import("../../style/flat.js").FlatStyleLike | Array<StyleAsShaders> | StyleAsShaders;
+    style: LayerStyle;
     /**
      * Style variables. Each variable must hold a literal value (not
      * an expression). These variables can be used as {@link import ("../../expr/expression.js").ExpressionValue expressions} in the styles properties
@@ -43,14 +43,14 @@ export type Options = {
 };
 export type LayerType = import("../../layer/BaseTile.js").default<any, any>;
 /**
- * @typedef {import('../../render/webgl/VectorStyleRenderer.js').AsShaders} StyleAsShaders
+ * @typedef {import('../../render/webgl/VectorStyleRenderer.js').StyleShaders} StyleShaders
  */
 /**
- * @typedef {import('../../render/webgl/VectorStyleRenderer.js').AsRule} StyleAsRule
+ * @typedef {import('../../style/flat.js').FlatStyleLike | Array<StyleShaders> | StyleShaders} LayerStyle
  */
 /**
  * @typedef {Object} Options
- * @property {import('../../style/flat.js').FlatStyleLike | Array<StyleAsShaders> | StyleAsShaders} style Flat vector style; also accepts shaders
+ * @property {LayerStyle} style Flat vector style; also accepts shaders
  * @property {import('../../style/flat.js').StyleVariables} [variables] Style variables. Each variable must hold a literal value (not
  * an expression). These variables can be used as {@link import("../../expr/expression.js").ExpressionValue expressions} in the styles properties
  * using the `['var', 'varName']` operator.
@@ -78,20 +78,20 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      */
     private hitDetectionEnabled_;
     /**
-     * @type {Array<StyleAsRule | StyleAsShaders>}
+     * @type {LayerStyle}
      * @private
      */
-    private styles_;
+    private style_;
     /**
      * @type {import('../../style/flat.js').StyleVariables}
      * @private
      */
     private styleVariables_;
     /**
-     * @type {Array<VectorStyleRenderer>}
+     * @type {VectorStyleRenderer}
      * @private
      */
-    private styleRenderers_;
+    private styleRenderer_;
     /**
      * This transform is updated on every frame and is the composition of:
      * - invert of the world->screen transform that was used when rebuilding buffers (see `this.renderTransform_`)

@@ -733,7 +733,6 @@ declare namespace ol {
                 export { _ol_render_webgl_renderinstructions$getCustomAttributesSize as getCustomAttributesSize };
             }
             export namespace style {
-                export { _ol_render_webgl_style$breakDownFlatStyle as breakDownFlatStyle };
                 export { _ol_render_webgl_style$computeHash as computeHash };
                 export { _ol_render_webgl_style$parseLiteralStyle as parseLiteralStyle };
             }
@@ -1619,7 +1618,6 @@ import { generateLineStringRenderInstructions as _ol_render_webgl_renderinstruct
 import { generatePointRenderInstructions as _ol_render_webgl_renderinstructions$generatePointRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { generatePolygonRenderInstructions as _ol_render_webgl_renderinstructions$generatePolygonRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { getCustomAttributesSize as _ol_render_webgl_renderinstructions$getCustomAttributesSize } from '../../ol/render/webgl/renderinstructions.js';
-import { breakDownFlatStyle as _ol_render_webgl_style$breakDownFlatStyle } from '../../ol/render/webgl/style.js';
 import { computeHash as _ol_render_webgl_style$computeHash } from '../../ol/render/webgl/style.js';
 import { parseLiteralStyle as _ol_render_webgl_style$parseLiteralStyle } from '../../ol/render/webgl/style.js';
 import $ol$renderer$Composite from '../../ol/renderer/Composite.js';

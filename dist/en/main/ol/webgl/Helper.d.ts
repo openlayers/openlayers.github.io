@@ -55,9 +55,9 @@ export type BufferCacheEntry = {
  */
 export type AttributeDescription = {
     /**
-     * Attribute name to use in shaders
+     * Attribute name to use in shaders; if null, this attribute will not be enabled and is simply used as padding in the buffers
      */
-    name: string;
+    name: string | null;
     /**
      * Number of components per attributes
      */

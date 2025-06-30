@@ -9,9 +9,9 @@ export type TileType = import("../VectorRenderTile").default;
 declare class TileGeometry extends BaseTileRepresentation<import("../VectorRenderTile").default> {
     /**
      * @param {import("./BaseTileRepresentation.js").TileRepresentationOptions<TileType>} options The tile texture options.
-     * @param {Array<import("../render/webgl/VectorStyleRenderer.js").default>} styleRenderers Array of vector style renderers
+     * @param {import("../render/webgl/VectorStyleRenderer.js").default} styleRenderer Vector style renderer
      */
-    constructor(options: import("./BaseTileRepresentation.js").TileRepresentationOptions<TileType>, styleRenderers: Array<import("../render/webgl/VectorStyleRenderer.js").default>);
+    constructor(options: import("./BaseTileRepresentation.js").TileRepresentationOptions<TileType>, styleRenderer: import("../render/webgl/VectorStyleRenderer.js").default);
     /**
      * @private
      */
@@ -19,11 +19,11 @@ declare class TileGeometry extends BaseTileRepresentation<import("../VectorRende
     /**
      * @private
      */
-    private styleRenderers_;
+    private styleRenderer_;
     /**
-     * @type {Array<import("../render/webgl/VectorStyleRenderer.js").WebGLBuffers>}
+     * @type {import("../render/webgl/VectorStyleRenderer.js").WebGLBuffers}
      */
-    buffers: Array<import("../render/webgl/VectorStyleRenderer.js").WebGLBuffers>;
+    buffers: import("../render/webgl/VectorStyleRenderer.js").WebGLBuffers;
     /**
      * Each geometry tile also has a mask which consisted of a quad (two triangles); this mask is intended to
      * be rendered to an offscreen buffer, and be used to correctly mask tiles according to their zoom level
@@ -34,11 +34,6 @@ declare class TileGeometry extends BaseTileRepresentation<import("../VectorRende
      * @private
      */
     private generateMaskBuffer_;
-    /**
-     * Will release a set of Webgl buffers
-     * @param {import('../render/webgl/VectorStyleRenderer.js').WebGLBuffers|null} buffers Buffers
-     */
-    disposeBuffers(buffers: import("../render/webgl/VectorStyleRenderer.js").WebGLBuffers | null): void;
 }
 import BaseTileRepresentation from './BaseTileRepresentation.js';
 import WebGLArrayBuffer from './Buffer.js';
