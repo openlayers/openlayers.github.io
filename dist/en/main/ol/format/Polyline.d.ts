@@ -34,6 +34,7 @@ export function decodeDeltas(encoded: string, stride: number, factor?: number): 
  *     multiplied. The remaining decimal places will get rounded away.
  *     Default is `1e5`.
  * @return {string} The encoded string.
+ * @deprecated
  * @api
  */
 export function encodeFloats(numbers: Array<number>, factor?: number): string;
@@ -44,6 +45,7 @@ export function encodeFloats(numbers: Array<number>, factor?: number): string;
  * @param {number} [factor] The factor by which the result will be divided.
  *     Default is `1e5`.
  * @return {Array<number>} A list of floating point numbers.
+ * @deprecated
  * @api
  */
 export function decodeFloats(encoded: string, factor?: number): Array<number>;
