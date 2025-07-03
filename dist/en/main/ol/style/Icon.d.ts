@@ -210,6 +210,12 @@ declare class Icon extends ImageStyle {
      */
     getSrc(): string | undefined;
     /**
+     * Set the image URI
+     * @param {string} src Image source URI
+     * @api
+     */
+    setSrc(src: string): void;
+    /**
      * Get the width of the icon (in pixels). Will return undefined when the icon image is not yet loaded.
      * @return {number} Icon width (in pixels).
      * @api
