@@ -199,7 +199,7 @@
 
       <div class="row-fluid">
         <p id="shortdesc">Example of selecting features by hovering.</p>
-        <div id="docs"><p>In this example, a listener is registered on the map&#39;s <code>pointermove</code> to highlight the currently hovered feature.</p>
+        <div id="docs"><p>In this example, the Select interaction reacts to the pointermove event for selection</p>
 </div>
       </div>
 
@@ -207,7 +207,9 @@
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
+import {pointerMove} from &#x27;ol/events/condition.js&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
+import Select from &#x27;ol/interaction/Select.js&#x27;;
 import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
 import Fill from &#x27;ol/style/Fill.js&#x27;;
@@ -220,17 +222,20 @@ const style &#x3D; new Style({
   }),
 });
 
+function colorStyle(style) {
+  return function (f) {
+    style.getFill().setColor(f.get(&#x27;COLOR&#x27;) || &#x27;#eeeeee&#x27;);
+    return style;
+  };
+}
+
 const vector &#x3D; new VectorLayer({
   source: new VectorSource({
     url: &#x27;https://openlayers.org/data/vector/ecoregions.json&#x27;,
     format: new GeoJSON(),
   }),
   background: &#x27;white&#x27;,
-  style: function (feature) {
-    const color &#x3D; feature.get(&#x27;COLOR&#x27;) || &#x27;#eeeeee&#x27;;
-    style.getFill().setColor(color);
-    return style;
-  },
+  style: colorStyle(style),
 });
 
 const map &#x3D; new Map({
@@ -253,23 +258,15 @@ const selectStyle &#x3D; new Style({
 });
 
 const status &#x3D; document.getElementById(&#x27;status&#x27;);
+const select &#x3D; new Select({
+  condition: pointerMove,
+  style: colorStyle(selectStyle),
+});
+map.addInteraction(select);
 
-let selected &#x3D; null;
-map.on(&#x27;pointermove&#x27;, function (e) {
-  if (selected !&#x3D;&#x3D; null) {
-    selected.setStyle(undefined);
-    selected &#x3D; null;
-  }
-
-  map.forEachFeatureAtPixel(e.pixel, function (f) {
-    selected &#x3D; f;
-    selectStyle.getFill().setColor(f.get(&#x27;COLOR&#x27;) || &#x27;#eeeeee&#x27;);
-    f.setStyle(selectStyle);
-    return true;
-  });
-
-  if (selected) {
-    status.innerHTML &#x3D; selected.get(&#x27;ECO_NAME&#x27;);
+select.on(&#x27;select&#x27;, function (e) {
+  if (e.selected.length &gt; 0) {
+    status.innerHTML &#x3D; e.selected[0].get(&#x27;ECO_NAME&#x27;);
   } else {
     status.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27;;
   }

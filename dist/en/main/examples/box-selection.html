@@ -156,7 +156,7 @@
 
       <div class="row-fluid">
         <p id="shortdesc">Using a DragBox interaction to select features.</p>
-        <div id="docs"><p>This example shows how to use a <code>DragBox</code> interaction to select features. Selected features are added to the feature overlay of a select interaction (<code>ol/interaction/Select</code>) for highlighting.</p> <p>Use <code>Ctrl+Drag</code> (<code>Command+Drag</code> on Mac) to draw boxes.</p>
+        <div id="docs"><p>This example shows how to use a <code>DragBox</code> interaction to select features. Features are selected using a select interaction (<code>ol/interaction/Select</code>), to recieve highlighting and apply filters (features with color <span style="background-color: #CC6767;">#CC6767</span> are not selectable)</p> <p>Use <code>Ctrl+Drag</code> (<code>Command+Drag</code> on Mac) to draw boxes.</p>
 </div>
       </div>
 
@@ -218,6 +218,9 @@ const selectedStyle &#x3D; new Style({
 
 // a normal select interaction to handle click
 const select &#x3D; new Select({
+  filter: function (feature) {
+    return !(feature.get(&#x27;COLOR_BIO&#x27;) &#x3D;&#x3D;&#x3D; &#x27;#CC6767&#x27;);
+  },
   style: function (feature) {
     const color &#x3D; feature.get(&#x27;COLOR_BIO&#x27;) || &#x27;#eeeeee&#x27;;
     selectedStyle.getFill().setColor(color);
@@ -225,8 +228,6 @@ const select &#x3D; new Select({
   },
 });
 map.addInteraction(select);
-
-const selectedFeatures &#x3D; select.getFeatures();
 
 // a DragBox interaction used to select features by drawing boxes
 const dragBox &#x3D; new DragBox({
@@ -251,11 +252,7 @@ dragBox.on(&#x27;boxend&#x27;, function () {
 
     const boxFeatures &#x3D; vectorSource
       .getFeaturesInExtent(extent)
-      .filter(
-        (feature) &#x3D;&gt;
-          !selectedFeatures.getArray().includes(feature) &amp;&amp;
-          feature.getGeometry().intersectsExtent(extent),
-      );
+      .filter((feature) &#x3D;&gt; feature.getGeometry().intersectsExtent(extent));
 
     // features that intersect the box geometry are added to the
     // collection of selected features
@@ -281,26 +278,29 @@ dragBox.on(&#x27;boxend&#x27;, function () {
         const geometry &#x3D; feature.getGeometry().clone();
         geometry.rotate(-rotation, anchor);
         if (geometry.intersectsExtent(extent)) {
-          selectedFeatures.push(feature);
+          select.selectFeature(feature);
         }
       });
     } else {
-      selectedFeatures.extend(boxFeatures);
+      boxFeatures.forEach(select.selectFeature.bind(select));
     }
   }
 });
 
 // clear selection when drawing a new box and when clicking on the map
 dragBox.on(&#x27;boxstart&#x27;, function () {
-  selectedFeatures.clear();
+  select.clearSelection();
 });
 
 const infoBox &#x3D; document.getElementById(&#x27;info&#x27;);
 
-selectedFeatures.on([&#x27;add&#x27;, &#x27;remove&#x27;], function () {
-  const names &#x3D; selectedFeatures.getArray().map((feature) &#x3D;&gt; {
-    return feature.get(&#x27;ECO_NAME&#x27;);
-  });
+select.on(&#x27;select&#x27;, function () {
+  const names &#x3D; select
+    .getFeatures()
+    .getArray()
+    .map((feature) &#x3D;&gt; {
+      return feature.get(&#x27;ECO_NAME&#x27;);
+    });
   if (names.length &gt; 0) {
     infoBox.innerHTML &#x3D; names.join(&#x27;, &#x27;);
   } else {

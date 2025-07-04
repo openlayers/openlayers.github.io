@@ -207,22 +207,16 @@
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
+import {always} from &#x27;ol/events/condition.js&#x27;;
 import GeoJSON from &#x27;ol/format/GeoJSON.js&#x27;;
+import Select from &#x27;ol/interaction/Select.js&#x27;;
 import VectorLayer from &#x27;ol/layer/Vector.js&#x27;;
 import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 import VectorSource from &#x27;ol/source/Vector.js&#x27;;
-import Fill from &#x27;ol/style/Fill.js&#x27;;
-import Stroke from &#x27;ol/style/Stroke.js&#x27;;
-import Style from &#x27;ol/style/Style.js&#x27;;
 
-const highlightStyle &#x3D; new Style({
-  fill: new Fill({
-    color: &#x27;#EEE&#x27;,
-  }),
-  stroke: new Stroke({
-    color: &#x27;#3399CC&#x27;,
-    width: 2,
-  }),
+const select &#x3D; new Select({
+  toggleCondition: always,
+  multi: true,
 });
 
 const vector &#x3D; new VectorLayer({
@@ -242,24 +236,13 @@ const map &#x3D; new Map({
     multiWorld: true,
   }),
 });
-
-const selected &#x3D; [];
+map.addInteraction(select);
 
 const status &#x3D; document.getElementById(&#x27;status&#x27;);
 
-map.on(&#x27;singleclick&#x27;, function (e) {
-  map.forEachFeatureAtPixel(e.pixel, function (f) {
-    const selIndex &#x3D; selected.indexOf(f);
-    if (selIndex &lt; 0) {
-      selected.push(f);
-      f.setStyle(highlightStyle);
-    } else {
-      selected.splice(selIndex, 1);
-      f.setStyle(undefined);
-    }
-  });
-
-  status.innerHTML &#x3D; &#x27;&amp;nbsp;&#x27; + selected.length + &#x27; selected features&#x27;;
+select.on(&#x27;select&#x27;, function () {
+  status.innerHTML &#x3D;
+    &#x27;&amp;nbsp;&#x27; + select.getFeatures().getLength() + &#x27; selected features&#x27;;
 });
 </code></pre>
       </div>
