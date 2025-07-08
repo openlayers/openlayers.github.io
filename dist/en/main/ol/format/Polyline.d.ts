@@ -10,6 +10,7 @@
  *     Default is `1e5`.
  * @return {string} The encoded string.
  * @api
+ * @deprecated
  */
 export function encodeDeltas(numbers: Array<number>, stride: number, factor?: number): string;
 /**
@@ -22,6 +23,7 @@ export function encodeDeltas(numbers: Array<number>, stride: number, factor?: nu
  *     be divided. Default is `1e5`.
  * @return {Array<number>} A list of n-dimensional points.
  * @api
+ * @deprecated
  */
 export function decodeDeltas(encoded: string, stride: number, factor?: number): Array<number>;
 /**
