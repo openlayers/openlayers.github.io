@@ -2,16 +2,15 @@
  * Pushes a quad (two triangles) based on a point geometry
  * @param {Float32Array} instructions Array of render instructions for points.
  * @param {number} elementIndex Index from which render instructions will be read.
- * @param {Float32Array} vertexBuffer Buffer in the form of a typed array.
- * @param {Uint32Array} indexBuffer Buffer in the form of a typed array.
+ * @param {Float32Array} instanceAttributesBuffer Buffer in the form of a typed array.
  * @param {number} customAttributesSize Amount of custom attributes for each element.
  * @param {BufferPositions} [bufferPositions] Buffer write positions; if not specified, positions will be set at 0.
  * @return {BufferPositions} New buffer positions where to write next
- * @property {number} vertexPosition New position in the vertex buffer where future writes should start.
- * @property {number} indexPosition New position in the index buffer where future writes should start.
+ * @property {number} vertexAttributesPosition New position in the vertex buffer where future writes should start.
+ * @property {number} indicesPosition New position in the index buffer where future writes should start.
  * @private
  */
-export function writePointFeatureToBuffers(instructions: Float32Array, elementIndex: number, vertexBuffer: Float32Array, indexBuffer: Uint32Array, customAttributesSize: number, bufferPositions?: BufferPositions): BufferPositions;
+export function writePointFeatureToBuffers(instructions: Float32Array, elementIndex: number, instanceAttributesBuffer: Float32Array, customAttributesSize: number, bufferPositions?: BufferPositions): BufferPositions;
 /**
  * Pushes a single quad to form a line segment; also includes a computation for the join angles with previous and next
  * segment, in order to be able to offset the vertices correctly in the shader.
@@ -37,8 +36,7 @@ export function writePointFeatureToBuffers(instructions: Float32Array, elementIn
  * @param {number} segmentEndIndex Index of the segment end point from which render instructions will be read.
  * @param {number|null} beforeSegmentIndex Index of the point right before the segment (null if none, e.g this is a line start)
  * @param {number|null} afterSegmentIndex Index of the point right after the segment (null if none, e.g this is a line end)
- * @param {Array<number>} vertexArray Array containing vertices.
- * @param {Array<number>} indexArray Array containing indices.
+ * @param {Array<number>} instanceAttributesArray Array containing instance attributes.
  * @param {Array<number>} customAttributes Array of custom attributes value
  * @param {import('../../transform.js').Transform} toWorldTransform Transform matrix used to obtain world coordinates from instructions
  * @param {number} currentLength Cumulated length of segments processed so far
@@ -46,7 +44,7 @@ export function writePointFeatureToBuffers(instructions: Float32Array, elementIn
  * @return {{length: number, angle: number}} Cumulated length with the newly processed segment (in world units), new sum of the join angle tangents
  * @private
  */
-export function writeLineSegmentToBuffers(instructions: Float32Array, segmentStartIndex: number, segmentEndIndex: number, beforeSegmentIndex: number | null, afterSegmentIndex: number | null, vertexArray: Array<number>, indexArray: Array<number>, customAttributes: Array<number>, toWorldTransform: import("../../transform.js").Transform, currentLength: number, currentAngleTangentSum: number): {
+export function writeLineSegmentToBuffers(instructions: Float32Array, segmentStartIndex: number, segmentEndIndex: number, beforeSegmentIndex: number | null, afterSegmentIndex: number | null, instanceAttributesArray: Array<number>, customAttributes: Array<number>, toWorldTransform: import("../../transform.js").Transform, currentLength: number, currentAngleTangentSum: number): {
     length: number;
     angle: number;
 };
@@ -69,10 +67,14 @@ export type BufferPositions = {
     /**
      * Position in the vertex buffer
      */
-    vertexPosition: number;
+    vertexAttributesPosition: number;
+    /**
+     * Position in the vertex buffer
+     */
+    instanceAttributesPosition: number;
     /**
      * Position in the index buffer
      */
-    indexPosition: number;
+    indicesPosition: number;
 };
 //# sourceMappingURL=bufferUtil.d.ts.map

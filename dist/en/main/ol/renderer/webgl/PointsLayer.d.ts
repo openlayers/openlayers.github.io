@@ -186,6 +186,10 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
     /**
      * @private
      */
+    private instanceAttributesBuffer_;
+    /**
+     * @private
+     */
     private indicesBuffer_;
     /**
      * @private
@@ -206,11 +210,14 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
      */
     private hitDetectionEnabled_;
     /**
-     * A list of attributes used by the renderer. By default only the position and
-     * index of the vertex (0 to 3) are required.
+     * A list of attributes used by the renderer.
      * @type {Array<import('../../webgl/Helper.js').AttributeDescription>}
      */
     attributes: Array<import("../../webgl/Helper.js").AttributeDescription>;
+    /**
+     * @type {Array<import('../../webgl/Helper.js').AttributeDescription>}
+     */
+    instanceAttributes: Array<import("../../webgl/Helper.js").AttributeDescription>;
     customAttributes: CustomAttribute[];
     /**
      * @private

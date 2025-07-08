@@ -12,12 +12,12 @@ export function convertStyleToShaders(style: FlatStyleLike | StyleShaders | Arra
 export type Attributes = string;
 export namespace Attributes {
     let POSITION: string;
-    let INDEX: string;
+    let LOCAL_POSITION: string;
     let SEGMENT_START: string;
     let SEGMENT_END: string;
     let MEASURE_START: string;
     let MEASURE_END: string;
-    let PARAMETERS: string;
+    let ANGLE_TANGENT_SUM: string;
     let JOIN_ANGLES: string;
     let DISTANCE: string;
 }
@@ -44,19 +44,23 @@ export type AttributeDefinitions = {
 export type UniformDefinitions = {
     [x: string]: import("../../webgl/Helper.js").UniformValue;
 };
+/**
+ * Buffers organized like so: [indicesBuffer, vertexAttributesBuffer, instanceAttributesBuffer]
+ */
+export type WebGLArrayBufferSet = Array<WebGLArrayBuffer>;
 export type WebGLBuffers = {
     /**
      * Array containing indices and vertices buffers for polygons
      */
-    polygonBuffers: Array<WebGLArrayBuffer>;
+    polygonBuffers: WebGLArrayBufferSet;
     /**
      * Array containing indices and vertices buffers for line strings
      */
-    lineStringBuffers: Array<WebGLArrayBuffer>;
+    lineStringBuffers: WebGLArrayBufferSet;
     /**
      * Array containing indices and vertices buffers for points
      */
-    pointBuffers: Array<WebGLArrayBuffer>;
+    pointBuffers: WebGLArrayBufferSet;
     /**
      * Inverse of the transform applied when generating buffers
      */
@@ -103,9 +107,17 @@ export type SubRenderPass = {
      */
     fragmentShader: string;
     /**
-     * Attributes description
+     * Attributes description, defined for each primitive vertex
      */
     attributesDesc: Array<import("../../webgl/Helper.js").AttributeDescription>;
+    /**
+     * Attributes description, defined once per primitive
+     */
+    instancedAttributesDesc: Array<import("../../webgl/Helper.js").AttributeDescription>;
+    /**
+     * Number of vertices per instance primitive in this render pass
+     */
+    instancePrimitiveVertexCount: number;
     /**
      * Program; this has to be recreated if the helper is lost/changed
      */
@@ -138,10 +150,13 @@ export type RenderPass = {
  * @typedef {Object<string, import("../../webgl/Helper").UniformValue>} UniformDefinitions
  */
 /**
+ * @typedef {Array<WebGLArrayBuffer>} WebGLArrayBufferSet Buffers organized like so: [indicesBuffer, vertexAttributesBuffer, instanceAttributesBuffer]
+ */
+/**
  * @typedef {Object} WebGLBuffers
- * @property {Array<WebGLArrayBuffer>} polygonBuffers Array containing indices and vertices buffers for polygons
- * @property {Array<WebGLArrayBuffer>} lineStringBuffers Array containing indices and vertices buffers for line strings
- * @property {Array<WebGLArrayBuffer>} pointBuffers Array containing indices and vertices buffers for points
+ * @property {WebGLArrayBufferSet} polygonBuffers Array containing indices and vertices buffers for polygons
+ * @property {WebGLArrayBufferSet} lineStringBuffers Array containing indices and vertices buffers for line strings
+ * @property {WebGLArrayBufferSet} pointBuffers Array containing indices and vertices buffers for points
  * @property {import("../../transform.js").Transform} invertVerticesTransform Inverse of the transform applied when generating buffers
  */
 /**
@@ -171,7 +186,9 @@ export type RenderPass = {
  * @typedef {Object} SubRenderPass
  * @property {string} vertexShader Vertex shader
  * @property {string} fragmentShader Fragment shader
- * @property {Array<import('../../webgl/Helper.js').AttributeDescription>} attributesDesc Attributes description
+ * @property {Array<import('../../webgl/Helper.js').AttributeDescription>} attributesDesc Attributes description, defined for each primitive vertex
+ * @property {Array<import('../../webgl/Helper.js').AttributeDescription>} instancedAttributesDesc Attributes description, defined once per primitive
+ * @property {number} instancePrimitiveVertexCount Number of vertices per instance primitive in this render pass
  * @property {WebGLProgram} [program] Program; this has to be recreated if the helper is lost/changed
  */
 /**
@@ -248,7 +265,7 @@ declare class VectorStyleRenderer {
      * @param {Float32Array|null} renderInstructions Render instructions
      * @param {import("../../geom/Geometry.js").Type} geometryType Geometry type
      * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
-     * @return {Promise<Array<WebGLArrayBuffer>>|null} Indices buffer and vertices buffer; null if nothing to render
+     * @return {Promise<WebGLArrayBufferSet>|null} Indices buffer and vertices buffer; null if nothing to render
      * @private
      */
     private generateBuffersForType_;
@@ -261,9 +278,9 @@ declare class VectorStyleRenderer {
     render(buffers: WebGLBuffers, frameState: import("../../Map.js").FrameState, preRenderCallback: () => void): void;
     /**
      * @param {WebGLArrayBuffer} indicesBuffer Indices buffer
-     * @param {WebGLArrayBuffer} verticesBuffer Vertices buffer
-     * @param {WebGLProgram} program Program
-     * @param {Array<import('../../webgl/Helper.js').AttributeDescription>} attributes Attribute descriptions
+     * @param {WebGLArrayBuffer} vertexAttributesBuffer Vertex attributes buffer
+     * @param {WebGLArrayBuffer} instanceAttributesBuffer Instance attributes buffer
+     * @param {SubRenderPass} subRenderPass Render pass (program, attributes, etc.) specific to one geometry type
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @param {function(): void} preRenderCallback This callback will be called right before drawing, and can be used to set uniforms
      * @private

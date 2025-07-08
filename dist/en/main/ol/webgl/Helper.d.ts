@@ -388,6 +388,11 @@ declare class WebGLHelper extends Disposable {
      */
     getExtension(name: string): any | null;
     /**
+     * Will throw if the extension is not available
+     * @return {ANGLE_instanced_arrays} Extension
+     */
+    getInstancedRenderingExtension_(): ANGLE_instanced_arrays;
+    /**
      * Just bind the buffer if it's in the cache. Otherwise create
      * the WebGL buffer, bind it, populate it, and add an entry to
      * the cache.
@@ -452,6 +457,14 @@ declare class WebGLHelper extends Disposable {
      * @param {number} end End index.
      */
     drawElements(start: number, end: number): void;
+    /**
+     * Execute a draw call similar to `drawElements`, but using instanced rendering.
+     * Will have no effect if `enableAttributesInstanced` was not called for this rendering pass.
+     * @param {number} start Start index.
+     * @param {number} end End index.
+     * @param {number} instanceCount The number of instances to render
+     */
+    drawElementsInstanced(start: number, end: number, instanceCount: number): void;
     /**
      * Apply the successive post process passes which will eventually render to the actual canvas.
      * @param {import("../Map.js").FrameState} frameState current frame state
@@ -564,9 +577,16 @@ declare class WebGLHelper extends Disposable {
      * @param {number} type UNSIGNED_INT, UNSIGNED_BYTE, UNSIGNED_SHORT or FLOAT
      * @param {number} stride Stride in bytes (0 means attribs are packed)
      * @param {number} offset Offset in bytes
+     * @param {boolean} instanced Whether the attribute is used for instanced rendering
      * @private
      */
     private enableAttributeArray_;
+    /**
+     * @private
+     * @param {Array<AttributeDescription>} attributes Ordered list of attributes to read from the buffer
+     * @param {boolean} instanced Whether the attributes are instanced.
+     */
+    private enableAttributes_;
     /**
      * Will enable the following attributes to be read from the currently bound buffer,
      * i.e. tell the GPU where to read the different attributes in the buffer. An error in the
@@ -574,6 +594,12 @@ declare class WebGLHelper extends Disposable {
      * @param {Array<AttributeDescription>} attributes Ordered list of attributes to read from the buffer
      */
     enableAttributes(attributes: Array<AttributeDescription>): void;
+    /**
+     * Will enable these attributes as instanced, meaning that they will only be read
+     * once per instance instead of per vertex.
+     * @param {Array<AttributeDescription>} attributes Ordered list of attributes to read from the buffer
+     */
+    enableAttributesInstanced(attributes: Array<AttributeDescription>): void;
     /**
      * WebGL context was lost
      * @param {WebGLContextEvent} event The context loss event.
