@@ -361,6 +361,14 @@ declare class Draw extends PointerInteraction {
      */
     private stopClick_;
     /**
+     * Ignore the next up event. This is set to `true` when a drag event is encountered,
+     * e.g. when the user pans the map while drawing. In this case, we do not want to bail
+     * out of tracing.
+     * @type {boolean}
+     * @private
+     */
+    private ignoreNextUpEvent_;
+    /**
      * The number of points that must be drawn before a polygon ring or line
      * string can be finished.  The default is 3 for polygon rings and 2 for
      * line strings.
@@ -549,6 +557,12 @@ declare class Draw extends PointerInteraction {
      * @private
      */
     private updateTrace_;
+    /**
+     * Handle drag events.
+     * @param {import("../MapBrowserEvent.js").default<PointerEvent>} event Event.
+     * @override
+     */
+    override handleDragEvent(event: import("../MapBrowserEvent.js").default<PointerEvent>): void;
     /**
      * Handle pointer up events.
      * @param {import("../MapBrowserEvent.js").default<PointerEvent>} event Event.
