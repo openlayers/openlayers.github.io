@@ -417,19 +417,8 @@ canvas.style &#x3D; {};
 const context &#x3D; canvas.getContext(&#x27;2d&#x27;);
 
 const sources &#x3D; {
-  landcover: new VectorTileSource({
-    maxZoom: 9,
-    format: new MVT(),
-    url: &#x27;https://api.maptiler.com/tiles/landcover/{z}/{x}/{y}.pbf?key&#x3D;&#x27; + key,
-  }),
-  contours: new VectorTileSource({
-    minZoom: 9,
-    maxZoom: 14,
-    format: new MVT(),
-    url: &#x27;https://api.maptiler.com/tiles/contours/{z}/{x}/{y}.pbf?key&#x3D;&#x27; + key,
-  }),
   maptiler_planet: new VectorTileSource({
-    format: new MVT(),
+    format: new MVT({layerName: &#x27;mvt:layer&#x27;}),
     maxZoom: 14,
     url: &#x27;https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key&#x3D;&#x27; + key,
   }),
