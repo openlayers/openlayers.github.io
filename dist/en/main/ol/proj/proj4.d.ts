@@ -17,7 +17,18 @@ export function unregister(): void;
  * @param {import("proj4")} proj4 Proj4.
  * @api
  */
-export function register(proj4: typeof import("proj4")): void;
+export function register(proj4: typeof import("proj4/dist/lib/core.js").default & {
+    defaultDatum: string;
+    Proj: typeof import("proj4/dist/lib/Proj.js").default;
+    WGS84: import("proj4/dist/lib/Proj.js").default;
+    Point: typeof import("proj4/dist/lib/Point.js").default;
+    toPoint: typeof import("proj4/dist/lib/common/toPoint.js").default;
+    defs: typeof import("proj4/dist/lib/defs.js").default;
+    nadgrid: typeof import("proj4/dist/lib/nadgrid.js").default;
+    transform: typeof import("proj4/dist/lib/transform.js").default;
+    mgrs: import("proj4/dist/lib/index.js").Mgrs;
+    version: string;
+}): void;
 /**
  * Set the lookup function for getting proj4 definitions given an EPSG code.
  * By default, the {@link module:ol/proj/proj4.fromEPSGCode} function uses the
