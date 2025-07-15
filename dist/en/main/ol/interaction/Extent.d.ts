@@ -25,6 +25,17 @@ export type Options = {
      */
     condition?: import("../events/condition.js").Condition | undefined;
     /**
+     * A function that
+     * takes a {@link module :ol/MapBrowserEvent~MapBrowserEvent} and returns a
+     * boolean to indicate whether that event should be handled to create a new extent.
+     * If `null`, the `condition` will also be used as `createCondition`.
+     */
+    createCondition?: import("../events/condition.js").Condition | null | undefined;
+    /**
+     * An extent can be dragged.
+     */
+    drag?: boolean | undefined;
+    /**
      * Initial extent. Defaults to no
      * initial extent.
      */
@@ -72,7 +83,8 @@ import Event from '../events/Event.js';
  * @classdesc
  * Allows the user to draw a vector box by clicking and dragging on the map.
  * Once drawn, the vector box can be modified by dragging its vertices or edges.
- * This interaction is only supported for mouse devices.
+ * The interaction can also be configured with an initial extent and a `createCondition`
+ * to prevent the creation of a new extent on `pointerdown`, if desired.
  *
  * @fires ExtentEvent
  * @api
@@ -100,6 +112,16 @@ declare class Extent extends PointerInteraction {
      * @private
      */
     private condition_;
+    /**
+     * @type {import("../events/condition.js").Condition}
+     * @private
+     */
+    private createCondition_;
+    /**
+     * @type {boolean}
+     * @private
+     */
+    private drag_;
     /**
      * Extent of the drawn box
      * @type {import("../extent.js").Extent}
@@ -157,6 +179,7 @@ declare class Extent extends PointerInteraction {
     private snapToVertex_;
     /**
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent pointer move event
+     * @return {boolean} The event was handled.
      * @private
      */
     private handlePointerMove_;
@@ -168,10 +191,16 @@ declare class Extent extends PointerInteraction {
     private createOrUpdateExtentFeature_;
     /**
      * @param {import("../coordinate.js").Coordinate} vertex location of feature
+     * @param {boolean} [createIfNotExists] create the feature if it does not exist
      * @return {Feature} vertex as feature
      * @private
      */
-    private createOrUpdatePointerFeature_;
+    private updatePointerFeature_;
+    /**
+     * Remove the vertex feature if it exists.
+     * @private
+     */
+    private noVertexFeature_;
     /**
      * Remove the interaction from its current map and attach it to the new map.
      * Subclasses may set up event handlers to get notified about changes to
@@ -192,6 +221,7 @@ declare class Extent extends PointerInteraction {
      *
      * @return {import("../extent.js").Extent} Drawn extent in the view projection.
      * @api
+     * @deprecated Use {@link module:ol/interaction/Extent~Extent#getExtent} instead.
      */
     getExtentInternal(): import("../extent.js").Extent;
     /**

@@ -137,7 +137,8 @@
     
       <div class="class-description col-lg-7 align-self-center ps-0"><p>Allows the user to draw a vector box by clicking and dragging on the map.
 Once drawn, the vector box can be modified by dragging its vertices or edges.
-This interaction is only supported for mouse devices.</p></div>
+The interaction can also be configured with an initial extent and a <code>createCondition</code>
+to prevent the creation of a new extent on <code>pointerdown</code>, if desired.</p></div>
     
     </div>
 </header>
@@ -163,7 +164,7 @@ This interaction is only supported for mouse devices.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Extent.js">interaction/Extent.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Extent.js#L99">line 99</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Extent.js#L105">line 105</a>
         </div>
         
     </div>
@@ -224,6 +225,66 @@ This interaction is only supported for mouse devices.</p></div>
 takes a <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and returns a
 boolean to indicate whether that event should be handled.
 Default is <a href="module-ol_events_condition.html#.always"><code>always</code></a>.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>createCondition</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_events_condition.html#~Condition">Condition</a></span>
+|
+
+<span class="param-type">null</span>
+
+
+                
+                    (defaults to null)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>A function that
+takes a <a href="module-ol_MapBrowserEvent-MapBrowserEvent.html"><code>MapBrowserEvent</code></a> and returns a
+boolean to indicate whether that event should be handled to create a new extent.
+If <code>null</code>, the <code>condition</code> will also be used as <code>createCondition</code>.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>drag</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    (defaults to false)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>An extent can be dragged.</p></td>
         </tr>
 
 	
@@ -1004,7 +1065,7 @@ Value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Extent.js">interaction/Extent.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Extent.js#L450">line 450</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Extent.js#L508">line 508</a>
         </div>
         
     </div>
@@ -1094,7 +1155,7 @@ Drawn extent in the view projection.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Extent.js">interaction/Extent.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Extent.js#L463">line 463</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Extent.js#L522">line 522</a>
         </div>
         
     </div>
@@ -1127,6 +1188,8 @@ Drawn extent in the view projection.
     
     
 
+    
+        <dt class="important tag-deprecated">Deprecated</dt><dd><ul class="dummy"><li>Use <a href="module-ol_interaction_Extent-Extent.html#getExtent"><code>getExtent</code></a> instead.</li><ul></dd>
     
     
     
@@ -2286,7 +2349,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Extent.js">interaction/Extent.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Extent.js#L473">line 473</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Extent.js#L532">line 532</a>
         </div>
         
     </div>
