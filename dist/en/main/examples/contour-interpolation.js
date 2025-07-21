@@ -4,16 +4,16 @@
 /***/ 9857:
 /***/ (function(__unused_webpack___webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) {
 
-/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(41564);
-/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(87240);
-/* harmony import */ var _src_ol_control_MousePosition_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(8841);
-/* harmony import */ var _src_ol_coordinate_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(61341);
-/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(96256);
+/* harmony import */ var _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(41564);
+/* harmony import */ var _src_ol_View_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(87240);
+/* harmony import */ var _src_ol_control_MousePosition_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8841);
+/* harmony import */ var _src_ol_coordinate_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(61341);
 /* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(47085);
-/* harmony import */ var _src_ol_proj_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25231);
-/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(77779);
-/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(54272);
-/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(28000);
+/* harmony import */ var _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(96256);
+/* harmony import */ var _src_ol_proj_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(25231);
+/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(77779);
+/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(28000);
+/* harmony import */ var _src_ol_source_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(54272);
 
 
 
@@ -43,7 +43,7 @@ canvas.width = tileSize * 3;
 canvas.height = tileSize * 3;
 const context = canvas.getContext('2d', {willReadFrequently: true});
 
-const source = new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .A({
+const source = new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .A({
   attributions: attribution,
   tileSize: tileSize,
   gutter: gutter,
@@ -110,11 +110,11 @@ const style = {
 };
 
 /// duplicate layers as one layer shared by two raster sources causes rendering issues
-const elevation1 = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A({
+const elevation1 = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .A({
   source: source,
   style: style,
 });
-const elevation2 = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A({
+const elevation2 = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .A({
   source: source,
   style: style,
 });
@@ -204,7 +204,7 @@ const contours = function (inputs, data) {
   return {data: contourData, width: width, height: height};
 };
 
-const contourSource = new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Ay({
+const contourSource = new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_9__/* ["default"] */ .Ay({
   sources: [elevation1],
   operationType: 'image',
   operation: contours,
@@ -235,7 +235,7 @@ const contourLayer = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__/* ["defau
 });
 
 const elevationLayer = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .A({
-  source: new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Ay({
+  source: new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_9__/* ["default"] */ .Ay({
     sources: [elevation2],
     operation: function (pixels) {
       return pixels[0];
@@ -245,7 +245,7 @@ const elevationLayer = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_4__/* ["def
   opacity: 0,
 });
 
-const dataLayer = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A({
+const dataLayer = new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .A({
   source: source,
   style: {color: ['array', 0, 0, 0, 0]},
 });
@@ -257,29 +257,29 @@ dataLayer.once('postrender', function (event) {
   }
 });
 
-const map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .A({
+const map = new _src_ol_Map_js__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .A({
   layers: [
-    new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A({
-      source: new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A(),
+    new _src_ol_layer_js__WEBPACK_IMPORTED_MODULE_5__/* ["default"] */ .A({
+      source: new _src_ol_source_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .A(),
     }),
     dataLayer,
     contourLayer,
     elevationLayer,
   ],
   target: 'map',
-  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_7__/* ["default"] */ .Ay({
-    center: (0,_src_ol_proj_js__WEBPACK_IMPORTED_MODULE_0__/* .fromLonLat */ .Rb)([-78.8175, -1.469167]),
+  view: new _src_ol_View_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Ay({
+    center: (0,_src_ol_proj_js__WEBPACK_IMPORTED_MODULE_6__/* .fromLonLat */ .Rb)([-78.8175, -1.469167]),
     zoom: 17,
     maxZoom: 21,
   }),
 });
 
-const mousePositionControl = new _src_ol_control_MousePosition_js__WEBPACK_IMPORTED_MODULE_8__/* ["default"] */ .A({
+const mousePositionControl = new _src_ol_control_MousePosition_js__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A({
   className: 'custom-mouse-position',
   target: 'info',
   wrapX: false,
   coordinateFormat: function (coordinate) {
-    let position = 'Position ' + (0,_src_ol_coordinate_js__WEBPACK_IMPORTED_MODULE_9__/* .toStringHDMS */ .xi)((0,_src_ol_proj_js__WEBPACK_IMPORTED_MODULE_0__/* .toLonLat */ .WP)(coordinate)) + '<br>';
+    let position = 'Position ' + (0,_src_ol_coordinate_js__WEBPACK_IMPORTED_MODULE_3__/* .toStringHDMS */ .xi)((0,_src_ol_proj_js__WEBPACK_IMPORTED_MODULE_6__/* .toLonLat */ .WP)(coordinate)) + '<br>';
     let pixel = elevationLayer.getData(map.getPixelFromCoordinate(coordinate));
     if (pixel) {
       const elevation = calculateElevation(pixel);
