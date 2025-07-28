@@ -14,7 +14,7 @@ export function unregister(): void;
  * registry, e.g. after calling `proj4.defs()`. Existing transforms will not be
  * modified by this function.
  *
- * @param {import("proj4").default} proj4 Proj4.
+ * @param {import("proj4")} proj4 Proj4.
  * @api
  */
 export function register(proj4: typeof import("proj4/dist/lib/core.js").default & {
