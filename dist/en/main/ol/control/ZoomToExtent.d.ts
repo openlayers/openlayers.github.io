@@ -23,6 +23,11 @@ export type Options = {
      * extent of the view projection is used.
      */
     extent?: import("../extent.js").Extent | undefined;
+    /**
+     * Options to pass to the view when fitting
+     * the extent (e.g. `padding`, `duration`, `minResolution`, `maxZoom`, `easing`, `callback`).
+     */
+    fitOptions?: import("../View.js").FitOptions | undefined;
 };
 /**
  * @typedef {Object} Options
@@ -34,6 +39,8 @@ export type Options = {
  * @property {string} [tipLabel='Fit to extent'] Text label to use for the button tip.
  * @property {import("../extent.js").Extent} [extent] The extent to zoom to. If undefined the validity
  * extent of the view projection is used.
+ * @property {import("../View.js").FitOptions} [fitOptions] Options to pass to the view when fitting
+ * the extent (e.g. `padding`, `duration`, `minResolution`, `maxZoom`, `easing`, `callback`).
  */
 /**
  * @classdesc
@@ -52,6 +59,11 @@ declare class ZoomToExtent extends Control {
      * @protected
      */
     protected extent: (import("../extent.js").Extent | null) | null;
+    /**
+     * @type {import("../View.js").FitOptions}
+     * @protected
+     */
+    protected fitOptions: import("../View.js").FitOptions;
     /**
      * @param {MouseEvent} event The event to handle
      * @private
