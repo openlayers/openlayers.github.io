@@ -116,6 +116,12 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      */
     override getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray;
     /**
+     * Determine whether tiles for next extent should be enqueued for rendering.
+     * @return {boolean} Rendering tiles for next extent is supported.
+     * @protected
+     */
+    protected enqueueTilesForNextExtent(): boolean;
+    /**
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @param {import("../../extent.js").Extent} extent The extent to be rendered.
      * @param {number} initialZ The zoom level.
