@@ -165,10 +165,7 @@ export type Options = {
  * Coordinate type when drawing points.
  */
 export type PointCoordType = import("../coordinate.js").Coordinate;
-/**
- * Coordinate type when drawing lines.
- */
-export type LineCoordType = Array<import("../coordinate.js").Coordinate>;
+export type LineCoordType = import("./tracing.js").LineCoordType;
 /**
  * Coordinate type when drawing polygons.
  */
@@ -177,44 +174,8 @@ export type PolyCoordType = Array<Array<import("../coordinate.js").Coordinate>>;
  * Types used for drawing coordinates.
  */
 export type SketchCoordType = PointCoordType | LineCoordType | PolyCoordType;
-export type TraceState = {
-    /**
-     * Tracing active.
-     */
-    active: boolean;
-    /**
-     * The initially clicked pixel location.
-     */
-    startPx?: import("../pixel.js").Pixel | undefined;
-    /**
-     * Targets available for tracing.
-     */
-    targets?: TraceTarget[] | undefined;
-    /**
-     * The index of the currently traced target.  A value of -1 indicates
-     * that no trace target is active.
-     */
-    targetIndex?: number | undefined;
-};
-export type TraceTarget = {
-    /**
-     * Target coordinates.
-     */
-    coordinates: Array<import("../coordinate.js").Coordinate>;
-    /**
-     * The target coordinates are a linear ring.
-     */
-    ring: boolean;
-    /**
-     * The index of first traced coordinate.  A fractional index represents an
-     * edge intersection.  Index values for rings will wrap (may be negative or larger than coordinates length).
-     */
-    startIndex: number;
-    /**
-     * The index of last traced coordinate.  Details from startIndex also apply here.
-     */
-    endIndex: number;
-};
+export type TraceState = import("./tracing.js").TraceState;
+export type TraceTarget = import("./tracing.js").TraceTarget;
 /**
  * Function that takes an array of coordinates and an optional existing geometry
  * and a projection as arguments, and returns a geometry. The optional existing
@@ -227,26 +188,6 @@ export type GeometryFunction = (arg0: SketchCoordType, arg1: import("../geom/Sim
  * cousins.
  */
 export type Mode = "Point" | "LineString" | "Polygon" | "Circle";
-export type TraceTargetUpdateInfo = {
-    /**
-     * The new target index.
-     */
-    index: number;
-    /**
-     * The new segment end index.
-     */
-    endIndex: number;
-};
-export type PointSegmentRelationship = {
-    /**
-     * The closest point expressed as a fraction along the segment length.
-     */
-    along: number;
-    /**
-     * The squared distance of the point to the segment.
-     */
-    squaredDistance: number;
-};
 /**
  * *
  */

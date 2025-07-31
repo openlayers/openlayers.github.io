@@ -484,6 +484,60 @@ provided, a vector source must be provided with the <code>source</code> option.<
 
         <tr>
             
+                <td class="name"><code>trace</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type"><a href="module-ol_events_condition.html#~Condition">Condition</a></span>
+
+
+                
+                    <br>(defaults to false)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Trace a portion of another geometry.
+Tracing starts when two neighboring vertices are dragged onto a trace target, without any other modification in between..</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>traceSource</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_Vector-VectorSource.html">VectorSource</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Source for features to trace.  If tracing is active and a <code>traceSource</code> is
+not provided, the interaction's <code>source</code> will be used.  Tracing requires that the interaction is configured with
+either a <code>traceSource</code> or a <code>source</code>.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
                 <td class="name"><code>wrapX</code></td>
             
 

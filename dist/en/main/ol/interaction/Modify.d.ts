@@ -1,59 +1,4 @@
 /**
- * @typedef {Object} SegmentData
- * @property {Array<number>} [depth] Depth.
- * @property {Feature} feature Feature.
- * @property {import("../geom/SimpleGeometry.js").default} geometry Geometry.
- * @property {number} [index] Index.
- * @property {Array<Array<number>>} segment Segment.
- * @property {Array<SegmentData>} [featureSegments] FeatureSegments.
- */
-/**
- * @typedef {[SegmentData, number]} DragSegment
- */
-/**
- * @typedef {Object} Options
- * @property {import("../events/condition.js").Condition} [condition] A function that
- * takes a {@link module:ol/MapBrowserEvent~MapBrowserEvent} and returns a
- * boolean to indicate whether that event will be considered to add or move a
- * vertex to the sketch. Default is
- * {@link module:ol/events/condition.primaryAction}.
- * @property {import("../events/condition.js").Condition} [deleteCondition] A function
- * that takes a {@link module:ol/MapBrowserEvent~MapBrowserEvent} and returns a
- * boolean to indicate whether that event should be handled. By default,
- * {@link module:ol/events/condition.singleClick} with
- * {@link module:ol/events/condition.altKeyOnly} results in a vertex deletion.
- * @property {import("../events/condition.js").Condition} [insertVertexCondition] A
- * function that takes a {@link module:ol/MapBrowserEvent~MapBrowserEvent} and
- * returns a boolean to indicate whether a new vertex should be added to the sketch
- * features. Default is {@link module:ol/events/condition.always}.
- * @property {number} [pixelTolerance=10] Pixel tolerance for considering the
- * pointer close enough to a segment or vertex for editing.
- * @property {import("../style/Style.js").StyleLike|import("../style/flat.js").FlatStyleLike} [style]
- * Style used for the modification point or vertex. For linestrings and polygons, this will
- * be the affected vertex, for circles a point along the circle, and for points the actual
- * point. If not configured, the default edit style is used (see {@link module:ol/style/Style~Style}).
- * When using a style function, the point feature passed to the function will have an `existing` property -
- * indicating whether there is an existing vertex underneath or not, a `features`
- * property - an array whose entries are the features that are being modified, and a `geometries`
- * property - an array whose entries are the geometries that are being modified. Both arrays are
- * in the same order. The `geometries` are only useful when modifying geometry collections, where
- * the geometry will be the particular geometry from the collection that is being modified.
- * @property {VectorSource} [source] The vector source with
- * features to modify.  If a vector source is not provided, a feature collection
- * must be provided with the `features` option.
- * @property {boolean|import("../layer/BaseVector").default} [hitDetection] When configured, point
- * features will be considered for modification based on their visual appearance, instead of being within
- * the `pixelTolerance` from the pointer location. When a {@link module:ol/layer/BaseVector~BaseVectorLayer} is
- * provided, only the rendered representation of the features on that layer will be considered.
- * @property {Collection<Feature>} [features]
- * The features the interaction works on.  If a feature collection is not
- * provided, a vector source must be provided with the `source` option.
- * @property {boolean} [wrapX=false] Wrap the world horizontally on the sketch
- * overlay.
- * @property {boolean} [snapToPointer=!hitDetection] The vertex, point or segment being modified snaps to the
- * pointer coordinate when clicked within the `pixelTolerance`.
- */
-/**
  * @classdesc
  * Events emitted by {@link module:ol/interaction/Modify~Modify} instances are
  * instances of this type.
@@ -168,6 +113,17 @@ export type Options = {
      */
     features?: Collection<Feature<import("../geom/Geometry.js").default>> | undefined;
     /**
+     * Trace a portion of another geometry.
+     * Tracing starts when two neighboring vertices are dragged onto a trace target, without any other modification in between..
+     */
+    trace?: boolean | import("../events/condition.js").Condition | undefined;
+    /**
+     * Source for features to trace.  If tracing is active and a `traceSource` is
+     * not provided, the interaction's `source` will be used.  Tracing requires that the interaction is configured with
+     * either a `traceSource` or a `source`.
+     */
+    traceSource?: VectorSource<Feature<import("../geom/Geometry.js").default>> | undefined;
+    /**
      * Wrap the world horizontally on the sketch
      * overlay.
      */
@@ -273,10 +229,10 @@ declare class Modify extends PointerInteraction {
      */
     private vertexSegments_;
     /**
-     * @type {import("../pixel.js").Pixel}
+     * @type {import("../coordinate.js").Coordinate}
      * @private
      */
-    private lastPixel_;
+    private lastCoordinate_;
     /**
      * Tracks if the next `singleclick` event should be ignored to prevent
      * accidental deletion right after vertex creation.
@@ -335,6 +291,26 @@ declare class Modify extends PointerInteraction {
      */
     private source_;
     /**
+     * @type {VectorSource|null}
+     * @private
+     */
+    private traceSource_;
+    /**
+     * @type {import("../events/condition.js").Condition}
+     * @private
+     */
+    private traceCondition_;
+    /**
+     * @type {import('./tracing.js').TraceState}
+     * @private
+     */
+    private traceState_;
+    /**
+     * @type {Array<DragSegment>|null}
+     * @private
+     */
+    private traceSegments_;
+    /**
      * @type {boolean|import("../layer/BaseVector").default}
      * @private
      */
@@ -359,6 +335,13 @@ declare class Modify extends PointerInteraction {
      * @private
      */
     private snapToPointer_;
+    /**
+     * Toggle tracing mode or set a tracing condition.
+     *
+     * @param {boolean|import("../events/condition.js").Condition} trace A boolean to toggle tracing mode or an event
+     *     condition that will be checked when a feature is clicked to determine if tracing should be active.
+     */
+    setTrace(trace: boolean | import("../events/condition.js").Condition): void;
     /**
      * @param {Feature} feature Feature.
      * @private
@@ -482,7 +465,53 @@ declare class Modify extends PointerInteraction {
      * @private
      */
     private createOrUpdateVertexFeature_;
-    findInsertVerticesAndUpdateDragSegments_(pixelCoordinate: any): SegmentData[] | undefined;
+    /**
+     * @param {import("../coordinate.js").Coordinate} pixelCoordinate Pixel coordinate.
+     * @return {Array<SegmentData>|undefined} Insert vertices and update drag segments.
+     * @private
+     */
+    private findInsertVerticesAndUpdateDragSegments_;
+    /**
+     * @private
+     */
+    private deactivateTrace_;
+    /**
+     * Update the trace.
+     * @param {import("../MapBrowserEvent.js").default} event Event.
+     * @private
+     */
+    private updateTrace_;
+    getTraceCandidates_(event: any): Feature<import("../geom/Geometry.js").default>[];
+    /**
+     * Activate or deactivate trace state based on a browser event.
+     * @param {import("../MapBrowserEvent.js").default} event Event.
+     * @private
+     */
+    private toggleTraceState_;
+    /**
+     * @param {import('./tracing.js').TraceTarget} target The trace target.
+     * @param {number} endIndex The new end index of the trace.
+     * @private
+     */
+    private addOrRemoveTracedCoordinates_;
+    /**
+     * @param {number} fromIndex The start index.
+     * @param {number} toIndex The end index.
+     * @private
+     */
+    private removeTracedCoordinates_;
+    /**
+     * @param {import('./tracing.js').TraceTarget} target The trace target.
+     * @param {number} fromIndex The start index.
+     * @param {number} toIndex The end index.
+     * @private
+     */
+    private addTracedCoordinates_;
+    /**
+     * @param {import('../coordinate.js').Coordinate} vertex Vertex.
+     * @param {DragSegment} dragSegment Drag segment.
+     */
+    updateGeometry_(vertex: import("../coordinate.js").Coordinate, dragSegment: DragSegment): void;
     /**
      * @param {import("../MapBrowserEvent.js").default} evt Event.
      * @private
@@ -500,7 +529,12 @@ declare class Modify extends PointerInteraction {
      * @private
      */
     private insertVertex_;
-    updatePointer_(coordinate: any): import("../coordinate.js").Coordinate;
+    /**
+     * @param {import("../coordinate.js").Coordinate} coordinate The coordinate.
+     * @return {import("../coordinate.js").Coordinate} The updated pointer coordinate.
+     * @private
+     */
+    private updatePointer_;
     /**
      * Get the current pointer position.
      * @return {import("../coordinate.js").Coordinate | null} The current pointer coordinate.
