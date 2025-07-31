@@ -1,7 +1,4 @@
 /**
- * @typedef {'addlayer'|'removelayer'} GroupEventType
- */
-/**
  * @classdesc
  * A layer group triggers 'addlayer' and 'removelayer' events when layers are added to or removed from
  * the group or one of its child groups.  When a layer group is added to or removed from another layer group,
@@ -21,11 +18,10 @@ export class GroupEvent extends Event {
     layer: BaseLayer;
 }
 export default LayerGroup;
-export type GroupEventType = "addlayer" | "removelayer";
 /**
  * *
  */
-export type GroupOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | "change:layers", import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | "change:layers", Return>;
+export type GroupOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | "change:layers", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"addlayer" | "removelayer", GroupEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | "addlayer" | "removelayer" | "change:layers", Return>;
 export type Options = {
     /**
      * Opacity (0, 1).
@@ -80,12 +76,18 @@ export type Options = {
 };
 import Event from '../events/Event.js';
 import BaseLayer from './Base.js';
+type GroupEventType = string;
+declare namespace GroupEventType {
+    let ADDLAYER: string;
+    let REMOVELAYER: string;
+}
 /**
  * @classdesc
  * A {@link module:ol/Collection~Collection} of layers that are handled together.
  *
  * A generic `change` event is triggered when the group/Collection changes.
  *
+ * @fires GroupEvent
  * @api
  */
 declare class LayerGroup extends BaseLayer {
