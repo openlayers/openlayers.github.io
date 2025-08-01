@@ -186,7 +186,7 @@ declare class Collection<T> extends BaseObject {
     /**
      * @private
      * @param {T} elem Element.
-     * @param {number} [ignoreStartingAt] Optional indexes to ignore.
+     * @param {number} [except] Optional index to ignore.
      */
     private assertUnique_;
 }
