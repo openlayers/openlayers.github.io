@@ -349,6 +349,13 @@
     </label>
     <span id="value-patternSpacing">0</span>
   </div>
+  <div class="form-group" style="margin-left: 18px">
+    <label>
+      Pattern start offset (pixels)
+      <input type="range" class="uniform" name="patternOffset" min="0" max="64" value="0">
+    </label>
+    <span id="value-patternOffset">0</span>
+  </div>
 </form>
 
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
@@ -388,6 +395,7 @@ const styleVariables &#x3D; {
   dashLength4: 15,
   dashOffset: 0,
   patternSpacing: 0,
+  patternOffset: 0,
 };
 
 const source &#x3D; new VectorSource({
@@ -427,6 +435,7 @@ const getStyle &#x3D; (dash, pattern) &#x3D;&gt; {
       ...newStyle,
       &#x27;stroke-pattern-src&#x27;: &#x27;data/dot.svg&#x27;,
       &#x27;stroke-pattern-spacing&#x27;: [&#x27;var&#x27;, &#x27;patternSpacing&#x27;],
+      &#x27;stroke-pattern-start-offset&#x27;: [&#x27;var&#x27;, &#x27;patternOffset&#x27;],
     };
   }
   return newStyle;
@@ -613,6 +622,13 @@ document
           &lt;input type&#x3D;&quot;range&quot; class&#x3D;&quot;uniform&quot; name&#x3D;&quot;patternSpacing&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;64&quot; value&#x3D;&quot;0&quot;&gt;
         &lt;/label&gt;
         &lt;span id&#x3D;&quot;value-patternSpacing&quot;&gt;0&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;form-group&quot; style&#x3D;&quot;margin-left: 18px&quot;&gt;
+        &lt;label&gt;
+          Pattern start offset (pixels)
+          &lt;input type&#x3D;&quot;range&quot; class&#x3D;&quot;uniform&quot; name&#x3D;&quot;patternOffset&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;64&quot; value&#x3D;&quot;0&quot;&gt;
+        &lt;/label&gt;
+        &lt;span id&#x3D;&quot;value-patternOffset&quot;&gt;0&lt;/span&gt;
       &lt;/div&gt;
     &lt;/form&gt;
 

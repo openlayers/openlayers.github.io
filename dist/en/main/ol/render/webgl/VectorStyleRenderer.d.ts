@@ -19,7 +19,8 @@ export namespace Attributes {
     let MEASURE_END: string;
     let ANGLE_TANGENT_SUM: string;
     let JOIN_ANGLES: string;
-    let DISTANCE: string;
+    let DISTANCE_LOW: string;
+    let DISTANCE_HIGH: string;
 }
 export default VectorStyleRenderer;
 /**

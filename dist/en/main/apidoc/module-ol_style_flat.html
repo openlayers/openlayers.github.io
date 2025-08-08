@@ -2522,7 +2522,7 @@ result may be obtained with appropriate settings for <code>shape-radius</code> a
             </td>
 
             <td class="description last">
-                <p>Stroke offset in pixel. A positive value offsets the line to the right,
+                <p>Stroke offset in pixel along the normal. A positive value offsets the line to the right,
 relative to the direction of the line. (WebGL only)</p>
                 
             </td>
@@ -2573,7 +2573,7 @@ it will be used to tint this image. (WebGL only)</p>
 
             <td class="description last">
                 <p>Offset, which, together with the size and the offset origin,
-define the sub-rectangle to use from the original fill pattern image. (WebGL only)</p>
+define the sub-rectangle to use from the original stroke pattern image. (WebGL only)</p>
                 
             </td>
         </tr>
@@ -2646,7 +2646,30 @@ sub-rectangle to use from the origin (sprite) fill pattern image. (WebGL only)</
             </td>
 
             <td class="description last">
-                <p>Spacing between each pattern occurrence in pixels; 0 if undefined.</p>
+                <p>Spacing between each pattern occurrence in pixels; 0 if undefined. (WebGL only)</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>stroke-pattern-start-offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Stroke pattern offset in pixels at the start of the line. (WebGL only)</p>
                 
             </td>
         </tr>

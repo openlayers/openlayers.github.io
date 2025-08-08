@@ -119,6 +119,11 @@ export class ShaderBuilder {
      */
     private strokeDistanceFieldExpression_;
     /**
+     * @private
+     * @type {string}
+     */
+    private strokePatternLengthExpression_;
+    /**
      * @type {boolean}
      * @private
      */
@@ -272,6 +277,20 @@ export class ShaderBuilder {
      * @return {ShaderBuilder} the builder object
      */
     setStrokeDistanceFieldExpression(expression: string): ShaderBuilder;
+    /**
+     * Defining a pattern length for a stroke lets us avoid having visual artifacts when
+     * a linestring is very long and thus has very high "distance" attributes on its vertices.
+     * If we apply a pattern or dash array to a stroke we know for certain that the full distance value
+     * is not necessary and can be trimmed down using `mod(currentDistance, patternLength)`.
+     * @param {string} expression Stroke expression that evaluates to a`float; value is expected to be
+     * in pixels.
+     * @return {ShaderBuilder} the builder object
+     */
+    setStrokePatternLengthExpression(expression: string): ShaderBuilder;
+    /**
+     * @return {string} The current stroke pattern length expression.
+     */
+    getStrokePatternLengthExpression(): string;
     /**
      * @param {string} expression Fill color expression, evaluate to `vec4`
      * @return {ShaderBuilder} the builder object
