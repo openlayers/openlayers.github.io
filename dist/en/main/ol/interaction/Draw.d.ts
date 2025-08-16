@@ -234,6 +234,11 @@ declare class Draw extends PointerInteraction {
      */
     un: DrawOnSignature<void>;
     /**
+     * @type {Options}
+     * @private
+     */
+    private options_;
+    /**
      * @type {boolean}
      * @private
      */
@@ -443,11 +448,24 @@ declare class Draw extends PointerInteraction {
      */
     override setMap(map: import("../Map.js").default): void;
     /**
+     * Set whether the drawing is done in freehand mode.
+     *
+     * @param {boolean} freehand Freehand drawing.
+     * @api
+     */
+    setFreehand(freehand: boolean): void;
+    /**
      * Get the overlay layer that this interaction renders sketch features to.
      * @return {VectorLayer} Overlay layer.
      * @api
      */
     getOverlay(): VectorLayer;
+    /**
+     * Get if this interaction is in freehand mode.
+     * @return {boolean} Freehand drawing.
+     * @api
+     */
+    getFreehand(): boolean;
     /**
      * Handles the {@link module:ol/MapBrowserEvent~MapBrowserEvent map browser event} and may actually draw or finish the drawing.
      * @param {import("../MapBrowserEvent.js").default<PointerEvent>} event Map browser event.

@@ -254,6 +254,8 @@
     <option value="Circle">Circle</option>
     <option value="None">None</option>
   </select>
+  <label for="freehand">Freehand Activated</label>
+  <input type="checkbox" id="freehand" checked />
 </form>
 
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
@@ -298,14 +300,15 @@ const map &#x3D; new Map({
 
 const typeSelect &#x3D; document.getElementById(&#x27;type&#x27;);
 
+const freehandCheckbox &#x3D; document.getElementById(&#x27;freehand&#x27;);
+
 let draw; // global so we can remove it later
 function addInteraction() {
-  const value &#x3D; typeSelect.value;
-  if (value !&#x3D;&#x3D; &#x27;None&#x27;) {
+  if (typeSelect.value !&#x3D;&#x3D; &#x27;None&#x27;) {
     draw &#x3D; new Draw({
       source: source,
       type: typeSelect.value,
-      freehand: true,
+      freehand: freehandCheckbox.checked,
     });
     map.addInteraction(draw);
   }
@@ -317,6 +320,15 @@ function addInteraction() {
 typeSelect.onchange &#x3D; function () {
   map.removeInteraction(draw);
   addInteraction();
+};
+
+/**
+ * Handle change event.
+ */
+freehandCheckbox.onchange &#x3D; function () {
+  if (draw) {
+    draw.setFreehand(freehandCheckbox.checked);
+  }
 };
 
 addInteraction();
@@ -348,6 +360,8 @@ addInteraction();
         &lt;option value&#x3D;&quot;Circle&quot;&gt;Circle&lt;/option&gt;
         &lt;option value&#x3D;&quot;None&quot;&gt;None&lt;/option&gt;
       &lt;/select&gt;
+      &lt;label for&#x3D;&quot;freehand&quot;&gt;Freehand Activated&lt;/label&gt;
+      &lt;input type&#x3D;&quot;checkbox&quot; id&#x3D;&quot;freehand&quot; checked /&gt;
     &lt;/form&gt;
 
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
