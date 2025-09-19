@@ -1,3 +1,8 @@
+/**
+ * @param {ImageTile} imageTile Image tile.
+ * @param {string} src Source.
+ */
+export function defaultTileLoadFunction(imageTile: ImageTile, src: string): void;
 export default TileImage;
 export type Options = {
     /**
@@ -98,6 +103,7 @@ export type Options = {
      */
     zDirection?: number | import("../array.js").NearestDirectionFunction | undefined;
 };
+import ImageTile from '../ImageTile.js';
 /**
  * @typedef {Object} Options
  * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
@@ -235,7 +241,6 @@ declare class TileImage extends UrlTile {
      */
     setTileGridForProjection(projection: import("../proj.js").ProjectionLike, tilegrid: import("../tilegrid/TileGrid.js").default): void;
 }
-import ImageTile from '../ImageTile.js';
 import UrlTile from './UrlTile.js';
 import ReprojTile from '../reproj/Tile.js';
 //# sourceMappingURL=TileImage.d.ts.map
