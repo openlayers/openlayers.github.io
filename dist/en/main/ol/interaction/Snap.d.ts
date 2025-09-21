@@ -10,13 +10,13 @@ export type SegmentData = {
      */
     feature: import("../Feature.js").default;
     /**
+     * Feature which intersects.
+     */
+    intersectionFeature?: import("../Feature.js").default<import("../geom/Geometry.js").default> | undefined;
+    /**
      * Segment.
      */
     segment: Segment;
-    /**
-     * Is intersection.
-     */
-    isIntersection?: boolean | undefined;
 };
 /**
  * A function taking a {@link module :ol/geom/Geometry~Geometry} as argument and returning an array of {@link Segment}s.
