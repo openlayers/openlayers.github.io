@@ -81,6 +81,7 @@ export function equals(arr1: Array<any> | Uint8ClampedArray, arr2: Array<any> | 
  * @param {Array<*>} arr The array to sort (modifies original).
  * @param {!function(*, *): number} compareFnc Comparison function.
  * @api
+ * @deprecated
  */
 export function stableSort(arr: Array<any>, compareFnc: (arg0: any, arg1: any) => number): void;
 /**
