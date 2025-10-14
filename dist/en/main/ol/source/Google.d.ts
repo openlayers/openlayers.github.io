@@ -85,6 +85,10 @@ export type Options = {
      * zoom levels. See {@link module :ol/tilegrid/TileGrid~TileGrid#getZForResolution}.
      */
     zDirection?: number | import("../array.js").NearestDirectionFunction | undefined;
+    /**
+     * The Google Tile server URL.
+     */
+    url?: string | undefined;
 };
 export type SessionTokenRequest = {
     /**
@@ -181,6 +185,7 @@ export type SessionTokenResponse = {
  * @property {number|import("../array.js").NearestDirectionFunction} [zDirection=0]
  * Choose whether to use tiles with a higher or lower zoom level when between integer
  * zoom levels. See {@link module:ol/tilegrid/TileGrid~TileGrid#getZForResolution}.
+ * @property {string} [url='https://tile.googleapis.com/'] The Google Tile server URL.
  */
 /**
  * @typedef {Object} SessionTokenRequest
@@ -251,6 +256,21 @@ declare class Google extends TileImage {
      * @private
      */
     private previousViewportExtent_;
+    /**
+     * @type {string}
+     * @private
+     */
+    private createSessionUrl_;
+    /**
+     * @type {string}
+     * @private
+     */
+    private tileUrl_;
+    /**
+     * @type {string}
+     * @private
+     */
+    private attributionUrl_;
     /**
      * @return {Error|null} A source loading error. When the source state is `error`, use this function
      * to get more information about the error. To debug a faulty configuration, you may want to use

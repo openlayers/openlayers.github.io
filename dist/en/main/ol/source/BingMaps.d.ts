@@ -68,6 +68,10 @@ export type Options = {
      * which is unique for each imagery set in BingMaps.
      */
     placeholderTiles?: boolean | undefined;
+    /**
+     * The Bing Map Metadata API URL.
+     */
+    url?: string | undefined;
 };
 export type BingMapsImageryMetadataResponse = {
     /**
@@ -174,6 +178,7 @@ export type CoverageArea = {
  * @property {boolean} [placeholderTiles] Whether to show BingMaps placeholder tiles when zoomed past the maximum level provided in an area. When `false`, requests beyond
  * the maximum zoom level will return no tile. When `true`, the placeholder tile will be returned. When not set, the default behaviour of the imagery set takes place,
  * which is unique for each imagery set in BingMaps.
+ * @property {string} [url='https://dev.virtualearth.net/REST/v1/Imagery/Metadata/'] The Bing Map Metadata API URL.
  */
 /**
  * @typedef {Object} BingMapsImageryMetadataResponse
