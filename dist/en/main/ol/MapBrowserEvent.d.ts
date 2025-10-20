@@ -5,7 +5,7 @@ export default MapBrowserEvent;
  * See {@link module:ol/Map~Map} for which events trigger a map browser event.
  * @template {PointerEvent|KeyboardEvent|WheelEvent} [EVENT=PointerEvent|KeyboardEvent|WheelEvent]
  */
-declare class MapBrowserEvent<EVENT extends PointerEvent | KeyboardEvent | WheelEvent = KeyboardEvent | WheelEvent | PointerEvent> extends MapEvent {
+declare class MapBrowserEvent<EVENT extends PointerEvent | KeyboardEvent | WheelEvent = PointerEvent | KeyboardEvent | WheelEvent> extends MapEvent {
     /**
      * @param {string} type Event type.
      * @param {import("./Map.js").default} map Map.

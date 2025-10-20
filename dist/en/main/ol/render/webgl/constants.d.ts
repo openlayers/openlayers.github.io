@@ -22,7 +22,7 @@ export type WebGLWorkerGenerateBuffersMessage = {
     /**
      * render instructions raw binary buffer.
      */
-    renderInstructions: ArrayBuffer;
+    renderInstructions: ArrayBufferLike;
     /**
      * Amount of hit detection + custom attributes count in the render instructions.
      */
