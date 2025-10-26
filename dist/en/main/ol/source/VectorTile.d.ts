@@ -35,7 +35,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
      */
     overlaps?: boolean | undefined;
     /**
-     * Projection of the tile grid.
+     * Projection of the tile source.
      */
     projection?: import("../proj.js").ProjectionLike;
     /**
@@ -142,7 +142,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
  * to `false` (e.g. for sources with polygons that represent administrative
  * boundaries or TopoJSON sources) allows the renderer to optimise fill and
  * stroke operations.
- * @property {import("../proj.js").ProjectionLike} [projection='EPSG:3857'] Projection of the tile grid.
+ * @property {import("../proj.js").ProjectionLike} [projection='EPSG:3857'] Projection of the tile source.
  * @property {import("./Source.js").State} [state] Source state.
  * @property {typeof import("../VectorTile.js").default} [tileClass] Class used to instantiate tiles.
  * Default is {@link module:ol/VectorTile~VectorTile}.
