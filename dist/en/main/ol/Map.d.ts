@@ -154,7 +154,7 @@ export type MapEventHandler<Return> = import("./Observable").OnSignature<import(
 export type MapOptions = {
     /**
      * Controls initially added to the map. If not specified,
-     * {@link module :ol/control/defaults.defaults} is used.
+     * {@link module :ol/control/defaults.defaults} is used. In a worker, no controls are added by default.
      */
     controls?: Collection<import("./control/Control.js").default> | import("./control/Control.js").default[] | undefined;
     /**
@@ -164,7 +164,7 @@ export type MapOptions = {
     pixelRatio?: number | undefined;
     /**
      * Interactions that are initially added to the map. If not specified,
-     * {@link module :ol/interaction/defaults.defaults} is used.
+     * {@link module :ol/interaction/defaults.defaults} is used. In a worker, no interactions are added by default.
      */
     interactions?: Collection<import("./interaction/Interaction.js").default> | import("./interaction/Interaction.js").default[] | undefined;
     /**
@@ -205,12 +205,13 @@ export type MapOptions = {
      * element itself or the `id` of the element. If not specified at construction
      * time, {@link module :ol/Map~Map#setTarget} must be called for the map to be
      * rendered. If passed by element, the container can be in a secondary document.
+     * For use in workers or when exporting a map, use an `OffscreenCanvas` or `HTMLCanvasElement` as target.
      * For accessibility (focus and keyboard events for map navigation), the `target` element must have a
      * properly configured `tabindex` attribute. If the `target` element is inside a Shadow DOM, the
      * `tabindex` atribute must be set on the custom element's host element.
      * **Note:** CSS `transform` support for the target element is limited to `scale`.
      */
-    target?: string | HTMLElement | undefined;
+    target?: string | HTMLCanvasElement | HTMLElement | OffscreenCanvas | undefined;
     /**
      * The map's view.  No layer sources will be
      * fetched unless this is specified at construction time or through
@@ -364,11 +365,7 @@ declare class Map extends BaseObject {
      * @type {?Array<import("./events.js").EventsKey>}
      */
     private layerGroupPropertyListenerKeys_;
-    /**
-     * @private
-     * @type {!HTMLElement}
-     */
-    private viewport_;
+    viewport_: HTMLDivElement | undefined;
     /**
      * @private
      * @type {!HTMLElement}

@@ -128,7 +128,7 @@ declare class RegularShape extends ImageStyle {
     constructor(options: Options);
     /**
      * @private
-     * @type {HTMLCanvasElement|null}
+     * @type {HTMLCanvasElement|OffscreenCanvas|null}
      */
     private hitDetectionCanvas_;
     /**
@@ -206,18 +206,18 @@ declare class RegularShape extends ImageStyle {
      */
     setFill(fill: import("./Fill.js").default | null): void;
     /**
-     * @return {HTMLCanvasElement} Image element.
+     * @return {HTMLCanvasElement|OffscreenCanvas} Image element.
      * @override
      */
-    override getHitDetectionImage(): HTMLCanvasElement;
+    override getHitDetectionImage(): HTMLCanvasElement | OffscreenCanvas;
     /**
      * Get the image icon.
      * @param {number} pixelRatio Pixel ratio.
-     * @return {HTMLCanvasElement} Image or Canvas element.
+     * @return {HTMLCanvasElement|OffscreenCanvas} Image or Canvas element.
      * @api
      * @override
      */
-    override getImage(pixelRatio: number): HTMLCanvasElement;
+    override getImage(pixelRatio: number): HTMLCanvasElement | OffscreenCanvas;
     /**
      * Get the number of points for generating the shape.
      * @return {number} Number of points for stars and regular polygons.
@@ -269,25 +269,25 @@ declare class RegularShape extends ImageStyle {
     /**
      * @private
      * @param {RenderOptions} renderOptions Render options.
-     * @param {CanvasRenderingContext2D} context The rendering context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context The rendering context.
      * @param {number} pixelRatio The pixel ratio.
      */
     private draw_;
     /**
      * @private
      * @param {RenderOptions} renderOptions Render options.
-     * @return {HTMLCanvasElement} Canvas containing the icon
+     * @return {HTMLCanvasElement|OffscreenCanvas} Canvas containing the icon
      */
     private createHitDetectionCanvas_;
     /**
      * @private
-     * @param {CanvasRenderingContext2D} context The context to draw in.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context The context to draw in.
      */
     private createPath_;
     /**
      * @private
      * @param {RenderOptions} renderOptions Render options.
-     * @param {CanvasRenderingContext2D} context The context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context The context.
      */
     private drawHitDetectionCanvas_;
 }

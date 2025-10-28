@@ -40,7 +40,7 @@ declare class VectorRenderTile extends Tile {
     constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, urlTileCoord: import("./tilecoord.js").TileCoord, getSourceTiles: (arg0: VectorRenderTile) => Array<import("./VectorTile").default<any>>, removeSourceTiles: (arg0: VectorRenderTile) => void);
     /**
      * @private
-     * @type {CanvasRenderingContext2D|null}
+     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D|null}
      */
     private context_;
     /**
@@ -94,18 +94,18 @@ declare class VectorRenderTile extends Tile {
      */
     wrappedTileCoord: import("./tilecoord.js").TileCoord;
     /**
-     * @return {CanvasRenderingContext2D} The rendering context.
+     * @return {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} The rendering context.
      */
-    getContext(): CanvasRenderingContext2D;
+    getContext(): CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
     /**
      * @return {boolean} Tile has a rendering context.
      */
     hasContext(): boolean;
     /**
      * Get the Canvas for this tile.
-     * @return {HTMLCanvasElement} Canvas.
+     * @return {HTMLCanvasElement|OffscreenCanvas} Canvas.
      */
-    getImage(): HTMLCanvasElement;
+    getImage(): HTMLCanvasElement | OffscreenCanvas;
     /**
      * @param {import("./layer/Layer.js").default} layer Layer.
      * @return {ReplayState} The replay state.

@@ -58,7 +58,7 @@ declare class ReprojTile extends Tile {
     private gutter_;
     /**
      * @private
-     * @type {HTMLCanvasElement}
+     * @type {HTMLCanvasElement|OffscreenCanvas}
      */
     private canvas_;
     /**
@@ -103,9 +103,9 @@ declare class ReprojTile extends Tile {
     private triangulation_;
     /**
      * Get the HTML Canvas element for this tile.
-     * @return {HTMLCanvasElement} Canvas.
+     * @return {HTMLCanvasElement|OffscreenCanvas} Canvas.
      */
-    getImage(): HTMLCanvasElement;
+    getImage(): HTMLCanvasElement | OffscreenCanvas;
     /**
      * @private
      */

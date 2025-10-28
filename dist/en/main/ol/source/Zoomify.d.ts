@@ -14,7 +14,7 @@ export class CustomTile extends ImageTile {
     constructor(tileSize: import("../size.js").Size, tileCoord: import("../tilecoord.js").TileCoord, state: any, src: string, crossOrigin: string | null, tileLoadFunction: import("../Tile.js").LoadFunction, options?: import("../Tile.js").Options);
     /**
      * @private
-     * @type {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement}
+     * @type {HTMLCanvasElement|OffscreenCanvas|HTMLImageElement|HTMLVideoElement}
      */
     private zoomifyImage_;
     /**

@@ -106,7 +106,9 @@ declare namespace ol {
     }
     export namespace dom {
         export { _ol_dom$createCanvasContext2D as createCanvasContext2D };
+        export { _ol_dom$createMockDiv as createMockDiv };
         export { _ol_dom$getSharedCanvasContext2D as getSharedCanvasContext2D };
+        export { _ol_dom$isCanvas as isCanvas };
         export { _ol_dom$outerHeight as outerHeight };
         export { _ol_dom$outerWidth as outerWidth };
         export { _ol_dom$releaseCanvas as releaseCanvas };
@@ -944,6 +946,7 @@ declare namespace ol {
         export { _ol_transform$create as create };
         export { _ol_transform$determinant as determinant };
         export { _ol_transform$equivalent as equivalent };
+        export { _ol_transform$fromString as fromString };
         export { _ol_transform$invert as invert };
         export { _ol_transform$makeInverse as makeInverse };
         export { _ol_transform$makeScale as makeScale };
@@ -1120,7 +1123,9 @@ import { CLASS_UNSUPPORTED as _ol_css$CLASS_UNSUPPORTED } from '../../ol/css.js'
 import { fontWeights as _ol_css$fontWeights } from '../../ol/css.js';
 import { getFontParameters as _ol_css$getFontParameters } from '../../ol/css.js';
 import { createCanvasContext2D as _ol_dom$createCanvasContext2D } from '../../ol/dom.js';
+import { createMockDiv as _ol_dom$createMockDiv } from '../../ol/dom.js';
 import { getSharedCanvasContext2D as _ol_dom$getSharedCanvasContext2D } from '../../ol/dom.js';
+import { isCanvas as _ol_dom$isCanvas } from '../../ol/dom.js';
 import { outerHeight as _ol_dom$outerHeight } from '../../ol/dom.js';
 import { outerWidth as _ol_dom$outerWidth } from '../../ol/dom.js';
 import { releaseCanvas as _ol_dom$releaseCanvas } from '../../ol/dom.js';
@@ -1769,6 +1774,7 @@ import { composeCssTransform as _ol_transform$composeCssTransform } from '../../
 import { create as _ol_transform$create } from '../../ol/transform.js';
 import { determinant as _ol_transform$determinant } from '../../ol/transform.js';
 import { equivalent as _ol_transform$equivalent } from '../../ol/transform.js';
+import { fromString as _ol_transform$fromString } from '../../ol/transform.js';
 import { invert as _ol_transform$invert } from '../../ol/transform.js';
 import { makeInverse as _ol_transform$makeInverse } from '../../ol/transform.js';
 import { makeScale as _ol_transform$makeScale } from '../../ol/transform.js';

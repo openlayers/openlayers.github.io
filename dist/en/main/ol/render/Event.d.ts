@@ -5,9 +5,9 @@ declare class RenderEvent extends Event {
      * @param {import("../transform.js").Transform} [inversePixelTransform] Transform for
      *     CSS pixels to rendered pixels.
      * @param {import("../Map.js").FrameState} [frameState] Frame state.
-     * @param {?(CanvasRenderingContext2D|WebGLRenderingContext)} [context] Context.
+     * @param {?(CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D|WebGLRenderingContext)} [context] Context.
      */
-    constructor(type: any, inversePixelTransform?: import("../transform.js").Transform, frameState?: import("../Map.js").FrameState, context?: (CanvasRenderingContext2D | WebGLRenderingContext) | null);
+    constructor(type: any, inversePixelTransform?: import("../transform.js").Transform, frameState?: import("../Map.js").FrameState, context?: (CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | WebGLRenderingContext) | null);
     /**
      * Transform from CSS pixels (relative to the top-left corner of the map viewport)
      * to rendered pixels on this event's `context`. Only available when a Canvas renderer is used, null otherwise.
@@ -25,10 +25,10 @@ declare class RenderEvent extends Event {
      * Canvas context. Not available when the event is dispatched by the map. For Canvas 2D layers,
      * the context will be the 2D rendering context.  For WebGL layers, the context will be the WebGL
      * context.
-     * @type {CanvasRenderingContext2D|WebGLRenderingContext|undefined}
+     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D|WebGLRenderingContext|undefined}
      * @api
      */
-    context: CanvasRenderingContext2D | WebGLRenderingContext | undefined;
+    context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | WebGLRenderingContext | undefined;
 }
 import Event from '../events/Event.js';
 //# sourceMappingURL=Event.d.ts.map

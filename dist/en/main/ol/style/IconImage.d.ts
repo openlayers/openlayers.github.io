@@ -1,5 +1,5 @@
 /**
- * @param {HTMLImageElement|HTMLCanvasElement|ImageBitmap|null} image Image.
+ * @param {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas|ImageBitmap|null} image Image.
  * @param {string|undefined} cacheKey Src.
  * @param {?string} crossOrigin Cross origin.
  * @param {import("../ImageState.js").default|undefined} imageState Image state.
@@ -7,25 +7,25 @@
  * @param {boolean} [pattern] Also cache a `repeat` pattern with the icon image.
  * @return {IconImage} Icon image.
  */
-export function get(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap | null, cacheKey: string | undefined, crossOrigin: string | null, imageState: any | undefined, color: import("../color.js").Color | string | null, pattern?: boolean): IconImage;
+export function get(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap | null, cacheKey: string | undefined, crossOrigin: string | null, imageState: any | undefined, color: import("../color.js").Color | string | null, pattern?: boolean): IconImage;
 export default IconImage;
 declare class IconImage extends EventTarget {
     /**
-     * @param {HTMLImageElement|HTMLCanvasElement|ImageBitmap|null} image Image.
+     * @param {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas|ImageBitmap|null} image Image.
      * @param {string|undefined} src Src.
      * @param {?string} crossOrigin Cross origin.
      * @param {import("../ImageState.js").default|undefined} imageState Image state.
      * @param {import("../color.js").Color|string|null} color Color.
      */
-    constructor(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap | null, src: string | undefined, crossOrigin: string | null, imageState: any | undefined, color: import("../color.js").Color | string | null);
+    constructor(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap | null, src: string | undefined, crossOrigin: string | null, imageState: any | undefined, color: import("../color.js").Color | string | null);
     /**
      * @private
-     * @type {HTMLImageElement|HTMLCanvasElement|ImageBitmap}
+     * @type {HTMLImageElement|OffscreenCanvas|HTMLCanvasElement|ImageBitmap}
      */
     private hitDetectionImage_;
     /**
      * @private
-     * @type {HTMLImageElement|HTMLCanvasElement|ImageBitmap|null}
+     * @type {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas|ImageBitmap|null}
      */
     private image_;
     /**
@@ -35,7 +35,7 @@ declare class IconImage extends EventTarget {
     private crossOrigin_;
     /**
      * @private
-     * @type {Object<number, HTMLCanvasElement>}
+     * @type {Object<number, HTMLCanvasElement|OffscreenCanvas>}
      */
     private canvas_;
     /**
@@ -87,9 +87,9 @@ declare class IconImage extends EventTarget {
     private handleImageLoad_;
     /**
      * @param {number} pixelRatio Pixel ratio.
-     * @return {HTMLImageElement|HTMLCanvasElement|ImageBitmap} Image or Canvas element or image bitmap.
+     * @return {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas|ImageBitmap} Image or Canvas element or image bitmap.
      */
-    getImage(pixelRatio: number): HTMLImageElement | HTMLCanvasElement | ImageBitmap;
+    getImage(pixelRatio: number): HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap;
     /**
      * @param {number} pixelRatio Pixel ratio.
      * @return {number} Image or Canvas element.
@@ -100,9 +100,9 @@ declare class IconImage extends EventTarget {
      */
     getImageState(): any;
     /**
-     * @return {HTMLImageElement|HTMLCanvasElement|ImageBitmap} Image element.
+     * @return {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas|ImageBitmap} Image element.
      */
-    getHitDetectionImage(): HTMLImageElement | HTMLCanvasElement | ImageBitmap;
+    getHitDetectionImage(): HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap;
     /**
      * Get the size of the icon (in pixels).
      * @return {import("../size.js").Size} Image size.

@@ -1,7 +1,7 @@
 /**
- * @type {Array<HTMLCanvasElement>}
+ * @type {Array<HTMLCanvasElement|OffscreenCanvas>}
  */
-export const canvasPool: Array<HTMLCanvasElement>;
+export const canvasPool: Array<HTMLCanvasElement | OffscreenCanvas>;
 export default CanvasLayerRenderer;
 /**
  * @abstract
@@ -10,6 +10,7 @@ export default CanvasLayerRenderer;
  */
 declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js").default> extends LayerRenderer<LayerType> {
     /**
+     * HTMLElement container for the layer to be rendered in.
      * @protected
      * @type {HTMLElement}
      */
@@ -41,15 +42,16 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      */
     protected inversePixelTransform: import("../../transform.js").Transform;
     /**
-     * @type {CanvasRenderingContext2D}
+     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D}
      */
-    context: CanvasRenderingContext2D;
+    context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
     /**
      * @private
      * @type {ZIndexContext}
      */
     private deferredContext_;
     /**
+     * true if the container has been reused from the previous renderer
      * @type {boolean}
      */
     containerReused: boolean;
@@ -78,12 +80,12 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      */
     useContainer(target: HTMLElement, transform: string, backgroundColor?: string): void;
     /**
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @param {import("../../extent.js").Extent} extent Clip extent.
      * @protected
      */
-    protected clipUnrotated(context: CanvasRenderingContext2D, frameState: import("../../Map.js").FrameState, extent: import("../../extent.js").Extent): void;
+    protected clipUnrotated(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, frameState: import("../../Map.js").FrameState, extent: import("../../extent.js").Extent): void;
     /**
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @param {HTMLElement} target Target that may be used to render content to.
@@ -92,23 +94,23 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
     protected prepareContainer(frameState: import("../../Map.js").FrameState, target: HTMLElement): void;
     /**
      * @param {import("../../render/EventType.js").default} type Event type.
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @private
      */
     private dispatchRenderEvent_;
     /**
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @protected
      */
-    protected preRender(context: CanvasRenderingContext2D, frameState: import("../../Map.js").FrameState): void;
+    protected preRender(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, frameState: import("../../Map.js").FrameState): void;
     /**
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @protected
      */
-    protected postRender(context: CanvasRenderingContext2D, frameState: import("../../Map.js").FrameState): void;
+    protected postRender(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, frameState: import("../../Map.js").FrameState): void;
     /**
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      */

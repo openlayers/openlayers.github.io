@@ -23,7 +23,7 @@ declare class ImageTile extends Tile {
     private src_;
     /**
      * @private
-     * @type {HTMLImageElement|HTMLCanvasElement}
+     * @type {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas}
      */
     private image_;
     /**
@@ -37,16 +37,21 @@ declare class ImageTile extends Tile {
      */
     private tileLoadFunction_;
     /**
-     * Get the HTML image element for this tile (may be a Canvas, Image, or Video).
-     * @return {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} Image.
+     * Get the HTML image element for this tile (may be a Canvas, OffscreenCanvas, Image, or Video).
+     * @return {HTMLCanvasElement|OffscreenCanvas|HTMLImageElement|HTMLVideoElement} Image.
      * @api
      */
-    getImage(): HTMLCanvasElement | HTMLImageElement | HTMLVideoElement;
+    getImage(): HTMLCanvasElement | OffscreenCanvas | HTMLImageElement | HTMLVideoElement;
     /**
      * Sets an HTML image element for this tile (may be a Canvas or preloaded Image).
-     * @param {HTMLCanvasElement|HTMLImageElement} element Element.
+     * @param {HTMLCanvasElement|OffscreenCanvas|HTMLImageElement} element Element.
      */
-    setImage(element: HTMLCanvasElement | HTMLImageElement): void;
+    setImage(element: HTMLCanvasElement | OffscreenCanvas | HTMLImageElement): void;
+    /**
+     * Get the cross origin of the ImageTile.
+     * @return {string} Cross origin.
+     */
+    getCrossOrigin(): string;
     /**
      * Tracks loading or read errors.
      *

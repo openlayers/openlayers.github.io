@@ -98,7 +98,7 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     clipping: boolean;
     /**
      * @private
-     * @type {CanvasRenderingContext2D}
+     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D}
      */
     private targetContext_;
     /**

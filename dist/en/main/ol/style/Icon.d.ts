@@ -43,7 +43,7 @@ export type Options = {
     /**
      * Image object for the icon.
      */
-    img?: HTMLCanvasElement | HTMLImageElement | ImageBitmap | undefined;
+    img?: HTMLCanvasElement | OffscreenCanvas | HTMLImageElement | ImageBitmap | undefined;
     /**
      * Displacement of the icon in pixels.
      * Positive values will shift the icon right and up.
@@ -192,17 +192,17 @@ declare class Icon extends ImageStyle {
     /**
      * Get the image icon.
      * @param {number} pixelRatio Pixel ratio.
-     * @return {HTMLImageElement|HTMLCanvasElement|ImageBitmap} Image or Canvas element. If the Icon
+     * @return {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas|ImageBitmap} Image or Canvas element. If the Icon
      * style was configured with `src` or with a not let loaded `img`, an `ImageBitmap` will be returned.
      * @api
      * @override
      */
-    override getImage(pixelRatio: number): HTMLImageElement | HTMLCanvasElement | ImageBitmap;
+    override getImage(pixelRatio: number): HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap;
     /**
-     * @return {HTMLImageElement|HTMLCanvasElement|ImageBitmap} Image element.
+     * @return {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas|ImageBitmap} Image element.
      * @override
      */
-    override getHitDetectionImage(): HTMLImageElement | HTMLCanvasElement | ImageBitmap;
+    override getHitDetectionImage(): HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap;
     /**
      * Get the image URL.
      * @return {string|undefined} Image src.

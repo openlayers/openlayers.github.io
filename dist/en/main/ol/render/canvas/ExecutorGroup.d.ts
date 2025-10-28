@@ -71,7 +71,7 @@ declare class ExecutorGroup {
     private executorsByZIndex_;
     /**
      * @private
-     * @type {CanvasRenderingContext2D}
+     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D}
      */
     private hitDetectionContext_;
     /**
@@ -81,7 +81,7 @@ declare class ExecutorGroup {
     private hitDetectionTransform_;
     /**
      * @private
-     * @type {CanvasRenderingContext2D}
+     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D}
      */
     private renderedContext_;
     /**
@@ -90,10 +90,10 @@ declare class ExecutorGroup {
      */
     private deferredZIndexContexts_;
     /**
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {import("../../transform.js").Transform} transform Transform.
      */
-    clip(context: CanvasRenderingContext2D, transform: import("../../transform.js").Transform): void;
+    clip(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, transform: import("../../transform.js").Transform): void;
     /**
      * Create executors and populate them using the provided instructions.
      * @private
@@ -127,7 +127,7 @@ declare class ExecutorGroup {
      */
     isEmpty(): boolean;
     /**
-     * @param {CanvasRenderingContext2D} targetContext Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} targetContext Context.
      * @param {import('../../size.js').Size} scaledCanvasSize Scale of the context.
      * @param {import("../../transform.js").Transform} transform Transform.
      * @param {number} viewRotation View rotation.
@@ -137,11 +137,11 @@ declare class ExecutorGroup {
      * @param {import("rbush").default<import('./Executor.js').DeclutterEntry>|null} [declutterTree] Declutter tree.
      *     When set to null, no decluttering is done, even when the executor group has a `ZIndexContext`.
      */
-    execute(targetContext: CanvasRenderingContext2D, scaledCanvasSize: import("../../size.js").Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, builderTypes?: Array<import("../canvas.js").BuilderType>, declutterTree?: import("rbush").default<import("./Executor.js").DeclutterEntry> | null): void;
+    execute(targetContext: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, scaledCanvasSize: import("../../size.js").Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, builderTypes?: Array<import("../canvas.js").BuilderType>, declutterTree?: import("rbush").default<import("./Executor.js").DeclutterEntry> | null): void;
     getDeferredZIndexContexts(): {
         [x: number]: import("./ZIndexContext.js").default[];
     };
-    getRenderedContext(): CanvasRenderingContext2D;
+    getRenderedContext(): OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D;
     renderDeferred(): void;
 }
 //# sourceMappingURL=ExecutorGroup.d.ts.map

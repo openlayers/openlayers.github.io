@@ -39,7 +39,7 @@ export type ImageOrLabelDimensions = {
     canvasTransform: import("../../transform.js").Transform;
 };
 export type ReplayImageOrLabelArgs = {
-    0: CanvasRenderingContext2D;
+    0: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
     1: import("../../size.js").Size;
     2: import("../canvas.js").Label | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement;
     3: ImageOrLabelDimensions;
@@ -203,12 +203,12 @@ declare class Executor {
     private replayImageOrLabel_;
     /**
      * @private
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      */
     private fill_;
     /**
      * @private
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {Array<*>} instruction Instruction.
      */
     private setStrokeStyle_;
@@ -223,7 +223,7 @@ declare class Executor {
     private drawLabelWithPointPlacement_;
     /**
      * @private
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {import('../../size.js').Size} scaledCanvasSize Scaled canvas size
      * @param {import("../../transform.js").Transform} transform Transform.
      * @param {Array<*>} instructions Instructions array.
@@ -237,16 +237,16 @@ declare class Executor {
      */
     private execute_;
     /**
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {import('../../size.js').Size} scaledCanvasSize Scaled canvas size.
      * @param {import("../../transform.js").Transform} transform Transform.
      * @param {number} viewRotation View rotation.
      * @param {boolean} snapToPixel Snap point symbols and text to integer pixels.
      * @param {import("rbush").default<DeclutterEntry>} [declutterTree] Declutter tree.
      */
-    execute(context: CanvasRenderingContext2D, scaledCanvasSize: import("../../size.js").Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, declutterTree?: import("rbush").default<DeclutterEntry>): void;
+    execute(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, scaledCanvasSize: import("../../size.js").Size, transform: import("../../transform.js").Transform, viewRotation: number, snapToPixel: boolean, declutterTree?: import("rbush").default<DeclutterEntry>): void;
     /**
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {import("../../transform.js").Transform} transform Transform.
      * @param {number} viewRotation View rotation.
      * @param {FeatureCallback<T>} [featureCallback] Feature callback.
@@ -255,7 +255,7 @@ declare class Executor {
      * @return {T|undefined} Callback result.
      * @template T
      */
-    executeHitDetection<T>(context: CanvasRenderingContext2D, transform: import("../../transform.js").Transform, viewRotation: number, featureCallback?: FeatureCallback<T>, hitExtent?: import("../../extent.js").Extent): T | undefined;
+    executeHitDetection<T>(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, transform: import("../../transform.js").Transform, viewRotation: number, featureCallback?: FeatureCallback<T>, hitExtent?: import("../../extent.js").Extent): T | undefined;
 }
 import ZIndexContext from '../canvas/ZIndexContext.js';
 //# sourceMappingURL=Executor.d.ts.map

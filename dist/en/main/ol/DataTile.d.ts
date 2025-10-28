@@ -1,5 +1,5 @@
 /**
- * @typedef {HTMLImageElement|HTMLCanvasElement|HTMLVideoElement|ImageBitmap} ImageLike
+ * @typedef {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas|HTMLVideoElement|ImageBitmap} ImageLike
  */
 /**
  * @typedef {Uint8Array|Uint8ClampedArray|Float32Array|DataView} ArrayLike
@@ -28,7 +28,7 @@ export function toArray(image: ImageLike): Uint8ClampedArray;
  */
 export const disposedError: Error;
 export default DataTile;
-export type ImageLike = HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageBitmap;
+export type ImageLike = HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | HTMLVideoElement | ImageBitmap;
 export type ArrayLike = Uint8Array | Uint8ClampedArray | Float32Array | DataView;
 /**
  * Data that can be used with a DataTile.

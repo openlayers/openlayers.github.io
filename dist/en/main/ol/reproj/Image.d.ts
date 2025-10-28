@@ -62,7 +62,7 @@ declare class ReprojImage extends ImageWrapper {
     private interpolate_;
     /**
      * @private
-     * @type {HTMLCanvasElement}
+     * @type {HTMLCanvasElement|OffscreenCanvas}
      */
     private canvas_;
     /**
@@ -71,10 +71,10 @@ declare class ReprojImage extends ImageWrapper {
      */
     private sourceListenerKey_;
     /**
-     * @return {HTMLCanvasElement} Image.
+     * @return {HTMLCanvasElement|OffscreenCanvas} Image.
      * @override
      */
-    override getImage(): HTMLCanvasElement;
+    override getImage(): HTMLCanvasElement | OffscreenCanvas;
     /**
      * @return {import("../proj/Projection.js").default} Projection.
      */

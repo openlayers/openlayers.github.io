@@ -114,7 +114,7 @@ declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = 
     private styleVariables_;
     /**
      * @private
-     * @type {HTMLCanvasElement}
+     * @type {HTMLCanvasElement|OffscreenCanvas}
      */
     private gradient_;
     /**

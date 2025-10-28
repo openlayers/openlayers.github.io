@@ -1,8 +1,8 @@
 export default ZIndexContext;
-export type ZIndexContextProxy = CanvasRenderingContext2D & {
+export type ZIndexContextProxy = CanvasRenderingContext2D | (OffscreenCanvasRenderingContext2D & {
     globalAlpha: any;
-};
-/** @typedef {CanvasRenderingContext2D & {globalAlpha: any}} ZIndexContextProxy */
+});
+/** @typedef {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D & {globalAlpha: any}} ZIndexContextProxy */
 /**
  * @extends {CanvasRenderingContext2D}
  */
@@ -51,9 +51,9 @@ declare class ZIndexContext {
      */
     getContext(): ZIndexContextProxy;
     /**
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      */
-    draw(context: CanvasRenderingContext2D): void;
+    draw(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D): void;
     clear(): void;
     /**
      * Offsets the zIndex by the highest current zIndex. Useful for rendering multiple worlds or tiles, to

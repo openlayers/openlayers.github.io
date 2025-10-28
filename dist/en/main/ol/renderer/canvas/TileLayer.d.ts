@@ -182,16 +182,16 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      */
     protected drawTile(tile: import("../../Tile.js").default, frameState: import("../../Map.js").FrameState, x: number, y: number, w: number, h: number, gutter: number, transition: boolean): void;
     /**
-     * @return {HTMLCanvasElement} Image
+     * @return {HTMLCanvasElement|OffscreenCanvas} Image
      */
-    getImage(): HTMLCanvasElement;
+    getImage(): HTMLCanvasElement | OffscreenCanvas;
     /**
      * Get the image from a tile.
      * @param {import("../../ImageTile.js").default} tile Tile.
-     * @return {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} Image.
+     * @return {HTMLCanvasElement|OffscreenCanvas|HTMLImageElement|HTMLVideoElement} Image.
      * @protected
      */
-    protected getTileImage(tile: import("../../ImageTile.js").default): HTMLCanvasElement | HTMLImageElement | HTMLVideoElement;
+    protected getTileImage(tile: import("../../ImageTile.js").default): HTMLCanvasElement | OffscreenCanvas | HTMLImageElement | HTMLVideoElement;
     /**
      * @param {!Object<string, !Object<string, boolean>>} usedTiles Used tiles.
      * @param {import("../../source/Tile.js").default} tileSource Tile source.

@@ -134,6 +134,12 @@ export function determinant(mat: Transform): number;
  */
 export function toString(mat: Transform): string;
 /**
+ * Create a transform from a CSS transform matrix string.
+ * @param {string} cssTransform The CSS string to parse.
+ * @return {!Transform} The transform.
+ */
+export function fromString(cssTransform: string): Transform;
+/**
  * Compare two matrices for equality.
  * @param {!string} cssTransform1 A CSS transform matrix string.
  * @param {!string} cssTransform2 A CSS transform matrix string.

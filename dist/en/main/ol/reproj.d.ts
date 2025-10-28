@@ -47,13 +47,13 @@ export function calculateSourceExtentResolution(sourceProj: import("./proj/Proje
  * @param {boolean} [interpolate] Use linear interpolation when resampling.
  * @param {boolean} [drawSingle] Draw single source images directly without stitchContext.
  * @param {boolean} [clipExtent] Clip stitchContext to sourceExtent.
- * @return {HTMLCanvasElement} Canvas with reprojected data.
+ * @return {HTMLCanvasElement|OffscreenCanvas} Canvas with reprojected data.
  */
-export function render(width: number, height: number, pixelRatio: number, sourceResolution: number, sourceExtent: import("./extent.js").Extent, targetResolution: number, targetExtent: import("./extent.js").Extent, triangulation: import("./reproj/Triangulation.js").default, sources: Array<ImageExtent>, gutter: number, renderEdges?: boolean, interpolate?: boolean, drawSingle?: boolean, clipExtent?: boolean): HTMLCanvasElement;
+export function render(width: number, height: number, pixelRatio: number, sourceResolution: number, sourceExtent: import("./extent.js").Extent, targetResolution: number, targetExtent: import("./extent.js").Extent, triangulation: import("./reproj/Triangulation.js").default, sources: Array<ImageExtent>, gutter: number, renderEdges?: boolean, interpolate?: boolean, drawSingle?: boolean, clipExtent?: boolean): HTMLCanvasElement | OffscreenCanvas;
 /**
- * @type {Array<HTMLCanvasElement>}
+ * @type {Array<HTMLCanvasElement|OffscreenCanvas>}
  */
-export const canvasPool: Array<HTMLCanvasElement>;
+export const canvasPool: Array<HTMLCanvasElement | OffscreenCanvas>;
 export type ImageExtent = {
     /**
      * Extent.
