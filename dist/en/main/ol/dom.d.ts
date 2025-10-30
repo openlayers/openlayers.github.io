@@ -55,7 +55,8 @@ export function removeChildren(node: Node): void;
  */
 export function replaceChildren(node: Node, children: Array<Node>): void;
 /**
- * Creates a minimal structure that mocks a DIV to be used in a worker environment
+ * Creates a minimal structure that mocks a DIV to be used by the composite and
+ * layer renderer in a worker environment
  * @return {HTMLDivElement} mocked DIV
  */
 export function createMockDiv(): HTMLDivElement;
