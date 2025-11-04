@@ -211,7 +211,7 @@ export type MapOptions = {
      * `tabindex` atribute must be set on the custom element's host element.
      * **Note:** CSS `transform` support for the target element is limited to `scale`.
      */
-    target?: string | HTMLCanvasElement | HTMLElement | OffscreenCanvas | undefined;
+    target?: string | HTMLElement | HTMLCanvasElement | OffscreenCanvas | undefined;
     /**
      * The map's view.  No layer sources will be
      * fetched unless this is specified at construction time or through

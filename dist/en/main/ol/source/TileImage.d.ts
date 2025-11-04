@@ -207,20 +207,22 @@ declare class TileImage extends UrlTile {
      * @param {number} y Tile coordinate y.
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
+     * @param {import("../structs/LRUCache.js").default<import("../Tile.js").default>} [tileCache] Tile cache.
      * @return {!(ImageTile|ReprojTile)} Tile.
      * @override
      */
-    override getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): (ImageTile | ReprojTile);
+    override getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default, tileCache?: import("../structs/LRUCache.js").default<import("../Tile.js").default>): (ImageTile | ReprojTile);
     /**
      * @param {number} z Tile coordinate z.
      * @param {number} x Tile coordinate x.
      * @param {number} y Tile coordinate y.
      * @param {number} pixelRatio Pixel ratio.
      * @param {!import("../proj/Projection.js").default} projection Projection.
+     * @param {import("../structs/LRUCache.js").default<import("../Tile.js").default>} [tileCache] Tile cache.
      * @return {!ImageTile} Tile.
      * @protected
      */
-    protected getTileInternal(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): ImageTile;
+    protected getTileInternal(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default, tileCache?: import("../structs/LRUCache.js").default<import("../Tile.js").default>): ImageTile;
     /**
      * Sets whether to render reprojection edges or not (usually for debugging).
      * @param {boolean} render Render the edges.

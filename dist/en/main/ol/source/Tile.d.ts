@@ -180,9 +180,10 @@ declare class TileSource<TileType extends import("../Tile.js").default = import(
      * @param {number} y Tile coordinate y.
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
+     * @param {import("../structs/LRUCache.js").default<import("../Tile.js").default>} [tileCache] Tile cache.
      * @return {TileType|null} Tile.
      */
-    getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default): TileType | null;
+    getTile(z: number, x: number, y: number, pixelRatio: number, projection: import("../proj/Projection.js").default, tileCache?: import("../structs/LRUCache.js").default<import("../Tile.js").default>): TileType | null;
     /**
      * Return the tile grid of the tile source.
      * @return {import("../tilegrid/TileGrid.js").default|null} Tile grid.

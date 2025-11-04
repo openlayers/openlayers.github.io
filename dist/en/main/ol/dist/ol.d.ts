@@ -912,6 +912,7 @@ declare namespace ol {
     export namespace tilecoord {
         export { _ol_tilecoord$createOrUpdate as createOrUpdate };
         export { _ol_tilecoord$fromKey as fromKey };
+        export { _ol_tilecoord$getCacheKey as getCacheKey };
         export { _ol_tilecoord$getCacheKeyForTileKey as getCacheKeyForTileKey };
         export { _ol_tilecoord$getKey as getKey };
         export { _ol_tilecoord$getKeyZXY as getKeyZXY };
@@ -1748,6 +1749,7 @@ import $ol$style$Text from '../../ol/style/Text.js';
 import { createDefaultStyle as _ol_style_flat$createDefaultStyle } from '../../ol/style/flat.js';
 import { createOrUpdate as _ol_tilecoord$createOrUpdate } from '../../ol/tilecoord.js';
 import { fromKey as _ol_tilecoord$fromKey } from '../../ol/tilecoord.js';
+import { getCacheKey as _ol_tilecoord$getCacheKey } from '../../ol/tilecoord.js';
 import { getCacheKeyForTileKey as _ol_tilecoord$getCacheKeyForTileKey } from '../../ol/tilecoord.js';
 import { getKey as _ol_tilecoord$getKey } from '../../ol/tilecoord.js';
 import { getKeyZXY as _ol_tilecoord$getKeyZXY } from '../../ol/tilecoord.js';
