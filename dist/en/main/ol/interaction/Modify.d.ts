@@ -68,6 +68,14 @@ export type Options = {
      * boolean to indicate whether that event should be handled. By default,
      * {@link module :ol/events/condition.singleClick} with
      * {@link module :ol/events/condition.altKeyOnly} results in a vertex deletion.
+     * This combination is handled by wrapping the two condition checks in a single function:
+     * ```js
+     * import { altKeyOnly, singleClick } from 'ol/events/condition.js';
+     *
+     * function (event) {
+     * return altKeyOnly(event) && singleClick(event)
+     * }
+     * ```
      */
     deleteCondition?: import("../events/condition.js").Condition | undefined;
     /**
