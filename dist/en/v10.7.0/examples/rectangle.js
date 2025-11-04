@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3722],{82325:function(e,n,s){var w=s(51541),r=s(41564),u=s(87240),a=s(30470),c=s(12185),t=s(23986),A=s(28e3),o=s(29810);new r.A({layers:[new c.A({source:new A.A}),new t.A({source:new o.A({features:[new w.A((0,a.VY)([-1e6,5e6,3e6,7e6]))]})})],target:"map",view:new u.Ay({center:[1e6,6e6],zoom:4})})}},function(e){var n;n=82325,e(e.s=n)}]);
+//# sourceMappingURL=rectangle.js.map
