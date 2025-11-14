@@ -119,6 +119,7 @@
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
+import {getView, withExtentCenter, withHigherResolutions} from &#x27;ol/View.js&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
 import GeoTIFF from &#x27;ol/source/GeoTIFF.js&#x27;;
 
@@ -137,7 +138,7 @@ const map &#x3D; new Map({
       source: source,
     }),
   ],
-  view: source.getView(),
+  view: getView(source, withHigherResolutions(1), withExtentCenter()),
 });
 </code></pre>
       </div>

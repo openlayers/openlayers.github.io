@@ -26,7 +26,45 @@ export function createRotationConstraint(options: ViewOptions): import("./rotati
  * @return {boolean} The animation involves no view change.
  */
 export function isNoopAnimation(animation: Animation): boolean;
+/**
+ * @typedef {function(ViewOptions):ViewOptions} ViewTransform
+ */
+/**
+ * Adds higher resolutions.
+ * @param {number} num The number of higher resolution levels to use.
+ * @return {ViewTransform} A view transform.
+ */
+export function withHigherResolutions(num: number): ViewTransform;
+/**
+ * Adds lower resolutions.
+ * @param {number} num The number of lower resolution levels to use.
+ * @return {ViewTransform} A view transform.
+ * @api
+ */
+export function withLowerResolutions(num: number): ViewTransform;
+/**
+ * Applies a center based on the extent.
+ * @return {ViewTransform} A view transform.
+ * @api
+ */
+export function withExtentCenter(): ViewTransform;
+/**
+ * Applies a zoom level.
+ * @param {number} z The zoom level.
+ * @return {ViewTransform} A view transform.
+ * @api
+ */
+export function withZoom(z: number): ViewTransform;
+/**
+ * Applies a series of transforms to a view that is resolved from a source.
+ * @param {import("./source/Source.js").default} source The source.
+ * @param {...ViewTransform} transforms The transforms to apply.
+ * @return {Promise<ViewOptions>} The view options.
+ * @api
+ */
+export function getView(source: import("./source/Source.js").default, ...transforms: ViewTransform[]): Promise<ViewOptions>;
 export default View;
+export type ViewTransform = (arg0: ViewOptions) => ViewOptions;
 /**
  * An animation configuration
  */
