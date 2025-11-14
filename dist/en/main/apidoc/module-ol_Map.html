@@ -1218,7 +1218,9 @@ Increasing this value can make it easier to click on the map.</p>
 element itself or the <code>id</code> of the element. If not specified at construction
 time, <a href="module-ol_Map-Map.html#setTarget"><code>setTarget</code></a> must be called for the map to be
 rendered. If passed by element, the container can be in a secondary document.
-For use in workers or when exporting a map, use an <code>OffscreenCanvas</code> or <code>HTMLCanvasElement</code> as target.
+For use in workers or when exporting a map, use an <code>OffscreenCanvas</code> or <code>HTMLCanvasElement</code> as target,
+with a width and height in physical pixels, optionally multiplied by and a scale transform matching
+the map's pixel ratio.
 For accessibility (focus and keyboard events for map navigation), the <code>target</code> element must have a
  properly configured <code>tabindex</code> attribute. If the <code>target</code> element is inside a Shadow DOM, the
  <code>tabindex</code> atribute must be set on the custom element's host element.
