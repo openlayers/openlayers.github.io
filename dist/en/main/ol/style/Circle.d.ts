@@ -60,20 +60,6 @@ declare class CircleStyle extends RegularShape {
      * @param {Options} [options] Options.
      */
     constructor(options?: Options);
-    /**
-     * Clones the style.
-     * @return {CircleStyle} The cloned style.
-     * @api
-     * @override
-     */
-    override clone(): CircleStyle;
-    /**
-     * Set the circle radius.
-     *
-     * @param {number} radius Circle radius.
-     * @api
-     */
-    setRadius(radius: number): void;
 }
 import RegularShape from './RegularShape.js';
 //# sourceMappingURL=Circle.d.ts.map

@@ -231,11 +231,23 @@ declare class RegularShape extends ImageStyle {
      */
     getRadius(): number;
     /**
+     * Set the (primary) radius for the shape.
+     * @param {number} radius Radius.
+     * @api
+     */
+    setRadius(radius: number): void;
+    /**
      * Get the secondary radius for the shape.
      * @return {number|undefined} Radius2.
      * @api
      */
     getRadius2(): number | undefined;
+    /**
+     * Set the secondary radius for the shape.
+     * @param {number|undefined} radius2 Radius2.
+     * @api
+     */
+    setRadius2(radius2: number | undefined): void;
     /**
      * Get the stroke style for the shape.
      * @return {import("./Stroke.js").default|null} Stroke style.

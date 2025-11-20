@@ -92,6 +92,7 @@
             <li data-name="setfill"><a href="module-ol_style_Circle-CircleStyle.html#setFill">setFill</a>
             <li data-name="setopacity"><a href="module-ol_style_Circle-CircleStyle.html#setOpacity">setOpacity</a>
             <li data-name="setradius"><a href="module-ol_style_Circle-CircleStyle.html#setRadius">setRadius</a>
+            <li data-name="setradius2"><a href="module-ol_style_Circle-CircleStyle.html#setRadius2">setRadius2</a>
             <li data-name="setrotatewithview"><a href="module-ol_style_Circle-CircleStyle.html#setRotateWithView">setRotateWithView</a>
             <li data-name="setrotation"><a href="module-ol_style_Circle-CircleStyle.html#setRotation">setRotation</a>
             <li data-name="setscale"><a href="module-ol_style_Circle-CircleStyle.html#setScale">setScale</a>
@@ -1555,7 +1556,7 @@ Radius.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L324">line 324</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L337">line 337</a>
         </div>
         
     </div>
@@ -1923,7 +1924,7 @@ Scale.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L334">line 334</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L360">line 360</a>
         </div>
         
     </div>
@@ -2015,7 +2016,7 @@ Size.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L343">line 343</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L369">line 369</a>
         </div>
         
     </div>
@@ -2480,19 +2481,21 @@ Stroke style.
             
 <dt class="">
     
-    <div class="nameContainer">
+    <div class="nameContainer inherited">
         <div class="anchor" id="setRadius">
         </div>
         <h4 class="name">
             setRadius<span class="signature">(radius)</span>
+            
+                <span class="inherited"><a href="module-ol_style_RegularShape-RegularShape.html#setRadius">inherited</a></span>
             
             
 
         </h4>
         
         <div class="tag-source">
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Circle.js">style/Circle.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Circle.js#L77">line 77</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L324">line 324</a>
         </div>
         
     </div>
@@ -2505,7 +2508,7 @@ Stroke style.
 
     
     <div class="description">
-        <p>Set the circle radius.</p>
+        <p>Set the (primary) radius for the shape.</p>
     </div>
     
 
@@ -2553,7 +2556,138 @@ Stroke style.
 
             <td  class="description last">
                 
-                <p>Circle radius.</p></td>
+                <p>Radius.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
+        <div class="anchor" id="setRadius2">
+        </div>
+        <h4 class="name">
+            setRadius2<span class="signature">(radius2)</span>
+            
+                <span class="inherited"><a href="module-ol_style_RegularShape-RegularShape.html#setRadius2">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L346">line 346</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Set the secondary radius for the shape.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>radius2</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Radius2.</p></td>
         </tr>
 
 	
@@ -3007,7 +3141,7 @@ Stroke style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L352">line 352</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L378">line 378</a>
         </div>
         
     </div>
