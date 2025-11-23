@@ -611,10 +611,13 @@ declare namespace ol {
         export namespace proj4 {
             export { _ol_proj_proj4$epsgLookupMapTiler as epsgLookupMapTiler };
             export { _ol_proj_proj4$fromEPSGCode as fromEPSGCode };
+            export { _ol_proj_proj4$fromProjectionCode as fromProjectionCode };
             export { _ol_proj_proj4$getEPSGLookup as getEPSGLookup };
+            export { _ol_proj_proj4$getProjectionCodeLookup as getProjectionCodeLookup };
             export { _ol_proj_proj4$isRegistered as isRegistered };
             export { _ol_proj_proj4$register as register };
             export { _ol_proj_proj4$setEPSGLookup as setEPSGLookup };
+            export { _ol_proj_proj4$setProjectionCodeLookup as setProjectionCodeLookup };
             export { _ol_proj_proj4$unregister as unregister };
         }
         export namespace projections {
@@ -1530,10 +1533,13 @@ import { getUserProjection as _ol_proj$getUserProjection } from '../../ol/proj.j
 import { identityTransform as _ol_proj$identityTransform } from '../../ol/proj.js';
 import { epsgLookupMapTiler as _ol_proj_proj4$epsgLookupMapTiler } from '../../ol/proj/proj4.js';
 import { fromEPSGCode as _ol_proj_proj4$fromEPSGCode } from '../../ol/proj/proj4.js';
+import { fromProjectionCode as _ol_proj_proj4$fromProjectionCode } from '../../ol/proj/proj4.js';
 import { getEPSGLookup as _ol_proj_proj4$getEPSGLookup } from '../../ol/proj/proj4.js';
+import { getProjectionCodeLookup as _ol_proj_proj4$getProjectionCodeLookup } from '../../ol/proj/proj4.js';
 import { isRegistered as _ol_proj_proj4$isRegistered } from '../../ol/proj/proj4.js';
 import { register as _ol_proj_proj4$register } from '../../ol/proj/proj4.js';
 import { setEPSGLookup as _ol_proj_proj4$setEPSGLookup } from '../../ol/proj/proj4.js';
+import { setProjectionCodeLookup as _ol_proj_proj4$setProjectionCodeLookup } from '../../ol/proj/proj4.js';
 import { unregister as _ol_proj_proj4$unregister } from '../../ol/proj/proj4.js';
 import { add as _ol_proj_projections$add } from '../../ol/proj/projections.js';
 import { clear as _ol_proj_projections$clear } from '../../ol/proj/projections.js';

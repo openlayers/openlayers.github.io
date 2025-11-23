@@ -197,7 +197,7 @@
 
       <div class="row-fluid">
         <p id="shortdesc">Rendering a COG over another layer in a different projection.</p>
-        <div id="docs"><p>Example of using <code>fromEPSGCode()</code> to enable a COG to be rendered over another layer in a different projection.</p>
+        <div id="docs"><p>Example of using <code>fromProjectionCode()</code> to enable a COG to be rendered over another layer in a different projection.</p>
 </div>
       </div>
 
@@ -205,12 +205,7 @@
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
-import {
-  epsgLookupMapTiler,
-  fromEPSGCode,
-  register,
-  setEPSGLookup,
-} from &#x27;ol/proj/proj4.js&#x27;;
+import {fromProjectionCode, register} from &#x27;ol/proj/proj4.js&#x27;;
 import GeoTIFF from &#x27;ol/source/GeoTIFF.js&#x27;;
 import XYZ from &#x27;ol/source/XYZ.js&#x27;;
 import proj4 from &#x27;proj4&#x27;;
@@ -221,7 +216,6 @@ const attributions &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://www.openstreetmap.org/copyright&quot; target&#x3D;&quot;_blank&quot;&gt;&amp;copy; OpenStreetMap contributors&lt;/a&gt;&#x27;;
 
 register(proj4);
-setEPSGLookup(epsgLookupMapTiler(key));
 
 const cogSource &#x3D; new GeoTIFF({
   sources: [
@@ -260,7 +254,9 @@ const map &#x3D; new Map({
   view: cogSource
     .getView()
     .then((viewConfig) &#x3D;&gt;
-      fromEPSGCode(viewConfig.projection.getCode()).then(() &#x3D;&gt; viewConfig),
+      fromProjectionCode(viewConfig.projection.getCode()).then(
+        () &#x3D;&gt; viewConfig,
+      ),
     ),
 });
 </code></pre>

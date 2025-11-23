@@ -73,8 +73,10 @@
         <ul>
             <li data-name="epsglookupmaptiler"><a href="module-ol_proj_proj4.html#.epsgLookupMapTiler">epsgLookupMapTiler</a>
             <li data-name="fromepsgcode"><a href="module-ol_proj_proj4.html#.fromEPSGCode">fromEPSGCode</a>
+            <li data-name="fromprojectioncode"><a href="module-ol_proj_proj4.html#.fromProjectionCode">fromProjectionCode</a>
             <li data-name="register"><a href="module-ol_proj_proj4.html#.register">register</a>
             <li data-name="setepsglookup"><a href="module-ol_proj_proj4.html#.setEPSGLookup">setEPSGLookup</a>
+            <li data-name="setprojectioncodelookup"><a href="module-ol_proj_proj4.html#.setProjectionCodeLookup">setProjectionCodeLookup</a>
         </ul>
     </div>
               <li class="loading">Loading …
@@ -183,7 +185,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js">proj/proj4.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L170">line 170</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L231">line 231</a>
         </div>
         
     </div>
@@ -268,6 +270,8 @@ Call <a href="module-ol_proj_proj4.html#.setEPSGLookup"><code>setEPSGLookup</cod
     
 
     
+        <dt class="important tag-deprecated">Deprecated</dt><dd><ul class="dummy"><li>Not needed any more, the default lookup provides this functionality now.</li><ul></dd>
+    
     
     
     
@@ -324,7 +328,7 @@ The EPSG lookup function.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js">proj/proj4.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L139">line 139</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L213">line 213</a>
         </div>
         
     </div>
@@ -341,9 +345,10 @@ The EPSG lookup function.
     
     <div class="description">
         <p>Get a projection from an EPSG code.  This function fetches the projection
-definition from the epsg.io website, registers this definition for use with
-proj4, and returns a configured projection.  You must call import proj4 and
-call <a href="module-ol_proj_proj4.html#.register"><code>register</code></a> before using this function.</p>
+definition from the spatialreference.org website, registers this definition
+for use with proj4, and returns a configured projection.  You must call
+import proj4 and call <a href="module-ol_proj_proj4.html#.register"><code>register</code></a> before using this
+function.</p>
 <p>If the projection definition is already registered with proj4, it will not
 be fetched again (so it is ok to call this function multiple times with the
 same code).</p>
@@ -398,6 +403,153 @@ same code).</p>
             <td  class="description last">
                 
                 <p>The EPSG code (e.g. 4326 or 'EPSG:4326').</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated</dt><dd><ul class="dummy"><li>Use <a href="module-ol_proj_proj4.html#.fromProjectionCode"><code>fromProjectionCode</code></a> instead.</li><ul></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The projection.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id=".fromProjectionCode">
+        </div>
+        <h4 class="name">
+            fromProjectionCode<span class="signature">(code)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Promise&lt;<a href="module-ol_proj_Projection-Projection.html">Projection</a>>}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js">proj/proj4.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L148">line 148</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+    
+    <pre class="prettyprint source"><code>import {fromProjectionCode} from 'ol/proj/proj4';</code></pre>
+
+
+    
+    <div class="description">
+        <p>Get a projection from a projection code (i.e., authority:number).
+This function fetches the projection definition from the
+<a href="https://spatialreference.org">https://spatialreference.org</a> website, registers this definition for use with
+proj4, and returns a configured projection.  You must call import proj4 and
+call <a href="module-ol_proj_proj4.html#.register"><code>register</code></a> before using this function.</p>
+<p>If the projection definition is already registered with proj4, it will not
+be fetched again (so it is ok to call this function multiple times with the
+same code).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>code</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The projection code (e.g., 'EPSG:4326' or 'OGC:CRS84').</p></td>
         </tr>
 
 	
@@ -604,7 +756,7 @@ modified by this function.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js">proj/proj4.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L112">line 112</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L183">line 183</a>
         </div>
         
     </div>
@@ -620,10 +772,144 @@ modified by this function.</p>
 
     
     <div class="description">
-        <p>Set the lookup function for getting proj4 definitions given an EPSG code.
+        <p>Set the lookup function for getting proj4 or WKT definitions given an EPSG code.
 By default, the <a href="module-ol_proj_proj4.html#.fromEPSGCode"><code>fromEPSGCode</code></a> function uses the
-epsg.io website for proj4 definitions.  This can be changed by providing a
-different lookup function.</p>
+spatialreference.org website for WKT definitions.
+This can be changed by providing a different lookup function.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>func</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The lookup function.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated</dt><dd><ul class="dummy"><li>Use <a href="module-ol_proj_proj4.html#.setProjectionCodeLookup"><code>setProjectionCodeLookup</code></a> instead.</li><ul></dd>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id=".setProjectionCodeLookup">
+        </div>
+        <h4 class="name">
+            setProjectionCodeLookup<span class="signature">(func)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js">proj/proj4.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/proj/proj4.js#L120">line 120</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+    
+    <pre class="prettyprint source"><code>import {setProjectionCodeLookup} from 'ol/proj/proj4';</code></pre>
+
+
+    
+    <div class="description">
+        <p>Set the lookup function for getting proj4 or WKT definitions given an
+projection code. By default, the <a href="module-ol_proj_proj4.html#.fromProjectionCode"><code>fromProjectionCode</code></a>
+function uses the spatialreference.org website for WKT definitions.
+This can be changed by providing a different lookup function.</p>
     </div>
     
 
