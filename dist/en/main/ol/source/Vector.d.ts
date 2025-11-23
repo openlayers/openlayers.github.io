@@ -534,14 +534,14 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     /**
      * Get the extent of the features currently in the source.
      *
-     * This method is not available when the source is configured with
+     * This will return `null` when the source is configured with
      * `useSpatialIndex` set to `false`.
      * @param {import("../extent.js").Extent} [extent] Destination extent. If provided, no new extent
      *     will be created. Instead, that extent's coordinates will be overwritten.
-     * @return {import("../extent.js").Extent} Extent.
+     * @return {import("../extent.js").Extent | null} Extent.
      * @api
      */
-    getExtent(extent?: import("../extent.js").Extent): import("../extent.js").Extent;
+    getExtent(extent?: import("../extent.js").Extent): import("../extent.js").Extent | null;
     /**
      * Get a feature by its identifier (the value returned by feature.getId()). When `RenderFeature`s
      * are used, `getFeatureById()` can return an array of `RenderFeature`s. This allows for handling

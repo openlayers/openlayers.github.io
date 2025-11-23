@@ -2307,7 +2307,7 @@ Closest feature (or <code>null</code> if none found).
         <div class="anchor" id="getExtent">
         </div>
         <h4 class="name">
-            getExtent<span class="signature">(<span class="optional">extent</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_extent.html#~Extent">Extent</a>}</span>
+            getExtent<span class="signature">(<span class="optional">extent</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_extent.html#~Extent">Extent</a> | null}</span>
             
             
 
@@ -2329,7 +2329,7 @@ Closest feature (or <code>null</code> if none found).
     
     <div class="description">
         <p>Get the extent of the features currently in the source.</p>
-<p>This method is not available when the source is configured with
+<p>This will return <code>null</code> when the source is configured with
 <code>useSpatialIndex</code> set to <code>false</code>.</p>
     </div>
     

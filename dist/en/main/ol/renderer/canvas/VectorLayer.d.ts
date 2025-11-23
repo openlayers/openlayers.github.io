@@ -27,6 +27,13 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
      */
     private clipped_;
     /**
+     * Do we need to extend the rendered area on the x-axis to handle
+     * features that cross the antimeridian?
+     * @private
+     * @type {boolean}
+     */
+    private extendX_;
+    /**
      * @private
      * @type {Array<import("../../Feature.js").default>}
      */
