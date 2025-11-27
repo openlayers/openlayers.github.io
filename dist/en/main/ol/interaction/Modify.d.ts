@@ -52,6 +52,11 @@ export type SegmentData = {
      */
     featureSegments?: SegmentData[] | undefined;
 };
+/**
+ * A function that takes a {@link module :ol/Feature~Feature} and  returns `true` if
+ * the feature may be modified or `false` otherwise.
+ */
+export type FilterFunction = (arg0: Feature) => boolean;
 export type DragSegment = [SegmentData, number];
 export type Options = {
     /**
@@ -121,6 +126,10 @@ export type Options = {
      */
     features?: Collection<Feature<import("../geom/Geometry.js").default>> | undefined;
     /**
+     * A function that takes a {@link module :ol/Feature~Feature}and returns `true` if the feature may be modified or `false` otherwise.
+     */
+    filter?: FilterFunction | undefined;
+    /**
      * Trace a portion of another geometry.
      * Tracing starts when two neighboring vertices are dragged onto a trace target, without any other modification in between..
      */
@@ -189,6 +198,33 @@ declare class Modify extends PointerInteraction {
      * @param {Options} options Options.
      */
     constructor(options: Options);
+    /**
+     * @param {import("../source/Vector.js").VectorSourceEvent} event Event.
+     * @private
+     */
+    private handleSourceAdd_;
+    /**
+     * @param {import("../source/Vector.js").VectorSourceEvent} event Event.
+     * @private
+     */
+    private handleSourceRemove_;
+    /**
+     * @param {import("../Collection.js").CollectionEvent} event Event.
+     * @private
+     */
+    private handleExternalCollectionAdd_;
+    /**
+     * @param {import("../Collection.js").CollectionEvent} event Event.
+     * @private
+     */
+    private handleExternalCollectionRemove_;
+    /**
+     * Listener for features in external source or features collection.  Ensures the feature filter
+     * is re-run and segment data is updated.
+     * @param {import("../events/Event.js").default | import("../Object").ObjectEvent} evt Event.
+     * @private
+     */
+    private handleFeatureChange_;
     /***
      * @type {ModifyOnSignature<import("../events").EventsKey>}
      */
@@ -201,8 +237,6 @@ declare class Modify extends PointerInteraction {
      * @type {ModifyOnSignature<void>}
      */
     un: ModifyOnSignature<void>;
-    /** @private */
-    private boundHandleFeatureChange_;
     /**
      * @private
      * @type {import("../events/condition.js").Condition}
@@ -324,7 +358,21 @@ declare class Modify extends PointerInteraction {
      */
     private hitDetection_;
     /**
-     * @type {Collection<Feature>}
+     * Useful for performance optimization
+     * @private
+     * @type boolean
+     */
+    private filterFunctionWasSupplied_;
+    /**
+     * @private
+     * @type {FilterFunction}
+     */
+    private filter_;
+    featuresCollection_: Collection<Feature<import("../geom/Geometry.js").default>> | undefined;
+    /**
+     * Internal features array.  When adding or removing features, be sure to use
+     * addFeature_()/removeFeature_() so that the the segment index is adjusted.
+     * @type {Array<Feature>}
      * @private
      */
     private features_;
@@ -351,6 +399,7 @@ declare class Modify extends PointerInteraction {
      */
     setTrace(trace: boolean | import("../events/condition.js").Condition): void;
     /**
+     * Called when a feature is added to the internal features collection
      * @param {Feature} feature Feature.
      * @private
      */
@@ -362,6 +411,8 @@ declare class Modify extends PointerInteraction {
      */
     private willModifyFeatures_;
     /**
+     * Removes a feature from the internal features collection and updates internal state
+     * accordingly.
      * @param {Feature} feature Feature.
      * @private
      */
@@ -386,30 +437,17 @@ declare class Modify extends PointerInteraction {
      */
     getOverlay(): VectorLayer;
     /**
-     * @param {import("../source/Vector.js").VectorSourceEvent} event Event.
-     * @private
+     * Common handler for event signaling addition of feature to the supplied features source
+     * or collection.
+     * @param {Feature} feature Feature.
      */
-    private handleSourceAdd_;
+    externalAddFeatureHandler_(feature: Feature): void;
     /**
-     * @param {import("../source/Vector.js").VectorSourceEvent} event Event.
-     * @private
+     * Common handler for event signaling removal of feature from the supplied features source
+     * or collection.
+     * @param {Feature} feature Feature.
      */
-    private handleSourceRemove_;
-    /**
-     * @param {import("../Collection.js").CollectionEvent<Feature>} evt Event.
-     * @private
-     */
-    private handleFeatureAdd_;
-    /**
-     * @param {import("../events/Event.js").default} evt Event.
-     * @private
-     */
-    private handleFeatureChange_;
-    /**
-     * @param {import("../Collection.js").CollectionEvent<Feature>} evt Event.
-     * @private
-     */
-    private handleFeatureRemove_;
+    externalRemoveFeatureHandler_(feature: Feature): void;
     /**
      * @param {Feature} feature Feature
      * @param {Point} geometry Geometry.

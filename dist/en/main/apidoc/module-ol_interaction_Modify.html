@@ -72,6 +72,7 @@
         <span class="subtitle">Typedefs</span>
         <ul>
             <li data-name="dragsegment"><a href="module-ol_interaction_Modify.html#~DragSegment">DragSegment</a>
+            <li data-name="filterfunction"><a href="module-ol_interaction_Modify.html#~FilterFunction">FilterFunction</a>
             <li data-name="options"><a href="module-ol_interaction_Modify.html#~Options">Options</a>
             <li data-name="segmentdata"><a href="module-ol_interaction_Modify.html#~SegmentData">SegmentData</a>
         </ul>
@@ -219,6 +220,87 @@
     
 </dl>
 
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="~FilterFunction">
+        </div>
+        <h4 class="name">
+            FilterFunction<span class="signature">()</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js">interaction/Modify.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L98">line 98</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>A function that takes a <a href="module-ol_Feature-Feature.html"><code>Feature</code></a> and  returns <code>true</code> if
+the feature may be modified or <code>false</code> otherwise.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
 
     
 </dd>
@@ -482,6 +564,30 @@ provided, only the rendered representation of the features on that layer will be
             <td class="description last">
                 <p>The features the interaction works on.  If a feature collection is not
 provided, a vector source must be provided with the <code>source</code> option.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>filter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_interaction_Modify.html#~FilterFunction">FilterFunction</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>A function that takes a <a href="module-ol_Feature-Feature.html"><code>Feature</code></a>
+and returns <code>true</code> if the feature may be modified or <code>false</code> otherwise.</p>
                 
             </td>
         </tr>
