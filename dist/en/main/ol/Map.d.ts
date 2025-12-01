@@ -664,6 +664,18 @@ declare class Map extends BaseObject {
      */
     getPixelFromCoordinateInternal(coordinate: import("./coordinate.js").Coordinate): import("./pixel.js").Pixel;
     /**
+     * Get the pixel ratio of the rendered map.
+     * @return {number} Pixel ratio.
+     * @api
+     */
+    getPixelRatio(): number;
+    /**
+     * Set the pixel ratio of the rendered map.
+     * @param {number} pixelRatio Pixel ratio.
+     * @api
+     */
+    setPixelRatio(pixelRatio: number): void;
+    /**
      * Get the map renderer.
      * @return {import("./renderer/Map.js").default|null} Renderer
      */

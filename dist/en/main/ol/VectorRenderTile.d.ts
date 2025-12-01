@@ -17,6 +17,10 @@ export type ReplayState = {
      */
     renderedResolution: number;
     /**
+     * RenderedPixelRatio.
+     */
+    renderedPixelRatio: number;
+    /**
      * RenderedRevision.
      */
     renderedRevision: number;
