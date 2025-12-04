@@ -4,7 +4,11 @@ export type TileOffset = {
     /**
      * Tile.
      */
-    tile: import("../ImageTile.js").default;
+    tile?: import("../ImageTile.js").default | undefined;
+    /**
+     * Tile getter.
+     */
+    getTile: () => import("../ImageTile.js").default;
     /**
      * Offset.
      */
@@ -15,7 +19,8 @@ export type TileOffset = {
  */
 /**
  * @typedef {Object} TileOffset
- * @property {import("../ImageTile.js").default} tile Tile.
+ * @property {import("../ImageTile.js").default} [tile] Tile.
+ * @property {function(): import("../ImageTile.js").default} getTile Tile getter.
  * @property {number} offset Offset.
  */
 /**
