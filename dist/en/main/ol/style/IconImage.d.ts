@@ -91,6 +91,10 @@ declare class IconImage extends EventTarget {
      */
     getImage(pixelRatio: number): HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap;
     /**
+     * @param {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas|ImageBitmap} image Image.
+     */
+    setImage(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap): void;
+    /**
      * @param {number} pixelRatio Pixel ratio.
      * @return {number} Image or Canvas element.
      */
