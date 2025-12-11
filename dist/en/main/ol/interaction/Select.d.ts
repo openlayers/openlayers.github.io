@@ -373,6 +373,7 @@ declare class Select extends Interaction {
      * The {@link module:ol/interaction/Select~SelectEvent} fired by this won't have a mapBrowserEvent property
      * @param {Feature} feature The feature to select
      * @return {boolean} True if the feature was selected
+     * @api
      */
     selectFeature(feature: Feature): boolean;
     /**
@@ -389,6 +390,7 @@ declare class Select extends Interaction {
      * The {@link module:ol/interaction/Select~SelectEvent} fired by this won't have a mapBrowserEvent property
      * @param {Feature} feature The feature to deselect
      * @return {boolean} True if the feature was deselected
+     * @api
      */
     deselectFeature(feature: Feature): boolean;
     /**
@@ -396,12 +398,14 @@ declare class Select extends Interaction {
      * Unlike modifying `select.getFeatures()` directly, this respects the `filter` and `layers` options (except `multi`, which is ignored).
      * The {@link module:ol/interaction/Select~SelectEvent} fired by this won't have a mapBrowserEvent property
      * @param {Feature} feature The feature to deselect
+     * @api
      */
     toggleFeature(feature: Feature): void;
     /**
      * Deselect all features as if a user deselected them.
      * Compared to `select.getFeatures().clear()` this causes a SelectEvent.
      * The {@link module:ol/interaction/Select~SelectEvent} fired by this won't have a mapBrowserEvent property
+     * @api
      */
     clearSelection(): void;
 }

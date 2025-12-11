@@ -72,6 +72,8 @@
         <span class="subtitle">Methods</span>
         <ul>
             <li data-name="changed"><a href="module-ol_interaction_Select-Select.html#changed">changed</a>
+            <li data-name="clearselection"><a href="module-ol_interaction_Select-Select.html#clearSelection">clearSelection</a>
+            <li data-name="deselectfeature"><a href="module-ol_interaction_Select-Select.html#deselectFeature">deselectFeature</a>
             <li data-name="dispatchevent"><a href="module-ol_interaction_Select-Select.html#dispatchEvent">dispatchEvent</a>
             <li data-name="get"><a href="module-ol_interaction_Select-Select.html#get">get</a>
             <li data-name="getactive"><a href="module-ol_interaction_Select-Select.html#getActive">getActive</a>
@@ -84,11 +86,13 @@
             <li data-name="getrevision"><a href="module-ol_interaction_Select-Select.html#getRevision">getRevision</a>
             <li data-name="on"><a href="module-ol_interaction_Select-Select.html#on">on</a>
             <li data-name="once"><a href="module-ol_interaction_Select-Select.html#once">once</a>
+            <li data-name="selectfeature"><a href="module-ol_interaction_Select-Select.html#selectFeature">selectFeature</a>
             <li data-name="set"><a href="module-ol_interaction_Select-Select.html#set">set</a>
             <li data-name="setactive"><a href="module-ol_interaction_Select-Select.html#setActive">setActive</a>
             <li data-name="sethittolerance"><a href="module-ol_interaction_Select-Select.html#setHitTolerance">setHitTolerance</a>
             <li data-name="setmap"><a href="module-ol_interaction_Select-Select.html#setMap">setMap</a>
             <li data-name="setproperties"><a href="module-ol_interaction_Select-Select.html#setProperties">setProperties</a>
+            <li data-name="togglefeature"><a href="module-ol_interaction_Select-Select.html#toggleFeature">toggleFeature</a>
             <li data-name="un"><a href="module-ol_interaction_Select-Select.html#un">un</a>
             <li data-name="unset"><a href="module-ol_interaction_Select-Select.html#unset">unset</a>
         </ul>
@@ -751,6 +755,226 @@ the radius around the given position will be checked for features.</p></td>
     
 
     
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="clearSelection">
+        </div>
+        <h4 class="name">
+            clearSelection<span class="signature">()</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Select.js">interaction/Select.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Select.js#L572">line 572</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Deselect all features as if a user deselected them.
+Compared to <code>select.getFeatures().clear()</code> this causes a SelectEvent.
+The <code>SelectEvent</code> fired by this won't have a mapBrowserEvent property</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="deselectFeature">
+        </div>
+        <h4 class="name">
+            deselectFeature<span class="signature">(feature)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Select.js">interaction/Select.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Select.js#L544">line 544</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Try to deselect a feature as if it was clicked.
+Compared to <code>select.getFeatures().remove(feature)</code> this causes a SelectEvent.
+The <code>SelectEvent</code> fired by this won't have a mapBrowserEvent property</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>feature</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The feature to deselect</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+True if the feature was deselected
+<br />
 
     
 
@@ -2153,6 +2377,143 @@ Unique key for the listener. If
             
 <dt class="">
     
+    <div class="nameContainer">
+        <div class="anchor" id="selectFeature">
+        </div>
+        <h4 class="name">
+            selectFeature<span class="signature">(feature)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Select.js">interaction/Select.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Select.js#L501">line 501</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Try to select a feature as if it was clicked and <code>addCondition</code> evaluated to True.
+Unlike modifying <code>select.getFeatures()</code> directly, this respects the <code>filter</code> and <code>layers</code> options (except <code>multi</code>, which is ignored).
+The <code>SelectEvent</code> fired by this won't have a mapBrowserEvent property</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>feature</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The feature to select</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+True if the feature was selected
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
     <div class="nameContainer inherited">
         <div class="anchor" id="set">
         </div>
@@ -2818,6 +3179,134 @@ properties and adds new ones (it does not remove any existing properties).</p>
             <td  class="description last">
                 
                 <p>Update without triggering an event.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="toggleFeature">
+        </div>
+        <h4 class="name">
+            toggleFeature<span class="signature">(feature)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Select.js">interaction/Select.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Select.js#L561">line 561</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Try to toggle a feature as if it was clicked and <code>toggleCondition</code> was True.
+Unlike modifying <code>select.getFeatures()</code> directly, this respects the <code>filter</code> and <code>layers</code> options (except <code>multi</code>, which is ignored).
+The <code>SelectEvent</code> fired by this won't have a mapBrowserEvent property</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>feature</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_Feature-Feature.html">Feature</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The feature to deselect</p></td>
         </tr>
 
 	
