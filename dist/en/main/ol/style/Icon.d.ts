@@ -190,6 +190,16 @@ declare class Icon extends ImageStyle {
      */
     getColor(): import("../color.js").Color;
     /**
+     * Set the icon color.
+     *
+     * Warning: Repeatedly setting the color on an icon style
+     * causes the icon image to be re-created each time. This can have a
+     * severe performance impact.
+     *
+     * @param {import("../color.js").Color|string|null|undefined} color Color.
+     */
+    setColor(color: import("../color.js").Color | string | null | undefined): void;
+    /**
      * Get the image icon.
      * @param {number} pixelRatio Pixel ratio.
      * @return {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas|ImageBitmap} Image or Canvas element. If the Icon
