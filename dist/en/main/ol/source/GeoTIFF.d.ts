@@ -124,6 +124,10 @@ export type GeoTIFFSourceOptions = {
 };
 export type Options = {
     /**
+     * Attributions.
+     */
+    attributions?: import("./Source.js").AttributionLike | undefined;
+    /**
      * List of information about GeoTIFF sources.
      * Multiple sources can be combined when their resolution sets are equal after applying a scale.
      * The list of sources defines a mapping between input bands as they are read from each GeoTIFF and
@@ -187,6 +191,7 @@ export type Options = {
  */
 /**
  * @typedef {Object} Options
+ * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
  * @property {Array<SourceInfo>} sources List of information about GeoTIFF sources.
  * Multiple sources can be combined when their resolution sets are equal after applying a scale.
  * The list of sources defines a mapping between input bands as they are read from each GeoTIFF and
