@@ -1,16 +1,16 @@
 /**
  * @typedef {Object} TileSetInfo
- * @property {string} urlTemplate The tile URL template.
+ * @property {string} [urlTemplate] The tile URL template.
  * @property {import("../proj/Projection.js").default} projection The source projection.
- * @property {import("../tilegrid/TileGrid.js").default} grid The tile grid.
- * @property {import("../Tile.js").UrlFunction} urlFunction The tile URL function.
+ * @property {import("../tilegrid/WMTS.js").default} grid The tile grid.
+ * @property {import("../Tile.js").UrlFunction} [urlFunction] The tile URL function.
  */
 /**
  * @typedef {Object} SourceInfo
- * @property {string} url The tile set URL.
- * @property {string} mediaType The preferred tile media type.
+ * @property {string} [url] The tile set URL.
+ * @property {string} [mediaType] The preferred tile media type.
  * @property {Array<string>} [supportedMediaTypes] The supported media types.
- * @property {import("../proj/Projection.js").default} projection The source projection.
+ * @property {import("../proj/Projection.js").default} [projection] The source projection.
  * @property {Object} [context] Optional context for constructing the URL.
  * @property {Array<string>} [collections] Optional collections to append the URL with.
  */
@@ -36,6 +36,14 @@ export function getMapTileUrlTemplate(links: Array<Link>, mediaType?: string, co
  */
 export function getVectorTileUrlTemplate(links: Array<Link>, mediaType?: string, supportedMediaTypes?: Array<string>, collections?: Array<string>): string;
 /**
+ * @param {SourceInfo} sourceInfo The source info.
+ * @param {TileMatrixSet} tileMatrixSet Tile matrix set.
+ * @param {string} [tileUrlTemplate] Tile URL template.
+ * @param {Array<TileMatrixSetLimit>} [tileMatrixSetLimits] Tile matrix set limits.
+ * @return {TileSetInfo} Tile set info.
+ */
+export function parseTileMatrixSet(sourceInfo: SourceInfo, tileMatrixSet: TileMatrixSet, tileUrlTemplate?: string, tileMatrixSetLimits?: Array<TileMatrixSetLimit>): TileSetInfo;
+/**
  * @param {SourceInfo} sourceInfo Source info.
  * @return {Promise<TileSetInfo>} Tile set info.
  */
@@ -44,7 +52,7 @@ export type TileSetInfo = {
     /**
      * The tile URL template.
      */
-    urlTemplate: string;
+    urlTemplate?: string | undefined;
     /**
      * The source projection.
      */
@@ -52,21 +60,21 @@ export type TileSetInfo = {
     /**
      * The tile grid.
      */
-    grid: import("../tilegrid/TileGrid.js").default;
+    grid: import("../tilegrid/WMTS.js").default;
     /**
      * The tile URL function.
      */
-    urlFunction: import("../Tile.js").UrlFunction;
+    urlFunction?: import("../Tile.js").UrlFunction | undefined;
 };
 export type SourceInfo = {
     /**
      * The tile set URL.
      */
-    url: string;
+    url?: string | undefined;
     /**
      * The preferred tile media type.
      */
-    mediaType: string;
+    mediaType?: string | undefined;
     /**
      * The supported media types.
      */
@@ -74,7 +82,7 @@ export type SourceInfo = {
     /**
      * The source projection.
      */
-    projection: import("../proj/Projection.js").default;
+    projection?: import("../proj.js").Projection | undefined;
     /**
      * Optional context for constructing the URL.
      */

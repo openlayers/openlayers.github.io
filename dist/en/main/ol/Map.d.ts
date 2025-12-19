@@ -123,11 +123,11 @@ export type MapOptionsInternal = {
     /**
      * Controls.
      */
-    controls?: Collection<import("./control/Control.js").default> | undefined;
+    controls?: Collection<import("./control.js").Control> | undefined;
     /**
      * Interactions.
      */
-    interactions?: Collection<import("./interaction/Interaction.js").default> | undefined;
+    interactions?: Collection<import("./interaction.js").Interaction> | undefined;
     /**
      * KeyboardEventTarget.
      */
@@ -156,7 +156,7 @@ export type MapOptions = {
      * Controls initially added to the map. If not specified,
      * {@link module :ol/control/defaults.defaults} is used. In a worker, no controls are added by default.
      */
-    controls?: Collection<import("./control/Control.js").default> | import("./control/Control.js").default[] | undefined;
+    controls?: Collection<import("./control.js").Control> | import("./control.js").Control[] | undefined;
     /**
      * The ratio between
      * physical pixels and device-independent pixels (dips) on the device.
@@ -166,7 +166,7 @@ export type MapOptions = {
      * Interactions that are initially added to the map. If not specified,
      * {@link module :ol/interaction/defaults.defaults} is used. In a worker, no interactions are added by default.
      */
-    interactions?: Collection<import("./interaction/Interaction.js").default> | import("./interaction/Interaction.js").default[] | undefined;
+    interactions?: Collection<import("./interaction.js").Interaction> | import("./interaction.js").Interaction[] | undefined;
     /**
      * The element to
      * listen to keyboard events on. This determines when the `KeyboardPan` and

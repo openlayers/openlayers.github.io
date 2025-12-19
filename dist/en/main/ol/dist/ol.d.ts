@@ -817,6 +817,7 @@ declare namespace ol {
         export { $ol$source$Cluster as Cluster };
         export { $ol$source$DataTile as DataTile };
         export { $ol$source$GeoTIFF as GeoTIFF };
+        export { $ol$source$GeoZarr as GeoZarr };
         export { $ol$source$Google as Google };
         export { $ol$source$IIIF as IIIF };
         export { $ol$source$Image as Image };
@@ -865,6 +866,7 @@ declare namespace ol {
             export { _ol_source_ogcTileUtil$getMapTileUrlTemplate as getMapTileUrlTemplate };
             export { _ol_source_ogcTileUtil$getTileSetInfo as getTileSetInfo };
             export { _ol_source_ogcTileUtil$getVectorTileUrlTemplate as getVectorTileUrlTemplate };
+            export { _ol_source_ogcTileUtil$parseTileMatrixSet as parseTileMatrixSet };
         }
         export { _ol_source$sourcesFromTileGrid as sourcesFromTileGrid };
         namespace _static {
@@ -1684,6 +1686,7 @@ import $ol$source$CartoDB from '../../ol/source/CartoDB.js';
 import $ol$source$Cluster from '../../ol/source/Cluster.js';
 import $ol$source$DataTile from '../../ol/source/DataTile.js';
 import $ol$source$GeoTIFF from '../../ol/source/GeoTIFF.js';
+import $ol$source$GeoZarr from '../../ol/source/GeoZarr.js';
 import $ol$source$Google from '../../ol/source/Google.js';
 import $ol$source$IIIF from '../../ol/source/IIIF.js';
 import $ol$source$Image from '../../ol/source/Image.js';
@@ -1723,6 +1726,7 @@ import { appendCollectionsQueryParam as _ol_source_ogcTileUtil$appendCollections
 import { getMapTileUrlTemplate as _ol_source_ogcTileUtil$getMapTileUrlTemplate } from '../../ol/source/ogcTileUtil.js';
 import { getTileSetInfo as _ol_source_ogcTileUtil$getTileSetInfo } from '../../ol/source/ogcTileUtil.js';
 import { getVectorTileUrlTemplate as _ol_source_ogcTileUtil$getVectorTileUrlTemplate } from '../../ol/source/ogcTileUtil.js';
+import { parseTileMatrixSet as _ol_source_ogcTileUtil$parseTileMatrixSet } from '../../ol/source/ogcTileUtil.js';
 import { sourcesFromTileGrid as _ol_source$sourcesFromTileGrid } from '../../ol/source.js';
 import { createLoader as _ol_source_static$createLoader } from '../../ol/source/static.js';
 import { DEFAULT_VERSION as _ol_source_wms$DEFAULT_VERSION } from '../../ol/source/wms.js';

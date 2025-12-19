@@ -94,7 +94,7 @@ export type Options = {
      * absent, all visible layers will be considered translatable.
      * Not used if `features` is provided.
      */
-    layers?: import("../layer/Layer.js").default<import("../source/Source").default, import("../renderer/Layer.js").default<any>>[] | ((arg0: import("../layer/Layer.js").default<import("../source/Source").default>) => boolean) | undefined;
+    layers?: import("../layer.js").Layer<import("../source.js").Source, import("../renderer/Layer.js").default<any>>[] | ((arg0: import("../layer/Layer.js").default<import("../source/Source").default>) => boolean) | undefined;
     /**
      * A function
      * that takes a {@link module :ol/Feature~Feature} and an

@@ -12,7 +12,7 @@ export type SegmentData = {
     /**
      * Feature which intersects.
      */
-    intersectionFeature?: import("../Feature.js").default<import("../geom/Geometry.js").default> | undefined;
+    intersectionFeature?: import("../Feature.js").default<import("../geom.js").Geometry> | undefined;
     /**
      * Segment.
      */
@@ -21,7 +21,7 @@ export type SegmentData = {
 /**
  * A function taking a {@link module :ol/geom/Geometry~Geometry} as argument and returning an array of {@link Segment}s.
  */
-export type Segmenter<GeometryType extends import("../geom/Geometry.js").default = import("../geom/Geometry.js").default> = (geometry: GeometryType, projection?: import("../proj/Projection.js").default) => Array<Segment>;
+export type Segmenter<GeometryType extends import("../geom/Geometry.js").default = import("../geom.js").Geometry> = (geometry: GeometryType, projection?: import("../proj/Projection.js").default) => Array<Segment>;
 /**
  * Each segmenter specified here will override the default segmenter for the
  * corresponding geometry type. To exclude all geometries of a specific geometry type from being snapped to,
@@ -31,45 +31,45 @@ export type Segmenters = {
     /**
      * Point segmenter.
      */
-    Point?: Segmenter<import("../geom/Point.js").default> | null | undefined;
+    Point?: Segmenter<import("../geom.js").Point> | null | undefined;
     /**
      * LineString segmenter.
      */
-    LineString?: Segmenter<import("../geom/LineString.js").default> | null | undefined;
+    LineString?: Segmenter<import("../geom.js").LineString> | null | undefined;
     /**
      * Polygon segmenter.
      */
-    Polygon?: Segmenter<import("../geom/Polygon.js").default> | null | undefined;
+    Polygon?: Segmenter<import("../geom.js").Polygon> | null | undefined;
     /**
      * Circle segmenter.
      */
-    Circle?: Segmenter<import("../geom/Circle.js").default> | null | undefined;
+    Circle?: Segmenter<import("../geom.js").Circle> | null | undefined;
     /**
      * GeometryCollection segmenter.
      */
-    GeometryCollection?: Segmenter<import("../geom/GeometryCollection.js").default> | null | undefined;
+    GeometryCollection?: Segmenter<import("../geom.js").GeometryCollection> | null | undefined;
     /**
      * MultiPoint segmenter.
      */
-    MultiPoint?: Segmenter<import("../geom/MultiPoint.js").default> | null | undefined;
+    MultiPoint?: Segmenter<import("../geom.js").MultiPoint> | null | undefined;
     /**
      * MultiLineString segmenter.
      */
-    MultiLineString?: Segmenter<import("../geom/MultiLineString.js").default> | null | undefined;
+    MultiLineString?: Segmenter<import("../geom.js").MultiLineString> | null | undefined;
     /**
      * MultiPolygon segmenter.
      */
-    MultiPolygon?: Segmenter<import("../geom/MultiPolygon.js").default> | null | undefined;
+    MultiPolygon?: Segmenter<import("../geom.js").MultiPolygon> | null | undefined;
 };
 export type Options = {
     /**
      * Snap to these features. Either this option or source should be provided.
      */
-    features?: import("../Collection.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>> | undefined;
+    features?: import("../Collection.js").default<import("../Feature.js").default<import("../geom.js").Geometry>> | undefined;
     /**
      * Snap to features from this source. Either this option or features should be provided
      */
-    source?: import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default>> | undefined;
+    source?: import("../source.js").Vector<import("../Feature.js").default<import("../geom.js").Geometry>> | undefined;
     /**
      * Snap to edges.
      */

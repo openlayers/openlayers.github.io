@@ -5,7 +5,7 @@ export type HeatmapEventTypes = "change:blur" | "change:radius" | "change:gradie
  */
 export type HeatmapOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | HeatmapEventTypes, import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | HeatmapEventTypes | import("../render/EventType").LayerRenderEventTypes, Return>;
 export type WeightExpression = import("../style/flat.js").NumberExpression | string | ((arg0: import("../Feature.js").default) => number);
-export type Options<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> = {
+export type Options<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source.js").Vector<FeatureType>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -106,7 +106,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
  * @extends {BaseVector<FeatureType, VectorSourceType, WebGLVectorLayerRenderer>}
  * @api
  */
-declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> extends BaseVector<FeatureType, VectorSourceType, WebGLVectorLayerRenderer> {
+declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source.js").Vector<FeatureType>> extends BaseVector<FeatureType, VectorSourceType, WebGLVectorLayerRenderer> {
     /**
      * @param {Options<FeatureType, VectorSourceType>} [options] Options.
      */

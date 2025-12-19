@@ -13,7 +13,7 @@ export type LayerEventType = "sourceready" | "change:source";
  * *
  */
 export type LayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | LayerEventType, import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | LayerEventType | import("../render/EventType").LayerRenderEventTypes, Return>;
-export type Options<SourceType extends import("../source/Source.js").default = import("../source/Source.js").default> = {
+export type Options<SourceType extends import("../source/Source.js").default = import("../source.js").Source> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -204,7 +204,7 @@ export type State = {
  * @template {import("../renderer/Layer.js").default} [RendererType=import("../renderer/Layer.js").default]
  * @api
  */
-declare class Layer<SourceType extends import("../source/Source.js").default = import("../source/Source.js").default, RendererType extends import("../renderer/Layer.js").default<any> = import("../renderer/Layer.js").default<any>> extends BaseLayer {
+declare class Layer<SourceType extends import("../source/Source.js").default = import("../source.js").Source, RendererType extends import("../renderer/Layer.js").default<any> = import("../renderer/Layer.js").default<any>> extends BaseLayer {
     /**
      * @param {Options<SourceType>} options Layer options.
      */

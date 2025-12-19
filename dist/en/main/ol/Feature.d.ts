@@ -17,7 +17,7 @@ export type FeatureOnSignature<Return> = import("./Observable").OnSignature<impo
 /**
  * *
  */
-export type ObjectWithGeometry<Geometry extends import("./geom/Geometry.js").default = import("./geom/Geometry.js").default> = {
+export type ObjectWithGeometry<Geometry extends import("./geom/Geometry.js").default = import("./geom.js").Geometry> = {
     [x: string]: any;
 } & {
     geometry?: Geometry;
@@ -84,7 +84,7 @@ export type ObjectWithGeometry<Geometry extends import("./geom/Geometry.js").def
  * @api
  * @template {import("./geom/Geometry.js").default} [Geometry=import("./geom/Geometry.js").default]
  */
-declare class Feature<Geometry extends import("./geom/Geometry.js").default = import("./geom/Geometry.js").default> extends BaseObject {
+declare class Feature<Geometry extends import("./geom/Geometry.js").default = import("./geom.js").Geometry> extends BaseObject {
     /**
      * @param {Geometry|ObjectWithGeometry<Geometry>} [geometryOrProperties]
      *     You may pass a Geometry object directly, or an object literal containing

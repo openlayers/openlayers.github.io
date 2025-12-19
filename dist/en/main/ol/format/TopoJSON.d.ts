@@ -79,7 +79,7 @@ export type Options = {
  *
  * @api
  */
-declare class TopoJSON extends JSONFeature<Feature<import("../geom/Geometry.js").default>> {
+declare class TopoJSON extends JSONFeature<Feature<import("../geom.js").Geometry>> {
     /**
      * @param {Options} [options] Options.
      */
