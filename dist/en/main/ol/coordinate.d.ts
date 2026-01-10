@@ -255,6 +255,14 @@ export function wrapX(coordinate: Coordinate, projection: import("./proj/Project
  */
 export function getWorldsAway(coordinate: Coordinate, projection: import("./proj/Projection.js").default, sourceExtentWidth?: number): number;
 /**
+ * Compute the angle between p0pA and p0pB
+ * @param {Coordinate} p0 Point 0
+ * @param {Coordinate} pA Point A
+ * @param {Coordinate} pB Point B
+ * @return {number} a value in [0, 2PI]
+ */
+export function angleBetween(p0: Coordinate, pA: Coordinate, pB: Coordinate): number;
+/**
  * An array of numbers representing an `xy`, `xyz` or `xyzm` coordinate.
  * Example: `[16, 48]`.
  */

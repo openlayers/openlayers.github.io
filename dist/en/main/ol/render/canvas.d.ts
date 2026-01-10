@@ -70,6 +70,7 @@ export function drawImageOrLabel(context: CanvasRenderingContext2D | import("../
  * @property {CanvasLineJoin} [currentLineJoin] Current LineJoin.
  * @property {number} [currentLineWidth] Current LineWidth.
  * @property {number} [currentMiterLimit] Current MiterLimit.
+ * @property {number} [currentStrokeOffset] Current StrokeOffset.
  * @property {number} [lastStroke] Last stroke.
  * @property {import("../colorlike.js").ColorLike} [fillStyle] FillStyle.
  * @property {import("../colorlike.js").ColorLike} [strokeStyle] StrokeStyle.
@@ -79,6 +80,7 @@ export function drawImageOrLabel(context: CanvasRenderingContext2D | import("../
  * @property {CanvasLineJoin} [lineJoin] LineJoin.
  * @property {number} [lineWidth] LineWidth.
  * @property {number} [miterLimit] MiterLimit.
+ * @property {number} [strokeOffset] StrokeOffset.
  * @property {number} [fillPatternScale] Fill pattern scale.
  */
 /**
@@ -89,6 +91,7 @@ export function drawImageOrLabel(context: CanvasRenderingContext2D | import("../
  * @property {CanvasLineJoin} lineJoin LineJoin.
  * @property {number} lineWidth LineWidth.
  * @property {number} miterLimit MiterLimit.
+ * @property {number} [strokeOffset] StrokeOffset.
  * @property {import("../colorlike.js").ColorLike} strokeStyle StrokeStyle.
  */
 /**
@@ -153,6 +156,11 @@ export const defaultLineJoin: CanvasLineJoin;
  * @type {number}
  */
 export const defaultMiterLimit: number;
+/**
+ * @const
+ * @type {number}
+ */
+export const defaultStrokeOffset: number;
 /**
  * @const
  * @type {import("../colorlike.js").ColorLike}
@@ -245,6 +253,10 @@ export type FillStrokeState = {
      */
     currentMiterLimit?: number | undefined;
     /**
+     * Current StrokeOffset.
+     */
+    currentStrokeOffset?: number | undefined;
+    /**
      * Last stroke.
      */
     lastStroke?: number | undefined;
@@ -281,6 +293,10 @@ export type FillStrokeState = {
      */
     miterLimit?: number | undefined;
     /**
+     * StrokeOffset.
+     */
+    strokeOffset?: number | undefined;
+    /**
      * Fill pattern scale.
      */
     fillPatternScale?: number | undefined;
@@ -310,6 +326,10 @@ export type StrokeState = {
      * MiterLimit.
      */
     miterLimit: number;
+    /**
+     * StrokeOffset.
+     */
+    strokeOffset?: number | undefined;
     /**
      * StrokeStyle.
      */

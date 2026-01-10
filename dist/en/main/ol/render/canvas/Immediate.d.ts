@@ -216,6 +216,7 @@ declare class CanvasImmediateRenderer extends VectorContext {
      * @param {number} end End.
      * @param {number} stride Stride.
      * @param {boolean} close Close.
+     * @param {number} [strokeOffset] Stroke Offset.
      * @private
      * @return {number} end End.
      */
@@ -225,6 +226,7 @@ declare class CanvasImmediateRenderer extends VectorContext {
      * @param {number} offset Offset.
      * @param {Array<number>} ends Ends.
      * @param {number} stride Stride.
+     * @param {number} [strokeOffset] Stroke Offset.
      * @private
      * @return {number} End.
      */

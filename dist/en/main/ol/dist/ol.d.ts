@@ -78,6 +78,7 @@ declare namespace ol {
     }
     export namespace coordinate {
         export { _ol_coordinate$add as add };
+        export { _ol_coordinate$angleBetween as angleBetween };
         export { _ol_coordinate$closestOnCircle as closestOnCircle };
         export { _ol_coordinate$closestOnSegment as closestOnSegment };
         export { _ol_coordinate$createStringXY as createStringXY };
@@ -678,6 +679,7 @@ declare namespace ol {
             export { _ol_render_canvas$defaultLineWidth as defaultLineWidth };
             export { _ol_render_canvas$defaultMiterLimit as defaultMiterLimit };
             export { _ol_render_canvas$defaultPadding as defaultPadding };
+            export { _ol_render_canvas$defaultStrokeOffset as defaultStrokeOffset };
             export { _ol_render_canvas$defaultStrokeStyle as defaultStrokeStyle };
             export { _ol_render_canvas$defaultTextAlign as defaultTextAlign };
             export { _ol_render_canvas$defaultTextBaseline as defaultTextBaseline };
@@ -1105,6 +1107,7 @@ import $ol$control$ZoomSlider from '../../ol/control/ZoomSlider.js';
 import $ol$control$ZoomToExtent from '../../ol/control/ZoomToExtent.js';
 import { defaults as _ol_control_defaults$defaults } from '../../ol/control/defaults.js';
 import { add as _ol_coordinate$add } from '../../ol/coordinate.js';
+import { angleBetween as _ol_coordinate$angleBetween } from '../../ol/coordinate.js';
 import { closestOnCircle as _ol_coordinate$closestOnCircle } from '../../ol/coordinate.js';
 import { closestOnSegment as _ol_coordinate$closestOnSegment } from '../../ol/coordinate.js';
 import { createStringXY as _ol_coordinate$createStringXY } from '../../ol/coordinate.js';
@@ -1590,6 +1593,7 @@ import { defaultLineJoin as _ol_render_canvas$defaultLineJoin } from '../../ol/r
 import { defaultLineWidth as _ol_render_canvas$defaultLineWidth } from '../../ol/render/canvas.js';
 import { defaultMiterLimit as _ol_render_canvas$defaultMiterLimit } from '../../ol/render/canvas.js';
 import { defaultPadding as _ol_render_canvas$defaultPadding } from '../../ol/render/canvas.js';
+import { defaultStrokeOffset as _ol_render_canvas$defaultStrokeOffset } from '../../ol/render/canvas.js';
 import { defaultStrokeStyle as _ol_render_canvas$defaultStrokeStyle } from '../../ol/render/canvas.js';
 import { defaultTextAlign as _ol_render_canvas$defaultTextAlign } from '../../ol/render/canvas.js';
 import { defaultTextBaseline as _ol_render_canvas$defaultTextBaseline } from '../../ol/render/canvas.js';

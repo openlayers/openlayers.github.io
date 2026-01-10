@@ -5,6 +5,7 @@ declare class CanvasLineStringBuilder extends CanvasBuilder {
      * @param {number} offset Offset.
      * @param {number} end End.
      * @param {number} stride Stride.
+     * @param {number} [strokeOffset] Stroke Offset in pixels.
      * @private
      * @return {number} end.
      */
