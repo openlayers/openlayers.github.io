@@ -17,9 +17,11 @@ export type FeatureOnSignature<Return> = import("./Observable").OnSignature<impo
 /**
  * *
  */
-export type ObjectWithGeometry<Geometry extends import("./geom/Geometry.js").default = import("./geom.js").Geometry> = {
+export type ObjectWithGeometry<Geometry extends import("./geom/Geometry.js").default = import("./geom.js").Geometry, Properties extends {
     [x: string]: any;
-} & {
+} = {
+    [x: string]: any;
+}> = Properties & {
     geometry?: Geometry;
 };
 /**
@@ -37,7 +39,8 @@ export type ObjectWithGeometry<Geometry extends import("./geom/Geometry.js").def
  */
 /***
  * @template {import("./geom/Geometry.js").default} [Geometry=import("./geom/Geometry.js").default]
- * @typedef {Object<string, *> & { geometry?: Geometry }} ObjectWithGeometry
+ * @template {Object<string, *>} [Properties=Object<string, *>]
+ * @typedef {Properties & { geometry?: Geometry }} ObjectWithGeometry
  */
 /**
  * @classdesc
@@ -83,15 +86,21 @@ export type ObjectWithGeometry<Geometry extends import("./geom/Geometry.js").def
  *
  * @api
  * @template {import("./geom/Geometry.js").default} [Geometry=import("./geom/Geometry.js").default]
+ * @template {Object<string, *>} [Properties=Object<string, *>]
+ * @extends {BaseObject<NoInfer<Properties>>}
  */
-declare class Feature<Geometry extends import("./geom/Geometry.js").default = import("./geom.js").Geometry> extends BaseObject {
+declare class Feature<Geometry extends import("./geom/Geometry.js").default = import("./geom.js").Geometry, Properties extends {
+    [x: string]: any;
+} = {
+    [x: string]: any;
+}> extends BaseObject<NoInfer<Properties>> {
     /**
-     * @param {Geometry|ObjectWithGeometry<Geometry>} [geometryOrProperties]
+     * @param {Geometry|ObjectWithGeometry<Geometry, NoInfer<Properties>>} [geometryOrProperties]
      *     You may pass a Geometry object directly, or an object literal containing
      *     properties. If you pass an object literal, you may include a Geometry
      *     associated with a `geometry` key.
      */
-    constructor(geometryOrProperties?: Geometry | ObjectWithGeometry<Geometry>);
+    constructor(geometryOrProperties?: Geometry | ObjectWithGeometry<Geometry, NoInfer<Properties>>);
     /***
      * @type {FeatureOnSignature<import("./events").EventsKey>}
      */

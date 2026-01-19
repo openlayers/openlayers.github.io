@@ -12,7 +12,9 @@ export type SegmentData = {
     /**
      * Feature which intersects.
      */
-    intersectionFeature?: import("../Feature.js").default<import("../geom.js").Geometry> | undefined;
+    intersectionFeature?: import("../Feature.js").default<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }> | undefined;
     /**
      * Segment.
      */
@@ -65,11 +67,15 @@ export type Options = {
     /**
      * Snap to these features. Either this option or source should be provided.
      */
-    features?: import("../Collection.js").default<import("../Feature.js").default<import("../geom.js").Geometry>> | undefined;
+    features?: import("../Collection.js").default<import("../Feature.js").default<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }>> | undefined;
     /**
      * Snap to features from this source. Either this option or features should be provided
      */
-    source?: import("../source.js").Vector<import("../Feature.js").default<import("../geom.js").Geometry>> | undefined;
+    source?: import("../source.js").Vector<import("../Feature.js").default<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }>> | undefined;
     /**
      * Snap to edges.
      */

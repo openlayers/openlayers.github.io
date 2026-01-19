@@ -184,7 +184,11 @@ export type MapOptions = {
      * a vector layer to appear on top of a tile layer, it must come after the tile
      * layer.
      */
-    layers?: import("./layer/Base.js").default[] | Collection<import("./layer/Base.js").default> | LayerGroup | undefined;
+    layers?: import("./layer/Base.js").default<{
+        [x: string]: any;
+    }>[] | Collection<import("./layer/Base.js").default<{
+        [x: string]: any;
+    }>> | LayerGroup | undefined;
     /**
      * Maximum number tiles to load
      * simultaneously.
@@ -273,7 +277,9 @@ export type MapOptions = {
  * @fires import("./render/Event.js").default#rendercomplete
  * @api
  */
-declare class Map extends BaseObject {
+declare class Map extends BaseObject<{
+    [x: string]: any;
+}> {
     /**
      * @param {MapOptions} [options] Map options.
      */

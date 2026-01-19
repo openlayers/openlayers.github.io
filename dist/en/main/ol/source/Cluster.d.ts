@@ -1,6 +1,8 @@
 export default Cluster;
 export type GeometryFunction<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").FeatureLike> = (feature: FeatureType) => (Point | null);
-export type Options<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom.js").Geometry>> = {
+export type Options<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom.js").Geometry, {
+    [x: string]: any;
+}>> = {
     /**
      * Attributions.
      */
@@ -112,7 +114,11 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = Fe
  * @template {import('../Feature.js').FeatureLike} [FeatureType=import('../Feature.js').default]
  * @extends {VectorSource<Feature<import("../geom/Geometry.js").default>>}
  */
-declare class Cluster<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom.js").Geometry>> extends VectorSource<Feature<import("../geom.js").Geometry>> {
+declare class Cluster<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom.js").Geometry, {
+    [x: string]: any;
+}>> extends VectorSource<Feature<import("../geom.js").Geometry, {
+    [x: string]: any;
+}>> {
     /**
      * @param {Options<FeatureType>} [options] Cluster options.
      */

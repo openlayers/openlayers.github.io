@@ -64,7 +64,9 @@ import Event from './events/Event.js';
  * @template T
  * @api
  */
-declare class Collection<T> extends BaseObject {
+declare class Collection<T> extends BaseObject<{
+    [x: string]: any;
+}> {
     /**
      * @param {Array<T>} [array] Array.
      * @param {Options} [options] Collection options.

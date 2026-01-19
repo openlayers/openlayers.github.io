@@ -45,7 +45,9 @@
  * @param {function(): void} failure Failure
  *      Function called when loading failed.
  */
-export function loadFeaturesXhr<FeatureType extends import("./Feature.js").FeatureLike = import("./Feature.js").default<import("./geom.js").Geometry>>(url: string | FeatureUrlFunction, format: import("./format/Feature.js").default<FeatureType>, extent: import("./extent.js").Extent, resolution: number, projection: import("./proj/Projection.js").default, success: (arg0: Array<FeatureType>, arg1: import("./proj/Projection.js").default) => void, failure: () => void): void;
+export function loadFeaturesXhr<FeatureType extends import("./Feature.js").FeatureLike = import("./Feature.js").default<import("./geom.js").Geometry, {
+    [x: string]: any;
+}>>(url: string | FeatureUrlFunction, format: import("./format/Feature.js").default<FeatureType>, extent: import("./extent.js").Extent, resolution: number, projection: import("./proj/Projection.js").default, success: (arg0: Array<FeatureType>, arg1: import("./proj/Projection.js").default) => void, failure: () => void): void;
 /**
  * Create an XHR feature loader for a `url` and `format`. The feature loader
  * loads features (with XHR), parses the features, and adds them to the
@@ -57,7 +59,9 @@ export function loadFeaturesXhr<FeatureType extends import("./Feature.js").Featu
  * @return {FeatureLoader<FeatureType>} The feature loader.
  * @api
  */
-export function xhr<FeatureType extends import("./Feature.js").FeatureLike = import("./Feature.js").default<import("./geom.js").Geometry>>(url: string | FeatureUrlFunction, format: import("./format/Feature.js").default<FeatureType>): FeatureLoader<FeatureType>;
+export function xhr<FeatureType extends import("./Feature.js").FeatureLike = import("./Feature.js").default<import("./geom.js").Geometry, {
+    [x: string]: any;
+}>>(url: string | FeatureUrlFunction, format: import("./format/Feature.js").default<FeatureType>): FeatureLoader<FeatureType>;
 /**
  * Setter for the withCredentials configuration for the XHR.
  *

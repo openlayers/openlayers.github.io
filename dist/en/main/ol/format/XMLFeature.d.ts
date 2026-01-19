@@ -7,7 +7,9 @@ export default XMLFeature;
  *
  * @abstract
  */
-declare class XMLFeature extends FeatureFormat<import("../Feature.js").default<import("../geom.js").Geometry>> {
+declare class XMLFeature extends FeatureFormat<import("../Feature.js").default<import("../geom.js").Geometry, {
+    [x: string]: any;
+}>> {
     constructor();
     /**
      * @type {XMLSerializer}

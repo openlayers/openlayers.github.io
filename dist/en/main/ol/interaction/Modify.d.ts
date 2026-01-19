@@ -112,7 +112,9 @@ export type Options = {
      * features to modify.  If a vector source is not provided, a feature collection
      * must be provided with the `features` option.
      */
-    source?: VectorSource<Feature<import("../geom.js").Geometry>> | undefined;
+    source?: VectorSource<Feature<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }>> | undefined;
     /**
      * When configured, point
      * features will be considered for modification based on their visual appearance, instead of being within
@@ -124,7 +126,9 @@ export type Options = {
      * The features the interaction works on.  If a feature collection is not
      * provided, a vector source must be provided with the `source` option.
      */
-    features?: Collection<Feature<import("../geom.js").Geometry>> | undefined;
+    features?: Collection<Feature<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }>> | undefined;
     /**
      * A function that takes a {@link module :ol/Feature~Feature}and returns `true` if the feature may be modified or `false` otherwise.
      */
@@ -139,7 +143,9 @@ export type Options = {
      * not provided, the interaction's `source` will be used.  Tracing requires that the interaction is configured with
      * either a `traceSource` or a `source`.
      */
-    traceSource?: VectorSource<Feature<import("../geom.js").Geometry>> | undefined;
+    traceSource?: VectorSource<Feature<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }>> | undefined;
     /**
      * Wrap the world horizontally on the sketch
      * overlay.
@@ -368,7 +374,9 @@ declare class Modify extends PointerInteraction {
      * @type {FilterFunction}
      */
     private filter_;
-    featuresCollection_: Collection<Feature<import("../geom.js").Geometry>> | undefined;
+    featuresCollection_: Collection<Feature<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }>> | undefined;
     /**
      * Internal features array.  When adding or removing features, be sure to use
      * addFeature_()/removeFeature_() so that the the segment index is adjusted.
@@ -527,7 +535,9 @@ declare class Modify extends PointerInteraction {
      * @private
      */
     private updateTrace_;
-    getTraceCandidates_(event: any): Feature<import("../geom.js").Geometry>[];
+    getTraceCandidates_(event: any): Feature<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }>[];
     /**
      * Activate or deactivate trace state based on a browser event.
      * @param {import("../MapBrowserEvent.js").default} event Event.

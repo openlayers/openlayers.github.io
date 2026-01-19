@@ -66,7 +66,11 @@ export type Options = {
     /**
      * Child layers.
      */
-    layers?: BaseLayer[] | Collection<BaseLayer> | undefined;
+    layers?: BaseLayer<{
+        [x: string]: any;
+    }>[] | Collection<BaseLayer<{
+        [x: string]: any;
+    }>> | undefined;
     /**
      * Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
      */
@@ -90,7 +94,9 @@ declare namespace GroupEventType {
  * @fires GroupEvent
  * @api
  */
-declare class LayerGroup extends BaseLayer {
+declare class LayerGroup extends BaseLayer<{
+    [x: string]: any;
+}> {
     /**
      * @param {Options} [options] Layer options.
      */

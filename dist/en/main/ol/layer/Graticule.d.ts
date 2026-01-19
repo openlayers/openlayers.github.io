@@ -278,7 +278,11 @@ export type Options = {
  * @extends {VectorLayer<VectorSource<Feature>>}
  * @api
  */
-declare class Graticule extends VectorLayer<VectorSource<Feature<import("../geom.js").Geometry>>, Feature<import("../geom.js").Geometry>> {
+declare class Graticule extends VectorLayer<VectorSource<Feature<import("../geom.js").Geometry, {
+    [x: string]: any;
+}>>, Feature<import("../geom.js").Geometry, {
+    [x: string]: any;
+}>> {
     /**
      * @param {Options} [options] Options.
      */

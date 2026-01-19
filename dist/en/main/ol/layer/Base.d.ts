@@ -8,7 +8,11 @@ export type BaseLayerObjectEventTypes = import("../ObjectEventType").Types | "ch
  * *
  */
 export type BaseLayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<BaseLayerObjectEventTypes, import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | BaseLayerObjectEventTypes, Return>;
-export type Options = {
+export type Options<Properties extends {
+    [x: string]: any;
+} = {
+    [x: string]: any;
+}> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -61,9 +65,7 @@ export type Options = {
     /**
      * Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
      */
-    properties?: {
-        [x: string]: any;
-    } | undefined;
+    properties?: Properties | undefined;
 };
 /**
  * A css color, or a function called with a view resolution returning a css color.
@@ -82,6 +84,7 @@ export type Options = {
  *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|BaseLayerObjectEventTypes, Return>} BaseLayerOnSignature
  */
 /**
+ * @template {Object<string, *>} [Properties=Object<string, *>]
  * @typedef {Object} Options
  * @property {string} [className='ol-layer'] A CSS class name to set to the layer element.
  * @property {number} [opacity=1] Opacity (0, 1).
@@ -102,7 +105,7 @@ export type Options = {
  * be visible.
  * @property {BackgroundColor} [background] Background color for the layer. If not specified, no background
  * will be rendered.
- * @property {Object<string, *>} [properties] Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
+ * @property {Properties} [properties] Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
  */
 /**
  * @classdesc
@@ -113,12 +116,18 @@ export type Options = {
  * is observable, and has get/set accessors.
  *
  * @api
+ * @template {Object<string, *>} [Properties=Object<string, *>]
+ * @extends {BaseObject<Options<NoInfer<Properties>>>}
  */
-declare class BaseLayer extends BaseObject {
+declare class BaseLayer<Properties extends {
+    [x: string]: any;
+} = {
+    [x: string]: any;
+}> extends BaseObject<Options<NoInfer<Properties>>> {
     /**
-     * @param {Options} options Layer options.
+     * @param {Options<NoInfer<Properties>>} options Layer options.
      */
-    constructor(options: Options);
+    constructor(options: Options<NoInfer<Properties>>);
     /***
      * @type {BaseLayerOnSignature<import("../events").EventsKey>}
      */

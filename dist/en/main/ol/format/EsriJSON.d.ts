@@ -43,7 +43,9 @@ export type Options = {
  *
  * @api
  */
-declare class EsriJSON extends JSONFeature<Feature<import("../geom.js").Geometry>> {
+declare class EsriJSON extends JSONFeature<Feature<import("../geom.js").Geometry, {
+    [x: string]: any;
+}>> {
     /**
      * @param {Options} [options] Options.
      */

@@ -53,7 +53,9 @@ export type Options = {
  *
  * @api
  */
-declare class Control extends BaseObject {
+declare class Control extends BaseObject<{
+    [x: string]: any;
+}> {
     /**
      * @param {Options} options Control options.
      */

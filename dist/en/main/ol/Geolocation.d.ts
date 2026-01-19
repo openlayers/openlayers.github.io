@@ -92,7 +92,9 @@ import BaseEvent from './events/Event.js';
  * @fires GeolocationError
  * @api
  */
-declare class Geolocation extends BaseObject {
+declare class Geolocation extends BaseObject<{
+    [x: string]: any;
+}> {
     /**
      * @param {Options} [options] Options.
      */

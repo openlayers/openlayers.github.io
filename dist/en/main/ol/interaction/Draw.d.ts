@@ -56,12 +56,16 @@ export type Options = {
     /**
      * Destination collection for the drawn features.
      */
-    features?: import("../Collection.js").default<Feature<import("../geom.js").Geometry>> | undefined;
+    features?: import("../Collection.js").default<Feature<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }>> | undefined;
     /**
      * Destination source for
      * the drawn features.
      */
-    source?: VectorSource<Feature<import("../geom.js").Geometry>> | undefined;
+    source?: VectorSource<Feature<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }>> | undefined;
     /**
      * Delay in milliseconds after pointerdown
      * before the current vertex can be dragged to its exact position.
@@ -149,7 +153,9 @@ export type Options = {
      * not provided, the interaction's `source` will be used.  Tracing requires that the interaction is configured with
      * either a `traceSource` or a `source`.
      */
-    traceSource?: VectorSource<Feature<import("../geom.js").Geometry>> | undefined;
+    traceSource?: VectorSource<Feature<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }>> | undefined;
     /**
      * Wrap the world horizontally on the sketch
      * overlay.

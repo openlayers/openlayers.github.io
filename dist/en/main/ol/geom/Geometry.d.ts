@@ -22,7 +22,9 @@ export type Type = "Point" | "LineString" | "LinearRing" | "Polygon" | "MultiPoi
  * @abstract
  * @api
  */
-declare class Geometry extends BaseObject {
+declare class Geometry extends BaseObject<{
+    [x: string]: any;
+}> {
     constructor();
     /**
      * @private

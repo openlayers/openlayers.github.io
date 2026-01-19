@@ -499,8 +499,9 @@ export type ViewOnSignature<Return> = import("./Observable").OnSignature<import(
  * put back the view to a stable state;
  *
  * @api
+ * @extends {BaseObject<ViewOptions>}
  */
-declare class View extends BaseObject {
+declare class View extends BaseObject<ViewOptions> {
     /**
      * @param {ViewOptions} [options] View options.
      */

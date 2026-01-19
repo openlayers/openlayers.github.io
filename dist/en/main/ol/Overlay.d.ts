@@ -123,7 +123,9 @@ export type OverlayOnSignature<Return> = import("./Observable").OnSignature<impo
  *
  * @api
  */
-declare class Overlay extends BaseObject {
+declare class Overlay extends BaseObject<{
+    [x: string]: any;
+}> {
     /**
      * @param {Options} options Overlay options.
      */

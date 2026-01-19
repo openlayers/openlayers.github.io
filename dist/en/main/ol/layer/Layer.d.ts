@@ -204,7 +204,9 @@ export type State = {
  * @template {import("../renderer/Layer.js").default} [RendererType=import("../renderer/Layer.js").default]
  * @api
  */
-declare class Layer<SourceType extends import("../source/Source.js").default = import("../source.js").Source, RendererType extends import("../renderer/Layer.js").default<any> = import("../renderer/Layer.js").default<any>> extends BaseLayer {
+declare class Layer<SourceType extends import("../source/Source.js").default = import("../source.js").Source, RendererType extends import("../renderer/Layer.js").default<any> = import("../renderer/Layer.js").default<any>> extends BaseLayer<{
+    [x: string]: any;
+}> {
     /**
      * @param {Options<SourceType>} options Layer options.
      */

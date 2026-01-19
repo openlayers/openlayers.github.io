@@ -60,7 +60,9 @@ export type InteractionOptions = {
  * vectors and so are visible on the screen.
  * @api
  */
-declare class Interaction extends BaseObject {
+declare class Interaction extends BaseObject<{
+    [x: string]: any;
+}> {
     /**
      * @param {InteractionOptions} [options] Options.
      */

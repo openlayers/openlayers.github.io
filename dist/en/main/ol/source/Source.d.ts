@@ -84,7 +84,9 @@ export type Options = {
  * @abstract
  * @api
  */
-declare class Source extends BaseObject {
+declare class Source extends BaseObject<{
+    [x: string]: any;
+}> {
     /**
      * @param {Options} options Source options.
      */

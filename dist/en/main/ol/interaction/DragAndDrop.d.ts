@@ -36,7 +36,9 @@ export type Options = {
      * Format constructors
      * (and/or formats pre-constructed with options).
      */
-    formatConstructors?: (typeof import("../format/Feature.js").default | import("../format/Feature.js").default<import("../Feature.js").default<import("../geom.js").Geometry>>)[] | undefined;
+    formatConstructors?: (typeof import("../format/Feature.js").default | import("../format/Feature.js").default<import("../Feature.js").default<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }>>)[] | undefined;
     /**
      * Optional vector source where features will be added.  If a source is provided
      * all existing features will be removed and new features will be added when
@@ -44,7 +46,9 @@ export type Options = {
      * source without removing the existing features (append only), instead of
      * providing the source option listen for the "addfeatures" event.
      */
-    source?: import("../source.js").Vector<import("../Feature.js").default<import("../geom.js").Geometry>> | undefined;
+    source?: import("../source.js").Vector<import("../Feature.js").default<import("../geom.js").Geometry, {
+        [x: string]: any;
+    }>> | undefined;
     /**
      * Target projection. By default, the map's view's projection is used.
      */

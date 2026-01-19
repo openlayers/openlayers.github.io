@@ -76,15 +76,18 @@ import Event from './events/Event.js';
  * object.unset('foo').
  *
  * @fires ObjectEvent
+ * @template {Object<string, *>} [Properties=Object<string, *>]
  * @api
  */
-declare class BaseObject extends Observable {
+declare class BaseObject<Properties extends {
+    [x: string]: any;
+} = {
+    [x: string]: any;
+}> extends Observable {
     /**
-     * @param {Object<string, *>} [values] An object with key-value pairs.
+     * @param {NoInfer<Properties>} [values] An object with key-value pairs.
      */
-    constructor(values?: {
-        [x: string]: any;
-    });
+    constructor(values?: NoInfer<Properties>);
     /***
      * @type {ObjectOnSignature<import("./events").EventsKey>}
      */
@@ -99,7 +102,7 @@ declare class BaseObject extends Observable {
     un: ObjectOnSignature<void>;
     /**
      * @private
-     * @type {Object<string, *>|null}
+     * @type {Partial<NoInfer<Properties>>|null}
      */
     private values_;
     /**
@@ -117,19 +120,15 @@ declare class BaseObject extends Observable {
     getKeys(): Array<string>;
     /**
      * Get an object of all property names and values.
-     * @return {Object<string, *>} Object.
+     * @return {NoInfer<Properties>} Object.
      * @api
      */
-    getProperties(): {
-        [x: string]: any;
-    };
+    getProperties(): NoInfer<Properties>;
     /**
      * Get an object of all property names and values.
-     * @return {Object<string, *>?} Object.
+     * @return {Partial<NoInfer<Properties>>?} Object.
      */
-    getPropertiesInternal(): {
-        [x: string]: any;
-    } | null;
+    getPropertiesInternal(): Partial<NoInfer<Properties>> | null;
     /**
      * @return {boolean} The object has properties.
      */
@@ -160,13 +159,11 @@ declare class BaseObject extends Observable {
     /**
      * Sets a collection of key-value pairs.  Note that this changes any existing
      * properties and adds new ones (it does not remove any existing properties).
-     * @param {Object<string, *>} values Values.
+     * @param {Partial<NoInfer<Properties>>} values Values.
      * @param {boolean} [silent] Update without triggering an event.
      * @api
      */
-    setProperties(values: {
-        [x: string]: any;
-    }, silent?: boolean): void;
+    setProperties(values: Partial<NoInfer<Properties>>, silent?: boolean): void;
     /**
      * Apply any properties from another object without triggering events.
      * @param {BaseObject} source The source object.
