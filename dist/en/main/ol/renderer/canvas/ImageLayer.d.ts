@@ -15,6 +15,11 @@ declare class CanvasImageLayerRenderer extends CanvasLayerRenderer<any> {
      */
     protected image: import("../../Image.js").default | null;
     /**
+     * @private
+     * @type {number}
+     */
+    private renderedSourceRevision_;
+    /**
      * @return {import('../../DataTile.js').ImageLike} Image.
      */
     getImage(): import("../../DataTile.js").ImageLike;
