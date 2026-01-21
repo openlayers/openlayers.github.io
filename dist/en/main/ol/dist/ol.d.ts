@@ -829,6 +829,7 @@ declare namespace ol {
         export { $ol$source$ImageStatic as ImageStatic };
         export { $ol$source$ImageTile as ImageTile };
         export { $ol$source$ImageWMS as ImageWMS };
+        export { $ol$source$OGCMap as OGCMap };
         export { $ol$source$OGCMapTile as OGCMapTile };
         export { $ol$source$OGCVectorTile as OGCVectorTile };
         export { $ol$source$OSM as OSM };
@@ -862,6 +863,11 @@ declare namespace ol {
         }
         export namespace mapserver {
             export { _ol_source_mapserver$createLoader as createLoader };
+        }
+        export namespace ogcMapUtil {
+            export { _ol_source_ogcMapUtil$createLoader as createLoader };
+            export { _ol_source_ogcMapUtil$getImageSrc as getImageSrc };
+            export { _ol_source_ogcMapUtil$getRequestUrl as getRequestUrl };
         }
         export namespace ogcTileUtil {
             export { _ol_source_ogcTileUtil$appendCollectionsQueryParam as appendCollectionsQueryParam };
@@ -1700,6 +1706,7 @@ import $ol$source$ImageMapGuide from '../../ol/source/ImageMapGuide.js';
 import $ol$source$ImageStatic from '../../ol/source/ImageStatic.js';
 import $ol$source$ImageTile from '../../ol/source/ImageTile.js';
 import $ol$source$ImageWMS from '../../ol/source/ImageWMS.js';
+import $ol$source$OGCMap from '../../ol/source/OGCMap.js';
 import $ol$source$OGCMapTile from '../../ol/source/OGCMapTile.js';
 import $ol$source$OGCVectorTile from '../../ol/source/OGCVectorTile.js';
 import $ol$source$OSM from '../../ol/source/OSM.js';
@@ -1726,6 +1733,9 @@ import { DECIMALS as _ol_source_common$DECIMALS } from '../../ol/source/common.j
 import { DEFAULT_WMS_VERSION as _ol_source_common$DEFAULT_WMS_VERSION } from '../../ol/source/common.js';
 import { createLoader as _ol_source_mapguide$createLoader } from '../../ol/source/mapguide.js';
 import { createLoader as _ol_source_mapserver$createLoader } from '../../ol/source/mapserver.js';
+import { createLoader as _ol_source_ogcMapUtil$createLoader } from '../../ol/source/ogcMapUtil.js';
+import { getImageSrc as _ol_source_ogcMapUtil$getImageSrc } from '../../ol/source/ogcMapUtil.js';
+import { getRequestUrl as _ol_source_ogcMapUtil$getRequestUrl } from '../../ol/source/ogcMapUtil.js';
 import { appendCollectionsQueryParam as _ol_source_ogcTileUtil$appendCollectionsQueryParam } from '../../ol/source/ogcTileUtil.js';
 import { getMapTileUrlTemplate as _ol_source_ogcTileUtil$getMapTileUrlTemplate } from '../../ol/source/ogcTileUtil.js';
 import { getTileSetInfo as _ol_source_ogcTileUtil$getTileSetInfo } from '../../ol/source/ogcTileUtil.js';
