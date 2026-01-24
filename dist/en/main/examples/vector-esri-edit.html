@@ -380,8 +380,7 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import $ from &#x27;jquery&#x27;;
-import Map from &#x27;ol/Map.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import EsriJSON from &#x27;ol/format/EsriJSON.js&#x27;;
 import Draw from &#x27;ol/interaction/Draw.js&#x27;;
@@ -422,10 +421,9 @@ const vectorSource &#x3D; new VectorSource({
       ) +
       &#x27;&amp;geometryType&#x3D;esriGeometryEnvelope&amp;inSR&#x3D;102100&amp;outFields&#x3D;*&#x27; +
       &#x27;&amp;outSR&#x3D;102100&#x27;;
-    $.ajax({
-      url: url,
-      dataType: &#x27;jsonp&#x27;,
-      success: function (response) {
+    fetch(url)
+      .then((response) &#x3D;&gt; response.json())
+      .then(function (response) {
         if (response.error) {
           alert(
             response.error.message + &#x27;\n&#x27; + response.error.details.join(&#x27;\n&#x27;),
@@ -439,8 +437,7 @@ const vectorSource &#x3D; new VectorSource({
             vectorSource.addFeatures(features);
           }
         }
-      },
-    });
+      });
   },
   strategy: tileStrategy(
     createXYZ({
@@ -519,17 +516,23 @@ selected.on(&#x27;remove&#x27;, function (evt) {
       }) +
       &#x27;]&#x27;;
     const url &#x3D; serviceUrl + layer + &#x27;/updateFeatures&#x27;;
-    $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function (data) {
-      const result &#x3D; typeof data &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? JSON.parse(data) : data;
-      if (result.updateResults &amp;&amp; result.updateResults.length &gt; 0) {
-        if (result.updateResults[0].success !&#x3D;&#x3D; true) {
-          const error &#x3D; result.updateResults[0].error;
-          alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
-        } else {
-          delete dirty[fid];
+    fetch(url, {
+      method: &#x27;POST&#x27;,
+      body: new URLSearchParams({f: &#x27;json&#x27;, features: payload}),
+      headers: {&#x27;Content-Type&#x27;: &#x27;application/x-www-form-urlencoded&#x27;},
+    })
+      .then((response) &#x3D;&gt; response.json())
+      .then((data) &#x3D;&gt; {
+        const result &#x3D; typeof data &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? JSON.parse(data) : data;
+        if (result.updateResults &amp;&amp; result.updateResults.length &gt; 0) {
+          if (result.updateResults[0].success !&#x3D;&#x3D; true) {
+            const error &#x3D; result.updateResults[0].error;
+            alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
+          } else {
+            delete dirty[fid];
+          }
         }
-      }
-    });
+      });
   }
 });
 
@@ -542,17 +545,23 @@ draw.on(&#x27;drawend&#x27;, function (evt) {
     }) +
     &#x27;]&#x27;;
   const url &#x3D; serviceUrl + layer + &#x27;/addFeatures&#x27;;
-  $.post(url, {f: &#x27;json&#x27;, features: payload}).done(function (data) {
-    const result &#x3D; typeof data &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? JSON.parse(data) : data;
-    if (result.addResults &amp;&amp; result.addResults.length &gt; 0) {
-      if (result.addResults[0].success &#x3D;&#x3D;&#x3D; true) {
-        feature.set(&#x27;objectid&#x27;, result.addResults[0][&#x27;objectId&#x27;]);
-      } else {
-        const error &#x3D; result.addResults[0].error;
-        alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
+  fetch(url, {
+    method: &#x27;POST&#x27;,
+    body: new URLSearchParams({f: &#x27;json&#x27;, features: payload}),
+    headers: {&#x27;Content-Type&#x27;: &#x27;application/x-www-form-urlencoded&#x27;},
+  })
+    .then((response) &#x3D;&gt; response.json())
+    .then((data) &#x3D;&gt; {
+      const result &#x3D; typeof data &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? JSON.parse(data) : data;
+      if (result.addResults &amp;&amp; result.addResults.length &gt; 0) {
+        if (result.addResults[0].success &#x3D;&#x3D;&#x3D; true) {
+          feature.set(&#x27;objectid&#x27;, result.addResults[0][&#x27;objectId&#x27;]);
+        } else {
+          const error &#x3D; result.addResults[0].error;
+          alert(error.description + &#x27; (&#x27; + error.code + &#x27;)&#x27;);
+        }
       }
-    }
-  });
+    });
 });
 </code></pre>
       </div>
@@ -592,8 +601,7 @@ draw.on(&#x27;drawend&#x27;, function (evt) {
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;vector-esri-edit&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;10.7.1-dev&quot;,
-    &quot;jquery&quot;: &quot;3.7.1&quot;
+    &quot;ol&quot;: &quot;10.7.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;vite&quot;: &quot;^3.2.3&quot;

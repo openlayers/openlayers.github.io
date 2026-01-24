@@ -217,8 +217,7 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import $ from &#x27;jquery&#x27;;
-import Map from &#x27;ol/Map.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import LayerGroup from &#x27;ol/layer/Group.js&#x27;;
 import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
@@ -262,17 +261,20 @@ const map &#x3D; new Map({
 });
 
 function bindInputs(layerid, layer) {
-  const visibilityInput &#x3D; $(layerid + &#x27; input.visible&#x27;);
-  visibilityInput.on(&#x27;change&#x27;, function () {
+  const visibilityInput &#x3D; document.querySelector(layerid + &#x27; input.visible&#x27;);
+  visibilityInput.addEventListener(&#x27;change&#x27;, function () {
     layer.setVisible(this.checked);
   });
-  visibilityInput.prop(&#x27;checked&#x27;, layer.getVisible());
+  visibilityInput.addEventListener(&#x27;change&#x27;, function () {
+    layer.setVisible(this.checked);
+  });
+  visibilityInput.checked &#x3D; layer.getVisible();
 
-  const opacityInput &#x3D; $(layerid + &#x27; input.opacity&#x27;);
-  opacityInput.on(&#x27;input&#x27;, function () {
+  const opacityInput &#x3D; document.querySelector(layerid + &#x27; input.opacity&#x27;);
+  opacityInput.addEventListener(&#x27;input&#x27;, function () {
     layer.setOpacity(parseFloat(this.value));
   });
-  opacityInput.val(String(layer.getOpacity()));
+  opacityInput.value &#x3D; String(layer.getOpacity());
 }
 function setup(id, group) {
   group.getLayers().forEach(function (layer, i) {
@@ -285,12 +287,15 @@ function setup(id, group) {
 }
 setup(&#x27;#layer&#x27;, map.getLayerGroup());
 
-$(&#x27;#layertree li &gt; span&#x27;)
-  .click(function () {
-    $(this).siblings(&#x27;fieldset&#x27;).toggle();
-  })
-  .siblings(&#x27;fieldset&#x27;)
-  .hide();
+document.querySelectorAll(&#x27;#layertree li &gt; span&#x27;).forEach(function (element) {
+  element.addEventListener(&#x27;click&#x27;, function () {
+    this.parentNode.querySelector(&#x27;fieldset&#x27;).style.display &#x3D;
+      this.parentNode.querySelector(&#x27;fieldset&#x27;).style.display &#x3D;&#x3D;&#x3D; &#x27;none&#x27;
+        ? &#x27;&#x27;
+        : &#x27;none&#x27;;
+  });
+  element.parentNode.querySelector(&#x27;fieldset&#x27;).style.display &#x3D; &#x27;none&#x27;;
+});
 </code></pre>
       </div>
 
@@ -378,8 +383,7 @@ $(&#x27;#layertree li &gt; span&#x27;)
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;layer-group&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;10.7.1-dev&quot;,
-    &quot;jquery&quot;: &quot;3.7.1&quot;
+    &quot;ol&quot;: &quot;10.7.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;vite&quot;: &quot;^3.2.3&quot;

@@ -10,7 +10,6 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./theme/ol.css">
     <link rel="stylesheet" type="text/css" href="/theme/site.css">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
     <link rel="icon" type="image/svg+xml" href="/theme/img/logo-light.svg" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href="/theme/img/logo-dark.svg" media="(prefers-color-scheme: dark)" />
   </head>
@@ -482,7 +481,7 @@ function onDrawend(e) {
     }
     topo.addEdgeNewFaces(start, end, edgeGeom);
   } catch (e) {
-    toastr.warning(e.toString());
+    alert(e.toString());
   }
 }
 
@@ -506,7 +505,6 @@ map.addControl(new MousePosition());
   &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
     &lt;title&gt;topolis integration&lt;/title&gt;
-    &lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css"&gt;
     &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
@@ -519,8 +517,6 @@ map.addControl(new MousePosition());
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
 
     &lt;script src="https://cdn.jsdelivr.net/npm/topolis@0.2.5/dist/topolis.js"&gt;&lt;/script&gt;
-    &lt;script src="https://code.jquery.com/jquery-3.7.1.min.js"&gt;&lt;/script&gt;
-    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"&gt;&lt;/script&gt;
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -546,8 +542,6 @@ map.addControl(new MousePosition());
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/topolis@0.2.5/dist/topolis.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
     <script src="common.js"></script>
     <script src="topolis.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js"></script>
