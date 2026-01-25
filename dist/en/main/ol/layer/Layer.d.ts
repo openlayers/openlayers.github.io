@@ -13,7 +13,11 @@ export type LayerEventType = "sourceready" | "change:source";
  * *
  */
 export type LayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | LayerEventType, import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | LayerEventType | import("../render/EventType").LayerRenderEventTypes, Return>;
-export type Options<SourceType extends import("../source/Source.js").default = import("../source.js").Source> = {
+export type Options<SourceType extends import("../source/Source.js").default = import("../source.js").Source, Properties extends {
+    [x: string]: any;
+} = {
+    [x: string]: any;
+}> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -76,9 +80,7 @@ export type Options<SourceType extends import("../source/Source.js").default = i
     /**
      * Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
      */
-    properties?: {
-        [x: string]: any;
-    } | undefined;
+    properties?: Properties | undefined;
 };
 export type State = {
     /**
@@ -139,6 +141,7 @@ export type State = {
  */
 /**
  * @template {import("../source/Source.js").default} [SourceType=import("../source/Source.js").default]
+ * @template {Object<string, *>} [Properties=Object<string, *>]
  * @typedef {Object} Options
  * @property {string} [className='ol-layer'] A CSS class name to set to the layer element.
  * @property {number} [opacity=1] Opacity (0, 1).
@@ -163,7 +166,7 @@ export type State = {
  * @property {import("../Map.js").default|null} [map] Map.
  * @property {RenderFunction} [render] Render function. Takes the frame state as input and is expected to return an
  * HTML element. Will overwrite the default rendering for the layer.
- * @property {Object<string, *>} [properties] Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
+ * @property {Properties} [properties] Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
  */
 /**
  * @typedef {Object} State
@@ -202,15 +205,19 @@ export type State = {
  *
  * @template {import("../source/Source.js").default} [SourceType=import("../source/Source.js").default]
  * @template {import("../renderer/Layer.js").default} [RendererType=import("../renderer/Layer.js").default]
+ * @template {Object<string, *>} [Properties=Object<string, *>]
+ * @extends {BaseLayer<NoInfer<Properties>>}
  * @api
  */
-declare class Layer<SourceType extends import("../source/Source.js").default = import("../source.js").Source, RendererType extends import("../renderer/Layer.js").default<any> = import("../renderer/Layer.js").default<any>> extends BaseLayer<{
+declare class Layer<SourceType extends import("../source/Source.js").default = import("../source.js").Source, RendererType extends import("../renderer/Layer.js").default<any> = import("../renderer/Layer.js").default<any>, Properties extends {
     [x: string]: any;
-}> {
+} = {
+    [x: string]: any;
+}> extends BaseLayer<NoInfer<Properties>> {
     /**
-     * @param {Options<SourceType>} options Layer options.
+     * @param {Options<SourceType, NoInfer<Properties>>} options Layer options.
      */
-    constructor(options: Options<SourceType>);
+    constructor(options: Options<SourceType, NoInfer<Properties>>);
     /***
      * @type {LayerOnSignature<import("../events").EventsKey>}
      */

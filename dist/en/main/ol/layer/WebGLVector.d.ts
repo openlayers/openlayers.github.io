@@ -138,7 +138,9 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
  * @template {import('../Feature.js').FeatureLike} [FeatureType=ExtractedFeatureType<VectorSourceType>]
  * @extends {Layer<VectorSourceType, WebGLVectorLayerRenderer>}
  */
-declare class WebGLVectorLayer<VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source.js").Vector<any>, FeatureType extends import("../Feature.js").FeatureLike = ExtractedFeatureType<VectorSourceType>> extends Layer<VectorSourceType, WebGLVectorLayerRenderer> {
+declare class WebGLVectorLayer<VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source.js").Vector<any>, FeatureType extends import("../Feature.js").FeatureLike = ExtractedFeatureType<VectorSourceType>> extends Layer<VectorSourceType, WebGLVectorLayerRenderer, {
+    [x: string]: any;
+}> {
     /**
      * @param {Options<VectorSourceType, FeatureType>} [options] Options.
      */

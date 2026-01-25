@@ -102,7 +102,9 @@ export type Options<ImageSourceType extends import("../source/Image.js").default
  * @extends {Layer<ImageSourceType, RendererType>}
  * @api
  */
-declare class BaseImageLayer<ImageSourceType extends import("../source/Image.js").default, RendererType extends import("../renderer/Layer.js").default<any>> extends Layer<ImageSourceType, RendererType> {
+declare class BaseImageLayer<ImageSourceType extends import("../source/Image.js").default, RendererType extends import("../renderer/Layer.js").default<any>> extends Layer<ImageSourceType, RendererType, {
+    [x: string]: any;
+}> {
     /**
      * @param {Options<ImageSourceType>} [options] Layer options.
      */

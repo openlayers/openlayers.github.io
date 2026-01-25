@@ -125,7 +125,9 @@ export type Options = {
      * selectable. If the option is absent, all visible layers will be considered
      * selectable.
      */
-    layers?: import("../layer.js").Layer<import("../source.js").Source, import("../renderer/Layer.js").default<any>>[] | ((arg0: import("../layer/Layer.js").default<import("../source/Source").default>) => boolean) | undefined;
+    layers?: import("../layer.js").Layer<import("../source.js").Source, import("../renderer/Layer.js").default<any>, {
+        [x: string]: any;
+    }>[] | ((arg0: import("../layer/Layer.js").default<import("../source/Source").default>) => boolean) | undefined;
     /**
      * Style for the selected features. By default the default edit style is used
      * (see {@link module :ol/style/Style~Style}). Set to `null` if this interaction should not apply

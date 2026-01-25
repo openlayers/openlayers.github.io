@@ -141,7 +141,9 @@ export type Options<TileSourceType extends import("../source/Tile.js").default> 
  * @extends {Layer<TileSourceType, RendererType>}
  * @api
  */
-declare class BaseTileLayer<TileSourceType extends import("../source/Tile.js").default, RendererType extends import("../renderer/Layer.js").default<any>> extends Layer<TileSourceType, RendererType> {
+declare class BaseTileLayer<TileSourceType extends import("../source/Tile.js").default, RendererType extends import("../renderer/Layer.js").default<any>> extends Layer<TileSourceType, RendererType, {
+    [x: string]: any;
+}> {
     /**
      * @param {Options<TileSourceType>} [options] Tile layer options.
      */

@@ -117,13 +117,15 @@ export type Options<Properties extends {
  *
  * @api
  * @template {Object<string, *>} [Properties=Object<string, *>]
- * @extends {BaseObject<Options<NoInfer<Properties>>>}
+ * @extends {BaseObject<NoInfer<Properties> & Object<string, *>>}
  */
 declare class BaseLayer<Properties extends {
     [x: string]: any;
 } = {
     [x: string]: any;
-}> extends BaseObject<Options<NoInfer<Properties>>> {
+}> extends BaseObject<NoInfer<Properties> & {
+    [x: string]: any;
+}> {
     /**
      * @param {Options<NoInfer<Properties>>} options Layer options.
      */

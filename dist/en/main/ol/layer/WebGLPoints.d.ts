@@ -146,7 +146,9 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
  * @fires import("../render/Event.js").RenderEvent#postrender
  * @deprecated Use ol/layer/WebGLVector instead
  */
-declare class WebGLPointsLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature").FeatureLike>> extends Layer<VectorSourceType, WebGLPointsLayerRenderer> {
+declare class WebGLPointsLayer<VectorSourceType extends import("../source/Vector.js").default<import("../Feature").FeatureLike>> extends Layer<VectorSourceType, WebGLPointsLayerRenderer, {
+    [x: string]: any;
+}> {
     /**
      * @param {Options<VectorSourceType>} options Options.
      */
