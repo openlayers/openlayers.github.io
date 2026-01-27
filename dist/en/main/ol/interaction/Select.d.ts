@@ -364,14 +364,6 @@ declare class Select extends Interaction {
      */
     private removeFeatureLayerAssociation_;
     /**
-     * @param {import("../Feature.js").FeatureLike} feature The feature to select
-     * @param {import("../layer/Layer.js").default} layer Optional layer containing this feature
-     * @param {Array<Feature>} [selected] optional array to which selected features will be added
-     * @return {Feature|undefined} The feature, if it got selected.
-     * @private
-     */
-    private selectFeatureInternal_;
-    /**
      * Try to select a feature as if it was clicked and `addCondition` evaluated to True.
      * Unlike modifying `select.getFeatures()` directly, this respects the `filter` and `layers` options (except `multi`, which is ignored).
      * The {@link module:ol/interaction/Select~SelectEvent} fired by this won't have a mapBrowserEvent property
@@ -380,14 +372,6 @@ declare class Select extends Interaction {
      * @api
      */
     selectFeature(feature: Feature): boolean;
-    /**
-     * Deselects a feature if it was previously selected. Also removes layer association.
-     * @param {import("../Feature.js").FeatureLike} feature The feature to deselect
-     * @param {Array<Feature>} [deselected] optional array to which deselected features will be added
-     * @return {Feature|undefined} The feature, if it was previously selected.
-     * @private
-     */
-    private removeFeatureInternal_;
     /**
      * Try to deselect a feature as if it was clicked.
      * Compared to `select.getFeatures().remove(feature)` this causes a SelectEvent.
