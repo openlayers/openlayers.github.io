@@ -474,6 +474,7 @@ declare class SentinelHub extends DataTileSource<import("../DataTile.js").defaul
      */
     setEvalscript(evalscript: Evalscript | string): void;
     fireWhenReady_(): void;
+    getKeyForConfig_(): string;
     /**
      * @param {number} z The z tile index.
      * @param {number} x The x tile index.
