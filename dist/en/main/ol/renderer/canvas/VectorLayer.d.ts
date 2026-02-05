@@ -23,9 +23,9 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     private hitDetectionImageData_;
     /**
      * @private
-     * @type {boolean}
+     * @type {import("../../extent.js").Extent}
      */
-    private clipped_;
+    private clipExtent_;
     /**
      * Do we need to extend the rendered area on the x-axis to handle
      * features that cross the antimeridian?
