@@ -16,9 +16,13 @@ export type LoaderOptions = {
      * The `crossOrigin` attribute for loaded images.  Note that
      * you must provide a `crossOrigin` value if you want to access pixel data with the Canvas renderer.
      * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
-     * the image from the remote server.
      */
     crossOrigin?: string | null | undefined;
+    /**
+     * The `referrerPolicy` property for loaded images.
+     * the image from the remote server.
+     */
+    referrerPolicy?: ReferrerPolicy | undefined;
     /**
      * Ratio. `1` means image requests are the size of the map viewport, `2` means
      * twice the width and height of the map viewport, and so on. Must be `1` or higher.

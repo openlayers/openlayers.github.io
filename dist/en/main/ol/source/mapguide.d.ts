@@ -17,6 +17,10 @@ export type LoaderOptions = {
      */
     crossOrigin?: string | null | undefined;
     /**
+     * The `referrerPolicy` property for loaded images.
+     */
+    referrerPolicy?: ReferrerPolicy | undefined;
+    /**
      * The display resolution.
      */
     displayDpi?: number | undefined;

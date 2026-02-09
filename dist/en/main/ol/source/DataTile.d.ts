@@ -10,6 +10,10 @@ export type LoaderOptions = {
      */
     crossOrigin?: CrossOriginAttribute | undefined;
     /**
+     * The `referrerPolicy` property for images.
+     */
+    referrerPolicy?: ReferrerPolicy | undefined;
+    /**
      * The maximum y coordinate at the given z level.  Will be undefined if the
      * underlying tile grid does not have a known extent.
      */
@@ -92,6 +96,10 @@ export type Options = {
      */
     crossOrigin?: CrossOriginAttribute | undefined;
     /**
+     * The `referrerPolicy` property for loaded images.
+     */
+    referrerPolicy?: ReferrerPolicy | undefined;
+    /**
      * Key for use in caching tiles.
      */
     key?: string | undefined;
@@ -108,6 +116,7 @@ export type Options = {
  * @typedef {Object} LoaderOptions
  * @property {AbortSignal} signal An abort controller signal.
  * @property {CrossOriginAttribute} [crossOrigin] The cross-origin attribute for images.
+ * @property {ReferrerPolicy} [referrerPolicy] The `referrerPolicy` property for images.
  * @property {number} [maxY] The maximum y coordinate at the given z level.  Will be undefined if the
  * underlying tile grid does not have a known extent.
  */
@@ -140,6 +149,7 @@ export type Options = {
  * @property {boolean} [interpolate=false] Use interpolated values when resampling.  By default,
  * the nearest neighbor is used when resampling.
  * @property {CrossOriginAttribute} [crossOrigin='anonymous'] The crossOrigin property to pass to loaders for image data.
+ * @property {ReferrerPolicy} [referrerPolicy] The `referrerPolicy` property for loaded images.
  * @property {string} [key] Key for use in caching tiles.
  * @property {number|import("../array.js").NearestDirectionFunction} [zDirection=0]
  * Choose whether to use tiles with a higher or lower zoom level when between integer
@@ -202,6 +212,11 @@ declare class DataTileSource<TileType extends import("../Tile.js").default = Dat
      * @type {CrossOriginAttribute}
      */
     private crossOrigin_;
+    /**
+     * @private
+     * @type {ReferrerPolicy}
+     */
+    private referrerPolicy_;
     /**
      * @type {import("../transform.js").Transform|null}
      */

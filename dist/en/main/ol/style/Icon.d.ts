@@ -41,6 +41,10 @@ export type Options = {
      */
     crossOrigin?: string | null | undefined;
     /**
+     * The `referrerPolicy` property for loaded images.
+     */
+    referrerPolicy?: ReferrerPolicy | undefined;
+    /**
      * Image object for the icon.
      */
     img?: HTMLCanvasElement | OffscreenCanvas | HTMLImageElement | ImageBitmap | undefined;
@@ -137,6 +141,11 @@ declare class Icon extends ImageStyle {
      * @type {?string}
      */
     private crossOrigin_;
+    /**
+     * @private
+     * @type {ReferrerPolicy}
+     */
+    private referrerPolicy_;
     /**
      * @private
      * @type {import("../color.js").Color}

@@ -11,6 +11,10 @@ export type Options = {
      */
     crossOrigin?: string | null | undefined;
     /**
+     * The `referrerPolicy` property for loaded images.
+     */
+    referrerPolicy?: ReferrerPolicy | undefined;
+    /**
      * Extent of the image in map coordinates.
      * This is the [left, bottom, right, top] map coordinates of your image.
      */
@@ -39,6 +43,7 @@ export type Options = {
  * @property {null|string} [crossOrigin] The `crossOrigin` attribute for loaded images.  Note that
  * you must provide a `crossOrigin` value if you want to access pixel data with the Canvas renderer.
  * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
+ * @property {ReferrerPolicy} [referrerPolicy] The `referrerPolicy` property for loaded images.
  * @property {import("../extent.js").Extent} imageExtent Extent of the image in map coordinates.
  * This is the [left, bottom, right, top] map coordinates of your image.
  * @property {import("../Image.js").LoadFunction} [imageLoadFunction] Optional function to load an image given a URL.

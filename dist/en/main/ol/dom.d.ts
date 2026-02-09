@@ -2,6 +2,11 @@
  * @module ol/dom
  */
 /**
+ * @typedef {Object} ImageAttributes
+ * @property {string|null} [crossOrigin] Cross origin.
+ * @property {ReferrerPolicy} [referrerPolicy]  Referrer policy.
+ */
+/**
  * Create an html canvas element and returns its 2d context.
  * @param {number} [width] Canvas width.
  * @param {number} [height] Canvas height.
@@ -65,4 +70,14 @@ export function createMockDiv(): HTMLDivElement;
  * @return {obj is (HTMLCanvasElement | OffscreenCanvas)} The object is a canvas.
  */
 export function isCanvas(obj: any): obj is (HTMLCanvasElement | OffscreenCanvas);
+export type ImageAttributes = {
+    /**
+     * Cross origin.
+     */
+    crossOrigin?: string | null | undefined;
+    /**
+     * Referrer policy.
+     */
+    referrerPolicy?: ReferrerPolicy | undefined;
+};
 //# sourceMappingURL=dom.d.ts.map

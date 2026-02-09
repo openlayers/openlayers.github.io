@@ -79,6 +79,10 @@ export type Options = {
      */
     crossOrigin?: import("./DataTile.js").CrossOriginAttribute | undefined;
     /**
+     * The `referrerPolicy` property for loaded images.
+     */
+    referrerPolicy?: ReferrerPolicy | undefined;
+    /**
      * Choose whether to use tiles with a higher or lower zoom level when between integer
      * zoom levels. See {@link module :ol/tilegrid/TileGrid~TileGrid#getZForResolution}.
      */

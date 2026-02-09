@@ -11,6 +11,10 @@ export type Options = {
      */
     crossOrigin?: string | null | undefined;
     /**
+     * The `referrerPolicy` property for loaded images.
+     */
+    referrerPolicy?: ReferrerPolicy | undefined;
+    /**
      * Use the `ol/Map#pixelRatio` value when requesting
      * the image from the remote server.
      */
@@ -64,6 +68,7 @@ export type Options = {
  * @property {null|string} [crossOrigin] The `crossOrigin` attribute for loaded images.  Note that
  * you must provide a `crossOrigin` value if you want to access pixel data with the Canvas renderer.
  * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
+ * @property {ReferrerPolicy} [referrerPolicy] The `referrerPolicy` property for loaded images.
  * @property {boolean} [hidpi=true] Use the `ol/Map#pixelRatio` value when requesting
  * the image from the remote server.
  * @property {import("./wms.js").ServerType} [serverType] The type of
@@ -100,6 +105,11 @@ declare class ImageWMS extends ImageSource {
      * @type {?string}
      */
     private crossOrigin_;
+    /**
+     * @private
+     * @type {ReferrerPolicy}
+     */
+    private referrerPolicy_;
     /**
      * @private
      * @type {string|undefined}
