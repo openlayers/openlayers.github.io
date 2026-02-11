@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3753],{86436:function(e,n,c){var r=c(41564),s=c(87240),t=c(12185),a=c(28e3);new r.A({layers:[new t.A({source:new a.A})],target:"map",view:new s.Ay({projection:"EPSG:4326",center:[0,0],zoom:2})})}},function(e){var n;n=86436,e(e.s=n)}]);
+//# sourceMappingURL=reprojection-wgs84.js.map

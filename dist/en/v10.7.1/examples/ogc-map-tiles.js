@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9577],{30340:function(e,a,s){var n=s(41564),t=s(87240),r=s(12185),c=s(28178);new n.A({target:"map",layers:[new r.A({source:new c.A({url:"https://maps.gnosis.earth/ogcapi/collections/blueMarble/map/tiles/WebMercatorQuad"})})],view:new t.Ay({center:[0,0],zoom:1})})}},function(e){var a;a=30340,e(e.s=a)}]);
+//# sourceMappingURL=ogc-map-tiles.js.map
