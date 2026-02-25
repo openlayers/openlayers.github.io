@@ -187,7 +187,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L602">line 602</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L603">line 603</a>
         </div>
         
     </div>
@@ -470,7 +470,8 @@ This operator has the following limitations:<ul>
 <li><code>haystack</code> has to be an array of numbers or strings (searching for a substring in a string is not supported yet)</li>
 <li>Only literal arrays are supported as <code>haystack</code> for now; this means that <code>haystack</code> cannot be the result of an
 expression. If <code>haystack</code> is an array of strings, use the <code>literal</code> operator to disambiguate from an expression:
-<code>['literal', ['abc', 'def', 'ghi']]</code></li>
+<code>['literal', ['abc', 'def', 'ghi']]</code>
+This works as well for number arrays although it is not required. Mixing types (numbers and strings) will produce undefined results.</li>
 </ul>
 </li>
 </ul>
@@ -596,7 +597,7 @@ Literal values can be of the following types:</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L429">line 429</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L430">line 430</a>
         </div>
         
     </div>

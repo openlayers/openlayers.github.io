@@ -213,6 +213,7 @@ export type ArgValidator = (arg0: Array<EncodedExpression>, arg1: number, arg2: 
  *     * Only literal arrays are supported as `haystack` for now; this means that `haystack` cannot be the result of an
  *     expression. If `haystack` is an array of strings, use the `literal` operator to disambiguate from an expression:
  *     `['literal', ['abc', 'def', 'ghi']]`
+ *     This works as well for number arrays although it is not required. Mixing types (numbers and strings) will produce undefined results.
  *
  * * Conversion operators:
  *   * `['array', value1, ...valueN]` creates a numerical array from `number` values; please note that the amount of
