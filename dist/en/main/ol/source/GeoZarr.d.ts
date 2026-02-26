@@ -6,7 +6,7 @@
  * @property {string} url The Zarr URL.
  * @property {string} group The group with arrays to render.
  * @property {Array<string>} bands The band names to render.
- * @property {import("../proj.js").ProjectionLike} [projection] Source projection.  If not provided, the GeoTIFF metadata
+ * @property {import("../proj.js").ProjectionLike} [projection] Source projection.  If not provided, the GeoZarr metadata
  * will be read for projection information.
  * @property {number} [transition=250] Duration of the opacity transition for rendering.
  * To disable the opacity transition, pass `transition: 0`.
@@ -140,7 +140,7 @@ export type Options = {
      */
     bands: Array<string>;
     /**
-     * Source projection.  If not provided, the GeoTIFF metadata
+     * Source projection.  If not provided, the GeoZarr metadata
      * will be read for projection information.
      */
     projection?: import("../proj.js").ProjectionLike;
