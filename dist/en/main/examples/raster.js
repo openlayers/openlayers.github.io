@@ -1060,9 +1060,10 @@ function basis(t1, v0, v1, v2, v3) {
 }
 
 ;// ../node_modules/d3-interpolate/src/constant.js
-/* harmony default export */ var src_constant = (x => () => x);
+/* harmony default export */ var constant = (x => () => x);
 
 ;// ../node_modules/d3-interpolate/src/color.js
+/* unused harmony import specifier */ var color_constant;
 
 
 function linear(a, d) {
@@ -1079,18 +1080,18 @@ function exponential(a, b, y) {
 
 function hue(a, b) {
   var d = b - a;
-  return d ? linear(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant(isNaN(a) ? b : a);
+  return d ? linear(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : color_constant(isNaN(a) ? b : a);
 }
 
 function gamma(y) {
   return (y = +y) === 1 ? nogamma : function(a, b) {
-    return b - a ? exponential(a, b, y) : src_constant(isNaN(a) ? b : a);
+    return b - a ? exponential(a, b, y) : constant(isNaN(a) ? b : a);
   };
 }
 
 function nogamma(a, b) {
   var d = b - a;
-  return d ? linear(a, d) : src_constant(isNaN(a) ? b : a);
+  return d ? linear(a, d) : constant(isNaN(a) ? b : a);
 }
 
 ;// ../node_modules/d3-interpolate/src/rgb.js
@@ -2137,6 +2138,8 @@ const bisectCenter = bisector(number_number).center;
 /* harmony default export */ var bisect = (bisectRight);
 
 ;// ../node_modules/d3-interpolate/src/array.js
+/* unused harmony import specifier */ var isNumberArray;
+/* unused harmony import specifier */ var numberArray;
 
 
 
@@ -2222,7 +2225,7 @@ function numberArray_isNumberArray(x) {
 
 /* harmony default export */ function value(a, b) {
   var t = typeof b, c;
-  return b == null || t === "boolean" ? src_constant(b)
+  return b == null || t === "boolean" ? constant(b)
       : (t === "number" ? number
       : t === "string" ? ((c = color(b)) ? (b = c, rgb) : string)
       : b instanceof color ? rgb
