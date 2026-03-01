@@ -156,6 +156,14 @@ export type Options = {
      * pointer coordinate when clicked within the `pixelTolerance`.
      */
     snapToPointer?: boolean | undefined;
+    /**
+     * A function that takes two coordinates and returns whether they should be
+     * considered equal for vertex matching purposes. By default, all coordinate
+     * dimensions are compared. This is useful when features have mixed coordinate
+     * dimensions (e.g., XY and XYZ) but should still be treated as sharing vertices
+     * at the same 2D position.
+     */
+    sharedVerticesEqual?: ((arg0: import("../coordinate.js").Coordinate, arg1: import("../coordinate.js").Coordinate) => boolean) | undefined;
 };
 /**
  * *
@@ -374,6 +382,11 @@ declare class Modify extends PointerInteraction {
      * @type {FilterFunction}
      */
     private filter_;
+    /**
+     * @private
+     * @type {function(import("../coordinate.js").Coordinate, import("../coordinate.js").Coordinate): boolean}
+     */
+    private coordinatesEqual_;
     featuresCollection_: Collection<Feature<import("../geom.js").Geometry, {
         [x: string]: any;
     }>> | undefined;
