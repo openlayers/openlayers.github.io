@@ -1304,6 +1304,30 @@ the linear interpolation is used to resample the data.  If false, nearest neighb
 
         <tr>
             
+                <td class="name"><code>loader</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Custom loader function for URL based sources.
+Called with the URL, request headers, and an abort signal. Expected to resolve with a <code>Response</code>.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
                 <td class="name"><code>overviews</code></td>
             
 
@@ -1318,7 +1342,7 @@ the linear interpolation is used to resample the data.  If false, nearest neighb
             </td>
 
             <td class="description last">
-                <p>List of any overview URLs, only applies if the url parameter is given.</p>
+                <p>List of any overview URLs, only applies if the url parameter is given and no loader is specified.</p>
                 
             </td>
         </tr>

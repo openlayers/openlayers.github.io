@@ -5,7 +5,12 @@ export type SourceInfo = {
      */
     url?: string | undefined;
     /**
-     * List of any overview URLs, only applies if the url parameter is given.
+     * Custom loader function for URL based sources.
+     * Called with the URL, request headers, and an abort signal. Expected to resolve with a `Response`.
+     */
+    loader?: ((arg0: string, arg1: HeadersInit, arg2: AbortSignal) => Promise<Response>) | undefined;
+    /**
+     * List of any overview URLs, only applies if the url parameter is given and no loader is specified.
      */
     overviews?: string[] | undefined;
     /**
