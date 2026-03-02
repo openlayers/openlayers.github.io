@@ -222,7 +222,7 @@ export type RasterSourceEventTypes = import("./Image.js").ImageSourceEventTypes 
 export type Options = {
     /**
      * Input
-     * sources or layers.  For vector data, use an VectorImage layer.
+     * sources or layers.
      */
     sources: Array<import("./Source.js").default | import("../layer/Layer.js").default>;
     /**
@@ -267,7 +267,7 @@ import Event from '../events/Event.js';
 /**
  * @typedef {Object} Options
  * @property {Array<import("./Source.js").default|import("../layer/Layer.js").default>} sources Input
- * sources or layers.  For vector data, use an VectorImage layer.
+ * sources or layers.
  * @property {Operation} [operation] Raster operation.
  * The operation will be called with data from input sources
  * and the output will be assigned to the raster source.
