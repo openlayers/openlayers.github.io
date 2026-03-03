@@ -271,7 +271,7 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
      */
     private nodataValues_;
     /**
-     * @type {Array<Array<Promise<GDALMetadata>>>}
+     * @type {Array<Array<GDALMetadata>>}
      * @private
      */
     private metadata_;
@@ -345,7 +345,7 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
     /**
      * @param {import("../size.js").Size} sourceTileSize The source tile size.
      * @param {Array} sourceSamples The source samples.
-     * @return {Promise<import("../DataTile.js").Data>} The composed tile data.
+     * @return {import("../DataTile.js").Data} The composed tile data.
      * @private
      */
     private composeTile_;
