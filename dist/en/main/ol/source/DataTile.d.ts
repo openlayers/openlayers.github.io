@@ -203,6 +203,10 @@ declare class DataTileSource<TileType extends import("../Tile.js").default = Dat
      */
     bandCount: number;
     /**
+     * @type {number|undefined} The 1-based band index for the nodata alpha band.
+     */
+    nodataBandIndex: number | undefined;
+    /**
      * @private
      * @type {!Object<string, import("../tilegrid/TileGrid.js").default>}
      */

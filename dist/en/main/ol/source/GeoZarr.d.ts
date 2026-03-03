@@ -20,46 +20,53 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
     constructor(options: Options);
     /**
      * @type {string}
+     * @private
      */
-    url_: string;
+    private url_;
     /**
      * @type {string}
+     * @private
      */
-    group_: string;
+    private group_;
     /**
      * @type {Error|null}
      */
     error_: Error | null;
     /**
      * @type {import('zarrita').Group<any>}
+     * @private
      */
-    root_: import("zarrita").Group<any>;
+    private root_;
     /**
      * @type {any|null}
+     * @private
      */
-    consolidatedMetadata_: any | null;
+    private consolidatedMetadata_;
     /**
      * @type {Array<string>}
+     * @private
      */
-    bands_: Array<string>;
+    private bands_;
     /**
      * @type {Object<string, Array<string>> | null}
+     * @private
      */
-    bandsByLevel_: {
-        [x: string]: Array<string>;
-    } | null;
+    private bandsByLevel_;
     /**
      * @type {number|undefined}
+     * @private
      */
-    fillValue_: number | undefined;
+    private fillValue_;
     /**
      * @type {ResampleMethod}
+     * @private
      */
-    resampleMethod_: ResampleMethod;
+    private resampleMethod_;
     /**
      * @type {import("../tilegrid/WMTS.js").default}
+     * @override
      */
-    tileGrid: import("../tilegrid/WMTS.js").default;
+    override tileGrid: import("../tilegrid/WMTS.js").default;
     configure_(): Promise<void>;
     /**
      * @param {number} z The z tile index.

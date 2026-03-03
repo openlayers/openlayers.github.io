@@ -217,6 +217,11 @@ declare class WebGLTileLayer extends BaseTileLayer<import("../source.js").DataTi
      */
     private getSourceBandCount_;
     /**
+     * @private
+     * @return {number|undefined} The 1-based band index for the nodata alpha band.
+     */
+    private getSourceNodataBandIndex_;
+    /**
      * @override
      */
     override createRenderer(): WebGLTileLayerRenderer<this>;

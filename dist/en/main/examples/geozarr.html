@@ -152,7 +152,7 @@
       <div class="row-fluid">
         <p id="shortdesc">A GeoZarr source displaying Sentinel-2 imagery.</p>
         <div id="docs"><p>The GeoZarr source can be used to read groups of multi-band data from Zarr files following the <a href="https://github.com/zarr-developers/geozarr-spec">GeoZarr specification</a>. GeoZarrs following the <a href="https://github.com/zarr-conventions/multiscales">Multiscales convention</a> are supported. Legacy multiscales GeoZarrs with an OGC TileMatrixSet definition also work.</p>
-<p>In this example, a true-color composite is rendered from Sentinel-2 L2A bands B02 (blue), B03 (green), and B04 (red) reflectance values. Reflectance values from 0 to 0.5 are stretched to values between 0 and 255 for the RGB color channels; and values that are all zero are made transparent (with 0 in the alpha channel). A gamma correction is also made to brighten the image.</p>
+<p>In this example, a true-color composite is rendered from Sentinel-2 L2A bands B02 (blue), B03 (green), and B04 (red) reflectance values. Reflectance values from 0 to 0.5 are stretched to values between 0 and 255 for the RGB color channels. A gamma correction is also made to brighten the image.</p>
 <p>To try different scenes, browse to the <a href="https://api.explorer.eopf.copernicus.eu/browser/external/api.explorer.eopf.copernicus.eu/stac/collections/sentinel-2-l2a">Sentinel-2 Level-2A</a> catalog of the EOPF Explorer, find a Zarr store, and paste the url after selecting &quot;Custom...&quot; from the dropdown above. Note that only GeoZarrs with a &#39;measurements/reflectance&#39; group and bands &#39;b02&#39;, &#39;b03&#39;, and &#39;b04&#39; will work without changes to the source code.</p>
 </div>
       </div>
@@ -219,12 +219,6 @@ function render() {
             [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;band&#x27;, 1], 0, 0, 0.5, 255],
             [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;band&#x27;, 2], 0, 0, 0.5, 255],
             [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;band&#x27;, 3], 0, 0, 0.5, 255],
-            [
-              &#x27;case&#x27;,
-              [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;+&#x27;, [&#x27;band&#x27;, 1], [&#x27;band&#x27;, 2], [&#x27;band&#x27;, 3]], 0],
-              0,
-              1,
-            ],
           ],
         },
         source,
