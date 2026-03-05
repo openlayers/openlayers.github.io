@@ -43,6 +43,14 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      */
     private consolidatedMetadata_;
     /**
+     * Cache of opened zarrita arrays keyed by path. Caching the Promise
+     * (not the resolved value) deduplicates concurrent opens for the same
+     * array path across tiles at the same zoom level.
+     * @type {Map<string, Promise<import('zarrita').Array<import('zarrita').DataType, any>>>}
+     * @private
+     */
+    private arrayCache_;
+    /**
      * @type {Array<string>}
      * @private
      */
