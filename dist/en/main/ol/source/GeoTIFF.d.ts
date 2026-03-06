@@ -167,6 +167,11 @@ export type Options = {
      */
     projection?: import("../proj.js").ProjectionLike;
     /**
+     * Whether to attempt to load missing projection definitions.
+     * Uses the pre-configured projection lookup function, which can be customized with {@link module :ol/proj/proj4.setProjectionCodeLookup}.
+     */
+    loadMissingProjection?: boolean | undefined;
+    /**
      * Duration of the opacity transition for rendering.
      * To disable the opacity transition, pass `transition: 0`.
      */
@@ -216,6 +221,8 @@ export type Options = {
  * to `false` will make it so any `min` and `max` properties on sources are ignored.
  * @property {import("../proj.js").ProjectionLike} [projection] Source projection.  If not provided, the GeoTIFF metadata
  * will be read for projection information.
+ * @property {boolean} [loadMissingProjection=false] Whether to attempt to load missing projection definitions.
+ * Uses the pre-configured projection lookup function, which can be customized with {@link module:ol/proj/proj4.setProjectionCodeLookup}.
  * @property {number} [transition=250] Duration of the opacity transition for rendering.
  * To disable the opacity transition, pass `transition: 0`.
  * @property {boolean} [wrapX=false] Render tiles beyond the tile grid extent.
@@ -296,6 +303,11 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
      */
     private convertToRGB_;
     /**
+     * @type {boolean}
+     * @private
+     */
+    private loadMissingProjection_;
+    /**
      * @return {Error} A source loading error. When the source state is `error`, use this function
      * to get more information about the error. To debug a faulty configuration, you may want to use
      * a listener like
@@ -317,7 +329,7 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
      * @param {Array<Array<GeoTIFFImage>>} sources Each source is a list of images
      * from a single GeoTIFF.
      */
-    determineProjection(sources: Array<Array<GeoTIFFImage>>): void;
+    determineProjection(sources: Array<Array<GeoTIFFImage>>): Promise<void>;
     /**
      * Determine any transform matrix for the images in this GeoTIFF.
      *

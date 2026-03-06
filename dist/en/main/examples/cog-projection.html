@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>COG with Projection Lookup</title>
+    <title>COG with automatic Projection Lookup</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
@@ -60,7 +60,7 @@
         <a href="#" id="codepen-button" class="btn btn-link float-end">
           <i class="fab fa-codepen fa-lg"></i> Edit
         </a>
-        <h4 id="title">COG with Projection Lookup</h4>
+        <h4 id="title">COG with automatic Projection Lookup</h4>
         <p class="tags">
           <span class="badge-group">
             <a
@@ -76,8 +76,8 @@
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog.html&quot;&gt;Cloud Optimized GeoTIFF (COG)&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-blob.html&quot;&gt;Cloud Optimized GeoTIFF (COG) from a Blob&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-custom-client.html&quot;&gt;Cloud Optimized GeoTIFF (COG) with Custom Loader&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-projection.html&quot;&gt;COG with automatic Projection Lookup&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-modeltransformation.html&quot;&gt;COG with ModelTransformation&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-projection.html&quot;&gt;COG with Projection Lookup&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geotiff-reprojection.html&quot;&gt;GeoTIFF Reprojection&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-pyramid.html&quot;&gt;GeoTIFF tile pyramid&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-overviews.html&quot;&gt;GeoTIFF with Overviews&lt;/a&gt;
@@ -99,8 +99,8 @@
               data-bs-target="#tag-example-list"
               data-title="projection"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-projection.html&quot;&gt;COG with automatic Projection Lookup&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-modeltransformation.html&quot;&gt;COG with ModelTransformation&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-projection.html&quot;&gt;COG with Projection Lookup&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-custom-proj.html&quot;&gt;Custom Tiled WMS&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection-image.html&quot;&gt;Image Reprojection&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./multiple-cogs.html&quot;&gt;Multiple COG sources&lt;/a&gt;
@@ -126,7 +126,7 @@
               data-bs-target="#tag-example-list"
               data-title="proj4js"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-projection.html&quot;&gt;COG with Projection Lookup&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-projection.html&quot;&gt;COG with automatic Projection Lookup&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection-image.html&quot;&gt;Image Reprojection&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection.html&quot;&gt;Raster Reprojection&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./reprojection-by-code.html&quot;&gt;Reprojection with coordinate system search&lt;/a&gt;
@@ -145,7 +145,7 @@
               data-bs-target="#tag-example-list"
               data-title="maptiler"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-projection.html&quot;&gt;COG with Projection Lookup&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-projection.html&quot;&gt;COG with automatic Projection Lookup&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./zoom-constrained.html&quot;&gt;Constrained Zoom&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop.html&quot;&gt;Drag-and-Drop&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-and-drop-image-vector.html&quot;&gt;Drag-and-Drop Image Vector&lt;/a&gt;
@@ -198,7 +198,7 @@
 
       <div class="row-fluid">
         <p id="shortdesc">Rendering a COG over another layer in a different projection.</p>
-        <div id="docs"><p>Example of using <code>fromProjectionCode()</code> to enable a COG to be rendered over another layer in a different projection.</p>
+        <div id="docs"><p>Example of automatically using <code>fromProjectionCode()</code> to enable a COG to be rendered over another layer in a different projection.</p>
 </div>
       </div>
 
@@ -206,7 +206,7 @@
         <h5 class="source-heading">main.js</h5>
         <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
-import {fromProjectionCode, register} from &#x27;ol/proj/proj4.js&#x27;;
+import {register} from &#x27;ol/proj/proj4.js&#x27;;
 import GeoTIFF from &#x27;ol/source/GeoTIFF.js&#x27;;
 import XYZ from &#x27;ol/source/XYZ.js&#x27;;
 import proj4 from &#x27;proj4&#x27;;
@@ -225,6 +225,7 @@ const cogSource &#x3D; new GeoTIFF({
       nodata: 0,
     },
   ],
+  loadMissingProjection: true,
 });
 
 cogSource.setAttributions(
@@ -252,13 +253,7 @@ const map &#x3D; new Map({
       style: {gamma: 0.7},
     }),
   ],
-  view: cogSource
-    .getView()
-    .then((viewConfig) &#x3D;&gt;
-      fromProjectionCode(viewConfig.projection.getCode()).then(
-        () &#x3D;&gt; viewConfig,
-      ),
-    ),
+  view: cogSource.getView(),
 });
 </code></pre>
       </div>
@@ -269,7 +264,7 @@ const map &#x3D; new Map({
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;COG with Projection Lookup&lt;/title&gt;
+    &lt;title&gt;COG with automatic Projection Lookup&lt;/title&gt;
     &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
