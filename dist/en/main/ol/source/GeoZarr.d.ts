@@ -86,6 +86,49 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      */
     private loadTile_;
 }
+export type ShardInfo = {
+    /**
+     * The shard (outer chunk) shape [rows, cols].
+     */
+    shardShape: Array<number>;
+    /**
+     * The inner chunk shape [rows, cols].
+     */
+    innerChunkShape: Array<number>;
+};
+export type ResampleMethod = "nearest" | "linear";
+export type Options = {
+    /**
+     * The Zarr URL.
+     */
+    url: string;
+    /**
+     * The group with arrays to render.
+     */
+    group: string;
+    /**
+     * The band names to render.
+     */
+    bands: Array<string>;
+    /**
+     * Source projection.  If not provided, the GeoZarr metadata
+     * will be read for projection information.
+     */
+    projection?: import("../proj.js").ProjectionLike;
+    /**
+     * Duration of the opacity transition for rendering.
+     * To disable the opacity transition, pass `transition: 0`.
+     */
+    transition?: number | undefined;
+    /**
+     * Render tiles beyond the tile grid extent.
+     */
+    wrapX?: boolean | undefined;
+    /**
+     * Resamplilng method if bands are not available for all multi-scale levels.
+     */
+    resample?: ResampleMethod | undefined;
+};
 export type DatasetAttributes = {
     /**
      * The multiscales attribute.
@@ -139,39 +182,10 @@ export type TileGridInfo = {
      * The fill value.
      */
     fillValue?: number | undefined;
-};
-export type ResampleMethod = "nearest" | "linear";
-export type Options = {
     /**
-     * The Zarr URL.
+     * The tile sizes for each level, if available.
      */
-    url: string;
-    /**
-     * The group with arrays to render.
-     */
-    group: string;
-    /**
-     * The band names to render.
-     */
-    bands: Array<string>;
-    /**
-     * Source projection.  If not provided, the GeoZarr metadata
-     * will be read for projection information.
-     */
-    projection?: import("../proj.js").ProjectionLike;
-    /**
-     * Duration of the opacity transition for rendering.
-     * To disable the opacity transition, pass `transition: 0`.
-     */
-    transition?: number | undefined;
-    /**
-     * Render tiles beyond the tile grid extent.
-     */
-    wrapX?: boolean | undefined;
-    /**
-     * Resamplilng method if bands are not available for all multi-scale levels.
-     */
-    resample?: ResampleMethod | undefined;
+    tileSizes?: Array<import("../size.js").Size> | undefined;
 };
 import DataTileSource from './DataTile.js';
 import WMTSTileGrid from '../tilegrid/WMTS.js';
