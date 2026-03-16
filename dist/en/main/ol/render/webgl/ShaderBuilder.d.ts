@@ -77,7 +77,12 @@ export class ShaderBuilder {
      * @type {string}
      * @private
      */
-    private discardExpression_;
+    private fragmentDiscardExpression_;
+    /**
+     * @type {string}
+     * @private
+     */
+    private shapeDiscardExpression_;
     /**
      * @type {boolean}
      * @private
@@ -218,7 +223,7 @@ export class ShaderBuilder {
     setTextureCoordinateExpression(expression: string): ShaderBuilder;
     /**
      * Sets an expression to determine whether a fragment (pixel) should be discarded,
-     * i.e. not drawn at all.
+     * i.e. not drawn at all. If the expression evaluates to `true`, the fragment is discarded.
      * This expression can use all the uniforms, varyings and attributes available
      * in the fragment shader, and should evaluate to a `bool` value (it will be
      * used in an `if` statement)
@@ -227,9 +232,23 @@ export class ShaderBuilder {
      */
     setFragmentDiscardExpression(expression: string): ShaderBuilder;
     /**
-     * @return {string} The current fragment discard expression
+     * @return {string} The current fragment discard expression; null if none has been set
      */
     getFragmentDiscardExpression(): string;
+    /**
+     * Sets an expression to determine whether a whole shape (triangle) should be filtered out
+     * and not rasterized at all. If the expression evaluates to `true`, the shape is discarded.
+     * This is more performant than the fragment discard expression because the fragment shader will not run at all.
+     * This expression can use all the uniforms, varyings and attributes available
+     * in the vertex shader, and should evaluate to a `bool` value.
+     * @param {string} expression Shape discard expression
+     * @return {ShaderBuilder} the builder object
+     */
+    setShapeDiscardExpression(expression: string): ShaderBuilder;
+    /**
+     * @return {string} The current shape discard expression; null if none has been set
+     */
+    getShapeDiscardExpression(): string;
     /**
      * Sets whether the symbols should rotate with the view or stay aligned with the map.
      * Note: will only be used for point geometry shaders.

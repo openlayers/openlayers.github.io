@@ -31,6 +31,7 @@ export function isType(type: number, expected: number): boolean;
  * @property {Set<string>} properties Properties referenced with the 'get' operator.
  * @property {boolean} featureId The style uses the feature id.
  * @property {boolean} geometryType The style uses the feature geometry type.
+ * @property {boolean} mCoordinate The style uses the M coordinate of geometries
  * @property {boolean} mapState The style uses the map state (view state or time elapsed).
  */
 /**
@@ -108,6 +109,10 @@ export type ParsingContext = {
      * The style uses the feature geometry type.
      */
     geometryType: boolean;
+    /**
+     * The style uses the M coordinate of geometries
+     */
+    mCoordinate: boolean;
     /**
      * The style uses the map state (view state or time elapsed).
      */
