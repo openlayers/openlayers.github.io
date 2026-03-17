@@ -1407,6 +1407,9 @@ Called with the URL, request headers, and an abort signal. Expected to resolve w
             
                 
 <span class="param-type">number</span>
+|
+
+<span class="param-type">Array.&lt;(number|undefined)></span>
 
 
                 
@@ -1416,10 +1419,12 @@ Called with the URL, request headers, and an abort signal. Expected to resolve w
             </td>
 
             <td class="description last">
-                <p>The minimum source data value.  Rendered values are scaled from 0 to 1 based on
-the configured min and max.  If not provided and raster statistics are available, those will be used instead.
-If neither are available, the minimum for the data type will be used.  To disable this behavior, set
-the <code>normalize</code> option to <code>false</code> in the constructor.</p>
+                <p>The minimum source data value.  Rendered values are
+scaled from 0 to 1 based on the configured min and max.  If not provided and raster statistics are available,
+those will be used instead.  If neither are available, the minimum for the data type will be used.  To disable
+this behavior, set the <code>normalize</code> option to <code>false</code> in the constructor.  If an array is provided, values
+correspond to the bands in the file (not the <code>bands</code> option).  Array values can be left <code>undefined</code> to trigger
+the default behavior.</p>
                 
             </td>
         </tr>
@@ -1435,6 +1440,9 @@ the <code>normalize</code> option to <code>false</code> in the constructor.</p>
             
                 
 <span class="param-type">number</span>
+|
+
+<span class="param-type">Array.&lt;(number|undefined)></span>
 
  | undefined
                 
@@ -1442,10 +1450,12 @@ the <code>normalize</code> option to <code>false</code> in the constructor.</p>
             </td>
 
             <td class="description last">
-                <p>The maximum source data value.  Rendered values are scaled from 0 to 1 based on
-the configured min and max.  If not provided and raster statistics are available, those will be used instead.
-If neither are available, the maximum for the data type will be used.  To disable this behavior, set
-the <code>normalize</code> option to <code>false</code> in the constructor.</p>
+                <p>The maximum source data value.  Rendered values are
+scaled from 0 to 1 based on the configured min and max.  If not provided and raster statistics are available,
+those will be used instead.  If neither are available, the maximum for the data type will be used.  To disable
+this behavior, set the <code>normalize</code> option to <code>false</code> in the constructor.  If an array is provided, values
+correspond to the bands in the file (not the <code>bands</code> option).  Array values can be left <code>undefined</code> to to trigger
+the default behavior.</p>
                 
             </td>
         </tr>
@@ -1461,6 +1471,9 @@ the <code>normalize</code> option to <code>false</code> in the constructor.</p>
             
                 
 <span class="param-type">number</span>
+|
+
+<span class="param-type">Array.&lt;(number|undefined)></span>
 
  | undefined
                 
@@ -1468,10 +1481,11 @@ the <code>normalize</code> option to <code>false</code> in the constructor.</p>
             </td>
 
             <td class="description last">
-                <p>Values to discard (overriding any nodata values in the metadata).
-When provided, an additional alpha band will be added to the data.  Often the GeoTIFF metadata
+                <p>Values to discard (overriding any nodata values in the
+metadata).  When provided, an additional alpha band will be added to the data.  Often the GeoTIFF metadata
 will include information about nodata values, so you should only need to set this property if
-you find that it is not already extracted from the metadata.</p>
+you find that it is not already extracted from the metadata.  If an array is provided, values correspond to
+the bands in the file (not the <code>bands</code> option).  Array values can be left <code>undefined</code> to trigger the default behavior.</p>
                 
             </td>
         </tr>
