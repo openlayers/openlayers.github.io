@@ -131,6 +131,11 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileTy
      */
     private renderedProjection_;
     /**
+     * @private
+     * @type {import("../../structs/LRUCache.js").default<import("../../Tile.js").default>|null}
+     */
+    private sourceTileCache_;
+    /**
      * @param {Options} options Options.
      * @override
      */
@@ -210,6 +215,14 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileTy
      * @private
      */
     private findAltTiles_;
+    /**
+     * @override
+     */
+    /**
+     * @return {import("../../structs/LRUCache.js").default<import("../../Tile.js").default>} Source tile cache.
+     * @private
+     */
+    private getSourceTileCache_;
 }
 import WebGLLayerRenderer from './Layer.js';
 //# sourceMappingURL=TileLayerBase.d.ts.map
