@@ -3,8 +3,7 @@
  */
 /**
  * @typedef {Object} Options
- * @property {string} url The Zarr URL.
- * @property {string} group The group with arrays to render.
+ * @property {string} url The Zarr URL including the multiscales group path (e.g. `'https://example.com/store.zarr/measurements/reflectance'`).
  * @property {Array<string>} bands The band names to render.
  * @property {import("../proj.js").ProjectionLike} [projection] Source projection.  If not provided, the GeoZarr metadata
  * will be read for projection information.
@@ -12,6 +11,12 @@
  * To disable the opacity transition, pass `transition: 0`.
  * @property {boolean} [wrapX=false] Render tiles beyond the tile grid extent.
  * @property {ResampleMethod} [resample='nearest'] Resamplilng method if bands are not available for all multi-scale levels.
+ */
+/**
+ * Source that supports GeoZarr stores with metadata for the following conventions:
+ * - Zarr multiscales convention (https://github.com/zarr-conventions/multiscales)
+ * - Geospatial projection convention (https://github.com/zarr-conventions/geo-proj)
+ * - Spatial convention (https://github.com/zarr-conventions/spatial)
  */
 export default class GeoZarr extends DataTileSource<import("../DataTile.js").default> {
     /**
@@ -24,11 +29,6 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      */
     private url_;
     /**
-     * @type {string}
-     * @private
-     */
-    private group_;
-    /**
      * @type {Error|null}
      */
     error_: Error | null;
@@ -36,7 +36,7 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      * @type {import('zarrita').Group<any>}
      * @private
      */
-    private root_;
+    private group_;
     /**
      * @type {any|null}
      * @private
@@ -99,13 +99,9 @@ export type ShardInfo = {
 export type ResampleMethod = "nearest" | "linear";
 export type Options = {
     /**
-     * The Zarr URL.
+     * The Zarr URL including the multiscales group path (e.g. `'https://example.com/store.zarr/measurements/reflectance'`).
      */
     url: string;
-    /**
-     * The group with arrays to render.
-     */
-    group: string;
     /**
      * The band names to render.
      */

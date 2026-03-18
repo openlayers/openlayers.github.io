@@ -134,8 +134,8 @@
     <div class="input-group">
       <label class="input-group-text" for="url-select">URL</label>
       <select class="form-select" id="url-select">
-        <option value="https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2C_MSIL2A_20260120T084301_N0511_R064_T36UXA_20260120T122910.zarr">Sentinel-2 L2A (Krasnokuts'k)</option>
-        <option value="https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2B_MSIL2A_20260120T125339_N0511_R138_T27VWL_20260120T131151.zarr">Sentinel-2 L2A (Hvolsvöllur)</option>
+        <option value="https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2C_MSIL2A_20260120T084301_N0511_R064_T36UXA_20260120T122910.zarr/measurements/reflectance">Sentinel-2 L2A (Krasnokuts'k)</option>
+        <option value="https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2B_MSIL2A_20260120T125339_N0511_R138_T27VWL_20260120T131151.zarr/measurements/reflectance">Sentinel-2 L2A (Hvolsvöllur)</option>
         <option value="custom">Custom...</option>
       </select>
       <input type="text" class="form-control" id="custom-url" placeholder="Enter Zarr URL" style="display: none; width: 300px;">
@@ -153,7 +153,7 @@
         <p id="shortdesc">A GeoZarr source displaying Sentinel-2 imagery.</p>
         <div id="docs"><p>The GeoZarr source can be used to read groups of multi-band data from Zarr files following the <a href="https://github.com/zarr-developers/geozarr-spec">GeoZarr specification</a>. GeoZarrs following the <a href="https://github.com/zarr-conventions/multiscales">Multiscales convention</a> are supported. Legacy multiscales GeoZarrs with an OGC TileMatrixSet definition also work.</p>
 <p>In this example, a true-color composite is rendered from Sentinel-2 L2A bands B02 (blue), B03 (green), and B04 (red) reflectance values. Reflectance values from 0 to 0.5 are stretched to values between 0 and 255 for the RGB color channels. A gamma correction is also made to brighten the image.</p>
-<p>To try different scenes, browse to the <a href="https://api.explorer.eopf.copernicus.eu/browser/external/api.explorer.eopf.copernicus.eu/stac/collections/sentinel-2-l2a">Sentinel-2 Level-2A</a> catalog of the EOPF Explorer, find a Zarr store, and paste the url after selecting &quot;Custom...&quot; from the dropdown above. Note that only GeoZarrs with a &#39;measurements/reflectance&#39; group and bands &#39;b02&#39;, &#39;b03&#39;, and &#39;b04&#39; will work without changes to the source code.</p>
+<p>To try different scenes, browse to the <a href="https://api.explorer.eopf.copernicus.eu/browser/external/api.explorer.eopf.copernicus.eu/stac/collections/sentinel-2-l2a">Sentinel-2 Level-2A</a> catalog of the EOPF Explorer, find a Zarr store, and paste the url including the group path (e.g. <code>store.zarr/measurements/reflectance</code>) after selecting &quot;Custom...&quot; from the dropdown above. Note that only GeoZarrs with bands &#39;b02&#39;, &#39;b03&#39;, and &#39;b04&#39; will work without changes to the source code.</p>
 </div>
       </div>
 
@@ -198,7 +198,6 @@ function render() {
 
   const source &#x3D; new GeoZarr({
     url: url,
-    group: &#x27;measurements/reflectance&#x27;,
     bands: [&#x27;b04&#x27;, &#x27;b03&#x27;, &#x27;b02&#x27;],
   });
 
@@ -263,8 +262,8 @@ render();
         &lt;div class&#x3D;&quot;input-group&quot;&gt;
           &lt;label class&#x3D;&quot;input-group-text&quot; for&#x3D;&quot;url-select&quot;&gt;URL&lt;/label&gt;
           &lt;select class&#x3D;&quot;form-select&quot; id&#x3D;&quot;url-select&quot;&gt;
-            &lt;option value&#x3D;&quot;https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2C_MSIL2A_20260120T084301_N0511_R064_T36UXA_20260120T122910.zarr&quot;&gt;Sentinel-2 L2A (Krasnokuts&#x27;k)&lt;/option&gt;
-            &lt;option value&#x3D;&quot;https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2B_MSIL2A_20260120T125339_N0511_R138_T27VWL_20260120T131151.zarr&quot;&gt;Sentinel-2 L2A (Hvolsvöllur)&lt;/option&gt;
+            &lt;option value&#x3D;&quot;https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2C_MSIL2A_20260120T084301_N0511_R064_T36UXA_20260120T122910.zarr/measurements/reflectance&quot;&gt;Sentinel-2 L2A (Krasnokuts&#x27;k)&lt;/option&gt;
+            &lt;option value&#x3D;&quot;https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2B_MSIL2A_20260120T125339_N0511_R138_T27VWL_20260120T131151.zarr/measurements/reflectance&quot;&gt;Sentinel-2 L2A (Hvolsvöllur)&lt;/option&gt;
             &lt;option value&#x3D;&quot;custom&quot;&gt;Custom...&lt;/option&gt;
           &lt;/select&gt;
           &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;form-control&quot; id&#x3D;&quot;custom-url&quot; placeholder&#x3D;&quot;Enter Zarr URL&quot; style&#x3D;&quot;display: none; width: 300px;&quot;&gt;
