@@ -3,7 +3,7 @@ export default WebGLVectorTileLayer;
  * *
  */
 export type ExtractedFeatureType<T> = T extends import("../source/Vector.js").default<infer U extends import("../Feature.js").FeatureLike> ? U : never;
-export type Options<VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source.js").VectorTile<any>, FeatureType extends import("../Feature.js").FeatureLike = ExtractedFeatureType<VectorTileSourceType>> = {
+export type Options<VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source/VectorTile.js").default<any>, FeatureType extends import("../Feature.js").FeatureLike = ExtractedFeatureType<VectorTileSourceType>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -138,7 +138,7 @@ export type Options<VectorTileSourceType extends import("../source/VectorTile.js
  * @template {import('../Feature.js').FeatureLike} [FeatureType=ExtractedFeatureType<VectorTileSourceType>]
  * @extends {BaseTileLayer<VectorTileSourceType, WebGLVectorTileLayerRenderer>}
  */
-declare class WebGLVectorTileLayer<VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source.js").VectorTile<any>, FeatureType extends import("../Feature.js").FeatureLike = ExtractedFeatureType<VectorTileSourceType>> extends BaseTileLayer<VectorTileSourceType, WebGLVectorTileLayerRenderer> {
+declare class WebGLVectorTileLayer<VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source/VectorTile.js").default<any>, FeatureType extends import("../Feature.js").FeatureLike = ExtractedFeatureType<VectorTileSourceType>> extends BaseTileLayer<VectorTileSourceType, WebGLVectorTileLayerRenderer> {
     /**
      * @param {Options<VectorTileSourceType, FeatureType>} [options] Options.
      */

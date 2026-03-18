@@ -65,12 +65,12 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     private renderedRotation_;
     /**
      * @private
-     * @type {import("../../coordinate").Coordinate}
+     * @type {import("../../coordinate.js").Coordinate}
      */
     private renderedCenter_;
     /**
      * @private
-     * @type {import("../../proj/Projection").default}
+     * @type {import("../../proj/Projection.js").default}
      */
     private renderedProjection_;
     /**
@@ -90,7 +90,7 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     private renderedFrameDeclutter_;
     /**
      * @private
-     * @type {import("../../render/canvas/ExecutorGroup").default}
+     * @type {import("../../render/canvas/ExecutorGroup.js").default}
      */
     private replayGroup_;
     /**
@@ -136,11 +136,11 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     /**
      * Asynchronous layer level hit detection.
      * @param {import("../../pixel.js").Pixel} pixel Pixel.
-     * @return {Promise<Array<import("../../Feature").default>>} Promise
+     * @return {Promise<Array<import("../../Feature.js").default>>} Promise
      * that resolves with an array of features.
      * @override
      */
-    override getFeatures(pixel: import("../../pixel.js").Pixel): Promise<Array<import("../../Feature").default>>;
+    override getFeatures(pixel: import("../../pixel.js").Pixel): Promise<Array<import("../../Feature.js").default>>;
     /**
      * Handle changes in image style state.
      * @param {import("../../events/Event.js").default} event Image style change event.

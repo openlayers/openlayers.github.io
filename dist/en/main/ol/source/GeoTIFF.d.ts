@@ -84,8 +84,6 @@ export type GeoKeys = {
      */
     ProjectedCSTypeGeoKey: number;
 };
-export type GeoTIFF = import("geotiff").GeoTIFF;
-export type MultiGeoTIFF = import("geotiff").MultiGeoTIFF;
 export type GDALMetadata = {
     /**
      * The minimum value (as a string).
@@ -96,7 +94,6 @@ export type GDALMetadata = {
      */
     STATISTICS_MAXIMUM: string;
 };
-export type GeoTIFFImage = import("geotiff").GeoTIFFImage;
 export type GeoTIFFSourceOptions = {
     /**
      * Whether to force the usage of the browsers XMLHttpRequest API.
@@ -368,4 +365,5 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
     private composeTile_;
 }
 import DataTile from './DataTile.js';
+import type { GeoTIFFImage } from 'geotiff';
 //# sourceMappingURL=GeoTIFF.d.ts.map

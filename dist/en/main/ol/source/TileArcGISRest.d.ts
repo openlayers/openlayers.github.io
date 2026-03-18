@@ -47,7 +47,7 @@ export type Options = {
      * extent, the grid will be based on that; if not, a grid based on a global
      * extent with origin at 0,0 will be used.
      */
-    tileGrid?: import("../tilegrid.js").TileGrid | undefined;
+    tileGrid?: import("../tilegrid/TileGrid.js").default | undefined;
     /**
      * Projection. Default is the view projection.
      * The projection code must contain a numeric end portion separated by :

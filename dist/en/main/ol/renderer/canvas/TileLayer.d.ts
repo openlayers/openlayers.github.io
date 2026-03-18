@@ -19,7 +19,7 @@ export type Options = {
  * @template {import("../../layer/Tile.js").default|import("../../layer/VectorTile.js").default} [LayerType=import("../../layer/Tile.js").default<import("../../source/Tile.js").default>|import("../../layer/VectorTile.js").default]
  * @extends {CanvasLayerRenderer<LayerType>}
  */
-declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile.js").default | import("../../layer/VectorTile.js").default = import("../../layer.js").Tile<import("../../source.js").Tile<import("../../Tile.js").default>> | import("../../layer.js").VectorTile<import("../../source.js").VectorTile<any>, any>> extends CanvasLayerRenderer<LayerType> {
+declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile.js").default | import("../../layer/VectorTile.js").default = import("../../layer/Tile.js").default<import("../../source/Tile.js").default<import("../../Tile.js").default>> | import("../../layer/VectorTile.js").default<import("../../source.js").VectorTile<any>, any>> extends CanvasLayerRenderer<LayerType> {
     /**
      * @param {LayerType} tileLayer Tile layer.
      * @param {Options} [options] Options.

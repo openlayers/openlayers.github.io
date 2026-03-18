@@ -1,5 +1,5 @@
 export default VectorImageLayer;
-export type Options<VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source.js").Vector<any>, FeatureType extends import("../Feature.js").FeatureLike = import("./BaseVector.js").ExtractedFeatureType<VectorSourceType>> = {
+export type Options<VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<any>, FeatureType extends import("../Feature.js").FeatureLike = import("./BaseVector.js").ExtractedFeatureType<VectorSourceType>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -160,7 +160,7 @@ export type Options<VectorSourceType extends import("../source/Vector.js").defau
  * @extends {BaseVectorLayer<FeatureType, VectorSourceType, CanvasVectorImageLayerRenderer>}
  * @api
  */
-declare class VectorImageLayer<VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source.js").Vector<any>, FeatureType extends import("../Feature.js").FeatureLike = import("./BaseVector.js").ExtractedFeatureType<VectorSourceType>> extends BaseVectorLayer<FeatureType, VectorSourceType, CanvasVectorImageLayerRenderer> {
+declare class VectorImageLayer<VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<any>, FeatureType extends import("../Feature.js").FeatureLike = import("./BaseVector.js").ExtractedFeatureType<VectorSourceType>> extends BaseVectorLayer<FeatureType, VectorSourceType, CanvasVectorImageLayerRenderer> {
     /**
      * @param {Options<VectorSourceType, FeatureType>} [options] Options.
      */

@@ -1,6 +1,6 @@
 export default WebGLPointsLayerRenderer;
 export type Point = import("../../geom/Point.js").default;
-export type PointFeature = import("../../Feature").default<Point>;
+export type PointFeature = import("../../Feature.js").default<Point>;
 /**
  * A description of a custom attribute to be passed on to the GPU, with a value different
  * for each feature.
@@ -76,7 +76,7 @@ export type Options = {
     postProcesses?: import("./Layer.js").PostProcessesOptions[] | undefined;
 };
 /** @typedef {import("../../geom/Point.js").default} Point */
-/** @typedef {import("../../Feature").default<Point>} PointFeature */
+/** @typedef {import("../../Feature.js").default<Point>} PointFeature */
 /**
  * @typedef {Object} CustomAttribute A description of a custom attribute to be passed on to the GPU, with a value different
  * for each feature.
@@ -102,9 +102,9 @@ export type Options = {
  * @property {string} vertexShader Vertex shader source, mandatory.
  * @property {string} fragmentShader Fragment shader source, mandatory.
  * @property {boolean} [hitDetectionEnabled] Whether shader is hit detection aware.
- * @property {Object<string,import("../../webgl/Helper").UniformValue>} [uniforms] Uniform definitions for the post process steps
+ * @property {Object<string,import("../../webgl/Helper.js").UniformValue>} [uniforms] Uniform definitions for the post process steps
  * Please note that `u_texture` is reserved for the main texture slot and `u_opacity` is reserved for the layer opacity.
- * @property {Array<import("./Layer").PostProcessesOptions>} [postProcesses] Post-processes definitions
+ * @property {Array<import("./Layer.js").PostProcessesOptions>} [postProcesses] Post-processes definitions
  */
 /**
  * @classdesc
@@ -306,7 +306,7 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
     override renderFrame(frameState: import("../../Map.js").FrameState): HTMLElement;
     /**
      * Rebuild internal webgl buffers based on current view extent; costly, should not be called too much
-     * @param {import("../../Map").FrameState} frameState Frame state.
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @private
      */
     private rebuildBuffers_;

@@ -3,11 +3,11 @@ export default BaseLayer;
  * A css color, or a function called with a view resolution returning a css color.
  */
 export type BackgroundColor = string | ((arg0: number) => string);
-export type BaseLayerObjectEventTypes = import("../ObjectEventType").Types | "change:extent" | "change:maxResolution" | "change:maxZoom" | "change:minResolution" | "change:minZoom" | "change:opacity" | "change:visible" | "change:zIndex";
+export type BaseLayerObjectEventTypes = import("../ObjectEventType.js").Types | "change:extent" | "change:maxResolution" | "change:maxZoom" | "change:minResolution" | "change:minZoom" | "change:opacity" | "change:visible" | "change:zIndex";
 /**
  * *
  */
-export type BaseLayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<BaseLayerObjectEventTypes, import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | BaseLayerObjectEventTypes, Return>;
+export type BaseLayerOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<BaseLayerObjectEventTypes, import("../Object.js").ObjectEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | BaseLayerObjectEventTypes, Return>;
 export type Options<Properties extends {
     [x: string]: any;
 } = {
@@ -74,14 +74,14 @@ export type Options<Properties extends {
  * @api
  */
 /**
- * @typedef {import("../ObjectEventType").Types|'change:extent'|'change:maxResolution'|'change:maxZoom'|
+ * @typedef {import("../ObjectEventType.js").Types|'change:extent'|'change:maxResolution'|'change:maxZoom'|
  *    'change:minResolution'|'change:minZoom'|'change:opacity'|'change:visible'|'change:zIndex'} BaseLayerObjectEventTypes
  */
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<BaseLayerObjectEventTypes, import("../Object").ObjectEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|BaseLayerObjectEventTypes, Return>} BaseLayerOnSignature
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<BaseLayerObjectEventTypes, import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|BaseLayerObjectEventTypes, Return>} BaseLayerOnSignature
  */
 /**
  * @template {Object<string, *>} [Properties=Object<string, *>]
@@ -131,13 +131,13 @@ declare class BaseLayer<Properties extends {
      */
     constructor(options: Options<NoInfer<Properties>>);
     /***
-     * @type {BaseLayerOnSignature<import("../events").EventsKey>}
+     * @type {BaseLayerOnSignature<import("../events.js").EventsKey>}
      */
-    on: BaseLayerOnSignature<import("../events").EventsKey>;
+    on: BaseLayerOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {BaseLayerOnSignature<import("../events").EventsKey>}
+     * @type {BaseLayerOnSignature<import("../events.js").EventsKey>}
      */
-    once: BaseLayerOnSignature<import("../events").EventsKey>;
+    once: BaseLayerOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {BaseLayerOnSignature<void>}
      */

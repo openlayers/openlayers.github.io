@@ -107,7 +107,7 @@ export type AtPixelOptions = {
      * Only layers which are visible and for which this function returns `true`
      * will be tested for features. By default, all visible layers will be tested.
      */
-    layerFilter?: undefined | ((arg0: import("./layer/Layer.js").default<import("./source/Source").default>) => boolean);
+    layerFilter?: undefined | ((arg0: import("./layer/Layer.js").default<import("./source/Source.js").default>) => boolean);
     /**
      * Hit-detection tolerance in css pixels. Pixels
      * inside the radius around the given position will be checked for features.
@@ -123,11 +123,11 @@ export type MapOptionsInternal = {
     /**
      * Controls.
      */
-    controls?: Collection<import("./control.js").Control> | undefined;
+    controls?: Collection<import("./control/Control.js").default> | undefined;
     /**
      * Interactions.
      */
-    interactions?: Collection<import("./interaction.js").Interaction> | undefined;
+    interactions?: Collection<import("./interaction/Interaction.js").default> | undefined;
     /**
      * KeyboardEventTarget.
      */
@@ -143,11 +143,11 @@ export type MapOptionsInternal = {
         [x: string]: any;
     };
 };
-export type MapObjectEventTypes = import("./ObjectEventType").Types | "change:layergroup" | "change:size" | "change:target" | "change:view";
+export type MapObjectEventTypes = import("./ObjectEventType.js").Types | "change:layergroup" | "change:size" | "change:target" | "change:view";
 /**
  * *
  */
-export type MapEventHandler<Return> = import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return> & import("./Observable").OnSignature<MapObjectEventTypes, import("./Object").ObjectEvent, Return> & import("./Observable").OnSignature<import("./MapBrowserEventType").Types, import("./MapBrowserEvent").default, Return> & import("./Observable").OnSignature<import("./MapEventType").Types, import("./MapEvent").default, Return> & import("./Observable").OnSignature<import("./render/EventType").MapRenderEventTypes, import("./render/Event").default, Return> & import("./Observable").CombinedOnSignature<import("./Observable").EventTypes | MapObjectEventTypes | import("./MapBrowserEventType").Types | import("./MapEventType").Types | import("./render/EventType").MapRenderEventTypes, Return>;
+export type MapEventHandler<Return> = import("./Observable.js").OnSignature<import("./Observable.js").EventTypes, import("./events/Event.js").default, Return> & import("./Observable.js").OnSignature<MapObjectEventTypes, import("./Object.js").ObjectEvent, Return> & import("./Observable.js").OnSignature<import("./MapBrowserEventType.js").Types, import("./MapBrowserEvent.js").default, Return> & import("./Observable.js").OnSignature<import("./MapEventType.js").Types, import("./MapEvent.js").default, Return> & import("./Observable.js").OnSignature<import("./render/EventType.js").MapRenderEventTypes, import("./render/Event.js").default, Return> & import("./Observable.js").CombinedOnSignature<import("./Observable.js").EventTypes | MapObjectEventTypes | import("./MapBrowserEventType.js").Types | import("./MapEventType.js").Types | import("./render/EventType.js").MapRenderEventTypes, Return>;
 /**
  * Object literal with config options for the map.
  */
@@ -156,7 +156,7 @@ export type MapOptions = {
      * Controls initially added to the map. If not specified,
      * {@link module :ol/control/defaults.defaults} is used. In a worker, no controls are added by default.
      */
-    controls?: Collection<import("./control.js").Control> | import("./control.js").Control[] | undefined;
+    controls?: Collection<import("./control/Control.js").default> | import("./control/Control.js").default[] | undefined;
     /**
      * The ratio between
      * physical pixels and device-independent pixels (dips) on the device.
@@ -166,7 +166,7 @@ export type MapOptions = {
      * Interactions that are initially added to the map. If not specified,
      * {@link module :ol/interaction/defaults.defaults} is used. In a worker, no interactions are added by default.
      */
-    interactions?: Collection<import("./interaction.js").Interaction> | import("./interaction.js").Interaction[] | undefined;
+    interactions?: Collection<import("./interaction/Interaction.js").default> | import("./interaction/Interaction.js").default[] | undefined;
     /**
      * The element to
      * listen to keyboard events on. This determines when the `KeyboardPan` and
@@ -285,13 +285,13 @@ declare class Map extends BaseObject<{
      */
     constructor(options?: MapOptions);
     /***
-     * @type {MapEventHandler<import("./events").EventsKey>}
+     * @type {MapEventHandler<import("./events.js").EventsKey>}
      */
-    on: MapEventHandler<import("./events").EventsKey>;
+    on: MapEventHandler<import("./events.js").EventsKey>;
     /***
-     * @type {MapEventHandler<import("./events").EventsKey>}
+     * @type {MapEventHandler<import("./events.js").EventsKey>}
      */
-    once: MapEventHandler<import("./events").EventsKey>;
+    once: MapEventHandler<import("./events.js").EventsKey>;
     /***
      * @type {MapEventHandler<void>}
      */
@@ -499,7 +499,7 @@ declare class Map extends BaseObject<{
      * Polygons must have a fill style applied to ensure that pixels inside a polygon are detected.
      * The fill can be transparent.
      * @param {import("./pixel.js").Pixel} pixel Pixel.
-     * @param {function(import("./Feature.js").FeatureLike, import("./layer/Layer.js").default<import("./source/Source").default>, import("./geom/SimpleGeometry.js").default): T} callback Feature callback. The callback will be
+     * @param {function(import("./Feature.js").FeatureLike, import("./layer/Layer.js").default<import("./source/Source.js").default>, import("./geom/SimpleGeometry.js").default): T} callback Feature callback. The callback will be
      *     called with two arguments. The first argument is one
      *     {@link module:ol/Feature~Feature feature} or
      *     {@link module:ol/render/Feature~RenderFeature render feature} at the pixel, the second is
@@ -512,7 +512,7 @@ declare class Map extends BaseObject<{
      * @template T
      * @api
      */
-    forEachFeatureAtPixel<T>(pixel: import("./pixel.js").Pixel, callback: (arg0: import("./Feature.js").FeatureLike, arg1: import("./layer/Layer.js").default<import("./source/Source").default>, arg2: import("./geom/SimpleGeometry.js").default) => T, options?: AtPixelOptions): T | undefined;
+    forEachFeatureAtPixel<T>(pixel: import("./pixel.js").Pixel, callback: (arg0: import("./Feature.js").FeatureLike, arg1: import("./layer/Layer.js").default<import("./source/Source.js").default>, arg2: import("./geom/SimpleGeometry.js").default) => T, options?: AtPixelOptions): T | undefined;
     /**
      * Get all features that intersect a pixel on the viewport.
      * For polygons without a fill, only the stroke will be used for hit detection.

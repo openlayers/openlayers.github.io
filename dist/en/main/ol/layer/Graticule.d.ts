@@ -433,7 +433,7 @@ declare class Graticule extends VectorLayer<VectorSource<Feature<import("../geom
     private lonLabelStyleBase_;
     /**
      * @private
-     * @param {import("../Feature").default} feature Feature
+     * @param {import("../Feature.js").default} feature Feature
      * @return {Style} style
      */
     private lonLabelStyle_;
@@ -444,7 +444,7 @@ declare class Graticule extends VectorLayer<VectorSource<Feature<import("../geom
     private latLabelStyleBase_;
     /**
      * @private
-     * @param {import("../Feature").default} feature Feature
+     * @param {import("../Feature.js").default} feature Feature
      * @return {Style} style
      */
     private latLabelStyle_;
@@ -489,11 +489,11 @@ declare class Graticule extends VectorLayer<VectorSource<Feature<import("../geom
     strategyFunction(extent: import("../extent.js").Extent, resolution: number): Array<import("../extent.js").Extent>;
     /**
      * Update geometries in the source based on current view
-     * @param {import("../extent").Extent} extent Extent
+     * @param {import("../extent.js").Extent} extent Extent
      * @param {number} resolution Resolution
      * @param {import("../proj/Projection.js").default} projection Projection
      */
-    loaderFunction(extent: import("../extent").Extent, resolution: number, projection: import("../proj/Projection.js").default): void;
+    loaderFunction(extent: import("../extent.js").Extent, resolution: number, projection: import("../proj/Projection.js").default): void;
     /**
      * @param {number} lon Longitude.
      * @param {number} minLat Minimal latitude.

@@ -2,7 +2,7 @@ export default BaseTileLayer;
 /**
  * *
  */
-export type BaseTileLayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | "change:preload" | "change:useInterimTilesOnError", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | "change:preload" | "change:useInterimTilesOnError" | import("../render/EventType").LayerRenderEventTypes, Return>;
+export type BaseTileLayerOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("./Base.js").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | "change:preload" | "change:useInterimTilesOnError", import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<import("../render/EventType.js").LayerRenderEventTypes, import("../render/Event.js").default, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("./Base.js").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | "change:preload" | "change:useInterimTilesOnError" | import("../render/EventType.js").LayerRenderEventTypes, Return>;
 export type Options<TileSourceType extends import("../source/Tile.js").default> = {
     /**
      * A CSS class name to set to the layer element.
@@ -68,7 +68,7 @@ export type Options<TileSourceType extends import("../source/Tile.js").default> 
      * Background color for the layer. If not specified, no background
      * will be rendered.
      */
-    background?: import("./Base").BackgroundColor | undefined;
+    background?: import("./Base.js").BackgroundColor | undefined;
     /**
      * Deprecated.  Use interim tiles on error.
      */
@@ -87,12 +87,12 @@ export type Options<TileSourceType extends import("../source/Tile.js").default> 
 };
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes|
- *     import("./Layer.js").LayerEventType|'change:preload'|'change:useInterimTilesOnError', import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("./Base").BaseLayerObjectEventTypes|
- *   import("./Layer.js").LayerEventType|'change:preload'|'change:useInterimTilesOnError'|import("../render/EventType").LayerRenderEventTypes, Return>} BaseTileLayerOnSignature
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("./Base.js").BaseLayerObjectEventTypes|
+ *     import("./Layer.js").LayerEventType|'change:preload'|'change:useInterimTilesOnError', import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<import("../render/EventType.js").LayerRenderEventTypes, import("../render/Event.js").default, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("./Base.js").BaseLayerObjectEventTypes|
+ *   import("./Layer.js").LayerEventType|'change:preload'|'change:useInterimTilesOnError'|import("../render/EventType.js").LayerRenderEventTypes, Return>} BaseTileLayerOnSignature
  */
 /**
  * @template {import("../source/Tile.js").default} TileSourceType
@@ -149,13 +149,13 @@ declare class BaseTileLayer<TileSourceType extends import("../source/Tile.js").d
      */
     constructor(options?: Options<TileSourceType>);
     /***
-     * @type {BaseTileLayerOnSignature<import("../events").EventsKey>}
+     * @type {BaseTileLayerOnSignature<import("../events.js").EventsKey>}
      */
-    on: BaseTileLayerOnSignature<import("../events").EventsKey>;
+    on: BaseTileLayerOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {BaseTileLayerOnSignature<import("../events").EventsKey>}
+     * @type {BaseTileLayerOnSignature<import("../events.js").EventsKey>}
      */
-    once: BaseTileLayerOnSignature<import("../events").EventsKey>;
+    once: BaseTileLayerOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {BaseTileLayerOnSignature<void>}
      */

@@ -12,8 +12,8 @@ export type LayerEventType = "sourceready" | "change:source";
 /**
  * *
  */
-export type LayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | LayerEventType, import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | LayerEventType | import("../render/EventType").LayerRenderEventTypes, Return>;
-export type Options<SourceType extends import("../source/Source.js").default = import("../source.js").Source, Properties extends {
+export type LayerOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("./Base.js").BaseLayerObjectEventTypes | LayerEventType, import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<import("../render/EventType.js").LayerRenderEventTypes, import("../render/Event.js").default, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("./Base.js").BaseLayerObjectEventTypes | LayerEventType | import("../render/EventType.js").LayerRenderEventTypes, Return>;
+export type Options<SourceType extends import("../source/Source.js").default = import("../source/Source.js").default, Properties extends {
     [x: string]: any;
 } = {
     [x: string]: any;
@@ -132,12 +132,12 @@ export type State = {
  */
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes|
- *     LayerEventType, import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("./Base").BaseLayerObjectEventTypes|LayerEventType|
- *     import("../render/EventType").LayerRenderEventTypes, Return>} LayerOnSignature
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("./Base.js").BaseLayerObjectEventTypes|
+ *     LayerEventType, import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<import("../render/EventType.js").LayerRenderEventTypes, import("../render/Event.js").default, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("./Base.js").BaseLayerObjectEventTypes|LayerEventType|
+ *     import("../render/EventType.js").LayerRenderEventTypes, Return>} LayerOnSignature
  */
 /**
  * @template {import("../source/Source.js").default} [SourceType=import("../source/Source.js").default]
@@ -209,7 +209,7 @@ export type State = {
  * @extends {BaseLayer<NoInfer<Properties>>}
  * @api
  */
-declare class Layer<SourceType extends import("../source/Source.js").default = import("../source.js").Source, RendererType extends import("../renderer/Layer.js").default<any> = import("../renderer/Layer.js").default<any>, Properties extends {
+declare class Layer<SourceType extends import("../source/Source.js").default = import("../source/Source.js").default, RendererType extends import("../renderer/Layer.js").default<any> = import("../renderer/Layer.js").default<any>, Properties extends {
     [x: string]: any;
 } = {
     [x: string]: any;
@@ -219,13 +219,13 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      */
     constructor(options: Options<SourceType, NoInfer<Properties>>);
     /***
-     * @type {LayerOnSignature<import("../events").EventsKey>}
+     * @type {LayerOnSignature<import("../events.js").EventsKey>}
      */
-    on: LayerOnSignature<import("../events").EventsKey>;
+    on: LayerOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {LayerOnSignature<import("../events").EventsKey>}
+     * @type {LayerOnSignature<import("../events.js").EventsKey>}
      */
-    once: LayerOnSignature<import("../events").EventsKey>;
+    once: LayerOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {LayerOnSignature<void>}
      */
@@ -289,16 +289,16 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      */
     private handleSourcePropertyChange_;
     /**
-     * @param {import("../pixel").Pixel} pixel Pixel.
-     * @return {Promise<Array<import("../Feature").FeatureLike>>} Promise that resolves with
+     * @param {import("../pixel.js").Pixel} pixel Pixel.
+     * @return {Promise<Array<import("../Feature.js").FeatureLike>>} Promise that resolves with
      * an array of features.
      */
-    getFeatures(pixel: import("../pixel").Pixel): Promise<Array<import("../Feature").FeatureLike>>;
+    getFeatures(pixel: import("../pixel.js").Pixel): Promise<Array<import("../Feature.js").FeatureLike>>;
     /**
-     * @param {import("../pixel").Pixel} pixel Pixel.
+     * @param {import("../pixel.js").Pixel} pixel Pixel.
      * @return {Uint8ClampedArray|Uint8Array|Float32Array|DataView|null} Pixel data.
      */
-    getData(pixel: import("../pixel").Pixel): Uint8ClampedArray | Uint8Array | Float32Array | DataView | null;
+    getData(pixel: import("../pixel.js").Pixel): Uint8ClampedArray | Uint8Array | Float32Array | DataView | null;
     /**
      * The layer is visible on the map view, i.e. within its min/max resolution or zoom and
      * extent, not set to `visible: false`, and not inside a layer group that is set

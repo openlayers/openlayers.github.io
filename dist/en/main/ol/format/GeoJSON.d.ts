@@ -10,7 +10,7 @@ export type GeoJSONMultiPoint = import("geojson").MultiPoint;
 export type GeoJSONMultiLineString = import("geojson").MultiLineString;
 export type GeoJSONMultiPolygon = import("geojson").MultiPolygon;
 export type GeoJSONGeometryCollection = import("geojson").GeometryCollection;
-export type Options<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom.js").Geometry, {
+export type Options<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom/Geometry.js").default, {
     [x: string]: any;
 }>> = {
     /**
@@ -79,7 +79,7 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = Fe
  * @extends {JSONFeature<FeatureType>}
  * @api
  */
-declare class GeoJSON<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom.js").Geometry, {
+declare class GeoJSON<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom/Geometry.js").default, {
     [x: string]: any;
 }>> extends JSONFeature<FeatureType> {
     /**

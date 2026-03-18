@@ -32,10 +32,10 @@ declare class CanvasVectorImageLayerRenderer extends CanvasImageLayerRenderer {
     /**
      * Asynchronous layer level hit detection.
      * @param {import("../../pixel.js").Pixel} pixel Pixel.
-     * @return {Promise<Array<import("../../Feature").default>>} Promise that resolves with an array of features.
+     * @return {Promise<Array<import("../../Feature.js").default>>} Promise that resolves with an array of features.
      * @override
      */
-    override getFeatures(pixel: import("../../pixel.js").Pixel): Promise<Array<import("../../Feature").default>>;
+    override getFeatures(pixel: import("../../pixel.js").Pixel): Promise<Array<import("../../Feature.js").default>>;
     /**
      * @override
      */

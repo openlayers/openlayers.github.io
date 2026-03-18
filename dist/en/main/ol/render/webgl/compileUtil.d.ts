@@ -43,10 +43,10 @@ export function applyContextToBuilder(builder: import("./ShaderBuilder.js").Shad
  * to be fed to a WebGLHelper instance
  * @param {import("../../expr/gpu.js").CompilationContext} context Compilation context
  * @param {import('../../style/flat.js').StyleVariables} [variables] Style variables.
- * @return {Object<string,import("../../webgl/Helper").UniformValue>} Uniforms
+ * @return {Object<string,import("../../webgl/Helper.js").UniformValue>} Uniforms
  */
 export function generateUniformsFromContext(context: import("../../expr/gpu.js").CompilationContext, variables?: import("../../style/flat.js").StyleVariables): {
-    [x: string]: import("../../webgl/Helper").UniformValue;
+    [x: string]: import("../../webgl/Helper.js").UniformValue;
 };
 /**
  * Generates a set of attributes from properties collected in a compilation context,

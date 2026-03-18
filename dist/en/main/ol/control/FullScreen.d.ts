@@ -2,7 +2,7 @@ export default FullScreen;
 /**
  * *
  */
-export type FullScreenOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes | "enterfullscreen" | "leavefullscreen", import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | "enterfullscreen" | "leavefullscreen" | import("../ObjectEventType").Types, Return>;
+export type FullScreenOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes | "enterfullscreen" | "leavefullscreen", import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types, import("../Object.js").ObjectEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | "enterfullscreen" | "leavefullscreen" | import("../ObjectEventType.js").Types, Return>;
 export type Options = {
     /**
      * CSS class name.
@@ -51,11 +51,11 @@ export type Options = {
 };
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes|
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes|
  *     'enterfullscreen'|'leavefullscreen', import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|
- *     'enterfullscreen'|'leavefullscreen'|import("../ObjectEventType").Types, Return>} FullScreenOnSignature
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types, import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|
+ *     'enterfullscreen'|'leavefullscreen'|import("../ObjectEventType.js").Types, Return>} FullScreenOnSignature
  */
 /**
  * @typedef {Object} Options
@@ -98,13 +98,13 @@ declare class FullScreen extends Control {
      */
     constructor(options?: Options);
     /***
-     * @type {FullScreenOnSignature<import("../events").EventsKey>}
+     * @type {FullScreenOnSignature<import("../events.js").EventsKey>}
      */
-    on: FullScreenOnSignature<import("../events").EventsKey>;
+    on: FullScreenOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {FullScreenOnSignature<import("../events").EventsKey>}
+     * @type {FullScreenOnSignature<import("../events.js").EventsKey>}
      */
-    once: FullScreenOnSignature<import("../events").EventsKey>;
+    once: FullScreenOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {FullScreenOnSignature<void>}
      */

@@ -38,11 +38,11 @@ export type Options = {
      */
     projection?: import("./proj.js").ProjectionLike;
 };
-export type GeolocationObjectEventTypes = import("./ObjectEventType").Types | "change:accuracy" | "change:accuracyGeometry" | "change:altitude" | "change:altitudeAccuracy" | "change:heading" | "change:position" | "change:projection" | "change:speed" | "change:tracking" | "change:trackingOptions";
+export type GeolocationObjectEventTypes = import("./ObjectEventType.js").Types | "change:accuracy" | "change:accuracyGeometry" | "change:altitude" | "change:altitudeAccuracy" | "change:heading" | "change:position" | "change:projection" | "change:speed" | "change:tracking" | "change:trackingOptions";
 /**
  * *
  */
-export type GeolocationOnSignature<Return> = import("./Observable").OnSignature<GeolocationObjectEventTypes, import("./Object").ObjectEvent, Return> & import("./Observable").OnSignature<"error", GeolocationError, Return> & import("./Observable").CombinedOnSignature<import("./Observable").EventTypes | GeolocationObjectEventTypes, Return> & import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return>;
+export type GeolocationOnSignature<Return> = import("./Observable.js").OnSignature<GeolocationObjectEventTypes, import("./Object.js").ObjectEvent, Return> & import("./Observable.js").OnSignature<"error", GeolocationError, Return> & import("./Observable.js").CombinedOnSignature<import("./Observable.js").EventTypes | GeolocationObjectEventTypes, Return> & import("./Observable.js").OnSignature<import("./Observable.js").EventTypes, import("./events/Event.js").default, Return>;
 import BaseEvent from './events/Event.js';
 /**
  * @typedef {Object} Options
@@ -54,16 +54,16 @@ import BaseEvent from './events/Event.js';
  * is reported in.
  */
 /**
- * @typedef {import("./ObjectEventType").Types|'change:accuracy'|'change:accuracyGeometry'|'change:altitude'|
+ * @typedef {import("./ObjectEventType.js").Types|'change:accuracy'|'change:accuracyGeometry'|'change:altitude'|
  *    'change:altitudeAccuracy'|'change:heading'|'change:position'|'change:projection'|'change:speed'|'change:tracking'|
  *    'change:trackingOptions'} GeolocationObjectEventTypes
  */
 /***
  * @template Return
- * @typedef {import("./Observable").OnSignature<GeolocationObjectEventTypes, import("./Object").ObjectEvent, Return> &
- *   import("./Observable").OnSignature<'error', GeolocationError, Return> &
- *   import("./Observable").CombinedOnSignature<import("./Observable").EventTypes|GeolocationObjectEventTypes, Return> &
- *   import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return>} GeolocationOnSignature
+ * @typedef {import("./Observable.js").OnSignature<GeolocationObjectEventTypes, import("./Object.js").ObjectEvent, Return> &
+ *   import("./Observable.js").OnSignature<'error', GeolocationError, Return> &
+ *   import("./Observable.js").CombinedOnSignature<import("./Observable.js").EventTypes|GeolocationObjectEventTypes, Return> &
+ *   import("./Observable.js").OnSignature<import("./Observable.js").EventTypes, import("./events/Event.js").default, Return>} GeolocationOnSignature
  */
 /**
  * @classdesc
@@ -100,13 +100,13 @@ declare class Geolocation extends BaseObject<{
      */
     constructor(options?: Options);
     /***
-     * @type {GeolocationOnSignature<import("./events").EventsKey>}
+     * @type {GeolocationOnSignature<import("./events.js").EventsKey>}
      */
-    on: GeolocationOnSignature<import("./events").EventsKey>;
+    on: GeolocationOnSignature<import("./events.js").EventsKey>;
     /***
-     * @type {GeolocationOnSignature<import("./events").EventsKey>}
+     * @type {GeolocationOnSignature<import("./events.js").EventsKey>}
      */
-    once: GeolocationOnSignature<import("./events").EventsKey>;
+    once: GeolocationOnSignature<import("./events.js").EventsKey>;
     /***
      * @type {GeolocationOnSignature<void>}
      */

@@ -5,7 +5,7 @@ export default CanvasVectorTileLayerRenderer;
  * @api
  * @extends {CanvasTileLayerRenderer<import("../../layer/VectorTile.js").default<import('../../source/VectorTile.js').default<import('../../Feature.js').FeatureLike>>>}
  */
-declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<import("../../layer.js").VectorTile<import("../../source.js").VectorTile<import("../../Feature.js").FeatureLike>, import("../../Feature.js").FeatureLike>> {
+declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<import("../../layer/VectorTile.js").default<import("../../source/VectorTile.js").default<import("../../Feature.js").FeatureLike>, import("../../Feature.js").FeatureLike>> {
     /**
      * @param {import("../../layer/VectorTile.js").default} layer VectorTile layer.
      * @param {import("./TileLayer.js").Options} options Options.
@@ -20,7 +20,7 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
     private renderedLayerRevision_;
     /**
      * @private
-     * @type {import("../../transform").Transform}
+     * @type {import("../../transform.js").Transform}
      */
     private renderedPixelToCoordinateTransform_;
     /**
@@ -103,7 +103,7 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
     private tileImageNeedsRender_;
     /**
      * @param {import("../../VectorRenderTile.js").default} tile Tile.
-     * @param {import("../../Map").FrameState} frameState Frame state.
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @private
      */
     private renderTileImage_;

@@ -109,11 +109,11 @@ declare class CanvasBuilder extends VectorContext {
     drawCustomCoordinates_(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, builderEnds: Array<number>): number;
     /**
      * @protected
-     * @param {import("../../geom/Geometry").default|import("../Feature.js").default} geometry The geometry.
+     * @param {import("../../geom/Geometry.js").default|import("../Feature.js").default} geometry The geometry.
      * @param {import("../../Feature.js").FeatureLike} feature Feature.
      * @param {number} index Render order index
      */
-    protected beginGeometry(geometry: import("../../geom/Geometry").default | import("../Feature.js").default, feature: import("../../Feature.js").FeatureLike, index: number): void;
+    protected beginGeometry(geometry: import("../../geom/Geometry.js").default | import("../Feature.js").default, feature: import("../../Feature.js").FeatureLike, index: number): void;
     /**
      * @return {import("../canvas.js").SerializableInstructions} the serializable instructions.
      */

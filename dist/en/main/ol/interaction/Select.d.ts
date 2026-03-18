@@ -1,7 +1,7 @@
 /**
  * A function that takes a {@link module:ol/Feature~Feature} and returns `true` if the feature may be
  * selected or `false` otherwise.
- * @typedef {function(import("../Feature.js").default, import("../layer/Layer.js").default<import("../source/Source").default>):boolean} FilterFunction
+ * @typedef {function(import("../Feature.js").default, import("../layer/Layer.js").default<import("../source/Source.js").default>):boolean} FilterFunction
  */
 /**
  * @typedef {Object} Options
@@ -19,7 +19,7 @@
  * feature removes all from the selection.
  * See `toggle`, `add`, `remove` options for adding/removing extra features to/
  * from the selection.
- * @property {Array<import("../layer/Layer.js").default>|function(import("../layer/Layer.js").default<import("../source/Source").default>): boolean} [layers]
+ * @property {Array<import("../layer/Layer.js").default>|function(import("../layer/Layer.js").default<import("../source/Source.js").default>): boolean} [layers]
  * A list of layers from which features should be selected. Alternatively, a
  * filter function can be provided. The function will be called for each layer
  * in the map and should return `true` for layers that you want to be
@@ -96,7 +96,7 @@ export default Select;
  * A function that takes a {@link module :ol/Feature~Feature} and returns `true` if the feature may be
  * selected or `false` otherwise.
  */
-export type FilterFunction = (arg0: import("../Feature.js").default, arg1: import("../layer/Layer.js").default<import("../source/Source").default>) => boolean;
+export type FilterFunction = (arg0: import("../Feature.js").default, arg1: import("../layer/Layer.js").default<import("../source/Source.js").default>) => boolean;
 export type Options = {
     /**
      * A function
@@ -125,9 +125,9 @@ export type Options = {
      * selectable. If the option is absent, all visible layers will be considered
      * selectable.
      */
-    layers?: import("../layer.js").Layer<import("../source.js").Source, import("../renderer/Layer.js").default<any>, {
+    layers?: import("../layer/Layer.js").default<import("../source/Source.js").default, import("../renderer/Layer.js").default<any>, {
         [x: string]: any;
-    }>[] | ((arg0: import("../layer/Layer.js").default<import("../source/Source").default>) => boolean) | undefined;
+    }>[] | ((arg0: import("../layer/Layer.js").default<import("../source/Source.js").default>) => boolean) | undefined;
     /**
      * Style for the selected features. By default the default edit style is used
      * (see {@link module :ol/style/Style~Style}). Set to `null` if this interaction should not apply
@@ -185,7 +185,7 @@ export type Options = {
 /**
  * *
  */
-export type SelectOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"select", SelectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "select", Return>;
+export type SelectOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types | "change:active", import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<"select", SelectEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | "change:active" | "select", Return>;
 import Event from '../events/Event.js';
 type SelectEventType = string;
 declare namespace SelectEventType {
@@ -193,11 +193,11 @@ declare namespace SelectEventType {
 }
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
- *     'change:active', import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<'select', SelectEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types|
+ *     'change:active', import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<'select', SelectEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types|
  *     'change:active'|'select', Return>} SelectOnSignature
  */
 /**
@@ -219,13 +219,13 @@ declare class Select extends Interaction {
      */
     constructor(options?: Options);
     /***
-     * @type {SelectOnSignature<import("../events").EventsKey>}
+     * @type {SelectOnSignature<import("../events.js").EventsKey>}
      */
-    on: SelectOnSignature<import("../events").EventsKey>;
+    on: SelectOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {SelectOnSignature<import("../events").EventsKey>}
+     * @type {SelectOnSignature<import("../events.js").EventsKey>}
      */
-    once: SelectOnSignature<import("../events").EventsKey>;
+    once: SelectOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {SelectOnSignature<void>}
      */
@@ -285,7 +285,7 @@ declare class Select extends Interaction {
     private features_;
     /**
      * @private
-     * @type {function(import("../layer/Layer.js").default<import("../source/Source").default>): boolean}
+     * @type {function(import("../layer/Layer.js").default<import("../source/Source.js").default>): boolean}
      */
     private layerFilter_;
     /**

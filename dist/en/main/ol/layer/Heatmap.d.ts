@@ -3,11 +3,11 @@ export type HeatmapEventTypes = "change:blur" | "change:radius" | "change:gradie
 /**
  * *
  */
-export type HeatmapOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | HeatmapEventTypes, import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | HeatmapEventTypes | import("../render/EventType").LayerRenderEventTypes, Return>;
+export type HeatmapOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("./Base.js").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | HeatmapEventTypes, import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<import("../render/EventType.js").LayerRenderEventTypes, import("../render/Event.js").default, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("./Base.js").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | HeatmapEventTypes | import("../render/EventType.js").LayerRenderEventTypes, Return>;
 export type WeightExpression = import("../style/flat.js").NumberExpression | string | ((arg0: import("../Feature.js").default) => number);
 export type Options<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry, {
     [x: string]: any;
-}>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source.js").Vector<FeatureType>> = {
+}>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -110,19 +110,19 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
  */
 declare class Heatmap<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry, {
     [x: string]: any;
-}>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source.js").Vector<FeatureType>> extends BaseVector<FeatureType, VectorSourceType, WebGLVectorLayerRenderer> {
+}>, VectorSourceType extends import("../source/Vector.js").default<FeatureType> = import("../source/Vector.js").default<FeatureType>> extends BaseVector<FeatureType, VectorSourceType, WebGLVectorLayerRenderer> {
     /**
      * @param {Options<FeatureType, VectorSourceType>} [options] Options.
      */
     constructor(options?: Options<FeatureType, VectorSourceType>);
     /***
-     * @type {HeatmapOnSignature<import("../events").EventsKey>}
+     * @type {HeatmapOnSignature<import("../events.js").EventsKey>}
      */
-    on: HeatmapOnSignature<import("../events").EventsKey>;
+    on: HeatmapOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {HeatmapOnSignature<import("../events").EventsKey>}
+     * @type {HeatmapOnSignature<import("../events.js").EventsKey>}
      */
-    once: HeatmapOnSignature<import("../events").EventsKey>;
+    once: HeatmapOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {HeatmapOnSignature<void>}
      */

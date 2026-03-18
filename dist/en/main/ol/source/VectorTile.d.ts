@@ -251,12 +251,12 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
     getOverlaps(): boolean;
     /**
      * @param {number} pixelRatio Pixel ratio.
-     * @param {import("../proj/Projection").default} projection Projection.
+     * @param {import("../proj/Projection.js").default} projection Projection.
      * @param {VectorRenderTile} tile Vector render tile.
      * @param {import("../Tile.js").UrlFunction} [tileUrlFunction] Tile URL function.
-     * @return {Array<import("../VectorTile").default>} Tile keys.
+     * @return {Array<import("../VectorTile.js").default>} Tile keys.
      */
-    getSourceTiles(pixelRatio: number, projection: import("../proj/Projection").default, tile: VectorRenderTile, tileUrlFunction?: import("../Tile.js").UrlFunction): Array<Tile<any>>;
+    getSourceTiles(pixelRatio: number, projection: import("../proj/Projection.js").default, tile: VectorRenderTile, tileUrlFunction?: import("../Tile.js").UrlFunction): Array<Tile<any>>;
     /**
      * @param {VectorRenderTile} tile Vector render tile.
      */

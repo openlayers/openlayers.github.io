@@ -56,7 +56,7 @@ export type Options = {
      * Feature property or geometry
      * or function returning a geometry to render for this style.
      */
-    geometry?: string | import("../geom.js").Geometry | GeometryFunction | undefined;
+    geometry?: string | import("../geom/Geometry.js").default | GeometryFunction | undefined;
     /**
      * Fill style.
      */

@@ -13,7 +13,7 @@ export type OnSignature<Type extends string, EventClass extends Event | import("
 /**
  * *
  */
-export type CombinedOnSignature<Type extends string, Return> = (type: Type[], listener: (event: Event | import("./events/Event").default) => unknown) => Return extends void ? void : Return[];
+export type CombinedOnSignature<Type extends string, Return> = (type: Type[], listener: (event: Event | import("./events/Event.js").default) => unknown) => Return extends void ? void : Return[];
 export type EventTypes = "change" | "error";
 /**
  * *
@@ -28,7 +28,7 @@ export type ObservableOnSignature<Return> = OnSignature<EventTypes, import("./ev
 /***
  * @template {string} Type
  * @template Return
- * @typedef {(type: Type[], listener: (event: Event|import("./events/Event").default) => ?) => Return extends void ? void : Return[]} CombinedOnSignature
+ * @typedef {(type: Type[], listener: (event: Event|import("./events/Event.js").default) => ?) => Return extends void ? void : Return[]} CombinedOnSignature
  */
 /**
  * @typedef {'change'|'error'} EventTypes
@@ -72,25 +72,25 @@ declare class Observable extends EventTarget {
     getRevision(): number;
     /**
      * @param {string|Array<string>} type Type.
-     * @param {function((Event|import("./events/Event").default)): ?} listener Listener.
+     * @param {function((Event|import("./events/Event.js").default)): ?} listener Listener.
      * @return {import("./events.js").EventsKey|Array<import("./events.js").EventsKey>} Event key.
      * @protected
      */
-    protected onInternal(type: string | Array<string>, listener: (arg0: (Event | import("./events/Event").default)) => unknown): import("./events.js").EventsKey | Array<import("./events.js").EventsKey>;
+    protected onInternal(type: string | Array<string>, listener: (arg0: (Event | import("./events/Event.js").default)) => unknown): import("./events.js").EventsKey | Array<import("./events.js").EventsKey>;
     /**
      * @param {string|Array<string>} type Type.
-     * @param {function((Event|import("./events/Event").default)): ?} listener Listener.
+     * @param {function((Event|import("./events/Event.js").default)): ?} listener Listener.
      * @return {import("./events.js").EventsKey|Array<import("./events.js").EventsKey>} Event key.
      * @protected
      */
-    protected onceInternal(type: string | Array<string>, listener: (arg0: (Event | import("./events/Event").default)) => unknown): import("./events.js").EventsKey | Array<import("./events.js").EventsKey>;
+    protected onceInternal(type: string | Array<string>, listener: (arg0: (Event | import("./events/Event.js").default)) => unknown): import("./events.js").EventsKey | Array<import("./events.js").EventsKey>;
     /**
      * Unlisten for a certain type of event.
      * @param {string|Array<string>} type Type.
-     * @param {function((Event|import("./events/Event").default)): ?} listener Listener.
+     * @param {function((Event|import("./events/Event.js").default)): ?} listener Listener.
      * @protected
      */
-    protected unInternal(type: string | Array<string>, listener: (arg0: (Event | import("./events/Event").default)) => unknown): void;
+    protected unInternal(type: string | Array<string>, listener: (arg0: (Event | import("./events/Event.js").default)) => unknown): void;
 }
 import EventTarget from './events/Target.js';
 //# sourceMappingURL=Observable.d.ts.map

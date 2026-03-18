@@ -2,13 +2,13 @@ export default VectorTileLayer;
 /**
  * *
  */
-export type VectorTileLayerOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | "change:preload" | "change:useInterimTilesOnError", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("./Base").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | "change:preload" | "change:useInterimTilesOnError" | import("../render/EventType").LayerRenderEventTypes, Return>;
+export type VectorTileLayerOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("./Base.js").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | "change:preload" | "change:useInterimTilesOnError", import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<import("../render/EventType.js").LayerRenderEventTypes, import("../render/Event.js").default, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("./Base.js").BaseLayerObjectEventTypes | import("./Layer.js").LayerEventType | "change:preload" | "change:useInterimTilesOnError" | import("../render/EventType.js").LayerRenderEventTypes, Return>;
 export type VectorTileRenderType = "hybrid" | "vector";
 /**
  * *
  */
 export type ExtractedFeatureType<T> = T extends import("../source/VectorTile.js").default<infer U extends import("../Feature.js").FeatureLike> ? U : never;
-export type Options<VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source.js").VectorTile<any>, FeatureType extends import("../Feature").FeatureLike = ExtractedFeatureType<VectorTileSourceType>> = {
+export type Options<VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source/VectorTile.js").default<any>, FeatureType extends import("../Feature.js").FeatureLike = ExtractedFeatureType<VectorTileSourceType>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -108,7 +108,7 @@ export type Options<VectorTileSourceType extends import("../source/VectorTile.js
      * Background color for the layer. If not specified, no
      * background will be rendered.
      */
-    background?: import("./Base").BackgroundColor | undefined;
+    background?: import("./Base.js").BackgroundColor | undefined;
     /**
      * When set to `true`, feature batches will be
      * recreated during animations. This means that no vectors will be shown clipped, but the setting
@@ -144,12 +144,12 @@ export type Options<VectorTileSourceType extends import("../source/VectorTile.js
 };
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes|
- *     import("./Layer.js").LayerEventType|'change:preload'|'change:useInterimTilesOnError', import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("./Base").BaseLayerObjectEventTypes|
- *     import("./Layer.js").LayerEventType|'change:preload'|'change:useInterimTilesOnError'|import("../render/EventType").LayerRenderEventTypes, Return>} VectorTileLayerOnSignature
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("./Base.js").BaseLayerObjectEventTypes|
+ *     import("./Layer.js").LayerEventType|'change:preload'|'change:useInterimTilesOnError', import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<import("../render/EventType.js").LayerRenderEventTypes, import("../render/Event.js").default, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("./Base.js").BaseLayerObjectEventTypes|
+ *     import("./Layer.js").LayerEventType|'change:preload'|'change:useInterimTilesOnError'|import("../render/EventType.js").LayerRenderEventTypes, Return>} VectorTileLayerOnSignature
  */
 /**
  * @typedef {'hybrid' | 'vector'} VectorTileRenderType
@@ -160,7 +160,7 @@ export type Options<VectorTileSourceType extends import("../source/VectorTile.js
  */
 /**
  * @template {import("../source/VectorTile.js").default<FeatureType>} [VectorTileSourceType=import("../source/VectorTile.js").default<*>]
- * @template {import("../Feature").FeatureLike} [FeatureType=ExtractedFeatureType<VectorTileSourceType>]
+ * @template {import("../Feature.js").FeatureLike} [FeatureType=ExtractedFeatureType<VectorTileSourceType>]
  * @typedef {Object} Options
  * @property {string} [className='ol-layer'] A CSS class name to set to the layer element.
  * @property {number} [opacity=1] Opacity (0, 1).
@@ -236,19 +236,19 @@ export type Options<VectorTileSourceType extends import("../source/VectorTile.js
  * @extends {BaseVectorLayer<FeatureType, VectorTileSourceType, CanvasVectorTileLayerRenderer>}
  * @api
  */
-declare class VectorTileLayer<VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source.js").VectorTile<any>, FeatureType extends import("../Feature.js").FeatureLike = ExtractedFeatureType<VectorTileSourceType>> extends BaseVectorLayer<FeatureType, VectorTileSourceType, CanvasVectorTileLayerRenderer> {
+declare class VectorTileLayer<VectorTileSourceType extends import("../source/VectorTile.js").default<FeatureType> = import("../source/VectorTile.js").default<any>, FeatureType extends import("../Feature.js").FeatureLike = ExtractedFeatureType<VectorTileSourceType>> extends BaseVectorLayer<FeatureType, VectorTileSourceType, CanvasVectorTileLayerRenderer> {
     /**
      * @param {Options<VectorTileSourceType, FeatureType>} [options] Options.
      */
     constructor(options?: Options<VectorTileSourceType, FeatureType>);
     /***
-     * @type {VectorTileLayerOnSignature<import("../events").EventsKey>}
+     * @type {VectorTileLayerOnSignature<import("../events.js").EventsKey>}
      */
-    on: VectorTileLayerOnSignature<import("../events").EventsKey>;
+    on: VectorTileLayerOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {VectorTileLayerOnSignature<import("../events").EventsKey>}
+     * @type {VectorTileLayerOnSignature<import("../events.js").EventsKey>}
      */
-    once: VectorTileLayerOnSignature<import("../events").EventsKey>;
+    once: VectorTileLayerOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {VectorTileLayerOnSignature<void>}
      */

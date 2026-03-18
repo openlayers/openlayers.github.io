@@ -3,7 +3,7 @@ export default BaseVectorLayer;
  * *
  */
 export type ExtractedFeatureType<T> = T extends import("../source/Vector.js").default<infer U extends import("../Feature.js").FeatureLike> ? U : never;
-export type Options<FeatureType extends import("../Feature").FeatureLike, VectorSourceType extends import("../source/Vector.js").default<FeatureType> | import("../source/VectorTile.js").default<FeatureType>> = {
+export type Options<FeatureType extends import("../Feature.js").FeatureLike, VectorSourceType extends import("../source/Vector.js").default<FeatureType> | import("../source/VectorTile.js").default<FeatureType>> = {
     /**
      * A CSS class name to set to the layer element.
      */
@@ -116,13 +116,13 @@ export type Options<FeatureType extends import("../Feature").FeatureLike, Vector
  * property on the layer object; for example, setting `title: 'My Title'` in the
  * options means that `title` is observable, and has get/set accessors.
  *
- * @template {import('../Feature').FeatureLike} FeatureType
+ * @template {import('../Feature.js').FeatureLike} FeatureType
  * @template {import("../source/Vector.js").default<FeatureType>|import("../source/VectorTile.js").default<FeatureType>} VectorSourceType<FeatureType>
  * @extends {Layer<VectorSourceType, RendererType>}
  * @template {import("../renderer/canvas/VectorLayer.js").default|import("../renderer/canvas/VectorTileLayer.js").default|import("../renderer/canvas/VectorImageLayer.js").default|import("../renderer/webgl/VectorLayer.js").default|import("../renderer/webgl/PointsLayer.js").default} RendererType
  * @api
  */
-declare class BaseVectorLayer<FeatureType extends import("../Feature").FeatureLike, VectorSourceType extends import("../source/Vector.js").default<FeatureType> | import("../source/VectorTile.js").default<FeatureType>, RendererType extends import("../renderer/canvas/VectorLayer.js").default | import("../renderer/canvas/VectorTileLayer.js").default | import("../renderer/canvas/VectorImageLayer.js").default | import("../renderer/webgl/VectorLayer.js").default | import("../renderer/webgl/PointsLayer.js").default> extends Layer<VectorSourceType, RendererType, {
+declare class BaseVectorLayer<FeatureType extends import("../Feature.js").FeatureLike, VectorSourceType extends import("../source/Vector.js").default<FeatureType> | import("../source/VectorTile.js").default<FeatureType>, RendererType extends import("../renderer/canvas/VectorLayer.js").default | import("../renderer/canvas/VectorTileLayer.js").default | import("../renderer/canvas/VectorImageLayer.js").default | import("../renderer/webgl/VectorLayer.js").default | import("../renderer/webgl/PointsLayer.js").default> extends Layer<VectorSourceType, RendererType, {
     [x: string]: any;
 }> {
     /**

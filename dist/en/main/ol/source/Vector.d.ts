@@ -52,7 +52,7 @@ export type FeatureClassOrArrayOfRenderFeatures<T extends import("../Feature.js"
  */
 export type VectorSourceOnSignature<Return, FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry, {
     [x: string]: any;
-}>> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("./VectorEventType").VectorSourceEventTypes, VectorSourceEvent<FeatureType>, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | import("./VectorEventType").VectorSourceEventTypes, Return>;
+}>> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types, import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<import("./VectorEventType.js").VectorSourceEventTypes, VectorSourceEvent<FeatureType>, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | import("./VectorEventType.js").VectorSourceEventTypes, Return>;
 export type Options<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry, {
     [x: string]: any;
 }>> = {
@@ -175,11 +175,11 @@ import Event from '../events/Event.js';
 /***
  * @template Return
  * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<import("./VectorEventType").VectorSourceEventTypes, VectorSourceEvent<FeatureType>, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
- *     import("./VectorEventType").VectorSourceEventTypes, Return>} VectorSourceOnSignature
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types, import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<import("./VectorEventType.js").VectorSourceEventTypes, VectorSourceEvent<FeatureType>, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types|
+ *     import("./VectorEventType.js").VectorSourceEventTypes, Return>} VectorSourceOnSignature
  */
 /**
  * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../Feature.js").default]
@@ -291,13 +291,13 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      */
     constructor(options?: Options<FeatureType>);
     /***
-     * @type {VectorSourceOnSignature<import("../events").EventsKey, FeatureType>}
+     * @type {VectorSourceOnSignature<import("../events.js").EventsKey, FeatureType>}
      */
-    on: VectorSourceOnSignature<import("../events").EventsKey, FeatureType>;
+    on: VectorSourceOnSignature<import("../events.js").EventsKey, FeatureType>;
     /***
-     * @type {VectorSourceOnSignature<import("../events").EventsKey, FeatureType>}
+     * @type {VectorSourceOnSignature<import("../events.js").EventsKey, FeatureType>}
      */
-    once: VectorSourceOnSignature<import("../events").EventsKey, FeatureType>;
+    once: VectorSourceOnSignature<import("../events.js").EventsKey, FeatureType>;
     /***
      * @type {VectorSourceOnSignature<void>}
      */

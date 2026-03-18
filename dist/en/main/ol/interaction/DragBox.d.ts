@@ -62,15 +62,15 @@ export type Options = {
 /**
  * *
  */
-export type DragBoxOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"boxcancel" | "boxdrag" | "boxend" | "boxstart", DragBoxEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "boxcancel" | "boxdrag" | "boxend", Return>;
+export type DragBoxOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types | "change:active", import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<"boxcancel" | "boxdrag" | "boxend" | "boxstart", DragBoxEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | "change:active" | "boxcancel" | "boxdrag" | "boxend", Return>;
 import Event from '../events/Event.js';
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
- *     'change:active', import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<'boxcancel'|'boxdrag'|'boxend'|'boxstart', DragBoxEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types|
+ *     'change:active', import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<'boxcancel'|'boxdrag'|'boxend'|'boxstart', DragBoxEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types|
  *     'change:active'|'boxcancel'|'boxdrag'|'boxend', Return>} DragBoxOnSignature
  */
 /**
@@ -91,13 +91,13 @@ declare class DragBox extends PointerInteraction {
      */
     constructor(options?: Options);
     /***
-     * @type {DragBoxOnSignature<import("../events").EventsKey>}
+     * @type {DragBoxOnSignature<import("../events.js").EventsKey>}
      */
-    on: DragBoxOnSignature<import("../events").EventsKey>;
+    on: DragBoxOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {DragBoxOnSignature<import("../events").EventsKey>}
+     * @type {DragBoxOnSignature<import("../events.js").EventsKey>}
      */
-    once: DragBoxOnSignature<import("../events").EventsKey>;
+    once: DragBoxOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {DragBoxOnSignature<void>}
      */

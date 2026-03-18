@@ -8,7 +8,7 @@ declare class CanvasImageLayerRenderer extends CanvasLayerRenderer<any> {
     /**
      * @param {import("../../layer/Image.js").default} imageLayer Image layer.
      */
-    constructor(imageLayer: import("../../layer.js").Image<any>);
+    constructor(imageLayer: import("../../layer/Image.js").default<any>);
     /**
      * @protected
      * @type {?import("../../Image.js").default}

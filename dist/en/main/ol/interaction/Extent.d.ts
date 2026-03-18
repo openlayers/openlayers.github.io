@@ -65,18 +65,18 @@ export type PointerHandler = (arg0: import("../coordinate.js").Coordinate) => im
 /**
  * *
  */
-export type ExtentOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"extentchanged", ExtentEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "extentchanged", Return>;
+export type ExtentOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types | "change:active", import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<"extentchanged", ExtentEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | "change:active" | "extentchanged", Return>;
 import Event from '../events/Event.js';
 /**
  * @typedef {function (import("../coordinate.js").Coordinate): import("../extent.js").Extent} PointerHandler
  */
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
- *     'change:active', import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<'extentchanged', ExtentEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types|
+ *     'change:active', import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<'extentchanged', ExtentEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types|
  *     'change:active'|'extentchanged', Return>} ExtentOnSignature
  */
 /**
@@ -95,13 +95,13 @@ declare class Extent extends PointerInteraction {
      */
     constructor(options?: Options);
     /***
-     * @type {ExtentOnSignature<import("../events").EventsKey>}
+     * @type {ExtentOnSignature<import("../events.js").EventsKey>}
      */
-    on: ExtentOnSignature<import("../events").EventsKey>;
+    on: ExtentOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {ExtentOnSignature<import("../events").EventsKey>}
+     * @type {ExtentOnSignature<import("../events.js").EventsKey>}
      */
-    once: ExtentOnSignature<import("../events").EventsKey>;
+    once: ExtentOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {ExtentOnSignature<void>}
      */

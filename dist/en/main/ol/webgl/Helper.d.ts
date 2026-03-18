@@ -69,7 +69,7 @@ export type AttributeDescription = {
      */
     type?: number | undefined;
 };
-export type UniformLiteralValue = number | Array<number> | HTMLCanvasElement | HTMLImageElement | ImageData | WebGLTexture | import("../transform").Transform;
+export type UniformLiteralValue = number | Array<number> | HTMLCanvasElement | HTMLImageElement | ImageData | WebGLTexture | import("../transform.js").Transform;
 /**
  * Uniform value can be a number, array of numbers (2 to 4), canvas element or a callback returning
  * one of the previous types.
@@ -396,15 +396,15 @@ declare class WebGLHelper extends Disposable {
      * Just bind the buffer if it's in the cache. Otherwise create
      * the WebGL buffer, bind it, populate it, and add an entry to
      * the cache.
-     * @param {import("./Buffer").default} buffer Buffer.
+     * @param {import("./Buffer.js").default} buffer Buffer.
      */
-    bindBuffer(buffer: import("./Buffer").default): void;
+    bindBuffer(buffer: import("./Buffer.js").default): void;
     /**
      * Update the data contained in the buffer array; this is required for the
      * new data to be rendered
-     * @param {import("./Buffer").default} buffer Buffer.
+     * @param {import("./Buffer.js").default} buffer Buffer.
      */
-    flushBufferData(buffer: import("./Buffer").default): void;
+    flushBufferData(buffer: import("./Buffer.js").default): void;
     /**
      * @param {import("./Buffer.js").default} buf Buffer.
      */
@@ -436,11 +436,11 @@ declare class WebGLHelper extends Disposable {
     bindTexture(texture: WebGLTexture, slot: number, uniformName: string): void;
     /**
      * Set up an attribute array buffer for use in the vertex shader.
-     * @param {import("./Buffer").default} buffer The buffer.
+     * @param {import("./Buffer.js").default} buffer The buffer.
      * @param {string} attributeName The attribute name.
      * @param {number} size The number of components per attribute vertex.
      */
-    bindAttribute(buffer: import("./Buffer").default, attributeName: string, size: number): void;
+    bindAttribute(buffer: import("./Buffer.js").default, attributeName: string, size: number): void;
     /**
      * Clear the render target & bind it for future draw operations.
      * This is similar to `prepareDraw`, only post processes will not be applied.
@@ -536,10 +536,10 @@ declare class WebGLHelper extends Disposable {
      * Sets the given transform to apply the rotation/translation/scaling of the given frame state.
      * The resulting transform can be used to convert world space coordinates to view coordinates in the [-1, 1] range.
      * @param {import("../Map.js").FrameState} frameState Frame state.
-     * @param {import("../transform").Transform} transform Transform to update.
-     * @return {import("../transform").Transform} The updated transform object.
+     * @param {import("../transform.js").Transform} transform Transform to update.
+     * @return {import("../transform.js").Transform} The updated transform object.
      */
-    makeProjectionTransform(frameState: import("../Map.js").FrameState, transform: import("../transform").Transform): import("../transform").Transform;
+    makeProjectionTransform(frameState: import("../Map.js").FrameState, transform: import("../transform.js").Transform): import("../transform.js").Transform;
     /**
      * Give a value for a standard float uniform
      * @param {string} uniform Uniform name

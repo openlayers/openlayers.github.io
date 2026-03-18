@@ -37,7 +37,7 @@ export type AttributeDefinition = {
      * This callback computes the numerical value of the
      * attribute for a given feature.
      */
-    callback: (this: import("./MixedGeometryBatch.js").GeometryBatchItem, arg1: import("../../Feature").FeatureLike) => number | Array<number>;
+    callback: (this: import("./MixedGeometryBatch.js").GeometryBatchItem, arg1: import("../../Feature.js").FeatureLike) => number | Array<number>;
 };
 export type AttributeDefinitions = {
     [x: string]: AttributeDefinition;
@@ -143,12 +143,12 @@ export type RenderPass = {
  * for each feature.
  * @property {number} [size] Amount of numerical values composing the attribute, either 1, 2, 3 or 4; in case size is > 1, the return value
  * of the callback should be an array; if unspecified, assumed to be a single float value
- * @property {function(this:import("./MixedGeometryBatch.js").GeometryBatchItem, import("../../Feature").FeatureLike):number|Array<number>} callback This callback computes the numerical value of the
+ * @property {function(this:import("./MixedGeometryBatch.js").GeometryBatchItem, import("../../Feature.js").FeatureLike):number|Array<number>} callback This callback computes the numerical value of the
  * attribute for a given feature.
  */
 /**
  * @typedef {Object<string, AttributeDefinition>} AttributeDefinitions
- * @typedef {Object<string, import("../../webgl/Helper").UniformValue>} UniformDefinitions
+ * @typedef {Object<string, import("../../webgl/Helper.js").UniformValue>} UniformDefinitions
  */
 /**
  * @typedef {Array<WebGLArrayBuffer>} WebGLArrayBufferSet Buffers organized like so: [indicesBuffer, vertexAttributesBuffer, instanceAttributesBuffer]

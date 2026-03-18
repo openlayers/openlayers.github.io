@@ -9,7 +9,7 @@ export default JSONFeature;
  * @extends {FeatureFormat<FeatureType>}
  * @abstract
  */
-declare class JSONFeature<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom.js").Geometry, {
+declare class JSONFeature<FeatureType extends import("../Feature.js").FeatureLike = import("../Feature.js").default<import("../geom/Geometry.js").default, {
     [x: string]: any;
 }>> extends FeatureFormat<FeatureType> {
     /**

@@ -187,9 +187,12 @@
 import View from &#x27;ol/View.js&#x27;;
 import MousePosition from &#x27;ol/control/MousePosition.js&#x27;;
 import {toStringHDMS} from &#x27;ol/coordinate.js&#x27;;
-import {Image as ImageLayer, WebGLTile as TileLayer} from &#x27;ol/layer.js&#x27;;
+import ImageLayer from &#x27;ol/layer/Image.js&#x27;;
+import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
 import {fromLonLat, toLonLat} from &#x27;ol/proj.js&#x27;;
-import {DataTile, OSM, Raster as RasterSource} from &#x27;ol/source.js&#x27;;
+import DataTile from &#x27;ol/source/DataTile.js&#x27;;
+import OSM from &#x27;ol/source/OSM.js&#x27;;
+import RasterSource from &#x27;ol/source/Raster.js&#x27;;
 
 const attribution &#x3D;
   &#x27;&lt;a href&#x3D;&quot;https://github.com/tilezen/joerd/blob/master/docs/attribution.md&quot; target&#x3D;&quot;_blank&quot;&gt;Data sources and attribution&lt;/a&gt;&#x27;;

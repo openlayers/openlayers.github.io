@@ -17,7 +17,7 @@
  */
 export function getRequestUrl(baseUrl: string, extent: import("../extent.js").Extent, size: import("../size.js").Size, projection: import("../proj/Projection.js").default, params: any): string;
 /**
- * @param {import("../extent").Extent} extent Extent.
+ * @param {import("../extent.js").Extent} extent Extent.
  * @param {number} resolution Resolution.
  * @param {number} pixelRatio pixel ratio.
  * @param {import("../proj.js").Projection} projection Projection.
@@ -26,7 +26,7 @@ export function getRequestUrl(baseUrl: string, extent: import("../extent.js").Ex
  * @param {import("./wms.js").ServerType} serverType The type of the remote WMS server.
  * @return {string} Image src.
  */
-export function getImageSrc(extent: import("../extent").Extent, resolution: number, pixelRatio: number, projection: import("../proj.js").Projection, url: string, params: any, serverType: import("./wms.js").ServerType): string;
+export function getImageSrc(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj.js").Projection, url: string, params: any, serverType: import("./wms.js").ServerType): string;
 /**
  * @param {Object} params WMS params.
  * @param {string} request WMS `REQUEST`.

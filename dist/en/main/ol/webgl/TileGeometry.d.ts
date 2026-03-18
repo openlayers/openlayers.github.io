@@ -1,12 +1,12 @@
 export default TileGeometry;
-export type TileType = import("../VectorRenderTile").default;
+export type TileType = import("../VectorRenderTile.js").default;
 /**
- * @typedef {import("../VectorRenderTile").default} TileType
+ * @typedef {import("../VectorRenderTile.js").default} TileType
  */
 /**
  * @extends {BaseTileRepresentation<TileType>}
  */
-declare class TileGeometry extends BaseTileRepresentation<import("../VectorRenderTile").default> {
+declare class TileGeometry extends BaseTileRepresentation<import("../VectorRenderTile.js").default> {
     /**
      * @param {import("./BaseTileRepresentation.js").TileRepresentationOptions<TileType>} options The tile texture options.
      * @param {import("../render/webgl/VectorStyleRenderer.js").default} styleRenderer Vector style renderer

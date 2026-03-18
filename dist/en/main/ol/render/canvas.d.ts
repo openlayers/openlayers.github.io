@@ -371,11 +371,11 @@ export type TextState = {
     /**
      * BackgroundFill.
      */
-    backgroundFill?: import("../style.js").Fill | undefined;
+    backgroundFill?: import("../style/Fill.js").default | undefined;
     /**
      * BackgroundStroke.
      */
-    backgroundStroke?: import("../style.js").Stroke | undefined;
+    backgroundStroke?: import("../style/Stroke.js").default | undefined;
     /**
      * Scale.
      */

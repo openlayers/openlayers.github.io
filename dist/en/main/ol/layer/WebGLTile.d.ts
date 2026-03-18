@@ -100,7 +100,7 @@ export type Options = {
     /**
      * Source for this layer.
      */
-    source?: import("../source.js").DataTile<import("../ImageTile.js").default | import("../DataTile.js").default> | undefined;
+    source?: import("../source/DataTile.js").default<import("../ImageTile.js").default | import("../DataTile.js").default> | undefined;
     /**
      * Array
      * of sources for this layer. Takes precedence over `source`. Can either be an array of sources, or a function that
@@ -108,7 +108,7 @@ export type Options = {
      * {@link module :ol/source.sourcesFromTileGrid} for a helper function to generate sources that are organized in a
      * pyramid following the same pattern as a tile grid. **Note:** All sources must have the same band count and content.
      */
-    sources?: import("../source.js").DataTile<import("../ImageTile.js").default | import("../DataTile.js").default>[] | ((arg0: import("../extent.js").Extent, arg1: number) => Array<SourceType>) | undefined;
+    sources?: import("../source/DataTile.js").default<import("../ImageTile.js").default | import("../DataTile.js").default>[] | ((arg0: import("../extent.js").Extent, arg1: number) => Array<SourceType>) | undefined;
     /**
      * Sets the layer as overlay on a map. The map will not manage
      * this layer in its layers collection, and the layer will be rendered on top. This is useful for
@@ -165,7 +165,7 @@ export type ParsedStyle = {
  * @fires import("../render/Event.js").RenderEvent#postrender
  * @api
  */
-declare class WebGLTileLayer extends BaseTileLayer<import("../source.js").DataTile<import("../ImageTile.js").default | import("../DataTile.js").default>, WebGLTileLayerRenderer<any>> {
+declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js").default<import("../ImageTile.js").default | import("../DataTile.js").default>, WebGLTileLayerRenderer<any>> {
     /**
      * @param {Options} [options] Tile layer options.
      */
@@ -226,11 +226,11 @@ declare class WebGLTileLayer extends BaseTileLayer<import("../source.js").DataTi
      */
     override createRenderer(): WebGLTileLayerRenderer<this>;
     /**
-     * @param {import("../Map").FrameState} frameState Frame state.
+     * @param {import("../Map.js").FrameState} frameState Frame state.
      * @param {Array<SourceType>} sources Sources.
      * @return {HTMLElement} Canvas.
      */
-    renderSources(frameState: import("../Map").FrameState, sources: Array<SourceType>): HTMLElement;
+    renderSources(frameState: import("../Map.js").FrameState, sources: Array<SourceType>): HTMLElement;
     /**
      * @param {?import("../Map.js").FrameState} frameState Frame state.
      * @param {HTMLElement} target Target which the renderer may (but need not) use

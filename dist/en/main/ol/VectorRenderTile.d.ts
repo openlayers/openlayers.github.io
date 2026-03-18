@@ -38,10 +38,10 @@ declare class VectorRenderTile extends Tile {
      * @param {import("./tilecoord.js").TileCoord} tileCoord Tile coordinate.
      * @param {import("./TileState.js").default} state State.
      * @param {import("./tilecoord.js").TileCoord} urlTileCoord Wrapped tile coordinate for source urls.
-     * @param {function(VectorRenderTile):Array<import("./VectorTile").default>} getSourceTiles Function.
+     * @param {function(VectorRenderTile):Array<import("./VectorTile.js").default>} getSourceTiles Function.
      * @param {function(VectorRenderTile):void} removeSourceTiles Function.
      */
-    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, urlTileCoord: import("./tilecoord.js").TileCoord, getSourceTiles: (arg0: VectorRenderTile) => Array<import("./VectorTile").default<any>>, removeSourceTiles: (arg0: VectorRenderTile) => void);
+    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, urlTileCoord: import("./tilecoord.js").TileCoord, getSourceTiles: (arg0: VectorRenderTile) => Array<import("./VectorTile.js").default<any>>, removeSourceTiles: (arg0: VectorRenderTile) => void);
     /**
      * @private
      * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D|null}
@@ -73,7 +73,7 @@ declare class VectorRenderTile extends Tile {
     /**
      * @type {Array<import("./VectorTile.js").default>}
      */
-    sourceTiles: Array<import("./VectorTile").default<any>>;
+    sourceTiles: Array<import("./VectorTile.js").default<any>>;
     /**
      * @type {Object<string, boolean>}
      */
@@ -87,7 +87,7 @@ declare class VectorRenderTile extends Tile {
     /**
      * @type {!function():Array<import("./VectorTile.js").default>}
      */
-    getSourceTiles: () => Array<import("./VectorTile").default<any>>;
+    getSourceTiles: () => Array<import("./VectorTile.js").default<any>>;
     /**
      * @type {!function(VectorRenderTile):void}
      * @private

@@ -56,14 +56,14 @@ export type Options = {
     /**
      * Destination collection for the drawn features.
      */
-    features?: import("../Collection.js").default<Feature<import("../geom.js").Geometry, {
+    features?: import("../Collection.js").default<Feature<import("../geom/Geometry.js").default, {
         [x: string]: any;
     }>> | undefined;
     /**
      * Destination source for
      * the drawn features.
      */
-    source?: VectorSource<Feature<import("../geom.js").Geometry, {
+    source?: VectorSource<Feature<import("../geom/Geometry.js").default, {
         [x: string]: any;
     }>> | undefined;
     /**
@@ -153,7 +153,7 @@ export type Options = {
      * not provided, the interaction's `source` will be used.  Tracing requires that the interaction is configured with
      * either a `traceSource` or a `source`.
      */
-    traceSource?: VectorSource<Feature<import("../geom.js").Geometry, {
+    traceSource?: VectorSource<Feature<import("../geom/Geometry.js").default, {
         [x: string]: any;
     }>> | undefined;
     /**
@@ -197,7 +197,7 @@ export type Mode = "Point" | "LineString" | "Polygon" | "Circle";
 /**
  * *
  */
-export type DrawOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"drawabort" | "drawend" | "drawstart", DrawEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "drawabort" | "drawend" | "drawstart", Return>;
+export type DrawOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types | "change:active", import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<"drawabort" | "drawend" | "drawstart", DrawEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | "change:active" | "drawabort" | "drawend" | "drawstart", Return>;
 import Event from '../events/Event.js';
 import Feature from '../Feature.js';
 type DrawEventType = string;
@@ -208,11 +208,11 @@ declare namespace DrawEventType {
 }
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
- *     'change:active', import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<'drawabort'|'drawend'|'drawstart', DrawEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types|
+ *     'change:active', import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<'drawabort'|'drawend'|'drawstart', DrawEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types|
  *     'change:active'|'drawabort'|'drawend'|'drawstart', Return>} DrawOnSignature
  */
 /**
@@ -228,13 +228,13 @@ declare class Draw extends PointerInteraction {
      */
     constructor(options: Options);
     /***
-     * @type {DrawOnSignature<import("../events").EventsKey>}
+     * @type {DrawOnSignature<import("../events.js").EventsKey>}
      */
-    on: DrawOnSignature<import("../events").EventsKey>;
+    on: DrawOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {DrawOnSignature<import("../events").EventsKey>}
+     * @type {DrawOnSignature<import("../events.js").EventsKey>}
      */
-    once: DrawOnSignature<import("../events").EventsKey>;
+    once: DrawOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {DrawOnSignature<void>}
      */
@@ -550,7 +550,7 @@ declare class Draw extends PointerInteraction {
      */
     private atFinish_;
     /**
-     * @param {import("../coordinate").Coordinate} coordinates Coordinate.
+     * @param {import("../coordinate.js").Coordinate} coordinates Coordinate.
      * @private
      */
     private createOrUpdateSketchPoint_;

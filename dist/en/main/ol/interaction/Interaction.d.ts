@@ -15,7 +15,7 @@ export default Interaction;
 /**
  * *
  */
-export type InteractionOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active", Return>;
+export type InteractionOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types | "change:active", import("../Object.js").ObjectEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | "change:active", Return>;
 /**
  * Object literal with config options for interactions.
  */
@@ -31,10 +31,10 @@ export type InteractionOptions = {
 };
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
- *     'change:active', import("../Object").ObjectEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types|
+ *     'change:active', import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types|
  *     'change:active', Return>} InteractionOnSignature
  */
 /**
@@ -68,13 +68,13 @@ declare class Interaction extends BaseObject<{
      */
     constructor(options?: InteractionOptions);
     /***
-     * @type {InteractionOnSignature<import("../events").EventsKey>}
+     * @type {InteractionOnSignature<import("../events.js").EventsKey>}
      */
-    on: InteractionOnSignature<import("../events").EventsKey>;
+    on: InteractionOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {InteractionOnSignature<import("../events").EventsKey>}
+     * @type {InteractionOnSignature<import("../events.js").EventsKey>}
      */
-    once: InteractionOnSignature<import("../events").EventsKey>;
+    once: InteractionOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {InteractionOnSignature<void>}
      */

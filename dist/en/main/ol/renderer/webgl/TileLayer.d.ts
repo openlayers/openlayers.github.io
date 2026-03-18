@@ -55,7 +55,7 @@ export type TileTextureRepresentation = import("../../webgl/TileTexture.js").def
  * @typedef {Object} Options
  * @property {string} vertexShader Vertex shader source.
  * @property {string} fragmentShader Fragment shader source.
- * @property {Object<string, import("../../webgl/Helper").UniformValue>} [uniforms] Additional uniforms
+ * @property {Object<string, import("../../webgl/Helper.js").UniformValue>} [uniforms] Additional uniforms
  * made available to shaders.
  * @property {Array<import("../../webgl/PaletteTexture.js").default>} [paletteTextures] Palette textures.
  * @property {number} [cacheSize=512] The texture cache size.

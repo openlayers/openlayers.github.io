@@ -28,7 +28,7 @@ export default Collection;
 /**
  * *
  */
-export type CollectionOnSignature<T, Return> = import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return> & import("./Observable").OnSignature<import("./ObjectEventType").Types | "change:length", import("./Object").ObjectEvent, Return> & import("./Observable").OnSignature<"add" | "remove", CollectionEvent<T>, Return> & import("./Observable").CombinedOnSignature<import("./Observable").EventTypes | import("./ObjectEventType").Types | "change:length" | "add" | "remove", Return>;
+export type CollectionOnSignature<T, Return> = import("./Observable.js").OnSignature<import("./Observable.js").EventTypes, import("./events/Event.js").default, Return> & import("./Observable.js").OnSignature<import("./ObjectEventType.js").Types | "change:length", import("./Object.js").ObjectEvent, Return> & import("./Observable.js").OnSignature<"add" | "remove", CollectionEvent<T>, Return> & import("./Observable.js").CombinedOnSignature<import("./Observable.js").EventTypes | import("./ObjectEventType.js").Types | "change:length" | "add" | "remove", Return>;
 export type Options = {
     /**
      * Disallow the same item from being added to
@@ -40,10 +40,10 @@ import Event from './events/Event.js';
 /***
  * @template T
  * @template Return
- * @typedef {import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return> &
- *   import("./Observable").OnSignature<import("./ObjectEventType").Types|'change:length', import("./Object").ObjectEvent, Return> &
- *   import("./Observable").OnSignature<'add'|'remove', CollectionEvent<T>, Return> &
- *   import("./Observable").CombinedOnSignature<import("./Observable").EventTypes|import("./ObjectEventType").Types|
+ * @typedef {import("./Observable.js").OnSignature<import("./Observable.js").EventTypes, import("./events/Event.js").default, Return> &
+ *   import("./Observable.js").OnSignature<import("./ObjectEventType.js").Types|'change:length', import("./Object.js").ObjectEvent, Return> &
+ *   import("./Observable.js").OnSignature<'add'|'remove', CollectionEvent<T>, Return> &
+ *   import("./Observable.js").CombinedOnSignature<import("./Observable.js").EventTypes|import("./ObjectEventType.js").Types|
  *     'change:length'|'add'|'remove',Return>} CollectionOnSignature
  */
 /**
@@ -73,13 +73,13 @@ declare class Collection<T> extends BaseObject<{
      */
     constructor(array?: Array<T>, options?: Options);
     /***
-     * @type {CollectionOnSignature<T, import("./events").EventsKey>}
+     * @type {CollectionOnSignature<T, import("./events.js").EventsKey>}
      */
-    on: CollectionOnSignature<T, import("./events").EventsKey>;
+    on: CollectionOnSignature<T, import("./events.js").EventsKey>;
     /***
-     * @type {CollectionOnSignature<T, import("./events").EventsKey>}
+     * @type {CollectionOnSignature<T, import("./events.js").EventsKey>}
      */
-    once: CollectionOnSignature<T, import("./events").EventsKey>;
+    once: CollectionOnSignature<T, import("./events.js").EventsKey>;
     /***
      * @type {CollectionOnSignature<T, void>}
      */

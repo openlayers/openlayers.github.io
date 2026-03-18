@@ -16,7 +16,7 @@
  */
 export function createHitDetectionImageData(size: import("../../size.js").Size, transforms: Array<import("../../transform.js").Transform>, features: Array<import("../../Feature.js").FeatureLike>, styleFunction: import("../../style/Style.js").StyleFunction | undefined, extent: import("../../extent.js").Extent, resolution: number, rotation: number, squaredTolerance?: number, projection?: import("../../proj/Projection.js").default): ImageData;
 /**
- * @param {import("../../pixel").Pixel} pixel Pixel coordinate on the hit
+ * @param {import("../../pixel.js").Pixel} pixel Pixel coordinate on the hit
  * detection canvas in css pixels.
  * @param {Array<F>} features Features. Has to
  * match the `features` array that was passed to `createHitDetectionImageData()`.
@@ -25,6 +25,6 @@ export function createHitDetectionImageData(size: import("../../size.js").Size, 
  * @return {Array<F>} Features.
  * @template {import("../../Feature.js").FeatureLike} F
  */
-export function hitDetect<F extends import("../../Feature.js").FeatureLike>(pixel: import("../../pixel").Pixel, features: Array<F>, imageData: ImageData): Array<F>;
+export function hitDetect<F extends import("../../Feature.js").FeatureLike>(pixel: import("../../pixel.js").Pixel, features: Array<F>, imageData: ImageData): Array<F>;
 export const HIT_DETECT_RESOLUTION: 0.5;
 //# sourceMappingURL=hitdetect.d.ts.map

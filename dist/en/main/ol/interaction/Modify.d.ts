@@ -112,7 +112,7 @@ export type Options = {
      * features to modify.  If a vector source is not provided, a feature collection
      * must be provided with the `features` option.
      */
-    source?: VectorSource<Feature<import("../geom.js").Geometry, {
+    source?: VectorSource<Feature<import("../geom/Geometry.js").default, {
         [x: string]: any;
     }>> | undefined;
     /**
@@ -121,12 +121,12 @@ export type Options = {
      * the `pixelTolerance` from the pointer location. When a {@link module :ol/layer/BaseVector~BaseVectorLayer} is
      * provided, only the rendered representation of the features on that layer will be considered.
      */
-    hitDetection?: boolean | import("../layer/BaseVector").default<any, any, any> | undefined;
+    hitDetection?: boolean | import("../layer/BaseVector.js").default<any, any, any> | undefined;
     /**
      * The features the interaction works on.  If a feature collection is not
      * provided, a vector source must be provided with the `source` option.
      */
-    features?: Collection<Feature<import("../geom.js").Geometry, {
+    features?: Collection<Feature<import("../geom/Geometry.js").default, {
         [x: string]: any;
     }>> | undefined;
     /**
@@ -143,7 +143,7 @@ export type Options = {
      * not provided, the interaction's `source` will be used.  Tracing requires that the interaction is configured with
      * either a `traceSource` or a `source`.
      */
-    traceSource?: VectorSource<Feature<import("../geom.js").Geometry, {
+    traceSource?: VectorSource<Feature<import("../geom/Geometry.js").default, {
         [x: string]: any;
     }>> | undefined;
     /**
@@ -168,7 +168,7 @@ export type Options = {
 /**
  * *
  */
-export type ModifyOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"modifyend" | "modifystart", ModifyEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "modifyend" | "modifystart", Return>;
+export type ModifyOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types | "change:active", import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<"modifyend" | "modifystart", ModifyEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | "change:active" | "modifyend" | "modifystart", Return>;
 import Event from '../events/Event.js';
 import Collection from '../Collection.js';
 import Feature from '../Feature.js';
@@ -179,11 +179,11 @@ declare namespace ModifyEventType {
 }
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
- *     'change:active', import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<'modifyend'|'modifystart', ModifyEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types|
+ *     'change:active', import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<'modifyend'|'modifystart', ModifyEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types|
  *     'change:active'|'modifyend'|'modifystart', Return>} ModifyOnSignature
  */
 /**
@@ -235,18 +235,18 @@ declare class Modify extends PointerInteraction {
     /**
      * Listener for features in external source or features collection.  Ensures the feature filter
      * is re-run and segment data is updated.
-     * @param {import("../events/Event.js").default | import("../Object").ObjectEvent} evt Event.
+     * @param {import("../events/Event.js").default | import("../Object.js").ObjectEvent} evt Event.
      * @private
      */
     private handleFeatureChange_;
     /***
-     * @type {ModifyOnSignature<import("../events").EventsKey>}
+     * @type {ModifyOnSignature<import("../events.js").EventsKey>}
      */
-    on: ModifyOnSignature<import("../events").EventsKey>;
+    on: ModifyOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {ModifyOnSignature<import("../events").EventsKey>}
+     * @type {ModifyOnSignature<import("../events.js").EventsKey>}
      */
-    once: ModifyOnSignature<import("../events").EventsKey>;
+    once: ModifyOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {ModifyOnSignature<void>}
      */
@@ -367,7 +367,7 @@ declare class Modify extends PointerInteraction {
      */
     private traceSegments_;
     /**
-     * @type {boolean|import("../layer/BaseVector").default}
+     * @type {boolean|import("../layer/BaseVector.js").default}
      * @private
      */
     private hitDetection_;
@@ -387,7 +387,7 @@ declare class Modify extends PointerInteraction {
      * @type {function(import("../coordinate.js").Coordinate, import("../coordinate.js").Coordinate): boolean}
      */
     private coordinatesEqual_;
-    featuresCollection_: Collection<Feature<import("../geom.js").Geometry, {
+    featuresCollection_: Collection<Feature<import("../geom/Geometry.js").default, {
         [x: string]: any;
     }>> | undefined;
     /**
@@ -548,7 +548,7 @@ declare class Modify extends PointerInteraction {
      * @private
      */
     private updateTrace_;
-    getTraceCandidates_(event: any): Feature<import("../geom.js").Geometry, {
+    getTraceCandidates_(event: any): Feature<import("../geom/Geometry.js").default, {
         [x: string]: any;
     }>[];
     /**

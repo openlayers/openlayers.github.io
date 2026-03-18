@@ -69,7 +69,7 @@ export type Options = {
      * extent, the grid will be based on that; if not, a grid based on a global
      * extent with origin at 0,0 will be used.
      */
-    tileGrid?: import("../tilegrid.js").TileGrid | undefined;
+    tileGrid?: import("../tilegrid/TileGrid.js").default | undefined;
     /**
      * The type of
      * the remote WMS server: `mapserver`, `geoserver`, `carmentaserver`, or `qgis`.

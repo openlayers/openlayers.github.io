@@ -66,7 +66,7 @@ declare class ExecutorGroup {
     private renderBuffer_;
     /**
      * @private
-     * @type {!Object<string, !Object<string, import("./Executor").default>>}
+     * @type {!Object<string, !Object<string, import("./Executor.js").default>>}
      */
     private executorsByZIndex_;
     /**

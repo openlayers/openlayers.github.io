@@ -35,5 +35,5 @@ export function renderFeature(replayGroup: import("../render/canvas/BuilderGroup
  * unmanaged layers. The third is the {@link module :ol/geom/SimpleGeometry~SimpleGeometry} of the feature. For features
  * with a GeometryCollection geometry, it will be the first detected geometry from the collection.
  */
-export type FeatureCallback<T> = (arg0: import("../Feature.js").FeatureLike, arg1: import("../layer/Layer.js").default<import("../source/Source").default>, arg2: import("../geom/SimpleGeometry.js").default) => T;
+export type FeatureCallback<T> = (arg0: import("../Feature.js").FeatureLike, arg1: import("../layer/Layer.js").default<import("../source/Source.js").default>, arg2: import("../geom/SimpleGeometry.js").default) => T;
 //# sourceMappingURL=vector.d.ts.map

@@ -13,11 +13,11 @@ declare class IconImage extends EventTarget {
     /**
      * @param {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas|ImageBitmap|null} image Image.
      * @param {string|undefined} src Src.
-     * @param {import('../dom').ImageAttributes} imageAttributes Image attributes options.
+     * @param {import('../dom.js').ImageAttributes} imageAttributes Image attributes options.
      * @param {import("../ImageState.js").default|undefined} imageState Image state.
      * @param {import("../color.js").Color|string|null} color Color.
      */
-    constructor(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap | null, src: string | undefined, imageAttributes: import("../dom").ImageAttributes, imageState: any | undefined, color: import("../color.js").Color | string | null);
+    constructor(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap | null, src: string | undefined, imageAttributes: import("../dom.js").ImageAttributes, imageState: any | undefined, color: import("../color.js").Color | string | null);
     /**
      * @private
      * @type {HTMLImageElement|OffscreenCanvas|HTMLCanvasElement|ImageBitmap}

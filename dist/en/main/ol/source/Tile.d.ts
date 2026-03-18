@@ -20,7 +20,7 @@ export default TileSource;
 /**
  * *
  */
-export type TileSourceOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("./TileEventType").TileSourceEventTypes, TileSourceEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | import("./TileEventType").TileSourceEventTypes, Return>;
+export type TileSourceOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types, import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<import("./TileEventType.js").TileSourceEventTypes, TileSourceEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | import("./TileEventType.js").TileSourceEventTypes, Return>;
 export type Options = {
     /**
      * Attributions.
@@ -75,11 +75,11 @@ export type Options = {
 import Event from '../events/Event.js';
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<import("./TileEventType").TileSourceEventTypes, TileSourceEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
- *     import("./TileEventType").TileSourceEventTypes, Return>} TileSourceOnSignature
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types, import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<import("./TileEventType.js").TileSourceEventTypes, TileSourceEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types|
+ *     import("./TileEventType.js").TileSourceEventTypes, Return>} TileSourceOnSignature
  */
 /**
  * @typedef {Object} Options
@@ -113,13 +113,13 @@ declare class TileSource<TileType extends import("../Tile.js").default = import(
      */
     constructor(options: Options);
     /***
-     * @type {TileSourceOnSignature<import("../events").EventsKey>}
+     * @type {TileSourceOnSignature<import("../events.js").EventsKey>}
      */
-    on: TileSourceOnSignature<import("../events").EventsKey>;
+    on: TileSourceOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {TileSourceOnSignature<import("../events").EventsKey>}
+     * @type {TileSourceOnSignature<import("../events.js").EventsKey>}
      */
-    once: TileSourceOnSignature<import("../events").EventsKey>;
+    once: TileSourceOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {TileSourceOnSignature<void>}
      */

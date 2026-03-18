@@ -211,7 +211,7 @@ import RenderFeature from '../render/Feature.js';
  * @abstract
  * @api
  */
-declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom.js").Geometry, {
+declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureLike = Feature<import("../geom/Geometry.js").default, {
     [x: string]: any;
 }>> {
     /**

@@ -261,7 +261,7 @@ export type Options = {
 /**
  * *
  */
-export type RasterSourceOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<import("./Image.js").ImageSourceEventTypes, import("./Image.js").ImageSourceEvent, Return> & import("../Observable").OnSignature<RasterSourceEventTypes, RasterSourceEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | RasterSourceEventTypes, Return>;
+export type RasterSourceOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types, import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<import("./Image.js").ImageSourceEventTypes, import("./Image.js").ImageSourceEvent, Return> & import("../Observable.js").OnSignature<RasterSourceEventTypes, RasterSourceEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | RasterSourceEventTypes, Return>;
 import Disposable from '../Disposable.js';
 import Event from '../events/Event.js';
 /**
@@ -288,11 +288,11 @@ import Event from '../events/Event.js';
  */
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<import("./Image.js").ImageSourceEventTypes, import("./Image.js").ImageSourceEvent, Return> &
- *   import("../Observable").OnSignature<RasterSourceEventTypes, RasterSourceEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types, import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<import("./Image.js").ImageSourceEventTypes, import("./Image.js").ImageSourceEvent, Return> &
+ *   import("../Observable.js").OnSignature<RasterSourceEventTypes, RasterSourceEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types
  *     |RasterSourceEventTypes, Return>} RasterSourceOnSignature
  */
 /**
@@ -310,13 +310,13 @@ declare class RasterSource extends ImageSource {
      */
     constructor(options: Options);
     /***
-     * @type {RasterSourceOnSignature<import("../events").EventsKey>}
+     * @type {RasterSourceOnSignature<import("../events.js").EventsKey>}
      */
-    on: RasterSourceOnSignature<import("../events").EventsKey>;
+    on: RasterSourceOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {RasterSourceOnSignature<import("../events").EventsKey>}
+     * @type {RasterSourceOnSignature<import("../events.js").EventsKey>}
      */
-    once: RasterSourceOnSignature<import("../events").EventsKey>;
+    once: RasterSourceOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {RasterSourceOnSignature<void>}
      */
@@ -421,11 +421,11 @@ declare class RasterSource extends ImageSource {
      */
     private onWorkerComplete_;
     /**
-     * @param {import("../proj/Projection").default} [projection] Projection.
+     * @param {import("../proj/Projection.js").default} [projection] Projection.
      * @return {Array<number>|null} Resolutions.
      * @override
      */
-    override getResolutions(projection?: import("../proj/Projection").default): Array<number> | null;
+    override getResolutions(projection?: import("../proj/Projection.js").default): Array<number> | null;
 }
 import ImageSource from './Image.js';
 //# sourceMappingURL=Raster.d.ts.map

@@ -6,7 +6,7 @@ export type Units = "degrees" | "imperial" | "nautical" | "metric" | "us";
 /**
  * *
  */
-export type ScaleLineOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:units", import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:units", Return>;
+export type ScaleLineOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types | "change:units", import("../Object.js").ObjectEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | "change:units", Return>;
 export type Options = {
     /**
      * CSS class name. The default is `ol-scale-bar` when configured with
@@ -59,10 +59,10 @@ export type Options = {
 };
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
- *     'change:units', import("../Object").ObjectEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types|
+ *     'change:units', import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types
  *     |'change:units', Return>} ScaleLineOnSignature
  */
 /**
@@ -109,13 +109,13 @@ declare class ScaleLine extends Control {
      */
     constructor(options?: Options);
     /***
-     * @type {ScaleLineOnSignature<import("../events").EventsKey>}
+     * @type {ScaleLineOnSignature<import("../events.js").EventsKey>}
      */
-    on: ScaleLineOnSignature<import("../events").EventsKey>;
+    on: ScaleLineOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {ScaleLineOnSignature<import("../events").EventsKey>}
+     * @type {ScaleLineOnSignature<import("../events.js").EventsKey>}
      */
-    once: ScaleLineOnSignature<import("../events").EventsKey>;
+    once: ScaleLineOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {ScaleLineOnSignature<void>}
      */

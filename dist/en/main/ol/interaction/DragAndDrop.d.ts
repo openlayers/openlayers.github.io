@@ -46,7 +46,7 @@ export type Options = {
      * source without removing the existing features (append only), instead of
      * providing the source option listen for the "addfeatures" event.
      */
-    source?: import("../source.js").Vector<import("../Feature.js").default<import("../geom.js").Geometry, {
+    source?: import("../source/Vector.js").default<import("../Feature.js").default<import("../geom.js").Geometry, {
         [x: string]: any;
     }>> | undefined;
     /**
@@ -61,7 +61,7 @@ export type Options = {
 /**
  * *
  */
-export type DragAndDropOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"addfeatures", DragAndDropEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "addfeatures", Return>;
+export type DragAndDropOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types | "change:active", import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<"addfeatures", DragAndDropEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | "change:active" | "addfeatures", Return>;
 import Event from '../events/Event.js';
 type DragAndDropEventType = string;
 declare namespace DragAndDropEventType {
@@ -69,11 +69,11 @@ declare namespace DragAndDropEventType {
 }
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
- *     'change:active', import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<'addfeatures', DragAndDropEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types|
+ *     'change:active', import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<'addfeatures', DragAndDropEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types|
  *     'change:active'|'addfeatures', Return>} DragAndDropOnSignature
  */
 /**
@@ -90,13 +90,13 @@ declare class DragAndDrop extends Interaction {
      */
     constructor(options?: Options);
     /***
-     * @type {DragAndDropOnSignature<import("../events").EventsKey>}
+     * @type {DragAndDropOnSignature<import("../events.js").EventsKey>}
      */
-    on: DragAndDropOnSignature<import("../events").EventsKey>;
+    on: DragAndDropOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {DragAndDropOnSignature<import("../events").EventsKey>}
+     * @type {DragAndDropOnSignature<import("../events.js").EventsKey>}
      */
-    once: DragAndDropOnSignature<import("../events").EventsKey>;
+    once: DragAndDropOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {DragAndDropOnSignature<void>}
      */

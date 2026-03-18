@@ -120,7 +120,7 @@ export type Options = {
     /**
      * Source for this layer.
      */
-    source?: import("../source.js").DataTile<import("../DataTile.js").default> | undefined;
+    source?: import("../source/DataTile.js").default<import("../DataTile.js").default> | undefined;
     /**
      * Sets the layer as overlay on a map. The map will not manage
      * this layer in its layers collection, and the layer will be rendered on top. This is useful for
@@ -146,7 +146,7 @@ export type Options = {
  * @fires import("../render/Event.js").RenderEvent#prerender
  * @fires import("../render/Event.js").RenderEvent#postrender
  */
-declare class FlowLayer extends BaseTileLayer<import("../source.js").DataTile<import("../DataTile.js").default>, FlowLayerRenderer> {
+declare class FlowLayer extends BaseTileLayer<import("../source/DataTile.js").default<import("../DataTile.js").default>, FlowLayerRenderer> {
     /**
      * @param {Options} options Flow layer options.
      */

@@ -7,7 +7,7 @@ export type Options = {
     /**
      * Tile grid.
      */
-    tileGrid?: import("../tilegrid.js").TileGrid | undefined;
+    tileGrid?: import("../tilegrid/TileGrid.js").default | undefined;
     /**
      * Whether to wrap the world horizontally.
      */

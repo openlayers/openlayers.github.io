@@ -2,7 +2,7 @@ export default MousePosition;
 /**
  * *
  */
-export type MousePositionOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:coordinateFormat" | "change:projection", import("../Object").ObjectEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:coordinateFormat" | "change:projection", Return>;
+export type MousePositionOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types | "change:coordinateFormat" | "change:projection", import("../Object.js").ObjectEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | "change:coordinateFormat" | "change:projection", Return>;
 export type Options = {
     /**
      * CSS class name.
@@ -43,10 +43,10 @@ export type Options = {
 };
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
- *     'change:coordinateFormat'|'change:projection', import("../Object").ObjectEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types|
+ *     'change:coordinateFormat'|'change:projection', import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types|
  *     'change:coordinateFormat'|'change:projection', Return>} MousePositionOnSignature
  */
 /**
@@ -85,13 +85,13 @@ declare class MousePosition extends Control {
      */
     constructor(options?: Options);
     /***
-     * @type {MousePositionOnSignature<import("../events").EventsKey>}
+     * @type {MousePositionOnSignature<import("../events.js").EventsKey>}
      */
-    on: MousePositionOnSignature<import("../events").EventsKey>;
+    on: MousePositionOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {MousePositionOnSignature<import("../events").EventsKey>}
+     * @type {MousePositionOnSignature<import("../events.js").EventsKey>}
      */
-    once: MousePositionOnSignature<import("../events").EventsKey>;
+    once: MousePositionOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {MousePositionOnSignature<void>}
      */

@@ -12,7 +12,7 @@ export type SegmentData = {
     /**
      * Feature which intersects.
      */
-    intersectionFeature?: import("../Feature.js").default<import("../geom.js").Geometry, {
+    intersectionFeature?: import("../Feature.js").default<import("../geom/Geometry.js").default, {
         [x: string]: any;
     }> | undefined;
     /**
@@ -23,7 +23,7 @@ export type SegmentData = {
 /**
  * A function taking a {@link module :ol/geom/Geometry~Geometry} as argument and returning an array of {@link Segment}s.
  */
-export type Segmenter<GeometryType extends import("../geom/Geometry.js").default = import("../geom.js").Geometry> = (geometry: GeometryType, projection?: import("../proj/Projection.js").default) => Array<Segment>;
+export type Segmenter<GeometryType extends import("../geom/Geometry.js").default = import("../geom/Geometry.js").default> = (geometry: GeometryType, projection?: import("../proj/Projection.js").default) => Array<Segment>;
 /**
  * Each segmenter specified here will override the default segmenter for the
  * corresponding geometry type. To exclude all geometries of a specific geometry type from being snapped to,
@@ -33,47 +33,47 @@ export type Segmenters = {
     /**
      * Point segmenter.
      */
-    Point?: Segmenter<import("../geom.js").Point> | null | undefined;
+    Point?: Segmenter<import("../geom/Point.js").default> | null | undefined;
     /**
      * LineString segmenter.
      */
-    LineString?: Segmenter<import("../geom.js").LineString> | null | undefined;
+    LineString?: Segmenter<import("../geom/LineString.js").default> | null | undefined;
     /**
      * Polygon segmenter.
      */
-    Polygon?: Segmenter<import("../geom.js").Polygon> | null | undefined;
+    Polygon?: Segmenter<import("../geom/Polygon.js").default> | null | undefined;
     /**
      * Circle segmenter.
      */
-    Circle?: Segmenter<import("../geom.js").Circle> | null | undefined;
+    Circle?: Segmenter<import("../geom/Circle.js").default> | null | undefined;
     /**
      * GeometryCollection segmenter.
      */
-    GeometryCollection?: Segmenter<import("../geom.js").GeometryCollection> | null | undefined;
+    GeometryCollection?: Segmenter<import("../geom/GeometryCollection.js").default> | null | undefined;
     /**
      * MultiPoint segmenter.
      */
-    MultiPoint?: Segmenter<import("../geom.js").MultiPoint> | null | undefined;
+    MultiPoint?: Segmenter<import("../geom/MultiPoint.js").default> | null | undefined;
     /**
      * MultiLineString segmenter.
      */
-    MultiLineString?: Segmenter<import("../geom.js").MultiLineString> | null | undefined;
+    MultiLineString?: Segmenter<import("../geom/MultiLineString.js").default> | null | undefined;
     /**
      * MultiPolygon segmenter.
      */
-    MultiPolygon?: Segmenter<import("../geom.js").MultiPolygon> | null | undefined;
+    MultiPolygon?: Segmenter<import("../geom/MultiPolygon.js").default> | null | undefined;
 };
 export type Options = {
     /**
      * Snap to these features. Either this option or source should be provided.
      */
-    features?: import("../Collection.js").default<import("../Feature.js").default<import("../geom.js").Geometry, {
+    features?: import("../Collection.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default, {
         [x: string]: any;
     }>> | undefined;
     /**
      * Snap to features from this source. Either this option or features should be provided
      */
-    source?: import("../source.js").Vector<import("../Feature.js").default<import("../geom.js").Geometry, {
+    source?: import("../source/Vector.js").default<import("../Feature.js").default<import("../geom/Geometry.js").default, {
         [x: string]: any;
     }>> | undefined;
     /**
@@ -131,14 +131,14 @@ export type SnappedInfo = {
 /**
  * *
  */
-export type SnapOnSignature<Return> = import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> & import("../Observable").OnSignature<import("../ObjectEventType").Types | "change:active", import("../Object").ObjectEvent, Return> & import("../Observable").OnSignature<"snap" | "unsnap", SnapEvent, Return> & import("../Observable").CombinedOnSignature<import("../Observable").EventTypes | import("../ObjectEventType").Types | "change:active" | "snap" | "unsnap", Return>;
+export type SnapOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types | "change:active", import("../Object.js").ObjectEvent, Return> & import("../Observable.js").OnSignature<"snap" | "unsnap", SnapEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | import("../ObjectEventType.js").Types | "change:active" | "snap" | "unsnap", Return>;
 /***
  * @template Return
- * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
- *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
- *     'change:active', import("../Object").ObjectEvent, Return> &
- *   import("../Observable").OnSignature<'snap'|'unsnap', SnapEvent, Return> &
- *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
+ * @typedef {import("../Observable.js").OnSignature<import("../Observable.js").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types|
+ *     'change:active', import("../Object.js").ObjectEvent, Return> &
+ *   import("../Observable.js").OnSignature<'snap'|'unsnap', SnapEvent, Return> &
+ *   import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes|import("../ObjectEventType.js").Types|
  *     'change:active'|'snap'|'unsnap', Return>} SnapOnSignature
  */
 /**
@@ -171,13 +171,13 @@ declare class Snap extends PointerInteraction {
      */
     constructor(options?: Options);
     /***
-     * @type {SnapOnSignature<import("../events").EventsKey>}
+     * @type {SnapOnSignature<import("../events.js").EventsKey>}
      */
-    on: SnapOnSignature<import("../events").EventsKey>;
+    on: SnapOnSignature<import("../events.js").EventsKey>;
     /***
-     * @type {SnapOnSignature<import("../events").EventsKey>}
+     * @type {SnapOnSignature<import("../events.js").EventsKey>}
      */
-    once: SnapOnSignature<import("../events").EventsKey>;
+    once: SnapOnSignature<import("../events.js").EventsKey>;
     /***
      * @type {SnapOnSignature<void>}
      */
