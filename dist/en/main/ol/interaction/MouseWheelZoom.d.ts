@@ -127,6 +127,18 @@ declare class MouseWheelZoom extends Interaction {
      */
     private deltaPerZoom_;
     /**
+     * Tracks whether the Ctrl key is physically held down (as opposed to the
+     * browser synthesizing ctrlKey=true for pinch-to-zoom trackpad gestures).
+     * @private
+     * @type {boolean}
+     */
+    private ctrlKeyPressed_;
+    /**
+     * @private
+     * @type {Array<import('../events.js').EventsKey>}
+     */
+    private ctrlKeyListenerKeys_;
+    /**
      * @private
      */
     private endInteraction_;
