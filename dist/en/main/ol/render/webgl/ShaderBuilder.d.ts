@@ -1,4 +1,4 @@
-export const COMMON_HEADER: "#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_screenToWorldMatrix;\nuniform vec2 u_viewportSizePx;\nuniform float u_pixelRatio;\nuniform float u_globalAlpha;\nuniform float u_time;\nuniform float u_zoom;\nuniform float u_resolution;\nuniform float u_rotation;\nuniform vec4 u_renderExtent;\nuniform vec2 u_patternOrigin;\nuniform float u_depth;\nuniform mediump int u_hitDetection;\n\nconst float PI = 3.141592653589793238;\nconst float TWO_PI = 2.0 * PI;\nfloat currentLineMetric = 0.; // an actual value will be used in the stroke shaders\n\nvec4 unpackColor(vec2 packedColor) {\n  return vec4(\n    min(floor(packedColor[0] / 256.0) / 255.0, 1.0),\n    min(mod(packedColor[0], 256.0) / 255.0, 1.0),\n    min(floor(packedColor[1] / 256.0) / 255.0, 1.0),\n    min(mod(packedColor[1], 256.0) / 255.0, 1.0)\n  );\n}\n";
+export const COMMON_HEADER: "#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\nuniform float u_one;\nuniform mat4 u_projectionMatrix;\nuniform mat4 u_invertProjectionMatrix;\nuniform vec2 u_viewportSizePx;\nuniform float u_pixelRatio;\nuniform float u_globalAlpha;\nuniform float u_time;\nuniform float u_zoom;\nuniform float u_resolution;\nuniform float u_rotation;\nuniform vec4 u_renderExtent;\nuniform float u_depth;\nuniform mediump int u_hitDetection;\n\n// these 64-bits floats are split into high/low\nuniform vec2 u_df_patternOriginX;\nuniform vec2 u_df_patternOriginY;\nuniform vec2 u_df_patternScaleRatio;\n\nconst float PI = 3.141592653589793238;\nconst float TWO_PI = 2.0 * PI;\nfloat currentLineMetric = 0.; // an actual value will be used in the stroke shaders\n\nvec2 pxToWorld(vec2 pxPos) {\n  vec2 screenPos = 2.0 * pxPos / u_viewportSizePx - 1.0;\n  return (u_invertProjectionMatrix * vec4(screenPos, 0.0, 1.0)).xy;\n}\n\nvec2 worldToPx(vec2 worldPos) {\n  vec4 screenPos = u_projectionMatrix * vec4(worldPos, 0.0, 1.0);\n  return (0.5 * screenPos.xy + 0.5) * u_viewportSizePx;\n}\nvec4 unpackColor(vec2 packedColor) {\n  return vec4(\n    min(floor(packedColor[0] / 256.0) / 255.0, 1.0),\n    min(mod(packedColor[0], 256.0) / 255.0, 1.0),\n    min(floor(packedColor[1] / 256.0) / 255.0, 1.0),\n    min(mod(packedColor[1], 256.0) / 255.0, 1.0)\n  );\n}\n\nvec2 df_from(float value) {\n  return vec2(value, 0.);\n}\n\nfloat df_float(vec2 df) {\n  return df.x;\n}\n\nvec2 df_add(vec2 dfa, vec2 dfb) {\n  vec2 dfc;\n  float t1, t2, e;\n  \n  t1 = dfa.x * u_one + dfb.x * u_one;\n  e = t1 * u_one - dfa.x * u_one;\n  t2 = ((dfb.x - e) + (dfa.x - (t1 - e))) * u_one + dfa.y + dfb.y * u_one;\n  \n  dfc.x = t1 * u_one + t2 * u_one;\n  dfc.y = t2 - (dfc.x - t1) * u_one;\n  return dfc;\n}\n\nvec2 df_sub(vec2 dfa, vec2 dfb) {\n  vec2 dfc;\n  float e, t1, t2;\n  \n  t1 = dfa.x - dfb.x;\n  e = t1 - dfa.x;\n  t2 = ((-dfb.x - e) + (dfa.x - (t1 - e))) + dfa.y - dfb.y;\n  \n  dfc.x = t1 + t2;\n  dfc.y = t2 - (dfc.x - t1);\n  return dfc;\n}\n\nvec2 df_mul(vec2 dfa, vec2 dfb) {\n  vec2 dfc;\n  float c11, c21, c2, e, t1, t2;\n  float a1, a2, b1, b2, cona, conb, split = 4097.;\n\n  cona = dfa.x * split * u_one;\n  conb = dfb.x * split * u_one;\n  a1 = cona * u_one - (cona - dfa.x);\n  b1 = conb * u_one - (conb - dfb.x);\n  a2 = dfa.x * u_one - a1;\n  b2 = dfb.x * u_one - b1 * u_one;\n\n  c11 = dfa.x * u_one * dfb.x * u_one;\n  c21 = a2 * b2 * u_one + (a2 * b1 + (a1 * b2 + (a1 * b1 - c11))) * u_one;\n\n  c2 = dfa.x * dfb.y * u_one + dfa.y * dfb.x * u_one;\n\n  t1 = c11 + c2 * u_one;\n  e = t1 - c11 * u_one;\n  t2 = dfa.y * dfb.y * u_one + ((c2 - e) + (c11 - (t1 - e))) + c21 * u_one;\n\n  dfc.x = t1 * u_one + t2 * u_one;\n  dfc.y = t2 - (dfc.x - t1) * u_one;\n\n  return dfc;\n}\n\nvec2 df_div(vec2 dfa, vec2 dfb) {\n  vec2 dfc;\n  float c11, c21, c2, e, t1, t2, t11, t12, t21, t22;\n  float a1, a2, b1, b2, cona, conb, split = 4097.;\n  float s1, s2;\n  \n  s1 = dfa.x / dfb.x * u_one;\n  cona = s1 * split * u_one;\n  conb = dfb.x * split * u_one;\n  a1 = cona - (cona - s1) * u_one;\n  b1 = conb - (conb - dfb.x) * u_one;\n  a2 = s1 - a1 * u_one;\n  b2 = dfb.x - b1 * u_one;\n  \n  c11 = s1 * dfb.x * u_one;\n  c21 = (((a1 * b1 - c11) + a1 * b2) + a2 * b1) + a2 * b2 * u_one;\n  \n  c2 = s1 * dfb.y * u_one;\n  \n  t1 = c11 + c2 * u_one;\n  e  = t1 - c11 * u_one;\n  t2 = ((c2 - e) + (c11 - (t1 - e))) + c21 * u_one;\n  \n  t12 = t1 + t2 * u_one;\n  t22 = t2 - (t12 - t1) * u_one;\n  \n  t11 = dfa.x - t12 * u_one;\n  e   = t11 - dfa.x * u_one;\n  t21 = ((-t12 - e) + (dfa.x - (t11 - e))) + dfa.y - t22 * u_one;\n  \n  s2 = (t11 + t21) / dfb.x * u_one;\n  \n  dfc.x = s1 + s2 * u_one;\n  dfc.y = s2 - (dfc.x - s1) * u_one;\n  \n  return dfc;\n}\n\nfloat df_mod(vec2 df, vec2 m) {\n  vec2 q = df_div(df, m) * u_one;\n  float qf = floor(q.x);\n  float frac = q.x - qf + q.y * u_one;\n  if (frac < 0.0) qf -= 1.0;\n  if (frac >= 1.0) qf += 1.0;\n  vec2 prod = df_mul(df_from(qf), m);\n  vec2 rem = df_add(df_from(df.x), df_from(-prod.x)) * u_one;\n  rem.y += df.y - prod.y;\n  return rem.x + rem.y * u_one;\n}\n\n";
 /**
  * @typedef {Object} AttributeDescription
  * @property {string} name Attribute name, as will be declared in the header of the vertex shader (including a_)
@@ -138,6 +138,11 @@ export class ShaderBuilder {
      * @private
      */
     private fillColorExpression_;
+    /**
+     * @private
+     * @type {string}
+     */
+    private fillPatternSizeExpression_;
     /**
      * @type {Array<string>}
      * @private
@@ -319,6 +324,18 @@ export class ShaderBuilder {
      * @return {string} The current fill color expression
      */
     getFillColorExpression(): string;
+    /**
+     * Defining a pattern size for a fill pattern lets us avoid having visual artifacts that typically appear
+     * when zoomed in above zoom levels 14~15. If we can compute the fill pattern size we can more efficiently
+     * compute the offset of the pattern on screen, thus avoiding precision issues.
+     * @param {string} expression Size expression that evaluates to a `vec2` in pixels
+     * @return {ShaderBuilder} the builder object
+     */
+    setFillPatternSizeExpression(expression: string): ShaderBuilder;
+    /**
+     * @return {string} The current fill pattern size expression.
+     */
+    getFillPatternSizeExpression(): string;
     addVertexShaderFunction(code: any): this;
     addFragmentShaderFunction(code: any): this;
     /**

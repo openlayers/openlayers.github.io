@@ -27,7 +27,7 @@ declare class TileGeometry extends BaseTileRepresentation<import("../VectorRende
     /**
      * Each geometry tile also has a mask which consisted of a quad (two triangles); this mask is intended to
      * be rendered to an offscreen buffer, and be used to correctly mask tiles according to their zoom level
-     * during rendering
+     * during rendering; these coordinates are expressed in the same coordinate system as the tile geometries
      */
     maskVertices: WebGLArrayBuffer;
     /**

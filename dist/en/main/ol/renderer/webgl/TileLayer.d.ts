@@ -9,12 +9,16 @@ export const Uniforms: {
     TRANSITION_ALPHA: string;
     DEPTH: string;
     RENDER_EXTENT: string;
-    PATTERN_ORIGIN: string;
-    RESOLUTION: string;
-    ZOOM: string;
     GLOBAL_ALPHA: string;
     PROJECTION_MATRIX: string;
-    SCREEN_TO_WORLD_MATRIX: string;
+    INVERT_PROJECTION_MATRIX: string;
+    TIME: string;
+    ZOOM: string;
+    RESOLUTION: string;
+    ROTATION: string;
+    VIEWPORT_SIZE_PX: string;
+    PIXEL_RATIO: string;
+    HIT_DETECTION: string;
 };
 export namespace Attributes {
     let TEXTURE_COORD: string;

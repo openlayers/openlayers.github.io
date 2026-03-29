@@ -1,9 +1,12 @@
 export const Uniforms: {
     RENDER_EXTENT: string;
-    PATTERN_ORIGIN: string;
     GLOBAL_ALPHA: string;
+    PATTERN_ORIGIN_X_DOUBLE: string;
+    PATTERN_ORIGIN_Y_DOUBLE: string;
+    PATTERN_SCALE_RATIO_DOUBLE: string;
+    ONE: string;
     PROJECTION_MATRIX: string;
-    SCREEN_TO_WORLD_MATRIX: string;
+    INVERT_PROJECTION_MATRIX: string;
     TIME: string;
     ZOOM: string;
     RESOLUTION: string;
@@ -106,18 +109,6 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      */
     private currentTransform_;
     /**
-     * @private
-     */
-    private tmpCoords_;
-    /**
-     * @private
-     */
-    private tmpTransform_;
-    /**
-     * @private
-     */
-    private tmpMat4_;
-    /**
      * @type {import("../../transform.js").Transform}
      * @private
      */
@@ -197,6 +188,7 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
     private handleSourceFeatureClear_;
     /**
      * @param {import("../../transform.js").Transform} batchInvertTransform Inverse of the transformation in which geometries are expressed
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
      * @private
      */
     private applyUniforms_;

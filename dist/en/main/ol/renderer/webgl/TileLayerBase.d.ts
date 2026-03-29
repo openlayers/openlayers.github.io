@@ -16,18 +16,22 @@ export function newTileRepresentationLookup(): TileRepresentationLookup;
  * @return {string} The cache key.
  */
 export function getCacheKey(source: import("../../source/Tile.js").default, tileCoord: import("../../tilecoord.js").TileCoord): string;
-export namespace Uniforms {
-    let TILE_TRANSFORM: string;
-    let TRANSITION_ALPHA: string;
-    let DEPTH: string;
-    let RENDER_EXTENT: string;
-    let PATTERN_ORIGIN: string;
-    let RESOLUTION: string;
-    let ZOOM: string;
-    let GLOBAL_ALPHA: string;
-    let PROJECTION_MATRIX: string;
-    let SCREEN_TO_WORLD_MATRIX: string;
-}
+export const Uniforms: {
+    TILE_TRANSFORM: string;
+    TRANSITION_ALPHA: string;
+    DEPTH: string;
+    RENDER_EXTENT: string;
+    GLOBAL_ALPHA: string;
+    PROJECTION_MATRIX: string;
+    INVERT_PROJECTION_MATRIX: string;
+    TIME: string;
+    ZOOM: string;
+    RESOLUTION: string;
+    ROTATION: string;
+    VIEWPORT_SIZE_PX: string;
+    PIXEL_RATIO: string;
+    HIT_DETECTION: string;
+};
 export default WebGLBaseTileLayerRenderer;
 export type AbstractTileRepresentation = import("../../webgl/BaseTileRepresentation.js").default<import("../../Tile.js").default>;
 export type TileRepresentationLookup = {

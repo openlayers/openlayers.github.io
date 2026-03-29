@@ -1,16 +1,24 @@
 export const Uniforms: {
     TILE_MASK_TEXTURE: string;
     TILE_ZOOM_LEVEL: string;
+    PATTERN_ORIGIN_X_DOUBLE: string;
+    PATTERN_ORIGIN_Y_DOUBLE: string;
+    PATTERN_SCALE_RATIO_DOUBLE: string;
+    ONE: string;
     TILE_TRANSFORM: string;
     TRANSITION_ALPHA: string;
     DEPTH: string;
     RENDER_EXTENT: string;
-    PATTERN_ORIGIN: string;
-    RESOLUTION: string;
-    ZOOM: string;
     GLOBAL_ALPHA: string;
     PROJECTION_MATRIX: string;
-    SCREEN_TO_WORLD_MATRIX: string;
+    INVERT_PROJECTION_MATRIX: string;
+    TIME: string;
+    ZOOM: string;
+    RESOLUTION: string;
+    ROTATION: string;
+    VIEWPORT_SIZE_PX: string;
+    PIXEL_RATIO: string;
+    HIT_DETECTION: string;
 };
 export namespace Attributes {
     let POSITION: string;
@@ -93,13 +101,22 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      */
     private styleRenderer_;
     /**
-     * This transform is updated on every frame and is the composition of:
-     * - invert of the world->screen transform that was used when rebuilding buffers (see `this.renderTransform_`)
-     * - current world->screen transform
-     * @type {import("../../transform.js").Transform}
+     * Transform that projects from world to viewport [-1,1]
      * @private
      */
     private currentFrameStateTransform_;
+    /**
+     * @private
+     */
+    private tmpCoords_;
+    /**
+     * @private
+     */
+    private tmpCoords2_;
+    /**
+     * @private
+     */
+    private tmpExtent_;
     /**
      * @private
      */
@@ -167,9 +184,18 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      * @param {import("../../transform.js").Transform} batchInvertTransform Inverse of the transformation in which tile geometries are expressed
      * @param {number} tileZ Tile zoom level
      * @param {number} depth Depth of the tile
+     * @param {import("../../Map.js").FrameState} frameState Frame state
      * @private
      */
     private applyUniforms_;
+    /**
+     * Apply the render extent as a uniform; the render extent uniform is expressed in the same coordinate space as the geometries in the render buffers,
+     * whereas the input render extent is expressed in full world coordinates.
+     * @private
+     * @param {import("../../extent.js").Extent} renderExtent Render extent in map units (world coordinates)
+     * @param {import('../../transform.js').Transform} geometryInvertTransform Transform.
+     */
+    private applyRenderExtentUniform;
     /**
      * @override
      */

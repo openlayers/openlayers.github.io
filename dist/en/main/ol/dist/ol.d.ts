@@ -772,6 +772,10 @@ declare namespace ol {
             export { $ol$renderer$webgl$TileLayerBase as TileLayerBase };
             export { $ol$renderer$webgl$VectorLayer as VectorLayer };
             export { $ol$renderer$webgl$VectorTileLayer as VectorTileLayer };
+            export namespace vectorUtil {
+                export { _ol_renderer_webgl_vectorUtil$VectorUniforms as VectorUniforms };
+                export { _ol_renderer_webgl_vectorUtil$applyVectorUniforms as applyVectorUniforms };
+            }
         }
     }
     export namespace reproj {
@@ -1666,6 +1670,8 @@ import $ol$renderer$webgl$TileLayer from '../../ol/renderer/webgl/TileLayer.js';
 import $ol$renderer$webgl$TileLayerBase from '../../ol/renderer/webgl/TileLayerBase.js';
 import $ol$renderer$webgl$VectorLayer from '../../ol/renderer/webgl/VectorLayer.js';
 import $ol$renderer$webgl$VectorTileLayer from '../../ol/renderer/webgl/VectorTileLayer.js';
+import { VectorUniforms as _ol_renderer_webgl_vectorUtil$VectorUniforms } from '../../ol/renderer/webgl/vectorUtil.js';
+import { applyVectorUniforms as _ol_renderer_webgl_vectorUtil$applyVectorUniforms } from '../../ol/renderer/webgl/vectorUtil.js';
 import $ol$reproj$DataTile from '../../ol/reproj/DataTile.js';
 import $ol$reproj$Image from '../../ol/reproj/Image.js';
 import $ol$reproj$Tile from '../../ol/reproj/Tile.js';

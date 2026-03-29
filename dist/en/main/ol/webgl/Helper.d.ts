@@ -19,7 +19,7 @@ export namespace ShaderType {
 export type DefaultUniform = string;
 export namespace DefaultUniform {
     let PROJECTION_MATRIX: string;
-    let SCREEN_TO_WORLD_MATRIX: string;
+    let INVERT_PROJECTION_MATRIX: string;
     let TIME: string;
     let ZOOM: string;
     let RESOLUTION: string;
