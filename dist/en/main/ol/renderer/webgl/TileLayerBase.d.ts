@@ -100,10 +100,25 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileTy
      */
     private tileTransform_;
     /**
-     * @type {Array<number>}
      * @protected
      */
-    protected tempMat4: Array<number>;
+    protected tmpCoords_: number[];
+    /**
+     * @protected
+     */
+    protected tmpCoords2_: number[];
+    /**
+     * @protected
+     */
+    protected tmpExtent_: number[];
+    /**
+     * @protected
+     */
+    protected tmpTransform_: number[];
+    /**
+     * @protected
+     */
+    protected tmpMat4_: import("../../vec/mat4.js").Mat4;
     /**
      * @type {import("../../TileRange.js").default}
      * @private
@@ -227,6 +242,14 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileTy
      * @private
      */
     private getSourceTileCache_;
+    /**
+     * Apply the render extent as a uniform; the render extent uniform is expressed in the same coordinate space as the geometries in the render buffers,
+     * whereas the input render extent is expressed in full world coordinates.
+     * @protected
+     * @param {import("../../extent.js").Extent} renderExtent Render extent in map units (world coordinates)
+     * @param {import('../../transform.js').Transform} worldToLocalTransform Transform.
+     */
+    protected applyRenderExtentUniform(renderExtent: import("../../extent.js").Extent, worldToLocalTransform: import("../../transform.js").Transform): void;
 }
 import WebGLLayerRenderer from './Layer.js';
 //# sourceMappingURL=TileLayerBase.d.ts.map

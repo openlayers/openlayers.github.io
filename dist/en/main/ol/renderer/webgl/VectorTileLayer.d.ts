@@ -106,26 +106,6 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      */
     private currentFrameStateTransform_;
     /**
-     * @private
-     */
-    private tmpCoords_;
-    /**
-     * @private
-     */
-    private tmpCoords2_;
-    /**
-     * @private
-     */
-    private tmpExtent_;
-    /**
-     * @private
-     */
-    private tmpTransform_;
-    /**
-     * @private
-     */
-    private tmpMat4_;
-    /**
      * @type {WebGLRenderTarget}
      * @private
      */
@@ -188,14 +168,6 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      * @private
      */
     private applyUniforms_;
-    /**
-     * Apply the render extent as a uniform; the render extent uniform is expressed in the same coordinate space as the geometries in the render buffers,
-     * whereas the input render extent is expressed in full world coordinates.
-     * @private
-     * @param {import("../../extent.js").Extent} renderExtent Render extent in map units (world coordinates)
-     * @param {import('../../transform.js').Transform} geometryInvertTransform Transform.
-     */
-    private applyRenderExtentUniform;
     /**
      * @override
      */

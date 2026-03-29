@@ -3,8 +3,6 @@ export const Uniforms: {
     TEXTURE_PIXEL_WIDTH: string;
     TEXTURE_PIXEL_HEIGHT: string;
     TEXTURE_RESOLUTION: string;
-    TEXTURE_ORIGIN_X: string;
-    TEXTURE_ORIGIN_Y: string;
     TILE_TRANSFORM: string;
     TRANSITION_ALPHA: string;
     DEPTH: string;
