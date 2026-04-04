@@ -1,5 +1,6 @@
-export { default as DoubleClickZoom } from "./interaction/DoubleClickZoom.js";
 export { default as DblClickDragZoom } from "./interaction/DblClickDragZoom.js";
+export { defaults } from "./interaction/defaults.js";
+export { default as DoubleClickZoom } from "./interaction/DoubleClickZoom.js";
 export { default as DragAndDrop } from "./interaction/DragAndDrop.js";
 export { default as DragBox } from "./interaction/DragBox.js";
 export { default as DragPan } from "./interaction/DragPan.js";
@@ -20,5 +21,4 @@ export { default as Pointer } from "./interaction/Pointer.js";
 export { default as Select } from "./interaction/Select.js";
 export { default as Snap } from "./interaction/Snap.js";
 export { default as Translate } from "./interaction/Translate.js";
-export { defaults } from "./interaction/defaults.js";
 //# sourceMappingURL=interaction.d.ts.map

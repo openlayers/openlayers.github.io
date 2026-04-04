@@ -398,7 +398,8 @@ function showInfo(propertiesFromFeatures) {
 
       <div class="row-fluid extra-source">
         <h5 class="source-heading">worker.js</h5>
-        <pre><code class="language-js">import TileQueue, {
+        <pre><code class="language-js">import {stylefunction} from &#x27;ol-mapbox-style&#x27;;
+import TileQueue, {
   getTilePriority as tilePriorityFunction,
 } from &#x27;ol/TileQueue.js&#x27;;
 import MVT from &#x27;ol/format/MVT.js&#x27;;
@@ -406,7 +407,6 @@ import {inView} from &#x27;ol/layer/Layer.js&#x27;;
 import VectorTileLayer from &#x27;ol/layer/VectorTile.js&#x27;;
 import {get} from &#x27;ol/proj.js&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile.js&#x27;;
-import {stylefunction} from &#x27;ol-mapbox-style&#x27;;
 
 const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
 

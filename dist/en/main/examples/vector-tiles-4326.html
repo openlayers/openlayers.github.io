@@ -216,12 +216,12 @@
 
       <div class="row-fluid">
         <h5 class="source-heading">main.js</h5>
-        <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
+        <pre><code id="example-js-source" class="language-js">import {applyBackground, applyStyle} from &#x27;ol-mapbox-style&#x27;;
+import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import VectorTileLayer from &#x27;ol/layer/VectorTile.js&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile.js&#x27;;
 import {createXYZ} from &#x27;ol/tilegrid.js&#x27;;
-import {applyBackground, applyStyle} from &#x27;ol-mapbox-style&#x27;;
 
 const key &#x3D; &#x27;Get your own API key at https://www.maptiler.com/cloud/&#x27;;
 const url &#x3D; &#x27;https://api.maptiler.com/maps/basic-4326/style.json?key&#x3D;&#x27; + key;
