@@ -91,6 +91,11 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      */
     private sourceTileCache_;
     /**
+     * @protected
+     * @type {import("../../extent.js").Extent|null}
+     */
+    protected layerExtent: import("../../extent.js").Extent | null;
+    /**
      * @return {LRUCache} Tile cache.
      */
     getTileCache(): LRUCache<any>;
