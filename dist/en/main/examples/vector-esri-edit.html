@@ -402,7 +402,7 @@ const layer &#x3D; &#x27;2&#x27;;
 const esrijsonFormat &#x3D; new EsriJSON();
 
 const vectorSource &#x3D; new VectorSource({
-  loader: function (extent, resolution, projection) {
+  loader: async (extent, resolution, projection) &#x3D;&gt; {
     const url &#x3D;
       serviceUrl +
       layer +
@@ -421,23 +421,18 @@ const vectorSource &#x3D; new VectorSource({
       ) +
       &#x27;&amp;geometryType&#x3D;esriGeometryEnvelope&amp;inSR&#x3D;102100&amp;outFields&#x3D;*&#x27; +
       &#x27;&amp;outSR&#x3D;102100&#x27;;
-    fetch(url)
-      .then((response) &#x3D;&gt; response.json())
-      .then(function (response) {
-        if (response.error) {
-          alert(
-            response.error.message + &#x27;\n&#x27; + response.error.details.join(&#x27;\n&#x27;),
-          );
-        } else {
-          // dataProjection will be read from document
-          const features &#x3D; esrijsonFormat.readFeatures(response, {
-            featureProjection: projection,
-          });
-          if (features.length &gt; 0) {
-            vectorSource.addFeatures(features);
-          }
-        }
+    const response &#x3D; await fetch(url);
+    const json &#x3D; await response.json();
+    if (json.error) {
+      alert(json.error.message + &#x27;\n&#x27; + json.error.details.join(&#x27;\n&#x27;));
+      throw new Error(json.error.message);
+    } else {
+      // dataProjection will be read from document
+      const features &#x3D; esrijsonFormat.readFeatures(json, {
+        featureProjection: projection,
       });
+      return features;
+    }
   },
   strategy: tileStrategy(
     createXYZ({

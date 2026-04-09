@@ -84,33 +84,29 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
      * import {bbox} from 'ol/loadingstrategy.js';
      *
      * const vectorSource = new Vector({
-     * format: new GeoJSON(),
-     * loader: function(extent, resolution, projection, success, failure) {
-     * const proj = projection.getCode();
+     * loader: async (extent, resolution, projection) => {
      * const url = 'https://ahocevar.com/geoserver/wfs?service=WFS&' +
      * 'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
-     * 'outputFormat=application/json&srsname=' + proj + '&' +
-     * 'bbox=' + extent.join(',') + ',' + proj;
-     * const xhr = new XMLHttpRequest();
-     * xhr.open('GET', url);
-     * const onError = function() {
-     * vectorSource.removeLoadedExtent(extent);
-     * failure();
+     * 'outputFormat=application/json' +
+     * 'bbox=' + extent.join(',') + ',' + projection.getCode();
+     * const response = await fetch(url);
+     * if (!response.ok) {
+     * throw new Error('Network response was not ok');
      * }
-     * xhr.onerror = onError;
-     * xhr.onload = function() {
-     * if (xhr.status == 200) {
-     * const features = vectorSource.getFormat().readFeatures(xhr.responseText);
-     * vectorSource.addFeatures(features);
-     * success(features);
-     * } else {
-     * onError();
-     * }
-     * }
-     * xhr.send();
+     * const json = await response.json();
+     * const features = new GeoJSON().readFeatures(json, {
+     * featureProjection: projection,
+     * });
+     * return features;
      * },
      * strategy: bbox,
      * });
+     * ```
+     *
+     * When you want to retry a failed request, use
+     * ```js
+     * vectorSource.removeLoadedExtent(extent);
+     * vectorSource.changed();
      * ```
      */
     loader?: import("../featureloader.js").FeatureLoader<FeatureType> | undefined;
@@ -204,34 +200,31 @@ import Event from '../events/Event.js';
  * import {bbox} from 'ol/loadingstrategy.js';
  *
  * const vectorSource = new Vector({
- *   format: new GeoJSON(),
- *   loader: function(extent, resolution, projection, success, failure) {
- *      const proj = projection.getCode();
+ *   loader: async (extent, resolution, projection) => {
  *      const url = 'https://ahocevar.com/geoserver/wfs?service=WFS&' +
  *          'version=1.1.0&request=GetFeature&typename=osm:water_areas&' +
- *          'outputFormat=application/json&srsname=' + proj + '&' +
- *          'bbox=' + extent.join(',') + ',' + proj;
- *      const xhr = new XMLHttpRequest();
- *      xhr.open('GET', url);
- *      const onError = function() {
- *        vectorSource.removeLoadedExtent(extent);
- *        failure();
+ *          'outputFormat=application/json' +
+ *          'bbox=' + extent.join(',') + ',' + projection.getCode();
+ *      const response = await fetch(url);
+ *      if (!response.ok) {
+ *        throw new Error('Network response was not ok');
  *      }
- *      xhr.onerror = onError;
- *      xhr.onload = function() {
- *        if (xhr.status == 200) {
- *          const features = vectorSource.getFormat().readFeatures(xhr.responseText);
- *          vectorSource.addFeatures(features);
- *          success(features);
- *        } else {
- *          onError();
- *        }
- *      }
- *      xhr.send();
+ *      const json = await response.json();
+ *      const features = new GeoJSON().readFeatures(json, {
+ *        featureProjection: projection,
+ *      });
+ *      return features;
  *    },
  *    strategy: bbox,
  *  });
  * ```
+ *
+ * When you want to retry a failed request, use
+ * ```js
+ * vectorSource.removeLoadedExtent(extent);
+ * vectorSource.changed();
+ * ```
+ *
  * @property {boolean} [overlaps=true] This source may have overlapping geometries.
  * Setting this to `false` (e.g. for sources with polygons that represent administrative
  * boundaries or TopoJSON sources) allows the renderer to optimise fill and
@@ -337,11 +330,6 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      * @type {RBush<{extent: import("../extent.js").Extent}>}
      */
     private loadedExtentsRtree_;
-    /**
-     * @type {number}
-     * @private
-     */
-    private loadingExtentsCount_;
     /**
      * @private
      * @type {!Object<string, FeatureType>}

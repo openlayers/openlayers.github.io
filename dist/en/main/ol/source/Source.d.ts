@@ -108,10 +108,10 @@ declare class Source extends BaseObject<{
     private attributionsCollapsible_;
     /**
      * This source is currently loading data. Sources that defer loading to the
-     * map's tile queue never set this to `true`.
-     * @type {boolean}
+     * map's tile queue never set this to a `truthy` value.
+     * @type {boolean|number}
      */
-    loading: boolean;
+    loading: boolean | number;
     /**
      * @private
      * @type {import("./Source.js").State}

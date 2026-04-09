@@ -190,7 +190,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/featureloader.js">featureloader.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/featureloader.js#L183">line 183</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/featureloader.js#L184">line 184</a>
         </div>
         
     </div>
@@ -320,7 +320,7 @@ Compare <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/featureloader.js">featureloader.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/featureloader.js#L137">line 137</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/featureloader.js#L138">line 138</a>
         </div>
         
     </div>
@@ -508,13 +508,13 @@ The feature loader.
     <div class="description">
         <p><a href="module-ol_source_Vector-VectorSource.html"><code>VectorSource</code></a> sources use a function of this type to
 load features.</p>
-<p>This function takes up to 5 arguments. These are an <a href="module-ol_extent.html#~Extent"><code>Extent</code></a> representing
-the area to be loaded, a <code>{number}</code> representing the resolution (map units per pixel), a
-<a href="module-ol_proj_Projection-Projection.html"><code>Projection</code></a> for the projection, an optional success callback that should get
-the loaded features passed as an argument and an optional failure callback with no arguments. If
-the callbacks are not used, the corresponding vector source will not fire <code>'featuresloadend'</code> and
-<code>'featuresloaderror'</code> events. <code>this</code> within the function is bound to the
-<a href="module-ol_source_Vector-VectorSource.html"><code>VectorSource</code></a> it's called from.</p>
+<p>This function takes 3 arguments: an <a href="module-ol_extent.html#~Extent"><code>Extent</code></a> representing
+the area to be loaded, a <code>{number}</code> representing the resolution (map units per pixel), and a
+<a href="module-ol_proj_Projection-Projection.html"><code>Projection</code></a> for the projection. The function is expeced to return
+a promise that resolves to an array of features.</p>
+<p>There are also a deprecated signature, with <code>void</code> as
+return, and two additional arguments: an optional success callback that should get
+the loaded features passed as an argument and an optional failure callback with no arguments.</p>
 <p>The function is responsible for loading the features and adding them to the
 source.</p>
     </div>
@@ -583,7 +583,7 @@ source.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/featureloader.js">featureloader.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/featureloader.js#L37">line 37</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/featureloader.js#L38">line 38</a>
         </div>
         
     </div>
