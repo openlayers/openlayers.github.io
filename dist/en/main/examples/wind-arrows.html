@@ -52,7 +52,7 @@
     <div class="container-fluid line-numbers">
       <div id="latest-check" class="alert alert-warning alert-dismissible" role="alert" style="display:none">
         <button id="latest-dismiss" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        This example uses OpenLayers v<span>10.8.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
+        This example uses OpenLayers v<span>10.9.1-dev</span>. The <a id="latest-link" href="#" class="alert-link">latest</a> is v<span id="latest-version"></span>.
       </div>
 
 
@@ -393,7 +393,7 @@ fetch(&#x27;data/openweather/weather.json&#x27;)
         <pre><code id="example-pkg-source" class="language-json">{
   &quot;name&quot;: &quot;wind-arrows&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;10.8.1-dev&quot;
+    &quot;ol&quot;: &quot;10.9.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;vite&quot;: &quot;^3.2.3&quot;
@@ -433,7 +433,7 @@ fetch(&#x27;data/openweather/weather.json&#x27;)
         const branchSearch = url.match(/\/([^\/]*)\/examples\//);
         const storageKey = 'ol-dismissed=-' + latestVersion;
         const dismissed = localStorage.getItem(storageKey) === 'true';
-        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '10.8.1-dev' != latestVersion) {
+        if (branchSearch && !dismissed && /^v[0-9\.]*$/.test(branchSearch[1]) && '10.9.1-dev' != latestVersion) {
           const link = url.replace(branchSearch[0], '/latest/examples/');
           fetch(link, {method: 'head'}).then(function(response) {
             const a = document.getElementById('latest-link');
