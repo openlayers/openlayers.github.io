@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6800],{42427:function(e,n,s){var a=s(41564),c=s(87240),r=s(12185),t=s(28e3);new a.A({layers:[new r.A({source:new t.A})],target:"map",view:new c.Ay({center:[0,0],zoom:2})})}},function(e){var n;n=42427,e(e.s=n)}]);
+//# sourceMappingURL=page-scroll.js.map

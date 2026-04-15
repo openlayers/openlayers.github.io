@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2734],{84681:function(e,r,n){var s=n(41564),o=n(87240),a=n(47085),t=n(73465),c=n(64740);const i=new a.A({source:new t.Ay({loader:(0,c.Eq)({url:"https://demo.mapserver.org/cgi-bin/wms?",params:{LAYERS:["bluemarble,country_bounds,cities"],VERSION:"1.3.0",FORMAT:"image/png"},projection:"EPSG:4326",hidpi:!0,serverType:"mapserver"})})});new s.A({layers:[i],target:"map",view:new o.Ay({projection:"EPSG:4326",center:[0,0],zoom:2})})}},function(e){var r;r=84681,e(e.s=r)}]);
+//# sourceMappingURL=mapserver-wms.js.map

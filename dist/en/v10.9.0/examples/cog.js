@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1488],{41803:function(s,e,n){var t=n(41564),a=n(87240),c=n(96256);const u=new(n(75191).A)({sources:[{url:"https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif"}]});new t.A({target:"map",layers:[new c.A({source:u})],view:(0,a.KZ)(u,(0,a.nH)(1),(0,a.Ev)())})}},function(s){var e;e=41803,s(s.s=e)}]);
+//# sourceMappingURL=cog.js.map

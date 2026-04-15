@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[914],{93069:function(e,n,a){var r=a(41564),s=a(87240),w=a(12185),t=a(28e3);const c=new s.Ay({center:[-4808600,-2620936],zoom:8});new r.A({layers:[new w.A({preload:1/0,source:new t.A({})})],target:"map1",view:c}),new r.A({layers:[new w.A({preload:0,source:new t.A({})})],target:"map2",view:c})}},function(e){var n;n=93069,e(e.s=n)}]);
+//# sourceMappingURL=preload.js.map

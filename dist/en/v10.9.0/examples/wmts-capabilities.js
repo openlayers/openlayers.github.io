@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1035],{83470:function(n,t,e){const c=new(e(9619).A);fetch("data/WMTSCapabilities.xml").then((function(n){return n.text()})).then((function(n){const t=c.read(n);document.getElementById("log").innerText=JSON.stringify(t,null,2)}))}},function(n){var t;t=83470,n(n.s=t)}]);
+//# sourceMappingURL=wmts-capabilities.js.map

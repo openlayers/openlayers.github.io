@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3901],{87384:function(e,n,t){var a=t(41564),r=t(87240),s=t(12185),c=t(28e3);new a.A({layers:[new s.A({source:new c.A})],target:"map",view:new r.Ay({center:[142e5,413e4],rotation:Math.PI/6,zoom:10})})}},function(e){var n;n=87384,e(e.s=n)}]);
+//# sourceMappingURL=rotation.js.map
