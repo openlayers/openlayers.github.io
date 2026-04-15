@@ -27,7 +27,7 @@
     "geotiff": "^3.0.5",
     "pbf": "4.0.1",
     "rbush": "^4.0.0",
-    "zarrita": "^0.6.0"
+    "zarrita": "^0.7.1"
   },
   "browserslist": [
     "> 1%",
