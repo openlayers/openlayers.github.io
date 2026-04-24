@@ -190,6 +190,7 @@ const bisectCenter = bisector(number).center;
 /* harmony default export */ var bisect = (bisectRight);
 
 ;// ../node_modules/d3-color/src/define.js
+Object.defineProperty(src_define, "name", { value: "default", configurable: true });
 /* harmony default export */ function src_define(constructor, factory, prototype) {
   constructor.prototype = factory.prototype = prototype;
   prototype.constructor = constructor;
@@ -600,6 +601,7 @@ function hsl2rgb(h, m1, m2) {
 }
 
 ;// ../node_modules/d3-interpolate/src/basis.js
+Object.defineProperty(src_basis, "name", { value: "default", configurable: true });
 function basis(t1, v0, v1, v2, v3) {
   var t2 = t1 * t1, t3 = t2 * t1;
   return ((1 - 3 * t1 + 3 * t2 - t3) * v0
@@ -621,6 +623,7 @@ function basis(t1, v0, v1, v2, v3) {
 }
 
 ;// ../node_modules/d3-interpolate/src/basisClosed.js
+Object.defineProperty(basisClosed, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function basisClosed(values) {
@@ -637,6 +640,7 @@ function basis(t1, v0, v1, v2, v3) {
 
 ;// ../node_modules/d3-interpolate/src/constant.js
 /* harmony default export */ var constant = (x => () => x);
+(Object.getOwnPropertyDescriptor(constant, "name") || {}).writable || Object.defineProperty(constant, "name", { value: "default", configurable: true });
 
 ;// ../node_modules/d3-interpolate/src/color.js
 /* unused harmony import specifier */ var color_constant;
@@ -728,6 +732,7 @@ var rgbBasis = rgbSpline(src_basis);
 var rgbBasisClosed = rgbSpline(basisClosed);
 
 ;// ../node_modules/d3-interpolate/src/array.js
+Object.defineProperty(array, "name", { value: "default", configurable: true });
 /* unused harmony import specifier */ var isNumberArray;
 /* unused harmony import specifier */ var numberArray;
 
@@ -754,6 +759,7 @@ function genericArray(a, b) {
 }
 
 ;// ../node_modules/d3-interpolate/src/date.js
+Object.defineProperty(date, "name", { value: "default", configurable: true });
 /* harmony default export */ function date(a, b) {
   var d = new Date;
   return a = +a, b = +b, function(t) {
@@ -762,6 +768,7 @@ function genericArray(a, b) {
 }
 
 ;// ../node_modules/d3-interpolate/src/number.js
+Object.defineProperty(src_number, "name", { value: "default", configurable: true });
 /* harmony default export */ function src_number(a, b) {
   return a = +a, b = +b, function(t) {
     return a * (1 - t) + b * t;
@@ -769,6 +776,7 @@ function genericArray(a, b) {
 }
 
 ;// ../node_modules/d3-interpolate/src/object.js
+Object.defineProperty(object, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function object(a, b) {
@@ -794,6 +802,7 @@ function genericArray(a, b) {
 }
 
 ;// ../node_modules/d3-interpolate/src/string.js
+Object.defineProperty(string, "name", { value: "default", configurable: true });
 
 
 var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
@@ -860,6 +869,7 @@ function one(b) {
 }
 
 ;// ../node_modules/d3-interpolate/src/numberArray.js
+Object.defineProperty(src_numberArray, "name", { value: "default", configurable: true });
 /* harmony default export */ function src_numberArray(a, b) {
   if (!b) b = [];
   var n = a ? Math.min(b.length, a.length) : 0,
@@ -876,6 +886,7 @@ function numberArray_isNumberArray(x) {
 }
 
 ;// ../node_modules/d3-interpolate/src/value.js
+Object.defineProperty(value, "name", { value: "default", configurable: true });
 
 
 
@@ -900,6 +911,7 @@ function numberArray_isNumberArray(x) {
 }
 
 ;// ../node_modules/d3-interpolate/src/round.js
+Object.defineProperty(round, "name", { value: "default", configurable: true });
 /* harmony default export */ function round(a, b) {
   return a = +a, b = +b, function(t) {
     return Math.round(a * (1 - t) + b * t);
@@ -1123,6 +1135,7 @@ FormatSpecifier.prototype.toString = function() {
 };
 
 ;// ../node_modules/d3-format/src/formatDecimal.js
+Object.defineProperty(formatDecimal, "name", { value: "default", configurable: true });
 /* harmony default export */ function formatDecimal(x) {
   return Math.abs(x = Math.round(x)) >= 1e21
       ? x.toLocaleString("en").replace(/,/g, "")
@@ -1145,6 +1158,7 @@ function formatDecimalParts(x, p) {
 }
 
 ;// ../node_modules/d3-format/src/exponent.js
+Object.defineProperty(exponent, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function exponent(x) {
@@ -1152,6 +1166,7 @@ function formatDecimalParts(x, p) {
 }
 
 ;// ../node_modules/d3-format/src/precisionPrefix.js
+Object.defineProperty(precisionPrefix, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function precisionPrefix(step, value) {
@@ -1159,6 +1174,7 @@ function formatDecimalParts(x, p) {
 }
 
 ;// ../node_modules/d3-format/src/formatGroup.js
+Object.defineProperty(formatGroup, "name", { value: "default", configurable: true });
 /* harmony default export */ function formatGroup(grouping, thousands) {
   return function(value, width) {
     var i = value.length,
@@ -1179,6 +1195,7 @@ function formatDecimalParts(x, p) {
 }
 
 ;// ../node_modules/d3-format/src/formatNumerals.js
+Object.defineProperty(formatNumerals, "name", { value: "default", configurable: true });
 /* harmony default export */ function formatNumerals(numerals) {
   return function(value) {
     return value.replace(/[0-9]/g, function(i) {
@@ -1188,6 +1205,7 @@ function formatDecimalParts(x, p) {
 }
 
 ;// ../node_modules/d3-format/src/formatTrim.js
+Object.defineProperty(formatTrim, "name", { value: "default", configurable: true });
 // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
 /* harmony default export */ function formatTrim(s) {
   out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
@@ -1201,6 +1219,7 @@ function formatDecimalParts(x, p) {
 }
 
 ;// ../node_modules/d3-format/src/formatPrefixAuto.js
+Object.defineProperty(formatPrefixAuto, "name", { value: "default", configurable: true });
 
 
 var prefixExponent;
@@ -1219,6 +1238,7 @@ var prefixExponent;
 }
 
 ;// ../node_modules/d3-format/src/formatRounded.js
+Object.defineProperty(formatRounded, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function formatRounded(x, p) {
@@ -1253,11 +1273,13 @@ var prefixExponent;
 });
 
 ;// ../node_modules/d3-format/src/identity.js
+Object.defineProperty(src_identity, "name", { value: "default", configurable: true });
 /* harmony default export */ function src_identity(x) {
   return x;
 }
 
 ;// ../node_modules/d3-format/src/locale.js
+Object.defineProperty(locale, "name", { value: "default", configurable: true });
 
 
 
@@ -1428,6 +1450,7 @@ function defaultLocale(definition) {
 }
 
 ;// ../node_modules/d3-format/src/precisionRound.js
+Object.defineProperty(precisionRound, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function precisionRound(step, max) {
@@ -1436,6 +1459,7 @@ function defaultLocale(definition) {
 }
 
 ;// ../node_modules/d3-format/src/precisionFixed.js
+Object.defineProperty(precisionFixed, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function precisionFixed(step) {
@@ -1748,6 +1772,7 @@ function sleep(time) {
 }
 
 ;// ../node_modules/d3-timer/src/timeout.js
+Object.defineProperty(src_timeout, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function src_timeout(callback, delay, time) {
@@ -1761,6 +1786,7 @@ function sleep(time) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/schedule.js
+Object.defineProperty(schedule, "name", { value: "default", configurable: true });
 
 
 
@@ -1916,6 +1942,7 @@ function create(node, id, self) {
 }
 
 ;// ../node_modules/d3-transition/src/interrupt.js
+Object.defineProperty(interrupt, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function interrupt(node, name) {
@@ -1942,6 +1969,7 @@ function create(node, id, self) {
 }
 
 ;// ../node_modules/d3-transition/src/selection/interrupt.js
+Object.defineProperty(selection_interrupt, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function selection_interrupt(name) {
@@ -1951,6 +1979,7 @@ function create(node, id, self) {
 }
 
 ;// ../node_modules/d3-interpolate/src/transform/decompose.js
+Object.defineProperty(decompose, "name", { value: "default", configurable: true });
 var degrees = 180 / Math.PI;
 
 var decompose_identity = {
@@ -2066,6 +2095,7 @@ var interpolateTransformSvg = interpolateTransform(parseSvg, ", ", ")", ")");
 // EXTERNAL MODULE: ../node_modules/d3-selection/src/namespace.js
 var namespace = __webpack_require__(51754);
 ;// ../node_modules/d3-transition/src/transition/tween.js
+Object.defineProperty(tween, "name", { value: "default", configurable: true });
 
 
 function tweenRemove(id, name) {
@@ -2149,6 +2179,7 @@ function tweenValue(transition, name, value) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/interpolate.js
+Object.defineProperty(interpolate, "name", { value: "default", configurable: true });
 
 
 
@@ -2161,6 +2192,7 @@ function tweenValue(transition, name, value) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/attr.js
+Object.defineProperty(attr, "name", { value: "default", configurable: true });
 
 
 
@@ -2241,6 +2273,7 @@ function attrFunctionNS(fullname, interpolate, value) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/attrTween.js
+Object.defineProperty(transition_attrTween, "name", { value: "default", configurable: true });
 
 
 function attrInterpolate(name, i) {
@@ -2287,6 +2320,7 @@ function attrTween(name, value) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/delay.js
+Object.defineProperty(delay, "name", { value: "default", configurable: true });
 
 
 function delayFunction(id, value) {
@@ -2312,6 +2346,7 @@ function delayConstant(id, value) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/duration.js
+Object.defineProperty(duration, "name", { value: "default", configurable: true });
 
 
 function durationFunction(id, value) {
@@ -2337,6 +2372,7 @@ function durationConstant(id, value) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/ease.js
+Object.defineProperty(ease, "name", { value: "default", configurable: true });
 
 
 function easeConstant(id, value) {
@@ -2355,6 +2391,7 @@ function easeConstant(id, value) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/easeVarying.js
+Object.defineProperty(transition_easeVarying, "name", { value: "default", configurable: true });
 
 
 function easeVarying(id, value) {
@@ -2373,6 +2410,7 @@ function easeVarying(id, value) {
 // EXTERNAL MODULE: ../node_modules/d3-selection/src/matcher.js
 var matcher = __webpack_require__(56495);
 ;// ../node_modules/d3-transition/src/transition/filter.js
+Object.defineProperty(filter, "name", { value: "default", configurable: true });
 
 
 
@@ -2391,6 +2429,7 @@ var matcher = __webpack_require__(56495);
 }
 
 ;// ../node_modules/d3-transition/src/transition/merge.js
+Object.defineProperty(merge, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function merge(transition) {
@@ -2412,6 +2451,7 @@ var matcher = __webpack_require__(56495);
 }
 
 ;// ../node_modules/d3-transition/src/transition/on.js
+Object.defineProperty(on, "name", { value: "default", configurable: true });
 
 
 function start(name) {
@@ -2446,6 +2486,7 @@ function onFunction(id, name, listener) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/remove.js
+Object.defineProperty(remove, "name", { value: "default", configurable: true });
 function removeFunction(id) {
   return function() {
     var parent = this.parentNode;
@@ -2461,6 +2502,7 @@ function removeFunction(id) {
 // EXTERNAL MODULE: ../node_modules/d3-selection/src/selector.js
 var selector = __webpack_require__(26764);
 ;// ../node_modules/d3-transition/src/transition/select.js
+Object.defineProperty(transition_select, "name", { value: "default", configurable: true });
 
 
 
@@ -2487,6 +2529,7 @@ var selector = __webpack_require__(26764);
 // EXTERNAL MODULE: ../node_modules/d3-selection/src/selectorAll.js
 var selectorAll = __webpack_require__(53285);
 ;// ../node_modules/d3-transition/src/transition/selectAll.js
+Object.defineProperty(selectAll, "name", { value: "default", configurable: true });
 
 
 
@@ -2515,6 +2558,7 @@ var selectorAll = __webpack_require__(53285);
 }
 
 ;// ../node_modules/d3-transition/src/transition/selection.js
+Object.defineProperty(transition_selection, "name", { value: "default", configurable: true });
 
 
 var Selection = selection/* default */.Ay.prototype.constructor;
@@ -2526,6 +2570,7 @@ var Selection = selection/* default */.Ay.prototype.constructor;
 // EXTERNAL MODULE: ../node_modules/d3-selection/src/selection/style.js
 var style = __webpack_require__(2365);
 ;// ../node_modules/d3-transition/src/transition/style.js
+Object.defineProperty(transition_style, "name", { value: "default", configurable: true });
 
 
 
@@ -2608,6 +2653,7 @@ function styleMaybeRemove(id, name) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/styleTween.js
+Object.defineProperty(transition_styleTween, "name", { value: "default", configurable: true });
 function styleInterpolate(name, i, priority) {
   return function(t) {
     this.style.setProperty(name, i.call(this, t), priority);
@@ -2634,6 +2680,7 @@ function styleTween(name, value, priority) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/text.js
+Object.defineProperty(transition_text, "name", { value: "default", configurable: true });
 
 
 function textConstant(value) {
@@ -2656,6 +2703,7 @@ function textFunction(value) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/textTween.js
+Object.defineProperty(transition_textTween, "name", { value: "default", configurable: true });
 function textInterpolate(i) {
   return function(t) {
     this.textContent = i.call(this, t);
@@ -2682,6 +2730,7 @@ function textTween(value) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/transition.js
+Object.defineProperty(transition, "name", { value: "default", configurable: true });
 
 
 
@@ -2708,6 +2757,7 @@ function textTween(value) {
 }
 
 ;// ../node_modules/d3-transition/src/transition/end.js
+Object.defineProperty(end, "name", { value: "default", configurable: true });
 
 
 /* harmony default export */ function end() {
@@ -2827,6 +2877,7 @@ function cubicInOut(t) {
 }
 
 ;// ../node_modules/d3-transition/src/selection/transition.js
+Object.defineProperty(selection_transition, "name", { value: "default", configurable: true });
 
 
 
