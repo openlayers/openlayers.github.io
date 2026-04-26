@@ -77,8 +77,10 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      * @param {HTMLElement} target Potential render target.
      * @param {string} transform CSS transform matrix.
      * @param {string} [backgroundColor] Background color.
+     * @param {number} [width] Physical pixel width of the rendering canvas.
+     * @param {number} [height] Physical pixel height of the rendering canvas.
      */
-    useContainer(target: HTMLElement, transform: string, backgroundColor?: string): void;
+    useContainer(target: HTMLElement, transform: string, backgroundColor?: string, width?: number, height?: number): void;
     /**
      * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
