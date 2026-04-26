@@ -232,6 +232,11 @@ export type Options = {
      */
     operation?: Operation | undefined;
     /**
+     * Use interpolated values when resampling. By default,
+     * linear interpolation is used when resampling. Set to `false` to use the nearest neighbor instead.
+     */
+    interpolate?: boolean | undefined;
+    /**
      * Functions that will be made available to operations run in a worker.
      */
     lib?: any;
@@ -271,6 +276,8 @@ import Event from '../events/Event.js';
  * @property {Operation} [operation] Raster operation.
  * The operation will be called with data from input sources
  * and the output will be assigned to the raster source.
+ * @property {boolean} [interpolate=true] Use interpolated values when resampling. By default,
+ * linear interpolation is used when resampling. Set to `false` to use the nearest neighbor instead.
  * @property {Object} [lib] Functions that will be made available to operations run in a worker.
  * @property {number} [threads] By default, operations will be run in a single worker thread.
  * To avoid using workers altogether, set `threads: 0`.  For pixel operations, operations can
@@ -414,6 +421,7 @@ declare class RasterSource extends ImageSource {
     /**
      * Called when pixel processing is complete.
      * @param {import("../Map.js").FrameState} frameState The frame state.
+     * @param {Array<number>} sourceRevisions Source revisions when processing started.
      * @param {Error} err Any error during processing.
      * @param {ImageData} output The output image data.
      * @param {Object|Array<Object>} data The user data (or an array if more than one thread).
