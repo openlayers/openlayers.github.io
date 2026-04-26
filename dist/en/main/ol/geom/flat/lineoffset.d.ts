@@ -26,7 +26,10 @@ export function offsetLineString(flatCoordinates: Array<number>, start: number, 
  *
  * @param {Array<number>} coords Flat offset coordinates (modified in-place).
  * @param {number} stride Coordinate stride (typically 2).
+ * @param {boolean} [closedLine] Whether the original line is closed (first vertex === last vertex).
+ *   When true, the first and last offset segments are not compared against each other to avoid
+ *   false loop detection at the closure point.
  * @return {Array<number>} The cleaned coordinate array.
  */
-export function removeOffsetCycles(coords: Array<number>, stride: number): Array<number>;
+export function removeOffsetCycles(coords: Array<number>, stride: number, closedLine?: boolean): Array<number>;
 //# sourceMappingURL=lineoffset.d.ts.map
