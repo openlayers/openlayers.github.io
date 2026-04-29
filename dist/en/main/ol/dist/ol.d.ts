@@ -229,6 +229,7 @@ declare namespace ol {
         export { _ol_extent$getBottomRight as getBottomRight };
         export { _ol_extent$getCenter as getCenter };
         export { _ol_extent$getCorner as getCorner };
+        export { _ol_extent$getDifference as getDifference };
         export { _ol_extent$getEnlargedArea as getEnlargedArea };
         export { _ol_extent$getForViewAndSize as getForViewAndSize };
         export { _ol_extent$getHeight as getHeight };
@@ -1246,6 +1247,7 @@ import { getBottomLeft as _ol_extent$getBottomLeft } from '../../ol/extent.js';
 import { getBottomRight as _ol_extent$getBottomRight } from '../../ol/extent.js';
 import { getCenter as _ol_extent$getCenter } from '../../ol/extent.js';
 import { getCorner as _ol_extent$getCorner } from '../../ol/extent.js';
+import { getDifference as _ol_extent$getDifference } from '../../ol/extent.js';
 import { getEnlargedArea as _ol_extent$getEnlargedArea } from '../../ol/extent.js';
 import { getForViewAndSize as _ol_extent$getForViewAndSize } from '../../ol/extent.js';
 import { getHeight as _ol_extent$getHeight } from '../../ol/extent.js';

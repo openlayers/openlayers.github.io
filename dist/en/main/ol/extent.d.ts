@@ -275,6 +275,38 @@ export function getIntersectionArea(extent1: Extent, extent2: Extent): number;
  */
 export function getIntersection(extent1: Extent, extent2: Extent, dest?: Extent): Extent;
 /**
+ * Get the difference between two extents, i.e. the area(s) of `extent1` that
+ * are not covered by `extent2`.  Returns an array of between 0 and 4 extents.
+ *
+ * When the extents do not intersect the returned array contains `extent1` as
+ * its only element.  When `extent2` completely contains `extent1` the returned
+ * array is empty.  Otherwise up to four non-overlapping extents are returned
+ * that together cover exactly the parts of `extent1` outside `extent2`.
+ *
+ * The decomposition used is:
+ *
+ * ```
+ * ┌────┬─────────┬────┐  ← y2
+ * │    │   top   │    │
+ * │    ├─────────┤    │  ← iy2
+ * │left│ (gone)  │right│
+ * │    ├─────────┤    │  ← iy1
+ * │    │ bottom  │    │
+ * └────┴─────────┴────┘  ← y1
+ * x1  ix1       ix2   x2
+ * ```
+ *
+ * The left and right strips span the full height of `extent1` while the top
+ * and bottom strips are clamped horizontally to the intersection, so the four
+ * rectangles tile perfectly without overlap or gaps.
+ *
+ * @param {Extent} extent1 Extent to subtract from.
+ * @param {Extent} extent2 Extent to subtract.
+ * @return {Array<Extent>} Remaining extents (0–4 elements).
+ * @api
+ */
+export function getDifference(extent1: Extent, extent2: Extent): Array<Extent>;
+/**
  * @param {Extent} extent Extent.
  * @return {number} Margin.
  */

@@ -91,6 +91,7 @@
             <li data-name="getbottomleft"><a href="module-ol_extent.html#.getBottomLeft">getBottomLeft</a>
             <li data-name="getbottomright"><a href="module-ol_extent.html#.getBottomRight">getBottomRight</a>
             <li data-name="getcenter"><a href="module-ol_extent.html#.getCenter">getCenter</a>
+            <li data-name="getdifference"><a href="module-ol_extent.html#.getDifference">getDifference</a>
             <li data-name="getheight"><a href="module-ol_extent.html#.getHeight">getHeight</a>
             <li data-name="getintersection"><a href="module-ol_extent.html#.getIntersection">getIntersection</a>
             <li data-name="getsize"><a href="module-ol_extent.html#.getSize">getSize</a>
@@ -209,7 +210,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js">extent.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L810">line 810</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L877">line 877</a>
         </div>
         
     </div>
@@ -2227,6 +2228,185 @@ Center.
 <dt class="">
     
     <div class="nameContainer">
+        <div class="anchor" id=".getDifference">
+        </div>
+        <h4 class="name">
+            getDifference<span class="signature">(extent1, extent2)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array&lt;<a href="module-ol_extent.html#~Extent">Extent</a>>}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js">extent.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L663">line 663</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+    
+    <pre class="prettyprint source"><code>import {getDifference} from 'ol/extent';</code></pre>
+
+
+    
+    <div class="description">
+        <p>Get the difference between two extents, i.e. the area(s) of <code>extent1</code> that
+are not covered by <code>extent2</code>.  Returns an array of between 0 and 4 extents.</p>
+<p>When the extents do not intersect the returned array contains <code>extent1</code> as
+its only element.  When <code>extent2</code> completely contains <code>extent1</code> the returned
+array is empty.  Otherwise up to four non-overlapping extents are returned
+that together cover exactly the parts of <code>extent1</code> outside <code>extent2</code>.</p>
+<p>The decomposition used is:</p>
+<pre class="prettyprint source"><code>┌────┬─────────┬────┐  ← y2
+│    │   top   │    │
+│    ├─────────┤    │  ← iy2
+│left│ (gone)  │right│
+│    ├─────────┤    │  ← iy1
+│    │ bottom  │    │
+└────┴─────────┴────┘  ← y1
+x1  ix1       ix2   x2</code></pre><p>The left and right strips span the full height of <code>extent1</code> while the top
+and bottom strips are clamped horizontally to the intersection, so the four
+rectangles tile perfectly without overlap or gaps.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>extent1</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Extent to subtract from.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>extent2</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_extent.html#~Extent">Extent</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Extent to subtract.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Remaining extents (0–4 elements).
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
         <div class="anchor" id=".getHeight">
         </div>
         <h4 class="name">
@@ -2564,7 +2744,7 @@ Intersecting extent.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js">extent.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L646">line 646</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L713">line 713</a>
         </div>
         
     </div>
@@ -2702,7 +2882,7 @@ The extent size.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js">extent.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L656">line 656</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L723">line 723</a>
         </div>
         
     </div>
@@ -2840,7 +3020,7 @@ Top left coordinate.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js">extent.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L666">line 666</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L733">line 733</a>
         </div>
         
     </div>
@@ -2978,7 +3158,7 @@ Top right coordinate.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js">extent.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L676">line 676</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L743">line 743</a>
         </div>
         
     </div>
@@ -3116,7 +3296,7 @@ Width.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js">extent.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L687">line 687</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L754">line 754</a>
         </div>
         
     </div>
@@ -3279,7 +3459,7 @@ The two extents intersect.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js">extent.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L702">line 702</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/extent.js#L769">line 769</a>
         </div>
         
     </div>

@@ -601,8 +601,13 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      */
     loadFeatures(extent: import("../extent.js").Extent, resolution: number, projection: import("../proj/Projection.js").default): void;
     /**
-     * Remove an extent from the list of loaded extents.
-     * @param {import("../extent.js").Extent} extent Extent.
+     * Marks an extent as not loaded, preserving any loaded areas outside it.
+     *
+     * Any previously loaded extent overlapping the given extent is split into its
+     * remaining non-overlapping parts using {@link module:ol/extent~getDifference getDifference()},
+     * which are then re-inserted into the tree.
+     *
+     * @param {import("../extent.js").Extent} extent Extent to mark as not loaded.
      * @api
      */
     removeLoadedExtent(extent: import("../extent.js").Extent): void;
