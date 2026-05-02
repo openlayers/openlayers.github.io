@@ -20,9 +20,9 @@ import {getRequestUrl} from './arcgisRest.js';
  * @property {boolean} [interpolate=true] Use interpolated values when resampling.  By default,
  * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
  * @property {Object<string,*>} [params] ArcGIS Rest parameters. This field is optional. Service defaults will be
- * used for any fields not specified. `FORMAT` is `PNG32` by default. `F` is `IMAGE` by
- * default. `TRANSPARENT` is `true` by default.  `BBOX`, `SIZE`, `BBOXSR`,
- * and `IMAGESR` will be set dynamically. Set `LAYERS` to
+ * used for any fields not specified. `format` is `png32` by default. `f` is `image` by
+ * default. `transparent` is `true` by default.  `bbox`, `size`, `bboxSR`,
+ * and `imageSR` will be set dynamically. Set `layers` to
  * override the default service layer visibility. See
  * https://developers.arcgis.com/rest/services-reference/export-map.htm
  * for further reference.
@@ -236,9 +236,9 @@ class TileArcGISRest extends TileImage {
 
     // Apply default params and override with user specified values.
     const baseParams = {
-      'F': 'image',
-      'FORMAT': 'PNG32',
-      'TRANSPARENT': true,
+      'f': 'image',
+      'format': 'png32',
+      'transparent': true,
     };
     Object.assign(baseParams, this.params_);
 
