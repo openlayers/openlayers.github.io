@@ -21,6 +21,10 @@ export type Options = {
      */
     extent?: import("../extent.js").Extent | undefined;
     /**
+     * Minimum zoom.
+     */
+    minZoom?: number | undefined;
+    /**
      * The tile grid origin, i.e.
      * where the `x` and `y` axes meet (`[z, 0, 0]`). Tile coordinates increase left
      * to right and downwards. If not specified, `extent` or `origins` must be provided.
@@ -72,6 +76,7 @@ export type Options = {
  * outside this extent will be requested by {@link module:ol/source/Tile~TileSource} sources.
  * When no `origin` or `origins` are configured, the `origin` will be set to the
  * top-left corner of the extent.
+ * @property {number} [minZoom=0] Minimum zoom.
  * @property {import("../coordinate.js").Coordinate} [origin] The tile grid origin, i.e.
  * where the `x` and `y` axes meet (`[z, 0, 0]`). Tile coordinates increase left
  * to right and downwards. If not specified, `extent` or `origins` must be provided.
