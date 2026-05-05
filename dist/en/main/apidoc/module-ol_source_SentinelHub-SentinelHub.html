@@ -92,6 +92,7 @@
             <li data-name="setauth"><a href="module-ol_source_SentinelHub-SentinelHub.html#setAuth">setAuth</a>
             <li data-name="setdata"><a href="module-ol_source_SentinelHub-SentinelHub.html#setData">setData</a>
             <li data-name="setevalscript"><a href="module-ol_source_SentinelHub-SentinelHub.html#setEvalscript">setEvalscript</a>
+            <li data-name="setformat"><a href="module-ol_source_SentinelHub-SentinelHub.html#setFormat">setFormat</a>
             <li data-name="setproperties"><a href="module-ol_source_SentinelHub-SentinelHub.html#setProperties">setProperties</a>
             <li data-name="settilegridforprojection"><a href="module-ol_source_SentinelHub-SentinelHub.html#setTileGridForProjection">setTileGridForProjection</a>
             <li data-name="un"><a href="module-ol_source_SentinelHub-SentinelHub.html#un">un</a>
@@ -175,7 +176,7 @@ details on handling these errors.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js">source/SentinelHub.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L390">line 390</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L406">line 406</a>
         </div>
         
     </div>
@@ -485,6 +486,33 @@ linear interpolation is used when resampling.  Set to false to use the nearest n
                 
                 <p>Duration of the opacity transition for rendering.
 To disable the opacity transition, pass <code>transition: 0</code>.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>format</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+                    (defaults to 'image/png')
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>MIME type for each process response (<code>responses[].format.type</code>), for example <code>image/png</code> or <code>image/jpeg</code>.</p></td>
         </tr>
 
 	
@@ -1282,7 +1310,7 @@ Attributions are collapsible.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js">source/SentinelHub.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L632">line 632</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L689">line 689</a>
         </div>
         
     </div>
@@ -2659,7 +2687,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js">source/SentinelHub.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L468">line 468</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L496">line 496</a>
         </div>
         
     </div>
@@ -2873,7 +2901,7 @@ and used with processing requests.  Alternatively, an access token can be suppli
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js">source/SentinelHub.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L509">line 509</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L537">line 537</a>
         </div>
         
     </div>
@@ -2999,7 +3027,7 @@ and used with processing requests.  Alternatively, an access token can be suppli
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js">source/SentinelHub.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L524">line 524</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L568">line 568</a>
         </div>
         
     </div>
@@ -3226,6 +3254,132 @@ context.</p>
 	</tbody>
 </table>
             </td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="setFormat">
+        </div>
+        <h4 class="name">
+            setFormat<span class="signature">(format)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js">source/SentinelHub.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/SentinelHub.js#L548">line 548</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Set the MIME type for process API tile responses (<code>responses[].format.type</code>).</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>format</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Format type (for example <code>image/png</code> or <code>image/jpeg</code>).</p></td>
         </tr>
 
 	

@@ -377,6 +377,10 @@ export type Options = {
      * To disable the opacity transition, pass `transition: 0`.
      */
     transition?: number | undefined;
+    /**
+     * MIME type for each process response (`responses[].format.type`), for example `image/png` or `image/jpeg`.
+     */
+    format?: string | undefined;
 };
 /**
  * @typedef {Object} Options
@@ -398,6 +402,7 @@ export type Options = {
  * @property {boolean} [wrapX=true] Wrap the world horizontally.
  * @property {number} [transition] Duration of the opacity transition for rendering.
  * To disable the opacity transition, pass `transition: 0`.
+ * @property {string} [format='image/png'] MIME type for each process response (`responses[].format.type`), for example `image/png` or `image/jpeg`.
  */
 /**
  * @classdesc
@@ -440,6 +445,11 @@ declare class SentinelHub extends DataTileSource<import("../DataTile.js").defaul
      * @type {string}
      * @private
      */
+    private format_;
+    /**
+     * @type {string}
+     * @private
+     */
     private token_;
     /**
      * @type {ReturnType<typeof setTimeout>}
@@ -462,6 +472,13 @@ declare class SentinelHub extends DataTileSource<import("../DataTile.js").defaul
      * @api
      */
     setData(data: Array<ProcessRequestInputDataItem>): void;
+    /**
+     * Set the MIME type for process API tile responses (`responses[].format.type`).
+     *
+     * @param {string} format Format type (for example `image/png` or `image/jpeg`).
+     * @api
+     */
+    setFormat(format: string): void;
     /**
      * Set or update the Evalscript used to process the data.  Either a process object or a string
      * Evalscript can be provided.  If a process object is provided, it will be serialized to produce the
