@@ -310,16 +310,6 @@ declare class WebGLHelper extends Disposable {
     private needsToBeRecreated_;
     /**
      * @private
-     * @type {import("../transform.js").Transform}
-     */
-    private offsetRotateMatrix_;
-    /**
-     * @private
-     * @type {import("../transform.js").Transform}
-     */
-    private offsetScaleMatrix_;
-    /**
-     * @private
      * @type {Array<number>}
      */
     private tmpMat4_;

@@ -78,6 +78,7 @@
             <li data-name="literalvalue"><a href="module-ol_expr_expression.html#~LiteralValue">LiteralValue</a>
             <li data-name="parser"><a href="module-ol_expr_expression.html#~Parser">Parser</a>
             <li data-name="parsingcontext"><a href="module-ol_expr_expression.html#~ParsingContext">ParsingContext</a>
+            <li data-name="valuetype"><a href="module-ol_expr_expression.html#~ValueType">ValueType</a>
         </ul>
     </div>
               <li class="loading">Loading …
@@ -187,7 +188,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L605">line 605</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L609">line 609</a>
         </div>
         
     </div>
@@ -597,7 +598,7 @@ Literal values can be of the following types:</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L432">line 432</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L436">line 436</a>
         </div>
         
     </div>
@@ -710,7 +711,7 @@ Literal values can be of the following types:</p>
             <td class="type">
             
                 
-<span class="param-type">Set.&lt;string></span>
+<span class="param-type">Map&lt;ValueType></span>
 
 
                 
@@ -718,7 +719,7 @@ Literal values can be of the following types:</p>
             </td>
 
             <td class="description last">
-                <p>Variables referenced with the 'var' operator.</p>
+                <p>Variables referenced with the 'var' operator; key is name, value is type.</p>
                 
             </td>
         </tr>
@@ -733,7 +734,7 @@ Literal values can be of the following types:</p>
             <td class="type">
             
                 
-<span class="param-type">Set.&lt;string></span>
+<span class="param-type">Map&lt;ValueType></span>
 
 
                 
@@ -741,7 +742,7 @@ Literal values can be of the following types:</p>
             </td>
 
             <td class="description last">
-                <p>Properties referenced with the 'get' operator.</p>
+                <p>Properties referenced with the 'get' operator; key is name, value is type.</p>
                 
             </td>
         </tr>
@@ -842,6 +843,52 @@ Literal values can be of the following types:</p>
 	</tbody>
 </table></dl>
         
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~ValueType">
+        </div>
+        <h4 class="name">
+            ValueType<span class="type-signature type number">{number}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
     
         
     

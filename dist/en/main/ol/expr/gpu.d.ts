@@ -56,19 +56,9 @@ export function uniformNameForVariable(variableName: string): string;
  * @typedef {import("./expression.js").LiteralExpression} LiteralExpression
  */
 /**
- * @typedef {Object} CompilationContextProperty
- * @property {string} name Name
- * @property {number} type Resolved property type
- */
-/**
- * @typedef {Object} CompilationContextVariable
- * @property {string} name Name
- * @property {number} type Resolved variable type
- */
-/**
  * @typedef {Object} CompilationContext
- * @property {Object<string, CompilationContextProperty>} properties The values for properties used in 'get' expressions.
- * @property {Object<string, CompilationContextVariable>} variables The values for variables used in 'var' expressions.
+ * @property {Map<string, ValueType>} variables Variables and their types (transferred from the parsing context)
+ * @property {Map<string, ValueType>} properties Properties and their types (transferred from the parsing context)
  * @property {Object<string, string>} functions Lookup of functions used by the style.
  * @property {number} [bandCount] Number of bands per pixel.
  * @property {Array<PaletteTexture>} [paletteTextures] List of palettes used by the style.
@@ -101,42 +91,19 @@ export const GEOMETRY_TYPE_PROPERTY_NAME: "geometryType";
  * The value `-9999999` will be used to indicate that a property on a feature is not defined, similar to a "no data" value.
  */
 export const UNDEFINED_PROP_VALUE: -9999999;
+export type ValueType = import("./expression.js").ValueType;
 export type ParsingContext = import("./expression.js").ParsingContext;
 export type Expression = import("./expression.js").Expression;
 export type LiteralExpression = import("./expression.js").LiteralExpression;
-export type CompilationContextProperty = {
-    /**
-     * Name
-     */
-    name: string;
-    /**
-     * Resolved property type
-     */
-    type: number;
-};
-export type CompilationContextVariable = {
-    /**
-     * Name
-     */
-    name: string;
-    /**
-     * Resolved variable type
-     */
-    type: number;
-};
 export type CompilationContext = {
     /**
-     * The values for properties used in 'get' expressions.
+     * Variables and their types (transferred from the parsing context)
      */
-    properties: {
-        [x: string]: CompilationContextProperty;
-    };
+    variables: Map<string, ValueType>;
     /**
-     * The values for variables used in 'var' expressions.
+     * Properties and their types (transferred from the parsing context)
      */
-    variables: {
-        [x: string]: CompilationContextVariable;
-    };
+    properties: Map<string, ValueType>;
     /**
      * Lookup of functions used by the style.
      */

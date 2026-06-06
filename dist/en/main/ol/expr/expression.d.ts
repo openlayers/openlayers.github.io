@@ -1,34 +1,34 @@
 /**
  * Get a string representation for a type.
- * @param {number} type The type.
+ * @param {ValueType} type The type.
  * @return {string} The type name.
  */
-export function typeName(type: number): string;
+export function typeName(type: ValueType): string;
 /**
- * @param {number} broad The broad type.
- * @param {number} specific The specific type.
+ * @param {ValueType} broad The broad type.
+ * @param {ValueType} specific The specific type.
  * @return {boolean} The broad type includes the specific type.
  */
-export function includesType(broad: number, specific: number): boolean;
+export function includesType(broad: ValueType, specific: ValueType): boolean;
 /**
- * @param {number} oneType One type.
- * @param {number} otherType Another type.
+ * @param {ValueType} oneType One type.
+ * @param {ValueType} otherType Another type.
  * @return {boolean} The set of types overlap (share a common specific type)
  */
-export function overlapsType(oneType: number, otherType: number): boolean;
+export function overlapsType(oneType: ValueType, otherType: ValueType): boolean;
 /**
- * @param {number} type The type.
- * @param {number} expected The expected type.
+ * @param {ValueType} type The type.
+ * @param {ValueType} expected The expected type.
  * @return {boolean} The given type is exactly the expected type.
  */
-export function isType(type: number, expected: number): boolean;
+export function isType(type: ValueType, expected: ValueType): boolean;
 /**
  * @typedef {LiteralExpression|CallExpression} Expression
  */
 /**
  * @typedef {Object} ParsingContext
- * @property {Set<string>} variables Variables referenced with the 'var' operator.
- * @property {Set<string>} properties Properties referenced with the 'get' operator.
+ * @property {Map<string, ValueType>} variables Variables referenced with the 'var' operator; key is name, value is type.
+ * @property {Map<string, ValueType>} properties Properties referenced with the 'get' operator; key is name, value is type.
  * @property {boolean} featureId The style uses the feature id.
  * @property {boolean} geometryType The style uses the feature geometry type.
  * @property {boolean} mCoordinate The style uses the M coordinate of geometries
@@ -43,11 +43,11 @@ export function newParsingContext(): ParsingContext;
  */
 /**
  * @param {EncodedExpression} encoded The encoded expression.
- * @param {number} expectedType The expected type.
+ * @param {ValueType} expectedType The expected type.
  * @param {ParsingContext} context The parsing context.
  * @return {Expression} The parsed expression result.
  */
-export function parse(encoded: EncodedExpression, expectedType: number, context: ParsingContext): Expression;
+export function parse(encoded: EncodedExpression, expectedType: ValueType, context: ParsingContext): Expression;
 /**
  * Returns a simplified geometry type suited for the `geometry-type` operator
  * @param {import('../geom/Geometry.js').default|import('../render/Feature.js').default} geometry Geometry object
@@ -67,20 +67,20 @@ export const AnyType: number;
  */
 export class LiteralExpression {
     /**
-     * @param {number} type The value type.
+     * @param {ValueType} type The value type.
      * @param {LiteralValue} value The literal value.
      */
-    constructor(type: number, value: LiteralValue);
+    constructor(type: ValueType, value: LiteralValue);
     type: number;
     value: LiteralValue;
 }
 export class CallExpression {
     /**
-     * @param {number} type The return type.
+     * @param {ValueType} type The return type.
      * @param {string} operator The operator.
      * @param {...Expression} args The arguments.
      */
-    constructor(type: number, operator: string, ...args: Expression[]);
+    constructor(type: ValueType, operator: string, ...args: Expression[]);
     type: number;
     operator: string;
     args: Expression[];
@@ -94,13 +94,13 @@ export const Ops: {
 export type Expression = LiteralExpression | CallExpression;
 export type ParsingContext = {
     /**
-     * Variables referenced with the 'var' operator.
+     * Variables referenced with the 'var' operator; key is name, value is type.
      */
-    variables: Set<string>;
+    variables: Map<string, ValueType>;
     /**
-     * Properties referenced with the 'get' operator.
+     * Properties referenced with the 'get' operator; key is name, value is type.
      */
-    properties: Set<string>;
+    properties: Map<string, ValueType>;
     /**
      * The style uses the feature id.
      */
@@ -123,7 +123,7 @@ export type EncodedExpression = LiteralValue | any[];
  * An argument validator applies various checks to an encoded expression arguments and
  * returns the parsed arguments if any.  The second argument is the return type of the call expression.
  */
-export type ArgValidator = (arg0: Array<EncodedExpression>, arg1: number, arg2: ParsingContext) => Array<Expression> | void;
+export type ArgValidator = (arg0: Array<EncodedExpression>, arg1: ValueType, arg2: ParsingContext) => Array<Expression> | void;
 /**
  * Base type used for literal style parameters; can be a number literal or the output of an operator,
  * which in turns takes {@link import ("./expression.js").ExpressionValue} arguments.
@@ -244,6 +244,7 @@ export type ArgValidator = (arg0: Array<EncodedExpression>, arg1: number, arg2: 
  * * {@link module :ol/color~Color}
  */
 export type ExpressionValue = Array<any> | import("../color.js").Color | string | number | boolean;
+export type ValueType = number;
 export type LiteralValue = boolean | number | string | Array<number>;
 /**
  * Second argument is the expected type.

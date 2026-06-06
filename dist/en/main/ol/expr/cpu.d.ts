@@ -1,4 +1,7 @@
 /**
+ * @typedef {import('./expression.js').ValueType} ValueType
+ */
+/**
  * @fileoverview This module includes functions to build expressions for evaluation on the CPU.
  * Building is composed of two steps: parsing and compiling.  The parsing step takes an encoded
  * expression and returns an instance of one of the expression classes.  The compiling step takes
@@ -46,11 +49,12 @@ export function newEvaluationContext(): EvaluationContext;
  */
 /**
  * @param {import('./expression.js').EncodedExpression} encoded The encoded expression.
- * @param {number} type The expected type.
+ * @param {ValueType} type The expected type.
  * @param {import('./expression.js').ParsingContext} context The parsing context.
  * @return {ExpressionEvaluator} The expression evaluator.
  */
-export function buildExpression(encoded: import("./expression.js").EncodedExpression, type: number, context: import("./expression.js").ParsingContext): ExpressionEvaluator;
+export function buildExpression(encoded: import("./expression.js").EncodedExpression, type: ValueType, context: import("./expression.js").ParsingContext): ExpressionEvaluator;
+export type ValueType = import("./expression.js").ValueType;
 export type EvaluationContext = {
     /**
      * The values for properties used in 'get' expressions.
