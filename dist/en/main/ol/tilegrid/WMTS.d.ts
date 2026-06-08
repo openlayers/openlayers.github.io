@@ -61,6 +61,11 @@ export type Options = {
      */
     sizes?: import("../size.js").Size[] | undefined;
     /**
+     * Pre-built tile ranges for each
+     * zoom level. When provided, used instead of `sizes` to set per-level tile index bounds.
+     */
+    tileRanges?: TileRange[] | undefined;
+    /**
      * Tile size.
      */
     tileSize?: number | import("../size.js").Size | undefined;
@@ -98,6 +103,8 @@ export type Options = {
  * which tile requests are made by sources. If the bottom-left corner of
  * an extent is used as `origin` or `origins`, then the `y` value must be
  * negative because OpenLayers tile coordinates use the top left as the origin.
+ * @property {Array<import("../TileRange.js").default>} [tileRanges] Pre-built tile ranges for each
+ * zoom level. When provided, used instead of `sizes` to set per-level tile index bounds.
  * @property {number|import("../size.js").Size} [tileSize] Tile size.
  * @property {Array<number|import("../size.js").Size>} [tileSizes] Tile sizes. The length of
  * this array needs to match the length of the `resolutions` array.
@@ -129,5 +136,6 @@ declare class WMTSTileGrid extends TileGrid {
      */
     getMatrixIds(): Array<string>;
 }
+import TileRange from '../TileRange.js';
 import TileGrid from './TileGrid.js';
 //# sourceMappingURL=WMTS.d.ts.map

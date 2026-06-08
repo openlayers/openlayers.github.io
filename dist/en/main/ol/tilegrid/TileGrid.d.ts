@@ -41,6 +41,12 @@ export type Options = {
      */
     sizes?: import("../size.js").Size[] | undefined;
     /**
+     * Pre-built tile ranges for each
+     * zoom level. When provided, these are used directly as the full tile ranges instead of computing
+     * them from `sizes`. Useful for setting per-level tile index bounds (e.g. from WMTS `TileMatrixSetLimits`).
+     */
+    tileRanges?: TileRange[] | undefined;
+    /**
      * Tile size.
      * Default is `[256, 256]`.
      */
@@ -76,6 +82,9 @@ export type Options = {
  * for which tile requests are made by sources. If the bottom-left corner of
  * an extent is used as `origin` or `origins`, then the `y` value must be
  * negative because OpenLayers tile coordinates use the top left as the origin.
+ * @property {Array<import("../TileRange.js").default>} [tileRanges] Pre-built tile ranges for each
+ * zoom level. When provided, these are used directly as the full tile ranges instead of computing
+ * them from `sizes`. Useful for setting per-level tile index bounds (e.g. from WMTS `TileMatrixSetLimits`).
  * @property {number|import("../size.js").Size} [tileSize] Tile size.
  * Default is `[256, 256]`.
  * @property {Array<number|import("../size.js").Size>} [tileSizes] Tile sizes. If given, the array length
@@ -350,4 +359,5 @@ declare class TileGrid {
      */
     private calculateTileRanges_;
 }
+import TileRange from '../TileRange.js';
 //# sourceMappingURL=TileGrid.d.ts.map

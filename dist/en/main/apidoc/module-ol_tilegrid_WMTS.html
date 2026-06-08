@@ -193,7 +193,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/tilegrid/WMTS.js">tilegrid/WMTS.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/tilegrid/WMTS.js#L101">line 101</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/tilegrid/WMTS.js#L105">line 105</a>
         </div>
         
     </div>
@@ -591,6 +591,30 @@ A grid <code>extent</code> can be configured in addition, and will further limit
 which tile requests are made by sources. If the bottom-left corner of
 an extent is used as <code>origin</code> or <code>origins</code>, then the <code>y</code> value must be
 negative because OpenLayers tile coordinates use the top left as the origin.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>tileRanges</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array&lt;TileRange></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Pre-built tile ranges for each
+zoom level. When provided, used instead of <code>sizes</code> to set per-level tile index bounds.</p>
                 
             </td>
         </tr>

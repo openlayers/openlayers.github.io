@@ -360,6 +360,31 @@ negative because OpenLayers tile coordinates use the top left as the origin.</p>
 
         <tr>
             
+                <td class="name"><code>tileRanges</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array&lt;TileRange></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Pre-built tile ranges for each
+zoom level. When provided, these are used directly as the full tile ranges instead of computing
+them from <code>sizes</code>. Useful for setting per-level tile index bounds (e.g. from WMTS <code>TileMatrixSetLimits</code>).</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
                 <td class="name"><code>tileSize</code></td>
             
 
