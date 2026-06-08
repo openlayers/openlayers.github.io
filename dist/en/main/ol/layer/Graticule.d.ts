@@ -163,6 +163,11 @@ export type Options = {
      */
     wrapX?: boolean | undefined;
     /**
+     * Background color for the layer. If not specified, no background
+     * will be rendered.
+     */
+    background?: import("./Base.js").BackgroundColor | undefined;
+    /**
      * Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
      */
     properties?: {
@@ -266,6 +271,8 @@ export type Options = {
  * [30, 10]
  * ```
  * @property {boolean} [wrapX=true] Whether to repeat the graticule horizontally.
+ * @property {import("./Base.js").BackgroundColor} [background] Background color for the layer. If not specified, no background
+ * will be rendered.
  * @property {Object<string, *>} [properties] Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
  */
 /**

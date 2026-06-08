@@ -88,6 +88,11 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = im
      */
     source?: VectorSourceType | undefined;
     /**
+     * Background color for the layer. If not specified, no background
+     * will be rendered.
+     */
+    background?: import("./Base.js").BackgroundColor | undefined;
+    /**
      * Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
      */
     properties?: {
