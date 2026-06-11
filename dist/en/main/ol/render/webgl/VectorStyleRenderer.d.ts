@@ -53,15 +53,15 @@ export type WebGLBuffers = {
     /**
      * Array containing indices and vertices buffers for polygons
      */
-    polygonBuffers: WebGLArrayBufferSet;
+    polygonBuffers: WebGLArrayBufferSet | null;
     /**
      * Array containing indices and vertices buffers for line strings
      */
-    lineStringBuffers: WebGLArrayBufferSet;
+    lineStringBuffers: WebGLArrayBufferSet | null;
     /**
      * Array containing indices and vertices buffers for points
      */
-    pointBuffers: WebGLArrayBufferSet;
+    pointBuffers: WebGLArrayBufferSet | null;
     /**
      * Inverse of the transform applied when generating buffers
      */
@@ -155,9 +155,9 @@ export type RenderPass = {
  */
 /**
  * @typedef {Object} WebGLBuffers
- * @property {WebGLArrayBufferSet} polygonBuffers Array containing indices and vertices buffers for polygons
- * @property {WebGLArrayBufferSet} lineStringBuffers Array containing indices and vertices buffers for line strings
- * @property {WebGLArrayBufferSet} pointBuffers Array containing indices and vertices buffers for points
+ * @property {WebGLArrayBufferSet|null} polygonBuffers Array containing indices and vertices buffers for polygons
+ * @property {WebGLArrayBufferSet|null} lineStringBuffers Array containing indices and vertices buffers for line strings
+ * @property {WebGLArrayBufferSet|null} pointBuffers Array containing indices and vertices buffers for points
  * @property {import("../../transform.js").Transform} invertVerticesTransform Inverse of the transform applied when generating buffers
  */
 /**
@@ -252,9 +252,9 @@ declare class VectorStyleRenderer {
     /**
      * @param {import('./MixedGeometryBatch.js').default} geometryBatch Geometry batch
      * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
-     * @return {Promise<WebGLBuffers|null>} A promise resolving to WebGL buffers; returns null if buffers are empty
+     * @return {Promise<WebGLBuffers>} A promise resolving to WebGL buffers; buffer sets are set to `null` if nothing to render
      */
-    generateBuffers(geometryBatch: import("./MixedGeometryBatch.js").default, transform: import("../../transform.js").Transform): Promise<WebGLBuffers | null>;
+    generateBuffers(geometryBatch: import("./MixedGeometryBatch.js").default, transform: import("../../transform.js").Transform): Promise<WebGLBuffers>;
     /**
      * @param {import('./MixedGeometryBatch.js').default} geometryBatch Geometry batch
      * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
