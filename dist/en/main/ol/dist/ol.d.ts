@@ -377,6 +377,9 @@ declare namespace ol {
             namespace center {
                 export { _ol_geom_flat_center$linearRingss as linearRingss };
             }
+            namespace clip {
+                export { _ol_geom_flat_clip$clipFlatLineStrings as clipFlatLineStrings };
+            }
             namespace closest {
                 export { _ol_geom_flat_closest$arrayMaxSquaredDelta as arrayMaxSquaredDelta };
                 export { _ol_geom_flat_closest$assignClosestArrayPoint as assignClosestArrayPoint };
@@ -1376,6 +1379,7 @@ import { linearRing as _ol_geom_flat_area$linearRing } from '../../ol/geom/flat/
 import { linearRings as _ol_geom_flat_area$linearRings } from '../../ol/geom/flat/area.js';
 import { linearRingss as _ol_geom_flat_area$linearRingss } from '../../ol/geom/flat/area.js';
 import { linearRingss as _ol_geom_flat_center$linearRingss } from '../../ol/geom/flat/center.js';
+import { clipFlatLineStrings as _ol_geom_flat_clip$clipFlatLineStrings } from '../../ol/geom/flat/clip.js';
 import { arrayMaxSquaredDelta as _ol_geom_flat_closest$arrayMaxSquaredDelta } from '../../ol/geom/flat/closest.js';
 import { assignClosestArrayPoint as _ol_geom_flat_closest$assignClosestArrayPoint } from '../../ol/geom/flat/closest.js';
 import { assignClosestMultiArrayPoint as _ol_geom_flat_closest$assignClosestMultiArrayPoint } from '../../ol/geom/flat/closest.js';
