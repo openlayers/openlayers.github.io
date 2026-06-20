@@ -74,7 +74,7 @@ declare class MVT<FeatureType extends import("../Feature.js").FeatureLike = Rend
     /**
      * Read the raw geometry from the pbf offset stored in a raw feature's geometry
      * property.
-     * @param {PBF} pbf PBF.
+     * @param {PbfReader} pbf PBF.
      * @param {Object} feature Raw feature.
      * @param {Array<number>} flatCoordinates Array to store flat coordinates in.
      * @param {Array<number>} ends Array to store ends in.
@@ -83,7 +83,7 @@ declare class MVT<FeatureType extends import("../Feature.js").FeatureLike = Rend
     private readRawGeometry_;
     /**
      * @private
-     * @param {PBF} pbf PBF
+     * @param {PbfReader} pbf PBF
      * @param {Object} rawFeature Raw Mapbox feature.
      * @param {import("./Feature.js").ReadOptions} options Read options.
      * @return {FeatureType|null} Feature.
