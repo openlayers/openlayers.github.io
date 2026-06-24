@@ -250,6 +250,14 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
      */
     getOverlaps(): boolean;
     /**
+     * @param {number} resolution Resolution.
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @param {number|import("../array.js").NearestDirectionFunction} zDirection Z direction.
+     * @return {number} Source z.
+     * @private
+     */
+    private getSourceZ_;
+    /**
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
      * @param {VectorRenderTile} tile Vector render tile.

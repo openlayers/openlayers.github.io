@@ -205,7 +205,9 @@ export type DatasetAttributes = {
     }>;
     "spatial:bbox": import("../extent.js").Extent;
     "spatial:shape": Array<number>;
-    "proj:code": string;
+    "proj:wkt2"?: string;
+    "proj:projjson"?: any;
+    "proj:code"?: string | null;
 };
 export type Multiscales = {
     /**

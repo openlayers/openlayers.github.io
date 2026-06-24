@@ -617,6 +617,7 @@ declare namespace ol {
             export { _ol_proj_proj4$epsgLookupMapTiler as epsgLookupMapTiler };
             export { _ol_proj_proj4$fromEPSGCode as fromEPSGCode };
             export { _ol_proj_proj4$fromProjectionCode as fromProjectionCode };
+            export { _ol_proj_proj4$fromProjectionDefinition as fromProjectionDefinition };
             export { _ol_proj_proj4$getEPSGLookup as getEPSGLookup };
             export { _ol_proj_proj4$getProjectionCodeLookup as getProjectionCodeLookup };
             export { _ol_proj_proj4$isRegistered as isRegistered };
@@ -1555,6 +1556,7 @@ import { identityTransform as _ol_proj$identityTransform } from '../../ol/proj.j
 import { epsgLookupMapTiler as _ol_proj_proj4$epsgLookupMapTiler } from '../../ol/proj/proj4.js';
 import { fromEPSGCode as _ol_proj_proj4$fromEPSGCode } from '../../ol/proj/proj4.js';
 import { fromProjectionCode as _ol_proj_proj4$fromProjectionCode } from '../../ol/proj/proj4.js';
+import { fromProjectionDefinition as _ol_proj_proj4$fromProjectionDefinition } from '../../ol/proj/proj4.js';
 import { getEPSGLookup as _ol_proj_proj4$getEPSGLookup } from '../../ol/proj/proj4.js';
 import { getProjectionCodeLookup as _ol_proj_proj4$getProjectionCodeLookup } from '../../ol/proj/proj4.js';
 import { isRegistered as _ol_proj_proj4$isRegistered } from '../../ol/proj/proj4.js';

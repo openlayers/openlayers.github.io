@@ -62,6 +62,11 @@ export function getProjectionCodeLookup(): (arg0: string) => Promise<string>;
  */
 export function fromProjectionCode(code: string): Promise<Projection>;
 /**
+ * @param {*} def Projection definition.
+ * @return {Projection} The projection.
+ */
+export function fromProjectionDefinition(def: any): Projection;
+/**
  * Set the lookup function for getting proj4 or WKT definitions given an EPSG code.
  * By default, the {@link module:ol/proj/proj4.fromEPSGCode} function uses the
  * spatialreference.org website for WKT definitions.
