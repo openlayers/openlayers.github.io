@@ -4,7 +4,8 @@
  * @param {import("../../expr/gpu.js").CompilationContext} compilationContext Compilation context
  * @param {import("../../expr/expression.js").EncodedExpression} value Value
  * @param {number} [expectedType] Expected final type (can be several types combined)
- * @param {import("../../expr/expression.js").ParsingContext} [parsingContext] Optional parsing context to be used
+ * @param {import("../../expr/expression.js").ParsingContext} [parsingContext] Optional parsing context to be used;
+ * if not specified, a new context using input variables from the compilation context will be used
  * @return {string} GLSL-compatible output
  */
 export function expressionToGlsl(compilationContext: import("../../expr/gpu.js").CompilationContext, value: import("../../expr/expression.js").EncodedExpression, expectedType?: number, parsingContext?: import("../../expr/expression.js").ParsingContext): string;

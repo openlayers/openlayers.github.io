@@ -64,11 +64,13 @@ export function uniformNameForVariable(variableName: string): string;
  * @property {Array<PaletteTexture>} [paletteTextures] List of palettes used by the style.
  * @property {boolean} featureId Whether the feature ID is used in the expression
  * @property {boolean} geometryType Whether the geometry type is used in the expression
+ * @property {import('../style/flat.js').StyleVariables} [inputVariables] Variable values (i.e. style variables) given as input during parsing to help with type narrowing
  */
 /**
+ * @param {import('../style/flat.js').StyleVariables} [inputVariables] Variable values (i.e. style variables) given as input during parsing to help with type narrowing
  * @return {CompilationContext} A new compilation context.
  */
-export function newCompilationContext(): CompilationContext;
+export function newCompilationContext(inputVariables?: import("../style/flat.js").StyleVariables): CompilationContext;
 /**
  * @typedef {string} CompiledExpression
  */
@@ -126,6 +128,12 @@ export type CompilationContext = {
      * Whether the geometry type is used in the expression
      */
     geometryType: boolean;
+    /**
+     * Variable values (i.e. style variables) given as input during parsing to help with type narrowing
+     */
+    inputVariables?: {
+        [x: string]: string | number | boolean | number[];
+    } | undefined;
 };
 export type CompiledExpression = string;
 /**

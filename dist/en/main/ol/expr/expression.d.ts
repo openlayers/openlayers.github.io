@@ -33,11 +33,13 @@ export function isType(type: ValueType, expected: ValueType): boolean;
  * @property {boolean} geometryType The style uses the feature geometry type.
  * @property {boolean} mCoordinate The style uses the M coordinate of geometries
  * @property {boolean} mapState The style uses the map state (view state or time elapsed).
+ * @property {import('../style/flat.js').StyleVariables} [inputVariables] Variable values (i.e. style variables) given as input during parsing to help with type narrowing
  */
 /**
+ * @param {import('../style/flat.js').StyleVariables} [inputVariables] Variable values (i.e. style variables) given as input during parsing to help with type narrowing
  * @return {ParsingContext} A new parsing context.
  */
-export function newParsingContext(): ParsingContext;
+export function newParsingContext(inputVariables?: import("../style/flat.js").StyleVariables): ParsingContext;
 /**
  * @typedef {LiteralValue|Array} EncodedExpression
  */
@@ -117,6 +119,12 @@ export type ParsingContext = {
      * The style uses the map state (view state or time elapsed).
      */
     mapState: boolean;
+    /**
+     * Variable values (i.e. style variables) given as input during parsing to help with type narrowing
+     */
+    inputVariables?: {
+        [x: string]: string | number | boolean | number[];
+    } | undefined;
 };
 export type EncodedExpression = LiteralValue | any[];
 /**
