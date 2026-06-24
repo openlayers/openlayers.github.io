@@ -854,6 +854,32 @@ Supported data should be wider and taller than the tile size by a value of <code
 
         <tr>
             
+                <td class="name"><code>hasAlpha</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Whether the data includes an alpha band.  Used when
+reprojecting to decide whether a coverage alpha band needs to be appended so areas
+outside the source footprint render transparent.  Defaults to <code>true</code> for 2 (luminance
+alpha) or 4 (RGBA) bands and <code>false</code> otherwise.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
                 <td class="name"><code>interpolate</code></td>
             
 

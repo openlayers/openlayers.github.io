@@ -87,6 +87,13 @@ export type Options = {
      */
     bandCount?: number | undefined;
     /**
+     * Whether the data includes an alpha band.  Used when
+     * reprojecting to decide whether a coverage alpha band needs to be appended so areas
+     * outside the source footprint render transparent.  Defaults to `true` for 2 (luminance
+     * alpha) or 4 (RGBA) bands and `false` otherwise.
+     */
+    hasAlpha?: boolean | undefined;
+    /**
      * Use interpolated values when resampling.  By default,
      * the nearest neighbor is used when resampling.
      */
@@ -146,6 +153,10 @@ export type Options = {
  * @property {boolean} [wrapX=false] Render tiles beyond the antimeridian.
  * @property {number} [transition] Transition time when fading in new tiles (in milliseconds).
  * @property {number} [bandCount=4] Number of bands represented in the data.
+ * @property {boolean} [hasAlpha] Whether the data includes an alpha band.  Used when
+ * reprojecting to decide whether a coverage alpha band needs to be appended so areas
+ * outside the source footprint render transparent.  Defaults to `true` for 2 (luminance
+ * alpha) or 4 (RGBA) bands and `false` otherwise.
  * @property {boolean} [interpolate=false] Use interpolated values when resampling.  By default,
  * the nearest neighbor is used when resampling.
  * @property {CrossOriginAttribute} [crossOrigin='anonymous'] The crossOrigin property to pass to loaders for image data.
@@ -202,6 +213,13 @@ declare class DataTileSource<TileType extends import("../Tile.js").default = Dat
      * @type {number}
      */
     bandCount: number;
+    /**
+     * Whether the data includes an alpha band.  When `false`, reprojection
+     * appends a coverage alpha band so areas outside the source footprint
+     * render transparent instead of opaque.
+     * @type {boolean}
+     */
+    hasAlpha: boolean;
     /**
      * The 1-based band index for the nodata alpha band.
      * @type {number|undefined}

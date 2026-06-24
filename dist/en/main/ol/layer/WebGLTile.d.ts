@@ -196,6 +196,19 @@ declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js
      */
     private styleVariables_;
     /**
+     * The band count the shaders were last built for (may include a coverage
+     * band added when reprojecting an alpha-less source).
+     * @type {number}
+     * @private
+     */
+    private styleBandCount_;
+    /**
+     * The nodata band index the shaders were last built for.
+     * @type {number|undefined}
+     * @private
+     */
+    private styleNodataBandIndex_;
+    /**
      * Gets the sources for this layer, for a given extent and resolution.
      * @param {import("../extent.js").Extent} extent Extent.
      * @param {number} resolution Resolution.
@@ -213,14 +226,46 @@ declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js
     private handleSourceUpdate_;
     /**
      * @private
+     * @return {SourceType} The first render source (or null).
+     */
+    private getFirstSource_;
+    /**
+     * Whether reprojecting the source to the given projection appends a coverage
+     * alpha band (only for sources that do not already carry an alpha band).
+     * @private
+     * @param {SourceType} source The render source.
+     * @param {import("../proj/Projection.js").default} [projection] The render projection.
+     * @return {boolean} A coverage band is added.
+     */
+    private usesCoverageBand_;
+    /**
+     * @private
+     * @param {import("../proj/Projection.js").default} [projection] The render projection.
      * @return {number} The number of source bands.
      */
     private getSourceBandCount_;
     /**
      * @private
+     * @param {import("../proj/Projection.js").default} [projection] The render projection.
      * @return {number|undefined} The 1-based band index for the nodata alpha band.
      */
     private getSourceNodataBandIndex_;
+    /**
+     * Parse the style for the given render projection, tracking the band layout
+     * used.  The render projection determines whether a coverage band is added
+     * for reprojected alpha-less sources.
+     * @private
+     * @param {import("../proj/Projection.js").default} [projection] The render projection.
+     * @return {ReturnType<typeof parseStyle>} The parsed style.
+     */
+    private parseStyleForRender_;
+    /**
+     * Rebuild the shaders for the given render projection and apply them to the
+     * renderer.
+     * @private
+     * @param {import("../proj/Projection.js").default} [projection] The render projection.
+     */
+    private applyShaders_;
     /**
      * @override
      */

@@ -290,11 +290,6 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
      */
     private normalize_;
     /**
-     * @type {boolean}
-     * @private
-     */
-    private addAlpha_;
-    /**
      * @type {Error}
      * @private
      */

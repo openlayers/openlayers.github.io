@@ -69,6 +69,12 @@ export type Options = {
      * Render reprojection edges.
      */
     renderEdges?: boolean | undefined;
+    /**
+     * Whether the source tiles already include an
+     * alpha band.  When `false`, an alpha band marking the reprojected coverage is
+     * appended to the output so areas outside the source footprint render transparent.
+     */
+    hasAlpha?: boolean | undefined;
 };
 /**
  * @typedef {function(number, number, number, number) : import("../DataTile.js").default} TileGetter
@@ -96,6 +102,9 @@ export type Options = {
  * transitions in milliseconds. A duration of 0 disables the opacity transition.
  * @property {import("../transform.js").Transform} [transformMatrix] Source transform matrix.
  * @property {boolean} [renderEdges] Render reprojection edges.
+ * @property {boolean} [hasAlpha=true] Whether the source tiles already include an
+ * alpha band.  When `false`, an alpha band marking the reprojected coverage is
+ * appended to the output so areas outside the source footprint render transparent.
  */
 /**
  * @classdesc
@@ -113,6 +122,13 @@ declare class ReprojDataTile extends DataTile {
      * @type {boolean | Array<number>}
      */
     private renderEdges_;
+    /**
+     * Whether the source tiles already carry an alpha band.  When `false`, a
+     * coverage alpha band is appended to the reprojected output.
+     * @private
+     * @type {boolean}
+     */
+    private hasAlpha_;
     /**
      * @private
      * @type {number}
