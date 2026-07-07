@@ -22,6 +22,13 @@ declare class ZIndexContext {
      */
     private offset_;
     /**
+     * Name of the method last accessed on the proxy, pushed together with its
+     * arguments when the method is actually called.
+     * @private
+     * @type {string|symbol}
+     */
+    private pendingMethod_;
+    /**
      * @private
      * @type {ZIndexContextProxy}
      */
@@ -32,9 +39,10 @@ declare class ZIndexContext {
      */
     private push_;
     /**
-     * @private
+     * Pushes the method name captured at access time together with the arguments
+     * passed at call time. Reused across all proxied method calls.
      * @param {...*} args Args.
-     * @return {ZIndexContext} This.
+     * @private
      */
     private pushMethodArgs_;
     /**

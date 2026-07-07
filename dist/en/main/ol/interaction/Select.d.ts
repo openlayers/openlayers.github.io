@@ -1,7 +1,7 @@
 /**
  * A function that takes a {@link module:ol/Feature~Feature} and returns `true` if the feature may be
  * selected or `false` otherwise.
- * @typedef {function(import("../Feature.js").default, import("../layer/Layer.js").default<import("../source/Source.js").default>):boolean} FilterFunction
+ * @typedef {function(import("../Feature.js").default, import("../layer/Layer.js").default<import("../source/Source.js").default> | undefined):boolean} FilterFunction
  */
 /**
  * @typedef {Object} Options
@@ -96,7 +96,7 @@ export default Select;
  * A function that takes a {@link module :ol/Feature~Feature} and returns `true` if the feature may be
  * selected or `false` otherwise.
  */
-export type FilterFunction = (arg0: import("../Feature.js").default, arg1: import("../layer/Layer.js").default<import("../source/Source.js").default>) => boolean;
+export type FilterFunction = (arg0: import("../Feature.js").default, arg1: import("../layer/Layer.js").default<import("../source/Source.js").default> | undefined) => boolean;
 export type Options = {
     /**
      * A function
