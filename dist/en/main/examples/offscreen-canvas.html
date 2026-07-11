@@ -174,20 +174,18 @@ function updateContainerTransform() {
     const renderedResolution &#x3D; renderedViewState.resolution;
     const renderedRotation &#x3D; renderedViewState.rotation;
     const transform &#x3D; create();
-    // Skip the extra transform for rotated views, because it will not work
-    // correctly in that case
-    if (!rotation) {
-      compose(
-        transform,
-        (renderedCenter[0] - center[0]) / resolution,
-        (center[1] - renderedCenter[1]) / resolution,
-        renderedResolution / resolution,
-        renderedResolution / resolution,
-        rotation - renderedRotation,
-        0,
-        0,
-      );
-    }
+    const dx &#x3D; renderedCenter[0] - center[0];
+    const dy &#x3D; renderedCenter[1] - center[1];
+    compose(
+      transform,
+      (Math.cos(rotation) * dx + Math.sin(rotation) * dy) / resolution,
+      (Math.sin(rotation) * dx - Math.cos(rotation) * dy) / resolution,
+      renderedResolution / resolution,
+      renderedResolution / resolution,
+      rotation - renderedRotation,
+      0,
+      0,
+    );
     transformContainer.style.transform &#x3D; toTransformString(transform);
   }
 }
