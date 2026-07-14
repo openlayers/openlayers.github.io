@@ -30,6 +30,11 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
      */
     protected maxStaleKeys: number;
     /**
+     * @type {string}
+     * @protected
+     */
+    protected renderedSourceKey_: string;
+    /**
      * @return {Array<string>} Get the list of stale keys.
      */
     getStaleKeys(): Array<string>;
@@ -37,6 +42,12 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
      * @param {string} key The new stale key.
      */
     prependStaleKey(key: string): void;
+    /**
+     * Remember the previous source key as stale when the key changes.
+     * @param {string} sourceKey The current source key.
+     * @protected
+     */
+    protected updateStaleKeys(sourceKey: string): void;
     /**
      * Asynchronous layer level hit detection.
      * @param {import("../pixel.js").Pixel} pixel Pixel.

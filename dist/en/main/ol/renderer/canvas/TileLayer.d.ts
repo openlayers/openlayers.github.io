@@ -57,11 +57,6 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
     protected renderedTiles: Array<import("../../Tile.js").default>;
     /**
      * @private
-     * @type {string}
-     */
-    private renderedSourceKey_;
-    /**
-     * @private
      * @type {number}
      */
     private renderedSourceRevision_;

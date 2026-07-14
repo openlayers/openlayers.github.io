@@ -13,9 +13,10 @@ export function newTileRepresentationLookup(): TileRepresentationLookup;
 /**
  * @param {import("../../source/Tile.js").default} source The source.
  * @param {import('../../tilecoord.js').TileCoord} tileCoord The tile coordinate.
+ * @param {string} [key] The source key to use; defaults to the current key.
  * @return {string} The cache key.
  */
-export function getCacheKey(source: import("../../source/Tile.js").default, tileCoord: import("../../tilecoord.js").TileCoord): string;
+export function getCacheKey(source: import("../../source/Tile.js").default, tileCoord: import("../../tilecoord.js").TileCoord, key?: string): string;
 export const Uniforms: {
     TILE_TRANSFORM: string;
     TRANSITION_ALPHA: string;
@@ -222,6 +223,16 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileTy
      * @protected
      */
     protected beforeFinalize(frameState: import("../../Map.js").FrameState): void;
+    /**
+     * Look for a ready tile at the same coordinate from a previous source key.
+     * A match is added to the provided lookup at the target zoom level.
+     * @param {import("../../tilecoord.js").TileCoord} tileCoord The target tile coordinate.
+     * @param {TileRepresentationLookup} tileRepresentationLookup Lookup of
+     * tile representations by zoom level.
+     * @return {boolean} A stale tile was found and added to the lookup.
+     * @private
+     */
+    private findStaleTile_;
     /**
      * Look for tiles covering the provided tile coordinate at an alternate
      * zoom level.  Loaded tiles will be added to the provided tile representation lookup.
