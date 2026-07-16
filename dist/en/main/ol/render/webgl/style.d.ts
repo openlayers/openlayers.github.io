@@ -9,6 +9,7 @@ export function computeHash(input: any | string): string;
  * @property {ShaderBuilder} builder Shader builder pre-configured according to a given style
  * @property {import("./VectorStyleRenderer.js").UniformDefinitions} uniforms Uniform definitions
  * @property {import("./VectorStyleRenderer.js").AttributeDefinitions} attributes Attribute definitions
+ * @property {import("../../style/flat.js").Rule} [sourceRule] Style and filter that was parsed (if any)
  */
 /**
  * Parses a {@link import("../../style/flat.js").FlatStyle} object and returns a {@link ShaderBuilder}
@@ -37,6 +38,10 @@ export type StyleParseResult = {
      * Attribute definitions
      */
     attributes: import("./VectorStyleRenderer.js").AttributeDefinitions;
+    /**
+     * Style and filter that was parsed (if any)
+     */
+    sourceRule?: import("../../style/flat.js").Rule | undefined;
 };
 import { ShaderBuilder } from './ShaderBuilder.js';
 //# sourceMappingURL=style.d.ts.map

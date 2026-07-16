@@ -703,6 +703,7 @@ declare namespace ol {
             export namespace style {
                 export { _ol_render_canvas_style$buildRuleSet as buildRuleSet };
                 export { _ol_render_canvas_style$buildStyle as buildStyle };
+                export { _ol_render_canvas_style$flatStyleLikeToStyleFunction as flatStyleLikeToStyleFunction };
                 export { _ol_render_canvas_style$flatStylesToStyleFunction as flatStylesToStyleFunction };
                 export { _ol_render_canvas_style$rulesToStyleFunction as rulesToStyleFunction };
             }
@@ -745,9 +746,22 @@ declare namespace ol {
                 export { _ol_render_webgl_renderinstructions$generatePolygonRenderInstructions as generatePolygonRenderInstructions };
                 export { _ol_render_webgl_renderinstructions$getCustomAttributesSize as getCustomAttributesSize };
             }
+            export namespace serialize {
+                export { _ol_render_webgl_serialize$deserializeFrameState as deserializeFrameState };
+                export { _ol_render_webgl_serialize$serializeFrameState as serializeFrameState };
+            }
             export namespace style {
                 export { _ol_render_webgl_style$computeHash as computeHash };
                 export { _ol_render_webgl_style$parseLiteralStyle as parseLiteralStyle };
+            }
+            export namespace textUtil {
+                export { _ol_render_webgl_textUtil$TextUniforms as TextUniforms };
+                export { _ol_render_webgl_textUtil$convertLineStringRenderInstructionsToCanvasTextBuilder as convertLineStringRenderInstructionsToCanvasTextBuilder };
+                export { _ol_render_webgl_textUtil$convertPointRenderInstructionsToCanvasTextBuilder as convertPointRenderInstructionsToCanvasTextBuilder };
+                export { _ol_render_webgl_textUtil$convertPolygonRenderInstructionsToCanvasTextBuilder as convertPolygonRenderInstructionsToCanvasTextBuilder };
+                export { _ol_render_webgl_textUtil$createPostProcessDefinition as createPostProcessDefinition };
+                export { _ol_render_webgl_textUtil$hasTextStyle as hasTextStyle };
+                export { _ol_render_webgl_textUtil$stripNonTextStyleProperties as stripNonTextStyleProperties };
             }
         }
     }
@@ -998,6 +1012,8 @@ declare namespace ol {
             export { _ol_vec_mat4$create as create };
             export { _ol_vec_mat4$fromTransform as fromTransform };
             export { _ol_vec_mat4$orthographic as orthographic };
+            export { _ol_vec_mat4$reset as reset };
+            export { _ol_vec_mat4$rotate as rotate };
             export { _ol_vec_mat4$scale as scale };
             export { _ol_vec_mat4$translate as translate };
             export { _ol_vec_mat4$translation as translation };
@@ -1015,6 +1031,7 @@ declare namespace ol {
         export { _ol_webgl$ELEMENT_ARRAY_BUFFER as ELEMENT_ARRAY_BUFFER };
         export { _ol_webgl$FLOAT as FLOAT };
         export { $ol$webgl$Helper as Helper };
+        export { $ol$webgl$LabelsArray as LabelsArray };
         export { $ol$webgl$PaletteTexture as PaletteTexture };
         export { $ol$webgl$PostProcessingPass as PostProcessingPass };
         export { $ol$webgl$RenderTarget as RenderTarget };
@@ -1627,6 +1644,7 @@ import { registerFont as _ol_render_canvas$registerFont } from '../../ol/render/
 import { rotateAtOffset as _ol_render_canvas$rotateAtOffset } from '../../ol/render/canvas.js';
 import { buildRuleSet as _ol_render_canvas_style$buildRuleSet } from '../../ol/render/canvas/style.js';
 import { buildStyle as _ol_render_canvas_style$buildStyle } from '../../ol/render/canvas/style.js';
+import { flatStyleLikeToStyleFunction as _ol_render_canvas_style$flatStyleLikeToStyleFunction } from '../../ol/render/canvas/style.js';
 import { flatStylesToStyleFunction as _ol_render_canvas_style$flatStylesToStyleFunction } from '../../ol/render/canvas/style.js';
 import { rulesToStyleFunction as _ol_render_canvas_style$rulesToStyleFunction } from '../../ol/render/canvas/style.js';
 import { textHeights as _ol_render_canvas$textHeights } from '../../ol/render/canvas.js';
@@ -1656,8 +1674,17 @@ import { generateLineStringRenderInstructions as _ol_render_webgl_renderinstruct
 import { generatePointRenderInstructions as _ol_render_webgl_renderinstructions$generatePointRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { generatePolygonRenderInstructions as _ol_render_webgl_renderinstructions$generatePolygonRenderInstructions } from '../../ol/render/webgl/renderinstructions.js';
 import { getCustomAttributesSize as _ol_render_webgl_renderinstructions$getCustomAttributesSize } from '../../ol/render/webgl/renderinstructions.js';
+import { deserializeFrameState as _ol_render_webgl_serialize$deserializeFrameState } from '../../ol/render/webgl/serialize.js';
+import { serializeFrameState as _ol_render_webgl_serialize$serializeFrameState } from '../../ol/render/webgl/serialize.js';
 import { computeHash as _ol_render_webgl_style$computeHash } from '../../ol/render/webgl/style.js';
 import { parseLiteralStyle as _ol_render_webgl_style$parseLiteralStyle } from '../../ol/render/webgl/style.js';
+import { TextUniforms as _ol_render_webgl_textUtil$TextUniforms } from '../../ol/render/webgl/textUtil.js';
+import { convertLineStringRenderInstructionsToCanvasTextBuilder as _ol_render_webgl_textUtil$convertLineStringRenderInstructionsToCanvasTextBuilder } from '../../ol/render/webgl/textUtil.js';
+import { convertPointRenderInstructionsToCanvasTextBuilder as _ol_render_webgl_textUtil$convertPointRenderInstructionsToCanvasTextBuilder } from '../../ol/render/webgl/textUtil.js';
+import { convertPolygonRenderInstructionsToCanvasTextBuilder as _ol_render_webgl_textUtil$convertPolygonRenderInstructionsToCanvasTextBuilder } from '../../ol/render/webgl/textUtil.js';
+import { createPostProcessDefinition as _ol_render_webgl_textUtil$createPostProcessDefinition } from '../../ol/render/webgl/textUtil.js';
+import { hasTextStyle as _ol_render_webgl_textUtil$hasTextStyle } from '../../ol/render/webgl/textUtil.js';
+import { stripNonTextStyleProperties as _ol_render_webgl_textUtil$stripNonTextStyleProperties } from '../../ol/render/webgl/textUtil.js';
 import $ol$renderer$Composite from '../../ol/renderer/Composite.js';
 import $ol$renderer$Layer from '../../ol/renderer/Layer.js';
 import $ol$renderer$Map from '../../ol/renderer/Map.js';
@@ -1836,6 +1863,8 @@ import { getUid as _ol_util$getUid } from '../../ol/util.js';
 import { create as _ol_vec_mat4$create } from '../../ol/vec/mat4.js';
 import { fromTransform as _ol_vec_mat4$fromTransform } from '../../ol/vec/mat4.js';
 import { orthographic as _ol_vec_mat4$orthographic } from '../../ol/vec/mat4.js';
+import { reset as _ol_vec_mat4$reset } from '../../ol/vec/mat4.js';
+import { rotate as _ol_vec_mat4$rotate } from '../../ol/vec/mat4.js';
 import { scale as _ol_vec_mat4$scale } from '../../ol/vec/mat4.js';
 import { translate as _ol_vec_mat4$translate } from '../../ol/vec/mat4.js';
 import { translation as _ol_vec_mat4$translation } from '../../ol/vec/mat4.js';
@@ -1848,6 +1877,7 @@ import { DYNAMIC_DRAW as _ol_webgl$DYNAMIC_DRAW } from '../../ol/webgl.js';
 import { ELEMENT_ARRAY_BUFFER as _ol_webgl$ELEMENT_ARRAY_BUFFER } from '../../ol/webgl.js';
 import { FLOAT as _ol_webgl$FLOAT } from '../../ol/webgl.js';
 import $ol$webgl$Helper from '../../ol/webgl/Helper.js';
+import $ol$webgl$LabelsArray from '../../ol/webgl/LabelsArray.js';
 import $ol$webgl$PaletteTexture from '../../ol/webgl/PaletteTexture.js';
 import $ol$webgl$PostProcessingPass from '../../ol/webgl/PostProcessingPass.js';
 import $ol$webgl$RenderTarget from '../../ol/webgl/RenderTarget.js';

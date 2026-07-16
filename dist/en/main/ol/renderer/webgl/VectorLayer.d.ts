@@ -1,6 +1,8 @@
 export const Uniforms: {
     RENDER_EXTENT: string;
     GLOBAL_ALPHA: string;
+    TEXT_OVERLAY_TEXTURE: string;
+    TEXT_OVERLAY_MATRIX: string;
     PATTERN_ORIGIN_X_DOUBLE: string;
     PATTERN_ORIGIN_Y_DOUBLE: string;
     PATTERN_SCALE_RATIO_DOUBLE: string;
@@ -99,6 +101,14 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
     /**
      * @private
      */
+    private layerRevision_;
+    /**
+     * @private
+     */
+    private skipNextTextRender_;
+    /**
+     * @private
+     */
     private previousExtent_;
     /**
      * This transform is updated on every frame and is the composition of:
@@ -123,6 +133,10 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      * @private
      */
     private style_;
+    /**
+     * @private
+     */
+    private hasText_;
     /**
      * @type {VectorStyleRenderer}
      * @public

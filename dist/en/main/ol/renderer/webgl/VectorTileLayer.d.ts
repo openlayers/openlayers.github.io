@@ -1,6 +1,8 @@
 export const Uniforms: {
     TILE_MASK_TEXTURE: string;
     TILE_ZOOM_LEVEL: string;
+    TEXT_OVERLAY_TEXTURE: string;
+    TEXT_OVERLAY_MATRIX: string;
     PATTERN_ORIGIN_X_DOUBLE: string;
     PATTERN_ORIGIN_Y_DOUBLE: string;
     PATTERN_SCALE_RATIO_DOUBLE: string;
@@ -45,6 +47,10 @@ export type Options = {
      */
     disableHitDetection?: boolean | undefined;
     /**
+     * Post-processes definitions
+     */
+    postProcesses?: import("./Layer.js").PostProcessesOptions[] | undefined;
+    /**
      * The vector tile cache size.
      */
     cacheSize?: number | undefined;
@@ -64,6 +70,7 @@ export type LayerType = import("../../layer/BaseTile.js").default<any, any>;
  * using the `['var', 'varName']` operator.
  * @property {boolean} [disableHitDetection=false] Setting this to true will provide a slight performance boost, but will
  * prevent all hit detection on the layer.
+ * @property {Array<import("./Layer.js").PostProcessesOptions>} [postProcesses] Post-processes definitions
  * @property {number} [cacheSize=512] The vector tile cache size.
  */
 /**
@@ -90,6 +97,10 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      * @private
      */
     private style_;
+    /**
+     * @private
+     */
+    private hasText_;
     /**
      * @type {import('../../style/flat.js').StyleVariables}
      * @private
@@ -125,6 +136,14 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      */
     private tileMaskProgram_;
     /**
+     * @private
+     */
+    private layerRevision_;
+    /**
+     * @private
+     */
+    private skipNextTextRender_;
+    /**
      * @param {Options} options Options.
      * @override
      */
@@ -154,6 +173,10 @@ declare class WebGLVectorTileLayerRenderer extends WebGLBaseTileLayerRenderer<im
      * @override
      */
     override beforeTilesMaskRender(frameState: any): boolean;
+    /**
+     * @override
+     */
+    override beforeFinalize(frameState: any): void;
     /**
      * @override
      */

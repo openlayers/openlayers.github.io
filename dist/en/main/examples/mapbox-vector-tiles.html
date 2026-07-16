@@ -259,13 +259,572 @@ import View from &#x27;ol/View.js&#x27;;
 import MVT from &#x27;ol/format/MVT.js&#x27;;
 import VectorTileLayer from &#x27;ol/layer/VectorTile.js&#x27;;
 import VectorTileSource from &#x27;ol/source/VectorTile.js&#x27;;
-import Fill from &#x27;ol/style/Fill.js&#x27;;
-import Icon from &#x27;ol/style/Icon.js&#x27;;
-import Stroke from &#x27;ol/style/Stroke.js&#x27;;
-import Style from &#x27;ol/style/Style.js&#x27;;
-import Text from &#x27;ol/style/Text.js&#x27;;
 
 const key &#x3D; &#x27;Your Mapbox access token from https://mapbox.com/ here&#x27;;
+
+const style &#x3D; [
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;landuse&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;park&#x27;],
+    ],
+    style: {
+      &#x27;fill-color&#x27;: &#x27;#d8e8c8&#x27;,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;landuse&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;cemetery&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;fill-color&#x27;: &#x27;#e0e4dd&#x27;,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;landuse&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;hospital&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;fill-color&#x27;: &#x27;#fde&#x27;,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;landuse&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;school&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;fill-color&#x27;: &#x27;#f0e8f8&#x27;,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;landuse&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;wood&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;fill-color&#x27;: &#x27;rgb(233,238,223)&#x27;,
+    },
+  },
+  {
+    filter: [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;waterway&#x27;],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#a0c8f0&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;water&#x27;],
+    else: true,
+    style: {
+      &#x27;fill-color&#x27;: &#x27;#a0c8f0&#x27;,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;aeroway&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;geometry-type&#x27;], &#x27;Polygon&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;fill-color&#x27;: &#x27;rgb(242,239,235)&#x27;,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;aeroway&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;geometry-type&#x27;], &#x27;LineString&#x27;],
+      [&#x27;&lt;&#x3D;&#x27;, [&#x27;resolution&#x27;], 76.43702828517625],
+    ],
+    else: true,
+    style: {
+      &#x27;fill-color&#x27;: &#x27;#f0ede9&#x27;,
+    },
+  },
+  {
+    filter: [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;building&#x27;],
+    else: true,
+    style: {
+      &#x27;fill-color&#x27;: &#x27;#f2eae2&#x27;,
+      &#x27;stroke-color&#x27;: &#x27;#dfdbd7&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;tunnel&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;motorway_link&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#e9ac77&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;tunnel&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;service&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#cfcdca&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;tunnel&#x27;],
+      [
+        &#x27;any&#x27;,
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;street&#x27;],
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;street_limited&#x27;],
+      ],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#cfcdca&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;tunnel&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;main&#x27;],
+      [&#x27;&lt;&#x3D;&#x27;, [&#x27;resolution&#x27;], 1222.99245256282],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#e9ac77&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;tunnel&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;motorway&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#e9ac77&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;tunnel&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;path&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#cba&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;tunnel&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;major_rail&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#bbb&#x27;,
+      &#x27;stroke-width&#x27;: 2,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;road&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;motorway_link&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#e9ac77&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;road&#x27;],
+      [
+        &#x27;any&#x27;,
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;street&#x27;],
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;street_limited&#x27;],
+      ],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;geometry-type&#x27;], &#x27;LineString&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#cfcdca&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;road&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;main&#x27;],
+      [&#x27;&lt;&#x3D;&#x27;, [&#x27;resolution&#x27;], 1222.99245256282],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#e9ac77&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;road&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;motorway&#x27;],
+      [&#x27;&lt;&#x3D;&#x27;, [&#x27;resolution&#x27;], 4891.96981025128],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#e9ac77&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;road&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;path&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#cba&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;road&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;major_rail&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#bbb&#x27;,
+      &#x27;stroke-width&#x27;: 2,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;bridge&#x27;],
+      [
+        &#x27;any&#x27;,
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;motorway&#x27;],
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;motorway_link&#x27;],
+      ],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#e9ac77&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;bridge&#x27;],
+      [
+        &#x27;any&#x27;,
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;street&#x27;],
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;street_limited&#x27;],
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;service&#x27;],
+      ],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#cfcdca&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;bridge&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;main&#x27;],
+      [&#x27;&lt;&#x3D;&#x27;, [&#x27;resolution&#x27;], 1222.99245256282],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#e9ac77&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;bridge&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;path&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#cba&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;bridge&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;class&#x27;], &#x27;major_rail&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#bbb&#x27;,
+      &#x27;stroke-width&#x27;: 2,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;admin&#x27;],
+      [&#x27;&gt;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;admin_level&#x27;], 2],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;maritime&#x27;], 0],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#9e9cab&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;admin&#x27;],
+      [&#x27;&gt;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;admin_level&#x27;], 2],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;maritime&#x27;], 1],
+    ],
+    else: true,
+    style: {
+      &#x27;stroke-color&#x27;: &#x27;#a0c8f0&#x27;,
+      &#x27;stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;any&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;country_label&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;place_label&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;name_en&#x27;],
+      &#x27;text-font&#x27;: &#x27;bold 11px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;#334&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 2,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;country_label&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;scalerank&#x27;], 2],
+      [&#x27;&lt;&#x3D;&#x27;, [&#x27;resolution&#x27;], 19567.87924100512],
+    ],
+    else: true,
+    style: {
+      &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;name_en&#x27;],
+      &#x27;text-font&#x27;: &#x27;bold 10px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;#334&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 2,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;country_label&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;scalerank&#x27;], 3],
+      [&#x27;&lt;&#x3D;&#x27;, [&#x27;resolution&#x27;], 9783.93962050256],
+    ],
+    else: true,
+    style: {
+      &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;name_en&#x27;],
+      &#x27;text-font&#x27;: &#x27;bold 9px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;#334&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 2,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;country_label&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;scalerank&#x27;], 4],
+      [&#x27;&lt;&#x3D;&#x27;, [&#x27;resolution&#x27;], 4891.96981025128],
+    ],
+    else: true,
+    style: {
+      &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;name_en&#x27;],
+      &#x27;text-font&#x27;: &#x27;bold 8px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;#334&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 2,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;marine_label&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;labelrank&#x27;], 1],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;geometry-type&#x27;], &#x27;Point&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;name_en&#x27;],
+      &#x27;text-font&#x27;: &#x27;italic 11px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;#74aee9&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;marine_label&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;labelrank&#x27;], 2],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;geometry-type&#x27;], &#x27;Point&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;name_en&#x27;],
+      &#x27;text-font&#x27;: &#x27;italic 11px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;#74aee9&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;marine_label&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;labelrank&#x27;], 3],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;geometry-type&#x27;], &#x27;Point&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;name_en&#x27;],
+      &#x27;text-font&#x27;: &#x27;italic 10px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;#74aee9&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;marine_label&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;labelrank&#x27;], 4],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;geometry-type&#x27;], &#x27;Point&#x27;],
+    ],
+    else: true,
+    style: {
+      &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;name_en&#x27;],
+      &#x27;text-font&#x27;: &#x27;italic 9px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;#74aee9&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;place_label&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;type&#x27;], &#x27;city&#x27;],
+      [&#x27;&lt;&#x3D;&#x27;, [&#x27;resolution&#x27;], 1222.99245256282],
+    ],
+    else: true,
+    style: {
+      &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;name_en&#x27;],
+      &#x27;text-font&#x27;: &#x27;11px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;#333&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;place_label&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;type&#x27;], &#x27;town&#x27;],
+      [&#x27;&lt;&#x3D;&#x27;, [&#x27;resolution&#x27;], 305.748113140705],
+    ],
+    else: true,
+    style: {
+      &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;name_en&#x27;],
+      &#x27;text-font&#x27;: &#x27;9px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;#333&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;place_label&#x27;],
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;type&#x27;], &#x27;village&#x27;],
+      [&#x27;&lt;&#x3D;&#x27;, [&#x27;resolution&#x27;], 38.21851414258813],
+    ],
+    else: true,
+    style: {
+      &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;name_en&#x27;],
+      &#x27;text-font&#x27;: &#x27;8px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;#333&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 1,
+    },
+  },
+  {
+    filter: [
+      &#x27;all&#x27;,
+      [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;layer&#x27;], &#x27;place_label&#x27;],
+      [&#x27;&lt;&#x3D;&#x27;, [&#x27;resolution&#x27;], 19.109257071294063],
+      [
+        &#x27;any&#x27;,
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;type&#x27;], &#x27;hamlet&#x27;],
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;type&#x27;], &#x27;suburb&#x27;],
+        [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;get&#x27;, &#x27;type&#x27;], &#x27;neighbourhood&#x27;],
+      ],
+    ],
+    else: true,
+    style: {
+      &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;name_en&#x27;],
+      &#x27;text-font&#x27;: &#x27;bold 9px &quot;Arial Narrow&quot;&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;#633&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 1,
+    },
+  },
+];
 
 const map &#x3D; new Map({
   layers: [
@@ -282,7 +841,7 @@ const map &#x3D; new Map({
           &#x27;{z}/{x}/{y}.vector.pbf?access_token&#x3D;&#x27; +
           key,
       }),
-      style: createMapboxStreetsV6Style(Style, Fill, Stroke, Icon, Text),
+      style,
     }),
   ],
   target: &#x27;map&#x27;,

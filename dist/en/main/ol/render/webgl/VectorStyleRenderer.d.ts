@@ -1,4 +1,9 @@
 /**
+ * @param {FlatStyleLike|StyleShaders|Array<StyleShaders>} styleOrShaders Either a flat style or shaders
+ * @return {FlatStyleLike|null} Will return null if the original flat style could not be found
+ */
+export function toFlatStyleLike(styleOrShaders: FlatStyleLike | StyleShaders | Array<StyleShaders>): FlatStyleLike | null;
+/**
  * Breaks down a vector style into an array of prebuilt shader builders with attributes and uniforms
  * @param {FlatStyleLike|StyleShaders|Array<StyleShaders>} style Vector style
  * @param {import('../../style/flat.js').StyleVariables} variables Style variables
@@ -49,6 +54,9 @@ export type UniformDefinitions = {
  * Buffers organized like so: [indicesBuffer, vertexAttributesBuffer, instanceAttributesBuffer]
  */
 export type WebGLArrayBufferSet = Array<WebGLArrayBuffer>;
+/**
+ * Anything set to null means there's nothing to render for that category.
+ */
 export type WebGLBuffers = {
     /**
      * Array containing indices and vertices buffers for polygons
@@ -62,6 +70,10 @@ export type WebGLBuffers = {
      * Array containing indices and vertices buffers for points
      */
     pointBuffers: WebGLArrayBufferSet | null;
+    /**
+     * Key corresponding to a text instructions set
+     */
+    textInstructionsKey: string | null;
     /**
      * Inverse of the transform applied when generating buffers
      */
@@ -155,9 +167,11 @@ export type RenderPass = {
  */
 /**
  * @typedef {Object} WebGLBuffers
+ * Anything set to null means there's nothing to render for that category.
  * @property {WebGLArrayBufferSet|null} polygonBuffers Array containing indices and vertices buffers for polygons
  * @property {WebGLArrayBufferSet|null} lineStringBuffers Array containing indices and vertices buffers for line strings
  * @property {WebGLArrayBufferSet|null} pointBuffers Array containing indices and vertices buffers for points
+ * @property {string|null} textInstructionsKey Key corresponding to a text instructions set
  * @property {import("../../transform.js").Transform} invertVerticesTransform Inverse of the transform applied when generating buffers
  */
 /**
@@ -209,7 +223,7 @@ export type RenderPass = {
  * The `generateBuffers` method returns a promise resolving to WebGL buffers that are intended to be rendered by the
  * same renderer.
  */
-declare class VectorStyleRenderer {
+declare class VectorStyleRenderer extends Disposable {
     /**
      * @param {FlatStyleLike|StyleShaders|Array<StyleShaders>} styles Vector styles expressed as flat styles, flat style rules or style shaders
      * @param {import('../../style/flat.js').StyleVariables} variables Style variables
@@ -226,6 +240,12 @@ declare class VectorStyleRenderer {
      * @private
      */
     private hitDetectionEnabled_;
+    /**
+     * Flat style like; if shaders are given as input, will use the `sourceRule` property of the shaders
+     * `null` if no Flat style equivalent is available (e.g. custom-made shaders); in that case no text rendering will happen
+     * @type {FlatStyleLike|null}
+     */
+    flatStyle: FlatStyleLike | null;
     /**
      * @type {Array<StyleShaders>}
      * @private
@@ -249,14 +269,37 @@ declare class VectorStyleRenderer {
     hasFill_: boolean;
     hasStroke_: boolean;
     hasSymbol_: boolean;
+    hasText_: boolean | null;
+    /**
+     * @private
+     */
+    private textOverlayCanvas_;
+    /**
+     * @private
+     */
+    private textOverlayContext_;
+    /**
+     * @type {import("../../Map.js").FrameState}
+     * @private
+     */
+    private textOverlayRenderFrameState_;
+    /**
+     * @type {Worker}
+     * @private
+     */
+    private textOverlayWorker_;
+    /** @type {Set<string>} */
+    textOverlayRenderList_: Set<string>;
     /**
      * @param {import('./MixedGeometryBatch.js').default} geometryBatch Geometry batch
      * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
+     * @param {number} resolution View resolution; used for text render instructions if any
      * @return {Promise<WebGLBuffers>} A promise resolving to WebGL buffers; buffer sets are set to `null` if nothing to render
      */
-    generateBuffers(geometryBatch: import("./MixedGeometryBatch.js").default, transform: import("../../transform.js").Transform): Promise<WebGLBuffers>;
+    generateBuffers(geometryBatch: import("./MixedGeometryBatch.js").default, transform: import("../../transform.js").Transform, resolution: number): Promise<WebGLBuffers>;
     /**
      * @param {import('./MixedGeometryBatch.js').default} geometryBatch Geometry batch
+     * @param {LabelsArray} labelsArray Labels array
      * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
      * @return {RenderInstructions} Render instructions
      * @private
@@ -270,6 +313,15 @@ declare class VectorStyleRenderer {
      * @private
      */
     private generateBuffersForType_;
+    /**
+     * @param {RenderInstructions} renderInstructions Render instructions
+     * @param {import('../../webgl/LabelsArray.js').default} labelsArray Labels array
+     * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
+     * @param {number} resolution View resolution to be used as a basis when computing text overflow
+     * @return {Promise<string>|null} Resolves to a key corresponding to the text draw instructions; null if no text to render
+     * @private
+     */
+    private generateTextInstructions_;
     /**
      * Render the geometries in the given buffers.
      * @param {WebGLBuffers} buffers WebGL Buffers to draw
@@ -288,10 +340,29 @@ declare class VectorStyleRenderer {
      */
     private renderInternal_;
     /**
+     * @param {WebGLBuffers} buffers WebGL Buffers to draw
+     * @private
+     */
+    private renderText_;
+    /**
+     * Render the geometries in the given buffers.
+     * @param {import("../../Map.js").FrameState} frameState Frame state
+     * @return {Promise<void>} A promise resolving after the post rendering step is over
+     */
+    finalizeTextRender(frameState: import("../../Map.js").FrameState): Promise<void>;
+    /**
      * @param {import('../../webgl/Helper.js').default} helper Helper
      * @param {WebGLBuffers} buffers WebGL Buffers to reload if any
      */
     setHelper(helper: import("../../webgl/Helper.js").default, buffers?: WebGLBuffers): void;
+    getTextOverlayCanvas(): HTMLCanvasElement | undefined;
+    getTextOverlayFrameState(): import("../../Map.js").FrameState;
+    /**
+     * Dispose of text instructions in worker.
+     * @param {string} key Key corresponding to the instructions set to dispose
+     */
+    disposeTextInstructions(key: string): void;
 }
 import WebGLArrayBuffer from '../../webgl/Buffer.js';
+import Disposable from '../../Disposable.js';
 //# sourceMappingURL=VectorStyleRenderer.d.ts.map

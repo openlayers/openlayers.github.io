@@ -4,18 +4,28 @@
  * and pass a more complete evaluation context (variables, zoom, time, etc.).
  *
  * @param {Array<import('../../style/flat.js').Rule>} rules The rules.
+ * @param {ParsingContext} [parsingContext] Optional parsing context; will create a new one if not provided
  * @return {import('../../style/Style.js').StyleFunction} A style function.
  */
-export function rulesToStyleFunction(rules: Array<import("../../style/flat.js").Rule>): import("../../style/Style.js").StyleFunction;
+export function rulesToStyleFunction(rules: Array<import("../../style/flat.js").Rule>, parsingContext?: ParsingContext): import("../../style/Style.js").StyleFunction;
 /**
  * This function adapts a style evaluator to the existing style function interface.
  * After we have deprecated the style function, we can use the compiled rules directly
  * and pass a more complete evaluation context (variables, zoom, time, etc.).
  *
  * @param {Array<import('../../style/flat.js').FlatStyle>} flatStyles The flat styles.
+ * @param {ParsingContext} [parsingContext] Optional parsing context; will create a new one if not provided
  * @return {import('../../style/Style.js').StyleFunction} A style function.
  */
-export function flatStylesToStyleFunction(flatStyles: Array<import("../../style/flat.js").FlatStyle>): import("../../style/Style.js").StyleFunction;
+export function flatStylesToStyleFunction(flatStyles: Array<import("../../style/flat.js").FlatStyle>, parsingContext?: ParsingContext): import("../../style/Style.js").StyleFunction;
+/**
+ * This function handles any kind of style that matches the FlatStyleLike type.
+ *
+ * @param {import('../../style/flat.js').FlatStyleLike} flatStyleLike The flat style.
+ * @param {ParsingContext} [parsingContext] Optional parsing context; will create a new one if not provided
+ * @return {import('../../style/Style.js').StyleFunction} A style function.
+ */
+export function flatStyleLikeToStyleFunction(flatStyleLike: import("../../style/flat.js").FlatStyleLike, parsingContext?: ParsingContext): import("../../style/Style.js").StyleFunction;
 /**
  * @typedef {function(EvaluationContext):Array<Style>} RuleSetEvaluator
  */

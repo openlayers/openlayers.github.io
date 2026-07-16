@@ -116,6 +116,16 @@ declare class WebGLLayerRenderer<LayerType extends import("../../layer/Layer.js"
      */
     protected clearCache(): void;
     /**
+     * @protected
+     * @param {Array<PostProcessesOptions>} postProcesses New post processes array
+     */
+    protected setPostProcesses(postProcesses: Array<PostProcessesOptions>): void;
+    /**
+     * @protected
+     * @return {Array<PostProcessesOptions>} Array of post processes
+     */
+    protected getPostProcesses(): Array<PostProcessesOptions>;
+    /**
      * @param {import("../../render/EventType.js").default} type Event type.
      * @param {WebGLRenderingContext} context The rendering context.
      * @param {import("../../Map.js").FrameState} frameState Frame state.

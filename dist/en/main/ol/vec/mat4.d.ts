@@ -7,6 +7,11 @@
  */
 export function create(): Mat4;
 /**
+ * @param {Mat4} out Flattened 4x4 matrix being reset.
+ * @return {Mat4} Reset 4x4 matrix
+ */
+export function reset(out: Mat4): Mat4;
+/**
  * @param {Mat4} mat4 Flattened 4x4 matrix receiving the result.
  * @param {import("../transform.js").Transform} transform Transformation matrix.
  * @return {Mat4} "2D transformation matrix as flattened 4x4 matrix."
@@ -55,5 +60,14 @@ export function translate(m: Mat4, x: number, y: number, z: number, out?: Mat4):
  * @return {Mat4} out
  */
 export function translation(x: number, y: number, z: number, out?: Mat4): Mat4;
+/**
+ * Rotate a matrix around the Z axis, only affecting X and Y components.
+ *
+ * @param {Mat4} m the matrix to rotate
+ * @param {number} angle How much to rotate (in radians).
+ * @param {Mat4} [out] the receiving matrix
+ * @return {Mat4} out
+ */
+export function rotate(m: Mat4, angle: number, out?: Mat4): Mat4;
 export type Mat4 = Array<number>;
 //# sourceMappingURL=mat4.d.ts.map

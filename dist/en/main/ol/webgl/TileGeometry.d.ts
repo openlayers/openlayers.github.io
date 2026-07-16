@@ -31,6 +31,10 @@ declare class TileGeometry extends BaseTileRepresentation<import("../VectorRende
      */
     maskVertices: WebGLArrayBuffer;
     /**
+     * @type {number}
+     */
+    wantedResolution: number;
+    /**
      * @private
      */
     private generateMaskBuffer_;

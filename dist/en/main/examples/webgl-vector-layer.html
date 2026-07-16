@@ -280,6 +280,16 @@ const style &#x3D; [
       &#x27;fill-color&#x27;: [&#x27;*&#x27;, [&#x27;get&#x27;, &#x27;COLOR&#x27;], [255, 255, 255, 0.6]],
     },
   },
+  {
+    style: {
+      &#x27;text-value&#x27;: [&#x27;coalesce&#x27;, [&#x27;get&#x27;, &#x27;ECO_NAME&#x27;], &#x27;unknown&#x27;],
+      &#x27;text-font&#x27;: &#x27;bold 12px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+      &#x27;text-fill-color&#x27;: &#x27;rgb(0,0,0)&#x27;,
+      &#x27;text-stroke-color&#x27;: &#x27;rgba(255, 255, 255, 0.8)&#x27;,
+      &#x27;text-stroke-width&#x27;: 2,
+      &#x27;text-overflow&#x27;: false,
+    },
+  },
 ];
 
 const osm &#x3D; new TileLayer({

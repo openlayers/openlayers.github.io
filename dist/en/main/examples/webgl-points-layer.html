@@ -178,6 +178,7 @@ Choose a predefined style from the list below or edit it as JSON manually.
   <option value="triangles-latitude">Triangles, color related to latitude</option>
   <option value="circles">Circles, size related to population</option>
   <option value="circles-zoom">Circles, size related to zoom</option>
+  <option value="circles-text">Circles with label</option>
   <option value="rotating-bars">Rotating bars</option>
 </select>
 <textarea style="width: 100%; height: 20rem; font-family: monospace; font-size: small;" id="style-editor"></textarea>
@@ -292,6 +293,17 @@ const predefinedStyles &#x3D; {
       2000000,
       0.92,
     ],
+  },
+  &#x27;circles-text&#x27;: {
+    &#x27;text-value&#x27;: [&#x27;get&#x27;, &#x27;city&#x27;],
+    &#x27;text-font&#x27;: &#x27;bold 11px &quot;Open Sans&quot;, &quot;Arial Unicode MS&quot;, sans-serif&#x27;,
+    &#x27;text-fill-color&#x27;: &#x27;#334&#x27;,
+    &#x27;text-stroke-color&#x27;: &#x27;rgba(255,255,255,0.8)&#x27;,
+    &#x27;text-stroke-width&#x27;: 2,
+    &#x27;text-offset-y&#x27;: -12,
+    &#x27;circle-radius&#x27;: 4,
+    &#x27;circle-fill-color&#x27;: [&#x27;match&#x27;, [&#x27;get&#x27;, &#x27;hover&#x27;], 1, &#x27;#ff3f3f&#x27;, &#x27;#006688&#x27;],
+    &#x27;circle-rotate-with-view&#x27;: false,
   },
   &#x27;circles-zoom&#x27;: {
     // by using an exponential interpolation with a base of 2 we can make it so that circles will have a fixed size
@@ -456,6 +468,7 @@ animate();
       &lt;option value&#x3D;&quot;triangles-latitude&quot;&gt;Triangles, color related to latitude&lt;/option&gt;
       &lt;option value&#x3D;&quot;circles&quot;&gt;Circles, size related to population&lt;/option&gt;
       &lt;option value&#x3D;&quot;circles-zoom&quot;&gt;Circles, size related to zoom&lt;/option&gt;
+      &lt;option value&#x3D;&quot;circles-text&quot;&gt;Circles with label&lt;/option&gt;
       &lt;option value&#x3D;&quot;rotating-bars&quot;&gt;Rotating bars&lt;/option&gt;
     &lt;/select&gt;
     &lt;textarea style&#x3D;&quot;width: 100%; height: 20rem; font-family: monospace; font-size: small;&quot; id&#x3D;&quot;style-editor&quot;&gt;&lt;/textarea&gt;
