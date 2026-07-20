@@ -543,8 +543,20 @@ declare class Modify extends PointerInteraction {
      */
     private deactivateTrace_;
     /**
+     * Determine whether a trace from `fromIndex` to `toIndex` passes at least one
+     * vertex of the target (i.e. whether it would add any traced coordinates).
+     * The index math mirrors {@link addTracedCoordinates_}.
+     * @param {number} fromIndex The start index.
+     * @param {number} toIndex The end index.
+     * @return {boolean} At least one target vertex lies between the indices.
+     * @private
+     */
+    private tracePassesVertex_;
+    /**
      * Update the trace.
      * @param {import("../MapBrowserEvent.js").default} event Event.
+     * @return {import('../coordinate.js').Coordinate|undefined} The coordinate the
+     * dragged vertex was snapped onto a target edge, if any.
      * @private
      */
     private updateTrace_;
@@ -563,6 +575,19 @@ declare class Modify extends PointerInteraction {
      * @private
      */
     private addOrRemoveTracedCoordinates_;
+    /**
+     * Tracing splices coordinates into a ring next to the dragged vertex, but only
+     * adjusts the index of the trace segment itself.  The dragged vertex' other
+     * segments in `dragSegments_` reference the same ring, so their stored index
+     * must be shifted too - otherwise the next {@link updateGeometry_} writes the
+     * dragged vertex to the wrong coordinate and scrambles the ring.
+     * @param {SegmentData} traceSegmentData The trace segment (adjusted by the
+     * caller and skipped here).
+     * @param {number} atIndex Segments at or after this coordinate index shift.
+     * @param {number} delta Coordinates added (positive) or removed (negative).
+     * @private
+     */
+    private shiftTracedSegmentIndices_;
     /**
      * @param {number} fromIndex The start index.
      * @param {number} toIndex The end index.
