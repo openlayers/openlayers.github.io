@@ -1,2 +1,33 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9676],{92647:function(e,t,n){var a=n(41564),r=n(87240),u=n(30135),s=n(52613),l=n(12185),c=n(9226),o=n(29810);const i=document.getElementById("blur"),d=document.getElementById("radius"),m=new s.A({source:new o.A({url:"data/kml/2012_Earthquakes_Mag5.kml",format:new u.Ay({extractStyles:!1})}),blur:parseInt(i.value,10),radius:parseInt(d.value,10),weight:function(e){const t=e.get("name");return parseFloat(t.substr(2))-5}}),p=new l.A({source:new c.A({layer:"stamen_toner"})});new a.A({layers:[p,m],target:"map",view:new r.Ay({center:[0,0],zoom:2})}),i.addEventListener("input",(function(){m.setBlur(parseInt(i.value,10))})),d.addEventListener("input",(function(){m.setRadius(parseInt(d.value,10))}))}},function(e){var t;t=92647,e(e.s=t)}]);
+import { H as Heatmap, Mn as Map, dn as VectorSource, jn as TileLayer, or as View, tn as KML, yn as StadiaMaps } from "./common.js";
+//#region examples/heatmap-earthquakes.js
+var blur = document.getElementById("blur");
+var radius = document.getElementById("radius");
+var vector = new Heatmap({
+	source: new VectorSource({
+		url: "data/kml/2012_Earthquakes_Mag5.kml",
+		format: new KML({ extractStyles: false })
+	}),
+	blur: parseInt(blur.value, 10),
+	radius: parseInt(radius.value, 10),
+	weight: function(feature) {
+		const name = feature.get("name");
+		return parseFloat(name.substr(2)) - 5;
+	}
+});
+new Map({
+	layers: [new TileLayer({ source: new StadiaMaps({ layer: "stamen_toner" }) }), vector],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+blur.addEventListener("input", function() {
+	vector.setBlur(parseInt(blur.value, 10));
+});
+radius.addEventListener("input", function() {
+	vector.setRadius(parseInt(radius.value, 10));
+});
+//#endregion
+
 //# sourceMappingURL=heatmap-earthquakes.js.map

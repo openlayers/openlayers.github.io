@@ -1,2 +1,29 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2111],{21570:function(e,s,a){var t=a(36634),n=a(41564),r=a(87240),o=a(47085),c=a(12185),w=a(73465),u=a(28e3),p=a(64740);const A=[new c.A({source:new u.A}),new o.A({extent:[-13884991,2870341,-7455066,6338219],source:new w.Ay({loader:(0,p.Eq)({url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"topp:states",FORMAT:"image/svg+xml"},ratio:1,load:t.Hh})})})];new n.A({layers:A,target:"map",view:new r.Ay({center:[-10997148,4569099],zoom:4})})}},function(e){var s;s=21570,e(e.s=s)}]);
+import { Bn as load, Cn as OSM, Mn as Map, jn as TileLayer, kt as createLoader, ln as ImageSource, or as View, un as ImageLayer } from "./common.js";
+//#region examples/wms-image-svg.js
+new Map({
+	layers: [new TileLayer({ source: new OSM() }), new ImageLayer({
+		extent: [
+			-13884991,
+			2870341,
+			-7455066,
+			6338219
+		],
+		source: new ImageSource({ loader: createLoader({
+			url: "https://ahocevar.com/geoserver/wms",
+			params: {
+				"LAYERS": "topp:states",
+				"FORMAT": "image/svg+xml"
+			},
+			ratio: 1,
+			load
+		}) })
+	})],
+	target: "map",
+	view: new View({
+		center: [-10997148, 4569099],
+		zoom: 4
+	})
+});
+//#endregion
+
 //# sourceMappingURL=wms-image-svg.js.map

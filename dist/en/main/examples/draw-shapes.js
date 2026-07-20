@@ -1,2 +1,70 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4212],{98095:function(e,n,t){var o=t(41564),c=t(87240),r=t(30470),a=t(9444),s=t(12185),u=t(23986),i=t(28e3),l=t(29810);const h=new s.A({source:new i.A}),w=new l.A({wrapX:!1}),d=new u.A({source:w}),f=new o.A({layers:[h,d],target:"map",view:new c.Ay({center:[-11e6,46e5],zoom:4})}),m=document.getElementById("type");let p;function y(){let e=m.value;if("None"!==e){let n;"Square"===e?(e="Circle",n=(0,a.Xs)(4)):"Box"===e?(e="Circle",n=(0,a.ge)()):"Star"===e&&(e="Circle",n=function(e,n){const t=e[0],o=e[e.length-1],c=t[0]-o[0],a=t[1]-o[1],s=Math.sqrt(c*c+a*a),u=Math.atan2(a,c),i=[];for(let e=0;e<12;++e){const n=u+2*e*Math.PI/12,o=e%2==0?1:.5,c=s*o*Math.cos(n),r=s*o*Math.sin(n);i.push([t[0]+c,t[1]+r])}return i.push(i[0].slice()),n?n.setCoordinates([i]):n=new r.Ay([i]),n}),p=new a.Ay({source:w,type:e,geometryFunction:n}),f.addInteraction(p)}}m.onchange=function(){f.removeInteraction(p),y()},document.getElementById("undo").addEventListener("click",(function(){p.removeLastPoint()})),y()}},function(e){var n;n=98095,e(e.s=n)}]);
+import { Cn as OSM, Gt as Draw, Kt as createBox, Mn as Map, bn as VectorLayer, dn as VectorSource, fr as Polygon, jn as TileLayer, or as View, qt as createRegularPolygon } from "./common.js";
+//#region examples/draw-shapes.js
+var raster = new TileLayer({ source: new OSM() });
+var source = new VectorSource({ wrapX: false });
+var map = new Map({
+	layers: [raster, new VectorLayer({ source })],
+	target: "map",
+	view: new View({
+		center: [-11e6, 46e5],
+		zoom: 4
+	})
+});
+var typeSelect = document.getElementById("type");
+var draw;
+function addInteraction() {
+	let value = typeSelect.value;
+	if (value !== "None") {
+		let geometryFunction;
+		if (value === "Square") {
+			value = "Circle";
+			geometryFunction = createRegularPolygon(4);
+		} else if (value === "Box") {
+			value = "Circle";
+			geometryFunction = createBox();
+		} else if (value === "Star") {
+			value = "Circle";
+			geometryFunction = function(coordinates, geometry) {
+				const center = coordinates[0];
+				const last = coordinates[coordinates.length - 1];
+				const dx = center[0] - last[0];
+				const dy = center[1] - last[1];
+				const radius = Math.sqrt(dx * dx + dy * dy);
+				const rotation = Math.atan2(dy, dx);
+				const newCoordinates = [];
+				const numPoints = 12;
+				for (let i = 0; i < numPoints; ++i) {
+					const angle = rotation + i * 2 * Math.PI / numPoints;
+					const fraction = i % 2 === 0 ? 1 : .5;
+					const offsetX = radius * fraction * Math.cos(angle);
+					const offsetY = radius * fraction * Math.sin(angle);
+					newCoordinates.push([center[0] + offsetX, center[1] + offsetY]);
+				}
+				newCoordinates.push(newCoordinates[0].slice());
+				if (!geometry) geometry = new Polygon([newCoordinates]);
+				else geometry.setCoordinates([newCoordinates]);
+				return geometry;
+			};
+		}
+		draw = new Draw({
+			source,
+			type: value,
+			geometryFunction
+		});
+		map.addInteraction(draw);
+	}
+}
+/**
+* Handle change event.
+*/
+typeSelect.onchange = function() {
+	map.removeInteraction(draw);
+	addInteraction();
+};
+document.getElementById("undo").addEventListener("click", function() {
+	draw.removeLastPoint();
+});
+addInteraction();
+//#endregion
+
 //# sourceMappingURL=draw-shapes.js.map

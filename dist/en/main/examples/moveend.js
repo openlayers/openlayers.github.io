@@ -1,2 +1,30 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2811],{55070:function(e,t,n){var o=n(41564),c=n(87240),u=n(16235),a=n(12185),i=n(25231),r=n(28e3);function f(e,t){document.getElementById(e).value=t.toFixed(2)}function l(e){return e-360*Math.floor((e+180)/360)}new o.A({layers:[new a.A({source:new r.A})],target:"map",view:new c.Ay({center:[0,0],zoom:2})}).on("moveend",(function(e){const t=e.map,n=t.getView().calculateExtent(t.getSize()),o=(0,i.WP)((0,u.R)(n)),c=(0,i.WP)((0,u.WU)(n));f("left",l(o[0])),f("bottom",o[1]),f("right",l(c[0])),f("top",c[1])}))}},function(e){var t;t=55070,e(e.s=t)}]);
+import { Cn as OSM, Dr as toLonLat, Jr as getTopRight, Mn as Map, Wr as getBottomLeft, jn as TileLayer, or as View } from "./common.js";
+//#region examples/moveend.js
+var map = new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+function display(id, value) {
+	document.getElementById(id).value = value.toFixed(2);
+}
+function wrapLon(value) {
+	return value - Math.floor((value + 180) / 360) * 360;
+}
+function onMoveEnd(evt) {
+	const map = evt.map;
+	const extent = map.getView().calculateExtent(map.getSize());
+	const bottomLeft = toLonLat(getBottomLeft(extent));
+	const topRight = toLonLat(getTopRight(extent));
+	display("left", wrapLon(bottomLeft[0]));
+	display("bottom", bottomLeft[1]);
+	display("right", wrapLon(topRight[0]));
+	display("top", topRight[1]);
+}
+map.on("moveend", onMoveEnd);
+//#endregion
+
 //# sourceMappingURL=moveend.js.map

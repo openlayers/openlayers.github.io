@@ -1,2 +1,45 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6428],{28487:function(e,t,n){var r=n(41564),o=n(87240),c=n(53815),i=n(12185),s=n(88887),w=n(64618),l=n(98267),a=n(38276),f=n(44689),u=n(88292),A=n(59194);const m=new u.Ay({fill:new a.A({color:"rgba(255, 255, 255, 0.6)"}),stroke:new f.A({color:"#319FD3",width:1}),text:new A.A({font:"12px Calibri,sans-serif",fill:new a.A({color:"#000"}),stroke:new f.A({color:"#fff",width:3})})}),g=new s.A({declutter:!0,source:new l.A({maxZoom:15,format:new c.A,url:"https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf"}),style:function(e){return m.getText().setText(e.get("name")),m}}),p=new i.A({source:new w.A({template:"z:{z} x:{x} y:{-y}",projection:g.getSource().getProjection(),tileGrid:g.getSource().getTileGrid(),zDirection:1})});new r.A({layers:[g,p],target:"map",view:new o.Ay({center:[0,6e6],zoom:4})})}},function(e){var t;t=28487,e(e.s=t)}]);
+import { $t as VectorTileLayer, Fn as Stroke, Ln as Fill, Mn as Map, Nn as Text, Pn as Style, Qt as TileDebug, Zt as VectorTile, en as MVT, jn as TileLayer, or as View } from "./common.js";
+//#region examples/canvas-tiles-tms.js
+var style = new Style({
+	fill: new Fill({ color: "rgba(255, 255, 255, 0.6)" }),
+	stroke: new Stroke({
+		color: "#319FD3",
+		width: 1
+	}),
+	text: new Text({
+		font: "12px Calibri,sans-serif",
+		fill: new Fill({ color: "#000" }),
+		stroke: new Stroke({
+			color: "#fff",
+			width: 3
+		})
+	})
+});
+var vtLayer = new VectorTileLayer({
+	declutter: true,
+	source: new VectorTile({
+		maxZoom: 15,
+		format: new MVT(),
+		url: "https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf"
+	}),
+	style: function(feature) {
+		style.getText().setText(feature.get("name"));
+		return style;
+	}
+});
+new Map({
+	layers: [vtLayer, new TileLayer({ source: new TileDebug({
+		template: "z:{z} x:{x} y:{-y}",
+		projection: vtLayer.getSource().getProjection(),
+		tileGrid: vtLayer.getSource().getTileGrid(),
+		zDirection: 1
+	}) })],
+	target: "map",
+	view: new View({
+		center: [0, 6e6],
+		zoom: 4
+	})
+});
+//#endregion
+
 //# sourceMappingURL=canvas-tiles-tms.js.map

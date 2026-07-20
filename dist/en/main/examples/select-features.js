@@ -1,2 +1,75 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4549],{62240:function(e,t,n){var o=n(41564),l=n(87240),c=n(38808),s=n(49208),r=n(68266),i=n(23986),u=n(29810),a=n(38276),d=n(44689),g=n(88292);const w=new g.Ay({fill:new a.A({color:"#eeeeee"})}),f=new i.A({source:new u.A({url:"https://openlayers.org/data/vector/ecoregions.json",format:new s.A}),background:"white",style:function(e){const t=e.get("COLOR")||"#eeeeee";return w.getFill().setColor(t),w}}),A=new o.A({layers:[f],target:"map",view:new l.Ay({center:[0,0],zoom:2})});let y=null;const h=new g.Ay({fill:new a.A({color:"#eeeeee"}),stroke:new d.A({color:"rgba(255, 255, 255, 0.7)",width:2})});function m(e){const t=e.get("COLOR")||"#eeeeee";return h.getFill().setColor(t),h}const p=new r.A({style:m}),k=new r.A({condition:c.jM,style:m}),v=new r.A({condition:c.N1,toggleCondition:c.Zm,style:m}),C=new r.A({style:m,condition:function(e){return(0,c.jM)(e)&&(0,c.Js)(e)}}),b=document.getElementById("type"),I=function(){null!==y&&A.removeInteraction(y);const e=b.value;y="singleclick"==e?p:"click"==e?k:"pointermove"==e?v:"altclick"==e?C:null,null!==y&&(A.addInteraction(y),y.on("select",(function(e){document.getElementById("status").innerHTML="&nbsp;"+e.target.getFeatures().getLength()+" selected features (last operation selected "+e.selected.length+" and deselected "+e.deselected.length+" features)"})))};b.onchange=I,I()}},function(e){var t;t=62240,e(e.s=t)}]);
+import { Fn as Stroke, Ln as Fill, Mn as Map, Pn as Style, Qn as never, Yn as altKeyOnly, Zn as click, bn as VectorLayer, dn as VectorSource, er as pointerMove, nn as Select, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/select-features.js
+var style = new Style({ fill: new Fill({ color: "#eeeeee" }) });
+var map = new Map({
+	layers: [new VectorLayer({
+		source: new VectorSource({
+			url: "https://openlayers.org/data/vector/ecoregions.json",
+			format: new GeoJSON()
+		}),
+		background: "white",
+		style: function(feature) {
+			const color = feature.get("COLOR") || "#eeeeee";
+			style.getFill().setColor(color);
+			return style;
+		}
+	})],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var select = null;
+var selected = new Style({
+	fill: new Fill({ color: "#eeeeee" }),
+	stroke: new Stroke({
+		color: "rgba(255, 255, 255, 0.7)",
+		width: 2
+	})
+});
+function selectStyle(feature) {
+	const color = feature.get("COLOR") || "#eeeeee";
+	selected.getFill().setColor(color);
+	return selected;
+}
+var selectSingleClick = new Select({ style: selectStyle });
+var selectClick = new Select({
+	condition: click,
+	style: selectStyle
+});
+var selectPointerMove = new Select({
+	condition: pointerMove,
+	toggleCondition: never,
+	style: selectStyle
+});
+var selectAltClick = new Select({
+	style: selectStyle,
+	condition: function(mapBrowserEvent) {
+		return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent);
+	}
+});
+var selectElement = document.getElementById("type");
+var changeInteraction = function() {
+	if (select !== null) map.removeInteraction(select);
+	const value = selectElement.value;
+	if (value == "singleclick") select = selectSingleClick;
+	else if (value == "click") select = selectClick;
+	else if (value == "pointermove") select = selectPointerMove;
+	else if (value == "altclick") select = selectAltClick;
+	else select = null;
+	if (select !== null) {
+		map.addInteraction(select);
+		select.on("select", function(e) {
+			document.getElementById("status").innerHTML = "&nbsp;" + e.target.getFeatures().getLength() + " selected features (last operation selected " + e.selected.length + " and deselected " + e.deselected.length + " features)";
+		});
+	}
+};
+/**
+* onchange callback on the select element.
+*/
+selectElement.onchange = changeInteraction;
+changeInteraction();
+//#endregion
+
 //# sourceMappingURL=select-features.js.map

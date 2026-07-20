@@ -1,2 +1,76 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6260],{83615:function(e,t,n){var o=n(41564),r=n(87240),i=n(30135),a=n(12185),l=n(23986),s=n(9226),c=n(29810),u=n(21133),g=n(38276),f=n(44689),p=n(88292);const w={},d=new l.A({source:new c.A({url:"data/kml/2012_Earthquakes_Mag5.kml",format:new i.Ay({extractStyles:!1})}),style:function(e){const t=e.get("name"),n=5+20*(parseFloat(t.substr(2))-5);let o=w[n];return o||(o=new p.Ay({image:new u.A({radius:n,fill:new g.A({color:"rgba(255, 153, 0, 0.4)"}),stroke:new f.A({color:"rgba(255, 204, 0, 0.2)",width:1})})}),w[n]=o),o}}),m=new a.A({source:new s.A({layer:"stamen_toner"})}),v=new o.A({layers:[m,d],target:"map",view:new r.Ay({center:[0,0],zoom:2})}),A=document.getElementById("info");A.style.pointerEvents="none";const y=new bootstrap.Tooltip(A,{animation:!1,customClass:"pe-none",offset:[0,5],title:"-",trigger:"manual"});let h;const k=function(e,t){const n=t.closest(".ol-control")?void 0:v.forEachFeatureAtPixel(e,(function(e){return e}));n?(A.style.left=e[0]+"px",A.style.top=e[1]+"px",n!==h&&y.setContent({".tooltip-inner":n.get("name")}),h?y.update():y.show()):y.hide(),h=n};v.on("pointermove",(function(e){if(e.dragging)return y.hide(),void(h=void 0);k(e.pixel,e.originalEvent.target)})),v.on("click",(function(e){k(e.pixel,e.originalEvent.target)})),v.getTargetElement().addEventListener("pointerleave",(function(){y.hide(),h=void 0}))}},function(e){var t;t=83615,e(e.s=t)}]);
+import { Fn as Stroke, Ln as Fill, Mn as Map, Pn as Style, Rn as CircleStyle, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View, tn as KML, yn as StadiaMaps } from "./common.js";
+//#region examples/kml-earthquakes.js
+var styleCache = {};
+var styleFunction = function(feature) {
+	const name = feature.get("name");
+	const radius = 5 + 20 * (parseFloat(name.substr(2)) - 5);
+	let style = styleCache[radius];
+	if (!style) {
+		style = new Style({ image: new CircleStyle({
+			radius,
+			fill: new Fill({ color: "rgba(255, 153, 0, 0.4)" }),
+			stroke: new Stroke({
+				color: "rgba(255, 204, 0, 0.2)",
+				width: 1
+			})
+		}) });
+		styleCache[radius] = style;
+	}
+	return style;
+};
+var vector = new VectorLayer({
+	source: new VectorSource({
+		url: "data/kml/2012_Earthquakes_Mag5.kml",
+		format: new KML({ extractStyles: false })
+	}),
+	style: styleFunction
+});
+var map = new Map({
+	layers: [new TileLayer({ source: new StadiaMaps({ layer: "stamen_toner" }) }), vector],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var info = document.getElementById("info");
+info.style.pointerEvents = "none";
+var tooltip = new bootstrap.Tooltip(info, {
+	animation: false,
+	customClass: "pe-none",
+	offset: [0, 5],
+	title: "-",
+	trigger: "manual"
+});
+var currentFeature;
+var displayFeatureInfo = function(pixel, target) {
+	const feature = target.closest(".ol-control") ? void 0 : map.forEachFeatureAtPixel(pixel, function(feature) {
+		return feature;
+	});
+	if (feature) {
+		info.style.left = pixel[0] + "px";
+		info.style.top = pixel[1] + "px";
+		if (feature !== currentFeature) tooltip.setContent({ ".tooltip-inner": feature.get("name") });
+		if (currentFeature) tooltip.update();
+		else tooltip.show();
+	} else tooltip.hide();
+	currentFeature = feature;
+};
+map.on("pointermove", function(evt) {
+	if (evt.dragging) {
+		tooltip.hide();
+		currentFeature = void 0;
+		return;
+	}
+	displayFeatureInfo(evt.pixel, evt.originalEvent.target);
+});
+map.on("click", function(evt) {
+	displayFeatureInfo(evt.pixel, evt.originalEvent.target);
+});
+map.getTargetElement().addEventListener("pointerleave", function() {
+	tooltip.hide();
+	currentFeature = void 0;
+});
+//#endregion
+
 //# sourceMappingURL=kml-earthquakes.js.map

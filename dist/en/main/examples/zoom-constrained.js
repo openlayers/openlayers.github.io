@@ -1,2 +1,19 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3337],{52868:function(e,t,a){var r=a(41564),o=a(87240),p=a(12185),n=a(15264);new r.A({target:"map",layers:[new p.A({source:new n.A({attributions:'<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',url:"https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",tileSize:512})})],view:new o.Ay({center:[-13553864,5918250],zoom:11,minZoom:9,maxZoom:13})})}},function(e){var t;t=52868,e(e.s=t)}]);
+import { Mn as Map, an as ImageTileSource, jn as TileLayer, or as View } from "./common.js";
+//#region examples/zoom-constrained.js
+new Map({
+	target: "map",
+	layers: [new TileLayer({ source: new ImageTileSource({
+		attributions: "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+		url: "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+		tileSize: 512
+	}) })],
+	view: new View({
+		center: [-13553864, 5918250],
+		zoom: 11,
+		minZoom: 9,
+		maxZoom: 13
+	})
+});
+//#endregion
+
 //# sourceMappingURL=zoom-constrained.js.map

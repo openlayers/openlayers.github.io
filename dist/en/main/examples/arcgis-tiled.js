@@ -1,2 +1,21 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7515],{56001:function(t,e,r){var i=r(41564),s=r(87240),n=r(12185),o=r(28e3),a=r(16235),h=r(31141),c=r(3974),l=r(62994),p=r(38376),u=r(70026);class g extends p.A{constructor(t){super({attributions:(t=t||{}).attributions,cacheSize:t.cacheSize,crossOrigin:t.crossOrigin,referrerPolicy:t.referrerPolicy,interpolate:t.interpolate,projection:t.projection,reprojectionErrorThreshold:t.reprojectionErrorThreshold,tileGrid:t.tileGrid,tileLoadFunction:t.tileLoadFunction,url:t.url,urls:t.urls,wrapX:void 0===t.wrapX||t.wrapX,transition:t.transition,zDirection:t.zDirection}),this.params_=Object.assign({},t.params),this.hidpi_=void 0===t.hidpi||t.hidpi,this.tmpExtent_=(0,a.S5)(),this.setKey(this.getKeyForParams_())}getKeyForParams_(){let t=0;const e=[];for(const r in this.params_)e[t++]=r+"-"+this.params_[r];return e.join("/")}getParams(){return this.params_}getRequestUrl_(t,e,r,i,s,n){const o=this.urls;if(!o)return;let a;if(1==o.length)a=o[0];else{a=o[(0,h.xP)((0,l.tW)(t),o.length)]}return(0,u.r)(a,r,(this.tileGrid||this.getTileGridForProjection(s)).getResolution(t[0]),i,s,n)}getTilePixelRatio(t){return this.hidpi_?t:1}setParams(t){this.params_=Object.assign({},t),this.setKey(this.getKeyForParams_())}updateParams(t){Object.assign(this.params_,t),this.setKey(this.getKeyForParams_())}tileUrlFunction(t,e,r){let i=this.getTileGrid();if(i||(i=this.getTileGridForProjection(r)),i.getResolutions().length<=t[0])return;1==e||this.hidpi_||(e=1);const s=i.getTileCoordExtent(t,this.tmpExtent_);let n=(0,c.xq)(i.getTileSize(t[0]),this.tmpSize);1!=e&&(n=(0,c.hs)(n,e,this.tmpSize));const o={f:"image",format:"png32",transparent:!0};return Object.assign(o,this.params_),this.getRequestUrl_(t,n,s,e,r,o)}}var m=g;const d=[new n.A({source:new o.A}),new n.A({extent:[-13884991,2870341,-7455066,6338219],source:new m({url:"https://sampleserver6.arcgisonline.com/ArcGIS/rest/services/USA/MapServer"})})];new i.A({layers:d,target:"map",view:new s.Ay({center:[-10997148,4569099],zoom:4})})}},function(t){var e;e=56001,t(t.s=e)}]);
+import { Cn as OSM, Mn as Map, jn as TileLayer, or as View, sn as TileArcGISRest } from "./common.js";
+//#region examples/arcgis-tiled.js
+new Map({
+	layers: [new TileLayer({ source: new OSM() }), new TileLayer({
+		extent: [
+			-13884991,
+			2870341,
+			-7455066,
+			6338219
+		],
+		source: new TileArcGISRest({ url: "https://sampleserver6.arcgisonline.com/ArcGIS/rest/services/USA/MapServer" })
+	})],
+	target: "map",
+	view: new View({
+		center: [-10997148, 4569099],
+		zoom: 4
+	})
+});
+//#endregion
+
 //# sourceMappingURL=arcgis-tiled.js.map

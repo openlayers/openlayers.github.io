@@ -1,2 +1,14 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3901],{87384:function(e,n,t){var a=t(41564),r=t(87240),s=t(12185),c=t(28e3);new a.A({layers:[new s.A({source:new c.A})],target:"map",view:new r.Ay({center:[142e5,413e4],rotation:Math.PI/6,zoom:10})})}},function(e){var n;n=87384,e(e.s=n)}]);
+import { Cn as OSM, Mn as Map, jn as TileLayer, or as View } from "./common.js";
+//#region examples/rotation.js
+new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [142e5, 413e4],
+		rotation: Math.PI / 6,
+		zoom: 10
+	})
+});
+//#endregion
+
 //# sourceMappingURL=rotation.js.map

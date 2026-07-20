@@ -1,2 +1,15 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5060],{98303:function(e,n,t){var c=t(41564),a=t(87240),o=t(38808),s=t(57038),r=t(12185),w=t(28e3);const i=new c.A({layers:[new r.A({source:new w.A})],target:"map",view:new a.Ay({center:[0,0],zoom:2})}),u=new s.A({condition:o.Kg});i.addInteraction(u)}},function(e){var n;n=98303,e(e.s=n)}]);
+import { Cn as OSM, Mn as Map, R as Extent, jn as TileLayer, nr as shiftKeyOnly, or as View } from "./common.js";
+//#region examples/extent-interaction.js
+var map = new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var extent = new Extent({ condition: shiftKeyOnly });
+map.addInteraction(extent);
+//#endregion
+
 //# sourceMappingURL=extent-interaction.js.map

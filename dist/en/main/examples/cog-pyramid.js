@@ -1,2 +1,36 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3363],{57565:function(e,t,n){var o=n(41564),s=n(87240),r=n(96256),c=n(16235),u=n(38993);var i=n(12430);const a=new(n(45342).A)({extent:[-180,-90,180,90],resolutions:[.703125,.3515625,.17578125,.087890625,.0439453125],tileSizes:[[512,256],[1024,512],[2048,1024],[4096,2048],[4096,4096]]}),l=new r.A({sources:function(e,t){const n=new u.A(32),o=e.getExtent();return function(s,r){n.expireCache(),o&&(s=(0,c._N)(o,s));const u=e.getZForResolution(r),i=[];return e.forEachTileCoord(s,u,(e=>{const o=e.toString();if(!n.containsKey(o)){const s=t(e);n.set(o,s)}i.push(n.get(o))})),i}}(a,(([e,t,n])=>new i.A({sources:[{url:`https://s2downloads.eox.at/demo/EOxCloudless/2019/rgb/${e}/${n}/${t}.tif`}]})))});new o.A({target:"map",layers:[l],view:new s.Ay({projection:"EPSG:4326",center:[0,0],zoom:0,showFullExtent:!0})})}},function(e){var t;t=57565,e(e.s=t)}]);
+import { An as TileGrid, Ht as WebGLTileLayer, Mn as Map, Rt as GeoTIFFSource, or as View, yt as sourcesFromTileGrid } from "./common.js";
+//#region examples/cog-pyramid.js
+new Map({
+	target: "map",
+	layers: [new WebGLTileLayer({ sources: sourcesFromTileGrid(new TileGrid({
+		extent: [
+			-180,
+			-90,
+			180,
+			90
+		],
+		resolutions: [
+			.703125,
+			.3515625,
+			.17578125,
+			.087890625,
+			.0439453125
+		],
+		tileSizes: [
+			[512, 256],
+			[1024, 512],
+			[2048, 1024],
+			[4096, 2048],
+			[4096, 4096]
+		]
+	}), ([z, x, y]) => new GeoTIFFSource({ sources: [{ url: `https://s2downloads.eox.at/demo/EOxCloudless/2019/rgb/${z}/${y}/${x}.tif` }] })) })],
+	view: new View({
+		projection: "EPSG:4326",
+		center: [0, 0],
+		zoom: 0,
+		showFullExtent: true
+	})
+});
+//#endregion
+
 //# sourceMappingURL=cog-pyramid.js.map

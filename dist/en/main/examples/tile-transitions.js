@@ -1,2 +1,35 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2916],{56111:function(e,t,n){var r=n(41564),i=n(87240),a=n(12185),s=n(15264);const o='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',c="https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=get_your_own_D6rA4zTHduk6KOKTXzGB",p=new a.A({source:new s.A({url:c,tileSize:512,attributions:o})}),u=new a.A({source:new s.A({url:c,transition:0,tileSize:512,attributions:o}),visible:!1});new r.A({layers:[p,u],target:"map",view:new i.Ay({center:[0,0],zoom:2,maxZoom:11})});document.getElementById("transition").addEventListener("change",(function(e){const t=e.target.checked;p.setVisible(t),u.setVisible(!t)}))}},function(e){var t;t=56111,e(e.s=t)}]);
+import { Mn as Map, an as ImageTileSource, jn as TileLayer, or as View } from "./common.js";
+//#region examples/tile-transitions.js
+var attributions = "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>";
+var url = "https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=get_your_own_D6rA4zTHduk6KOKTXzGB";
+var withTransition = new TileLayer({ source: new ImageTileSource({
+	url,
+	tileSize: 512,
+	attributions
+}) });
+var withoutTransition = new TileLayer({
+	source: new ImageTileSource({
+		url,
+		transition: 0,
+		tileSize: 512,
+		attributions
+	}),
+	visible: false
+});
+new Map({
+	layers: [withTransition, withoutTransition],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2,
+		maxZoom: 11
+	})
+});
+document.getElementById("transition").addEventListener("change", function(event) {
+	const transition = event.target.checked;
+	withTransition.setVisible(transition);
+	withoutTransition.setVisible(!transition);
+});
+//#endregion
+
 //# sourceMappingURL=tile-transitions.js.map

@@ -1,2 +1,50 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4435],{29702:function(e,t,n){var o=n(41564),r=n(87240),a=n(94782),i=n(49208),s=n(17534),c=n(30135),p=n(28665),u=n(56182),l=n(35947),f=n(12185),g=n(29596),w=n(15264),m=n(29810);const h=new u.A({formatConstructors:[a.A,i.A,s.A,c.Ay,p.A]}),A=new o.A({interactions:(0,l.N)().extend([h]),layers:[new f.A({source:new w.A({attributions:'<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',url:"https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",tileSize:512,maxZoom:20})})],target:"map",view:new r.Ay({center:[0,0],zoom:2})});h.on("addfeatures",(function(e){const t=new m.A({features:e.features});A.addLayer(new g.A({source:t})),A.getView().fit(t.getExtent())}));const y=function(e){const t=[];if(A.forEachFeatureAtPixel(e,(function(e){t.push(e)})),t.length>0){const e=[];let n,o;for(n=0,o=t.length;n<o;++n)e.push(t[n].get("name"));document.getElementById("info").innerHTML=e.join(", ")||"&nbsp"}else document.getElementById("info").innerHTML="&nbsp;"};A.on("pointermove",(function(e){e.dragging||y(e.pixel)})),A.on("click",(function(e){y(e.pixel)}))}},function(e){var t;t=29702,e(e.s=t)}]);
+import { J as DragAndDrop, Mn as Map, Wn as defaults, X as IGC, Y as TopoJSON, Z as GPX, an as ImageTileSource, dn as VectorSource, jn as TileLayer, or as View, q as VectorImageLayer, rn as GeoJSON, tn as KML } from "./common.js";
+//#region examples/drag-and-drop-image-vector.js
+var dragAndDropInteraction = new DragAndDrop({ formatConstructors: [
+	GPX,
+	GeoJSON,
+	IGC,
+	KML,
+	TopoJSON
+] });
+var map = new Map({
+	interactions: defaults().extend([dragAndDropInteraction]),
+	layers: [new TileLayer({ source: new ImageTileSource({
+		attributions: "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+		url: "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+		tileSize: 512,
+		maxZoom: 20
+	}) })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+dragAndDropInteraction.on("addfeatures", function(event) {
+	const vectorSource = new VectorSource({ features: event.features });
+	map.addLayer(new VectorImageLayer({ source: vectorSource }));
+	map.getView().fit(vectorSource.getExtent());
+});
+var displayFeatureInfo = function(pixel) {
+	const features = [];
+	map.forEachFeatureAtPixel(pixel, function(feature) {
+		features.push(feature);
+	});
+	if (features.length > 0) {
+		const info = [];
+		let i, ii;
+		for (i = 0, ii = features.length; i < ii; ++i) info.push(features[i].get("name"));
+		document.getElementById("info").innerHTML = info.join(", ") || "&nbsp";
+	} else document.getElementById("info").innerHTML = "&nbsp;";
+};
+map.on("pointermove", function(evt) {
+	if (evt.dragging) return;
+	displayFeatureInfo(evt.pixel);
+});
+map.on("click", function(evt) {
+	displayFeatureInfo(evt.pixel);
+});
+//#endregion
+
 //# sourceMappingURL=drag-and-drop-image-vector.js.map

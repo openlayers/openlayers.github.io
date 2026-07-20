@@ -1,2 +1,62 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7615],{27506:function(e,l,o){var r=o(41564),c=o(87240),i=o(9444),n=o(12185),t=o(23986),s=o(28e3),u=o(29810);const a=new n.A({source:new s.A}),w=new u.A({wrapX:!1}),d=new t.A({source:w}),f=new r.A({layers:[a,d],target:"map",view:new c.Ay({center:[-11e6,46e5],zoom:4})}),y={Point:{"circle-radius":5,"circle-fill-color":"red"},LineString:{"circle-radius":5,"circle-fill-color":"red","stroke-color":"yellow","stroke-width":2},Polygon:{"circle-radius":5,"circle-fill-color":"red","stroke-color":"yellow","stroke-width":2,"fill-color":"blue"},Circle:{"circle-radius":5,"circle-fill-color":"red","stroke-color":"blue","stroke-width":2,"fill-color":"yellow"}},k=document.getElementById("type");let h;function p(){const e=k.value;"None"!==e&&(h=new i.Ay({source:w,type:k.value,style:y[e]}),f.addInteraction(h))}k.onchange=function(){f.removeInteraction(h),p()},p()}},function(e){var l;l=27506,e(e.s=l)}]);
+import { Cn as OSM, Gt as Draw, Mn as Map, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View } from "./common.js";
+//#region examples/draw-features-style.js
+var raster = new TileLayer({ source: new OSM() });
+var source = new VectorSource({ wrapX: false });
+var map = new Map({
+	layers: [raster, new VectorLayer({ source })],
+	target: "map",
+	view: new View({
+		center: [-11e6, 46e5],
+		zoom: 4
+	})
+});
+var styles = {
+	Point: {
+		"circle-radius": 5,
+		"circle-fill-color": "red"
+	},
+	LineString: {
+		"circle-radius": 5,
+		"circle-fill-color": "red",
+		"stroke-color": "yellow",
+		"stroke-width": 2
+	},
+	Polygon: {
+		"circle-radius": 5,
+		"circle-fill-color": "red",
+		"stroke-color": "yellow",
+		"stroke-width": 2,
+		"fill-color": "blue"
+	},
+	Circle: {
+		"circle-radius": 5,
+		"circle-fill-color": "red",
+		"stroke-color": "blue",
+		"stroke-width": 2,
+		"fill-color": "yellow"
+	}
+};
+var typeSelect = document.getElementById("type");
+var draw;
+function addInteraction() {
+	const value = typeSelect.value;
+	if (value !== "None") {
+		draw = new Draw({
+			source,
+			type: typeSelect.value,
+			style: styles[value]
+		});
+		map.addInteraction(draw);
+	}
+}
+/**
+* Handle change event.
+*/
+typeSelect.onchange = function() {
+	map.removeInteraction(draw);
+	addInteraction();
+};
+addInteraction();
+//#endregion
+
 //# sourceMappingURL=draw-features-style.js.map

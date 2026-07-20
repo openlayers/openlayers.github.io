@@ -263,7 +263,7 @@ const source &#x3D; new DataTile({
       ).data;
       const pixels &#x3D; data.length / 4;
       const floatData &#x3D; new Float32Array(data.buffer);
-      for (let i &#x3D; 0, j &#x3D; 0; i &lt; pixels; ) {
+      for (let i &#x3D; 0, j &#x3D; 0; i &lt; pixels;) {
         floatData[i++] &#x3D; calculateElevation(data.slice(j, (j +&#x3D; 4)));
       }
       return floatData;
@@ -527,8 +527,7 @@ map.addControl(mousePositionControl);
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="common.js"></script>
-    <script src="contour-interpolation.js"></script>
+    <script type="module" src="contour-interpolation.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/toolbar/prism-toolbar.min.js"></script>

@@ -1,2 +1,17 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8518],{69889:function(e,o,t){var n=t(41564),r=t(87240),a=t(12185),c=t(28e3);new n.A({layers:[new a.A({source:new c.A})],target:"map",view:new r.Ay({center:[-873e4,593e4],rotation:Math.PI/5,zoom:8})});document.querySelectorAll(".ol-zoom-in, .ol-zoom-out, .ol-rotate-reset").forEach((function(e){new bootstrap.Tooltip(e,{container:"#map"})}))}},function(e){var o;o=69889,e(e.s=o)}]);
+import { Cn as OSM, Mn as Map, jn as TileLayer, or as View } from "./common.js";
+//#region examples/button-title.js
+new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [-873e4, 593e4],
+		rotation: Math.PI / 5,
+		zoom: 8
+	})
+});
+document.querySelectorAll(".ol-zoom-in, .ol-zoom-out, .ol-rotate-reset").forEach(function(el) {
+	new bootstrap.Tooltip(el, { container: "#map" });
+});
+//#endregion
+
 //# sourceMappingURL=button-title.js.map

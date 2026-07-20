@@ -1,2 +1,112 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5104],{54347:function(e,n,a){var t=a(51541),r=a(41564),s=a(87240),l=a(40878),i=a(23986),o=a(29810),w=a(38276),c=a(28656),g=a(44689),u=a(88292);const d=new g.A({color:"black",width:2}),A=new w.A({color:"red"}),h={square:new u.Ay({image:new c.A({fill:A,stroke:d,points:4,radius:10,angle:Math.PI/4})}),rectangle:new u.Ay({image:new c.A({fill:A,stroke:d,radius:10/Math.SQRT2,radius2:10,points:4,angle:0,scale:[1,.5]})}),triangle:new u.Ay({image:new c.A({fill:A,stroke:d,points:3,radius:10,rotation:Math.PI/4,angle:0})}),star:new u.Ay({image:new c.A({fill:A,stroke:d,points:5,radius:10,radius2:4,angle:0})}),cross:new u.Ay({image:new c.A({fill:A,stroke:d,points:4,radius:10,radius2:0,angle:0})}),x:new u.Ay({image:new c.A({fill:A,stroke:d,points:4,radius:10,radius2:0,angle:Math.PI/4})}),stacked:[new u.Ay({image:new c.A({fill:A,stroke:d,points:4,radius:5,angle:Math.PI/4,displacement:[0,10]})}),new u.Ay({image:new c.A({fill:A,stroke:d,points:4,radius:10,angle:Math.PI/4})})]},m=["x","cross","star","triangle","square","rectangle","stacked"],f=new Array(250),k=45e5;for(let e=0;e<250;++e){const n=[2*k*Math.random()-k,2*k*Math.random()-k];f[e]=new t.A(new l.A(n)),f[e].setStyle(h[m[Math.floor(Math.random()*m.length)]])}const y=new o.A({features:f}),p=new i.A({source:y}),M=(new r.A({layers:[p],target:"map",view:new s.Ay({center:[0,0],zoom:2})}),["blue","green","yellow","aqua","red"]);let I=0;document.getElementById("color-changer").addEventListener("click",(function(){h.square.getImage().setFill(new w.A({color:M[I%M.length]})),p.changed(),I++}))}},function(e){var n;n=54347,e(e.s=n)}]);
+import { Fn as Stroke, Ln as Fill, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, hr as Point, or as View, xn as Feature, zn as RegularShape } from "./common.js";
+//#region examples/regularshape.js
+var stroke = new Stroke({
+	color: "black",
+	width: 2
+});
+var fill = new Fill({ color: "red" });
+var styles = {
+	"square": new Style({ image: new RegularShape({
+		fill,
+		stroke,
+		points: 4,
+		radius: 10,
+		angle: Math.PI / 4
+	}) }),
+	"rectangle": new Style({ image: new RegularShape({
+		fill,
+		stroke,
+		radius: 10 / Math.SQRT2,
+		radius2: 10,
+		points: 4,
+		angle: 0,
+		scale: [1, .5]
+	}) }),
+	"triangle": new Style({ image: new RegularShape({
+		fill,
+		stroke,
+		points: 3,
+		radius: 10,
+		rotation: Math.PI / 4,
+		angle: 0
+	}) }),
+	"star": new Style({ image: new RegularShape({
+		fill,
+		stroke,
+		points: 5,
+		radius: 10,
+		radius2: 4,
+		angle: 0
+	}) }),
+	"cross": new Style({ image: new RegularShape({
+		fill,
+		stroke,
+		points: 4,
+		radius: 10,
+		radius2: 0,
+		angle: 0
+	}) }),
+	"x": new Style({ image: new RegularShape({
+		fill,
+		stroke,
+		points: 4,
+		radius: 10,
+		radius2: 0,
+		angle: Math.PI / 4
+	}) }),
+	"stacked": [new Style({ image: new RegularShape({
+		fill,
+		stroke,
+		points: 4,
+		radius: 5,
+		angle: Math.PI / 4,
+		displacement: [0, 10]
+	}) }), new Style({ image: new RegularShape({
+		fill,
+		stroke,
+		points: 4,
+		radius: 10,
+		angle: Math.PI / 4
+	}) })]
+};
+var styleKeys = [
+	"x",
+	"cross",
+	"star",
+	"triangle",
+	"square",
+	"rectangle",
+	"stacked"
+];
+var count = 250;
+var features = new Array(count);
+var e = 45e5;
+for (let i = 0; i < count; ++i) {
+	features[i] = new Feature(new Point([2 * e * Math.random() - e, 2 * e * Math.random() - e]));
+	features[i].setStyle(styles[styleKeys[Math.floor(Math.random() * styleKeys.length)]]);
+}
+var vectorLayer = new VectorLayer({ source: new VectorSource({ features }) });
+new Map({
+	layers: [vectorLayer],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var colors = [
+	"blue",
+	"green",
+	"yellow",
+	"aqua",
+	"red"
+];
+var currentColor = 0;
+document.getElementById("color-changer").addEventListener("click", function() {
+	styles.square.getImage().setFill(new Fill({ color: colors[currentColor % colors.length] }));
+	vectorLayer.changed();
+	currentColor++;
+});
+//#endregion
+
 //# sourceMappingURL=regularshape.js.map

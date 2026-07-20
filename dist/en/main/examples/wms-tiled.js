@@ -1,2 +1,29 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5867],{41372:function(e,s,r){var n=r(41564),t=r(87240),a=r(96256),o=r(28e3),c=r(6848);const w=[new a.A({source:new o.A}),new a.A({extent:[-13884991,2870341,-7455066,6338219],source:new c.A({url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"topp:states",TILED:!0},serverType:"geoserver",transition:0})})];new n.A({layers:w,target:"map",view:new t.Ay({center:[-10997148,4569099],zoom:4})})}},function(e){var s;s=41372,e(e.s=s)}]);
+import { Cn as OSM, Ct as TileWMS, Ht as WebGLTileLayer, Mn as Map, or as View } from "./common.js";
+//#region examples/wms-tiled.js
+new Map({
+	layers: [new WebGLTileLayer({ source: new OSM() }), new WebGLTileLayer({
+		extent: [
+			-13884991,
+			2870341,
+			-7455066,
+			6338219
+		],
+		source: new TileWMS({
+			url: "https://ahocevar.com/geoserver/wms",
+			params: {
+				"LAYERS": "topp:states",
+				"TILED": true
+			},
+			serverType: "geoserver",
+			transition: 0
+		})
+	})],
+	target: "map",
+	view: new View({
+		center: [-10997148, 4569099],
+		zoom: 4
+	})
+});
+//#endregion
+
 //# sourceMappingURL=wms-tiled.js.map

@@ -1,2 +1,26 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2194],{26013:function(e,r,s){var t=s(41564),n=s(87240),a=s(47085),o=s(12185),c=s(2091),w=s(28e3);const p=[new o.A({source:new w.A}),new a.A({extent:[-13884991,2870341,-7455066,6338219],source:new c.A({url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"topp:states"},ratio:1,serverType:"geoserver"})})];new t.A({layers:p,target:"map",view:new n.Ay({center:[-10997148,4569099],zoom:4})})}},function(e){var r;r=26013,e(e.s=r)}]);
+import { Cn as OSM, Mn as Map, Ot as ImageWMS, jn as TileLayer, or as View, un as ImageLayer } from "./common.js";
+//#region examples/wms-image.js
+new Map({
+	layers: [new TileLayer({ source: new OSM() }), new ImageLayer({
+		extent: [
+			-13884991,
+			2870341,
+			-7455066,
+			6338219
+		],
+		source: new ImageWMS({
+			url: "https://ahocevar.com/geoserver/wms",
+			params: { "LAYERS": "topp:states" },
+			ratio: 1,
+			serverType: "geoserver"
+		})
+	})],
+	target: "map",
+	view: new View({
+		center: [-10997148, 4569099],
+		zoom: 4
+	})
+});
+//#endregion
+
 //# sourceMappingURL=wms-image.js.map

@@ -1,2 +1,31 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4613],{37248:function(e,n,t){var c=t(41564),o=t(87240),i=t(16235),s=t(47085),a=t(43438),m=t(56934);const r=[0,0,1024,968],u=new a.A({code:"xkcd-image",units:"pixels",extent:r});new c.A({layers:[new s.A({source:new m.A({attributions:'© <a href="https://xkcd.com/license.html">xkcd</a>',url:"https://imgs.xkcd.com/comics/online_communities.png",projection:u,imageExtent:r})})],target:"map",view:new o.Ay({projection:u,center:(0,i.q1)(r),zoom:2,maxZoom:8})})}},function(e){var n;n=37248,e(e.s=n)}]);
+import { At as Static, Gr as getCenter, Mn as Map, jr as Projection, or as View, un as ImageLayer } from "./common.js";
+//#region examples/static-image.js
+var extent = [
+	0,
+	0,
+	1024,
+	968
+];
+var projection = new Projection({
+	code: "xkcd-image",
+	units: "pixels",
+	extent
+});
+new Map({
+	layers: [new ImageLayer({ source: new Static({
+		attributions: "© <a href=\"https://xkcd.com/license.html\">xkcd</a>",
+		url: "https://imgs.xkcd.com/comics/online_communities.png",
+		projection,
+		imageExtent: extent
+	}) })],
+	target: "map",
+	view: new View({
+		projection,
+		center: getCenter(extent),
+		zoom: 2,
+		maxZoom: 8
+	})
+});
+//#endregion
+
 //# sourceMappingURL=static-image.js.map

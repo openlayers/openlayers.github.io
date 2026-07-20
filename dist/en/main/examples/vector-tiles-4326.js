@@ -1,2 +1,35 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[52],{93327:function(e,t,o){var n=o(93895),s=o(41564),i=o(87240),r=o(88887),a=o(98267);const c="https://api.maptiler.com/maps/basic-4326/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB",u=(0,o(10135).EN)({extent:[-180,-90,180,90],tileSize:512,maxResolution:180/512,maxZoom:13}),l=new r.A({declutter:!0,source:new a.A({projection:"EPSG:4326",tileGrid:u})});(0,n.AV)(l,c,{resolutions:u.getResolutions()}),(0,n.V5)(l,c);new s.A({target:"map",layers:[l],view:new i.Ay({projection:"EPSG:4326",zoom:0,center:[0,30]})})}},function(e){var t;t=93327,e(e.s=t)}]);
+import { $t as VectorTileLayer, Dn as createXYZ, Mn as Map, Zt as VectorTile, it as applyStyle, or as View, rt as applyBackground } from "./common.js";
+//#region examples/vector-tiles-4326.js
+var url = "https://api.maptiler.com/maps/basic-4326/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB";
+var tileGrid = createXYZ({
+	extent: [
+		-180,
+		-90,
+		180,
+		90
+	],
+	tileSize: 512,
+	maxResolution: 180 / 512,
+	maxZoom: 13
+});
+var layer = new VectorTileLayer({
+	declutter: true,
+	source: new VectorTile({
+		projection: "EPSG:4326",
+		tileGrid
+	})
+});
+applyStyle(layer, url, { resolutions: tileGrid.getResolutions() });
+applyBackground(layer, url);
+new Map({
+	target: "map",
+	layers: [layer],
+	view: new View({
+		projection: "EPSG:4326",
+		zoom: 0,
+		center: [0, 30]
+	})
+});
+//#endregion
+
 //# sourceMappingURL=vector-tiles-4326.js.map

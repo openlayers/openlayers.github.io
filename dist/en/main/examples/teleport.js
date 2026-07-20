@@ -1,2 +1,17 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6906],{2085:function(e,t,n){var a=n(41564),c=n(87240),s=n(12185),r=n(28e3);const o=new a.A({layers:[new s.A({source:new r.A})],view:new c.Ay({center:[0,0],zoom:2})});o.setTarget("map1");document.getElementById("teleport").addEventListener("click",(function(){const e="map1"===o.getTarget()?"map2":"map1";o.setTarget(e)}),!1)}},function(e){var t;t=2085,e(e.s=t)}]);
+import { Cn as OSM, Mn as Map, jn as TileLayer, or as View } from "./common.js";
+//#region examples/teleport.js
+var map = new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+map.setTarget("map1");
+document.getElementById("teleport").addEventListener("click", function() {
+	const target = map.getTarget() === "map1" ? "map2" : "map1";
+	map.setTarget(target);
+}, false);
+//#endregion
+
 //# sourceMappingURL=teleport.js.map

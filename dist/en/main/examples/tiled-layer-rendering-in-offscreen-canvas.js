@@ -1,2 +1,47 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4691],{91376:function(e,t,n){var r=n(41564),s=n(87240),a=n(12185),o=n(15264);const i=new function(){return new Worker(n.p+"tiled-layer-rendering-in-offscreen-canvas.worker.worker.js")},c=[];new r.A({layers:[new a.A({source:new o.A({tileSize:512,loader:(e,t,n)=>new Promise((r=>{const s=()=>{const s=({data:{action:e,imageData:t}})=>{if("rendered"!==e)return;i.removeEventListener("message",s),r(t),c.shift();const n=c[0];n?.()};i.addEventListener("message",s),i.postMessage({action:"render",tile:[e,t,n]})};0===c.length&&s(),c.push(s)})),attributions:['<a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>']})})],target:"map",view:new s.Ay({center:[0,0],zoom:2})})}},function(e){var t;t=91376,e(e.s=t)}]);
+import { Mn as Map, an as ImageTileSource, jn as TileLayer, or as View } from "./common.js";
+//#region examples/tiled-layer-rendering-in-offscreen-canvas.js
+var worker = new Worker(new URL(
+	/* @vite-ignore */
+	"/assets/tiled-layer-rendering-in-offscreen-canvas.worker-S9yKuKxc.js",
+	"" + import.meta.url
+), { type: "module" });
+var tileQueue = [];
+new Map({
+	layers: [new TileLayer({ source: new ImageTileSource({
+		tileSize: 512,
+		loader: (z, x, y) => {
+			return new Promise((resolve) => {
+				const loadTile = () => {
+					const handleMessage = ({ data: { action, imageData } }) => {
+						if (action !== "rendered") return;
+						worker.removeEventListener("message", handleMessage);
+						resolve(imageData);
+						tileQueue.shift();
+						const loadNextTile = tileQueue[0];
+						loadNextTile?.();
+					};
+					worker.addEventListener("message", handleMessage);
+					worker.postMessage({
+						action: "render",
+						tile: [
+							z,
+							x,
+							y
+						]
+					});
+				};
+				if (tileQueue.length === 0) loadTile();
+				tileQueue.push(loadTile);
+			});
+		},
+		attributions: ["<a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">© OpenStreetMap contributors</a>"]
+	}) })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+//#endregion
+
 //# sourceMappingURL=tiled-layer-rendering-in-offscreen-canvas.js.map

@@ -1,2 +1,54 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4890],{77845:function(e,n,t){var o=t(41564),r=t(87240),c=t(49208),a=t(23986),i=t(29596),s=t(29810);const u=new i.A({background:"#1a2b39",imageRatio:2,source:new s.A({url:"https://openlayers.org/data/vector/ecoregions.json",format:new c.A}),style:{"fill-color":["string",["get","COLOR"],"#eee"]}}),l=new o.A({layers:[u],target:"map",view:new r.Ay({center:[0,0],zoom:1})}),g=new a.A({source:new s.A,map:l,style:{"stroke-color":"rgba(255, 255, 255, 0.7)","stroke-width":2}});let f;const p=function(e){const n=l.forEachFeatureAtPixel(e,(function(e){return e})),t=document.getElementById("info");t.innerHTML=n&&n.get("ECO_NAME")||"&nbsp;",n!==f&&(f&&g.getSource().removeFeature(f),n&&g.getSource().addFeature(n),f=n)};l.on("pointermove",(function(e){e.dragging||p(e.pixel)})),l.on("click",(function(e){p(e.pixel)}))}},function(e){var n;n=77845,e(e.s=n)}]);
+import { Mn as Map, bn as VectorLayer, dn as VectorSource, or as View, q as VectorImageLayer, rn as GeoJSON } from "./common.js";
+//#region examples/image-vector-layer.js
+var map = new Map({
+	layers: [new VectorImageLayer({
+		background: "#1a2b39",
+		imageRatio: 2,
+		source: new VectorSource({
+			url: "https://openlayers.org/data/vector/ecoregions.json",
+			format: new GeoJSON()
+		}),
+		style: { "fill-color": [
+			"string",
+			["get", "COLOR"],
+			"#eee"
+		] }
+	})],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 1
+	})
+});
+var featureOverlay = new VectorLayer({
+	source: new VectorSource(),
+	map,
+	style: {
+		"stroke-color": "rgba(255, 255, 255, 0.7)",
+		"stroke-width": 2
+	}
+});
+var highlight;
+var displayFeatureInfo = function(pixel) {
+	const feature = map.forEachFeatureAtPixel(pixel, function(feature) {
+		return feature;
+	});
+	const info = document.getElementById("info");
+	if (feature) info.innerHTML = feature.get("ECO_NAME") || "&nbsp;";
+	else info.innerHTML = "&nbsp;";
+	if (feature !== highlight) {
+		if (highlight) featureOverlay.getSource().removeFeature(highlight);
+		if (feature) featureOverlay.getSource().addFeature(feature);
+		highlight = feature;
+	}
+};
+map.on("pointermove", function(evt) {
+	if (evt.dragging) return;
+	displayFeatureInfo(evt.pixel);
+});
+map.on("click", function(evt) {
+	displayFeatureInfo(evt.pixel);
+});
+//#endregion
+
 //# sourceMappingURL=image-vector-layer.js.map

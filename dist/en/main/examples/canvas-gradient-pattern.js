@@ -1,2 +1,35 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6129],{50972:function(e,o,t){var r=t(41564),a=t(87240),n=t(30135),l=t(95907),d=t(23986),c=t(25231),s=t(29810),w=t(38276),p=t(44689),u=t(88292);const C=l.cr,i=document.createElement("canvas").getContext("2d").createLinearGradient(0,0,1024*C,0);i.addColorStop(0,"red"),i.addColorStop(1/6,"orange"),i.addColorStop(2/6,"yellow"),i.addColorStop(.5,"green"),i.addColorStop(4/6,"aqua"),i.addColorStop(5/6,"blue"),i.addColorStop(1,"purple");const k=new d.A({background:"white",source:new s.A({url:"data/kml/states.kml",format:new n.Ay({extractStyles:!1})}),style:new u.Ay({fill:new w.A({color:i}),stroke:new p.A({color:"#333",width:1})})});new r.A({layers:[k],target:"map",view:new a.Ay({center:(0,c.Rb)([-100,38.5]),zoom:4})})}},function(e){var o;o=50972,e(e.s=o)}]);
+import { Cr as fromLonLat, Fn as Stroke, Ln as Fill, Mn as Map, Pn as Style, Zr as DEVICE_PIXEL_RATIO, bn as VectorLayer, dn as VectorSource, or as View, tn as KML } from "./common.js";
+//#region examples/canvas-gradient-pattern.js
+var pixelRatio = DEVICE_PIXEL_RATIO;
+var gradient = document.createElement("canvas").getContext("2d").createLinearGradient(0, 0, 1024 * pixelRatio, 0);
+gradient.addColorStop(0, "red");
+gradient.addColorStop(1 / 6, "orange");
+gradient.addColorStop(2 / 6, "yellow");
+gradient.addColorStop(3 / 6, "green");
+gradient.addColorStop(4 / 6, "aqua");
+gradient.addColorStop(5 / 6, "blue");
+gradient.addColorStop(1, "purple");
+new Map({
+	layers: [new VectorLayer({
+		background: "white",
+		source: new VectorSource({
+			url: "data/kml/states.kml",
+			format: new KML({ extractStyles: false })
+		}),
+		style: new Style({
+			fill: new Fill({ color: gradient }),
+			stroke: new Stroke({
+				color: "#333",
+				width: 1
+			})
+		})
+	})],
+	target: "map",
+	view: new View({
+		center: fromLonLat([-100, 38.5]),
+		zoom: 4
+	})
+});
+//#endregion
+
 //# sourceMappingURL=canvas-gradient-pattern.js.map

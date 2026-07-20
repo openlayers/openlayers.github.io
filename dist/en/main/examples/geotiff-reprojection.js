@@ -1,2 +1,19 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6744],{61731:function(e,t,n){var s=n(41564),c=n(87240),o=n(96256),r=n(25231);const a=new(n(12430).A)({sources:[{url:"https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif"}]}),i=new s.A({target:"map",layers:[new o.A({source:a})],view:new c.Ay({center:[0,0],zoom:12})});a.getView().then((e=>{const t=i.getView(),n=(0,r.pd)(e.center,e.projection,t.getProjection());t.setCenter(n)}))}},function(e){var t;t=61731,e(e.s=t)}]);
+import { Ht as WebGLTileLayer, Mn as Map, Or as transform, Rt as GeoTIFFSource, or as View } from "./common.js";
+//#region examples/geotiff-reprojection.js
+var source = new GeoTIFFSource({ sources: [{ url: "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif" }] });
+var map = new Map({
+	target: "map",
+	layers: [new WebGLTileLayer({ source })],
+	view: new View({
+		center: [0, 0],
+		zoom: 12
+	})
+});
+source.getView().then((sourceView) => {
+	const view = map.getView();
+	const center = transform(sourceView.center, sourceView.projection, view.getProjection());
+	view.setCenter(center);
+});
+//#endregion
+
 //# sourceMappingURL=geotiff-reprojection.js.map

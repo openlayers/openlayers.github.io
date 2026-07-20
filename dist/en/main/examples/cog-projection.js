@@ -1,2 +1,33 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1894],{89841:function(t,e,a){var r=a(4209),i=a(41564),n=a(96256),s=a(76582),o=a(12430),p=a(55238);(0,s.kz)(r.A);const c=new o.A({sources:[{url:"https://mikenunn.net/data/MiniScale_(std_with_grid)_R23.tif",nodata:0}],loadMissingProjection:!0});c.setAttributions("Contains OS data © Crown Copyright and database right "+(new Date).getFullYear());new i.A({target:"map",layers:[new n.A({source:new p.A({attributions:'<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',url:"https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",tileSize:512,maxZoom:20,crossOrigin:""}),style:{exposure:.2}}),new n.A({source:c,opacity:.7,style:{gamma:.7}})],view:c.getView()})}},function(t){var e;e=89841,t(t.s=e)}]);
+import { Bt as register, Ht as WebGLTileLayer, It as proj4, Mn as Map, Rt as GeoTIFFSource, wn as XYZ } from "./common.js";
+//#region examples/cog-projection.js
+var attributions = "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>";
+register(proj4);
+var cogSource = new GeoTIFFSource({
+	sources: [{
+		url: "https://mikenunn.net/data/MiniScale_(std_with_grid)_R23.tif",
+		nodata: 0
+	}],
+	loadMissingProjection: true
+});
+cogSource.setAttributions("Contains OS data © Crown Copyright and database right " + (/* @__PURE__ */ new Date()).getFullYear());
+new Map({
+	target: "map",
+	layers: [new WebGLTileLayer({
+		source: new XYZ({
+			attributions,
+			url: "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+			tileSize: 512,
+			maxZoom: 20,
+			crossOrigin: ""
+		}),
+		style: { exposure: .2 }
+	}), new WebGLTileLayer({
+		source: cogSource,
+		opacity: .7,
+		style: { gamma: .7 }
+	})],
+	view: cogSource.getView()
+});
+//#endregion
+
 //# sourceMappingURL=cog-projection.js.map

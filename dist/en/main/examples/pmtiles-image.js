@@ -1,2 +1,38 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7949],{34520:function(e,t,a){var n=a(26947),r=a(41564),o=a(87240),s=a(96256),c=a(25231),i=a(15264);(0,c.n0)();const p=new n.HC("https://pmtiles.io/stamen_toner(raster)CC-BY+ODbL_z3.pmtiles");const w=new i.A({async loader(e,t,a,{signal:n}){const r=await p.getZxy(e,t,a,n),o=new Blob([r.data]),s=URL.createObjectURL(o),c=await function(e){return new Promise(((t,a)=>{const n=new Image;n.addEventListener("load",(()=>t(n))),n.addEventListener("error",(()=>a(new Error("load failed")))),n.src=e}))}(s);return URL.revokeObjectURL(s),c},attributions:'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'});new r.A({layers:[new s.A({source:w})],target:"map",view:new o.Ay({center:[0,0],zoom:2,maxZoom:4})})}},function(e){var t;t=34520,e(e.s=t)}]);
+import { Ar as useGeographic, Ht as WebGLTileLayer, Mn as Map, S as w, an as ImageTileSource, or as View } from "./common.js";
+//#region examples/pmtiles-image.js
+useGeographic();
+var tiles = new w("https://pmtiles.io/stamen_toner(raster)CC-BY+ODbL_z3.pmtiles");
+/**
+* @param {string} src The image source URL.
+* @return {Promise<HTMLImageElement>} Resolves with the loaded image.
+*/
+function loadImage(src) {
+	return new Promise((resolve, reject) => {
+		const img = new Image();
+		img.addEventListener("load", () => resolve(img));
+		img.addEventListener("error", () => reject(/* @__PURE__ */ new Error("load failed")));
+		img.src = src;
+	});
+}
+new Map({
+	layers: [new WebGLTileLayer({ source: new ImageTileSource({
+		async loader(z, x, y, { signal }) {
+			const response = await tiles.getZxy(z, x, y, signal);
+			const blob = new Blob([response.data]);
+			const src = URL.createObjectURL(blob);
+			const image = await loadImage(src);
+			URL.revokeObjectURL(src);
+			return image;
+		},
+		attributions: "Map tiles by <a href=\"http://stamen.com\">Stamen Design</a>, under <a href=\"http://creativecommons.org/licenses/by/4.0\">CC BY 4.0</a>. Data by <a href=\"http://openstreetmap.org\">OpenStreetMap</a>, under <a href=\"http://www.openstreetmap.org/copyright\">ODbL</a>."
+	}) })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2,
+		maxZoom: 4
+	})
+});
+//#endregion
+
 //# sourceMappingURL=pmtiles-image.js.map

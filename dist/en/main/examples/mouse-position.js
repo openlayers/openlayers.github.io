@@ -1,2 +1,27 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1080],{64915:function(e,t,n){var o=n(41564),c=n(87240),s=n(8841),a=n(76825),r=n(61341),i=n(12185),u=n(28e3);const m=new s.A({coordinateFormat:(0,r.z)(4),projection:"EPSG:4326",className:"custom-mouse-position",target:document.getElementById("mouse-position")});new o.A({controls:(0,a.N)().extend([m]),layers:[new i.A({source:new u.A})],target:"map",view:new c.Ay({center:[0,0],zoom:2})});document.getElementById("projection").addEventListener("change",(function(e){m.setProjection(e.target.value)}));document.getElementById("precision").addEventListener("change",(function(e){const t=(0,r.z)(e.target.valueAsNumber);m.setCoordinateFormat(t)}))}},function(e){var t;t=64915,e(e.s=t)}]);
+import { Cn as OSM, Mn as Map, Rr as createStringXY, jn as TileLayer, or as View, rr as defaults, vt as MousePosition } from "./common.js";
+//#region examples/mouse-position.js
+var mousePositionControl = new MousePosition({
+	coordinateFormat: createStringXY(4),
+	projection: "EPSG:4326",
+	className: "custom-mouse-position",
+	target: document.getElementById("mouse-position")
+});
+new Map({
+	controls: defaults().extend([mousePositionControl]),
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+document.getElementById("projection").addEventListener("change", function(event) {
+	mousePositionControl.setProjection(event.target.value);
+});
+document.getElementById("precision").addEventListener("change", function(event) {
+	const format = createStringXY(event.target.valueAsNumber);
+	mousePositionControl.setCoordinateFormat(format);
+});
+//#endregion
+
 //# sourceMappingURL=mouse-position.js.map

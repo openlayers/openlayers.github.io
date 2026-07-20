@@ -1,2 +1,16 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9835],{86686:function(e,n,r){var t=r(41564),a=r(87240),c=r(39709),o=r(12185),s=r(23986),u=r(28e3),w=r(29810);const A=new o.A({source:new u.A}),f=(new c.A).readFeature("POLYGON((10.689 -25.092, 34.595 -20.170, 38.814 -35.639, 13.502 -39.155, 10.689 -25.092))",{dataProjection:"EPSG:4326",featureProjection:"EPSG:3857"}),i=new s.A({source:new w.A({features:[f]})});new t.A({layers:[A,i],target:"map",view:new a.Ay({center:[2952104.0199,-3277504.823],zoom:4})})}},function(e){var n;n=86686,e(e.s=n)}]);
+import { B as WKT, Cn as OSM, Mn as Map, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View } from "./common.js";
+//#region examples/wkt.js
+new Map({
+	layers: [new TileLayer({ source: new OSM() }), new VectorLayer({ source: new VectorSource({ features: [new WKT().readFeature("POLYGON((10.689 -25.092, 34.595 -20.170, 38.814 -35.639, 13.502 -39.155, 10.689 -25.092))", {
+		dataProjection: "EPSG:4326",
+		featureProjection: "EPSG:3857"
+	})] }) })],
+	target: "map",
+	view: new View({
+		center: [2952104.0199, -3277504.823],
+		zoom: 4
+	})
+});
+//#endregion
+
 //# sourceMappingURL=wkt.js.map

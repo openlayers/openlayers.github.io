@@ -1,2 +1,99 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9025],{80972:function(e,t,r){var s=r(41564),n=r(87240),o=r(10572),a=r(9444),c=r(74676),i=r(68266),u=r(35947),d=r(12185),l=r(23986),p=r(27542),f=r(25231),w=r(15264),m=r(29810),g=r(10135);const h="https://sampleserver6.arcgisonline.com/arcgis/rest/services/Wildfire/FeatureServer/",y=new o.A,v=new m.A({loader:async(e,t,r)=>{const s=h+"2/query/?f=json&returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry="+encodeURIComponent('{"xmin":'+e[0]+',"ymin":'+e[1]+',"xmax":'+e[2]+',"ymax":'+e[3]+',"spatialReference":{"wkid":102100}}')+"&geometryType=esriGeometryEnvelope&inSR=102100&outFields=*&outSR=102100",n=await fetch(s),o=await n.json();if(o.error)throw alert(o.error.message+"\n"+o.error.details.join("\n")),new Error(o.error.message);return y.readFeatures(o,{featureProjection:r})},strategy:(0,p.Vs)((0,g.EN)({tileSize:512}))}),A=new l.A({source:v}),R=new d.A({source:new w.A({attributions:'Tiles © <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>',url:"https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"})}),j=new a.Ay({source:v,type:"Polygon"}),S=new i.A;S.setActive(!1);const b=S.getFeatures(),F=new c.A({features:b});F.setActive(!1);const I=new s.A({interactions:(0,u.N)().extend([j,S,F]),layers:[R,A],target:document.getElementById("map"),view:new n.Ay({center:(0,f.Rb)([-110.875,37.345]),zoom:5})}),P=document.getElementById("type");P.onchange=function(){j.setActive("DRAW"===P.value),S.setActive("MODIFY"===P.value),F.setActive("MODIFY"===P.value)};const x={};b.on("add",(function(e){e.element.on("change",(function(e){x[e.target.get("objectid")]=!0}))})),b.on("remove",(function(e){const t=e.element,r=t.get("objectid");if(!0===x[r]){const e="["+y.writeFeature(t,{featureProjection:I.getView().getProjection()})+"]";fetch(h+"2/updateFeatures",{method:"POST",body:new URLSearchParams({f:"json",features:e}),headers:{"Content-Type":"application/x-www-form-urlencoded"}}).then((e=>e.json())).then((e=>{const t="string"==typeof e?JSON.parse(e):e;if(t.updateResults&&t.updateResults.length>0)if(!0!==t.updateResults[0].success){const e=t.updateResults[0].error;alert(e.description+" ("+e.code+")")}else delete x[r]}))}})),j.on("drawend",(function(e){const t=e.feature,r="["+y.writeFeature(t,{featureProjection:I.getView().getProjection()})+"]";fetch(h+"2/addFeatures",{method:"POST",body:new URLSearchParams({f:"json",features:r}),headers:{"Content-Type":"application/x-www-form-urlencoded"}}).then((e=>e.json())).then((e=>{const r="string"==typeof e?JSON.parse(e):e;if(r.addResults&&r.addResults.length>0)if(!0===r.addResults[0].success)t.set("objectid",r.addResults[0].objectId);else{const e=r.addResults[0].error;alert(e.description+" ("+e.code+")")}}))}))}},function(e){var t;t=80972,e(e.s=t)}]);
+import { Cr as fromLonLat, Dn as createXYZ, G as Modify, Gt as Draw, Mn as Map, Wn as defaults, an as ImageTileSource, bn as VectorLayer, dn as VectorSource, jn as TileLayer, m as EsriJSON, nn as Select, or as View, vn as tile } from "./common.js";
+//#region examples/vector-esri-edit.js
+var esrijsonFormat = new EsriJSON();
+var vectorSource = new VectorSource({
+	loader: async (extent, resolution, projection) => {
+		const url = "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Wildfire/FeatureServer/2/query/?f=json&returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry=" + encodeURIComponent("{\"xmin\":" + extent[0] + ",\"ymin\":" + extent[1] + ",\"xmax\":" + extent[2] + ",\"ymax\":" + extent[3] + ",\"spatialReference\":{\"wkid\":102100}}") + "&geometryType=esriGeometryEnvelope&inSR=102100&outFields=*&outSR=102100";
+		const json = await (await fetch(url)).json();
+		if (json.error) {
+			alert(json.error.message + "\n" + json.error.details.join("\n"));
+			throw new Error(json.error.message);
+		} else return esrijsonFormat.readFeatures(json, { featureProjection: projection });
+	},
+	strategy: tile(createXYZ({ tileSize: 512 }))
+});
+var vector = new VectorLayer({ source: vectorSource });
+var raster = new TileLayer({ source: new ImageTileSource({
+	attributions: "Tiles © <a href=\"https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer\">ArcGIS</a>",
+	url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
+}) });
+var draw = new Draw({
+	source: vectorSource,
+	type: "Polygon"
+});
+var select = new Select();
+select.setActive(false);
+var selected = select.getFeatures();
+var modify = new Modify({ features: selected });
+modify.setActive(false);
+var map = new Map({
+	interactions: defaults().extend([
+		draw,
+		select,
+		modify
+	]),
+	layers: [raster, vector],
+	target: document.getElementById("map"),
+	view: new View({
+		center: fromLonLat([-110.875, 37.345]),
+		zoom: 5
+	})
+});
+var typeSelect = document.getElementById("type");
+/**
+* Let user change the interaction type.
+*/
+typeSelect.onchange = function() {
+	draw.setActive(typeSelect.value === "DRAW");
+	select.setActive(typeSelect.value === "MODIFY");
+	modify.setActive(typeSelect.value === "MODIFY");
+};
+var dirty = {};
+selected.on("add", function(evt) {
+	evt.element.on("change", function(evt) {
+		dirty[evt.target.get("objectid")] = true;
+	});
+});
+selected.on("remove", function(evt) {
+	const feature = evt.element;
+	const fid = feature.get("objectid");
+	if (dirty[fid] === true) {
+		const payload = "[" + esrijsonFormat.writeFeature(feature, { featureProjection: map.getView().getProjection() }) + "]";
+		fetch("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Wildfire/FeatureServer/2/updateFeatures", {
+			method: "POST",
+			body: new URLSearchParams({
+				f: "json",
+				features: payload
+			}),
+			headers: { "Content-Type": "application/x-www-form-urlencoded" }
+		}).then((response) => response.json()).then((data) => {
+			const result = typeof data === "string" ? JSON.parse(data) : data;
+			if (result.updateResults && result.updateResults.length > 0) if (result.updateResults[0].success !== true) {
+				const error = result.updateResults[0].error;
+				alert(error.description + " (" + error.code + ")");
+			} else delete dirty[fid];
+		});
+	}
+});
+draw.on("drawend", function(evt) {
+	const feature = evt.feature;
+	const payload = "[" + esrijsonFormat.writeFeature(feature, { featureProjection: map.getView().getProjection() }) + "]";
+	fetch("https://sampleserver6.arcgisonline.com/arcgis/rest/services/Wildfire/FeatureServer/2/addFeatures", {
+		method: "POST",
+		body: new URLSearchParams({
+			f: "json",
+			features: payload
+		}),
+		headers: { "Content-Type": "application/x-www-form-urlencoded" }
+	}).then((response) => response.json()).then((data) => {
+		const result = typeof data === "string" ? JSON.parse(data) : data;
+		if (result.addResults && result.addResults.length > 0) if (result.addResults[0].success === true) feature.set("objectid", result.addResults[0]["objectId"]);
+		else {
+			const error = result.addResults[0].error;
+			alert(error.description + " (" + error.code + ")");
+		}
+	});
+});
+//#endregion
+
 //# sourceMappingURL=vector-esri-edit.js.map

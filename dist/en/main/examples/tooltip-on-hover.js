@@ -1,2 +1,55 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2687],{78130:function(e,t,i){var n=i(41564),o=i(87240),l=i(49208),r=i(23986),s=i(29810);const c=new r.A({source:new s.A({url:"https://openlayers.org/data/vector/ecoregions.json",format:new l.A}),background:"white",style:{"fill-color":["string",["get","COLOR"],"#eeeeee"]}}),a=new n.A({layers:[c],target:"map",view:new o.Ay({center:[0,0],zoom:2})}),u=document.getElementById("info");let v;const d=function(e,t){const i=t.closest(".ol-control")?void 0:a.forEachFeatureAtPixel(e,(function(e){return e}));i?(u.style.left=e[0]+"px",u.style.top=e[1]+"px",i!==v&&(u.style.visibility="visible",u.innerText=i.get("ECO_NAME"))):u.style.visibility="hidden",v=i};a.on("pointermove",(function(e){if(e.dragging)return u.style.visibility="hidden",void(v=void 0);d(e.pixel,e.originalEvent.target)})),a.on("click",(function(e){d(e.pixel,e.originalEvent.target)})),a.getTargetElement().addEventListener("pointerleave",(function(){v=void 0,u.style.visibility="hidden"}))}},function(e){var t;t=78130,e(e.s=t)}]);
+import { Mn as Map, bn as VectorLayer, dn as VectorSource, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/tooltip-on-hover.js
+var map = new Map({
+	layers: [new VectorLayer({
+		source: new VectorSource({
+			url: "https://openlayers.org/data/vector/ecoregions.json",
+			format: new GeoJSON()
+		}),
+		background: "white",
+		style: { "fill-color": [
+			"string",
+			["get", "COLOR"],
+			"#eeeeee"
+		] }
+	})],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var info = document.getElementById("info");
+var currentFeature;
+var displayFeatureInfo = function(pixel, target) {
+	const feature = target.closest(".ol-control") ? void 0 : map.forEachFeatureAtPixel(pixel, function(feature) {
+		return feature;
+	});
+	if (feature) {
+		info.style.left = pixel[0] + "px";
+		info.style.top = pixel[1] + "px";
+		if (feature !== currentFeature) {
+			info.style.visibility = "visible";
+			info.innerText = feature.get("ECO_NAME");
+		}
+	} else info.style.visibility = "hidden";
+	currentFeature = feature;
+};
+map.on("pointermove", function(evt) {
+	if (evt.dragging) {
+		info.style.visibility = "hidden";
+		currentFeature = void 0;
+		return;
+	}
+	displayFeatureInfo(evt.pixel, evt.originalEvent.target);
+});
+map.on("click", function(evt) {
+	displayFeatureInfo(evt.pixel, evt.originalEvent.target);
+});
+map.getTargetElement().addEventListener("pointerleave", function() {
+	currentFeature = void 0;
+	info.style.visibility = "hidden";
+});
+//#endregion
+
 //# sourceMappingURL=tooltip-on-hover.js.map

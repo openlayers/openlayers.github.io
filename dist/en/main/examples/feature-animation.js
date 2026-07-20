@@ -1,2 +1,51 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3130],{46629:function(e,n,t){var r=t(51541),o=t(41564),a=t(69878),w=t(87240),c=t(426),s=t(40878),u=t(12185),i=t(23986),d=t(25231),f=t(66267),A=t(28e3),m=t(29810),l=t(21133),p=t(44689),v=t(88292);const h=new u.A({source:new A.A({wrapX:!1})}),y=new m.A({wrapX:!1}),k=new i.A({source:y}),b=new o.A({layers:[h,k],target:"map",view:new w.Ay({center:[0,0],zoom:1,multiWorld:!0})});y.on("addfeature",(function(e){!function(e){const n=Date.now(),t=e.getGeometry().clone(),r=h.on("postrender",(function(e){const o=e.frameState.time-n;if(o>=3e3)return void(0,a.e)(r);const w=(0,f.r2)(e),s=o/3e3,u=25*(0,c.vT)(s)+5,i=(0,c.vT)(1-s),d=new v.Ay({image:new l.A({radius:u,stroke:new p.A({color:"rgba(255, 0, 0, "+i+")",width:.25+i})})});w.setStyle(d),w.drawGeometry(t),b.render()}))}(e.feature)})),window.setInterval((function(){const e=360*Math.random()-180,n=170*Math.random()-85,t=new s.A((0,d.Rb)([e,n])),o=new r.A(t);y.addFeature(o)}),1e3)}},function(e){var n;n=46629,e(e.s=n)}]);
+import { $r as unByKey, Cn as OSM, Cr as fromLonLat, Fn as Stroke, Ir as easeOut, Mn as Map, Pn as Style, Rn as CircleStyle, bn as VectorLayer, ct as getVectorContext, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+//#region examples/feature-animation.js
+var tileLayer = new TileLayer({ source: new OSM({ wrapX: false }) });
+var source = new VectorSource({ wrapX: false });
+var map = new Map({
+	layers: [tileLayer, new VectorLayer({ source })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 1,
+		multiWorld: true
+	})
+});
+function addRandomFeature() {
+	const feature = new Feature(new Point(fromLonLat([Math.random() * 360 - 180, Math.random() * 170 - 85])));
+	source.addFeature(feature);
+}
+var duration = 3e3;
+function flash(feature) {
+	const start = Date.now();
+	const flashGeom = feature.getGeometry().clone();
+	const listenerKey = tileLayer.on("postrender", animate);
+	function animate(event) {
+		const elapsed = event.frameState.time - start;
+		if (elapsed >= duration) {
+			unByKey(listenerKey);
+			return;
+		}
+		const vectorContext = getVectorContext(event);
+		const elapsedRatio = elapsed / duration;
+		const radius = easeOut(elapsedRatio) * 25 + 5;
+		const opacity = easeOut(1 - elapsedRatio);
+		const style = new Style({ image: new CircleStyle({
+			radius,
+			stroke: new Stroke({
+				color: "rgba(255, 0, 0, " + opacity + ")",
+				width: .25 + opacity
+			})
+		}) });
+		vectorContext.setStyle(style);
+		vectorContext.drawGeometry(flashGeom);
+		map.render();
+	}
+}
+source.on("addfeature", function(e) {
+	flash(e.feature);
+});
+window.setInterval(addRandomFeature, 1e3);
+//#endregion
+
 //# sourceMappingURL=feature-animation.js.map

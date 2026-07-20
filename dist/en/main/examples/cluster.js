@@ -1,2 +1,73 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5623],{84202:function(e,t,n){var a=n(51541),s=n(41564),r=n(87240),i=n(16235),o=n(40878),c=n(12185),u=n(23986),l=n(28227),f=n(28e3),w=n(29810),d=n(21133),A=n(38276),g=n(44689),m=n(88292),p=n(59194);const h=document.getElementById("distance"),v=document.getElementById("min-distance"),y=new Array(2e4),k=45e5;for(let e=0;e<2e4;++e){const t=[2*k*Math.random()-k,2*k*Math.random()-k];y[e]=new a.A(new o.A(t))}const I=new w.A({features:y}),C=new l.A({distance:parseInt(h.value,10),minDistance:parseInt(v.value,10),source:I}),E={},x=new u.A({source:C,style:function(e){const t=e.get("features").length;let n=E[t];return n||(n=new m.Ay({image:new d.A({radius:10,stroke:new g.A({color:"#fff"}),fill:new A.A({color:"#3399CC"})}),text:new p.A({text:t.toString(),fill:new A.A({color:"#fff"})})}),E[t]=n),n}}),D=new c.A({source:new f.A}),M=new s.A({layers:[D,x],target:"map",view:new r.Ay({center:[0,0],zoom:2})});h.addEventListener("input",(function(){C.setDistance(parseInt(h.value,10))})),v.addEventListener("input",(function(){C.setMinDistance(parseInt(v.value,10))})),M.on("click",(e=>{x.getFeatures(e.pixel).then((e=>{if(e.length){const t=e[0].get("features");if(t.length>1){const e=(0,i.Tr)(t.map((e=>e.getGeometry().getCoordinates())));M.getView().fit(e,{duration:1e3,padding:[50,50,50,50]})}}}))}))}},function(e){var t;t=84202,e(e.s=t)}]);
+import { Cn as OSM, Fn as Stroke, Ln as Fill, Mn as Map, Nn as Text, Pn as Style, Rn as CircleStyle, Vr as boundingExtent, Wt as Cluster, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+//#region examples/cluster.js
+var distanceInput = document.getElementById("distance");
+var minDistanceInput = document.getElementById("min-distance");
+var count = 2e4;
+var features = new Array(count);
+var e = 45e5;
+for (let i = 0; i < count; ++i) features[i] = new Feature(new Point([2 * e * Math.random() - e, 2 * e * Math.random() - e]));
+var source = new VectorSource({ features });
+var clusterSource = new Cluster({
+	distance: parseInt(distanceInput.value, 10),
+	minDistance: parseInt(minDistanceInput.value, 10),
+	source
+});
+var styleCache = {};
+var clusters = new VectorLayer({
+	source: clusterSource,
+	style: function(feature) {
+		const size = feature.get("features").length;
+		let style = styleCache[size];
+		if (!style) {
+			style = new Style({
+				image: new CircleStyle({
+					radius: 10,
+					stroke: new Stroke({ color: "#fff" }),
+					fill: new Fill({ color: "#3399CC" })
+				}),
+				text: new Text({
+					text: size.toString(),
+					fill: new Fill({ color: "#fff" })
+				})
+			});
+			styleCache[size] = style;
+		}
+		return style;
+	}
+});
+var map = new Map({
+	layers: [new TileLayer({ source: new OSM() }), clusters],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+distanceInput.addEventListener("input", function() {
+	clusterSource.setDistance(parseInt(distanceInput.value, 10));
+});
+minDistanceInput.addEventListener("input", function() {
+	clusterSource.setMinDistance(parseInt(minDistanceInput.value, 10));
+});
+map.on("click", (e) => {
+	clusters.getFeatures(e.pixel).then((clickedFeatures) => {
+		if (clickedFeatures.length) {
+			const features = clickedFeatures[0].get("features");
+			if (features.length > 1) {
+				const extent = boundingExtent(features.map((r) => r.getGeometry().getCoordinates()));
+				map.getView().fit(extent, {
+					duration: 1e3,
+					padding: [
+						50,
+						50,
+						50,
+						50
+					]
+				});
+			}
+		}
+	});
+});
+//#endregion
+
 //# sourceMappingURL=cluster.js.map

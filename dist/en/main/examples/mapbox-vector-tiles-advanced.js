@@ -1,2 +1,31 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[353],{73436:function(e,t,r){var a=r(41564),o=r(87240),n=r(53815),s=r(88887),c=r(25231),p=r(98267),i=r(38276),b=r(75052),w=r(44689),l=r(88292),u=r(59194),h=r(45342);const m=[];for(let e=0;e<=8;++e)m.push(156543.03392804097/Math.pow(2,2*e));new a.A({layers:[new s.A({source:new p.A({attributions:'© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',format:new n.A,tileGrid:new h.A({extent:(0,c.Jt)("EPSG:3857").getExtent(),resolutions:m,tileSize:512}),tileUrlFunction:function(e){return"https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2t0cGdwMHVnMGdlbzMxbDhwazBic2xrNSJ9.WbcTL9uj8JPAsnT9mgb7oQ".replace("{z}",String(2*e[0]-1)).replace("{x}",String(e[1])).replace("{y}",String(e[2])).replace("{a-d}","abcd".substr(((e[1]<<e[0])+e[2])%4,1))}}),style:createMapboxStreetsV6Style(l.Ay,i.A,w.A,b.A,u.A)})],target:"map",view:new o.Ay({center:[0,0],minZoom:1,zoom:2})})}},function(e){var t;t=73436,e(e.s=t)}]);
+import { $t as VectorTileLayer, An as TileGrid, Fn as Stroke, In as Icon, Ln as Fill, Mn as Map, Nn as Text, Pn as Style, Zt as VectorTile, en as MVT, or as View, wr as get } from "./common.js";
+//#region examples/mapbox-vector-tiles-advanced.js
+var resolutions = [];
+for (let i = 0; i <= 8; ++i) resolutions.push(156543.03392804097 / Math.pow(2, i * 2));
+function tileUrlFunction(tileCoord) {
+	return "https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2t0cGdwMHVnMGdlbzMxbDhwazBic2xrNSJ9.WbcTL9uj8JPAsnT9mgb7oQ".replace("{z}", String(tileCoord[0] * 2 - 1)).replace("{x}", String(tileCoord[1])).replace("{y}", String(tileCoord[2])).replace("{a-d}", "abcd".substr(((tileCoord[1] << tileCoord[0]) + tileCoord[2]) % 4, 1));
+}
+new Map({
+	layers: [new VectorTileLayer({
+		source: new VectorTile({
+			attributions: "© <a href=\"https://www.mapbox.com/map-feedback/\">Mapbox</a> © <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap contributors</a>",
+			format: new MVT(),
+			tileGrid: new TileGrid({
+				extent: get("EPSG:3857").getExtent(),
+				resolutions,
+				tileSize: 512
+			}),
+			tileUrlFunction
+		}),
+		style: createMapboxStreetsV6Style(Style, Fill, Stroke, Icon, Text)
+	})],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		minZoom: 1,
+		zoom: 2
+	})
+});
+//#endregion
+
 //# sourceMappingURL=mapbox-vector-tiles-advanced.js.map

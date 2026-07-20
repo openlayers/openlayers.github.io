@@ -1,2 +1,42 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8691],{98614:function(e,n,t){var c=t(41564),o=t(87240),a=t(9444),r=t(12185),u=t(23986),s=t(28e3),d=t(29810);const w=new r.A({source:new s.A}),h=new d.A({wrapX:!1}),f=new u.A({source:h}),i=new c.A({layers:[w,f],target:"map",view:new o.Ay({center:[-11e6,46e5],zoom:4})}),l=document.getElementById("type"),m=document.getElementById("freehand");let p;function y(){"None"!==l.value&&(p=new a.Ay({source:h,type:l.value,freehand:m.checked}),i.addInteraction(p))}l.onchange=function(){i.removeInteraction(p),y()},m.onchange=function(){p&&p.setFreehand(m.checked)},y()}},function(e){var n;n=98614,e(e.s=n)}]);
+import { Cn as OSM, Gt as Draw, Mn as Map, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View } from "./common.js";
+//#region examples/draw-freehand.js
+var raster = new TileLayer({ source: new OSM() });
+var source = new VectorSource({ wrapX: false });
+var map = new Map({
+	layers: [raster, new VectorLayer({ source })],
+	target: "map",
+	view: new View({
+		center: [-11e6, 46e5],
+		zoom: 4
+	})
+});
+var typeSelect = document.getElementById("type");
+var freehandCheckbox = document.getElementById("freehand");
+var draw;
+function addInteraction() {
+	if (typeSelect.value !== "None") {
+		draw = new Draw({
+			source,
+			type: typeSelect.value,
+			freehand: freehandCheckbox.checked
+		});
+		map.addInteraction(draw);
+	}
+}
+/**
+* Handle change event.
+*/
+typeSelect.onchange = function() {
+	map.removeInteraction(draw);
+	addInteraction();
+};
+/**
+* Handle change event.
+*/
+freehandCheckbox.onchange = function() {
+	if (draw) draw.setFreehand(freehandCheckbox.checked);
+};
+addInteraction();
+//#endregion
+
 //# sourceMappingURL=draw-freehand.js.map

@@ -1,2 +1,34 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4110],{92201:function(e,n,a){var t=a(41564),s=a(87240),o=a(13413),r=a(76825),i=a(47085),c=a(12185),p=a(43438),h=a(2091),m=a(6848);const w=[new c.A({source:new m.A({attributions:'© <a href="https://shop.swisstopo.admin.ch/en/products/maps/national/lk1000"target="_blank">Pixelmap 1:1000000 / geo.admin.ch</a>',crossOrigin:"anonymous",params:{LAYERS:"ch.swisstopo.pixelkarte-farbe-pk1000.noscale",FORMAT:"image/jpeg"},url:"https://wms.geo.admin.ch/"})}),new i.A({source:new h.A({attributions:'© <a href="https://www.hydrodaten.admin.ch/en/notes-on-the-flood-alert-maps.html"target="_blank">Flood Alert / geo.admin.ch</a>',crossOrigin:"anonymous",params:{LAYERS:"ch.bafu.hydroweb-warnkarte_national"},serverType:"mapserver",url:"https://wms.geo.admin.ch/"})})],l=new p.A({code:"EPSG:21781",units:"m"});new t.A({controls:(0,r.N)().extend([new o.A]),layers:w,target:"map",view:new s.Ay({center:[66e4,19e4],projection:l,zoom:9})})}},function(e){var n;n=92201,e(e.s=n)}]);
+import { Ct as TileWMS, Mn as Map, Ot as ImageWMS, U as ScaleLine, jn as TileLayer, jr as Projection, or as View, rr as defaults, un as ImageLayer } from "./common.js";
+//#region examples/wms-no-proj.js
+var layers = [new TileLayer({ source: new TileWMS({
+	attributions: "© <a href=\"https://shop.swisstopo.admin.ch/en/products/maps/national/lk1000\"target=\"_blank\">Pixelmap 1:1000000 / geo.admin.ch</a>",
+	crossOrigin: "anonymous",
+	params: {
+		"LAYERS": "ch.swisstopo.pixelkarte-farbe-pk1000.noscale",
+		"FORMAT": "image/jpeg"
+	},
+	url: "https://wms.geo.admin.ch/"
+}) }), new ImageLayer({ source: new ImageWMS({
+	attributions: "© <a href=\"https://www.hydrodaten.admin.ch/en/notes-on-the-flood-alert-maps.html\"target=\"_blank\">Flood Alert / geo.admin.ch</a>",
+	crossOrigin: "anonymous",
+	params: { "LAYERS": "ch.bafu.hydroweb-warnkarte_national" },
+	serverType: "mapserver",
+	url: "https://wms.geo.admin.ch/"
+}) })];
+var projection = new Projection({
+	code: "EPSG:21781",
+	units: "m"
+});
+new Map({
+	controls: defaults().extend([new ScaleLine()]),
+	layers,
+	target: "map",
+	view: new View({
+		center: [66e4, 19e4],
+		projection,
+		zoom: 9
+	})
+});
+//#endregion
+
 //# sourceMappingURL=wms-no-proj.js.map

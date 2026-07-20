@@ -1,2 +1,84 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2204],{9508:function(e,t){function r(e){return String.fromCharCode.apply(null,new Uint8Array(e))}function n(e){return"NUMPY"===r(e.slice(0,6)).slice(1,6)}Object.defineProperty(t,"__esModule",{value:!0}),t.fromArrayBuffer=function(e){if(0===e.byteLength)return{};if(!n(e))throw new Error("Not a NumpyTile");var t,a=(u=e.slice(8,10),s=new DataView(u),c=s.getUint8(0),c|=s.getUint8(1)<<8),i=r(e.slice(10,10+a)),l=10+a,o=JSON.parse(i.toLowerCase().replace(/'/g,'"').replace(/\(/g,"[").replace(/\),/g,"]"));var u,s,c;if("|u1"===o.descr)t=new Uint8Array(e,l);else if("|i1"===o.descr)t=new Int8Array(e,l);else if("<u2"===o.descr)t=new Uint16Array(e,l);else if("<i2"===o.descr)t=new Int16Array(e,l);else if("<u4"===o.descr)t=new Uint32Array(e,l);else if("<i4"===o.descr)t=new Int32Array(e,l);else if("<f4"===o.descr)t=new Float32Array(e,l);else{if("<f8"!==o.descr)throw new Error("unknown numeric dtype");t=new Float64Array(e,l)}return{shape:o.shape,data:t}},t.isNumpyArr=n},90551:function(e,t,r){var n=r(9508),a=r(41564),i=r(87240),l=r(96256),o=r(25231),u=r(77779);const s=e=>["interpolate",["linear"],["band",e],["var","bMin"],0,["var","bMax"],1],c=3e3,d=18e3,f=new l.A({style:{color:["array",s(3),s(2),s(1),["band",5]],variables:{bMin:c,bMax:d}},source:new u.A({loader:function(e,t,r){const a=`https://titiler.xyz/cog/tiles/WebMercatorQuad/${e}/${t}/${r}?format=npy&url=${encodeURIComponent("https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2_analytic.tif")}`;return fetch(a).then((e=>e.arrayBuffer())).then((e=>n.fromArrayBuffer(e))).then((e=>{const t=new Float32Array(327680),r=65536;for(let n=0;n<256;n++)for(let a=0;a<256;a++){const i=n+256*a;t[5*i+0]=e.data[256*a+n],t[5*i+1]=e.data[r+256*a+n],t[5*i+2]=e.data[131072+256*a+n],t[5*i+3]=e.data[196608+256*a+n],t[5*i+4]=e.data[262144+256*a+n]>0?1:0}return t}))},bandCount:5})}),p=(new a.A({target:"map",layers:[f],view:new i.Ay({center:(0,o.Rb)([172.933,1.3567]),zoom:15})}),document.getElementById("input-min")),y=document.getElementById("input-max"),g=document.getElementById("output-min"),w=document.getElementById("output-max");p.addEventListener("input",(e=>{f.updateStyleVariables({bMin:parseFloat(e.target.value),bMax:parseFloat(y.value)}),g.innerText=e.target.value})),y.addEventListener("input",(e=>{f.updateStyleVariables({bMin:parseFloat(p.value),bMax:parseFloat(e.target.value)}),w.innerText=e.target.value})),p.value=String(c),y.value=String(d),g.innerText=String(c),w.innerText=String(d)}},function(e){var t;t=90551,e(e.s=t)}]);
+import { r as __toESM } from "./rolldown-runtime.js";
+import { Cr as fromLonLat, Ht as WebGLTileLayer, Mn as Map, T as require_ol_numpytiles, on as DataTileSource, or as View } from "./common.js";
+//#region examples/numpytile.js
+var import_ol_numpytiles = /* @__PURE__ */ __toESM(require_ol_numpytiles(), 1);
+var COG = "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2_analytic.tif";
+function numpyTileLoader(z, x, y) {
+	const url = `https://titiler.xyz/cog/tiles/WebMercatorQuad/${z}/${x}/${y}?format=npy&url=${encodeURIComponent(COG)}`;
+	return fetch(url).then((r) => r.arrayBuffer()).then((buffer) => import_ol_numpytiles.fromArrayBuffer(buffer)).then((numpyData) => {
+		const dataTile = new Float32Array(256 * 256 * 5);
+		const bandSize = 256 * 256;
+		for (let x = 0; x < 256; x++) for (let y = 0; y < 256; y++) {
+			const px = x + y * 256;
+			dataTile[px * 5 + 0] = numpyData.data[y * 256 + x];
+			dataTile[px * 5 + 1] = numpyData.data[bandSize + y * 256 + x];
+			dataTile[px * 5 + 2] = numpyData.data[bandSize * 2 + y * 256 + x];
+			dataTile[px * 5 + 3] = numpyData.data[bandSize * 3 + y * 256 + x];
+			dataTile[px * 5 + 4] = numpyData.data[bandSize * 4 + y * 256 + x] > 0 ? 1 : 0;
+		}
+		return dataTile;
+	});
+}
+var interpolateBand = (bandIdx) => [
+	"interpolate",
+	["linear"],
+	["band", bandIdx],
+	["var", "bMin"],
+	0,
+	["var", "bMax"],
+	1
+];
+var initialMin = 3e3;
+var initialMax = 18e3;
+var numpyLayer = new WebGLTileLayer({
+	style: {
+		color: [
+			"array",
+			interpolateBand(3),
+			interpolateBand(2),
+			interpolateBand(1),
+			["band", 5]
+		],
+		variables: {
+			"bMin": initialMin,
+			"bMax": initialMax
+		}
+	},
+	source: new DataTileSource({
+		loader: numpyTileLoader,
+		bandCount: 5
+	})
+});
+new Map({
+	target: "map",
+	layers: [numpyLayer],
+	view: new View({
+		center: fromLonLat([172.933, 1.3567]),
+		zoom: 15
+	})
+});
+var inputMin = document.getElementById("input-min");
+var inputMax = document.getElementById("input-max");
+var outputMin = document.getElementById("output-min");
+var outputMax = document.getElementById("output-max");
+inputMin.addEventListener("input", (evt) => {
+	numpyLayer.updateStyleVariables({
+		"bMin": parseFloat(evt.target.value),
+		"bMax": parseFloat(inputMax.value)
+	});
+	outputMin.innerText = evt.target.value;
+});
+inputMax.addEventListener("input", (evt) => {
+	numpyLayer.updateStyleVariables({
+		"bMin": parseFloat(inputMin.value),
+		"bMax": parseFloat(evt.target.value)
+	});
+	outputMax.innerText = evt.target.value;
+});
+inputMin.value = String(initialMin);
+inputMax.value = String(initialMax);
+outputMin.innerText = String(initialMin);
+outputMax.innerText = String(initialMax);
+//#endregion
+
 //# sourceMappingURL=numpytile.js.map

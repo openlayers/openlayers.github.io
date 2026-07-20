@@ -1,2 +1,45 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4865],{34300:function(e,t,n){var o=n(41564),r=n(87240),a=n(30135),i=n(12185),c=n(23986),l=n(15264),p=n(29810);const s=new i.A({source:new l.A({attributions:'<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',url:"https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",tileSize:512,maxZoom:20})}),u=new c.A({source:new p.A({url:"data/kml/2012-02-10.kml",format:new a.Ay})}),m=new o.A({layers:[s,u],target:document.getElementById("map"),view:new r.Ay({center:[876970.8463461736,5859807.853963373],projection:"EPSG:3857",zoom:10})}),g=function(e){const t=[];if(m.forEachFeatureAtPixel(e,(function(e){t.push(e)})),t.length>0){const e=[];let n,o;for(n=0,o=t.length;n<o;++n)e.push(t[n].get("name"));document.getElementById("info").innerHTML=e.join(", ")||"(unknown)",m.getTargetElement().style.cursor="pointer"}else document.getElementById("info").innerHTML="&nbsp;",m.getTargetElement().style.cursor=""};m.on("pointermove",(function(e){e.dragging||g(e.pixel)})),m.on("click",(function(e){g(e.pixel)}))}},function(e){var t;t=34300,e(e.s=t)}]);
+import { Mn as Map, an as ImageTileSource, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View, tn as KML } from "./common.js";
+//#region examples/kml.js
+var map = new Map({
+	layers: [new TileLayer({ source: new ImageTileSource({
+		attributions: "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+		url: "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+		tileSize: 512,
+		maxZoom: 20
+	}) }), new VectorLayer({ source: new VectorSource({
+		url: "data/kml/2012-02-10.kml",
+		format: new KML()
+	}) })],
+	target: document.getElementById("map"),
+	view: new View({
+		center: [876970.8463461736, 5859807.853963373],
+		projection: "EPSG:3857",
+		zoom: 10
+	})
+});
+var displayFeatureInfo = function(pixel) {
+	const features = [];
+	map.forEachFeatureAtPixel(pixel, function(feature) {
+		features.push(feature);
+	});
+	if (features.length > 0) {
+		const info = [];
+		let i, ii;
+		for (i = 0, ii = features.length; i < ii; ++i) info.push(features[i].get("name"));
+		document.getElementById("info").innerHTML = info.join(", ") || "(unknown)";
+		map.getTargetElement().style.cursor = "pointer";
+	} else {
+		document.getElementById("info").innerHTML = "&nbsp;";
+		map.getTargetElement().style.cursor = "";
+	}
+};
+map.on("pointermove", function(evt) {
+	if (evt.dragging) return;
+	displayFeatureInfo(evt.pixel);
+});
+map.on("click", function(evt) {
+	displayFeatureInfo(evt.pixel);
+});
+//#endregion
+
 //# sourceMappingURL=kml.js.map

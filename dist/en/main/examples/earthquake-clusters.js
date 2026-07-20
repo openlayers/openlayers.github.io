@@ -1,2 +1,115 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8036],{63071:function(e,t,n){var r=n(41564),o=n(87240),s=n(16235),a=n(30135),l=n(68266),i=n(35947),u=n(12185),c=n(23986),g=n(28227),w=n(9226),f=n(29810),A=n(21133),m=n(38276),y=n(28656),h=n(44689),d=n(88292),k=n(59194);const p=new m.A({color:"rgba(255, 153, 0, 0.8)"}),b=new h.A({color:"rgba(255, 204, 0, 0.2)",width:1}),x=new m.A({color:"#fff"}),v=new h.A({color:"rgba(0, 0, 0, 0.6)",width:3}),M=new m.A({color:"rgba(255, 255, 255, 0.01)"});function S(e){const t=e.get("name"),n=5+20*(parseFloat(t.substr(2))-5);return new d.Ay({geometry:e.getGeometry(),image:new y.A({radius:n,radius2:3,points:5,angle:Math.PI,fill:p,stroke:b})})}let G,_=null;let q;_=new c.A({source:new g.A({distance:40,source:new f.A({url:"data/kml/2012_Earthquakes_Mag5.kml",format:new a.Ay({extractStyles:!1})})}),style:function(e,t){let n;t!=q&&(!function(e){G=0;const t=_.getSource().getFeatures();let n,r;for(let o=t.length-1;o>=0;--o){n=t[o];const a=n.get("features"),l=(0,s.S5)();let i,u;for(i=0,u=a.length;i<u;++i)(0,s.X$)(l,a[i].getGeometry().getExtent());G=Math.max(G,u),r=.25*((0,s.RG)(l)+(0,s.Oq)(l))/e,n.set("radius",r)}}(t),q=t);const r=e.get("features").length;if(r>1)n=new d.Ay({image:new A.A({radius:e.get("radius"),fill:new m.A({color:[255,153,0,Math.min(.8,.4+r/G)]})}),text:new k.A({text:r.toString(),fill:x,stroke:v})});else{n=S(e.get("features")[0])}return n}});const C=new u.A({source:new w.A({layer:"stamen_toner"})});new r.A({layers:[C,_],interactions:(0,i.N)().extend([new l.A({condition:function(e){return"pointermove"==e.type||"singleclick"==e.type},style:function(e){const t=[new d.Ay({image:new A.A({radius:e.get("radius"),fill:M})})],n=e.get("features");let r;for(let e=n.length-1;e>=0;--e)r=n[e],t.push(S(r));return t}})]),target:"map",view:new o.Ay({center:[0,0],zoom:2})})}},function(e){var t;t=63071,e(e.s=t)}]);
+import { Fn as Stroke, Hr as createEmpty, Kr as getHeight, Ln as Fill, Mn as Map, Nn as Text, Pn as Style, Rn as CircleStyle, Ur as extend, Wn as defaults, Wt as Cluster, Yr as getWidth, bn as VectorLayer, dn as VectorSource, jn as TileLayer, nn as Select, or as View, tn as KML, yn as StadiaMaps, zn as RegularShape } from "./common.js";
+//#region examples/earthquake-clusters.js
+var earthquakeFill = new Fill({ color: "rgba(255, 153, 0, 0.8)" });
+var earthquakeStroke = new Stroke({
+	color: "rgba(255, 204, 0, 0.2)",
+	width: 1
+});
+var textFill = new Fill({ color: "#fff" });
+var textStroke = new Stroke({
+	color: "rgba(0, 0, 0, 0.6)",
+	width: 3
+});
+var invisibleFill = new Fill({ color: "rgba(255, 255, 255, 0.01)" });
+function createEarthquakeStyle(feature) {
+	const name = feature.get("name");
+	const radius = 5 + 20 * (parseFloat(name.substr(2)) - 5);
+	return new Style({
+		geometry: feature.getGeometry(),
+		image: new RegularShape({
+			radius,
+			radius2: 3,
+			points: 5,
+			angle: Math.PI,
+			fill: earthquakeFill,
+			stroke: earthquakeStroke
+		})
+	});
+}
+var maxFeatureCount;
+var vector = null;
+var calculateClusterInfo = function(resolution) {
+	maxFeatureCount = 0;
+	const features = vector.getSource().getFeatures();
+	let feature, radius;
+	for (let i = features.length - 1; i >= 0; --i) {
+		feature = features[i];
+		const originalFeatures = feature.get("features");
+		const extent = createEmpty();
+		let j, jj;
+		for (j = 0, jj = originalFeatures.length; j < jj; ++j) extend(extent, originalFeatures[j].getGeometry().getExtent());
+		maxFeatureCount = Math.max(maxFeatureCount, jj);
+		radius = .25 * (getWidth(extent) + getHeight(extent)) / resolution;
+		feature.set("radius", radius);
+	}
+};
+var currentResolution;
+function styleFunction(feature, resolution) {
+	if (resolution != currentResolution) {
+		calculateClusterInfo(resolution);
+		currentResolution = resolution;
+	}
+	let style;
+	const size = feature.get("features").length;
+	if (size > 1) style = new Style({
+		image: new CircleStyle({
+			radius: feature.get("radius"),
+			fill: new Fill({ color: [
+				255,
+				153,
+				0,
+				Math.min(.8, .4 + size / maxFeatureCount)
+			] })
+		}),
+		text: new Text({
+			text: size.toString(),
+			fill: textFill,
+			stroke: textStroke
+		})
+	});
+	else {
+		const originalFeature = feature.get("features")[0];
+		style = createEarthquakeStyle(originalFeature);
+	}
+	return style;
+}
+function selectStyleFunction(feature) {
+	const styles = [new Style({ image: new CircleStyle({
+		radius: feature.get("radius"),
+		fill: invisibleFill
+	}) })];
+	const originalFeatures = feature.get("features");
+	let originalFeature;
+	for (let i = originalFeatures.length - 1; i >= 0; --i) {
+		originalFeature = originalFeatures[i];
+		styles.push(createEarthquakeStyle(originalFeature));
+	}
+	return styles;
+}
+vector = new VectorLayer({
+	source: new Cluster({
+		distance: 40,
+		source: new VectorSource({
+			url: "data/kml/2012_Earthquakes_Mag5.kml",
+			format: new KML({ extractStyles: false })
+		})
+	}),
+	style: styleFunction
+});
+new Map({
+	layers: [new TileLayer({ source: new StadiaMaps({ layer: "stamen_toner" }) }), vector],
+	interactions: defaults().extend([new Select({
+		condition: function(evt) {
+			return evt.type == "pointermove" || evt.type == "singleclick";
+		},
+		style: selectStyleFunction
+	})]),
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+//#endregion
+
 //# sourceMappingURL=earthquake-clusters.js.map

@@ -1,2 +1,22 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9910],{93889:function(e,n,t){var o=t(76661),c=t(41564),s=t(87240),i=t(12185),r=t(28e3);const a=new s.Ay({center:[0,0],zoom:2}),u=(new c.A({layers:[new i.A({source:new r.A})],target:"map",view:a}),new o.A({projection:a.getProjection(),tracking:!0}));u.once("change:position",(function(){a.setCenter(u.getPosition()),a.setResolution(2.388657133911758)}))}},function(e){var n;n=93889,e(e.s=n)}]);
+import { Cn as OSM, Mn as Map, jn as TileLayer, or as View, ut as Geolocation } from "./common.js";
+//#region examples/mobile-full-screen.js
+var view = new View({
+	center: [0, 0],
+	zoom: 2
+});
+new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view
+});
+var geolocation = new Geolocation({
+	projection: view.getProjection(),
+	tracking: true
+});
+geolocation.once("change:position", function() {
+	view.setCenter(geolocation.getPosition());
+	view.setResolution(2.388657133911758);
+});
+//#endregion
+
 //# sourceMappingURL=mobile-full-screen.js.map

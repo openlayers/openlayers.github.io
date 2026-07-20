@@ -1,2 +1,18 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3722],{82325:function(e,n,s){var w=s(51541),r=s(41564),u=s(87240),a=s(30470),c=s(12185),t=s(23986),A=s(28e3),o=s(29810);new r.A({layers:[new c.A({source:new A.A}),new t.A({source:new o.A({features:[new w.A((0,a.VY)([-1e6,5e6,3e6,7e6]))]})})],target:"map",view:new u.Ay({center:[1e6,6e6],zoom:4})})}},function(e){var n;n=82325,e(e.s=n)}]);
+import { Cn as OSM, Mn as Map, bn as VectorLayer, dn as VectorSource, jn as TileLayer, mr as fromExtent, or as View, xn as Feature } from "./common.js";
+//#region examples/rectangle.js
+new Map({
+	layers: [new TileLayer({ source: new OSM() }), new VectorLayer({ source: new VectorSource({ features: [new Feature(fromExtent([
+		-1e6,
+		5e6,
+		3e6,
+		7e6
+	]))] }) })],
+	target: "map",
+	view: new View({
+		center: [1e6, 6e6],
+		zoom: 4
+	})
+});
+//#endregion
+
 //# sourceMappingURL=rectangle.js.map

@@ -1,2 +1,54 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7645],{67048:function(e,n,t){var o=t(41564),r=t(87240),c=t(49208),s=t(23986),i=t(29810);const a=new s.A({background:"#1a2b39",source:new i.A({url:"https://openlayers.org/data/vector/ecoregions.json",format:new c.A}),style:{"fill-color":["string",["get","COLOR_NNH"],"#eee"]}}),u=new o.A({layers:[a],target:"map",view:new r.Ay({center:[0,0],zoom:1})}),g=new s.A({source:new i.A,map:u,style:{"stroke-color":"rgba(255, 255, 255, 0.7)","stroke-width":2}});let l;const f=function(e){a.getFeatures(e).then((function(e){const n=e.length?e[0]:void 0,t=document.getElementById("info");e.length?t.innerHTML=n.get("ECO_NAME")+": "+n.get("NNH_NAME"):t.innerHTML="&nbsp;",n!==l&&(l&&g.getSource().removeFeature(l),n&&g.getSource().addFeature(n),l=n)}))};u.on("pointermove",(function(e){e.dragging||f(e.pixel)})),u.on("click",(function(e){f(e.pixel)}))}},function(e){var n;n=67048,e(e.s=n)}]);
+import { Mn as Map, bn as VectorLayer, dn as VectorSource, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/hitdetect-vector.js
+var vectorLayer = new VectorLayer({
+	background: "#1a2b39",
+	source: new VectorSource({
+		url: "https://openlayers.org/data/vector/ecoregions.json",
+		format: new GeoJSON()
+	}),
+	style: { "fill-color": [
+		"string",
+		["get", "COLOR_NNH"],
+		"#eee"
+	] }
+});
+var map = new Map({
+	layers: [vectorLayer],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 1
+	})
+});
+var featureOverlay = new VectorLayer({
+	source: new VectorSource(),
+	map,
+	style: {
+		"stroke-color": "rgba(255, 255, 255, 0.7)",
+		"stroke-width": 2
+	}
+});
+var highlight;
+var displayFeatureInfo = function(pixel) {
+	vectorLayer.getFeatures(pixel).then(function(features) {
+		const feature = features.length ? features[0] : void 0;
+		const info = document.getElementById("info");
+		if (features.length) info.innerHTML = feature.get("ECO_NAME") + ": " + feature.get("NNH_NAME");
+		else info.innerHTML = "&nbsp;";
+		if (feature !== highlight) {
+			if (highlight) featureOverlay.getSource().removeFeature(highlight);
+			if (feature) featureOverlay.getSource().addFeature(feature);
+			highlight = feature;
+		}
+	});
+};
+map.on("pointermove", function(evt) {
+	if (evt.dragging) return;
+	displayFeatureInfo(evt.pixel);
+});
+map.on("click", function(evt) {
+	displayFeatureInfo(evt.pixel);
+});
+//#endregion
+
 //# sourceMappingURL=hitdetect-vector.js.map

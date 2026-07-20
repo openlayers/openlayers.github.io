@@ -1,2 +1,42 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6098],{37021:function(e,t,n){var o=n(41564),r=n(87240),a=n(16235),s=n(49208),i=n(12185),p=n(23986),l=n(15264),c=n(29810),w=n(38276),u=n(88292),m=n(59194);const g=new u.Ay({text:new m.A({font:'bold 11px "Open Sans", "Arial Unicode MS", "sans-serif"',placement:"line",fill:new w.A({color:"white"})})}),A=[1817379,6139595,1827851,6143616];new o.A({layers:[new i.A({source:new l.A({attributions:'<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',url:"https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",tileSize:512,maxZoom:20})}),new p.A({declutter:!0,source:new c.A({format:new s.A,url:"data/geojson/vienna-streets.geojson"}),style:function(e){return g.getText().setText(e.get("name")),g}})],target:"map",view:new r.Ay({extent:A,center:(0,a.q1)(A),zoom:17,minZoom:14})})}},function(e){var t;t=37021,e(e.s=t)}]);
+import { Gr as getCenter, Ln as Fill, Mn as Map, Nn as Text, Pn as Style, an as ImageTileSource, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/street-labels.js
+var style = new Style({ text: new Text({
+	font: "bold 11px \"Open Sans\", \"Arial Unicode MS\", \"sans-serif\"",
+	placement: "line",
+	fill: new Fill({ color: "white" })
+}) });
+var attributions = "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>";
+var viewExtent = [
+	1817379,
+	6139595,
+	1827851,
+	6143616
+];
+new Map({
+	layers: [new TileLayer({ source: new ImageTileSource({
+		attributions,
+		url: "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+		tileSize: 512,
+		maxZoom: 20
+	}) }), new VectorLayer({
+		declutter: true,
+		source: new VectorSource({
+			format: new GeoJSON(),
+			url: "data/geojson/vienna-streets.geojson"
+		}),
+		style: function(feature) {
+			style.getText().setText(feature.get("name"));
+			return style;
+		}
+	})],
+	target: "map",
+	view: new View({
+		extent: viewExtent,
+		center: getCenter(viewExtent),
+		zoom: 17,
+		minZoom: 14
+	})
+});
+//#endregion
+
 //# sourceMappingURL=street-labels.js.map

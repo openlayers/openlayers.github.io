@@ -1,1 +1,117 @@
-!function(){"use strict";let e;const t=document.getElementById("codepen-button");if(t){const n=document.getElementById("codepen-form");t.href=n.action,t.addEventListener("click",(function(t){t.preventDefault();const r=document.getElementById("example-html-source").innerText,o=document.getElementById("example-js-source").innerText,i=document.getElementById("example-worker-source"),s=i?i.innerText:void 0;let c=document.getElementById("example-pkg-source").innerText;c=JSON.parse(c),c.devDependencies.typescript="latest",c=JSON.stringify(c,void 0,2);const a=new Set,d=(o.match(/'(?:\.\/)?(?:data|resources)\/[^']*'/g)||[]).map((function(e){return e.replace(/^'(?:\.\/)?|'$/g,"")})).filter((function(e){return!a.has(e)&&a.add(e)})),l=d.map((function(e){return function(e){return new Promise((function(t,n){if(/\.(png|jpe?g|gif|tiff?|svg|kmz)$/.test(e))t({isBinary:!0,content:new URL(e,window.location.href).href});else{const r=new XMLHttpRequest;r.open("GET",e),r.responseType="text",r.addEventListener("load",(function(){t({content:r.response})})),r.addEventListener("error",n),r.send()}}))}(e)}));l.push((e||(e=new Promise((function(e,t){const n=document.createElement("script");n.src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js",document.head.append(n),n.addEventListener("load",e),n.addEventListener("error",t)}))),e)),Promise.all(l).then((function(e){const t={"index.html":{content:r},"main.js":{content:o},"package.json":{content:c},"sandbox.config.json":{content:'{"template": "parcel"}'},".babelrc":{content:"{}"},".prettierrc":{content:JSON.stringify({printWidth:80,tabWidth:2,useTabs:!1,semi:!0,singleQuote:!0,trailingComma:"all",bracketSpacing:!1,jsxBracketSameLine:!1,fluid:!1},void 0,2)}};s&&(t["worker.js"]={content:s});for(let n=0;n<d.length;n++)t[d[n]]=e[n];var i;n.parameters.value=(i={files:t},LZString.compressToBase64(JSON.stringify(i)).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")),n.submit()}))}))}}();
+(function() {
+  "use strict"
+  /* global LZString */
+
+  let lzStringPromise;
+  function loadLzString() {
+    if (!lzStringPromise) {
+      lzStringPromise = new Promise(function (resolve, reject) {
+        const script = document.createElement('script')
+        script.src = 'https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js';
+        document.head.append(script);
+        script.addEventListener('load', resolve);
+        script.addEventListener('error', reject);
+      });
+    }
+    return lzStringPromise;
+  }
+
+  function compress(json) {
+    return LZString.compressToBase64(JSON.stringify(json))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+  }
+
+  function fetchResource(resource) {
+    return new Promise(function (resolve, reject) {
+      const isImage = /\.(png|jpe?g|gif|tiff?|svg|kmz)$/.test(resource);
+      if (isImage) {
+        resolve ({
+          isBinary: true,
+          content: new URL(resource, window.location.href).href
+        });
+      } else {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', resource);
+        xhr.responseType = 'text';
+        xhr.addEventListener('load', function () {
+          resolve ({
+            content: xhr.response
+          });
+        });
+        xhr.addEventListener('error', reject);
+        xhr.send();
+      }
+    })
+  }
+
+  const codepenButton = document.getElementById('codepen-button');
+  if (codepenButton) {
+    const form = document.getElementById('codepen-form');
+    codepenButton.href = form.action;
+    codepenButton.addEventListener('click', function (event) {
+      event.preventDefault();
+      const html = document.getElementById('example-html-source').innerText;
+      const js = document.getElementById('example-js-source').innerText;
+      const workerContainer = document.getElementById('example-worker-source');
+      const worker = workerContainer ? workerContainer.innerText : undefined;
+      let pkgJson = document.getElementById('example-pkg-source').innerText;
+      pkgJson = JSON.parse(pkgJson);
+      pkgJson['devDependencies']['typescript'] = 'latest';
+      pkgJson = JSON.stringify(pkgJson, undefined, 2);
+
+      const unique = new Set();
+      const localResources = (js.match(/'(?:\.\/)?(?:data|resources)\/[^']*'/g) || [])
+        .map(function (f) {
+          return f.replace(/^'(?:\.\/)?|'$/g, '');
+        })
+        .filter(function (f) {
+          return unique.has(f) ? false : unique.add(f);
+        });
+
+      const promises = localResources.map(function (resource) {
+        return fetchResource(resource);
+      });
+      promises.push(loadLzString());
+
+      Promise.all(promises).then(
+        function (results) {
+          const files = {
+            'index.html': {content: html},
+            'main.js': {content: js},
+            'package.json': {content: pkgJson},
+            'sandbox.config.json': {content: '{"template": "parcel"}'},
+            '.babelrc': {content: '{}'},
+            '.prettierrc': {
+              content: JSON.stringify(
+                {
+                  printWidth: 80,
+                  tabWidth: 2,
+                  useTabs: false,
+                  semi: true,
+                  singleQuote: true,
+                  trailingComma: 'all',
+                  bracketSpacing: false,
+                  jsxBracketSameLine: false,
+                  fluid: false,
+                },
+                undefined,
+                2
+              ),
+            },
+          };
+          if (worker) {
+            files['worker.js'] = {content: worker}
+          }
+          for (let i = 0; i < localResources.length; i++) {
+            files[localResources[i]] = results[i];
+          }
+
+          form.parameters.value = compress({files: files});
+          form.submit();
+        }
+      );
+    });
+  }
+})();

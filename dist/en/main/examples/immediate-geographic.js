@@ -1,2 +1,39 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4874],{5077:function(e,n,t){var r=t(41564),a=t(87240),o=t(426),s=t(40878),c=t(12185),w=t(25231),l=t(66267),h=t(9226),i=t(21133),u=t(38276),A=t(88292);(0,w.n0)();const f=new c.A({source:new h.A({layer:"stamen_toner"})}),m=new r.A({layers:[f],target:"map",view:new a.Ay({center:[0,0],zoom:2})}),d=new i.A({radius:8,fill:new u.A({color:"rgb(255, 153, 0)"})}),p=new A.Ay({image:d}),y=1e3,M=new Array(y);for(let e=0;e<y;++e){const n=360*Math.random()-180,t=180*Math.random()-90;M[e]=new s.A([n,t])}f.on("postrender",(function(e){const n=(0,l.r2)(e);for(let e=0;e<y;++e){const t=(0,o.t8)(Math.pow((y-e)/y,.15));t<.1||(d.setOpacity(t),d.setScale(t),n.setStyle(p),n.drawGeometry(M[e]))}const t=360*Math.random()-180,r=180*Math.random()-90;M.push(new s.A([t,r])),M.shift(),m.render()}))}},function(e){var n;n=5077,e(e.s=n)}]);
+import { Ar as useGeographic, Ln as Fill, Lr as upAndDown, Mn as Map, Pn as Style, Rn as CircleStyle, ct as getVectorContext, hr as Point, jn as TileLayer, or as View, yn as StadiaMaps } from "./common.js";
+//#region examples/immediate-geographic.js
+useGeographic();
+var layer = new TileLayer({ source: new StadiaMaps({ layer: "stamen_toner" }) });
+var map = new Map({
+	layers: [layer],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var image = new CircleStyle({
+	radius: 8,
+	fill: new Fill({ color: "rgb(255, 153, 0)" })
+});
+var style = new Style({ image });
+var n = 1e3;
+var geometries = new Array(n);
+for (let i = 0; i < n; ++i) geometries[i] = new Point([360 * Math.random() - 180, 180 * Math.random() - 90]);
+layer.on("postrender", function(event) {
+	const vectorContext = getVectorContext(event);
+	for (let i = 0; i < n; ++i) {
+		const importance = upAndDown(Math.pow((n - i) / n, .15));
+		if (importance < .1) continue;
+		image.setOpacity(importance);
+		image.setScale(importance);
+		vectorContext.setStyle(style);
+		vectorContext.drawGeometry(geometries[i]);
+	}
+	const lon = 360 * Math.random() - 180;
+	const lat = 180 * Math.random() - 90;
+	geometries.push(new Point([lon, lat]));
+	geometries.shift();
+	map.render();
+});
+//#endregion
+
 //# sourceMappingURL=immediate-geographic.js.map

@@ -1,2 +1,66 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3852],{40151:function(e,n,t){var a=t(41564),r=t(87240),o=t(96256),s=t(12430);const l=["red","green","blue"];for(const e of l){document.getElementById(e).addEventListener("change",d);document.getElementById(`${e}Max`).addEventListener("input",d)}function c(){const e={};for(const n of l){const t=document.getElementById(n);e[n]=parseInt(t.value,10);const a=`${n}Max`,r=document.getElementById(a);e[a]=parseInt(r.value,10)}return e}const u=new o.A({style:{variables:c(),color:["array",["/",["band",["var","red"]],["var","redMax"]],["/",["band",["var","green"]],["var","greenMax"]],["/",["band",["var","blue"]],["var","blueMax"]],1]},source:new s.A({normalize:!1,sources:[{url:"https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"}]})});function d(){u.updateStyleVariables(c())}new a.A({target:"map",layers:[u],view:new r.Ay({projection:"EPSG:4326",center:[0,0],zoom:2,maxZoom:6})})}},function(e){var n;n=40151,e(e.s=n)}]);
+import { Ht as WebGLTileLayer, Mn as Map, Rt as GeoTIFFSource, or as View } from "./common.js";
+//#region examples/cog-stretch.js
+var channels = [
+	"red",
+	"green",
+	"blue"
+];
+for (const channel of channels) {
+	document.getElementById(channel).addEventListener("change", update);
+	document.getElementById(`${channel}Max`).addEventListener("input", update);
+}
+function getVariables() {
+	const variables = {};
+	for (const channel of channels) {
+		const selector = document.getElementById(channel);
+		variables[channel] = parseInt(selector.value, 10);
+		const inputId = `${channel}Max`;
+		const input = document.getElementById(inputId);
+		variables[inputId] = parseInt(input.value, 10);
+	}
+	return variables;
+}
+var layer = new WebGLTileLayer({
+	style: {
+		variables: getVariables(),
+		color: [
+			"array",
+			[
+				"/",
+				["band", ["var", "red"]],
+				["var", "redMax"]
+			],
+			[
+				"/",
+				["band", ["var", "green"]],
+				["var", "greenMax"]
+			],
+			[
+				"/",
+				["band", ["var", "blue"]],
+				["var", "blueMax"]
+			],
+			1
+		]
+	},
+	source: new GeoTIFFSource({
+		normalize: false,
+		sources: [{ url: "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif" }]
+	})
+});
+function update() {
+	layer.updateStyleVariables(getVariables());
+}
+new Map({
+	target: "map",
+	layers: [layer],
+	view: new View({
+		projection: "EPSG:4326",
+		center: [0, 0],
+		zoom: 2,
+		maxZoom: 6
+	})
+});
+//#endregion
+
 //# sourceMappingURL=cog-stretch.js.map

@@ -1,2 +1,12 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1035],{83470:function(n,t,e){const c=new(e(9619).A);fetch("data/WMTSCapabilities.xml").then((function(n){return n.text()})).then((function(n){const t=c.read(n);document.getElementById("log").innerText=JSON.stringify(t,null,2)}))}},function(n){var t;t=83470,n(n.s=t)}]);
+import { b as WMTSCapabilities } from "./common.js";
+//#region examples/wmts-capabilities.js
+var parser = new WMTSCapabilities();
+fetch("data/WMTSCapabilities.xml").then(function(response) {
+	return response.text();
+}).then(function(text) {
+	const result = parser.read(text);
+	document.getElementById("log").innerText = JSON.stringify(result, null, 2);
+});
+//#endregion
+
 //# sourceMappingURL=wmts-capabilities.js.map

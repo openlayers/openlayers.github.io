@@ -1,2 +1,36 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2432],{55851:function(e,n,t){var c=t(41564),r=t(87240),o=t(9444),s=t(74676),u=t(90278),a=t(23986),i=t(29810);const w=new a.A({background:"#333",source:new i.A,style:{"stroke-color":"#ffcc33"}}),g=new c.A({layers:[w],target:"map",view:new r.Ay({center:[-11e6,46e5],zoom:4})}),d=new s.A({source:w.getSource()});g.addInteraction(d);const f=new o.Ay({source:w.getSource(),type:"LineString"});g.addInteraction(f);const A=new u.A({source:w.getSource(),segmenters:{LineString:e=>{const n=[];return e.forEachSegment(((e,t)=>{n.push([e,t],[[(e[0]+t[0])/2,(e[1]+t[1])/2]])})),n}}});g.addInteraction(A)}},function(e){var n;n=55851,e(e.s=n)}]);
+import { G as Modify, Gt as Draw, Mn as Map, W as Snap, bn as VectorLayer, dn as VectorSource, or as View } from "./common.js";
+//#region examples/snap-custom-segmenter.js
+var vector = new VectorLayer({
+	background: "#333",
+	source: new VectorSource(),
+	style: { "stroke-color": "#ffcc33" }
+});
+var map = new Map({
+	layers: [vector],
+	target: "map",
+	view: new View({
+		center: [-11e6, 46e5],
+		zoom: 4
+	})
+});
+var modify = new Modify({ source: vector.getSource() });
+map.addInteraction(modify);
+var draw = new Draw({
+	source: vector.getSource(),
+	type: "LineString"
+});
+map.addInteraction(draw);
+var snap = new Snap({
+	source: vector.getSource(),
+	segmenters: { LineString: (geometry) => {
+		const segments = [];
+		geometry.forEachSegment((c1, c2) => {
+			segments.push([c1, c2], [[(c1[0] + c2[0]) / 2, (c1[1] + c2[1]) / 2]]);
+		});
+		return segments;
+	} }
+});
+map.addInteraction(snap);
+//#endregion
+
 //# sourceMappingURL=snap-custom-segmenter.js.map

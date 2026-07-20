@@ -1,2 +1,36 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9399],{12970:function(e,t,n){var l=n(41564),a=n(87240),c=n(96256),i=n(77779);const r=256,s=document.createElement("canvas");s.width=r,s.height=r;const o=s.getContext("2d",{willReadFrequently:!0});o.strokeStyle="white",o.textAlign="center",o.font="24px sans-serif";new l.A({target:"map",layers:[new c.A({source:new i.A({loader:function(e,t,n){const l=128;return o.clearRect(0,0,r,r),o.fillStyle="rgba(100, 100, 100, 0.5)",o.fillRect(0,0,r,r),o.fillStyle="black",o.fillText(`z: ${e}`,l,98),o.fillText(`x: ${t}`,l,l),o.fillText(`y: ${n}`,l,158),o.strokeRect(0,0,r,r),o.getImageData(0,0,r,r).data},transition:0})})],view:new a.Ay({center:[0,0],zoom:0})})}},function(e){var t;t=12970,e(e.s=t)}]);
+import { Ht as WebGLTileLayer, Mn as Map, on as DataTileSource, or as View } from "./common.js";
+//#region examples/data-tiles.js
+var size = 256;
+var canvas = document.createElement("canvas");
+canvas.width = size;
+canvas.height = size;
+var context = canvas.getContext("2d", { willReadFrequently: true });
+context.strokeStyle = "white";
+context.textAlign = "center";
+context.font = "24px sans-serif";
+var lineHeight = 30;
+new Map({
+	target: "map",
+	layers: [new WebGLTileLayer({ source: new DataTileSource({
+		loader: function(z, x, y) {
+			const half = size / 2;
+			context.clearRect(0, 0, size, size);
+			context.fillStyle = "rgba(100, 100, 100, 0.5)";
+			context.fillRect(0, 0, size, size);
+			context.fillStyle = "black";
+			context.fillText(`z: ${z}`, half, half - lineHeight);
+			context.fillText(`x: ${x}`, half, half);
+			context.fillText(`y: ${y}`, half, 158);
+			context.strokeRect(0, 0, size, size);
+			return context.getImageData(0, 0, size, size).data;
+		},
+		transition: 0
+	}) })],
+	view: new View({
+		center: [0, 0],
+		zoom: 0
+	})
+});
+//#endregion
+
 //# sourceMappingURL=data-tiles.js.map

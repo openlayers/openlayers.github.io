@@ -1,2 +1,107 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9301],{56608:function(e,t,a){var n=a(51541),o=a(41564),s=a(87240),l=a(40878),i=a(12185),r=a(23986),c=a(28178),u=a(29810),g=a(21133),p=a(38276),x=a(75052),h=a(44689),w=a(88292),f=a(59194);const d=new n.A({geometry:new l.A([0,0])}),m=new w.Ay({image:new x.A({anchor:[.5,1],src:"data/world.png"}),text:new f.A({text:"World\nText",font:"bold 30px Calibri,sans-serif",fill:new p.A({color:"black"}),stroke:new h.A({color:"white",width:2})})}),A=new w.Ay({image:new g.A({radius:7,fill:new p.A({color:"black"}),stroke:new h.A({color:"white",width:2})})});d.setStyle([A,m]);const v=new u.A({features:[d]}),F=new r.A({source:v}),T=new i.A({source:new c.A({url:"https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:raster:HYP_HR_SR_OB_DR/map/tiles/WebMercatorQuad",crossOrigin:""})}),k=new o.A({layers:[T,F],target:"map",view:new s.Ay({center:[0,0],zoom:3})}),Y=["left","center","right"],R=["top","middle","bottom"],X={};function y(){m.getImage().setRotation(parseFloat(X.rotation.value)*Math.PI),m.getImage().setRotateWithView(X.rotateWithView.checked),m.getImage().setScale([parseFloat(X.scaleX.value),parseFloat(X.scaleY.value)]),m.getImage().setAnchor([parseFloat(X.anchorX.value),parseFloat(X.anchorY.value)]),m.getImage().setDisplacement([parseFloat(X.displacementX.value),parseFloat(X.displacementY.value)]),m.getText().setRotation(parseFloat(X.textRotation.value)*Math.PI),m.getText().setRotateWithView(X.textRotateWithView.checked),m.getText().setScale([parseFloat(X.textScaleX.value),parseFloat(X.textScaleY.value)]),m.getText().setTextAlign(Y[parseFloat(X.textAlign.value)]),m.getText().setTextBaseline(R[parseFloat(X.textBaseline.value)]),m.getText().setOffsetX(parseFloat(X.textOffsetX.value)),m.getText().setOffsetY(parseFloat(X.textOffsetY.value)),d.changed()}["rotation","rotateWithView","scaleX","scaleY","anchorX","anchorY","displacementX","displacementY","textRotation","textRotateWithView","textScaleX","textScaleY","textAlign","textBaseline","textOffsetX","textOffsetY"].forEach((function(e){const t=document.getElementById(e),a=document.getElementById(e+"Out");function n(){const n=parseFloat(t.value);"checkbox"===t.type?a.innerText=String(t.checked):a.innerText="textAlign"===e?Y[n]:"textBaseline"===e?R[n]:t.step.startsWith("0.")?n.toFixed(2):String(n)}t.addEventListener("input",(function(){n(),y()})),n(),X[e]=t})),y(),k.on("pointermove",(function(e){const t=k.hasFeatureAtPixel(e.pixel);k.getTargetElement().style.cursor=t?"pointer":""}))}},function(e){var t;t=56608,e(e.s=t)}]);
+import { Dt as OGCMapTile, Fn as Stroke, In as Icon, Ln as Fill, Mn as Map, Nn as Text, Pn as Style, Rn as CircleStyle, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+//#region examples/icon-scale.js
+var iconFeature = new Feature({ geometry: new Point([0, 0]) });
+var iconStyle = new Style({
+	image: new Icon({
+		anchor: [.5, 1],
+		src: "data/world.png"
+	}),
+	text: new Text({
+		text: "World\nText",
+		font: "bold 30px Calibri,sans-serif",
+		fill: new Fill({ color: "black" }),
+		stroke: new Stroke({
+			color: "white",
+			width: 2
+		})
+	})
+});
+var pointStyle = new Style({ image: new CircleStyle({
+	radius: 7,
+	fill: new Fill({ color: "black" }),
+	stroke: new Stroke({
+		color: "white",
+		width: 2
+	})
+}) });
+iconFeature.setStyle([pointStyle, iconStyle]);
+var vectorLayer = new VectorLayer({ source: new VectorSource({ features: [iconFeature] }) });
+var map = new Map({
+	layers: [new TileLayer({ source: new OGCMapTile({
+		url: "https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:raster:HYP_HR_SR_OB_DR/map/tiles/WebMercatorQuad",
+		crossOrigin: ""
+	}) }), vectorLayer],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 3
+	})
+});
+var textAlignments = [
+	"left",
+	"center",
+	"right"
+];
+var textBaselines = [
+	"top",
+	"middle",
+	"bottom"
+];
+var controls = {};
+[
+	"rotation",
+	"rotateWithView",
+	"scaleX",
+	"scaleY",
+	"anchorX",
+	"anchorY",
+	"displacementX",
+	"displacementY",
+	"textRotation",
+	"textRotateWithView",
+	"textScaleX",
+	"textScaleY",
+	"textAlign",
+	"textBaseline",
+	"textOffsetX",
+	"textOffsetY"
+].forEach(function(id) {
+	const control = document.getElementById(id);
+	const output = document.getElementById(id + "Out");
+	function setOutput() {
+		const value = parseFloat(control.value);
+		if (control.type === "checkbox") output.innerText = String(control.checked);
+		else if (id === "textAlign") output.innerText = textAlignments[value];
+		else if (id === "textBaseline") output.innerText = textBaselines[value];
+		else output.innerText = control.step.startsWith("0.") ? value.toFixed(2) : String(value);
+	}
+	control.addEventListener("input", function() {
+		setOutput();
+		updateStyle();
+	});
+	setOutput();
+	controls[id] = control;
+});
+function updateStyle() {
+	iconStyle.getImage().setRotation(parseFloat(controls["rotation"].value) * Math.PI);
+	iconStyle.getImage().setRotateWithView(controls["rotateWithView"].checked);
+	iconStyle.getImage().setScale([parseFloat(controls["scaleX"].value), parseFloat(controls["scaleY"].value)]);
+	iconStyle.getImage().setAnchor([parseFloat(controls["anchorX"].value), parseFloat(controls["anchorY"].value)]);
+	iconStyle.getImage().setDisplacement([parseFloat(controls["displacementX"].value), parseFloat(controls["displacementY"].value)]);
+	iconStyle.getText().setRotation(parseFloat(controls["textRotation"].value) * Math.PI);
+	iconStyle.getText().setRotateWithView(controls["textRotateWithView"].checked);
+	iconStyle.getText().setScale([parseFloat(controls["textScaleX"].value), parseFloat(controls["textScaleY"].value)]);
+	iconStyle.getText().setTextAlign(textAlignments[parseFloat(controls["textAlign"].value)]);
+	iconStyle.getText().setTextBaseline(textBaselines[parseFloat(controls["textBaseline"].value)]);
+	iconStyle.getText().setOffsetX(parseFloat(controls["textOffsetX"].value));
+	iconStyle.getText().setOffsetY(parseFloat(controls["textOffsetY"].value));
+	iconFeature.changed();
+}
+updateStyle();
+map.on("pointermove", function(e) {
+	const hit = map.hasFeatureAtPixel(e.pixel);
+	map.getTargetElement().style.cursor = hit ? "pointer" : "";
+});
+//#endregion
+
 //# sourceMappingURL=icon-scale.js.map

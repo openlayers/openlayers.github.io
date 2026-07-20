@@ -1,2 +1,16 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6138],{52981:function(e,t,r){var n=r(41564),a=r(87240),p=r(96256),s=r(15264);new n.A({target:"map",layers:[new p.A({source:new s.A({url:"https://tile.openstreetmap.org/{z}/{x}/{y}.png",attributions:'&#169; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors.'})})],view:new a.Ay({center:[0,0],zoom:0})})}},function(e){var t;t=52981,e(e.s=t)}]);
+import { Ht as WebGLTileLayer, Mn as Map, an as ImageTileSource, or as View } from "./common.js";
+//#region examples/webgl-tiles.js
+new Map({
+	target: "map",
+	layers: [new WebGLTileLayer({ source: new ImageTileSource({
+		url: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+		attributions: "&#169; <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">OpenStreetMap</a> contributors."
+	}) })],
+	view: new View({
+		center: [0, 0],
+		zoom: 0
+	})
+});
+//#endregion
+
 //# sourceMappingURL=webgl-tiles.js.map

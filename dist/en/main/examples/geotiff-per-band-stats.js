@@ -1,2 +1,24 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3261],{90840:function(a,s,e){var t=e(41564),n=e(96256);const r=new(e(12430).A)({sources:[{url:"https://spacenet-dataset.s3.amazonaws.com/spacenet/SN3_roads/train/AOI_3_Paris/PS-RGB/SN3_roads_train_AOI_3_Paris_PS-RGB_img101.tif",nodata:0,min:[110,216,217],max:[586,579,432]}]});new t.A({target:"map",layers:[new n.A({source:r})],view:r.getView()})}},function(a){var s;s=90840,a(a.s=s)}]);
+import { Ht as WebGLTileLayer, Mn as Map, Rt as GeoTIFFSource } from "./common.js";
+//#region examples/geotiff-per-band-stats.js
+var source = new GeoTIFFSource({ sources: [{
+	url: "https://spacenet-dataset.s3.amazonaws.com/spacenet/SN3_roads/train/AOI_3_Paris/PS-RGB/SN3_roads_train_AOI_3_Paris_PS-RGB_img101.tif",
+	nodata: 0,
+	min: [
+		110,
+		216,
+		217
+	],
+	max: [
+		586,
+		579,
+		432
+	]
+}] });
+new Map({
+	target: "map",
+	layers: [new WebGLTileLayer({ source })],
+	view: source.getView()
+});
+//#endregion
+
 //# sourceMappingURL=geotiff-per-band-stats.js.map

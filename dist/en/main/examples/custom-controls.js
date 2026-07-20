@@ -1,2 +1,36 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9929],{98052:function(e,t,n){var o=n(41564),a=n(87240),s=n(73988),r=n(76825),c=n(12185),l=n(28e3);class i extends s.A{constructor(e){const t=e||{},n=document.createElement("button");n.innerHTML="N";const o=document.createElement("div");o.className="rotate-north ol-unselectable ol-control",o.appendChild(n),super({element:o,target:t.target}),n.addEventListener("click",this.handleRotateNorth.bind(this),!1)}handleRotateNorth(){this.getMap().getView().setRotation(0)}}new o.A({controls:(0,r.N)().extend([new i]),layers:[new c.A({source:new l.A})],target:"map",view:new a.Ay({center:[0,0],zoom:3,rotation:1})})}},function(e){var t;t=98052,e(e.s=t)}]);
+import { Cn as OSM, Mn as Map, ar as Control, jn as TileLayer, or as View, rr as defaults } from "./common.js";
+//#region examples/custom-controls.js
+var RotateNorthControl = class extends Control {
+	/**
+	* @param {Object} [opt_options] Control options.
+	*/
+	constructor(opt_options) {
+		const options = opt_options || {};
+		const button = document.createElement("button");
+		button.innerHTML = "N";
+		const element = document.createElement("div");
+		element.className = "rotate-north ol-unselectable ol-control";
+		element.appendChild(button);
+		super({
+			element,
+			target: options.target
+		});
+		button.addEventListener("click", this.handleRotateNorth.bind(this), false);
+	}
+	handleRotateNorth() {
+		this.getMap().getView().setRotation(0);
+	}
+};
+new Map({
+	controls: defaults().extend([new RotateNorthControl()]),
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 3,
+		rotation: 1
+	})
+});
+//#endregion
+
 //# sourceMappingURL=custom-controls.js.map

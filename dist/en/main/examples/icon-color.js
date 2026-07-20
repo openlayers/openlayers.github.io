@@ -1,2 +1,53 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5650],{24445:function(e,n,s){var t=s(51541),o=s(41564),r=s(87240),a=s(40878),c=s(12185),w=s(23986),A=s(25231),g=s(28178),i=s(29810),y=s(75052),m=s(88292);const l=new t.A({geometry:new a.A((0,A.Rb)([12.5,41.9]))}),u=new t.A({geometry:new a.A((0,A.Rb)([-.12755,51.507222]))}),b=new t.A({geometry:new a.A((0,A.Rb)([-3.683333,40.4]))}),d=new t.A({geometry:new a.A((0,A.Rb)([2.353,48.8566]))}),p=new t.A({geometry:new a.A((0,A.Rb)([13.3884,52.5169]))});l.setStyle(new m.Ay({image:new y.A({color:"#BADA55",crossOrigin:"anonymous",src:"data/square.svg"})})),u.setStyle(new m.Ay({image:new y.A({color:"rgba(255, 0, 0, .5)",crossOrigin:"anonymous",src:"data/bigdot.png",scale:.2})})),b.setStyle(new m.Ay({image:new y.A({crossOrigin:"anonymous",src:"data/bigdot.png",scale:.2})})),d.setStyle(new m.Ay({image:new y.A({color:"#8959A8",crossOrigin:"anonymous",src:"data/dot.svg"})})),p.setStyle(new m.Ay({image:new y.A({crossOrigin:"anonymous",src:"data/dot.svg"})}));const R=new i.A({features:[l,u,b,d,p]}),O=new w.A({source:R}),h=new c.A({source:new g.A({url:"https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:raster:HYP_HR_SR_OB_DR/map/tiles/WebMercatorQuad",crossOrigin:""})});new o.A({layers:[h,O],target:document.getElementById("map"),view:new r.Ay({center:(0,A.Rb)([2.896372,44.6024]),zoom:3})})}},function(e){var n;n=24445,e(e.s=n)}]);
+import { Cr as fromLonLat, Dt as OGCMapTile, In as Icon, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+//#region examples/icon-color.js
+var rome = new Feature({ geometry: new Point(fromLonLat([12.5, 41.9])) });
+var london = new Feature({ geometry: new Point(fromLonLat([-.12755, 51.507222])) });
+var madrid = new Feature({ geometry: new Point(fromLonLat([-3.683333, 40.4])) });
+var paris = new Feature({ geometry: new Point(fromLonLat([2.353, 48.8566])) });
+var berlin = new Feature({ geometry: new Point(fromLonLat([13.3884, 52.5169])) });
+rome.setStyle(new Style({ image: new Icon({
+	color: "#BADA55",
+	crossOrigin: "anonymous",
+	src: "data/square.svg"
+}) }));
+london.setStyle(new Style({ image: new Icon({
+	color: "rgba(255, 0, 0, .5)",
+	crossOrigin: "anonymous",
+	src: "data/bigdot.png",
+	scale: .2
+}) }));
+madrid.setStyle(new Style({ image: new Icon({
+	crossOrigin: "anonymous",
+	src: "data/bigdot.png",
+	scale: .2
+}) }));
+paris.setStyle(new Style({ image: new Icon({
+	color: "#8959A8",
+	crossOrigin: "anonymous",
+	src: "data/dot.svg"
+}) }));
+berlin.setStyle(new Style({ image: new Icon({
+	crossOrigin: "anonymous",
+	src: "data/dot.svg"
+}) }));
+var vectorLayer = new VectorLayer({ source: new VectorSource({ features: [
+	rome,
+	london,
+	madrid,
+	paris,
+	berlin
+] }) });
+new Map({
+	layers: [new TileLayer({ source: new OGCMapTile({
+		url: "https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:raster:HYP_HR_SR_OB_DR/map/tiles/WebMercatorQuad",
+		crossOrigin: ""
+	}) }), vectorLayer],
+	target: document.getElementById("map"),
+	view: new View({
+		center: fromLonLat([2.896372, 44.6024]),
+		zoom: 3
+	})
+});
+//#endregion
+
 //# sourceMappingURL=icon-color.js.map

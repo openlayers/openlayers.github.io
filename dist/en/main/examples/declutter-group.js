@@ -1,2 +1,43 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8611],{95222:function(e,t,o){var r=o(93895),s=o(51541),a=o(41564),l=o(87240),n=o(16235),c=o(40878),i=o(30470),w=o(99110),y=o(23986),u=o(29810);const b=[-12e6,35e5,-1e7,55e5],f=new y.A({declutter:"separate",source:new u.A({features:[new s.A({geometry:(0,i.VY)(b),text:"Polygon above Mapbox styled layers"}),new s.A({geometry:new c.A([-11e6,43e5]),text:"Point above Mapbox styled layers"})]}),style:{"stroke-color":"rgba(180, 180, 255, 1)","stroke-width":1,"fill-color":"rgba(200, 200, 255, 0.85)","text-value":["get","text"],"text-font":"bold 14px sans-serif","text-offset-y":-12,"text-overflow":!0,"circle-radius":5,"circle-fill-color":"rgba(180, 180, 255, 1)","circle-stroke-color":"rgba(255, 255, 255, 1)"}}),p=new w.A;(0,r.Bb)(p,"https://api.maptiler.com/maps/streets-v2/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB");new a.A({target:"map",view:new l.Ay({center:(0,n.q1)(b),zoom:3.9}),layers:[p,f]})}},function(e){var t;t=95222,e(e.s=t)}]);
+import { Gr as getCenter, Mn as Map, Un as LayerGroup, bn as VectorLayer, dn as VectorSource, hr as Point, mr as fromExtent, nt as apply, or as View, xn as Feature } from "./common.js";
+//#region examples/declutter-group.js
+var square = [
+	-12e6,
+	35e5,
+	-1e7,
+	55e5
+];
+var overlay = new VectorLayer({
+	declutter: "separate",
+	source: new VectorSource({ features: [new Feature({
+		geometry: fromExtent(square),
+		text: "Polygon above Mapbox styled layers"
+	}), new Feature({
+		geometry: new Point([-11e6, 43e5]),
+		text: "Point above Mapbox styled layers"
+	})] }),
+	style: {
+		"stroke-color": "rgba(180, 180, 255, 1)",
+		"stroke-width": 1,
+		"fill-color": "rgba(200, 200, 255, 0.85)",
+		"text-value": ["get", "text"],
+		"text-font": "bold 14px sans-serif",
+		"text-offset-y": -12,
+		"text-overflow": true,
+		"circle-radius": 5,
+		"circle-fill-color": "rgba(180, 180, 255, 1)",
+		"circle-stroke-color": "rgba(255, 255, 255, 1)"
+	}
+});
+var layer = new LayerGroup();
+apply(layer, "https://api.maptiler.com/maps/streets-v2/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB");
+new Map({
+	target: "map",
+	view: new View({
+		center: getCenter(square),
+		zoom: 3.9
+	}),
+	layers: [layer, overlay]
+});
+//#endregion
+
 //# sourceMappingURL=declutter-group.js.map

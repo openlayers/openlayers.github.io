@@ -1,2 +1,53 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3202],{99501:function(e,t,n){var s=n(41564),c=n(87240),a=n(13413),l=n(76825),o=n(12185),d=n(28e3);const i=document.getElementById("scaleBarOptions"),u=document.getElementById("units"),r=document.getElementById("type"),m=document.getElementById("steps"),v=document.getElementById("showScaleText"),g=document.getElementById("invertColors");let y;function p(){return"scaleline"===r.value?(y=new a.A({units:u.value}),i.style.display="none"):(y=new a.A({units:u.value,bar:!0,steps:parseInt(m.value,10),text:v.checked,minWidth:140}),w(),i.style.display="block"),y}const h=new s.A({controls:(0,l.N)().extend([p()]),layers:[new o.A({source:new d.A})],target:"map",view:new c.Ay({center:[0,0],zoom:2})});function E(){h.removeControl(y),h.addControl(p())}function w(){y.element.classList.toggle("ol-scale-bar-inverted",g.checked)}u.addEventListener("change",(function(){y.setUnits(u.value)})),r.addEventListener("change",E),m.addEventListener("input",E),v.addEventListener("change",E),g.addEventListener("change",w)}},function(e){var t;t=99501,e(e.s=t)}]);
+import { Cn as OSM, Mn as Map, U as ScaleLine, jn as TileLayer, or as View, rr as defaults } from "./common.js";
+//#region examples/scale-line.js
+var scaleBarOptionsContainer = document.getElementById("scaleBarOptions");
+var unitsSelect = document.getElementById("units");
+var typeSelect = document.getElementById("type");
+var stepsRange = document.getElementById("steps");
+var scaleTextCheckbox = document.getElementById("showScaleText");
+var invertColorsCheckbox = document.getElementById("invertColors");
+var control;
+function scaleControl() {
+	if (typeSelect.value === "scaleline") {
+		control = new ScaleLine({ units: unitsSelect.value });
+		scaleBarOptionsContainer.style.display = "none";
+	} else {
+		control = new ScaleLine({
+			units: unitsSelect.value,
+			bar: true,
+			steps: parseInt(stepsRange.value, 10),
+			text: scaleTextCheckbox.checked,
+			minWidth: 140
+		});
+		onInvertColorsChange();
+		scaleBarOptionsContainer.style.display = "block";
+	}
+	return control;
+}
+var map = new Map({
+	controls: defaults().extend([scaleControl()]),
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+function reconfigureScaleLine() {
+	map.removeControl(control);
+	map.addControl(scaleControl());
+}
+function onChangeUnit() {
+	control.setUnits(unitsSelect.value);
+}
+function onInvertColorsChange() {
+	control.element.classList.toggle("ol-scale-bar-inverted", invertColorsCheckbox.checked);
+}
+unitsSelect.addEventListener("change", onChangeUnit);
+typeSelect.addEventListener("change", reconfigureScaleLine);
+stepsRange.addEventListener("input", reconfigureScaleLine);
+scaleTextCheckbox.addEventListener("change", reconfigureScaleLine);
+invertColorsCheckbox.addEventListener("change", onInvertColorsChange);
+//#endregion
+
 //# sourceMappingURL=scale-line.js.map

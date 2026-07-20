@@ -1,2 +1,216 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5745],{28876:function(e,t,n){var o=n(41564),r=n(87240),l=n(77833),a=n(40878),i=n(9444),c=n(74676),s=n(12185),g=n(23986),u=n(28e3),w=n(29810),A=n(7074),d=n(21133),f=n(38276),m=n(28656),b=n(44689),y=n(88292),h=n(59194);const p=document.getElementById("type"),x=document.getElementById("segments"),k=document.getElementById("clear"),v=new y.Ay({fill:new f.A({color:"rgba(255, 255, 255, 0.2)"}),stroke:new b.A({color:"rgba(0, 0, 0, 0.5)",lineDash:[10,10],width:2}),image:new d.A({radius:5,stroke:new b.A({color:"rgba(0, 0, 0, 0.7)"}),fill:new f.A({color:"rgba(255, 255, 255, 0.2)"})})}),C=new y.Ay({text:new h.A({font:"14px Calibri,sans-serif",fill:new f.A({color:"rgba(255, 255, 255, 1)"}),backgroundFill:new f.A({color:"rgba(0, 0, 0, 0.7)"}),padding:[3,3,3,3],textBaseline:"bottom",offsetY:-15}),image:new m.A({radius:8,points:3,angle:Math.PI,displacement:[0,10],fill:new f.A({color:"rgba(0, 0, 0, 0.7)"})})}),I=new y.Ay({text:new h.A({font:"12px Calibri,sans-serif",fill:new f.A({color:"rgba(255, 255, 255, 1)"}),backgroundFill:new f.A({color:"rgba(0, 0, 0, 0.4)"}),padding:[2,2,2,2],textAlign:"left",offsetX:15})}),P=new y.Ay({image:new d.A({radius:5,stroke:new b.A({color:"rgba(0, 0, 0, 0.7)"}),fill:new f.A({color:"rgba(0, 0, 0, 0.4)"})}),text:new h.A({text:"Drag to modify",font:"12px Calibri,sans-serif",fill:new f.A({color:"rgba(255, 255, 255, 1)"}),backgroundFill:new f.A({color:"rgba(0, 0, 0, 0.7)"}),padding:[2,2,2,2],textAlign:"left",offsetX:15})}),T=new y.Ay({text:new h.A({font:"12px Calibri,sans-serif",fill:new f.A({color:"rgba(255, 255, 255, 1)"}),backgroundFill:new f.A({color:"rgba(0, 0, 0, 0.4)"}),padding:[2,2,2,2],textBaseline:"bottom",offsetY:-12}),image:new m.A({radius:6,points:3,angle:Math.PI,displacement:[0,8],fill:new f.A({color:"rgba(0, 0, 0, 0.4)"})})}),G=[T],M=function(e){const t=(0,A.R3)(e);let n;return n=t>100?Math.round(t/1e3*100)/100+" km":Math.round(100*t)/100+" m",n},B=new s.A({source:new u.A}),F=new w.A,E=new c.A({source:F,style:P});let S;function D(e,t,n,o){const r=[],i=e.getGeometry(),c=i.getType();let s,g,u;if(n&&n!==c&&"Point"!==c||(r.push(v),"Polygon"===c?(s=i.getInteriorPoint(),g=function(e){const t=(0,A.UG)(e);let n;return n=t>1e4?Math.round(t/1e6*100)/100+" km²":Math.round(100*t)/100+" m²",n}(i),u=new l.A(i.getCoordinates()[0])):"LineString"===c&&(s=new a.A(i.getLastCoordinate()),g=M(i),u=i)),t&&u){let e=0;u.forEachSegment((function(t,n){const o=new l.A([t,n]),i=M(o);G.length-1<e&&G.push(T.clone());const c=new a.A(o.getCoordinateAt(.5));G[e].setGeometry(c),G[e].getText().setText(i),r.push(G[e]),e++}))}return g&&(C.setGeometry(s),C.getText().setText(g),r.push(C)),o&&"Point"===c&&!E.getOverlay().getSource().getFeatures().length&&(S=i,I.getText().setText(o),r.push(I)),r}const L=new g.A({source:F,style:function(e){return D(e,x.checked)}}),O=new o.A({layers:[B,L],target:"map",view:new r.Ay({center:[-11e6,46e5],zoom:15})});let X;function Y(){const e=p.value,t="Click to continue drawing the "+("Polygon"===e?"polygon":"line"),n="Click to start measuring";let o=n;X=new i.Ay({source:F,type:e,style:function(t){return D(t,x.checked,e,o)}}),X.on("drawstart",(function(){k.checked&&F.clear(),E.setActive(!1),o=t})),X.on("drawend",(function(){P.setGeometry(S),E.setActive(!0),O.once("pointermove",(function(){P.setGeometry(null)})),o=n})),E.setActive(!0),O.addInteraction(X)}O.addInteraction(E),p.onchange=function(){O.removeInteraction(X),Y()},Y(),x.onchange=function(){L.changed(),X.getOverlay().changed()}}},function(e){var t;t=28876,e(e.s=t)}]);
+import { Cn as OSM, Fn as Stroke, G as Modify, Gt as Draw, Ln as Fill, Mn as Map, Mr as getArea, Nn as Text, Pn as Style, Pr as getLength, Rn as CircleStyle, bn as VectorLayer, dn as VectorSource, gn as LineString, hr as Point, jn as TileLayer, or as View, zn as RegularShape } from "./common.js";
+//#region examples/measure-style.js
+var typeSelect = document.getElementById("type");
+var showSegments = document.getElementById("segments");
+var clearPrevious = document.getElementById("clear");
+var style = new Style({
+	fill: new Fill({ color: "rgba(255, 255, 255, 0.2)" }),
+	stroke: new Stroke({
+		color: "rgba(0, 0, 0, 0.5)",
+		lineDash: [10, 10],
+		width: 2
+	}),
+	image: new CircleStyle({
+		radius: 5,
+		stroke: new Stroke({ color: "rgba(0, 0, 0, 0.7)" }),
+		fill: new Fill({ color: "rgba(255, 255, 255, 0.2)" })
+	})
+});
+var labelStyle = new Style({
+	text: new Text({
+		font: "14px Calibri,sans-serif",
+		fill: new Fill({ color: "rgba(255, 255, 255, 1)" }),
+		backgroundFill: new Fill({ color: "rgba(0, 0, 0, 0.7)" }),
+		padding: [
+			3,
+			3,
+			3,
+			3
+		],
+		textBaseline: "bottom",
+		offsetY: -15
+	}),
+	image: new RegularShape({
+		radius: 8,
+		points: 3,
+		angle: Math.PI,
+		displacement: [0, 10],
+		fill: new Fill({ color: "rgba(0, 0, 0, 0.7)" })
+	})
+});
+var tipStyle = new Style({ text: new Text({
+	font: "12px Calibri,sans-serif",
+	fill: new Fill({ color: "rgba(255, 255, 255, 1)" }),
+	backgroundFill: new Fill({ color: "rgba(0, 0, 0, 0.4)" }),
+	padding: [
+		2,
+		2,
+		2,
+		2
+	],
+	textAlign: "left",
+	offsetX: 15
+}) });
+var modifyStyle = new Style({
+	image: new CircleStyle({
+		radius: 5,
+		stroke: new Stroke({ color: "rgba(0, 0, 0, 0.7)" }),
+		fill: new Fill({ color: "rgba(0, 0, 0, 0.4)" })
+	}),
+	text: new Text({
+		text: "Drag to modify",
+		font: "12px Calibri,sans-serif",
+		fill: new Fill({ color: "rgba(255, 255, 255, 1)" }),
+		backgroundFill: new Fill({ color: "rgba(0, 0, 0, 0.7)" }),
+		padding: [
+			2,
+			2,
+			2,
+			2
+		],
+		textAlign: "left",
+		offsetX: 15
+	})
+});
+var segmentStyle = new Style({
+	text: new Text({
+		font: "12px Calibri,sans-serif",
+		fill: new Fill({ color: "rgba(255, 255, 255, 1)" }),
+		backgroundFill: new Fill({ color: "rgba(0, 0, 0, 0.4)" }),
+		padding: [
+			2,
+			2,
+			2,
+			2
+		],
+		textBaseline: "bottom",
+		offsetY: -12
+	}),
+	image: new RegularShape({
+		radius: 6,
+		points: 3,
+		angle: Math.PI,
+		displacement: [0, 8],
+		fill: new Fill({ color: "rgba(0, 0, 0, 0.4)" })
+	})
+});
+var segmentStyles = [segmentStyle];
+var formatLength = function(line) {
+	const length = getLength(line);
+	let output;
+	if (length > 100) output = Math.round(length / 1e3 * 100) / 100 + " km";
+	else output = Math.round(length * 100) / 100 + " m";
+	return output;
+};
+var formatArea = function(polygon) {
+	const area = getArea(polygon);
+	let output;
+	if (area > 1e4) output = Math.round(area / 1e6 * 100) / 100 + " km²";
+	else output = Math.round(area * 100) / 100 + " m²";
+	return output;
+};
+var raster = new TileLayer({ source: new OSM() });
+var source = new VectorSource();
+var modify = new Modify({
+	source,
+	style: modifyStyle
+});
+var tipPoint;
+function styleFunction(feature, segments, drawType, tip) {
+	const styles = [];
+	const geometry = feature.getGeometry();
+	const type = geometry.getType();
+	let point, label, line;
+	if (!drawType || drawType === type || type === "Point") {
+		styles.push(style);
+		if (type === "Polygon") {
+			point = geometry.getInteriorPoint();
+			label = formatArea(geometry);
+			line = new LineString(geometry.getCoordinates()[0]);
+		} else if (type === "LineString") {
+			point = new Point(geometry.getLastCoordinate());
+			label = formatLength(geometry);
+			line = geometry;
+		}
+	}
+	if (segments && line) {
+		let count = 0;
+		line.forEachSegment(function(a, b) {
+			const segment = new LineString([a, b]);
+			const label = formatLength(segment);
+			if (segmentStyles.length - 1 < count) segmentStyles.push(segmentStyle.clone());
+			const segmentPoint = new Point(segment.getCoordinateAt(.5));
+			segmentStyles[count].setGeometry(segmentPoint);
+			segmentStyles[count].getText().setText(label);
+			styles.push(segmentStyles[count]);
+			count++;
+		});
+	}
+	if (label) {
+		labelStyle.setGeometry(point);
+		labelStyle.getText().setText(label);
+		styles.push(labelStyle);
+	}
+	if (tip && type === "Point" && !modify.getOverlay().getSource().getFeatures().length) {
+		tipPoint = geometry;
+		tipStyle.getText().setText(tip);
+		styles.push(tipStyle);
+	}
+	return styles;
+}
+var vector = new VectorLayer({
+	source,
+	style: function(feature) {
+		return styleFunction(feature, showSegments.checked);
+	}
+});
+var map = new Map({
+	layers: [raster, vector],
+	target: "map",
+	view: new View({
+		center: [-11e6, 46e5],
+		zoom: 15
+	})
+});
+map.addInteraction(modify);
+var draw;
+function addInteraction() {
+	const drawType = typeSelect.value;
+	const activeTip = "Click to continue drawing the " + (drawType === "Polygon" ? "polygon" : "line");
+	const idleTip = "Click to start measuring";
+	let tip = idleTip;
+	draw = new Draw({
+		source,
+		type: drawType,
+		style: function(feature) {
+			return styleFunction(feature, showSegments.checked, drawType, tip);
+		}
+	});
+	draw.on("drawstart", function() {
+		if (clearPrevious.checked) source.clear();
+		modify.setActive(false);
+		tip = activeTip;
+	});
+	draw.on("drawend", function() {
+		modifyStyle.setGeometry(tipPoint);
+		modify.setActive(true);
+		map.once("pointermove", function() {
+			modifyStyle.setGeometry(null);
+		});
+		tip = idleTip;
+	});
+	modify.setActive(true);
+	map.addInteraction(draw);
+}
+typeSelect.onchange = function() {
+	map.removeInteraction(draw);
+	addInteraction();
+};
+addInteraction();
+showSegments.onchange = function() {
+	vector.changed();
+	draw.getOverlay().changed();
+};
+//#endregion
+
 //# sourceMappingURL=measure-style.js.map

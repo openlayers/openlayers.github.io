@@ -1,2 +1,28 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1969],{40108:function(e,t,n){var a=n(51541),r=n(41564),c=n(87240),o=n(40878),s=n(12185),i=n(23986),u=n(9226),l=n(29810),w=n(75052),m=n(88292);const g=new a.A({geometry:new o.A([0,0])}),f=new l.A({features:[g]}),y=new i.A({source:f}),A=new s.A({source:new u.A({layer:"stamen_toner"})}),p=new r.A({layers:[A,y],target:document.getElementById("map"),view:new c.Ay({center:[0,0],zoom:2})});gifler("data/globe.gif").frames(document.createElement("canvas"),(function(e,t){g.getStyle()||g.setStyle(new m.Ay({image:new w.A({img:e.canvas,opacity:.8})})),e.clearRect(0,0,t.width,t.height),e.drawImage(t.buffer,t.x,t.y),p.render()}),!0),p.on("pointermove",(function(e){const t=p.hasFeatureAtPixel(e.pixel);p.getTargetElement().style.cursor=t?"pointer":""}))}},function(e){var t;t=40108,e(e.s=t)}]);
+import { In as Icon, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature, yn as StadiaMaps } from "./common.js";
+//#region examples/animated-gif.js
+var iconFeature = new Feature({ geometry: new Point([0, 0]) });
+var vectorLayer = new VectorLayer({ source: new VectorSource({ features: [iconFeature] }) });
+var map = new Map({
+	layers: [new TileLayer({ source: new StadiaMaps({ layer: "stamen_toner" }) }), vectorLayer],
+	target: document.getElementById("map"),
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+gifler("data/globe.gif").frames(document.createElement("canvas"), function(ctx, frame) {
+	if (!iconFeature.getStyle()) iconFeature.setStyle(new Style({ image: new Icon({
+		img: ctx.canvas,
+		opacity: .8
+	}) }));
+	ctx.clearRect(0, 0, frame.width, frame.height);
+	ctx.drawImage(frame.buffer, frame.x, frame.y);
+	map.render();
+}, true);
+map.on("pointermove", function(e) {
+	const hit = map.hasFeatureAtPixel(e.pixel);
+	map.getTargetElement().style.cursor = hit ? "pointer" : "";
+});
+//#endregion
+
 //# sourceMappingURL=animated-gif.js.map

@@ -1,2 +1,84 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3486],{79481:function(t,n,e){var o=e(51541),c=e(41564),i=e(87240),s=e(77833),a=e(23986),r=e(29810);const u=1e7,h=Math.cos(Math.PI/6),f=u*Math.sin(Math.PI/6),l=u*h,p=new s.A([[0,u],[l,-f],[-l,-f],[0,u]]),x=new o.A(p),w=new a.A({source:new r.A({features:[x]})});new c.A({layers:[w],target:"map",view:new i.Ay({center:[0,0],zoom:1})});function m(t){const n=t.next,e=t.point,o=t.next.point,c=o[0]-e[0],i=o[1]-e[1],s={point:[e[0]+c/3,e[1]+i/3]},a=Math.sqrt(c*c+i*i)/(2*h),r=Math.atan2(i,c)+Math.PI/6,u={point:[e[0]+a*Math.cos(r),e[1]+a*Math.sin(r)]},f={point:[o[0]-c/3,o[1]-i/3]};t.next=s,s.next=u,u.next=f,f.next=n}const d=document.getElementById("depth");function M(){!function(t){const n=p.clone(),e=function(t){const n={point:t[0]},e=t.length;for(let o=0,c=n;o<e-1;++o)c.next={point:t[o+1]},c=c.next;return n}(n.getCoordinates());for(let n=0;n<t;++n){let t=e;for(;t.next;){const n=t.next;m(t),t=n}}const o=function(t){const n=[t.point];for(let e=t,o=1;e.next;e=e.next,++o)n[o]=e.next.point;return n}(e);document.getElementById("count").innerText=String(o.length),n.setCoordinates(o),x.setGeometry(n)}(Number(d.value))}let g;d.onchange=function(){window.clearTimeout(g),g=window.setTimeout(M,200)},M()}},function(t){var n;n=79481,t(t.s=n)}]);
+import { Mn as Map, bn as VectorLayer, dn as VectorSource, gn as LineString, or as View, xn as Feature } from "./common.js";
+//#region examples/fractal.js
+var radius = 1e7;
+var cos30 = Math.cos(Math.PI / 6);
+var rise = radius * Math.sin(Math.PI / 6);
+var run = radius * cos30;
+var triangle = new LineString([
+	[0, radius],
+	[run, -rise],
+	[-run, -rise],
+	[0, radius]
+]);
+var feature = new Feature(triangle);
+new Map({
+	layers: [new VectorLayer({ source: new VectorSource({ features: [feature] }) })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 1
+	})
+});
+function makeFractal(depth) {
+	const geometry = triangle.clone();
+	const graph = coordsToGraph(geometry.getCoordinates());
+	for (let i = 0; i < depth; ++i) {
+		let node = graph;
+		while (node.next) {
+			const next = node.next;
+			injectNodes(node);
+			node = next;
+		}
+	}
+	const coordinates = graphToCoords(graph);
+	document.getElementById("count").innerText = String(coordinates.length);
+	geometry.setCoordinates(coordinates);
+	feature.setGeometry(geometry);
+}
+function injectNodes(startNode) {
+	const endNode = startNode.next;
+	const start = startNode.point;
+	const end = startNode.next.point;
+	const dx = end[0] - start[0];
+	const dy = end[1] - start[1];
+	const firstNode = { point: [start[0] + dx / 3, start[1] + dy / 3] };
+	const r = Math.sqrt(dx * dx + dy * dy) / (2 * cos30);
+	const a = Math.atan2(dy, dx) + Math.PI / 6;
+	const secondNode = { point: [start[0] + r * Math.cos(a), start[1] + r * Math.sin(a)] };
+	const thirdNode = { point: [end[0] - dx / 3, end[1] - dy / 3] };
+	startNode.next = firstNode;
+	firstNode.next = secondNode;
+	secondNode.next = thirdNode;
+	thirdNode.next = endNode;
+}
+function coordsToGraph(coordinates) {
+	const graph = { point: coordinates[0] };
+	const length = coordinates.length;
+	for (let level = 0, node = graph; level < length - 1; ++level) {
+		node.next = { point: coordinates[level + 1] };
+		node = node.next;
+	}
+	return graph;
+}
+function graphToCoords(graph) {
+	const coordinates = [graph.point];
+	for (let node = graph, i = 1; node.next; node = node.next, ++i) coordinates[i] = node.next.point;
+	return coordinates;
+}
+var depthInput = document.getElementById("depth");
+function update() {
+	makeFractal(Number(depthInput.value));
+}
+var updateTimer;
+/**
+* Regenerate fractal on depth change.  Change events are debounced so updates
+* only occur every 200ms.
+*/
+depthInput.onchange = function() {
+	window.clearTimeout(updateTimer);
+	updateTimer = window.setTimeout(update, 200);
+};
+update();
+//#endregion
+
 //# sourceMappingURL=fractal.js.map

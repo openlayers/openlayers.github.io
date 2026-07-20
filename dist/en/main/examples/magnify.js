@@ -1,2 +1,81 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8608],{523:function(t,e,n){var a=n(41564),r=n(87240),o=n(12185),s=n(25231),i=n(66267),u=n(15264);const p=new o.A({source:new u.A({attributions:'<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',url:"https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",tileSize:512,maxZoom:20})}),c=document.getElementById("map"),l=new a.A({layers:[p],target:c,view:new r.Ay({center:(0,s.Rb)([-109,46.5]),zoom:6})});let d=75;document.addEventListener("keydown",(function(t){"ArrowUp"===t.key?(d=Math.min(d+5,150),l.render(),t.preventDefault()):"ArrowDown"===t.key&&(d=Math.max(d-5,25),l.render(),t.preventDefault())}));let h=null;c.addEventListener("mousemove",(function(t){h=l.getEventPixel(t),l.render()})),c.addEventListener("mouseout",(function(){h=null,l.render()})),p.on("postrender",(function(t){if(h){const e=(0,i.FY)(t,h),n=(0,i.FY)(t,[h[0]+d,h[1]]),a=Math.sqrt(Math.pow(n[0]-e[0],2)+Math.pow(n[1]-e[1],2)),r=t.context,o=e[0],s=e[1],u=o-a,p=s-a,c=Math.round(2*a+1),l=r.getImageData(u,p,c,c).data,m=r.createImageData(c,c),w=m.data;for(let t=0;t<c;++t)for(let e=0;e<c;++e){const n=e-a,r=t-a;let o=e,s=t;Math.sqrt(n*n+r*r)<a&&(o=Math.round(a+n/2),s=Math.round(a+r/2));const i=4*(t*c+e),u=4*(s*c+o);w[i]=l[u],w[i+1]=l[u+1],w[i+2]=l[u+2],w[i+3]=l[u+3]}r.beginPath(),r.arc(o,s,a,0,2*Math.PI),r.lineWidth=3*a/d,r.strokeStyle="rgba(255,255,255,0.5)",r.putImageData(m,u,p),r.stroke(),r.restore()}}))}},function(t){var e;e=523,t(t.s=e)}]);
+import { Cr as fromLonLat, Mn as Map, an as ImageTileSource, jn as TileLayer, or as View, st as getRenderPixel } from "./common.js";
+//#region examples/magnify.js
+var imagery = new TileLayer({ source: new ImageTileSource({
+	attributions: "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+	url: "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+	tileSize: 512,
+	maxZoom: 20
+}) });
+var container = document.getElementById("map");
+var map = new Map({
+	layers: [imagery],
+	target: container,
+	view: new View({
+		center: fromLonLat([-109, 46.5]),
+		zoom: 6
+	})
+});
+var radius = 75;
+document.addEventListener("keydown", function(evt) {
+	if (evt.key === "ArrowUp") {
+		radius = Math.min(radius + 5, 150);
+		map.render();
+		evt.preventDefault();
+	} else if (evt.key === "ArrowDown") {
+		radius = Math.max(radius - 5, 25);
+		map.render();
+		evt.preventDefault();
+	}
+});
+var mousePosition = null;
+container.addEventListener("mousemove", function(event) {
+	mousePosition = map.getEventPixel(event);
+	map.render();
+});
+container.addEventListener("mouseout", function() {
+	mousePosition = null;
+	map.render();
+});
+imagery.on("postrender", function(event) {
+	if (mousePosition) {
+		const pixel = getRenderPixel(event, mousePosition);
+		const offset = getRenderPixel(event, [mousePosition[0] + radius, mousePosition[1]]);
+		const half = Math.sqrt(Math.pow(offset[0] - pixel[0], 2) + Math.pow(offset[1] - pixel[1], 2));
+		const context = event.context;
+		const centerX = pixel[0];
+		const centerY = pixel[1];
+		const originX = centerX - half;
+		const originY = centerY - half;
+		const size = Math.round(2 * half + 1);
+		const sourceData = context.getImageData(originX, originY, size, size).data;
+		const dest = context.createImageData(size, size);
+		const destData = dest.data;
+		for (let j = 0; j < size; ++j) for (let i = 0; i < size; ++i) {
+			const dI = i - half;
+			const dJ = j - half;
+			const dist = Math.sqrt(dI * dI + dJ * dJ);
+			let sourceI = i;
+			let sourceJ = j;
+			if (dist < half) {
+				sourceI = Math.round(half + dI / 2);
+				sourceJ = Math.round(half + dJ / 2);
+			}
+			const destOffset = (j * size + i) * 4;
+			const sourceOffset = (sourceJ * size + sourceI) * 4;
+			destData[destOffset] = sourceData[sourceOffset];
+			destData[destOffset + 1] = sourceData[sourceOffset + 1];
+			destData[destOffset + 2] = sourceData[sourceOffset + 2];
+			destData[destOffset + 3] = sourceData[sourceOffset + 3];
+		}
+		context.beginPath();
+		context.arc(centerX, centerY, half, 0, 2 * Math.PI);
+		context.lineWidth = 3 * half / radius;
+		context.strokeStyle = "rgba(255,255,255,0.5)";
+		context.putImageData(dest, originX, originY);
+		context.stroke();
+		context.restore();
+	}
+});
+//#endregion
+
 //# sourceMappingURL=magnify.js.map

@@ -1,2 +1,217 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7035],{94350:function(t,e,n){var a=n(26947),r=n(41564),o=n(87240),c=n(96256),i=n(25231),s=n(77779);(0,i.n0)();const u=new a.HC("https://pub-9288c68512ed46eca46ddcade307709b.r2.dev/protomaps-sample-datasets/terrarium_z9.pmtiles");function d(t,e){return["+",["*",65280,["band",1,t,e]],["*",255,["band",2,t,e]],["*",255/256,["band",3,t,e]],-32768]}const l=["*",2,["resolution"]],m=["*",["var","vert"],d(-1,0)],v=["/",["-",["*",["var","vert"],d(1,0)],m],l],b=["*",["var","vert"],d(0,-1)],p=["/",["-",["*",["var","vert"],d(0,1)],b],l],f=["atan",["sqrt",["+",["^",v,2],["^",p,2]]]],w=["clamp",["atan",["-",0,v],p],-Math.PI,Math.PI],h=["*",Math.PI/180,["var","sunEl"]],E=["*",255,["+",["*",["sin",h],["cos",f]],["*",["cos",h],["sin",f],["cos",["-",["*",Math.PI/180,["var","sunAz"]],w]]]]],g={},y=new c.A({source:new s.A({loader:async function(t,e,n,{signal:a}){const r=await u.getZxy(t,e,n,a),o=new Blob([r.data]),c=URL.createObjectURL(o),i=await function(t){return new Promise(((e,n)=>{const a=new Image;a.addEventListener("load",(()=>e(a))),a.addEventListener("error",(()=>n(new Error("load failed")))),a.src=t}))}(c);return URL.revokeObjectURL(c),i},wrapX:!0,maxZoom:9,attributions:"<a href='https://github.com/tilezen/joerd/blob/master/docs/attribution.md#attribution'>Tilezen Jörð</a>"}),style:{variables:g,color:["color",E]}});["vert","sunEl","sunAz"].forEach((function(t){const e=document.getElementById(t),n=document.getElementById(t+"Out");function a(){n.innerText=e.value,g[t]=Number(e.value)}a(),e.addEventListener("input",(function(){a(),y.updateStyleVariables(g)}))}));const I=new r.A({target:"map",layers:[y],view:new o.Ay({center:[0,0],zoom:1})});const x=document.getElementById("elevationOut"),L=document.getElementById("locationOut");I.on(["pointermove","click"],(function(t){const e=y.getData(t.pixel);e&&(x.innerText=function(t){return 256*t[0]+t[1]+t[2]/256-32768}(e).toLocaleString()+" m",L.innerText=function([t,e]){const n=e<0?"S":"N",a=t<0?"W":"E";return`${Math.abs(e).toFixed(1)}° ${n}, ${Math.abs(t).toFixed(1)}° ${a}`}(t.coordinate))}))}},function(t){var e;e=94350,t(t.s=e)}]);
+import { Ar as useGeographic, Ht as WebGLTileLayer, Mn as Map, S as w, on as DataTileSource, or as View } from "./common.js";
+//#region examples/pmtiles-elevation.js
+useGeographic();
+var tiles = new w("https://pub-9288c68512ed46eca46ddcade307709b.r2.dev/protomaps-sample-datasets/terrarium_z9.pmtiles");
+function loadImage(src) {
+	return new Promise((resolve, reject) => {
+		const img = new Image();
+		img.addEventListener("load", () => resolve(img));
+		img.addEventListener("error", () => reject(/* @__PURE__ */ new Error("load failed")));
+		img.src = src;
+	});
+}
+async function loader(z, x, y, { signal }) {
+	const response = await tiles.getZxy(z, x, y, signal);
+	const blob = new Blob([response.data]);
+	const src = URL.createObjectURL(blob);
+	const image = await loadImage(src);
+	URL.revokeObjectURL(src);
+	return image;
+}
+function elevation(xOffset, yOffset) {
+	return [
+		"+",
+		[
+			"*",
+			255 * 256,
+			[
+				"band",
+				1,
+				xOffset,
+				yOffset
+			]
+		],
+		[
+			"*",
+			255,
+			[
+				"band",
+				2,
+				xOffset,
+				yOffset
+			]
+		],
+		[
+			"*",
+			255 / 256,
+			[
+				"band",
+				3,
+				xOffset,
+				yOffset
+			]
+		],
+		-32768
+	];
+}
+var dp = [
+	"*",
+	2,
+	["resolution"]
+];
+var z0x = [
+	"*",
+	["var", "vert"],
+	elevation(-1, 0)
+];
+var dzdx = [
+	"/",
+	[
+		"-",
+		[
+			"*",
+			["var", "vert"],
+			elevation(1, 0)
+		],
+		z0x
+	],
+	dp
+];
+var z0y = [
+	"*",
+	["var", "vert"],
+	elevation(0, -1)
+];
+var dzdy = [
+	"/",
+	[
+		"-",
+		[
+			"*",
+			["var", "vert"],
+			elevation(0, 1)
+		],
+		z0y
+	],
+	dp
+];
+var slope = ["atan", ["sqrt", [
+	"+",
+	[
+		"^",
+		dzdx,
+		2
+	],
+	[
+		"^",
+		dzdy,
+		2
+	]
+]]];
+var aspect = [
+	"clamp",
+	[
+		"atan",
+		[
+			"-",
+			0,
+			dzdx
+		],
+		dzdy
+	],
+	-Math.PI,
+	Math.PI
+];
+var sunEl = [
+	"*",
+	Math.PI / 180,
+	["var", "sunEl"]
+];
+var sunAz = [
+	"*",
+	Math.PI / 180,
+	["var", "sunAz"]
+];
+var scaled = [
+	"*",
+	255,
+	[
+		"+",
+		[
+			"*",
+			["sin", sunEl],
+			["cos", slope]
+		],
+		[
+			"*",
+			["cos", sunEl],
+			["sin", slope],
+			["cos", [
+				"-",
+				sunAz,
+				aspect
+			]]
+		]
+	]
+];
+var variables = {};
+var layer = new WebGLTileLayer({
+	source: new DataTileSource({
+		loader,
+		wrapX: true,
+		maxZoom: 9,
+		attributions: "<a href='https://github.com/tilezen/joerd/blob/master/docs/attribution.md#attribution'>Tilezen Jörð</a>"
+	}),
+	style: {
+		variables,
+		color: ["color", scaled]
+	}
+});
+[
+	"vert",
+	"sunEl",
+	"sunAz"
+].forEach(function(id) {
+	const control = document.getElementById(id);
+	const output = document.getElementById(id + "Out");
+	function updateValues() {
+		output.innerText = control.value;
+		variables[id] = Number(control.value);
+	}
+	updateValues();
+	control.addEventListener("input", function() {
+		updateValues();
+		layer.updateStyleVariables(variables);
+	});
+});
+var map = new Map({
+	target: "map",
+	layers: [layer],
+	view: new View({
+		center: [0, 0],
+		zoom: 1
+	})
+});
+function getElevation(data) {
+	const red = data[0];
+	const green = data[1];
+	const blue = data[2];
+	return red * 256 + green + blue / 256 - 32768;
+}
+function formatLocation([lon, lat]) {
+	const NS = lat < 0 ? "S" : "N";
+	const EW = lon < 0 ? "W" : "E";
+	return `${Math.abs(lat).toFixed(1)}° ${NS}, ${Math.abs(lon).toFixed(1)}° ${EW}`;
+}
+var elevationOut = document.getElementById("elevationOut");
+var locationOut = document.getElementById("locationOut");
+function displayPixelValue(event) {
+	const data = layer.getData(event.pixel);
+	if (!data) return;
+	elevationOut.innerText = getElevation(data).toLocaleString() + " m";
+	locationOut.innerText = formatLocation(event.coordinate);
+}
+map.on(["pointermove", "click"], displayPixelValue);
+//#endregion
+
 //# sourceMappingURL=pmtiles-elevation.js.map

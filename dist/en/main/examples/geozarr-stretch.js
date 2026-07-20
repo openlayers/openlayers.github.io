@@ -1,2 +1,68 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3469],{97064:function(e,n,t){var a=t(41564),r=t(87240),s=t(96256),o=t(874),u=t(28e3);const l=["red","green","blue"];for(const e of l){document.getElementById(e).addEventListener("change",v);document.getElementById(`${e}Max`).addEventListener("input",v)}function c(){const e={};for(const n of l){const t=document.getElementById(n);e[n]=parseFloat(t.value);const a=`${n}Max`,r=document.getElementById(a);e[a]=parseFloat(r.value)}return e}const d=new o.default({url:"https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2B_MSIL2A_20260120T125339_N0511_R138_T27VWL_20260120T131151.zarr/measurements/reflectance",bands:["b04","b03","b02","b11"]}),b=new s.A({style:{variables:c(),gamma:1.5,color:["array",["/",["band",["var","red"]],["var","redMax"]],["/",["band",["var","green"]],["var","greenMax"]],["/",["band",["var","blue"]],["var","blueMax"]],1]},source:d});function v(){b.updateStyleVariables(c())}new a.A({target:"map",layers:[new s.A({source:new u.A}),b],view:(0,r.KZ)(d,(0,r.nH)(2),(0,r.Ev)())})}},function(e){var n;n=97064,e(e.s=n)}]);
+import { Cn as OSM, Ht as WebGLTileLayer, Mn as Map, N as GeoZarr, cr as withExtentCenter, lr as withHigherResolutions, sr as getView } from "./common.js";
+//#region examples/geozarr-stretch.js
+var channels = [
+	"red",
+	"green",
+	"blue"
+];
+for (const channel of channels) {
+	document.getElementById(channel).addEventListener("change", update);
+	document.getElementById(`${channel}Max`).addEventListener("input", update);
+}
+function getVariables() {
+	const variables = {};
+	for (const channel of channels) {
+		const selector = document.getElementById(channel);
+		variables[channel] = parseFloat(selector.value);
+		const inputId = `${channel}Max`;
+		const input = document.getElementById(inputId);
+		variables[inputId] = parseFloat(input.value);
+	}
+	return variables;
+}
+var source = new GeoZarr({
+	url: "https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2B_MSIL2A_20260120T125339_N0511_R138_T27VWL_20260120T131151.zarr/measurements/reflectance",
+	bands: [
+		"b04",
+		"b03",
+		"b02",
+		"b11"
+	]
+});
+var layer = new WebGLTileLayer({
+	style: {
+		variables: getVariables(),
+		gamma: 1.5,
+		color: [
+			"array",
+			[
+				"/",
+				["band", ["var", "red"]],
+				["var", "redMax"]
+			],
+			[
+				"/",
+				["band", ["var", "green"]],
+				["var", "greenMax"]
+			],
+			[
+				"/",
+				["band", ["var", "blue"]],
+				["var", "blueMax"]
+			],
+			1
+		]
+	},
+	source
+});
+function update() {
+	layer.updateStyleVariables(getVariables());
+}
+new Map({
+	target: "map",
+	layers: [new WebGLTileLayer({ source: new OSM() }), layer],
+	view: getView(source, withHigherResolutions(2), withExtentCenter())
+});
+//#endregion
+
 //# sourceMappingURL=geozarr-stretch.js.map

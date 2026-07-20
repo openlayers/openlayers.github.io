@@ -1,2 +1,62 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9341],{68904:function(e,t,a){var n=a(41564),r=a(87240),i=a(49208),s=a(52613),u=a(12185),l=a(25231),p=a(9226),d=a(29810);const o=document.getElementById("blur"),c=document.getElementById("radius"),y=new s.A({source:new d.A({url:"data/geojson/ship-trajectories.json",format:new i.A,attributions:"Danish Maritime Authority"}),blur:["/",["var","blur"],2],radius:["/",["var","radius"],2],variables:{blur:parseInt(o.value,10),radius:parseInt(c.value,10),shipType:"All"},filter:["any",["==",["var","shipType"],"All"],["==",["var","shipType"],["get","ShipType"]]],weight:()=>.1}),v=new u.A({source:new p.A({layer:"alidade_smooth_dark"})}),h=new n.A({layers:[v,y],target:"map",view:new r.Ay({center:(0,l.Rb)([11.86,57.67]),zoom:12})});o.addEventListener("input",(function(){y.updateStyleVariables({blur:parseInt(o.value,10)})})),c.addEventListener("input",(function(){y.updateStyleVariables({radius:parseInt(c.value,10)})}));const b=document.getElementById("shiptype-filter");b.addEventListener("input",(function(){y.updateStyleVariables({shipType:b.value}),h.render()}))}},function(e){var t;t=68904,e(e.s=t)}]);
+import { Cr as fromLonLat, H as Heatmap, Mn as Map, dn as VectorSource, jn as TileLayer, or as View, rn as GeoJSON, yn as StadiaMaps } from "./common.js";
+//#region examples/heatmap-trajectories.js
+var blur = document.getElementById("blur");
+var radius = document.getElementById("radius");
+var heatmap = new Heatmap({
+	source: new VectorSource({
+		url: "data/geojson/ship-trajectories.json",
+		format: new GeoJSON(),
+		attributions: "Danish Maritime Authority"
+	}),
+	blur: [
+		"/",
+		["var", "blur"],
+		2
+	],
+	radius: [
+		"/",
+		["var", "radius"],
+		2
+	],
+	variables: {
+		blur: parseInt(blur.value, 10),
+		radius: parseInt(radius.value, 10),
+		shipType: "All"
+	},
+	filter: [
+		"any",
+		[
+			"==",
+			["var", "shipType"],
+			"All"
+		],
+		[
+			"==",
+			["var", "shipType"],
+			["get", "ShipType"]
+		]
+	],
+	weight: () => .1
+});
+var map = new Map({
+	layers: [new TileLayer({ source: new StadiaMaps({ layer: "alidade_smooth_dark" }) }), heatmap],
+	target: "map",
+	view: new View({
+		center: fromLonLat([11.86, 57.67]),
+		zoom: 12
+	})
+});
+blur.addEventListener("input", function() {
+	heatmap.updateStyleVariables({ blur: parseInt(blur.value, 10) });
+});
+radius.addEventListener("input", function() {
+	heatmap.updateStyleVariables({ radius: parseInt(radius.value, 10) });
+});
+var shipTypeSelect = document.getElementById("shiptype-filter");
+shipTypeSelect.addEventListener("input", function() {
+	heatmap.updateStyleVariables({ shipType: shipTypeSelect.value });
+	map.render();
+});
+//#endregion
+
 //# sourceMappingURL=heatmap-trajectories.js.map

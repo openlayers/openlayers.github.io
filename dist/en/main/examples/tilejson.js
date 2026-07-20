@@ -1,2 +1,16 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5829],{27120:function(e,s,a){var n=a(41564),r=a(87240),t=a(12185),o=a(14407);new n.A({layers:[new t.A({source:new o.A({url:"https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:raster:HYP_HR_SR_OB_DR/map/tiles/WebMercatorQuad?f=tilejson",crossOrigin:"anonymous"})})],target:"map",view:new r.Ay({center:[0,0],zoom:2})})}},function(e){var s;s=27120,e(e.s=s)}]);
+import { Mn as Map, jn as TileLayer, or as View, wt as TileJSON } from "./common.js";
+//#region examples/tilejson.js
+new Map({
+	layers: [new TileLayer({ source: new TileJSON({
+		url: "https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:raster:HYP_HR_SR_OB_DR/map/tiles/WebMercatorQuad?f=tilejson",
+		crossOrigin: "anonymous"
+	}) })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+//#endregion
+
 //# sourceMappingURL=tilejson.js.map

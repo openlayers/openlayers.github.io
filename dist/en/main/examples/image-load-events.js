@@ -1,2 +1,78 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8527],{36002:function(t,e,o){var i=o(41564),n=o(87240),s=o(47085),d=o(2091);function a(t){this.el=t,this.loading=0,this.loaded=0}a.prototype.addLoading=function(){++this.loading,this.update()},a.prototype.addLoaded=function(){++this.loaded,this.update()},a.prototype.update=function(){const t=(this.loaded/this.loading*100).toFixed(1)+"%";this.el.style.width=t},a.prototype.show=function(){this.el.style.visibility="visible"},a.prototype.hide=function(){const t=this.el.style;setTimeout((function(){t.visibility="hidden",t.width="0px"}),250)};const r=new a(document.getElementById("progress")),l=new d.A({url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"topp:states"},serverType:"geoserver"});l.on("imageloadstart",(function(){r.addLoading()})),l.on(["imageloadend","imageloaderror"],(function(){r.addLoaded()}));const c=new i.A({layers:[new s.A({source:l})],target:"map",view:new n.Ay({center:[-10997148,4569099],zoom:4})});c.on("loadstart",(function(){r.show()})),c.on("loadend",(function(){r.hide()}))}},function(t){var e;e=36002,t(t.s=e)}]);
+import { Mn as Map, Ot as ImageWMS, or as View, un as ImageLayer } from "./common.js";
+//#region examples/image-load-events.js
+/**
+* Renders a progress bar.
+* @param {HTMLElement} el The target element.
+* @class
+*/
+function Progress(el) {
+	this.el = el;
+	this.loading = 0;
+	this.loaded = 0;
+}
+/**
+* Increment the count of loading tiles.
+*/
+Progress.prototype.addLoading = function() {
+	++this.loading;
+	this.update();
+};
+/**
+* Increment the count of loaded tiles.
+*/
+Progress.prototype.addLoaded = function() {
+	++this.loaded;
+	this.update();
+};
+/**
+* Update the progress bar.
+*/
+Progress.prototype.update = function() {
+	const width = (this.loaded / this.loading * 100).toFixed(1) + "%";
+	this.el.style.width = width;
+};
+/**
+* Show the progress bar.
+*/
+Progress.prototype.show = function() {
+	this.el.style.visibility = "visible";
+};
+/**
+* Hide the progress bar.
+*/
+Progress.prototype.hide = function() {
+	const style = this.el.style;
+	setTimeout(function() {
+		style.visibility = "hidden";
+		style.width = "0px";
+	}, 250);
+};
+var progress = new Progress(document.getElementById("progress"));
+var source = new ImageWMS({
+	url: "https://ahocevar.com/geoserver/wms",
+	params: { "LAYERS": "topp:states" },
+	serverType: "geoserver"
+});
+source.on("imageloadstart", function() {
+	progress.addLoading();
+});
+source.on(["imageloadend", "imageloaderror"], function() {
+	progress.addLoaded();
+});
+var map = new Map({
+	layers: [new ImageLayer({ source })],
+	target: "map",
+	view: new View({
+		center: [-10997148, 4569099],
+		zoom: 4
+	})
+});
+map.on("loadstart", function() {
+	progress.show();
+});
+map.on("loadend", function() {
+	progress.hide();
+});
+//#endregion
+
 //# sourceMappingURL=image-load-events.js.map

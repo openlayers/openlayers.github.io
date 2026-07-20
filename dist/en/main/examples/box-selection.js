@@ -1,2 +1,89 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8999],{68778:function(e,t,n){var o=n(41564),r=n(87240),c=n(38808),a=n(16235),s=n(49208),i=n(62126),l=n(68266),g=n(23986),u=n(29810),f=n(38276),w=n(44689),A=n(88292);const h=new u.A({url:"https://openlayers.org/data/vector/ecoregions.json",format:new s.A}),y=new A.Ay({fill:new f.A({color:"#eeeeee"})}),d=new o.A({layers:[new g.A({source:h,background:"#1a2b39",style:function(e){const t=e.get("COLOR_BIO")||"#eeeeee";return y.getFill().setColor(t),y}})],target:"map",view:new r.Ay({center:[0,0],zoom:2,constrainRotation:16})}),m=new A.Ay({fill:new f.A({color:"rgba(255, 255, 255, 0.6)"}),stroke:new w.A({color:"rgba(255, 255, 255, 0.7)",width:2})}),E=new l.A({filter:function(e){return!("#CC6767"===e.get("COLOR_BIO"))},style:function(e){const t=e.get("COLOR_BIO")||"#eeeeee";return m.getFill().setColor(t),m}});d.addInteraction(E);const C=new i.A({condition:c.k5});d.addInteraction(C),C.on("boxend",(function(){const e=C.getGeometry().getExtent(),t=d.getView().getProjection().getExtent(),n=(0,a.RG)(t),o=Math.floor((e[0]-t[0])/n),r=Math.floor((e[2]-t[0])/n);for(let c=o;c<=r;++c){const o=Math.max(e[0]-c*n,t[0]),r=Math.min(e[2]-c*n,t[2]),a=[o,e[1],r,e[3]],s=h.getFeaturesInExtent(a).filter((e=>e.getGeometry().intersectsExtent(a))),i=d.getView().getRotation();if(i%(Math.PI/2)!=0){const e=[0,0],t=C.getGeometry().clone();t.translate(-c*n,0),t.rotate(-i,e);const o=t.getExtent();s.forEach((function(t){const n=t.getGeometry().clone();n.rotate(-i,e),n.intersectsExtent(o)&&E.selectFeature(t)}))}else s.forEach(E.selectFeature.bind(E))}})),C.on("boxstart",(function(){E.clearSelection()}));const O=document.getElementById("info");E.on("select",(function(){const e=E.getFeatures().getArray().map((e=>e.get("ECO_NAME")));e.length>0?O.innerHTML=e.join(", "):O.innerHTML="None"}))}},function(e){var t;t=68778,e(e.s=t)}]);
+import { $n as platformModifierKeyOnly, Fn as Stroke, Kn as DragBox, Ln as Fill, Mn as Map, Pn as Style, Yr as getWidth, bn as VectorLayer, dn as VectorSource, nn as Select, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/box-selection.js
+var vectorSource = new VectorSource({
+	url: "https://openlayers.org/data/vector/ecoregions.json",
+	format: new GeoJSON()
+});
+var style = new Style({ fill: new Fill({ color: "#eeeeee" }) });
+var map = new Map({
+	layers: [new VectorLayer({
+		source: vectorSource,
+		background: "#1a2b39",
+		style: function(feature) {
+			const color = feature.get("COLOR_BIO") || "#eeeeee";
+			style.getFill().setColor(color);
+			return style;
+		}
+	})],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2,
+		constrainRotation: 16
+	})
+});
+var selectedStyle = new Style({
+	fill: new Fill({ color: "rgba(255, 255, 255, 0.6)" }),
+	stroke: new Stroke({
+		color: "rgba(255, 255, 255, 0.7)",
+		width: 2
+	})
+});
+var select = new Select({
+	filter: function(feature) {
+		return !(feature.get("COLOR_BIO") === "#CC6767");
+	},
+	style: function(feature) {
+		const color = feature.get("COLOR_BIO") || "#eeeeee";
+		selectedStyle.getFill().setColor(color);
+		return selectedStyle;
+	}
+});
+map.addInteraction(select);
+var dragBox = new DragBox({ condition: platformModifierKeyOnly });
+map.addInteraction(dragBox);
+dragBox.on("boxend", function() {
+	const boxExtent = dragBox.getGeometry().getExtent();
+	const worldExtent = map.getView().getProjection().getExtent();
+	const worldWidth = getWidth(worldExtent);
+	const startWorld = Math.floor((boxExtent[0] - worldExtent[0]) / worldWidth);
+	const endWorld = Math.floor((boxExtent[2] - worldExtent[0]) / worldWidth);
+	for (let world = startWorld; world <= endWorld; ++world) {
+		const left = Math.max(boxExtent[0] - world * worldWidth, worldExtent[0]);
+		const right = Math.min(boxExtent[2] - world * worldWidth, worldExtent[2]);
+		const extent = [
+			left,
+			boxExtent[1],
+			right,
+			boxExtent[3]
+		];
+		const boxFeatures = vectorSource.getFeaturesInExtent(extent).filter((feature) => feature.getGeometry().intersectsExtent(extent));
+		const rotation = map.getView().getRotation();
+		if (rotation % (Math.PI / 2) !== 0) {
+			const anchor = [0, 0];
+			const geometry = dragBox.getGeometry().clone();
+			geometry.translate(-world * worldWidth, 0);
+			geometry.rotate(-rotation, anchor);
+			const extent = geometry.getExtent();
+			boxFeatures.forEach(function(feature) {
+				const geometry = feature.getGeometry().clone();
+				geometry.rotate(-rotation, anchor);
+				if (geometry.intersectsExtent(extent)) select.selectFeature(feature);
+			});
+		} else boxFeatures.forEach(select.selectFeature.bind(select));
+	}
+});
+dragBox.on("boxstart", function() {
+	select.clearSelection();
+});
+var infoBox = document.getElementById("info");
+select.on("select", function() {
+	const names = select.getFeatures().getArray().map((feature) => {
+		return feature.get("ECO_NAME");
+	});
+	if (names.length > 0) infoBox.innerHTML = names.join(", ");
+	else infoBox.innerHTML = "None";
+});
+//#endregion
+
 //# sourceMappingURL=box-selection.js.map

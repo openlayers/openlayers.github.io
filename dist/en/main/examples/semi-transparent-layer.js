@@ -1,2 +1,20 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9748],{31215:function(e,n,s){var a=s(41564),o=s(87240),c=s(12185),i=s(25231),r=s(28e3),t=s(14407);new a.A({layers:[new c.A({className:"bw",source:new r.A}),new c.A({source:new t.A({url:"https://api.tiles.mapbox.com/v4/mapbox.va-quake-aug.json?secure&access_token=pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2t0cGdwMHVnMGdlbzMxbDhwazBic2xrNSJ9.WbcTL9uj8JPAsnT9mgb7oQ",crossOrigin:"anonymous",transition:0})})],target:"map",view:new o.Ay({center:(0,i.Rb)([-77.93255,37.9555]),zoom:7})})}},function(e){var n;n=31215,e(e.s=n)}]);
+import { Cn as OSM, Cr as fromLonLat, Mn as Map, jn as TileLayer, or as View, wt as TileJSON } from "./common.js";
+//#region examples/semi-transparent-layer.js
+new Map({
+	layers: [new TileLayer({
+		className: "bw",
+		source: new OSM()
+	}), new TileLayer({ source: new TileJSON({
+		url: "https://api.tiles.mapbox.com/v4/mapbox.va-quake-aug.json?secure&access_token=pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2t0cGdwMHVnMGdlbzMxbDhwazBic2xrNSJ9.WbcTL9uj8JPAsnT9mgb7oQ",
+		crossOrigin: "anonymous",
+		transition: 0
+	}) })],
+	target: "map",
+	view: new View({
+		center: fromLonLat([-77.93255, 37.9555]),
+		zoom: 7
+	})
+});
+//#endregion
+
 //# sourceMappingURL=semi-transparent-layer.js.map

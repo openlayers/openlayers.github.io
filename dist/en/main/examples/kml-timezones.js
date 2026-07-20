@@ -1,2 +1,92 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1898],{44005:function(e,t,n){var o=n(41564),i=n(87240),r=n(30135),s=n(12185),a=n(23986),c=n(9226),l=n(29810),f=n(38276),u=n(44689),m=n(88292);const g=new a.A({source:new l.A({url:"data/kml/timezones.kml",format:new r.Ay({extractStyles:!1})}),style:function(e){const t=e.get("tz-offset"),n=new Date;n.setTime(n.getTime()+6e4*(n.getTimezoneOffset()+(t||0)));let o=Math.abs(12-(n.getHours()+n.getMinutes()/60));o>12&&(o=24-o);const i=.75*(1-o/12);return new m.Ay({fill:new f.A({color:[255,255,51,i]}),stroke:new u.A({color:"#ffffff"})})}});g.getSource().on("featuresloadend",(function(e){e.features.forEach((function(e){const t=function(e){const t=e.match(/([+-]?)(\d{2}):(\d{2})$/);return t?("-"===t[1]?-1:1)*(60*Number(t[2])+Number(t[3])):null}(e.get("name"));e.set("tz-offset",t,!0)}))}));const d=new s.A({source:new c.A({layer:"stamen_toner"})}),p=new o.A({layers:[d,g],target:"map",view:new i.Ay({center:[0,0],zoom:2})}),w=document.getElementById("info");w.style.pointerEvents="none";const v=new bootstrap.Tooltip(w,{animation:!1,customClass:"pe-none",offset:[0,5],title:"-",trigger:"manual"});let h;const y=function(e,t){const n=t.closest(".ol-control")?void 0:p.forEachFeatureAtPixel(e,(function(e){return e}));n?(w.style.left=e[0]+"px",w.style.top=e[1]+"px",n!==h&&v.setContent({".tooltip-inner":n.get("name")}),h?v.update():v.show()):v.hide(),h=n};p.on("pointermove",(function(e){if(e.dragging)return v.hide(),void(h=void 0);y(e.pixel,e.originalEvent.target)})),p.on("click",(function(e){y(e.pixel,e.originalEvent.target)})),p.getTargetElement().addEventListener("pointerleave",(function(){v.hide(),h=void 0}))}},function(e){var t;t=44005,e(e.s=t)}]);
+import { Fn as Stroke, Ln as Fill, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View, tn as KML, yn as StadiaMaps } from "./common.js";
+//#region examples/kml-timezones.js
+var styleFunction = function(feature) {
+	const tzOffset = feature.get("tz-offset");
+	const local = /* @__PURE__ */ new Date();
+	local.setTime(local.getTime() + (local.getTimezoneOffset() + (tzOffset || 0)) * 6e4);
+	let delta = Math.abs(12 - (local.getHours() + local.getMinutes() / 60));
+	if (delta > 12) delta = 24 - delta;
+	return new Style({
+		fill: new Fill({ color: [
+			255,
+			255,
+			51,
+			.75 * (1 - delta / 12)
+		] }),
+		stroke: new Stroke({ color: "#ffffff" })
+	});
+};
+var vector = new VectorLayer({
+	source: new VectorSource({
+		url: "data/kml/timezones.kml",
+		format: new KML({ extractStyles: false })
+	}),
+	style: styleFunction
+});
+/**
+* @param {string} name e.g. GMT -08:30
+* @return {number|null} The offset from UTC in minutes
+*/
+function parseOffsetFromUtc(name) {
+	const match = name.match(/([+-]?)(\d{2}):(\d{2})$/);
+	if (!match) return null;
+	const sign = match[1] === "-" ? -1 : 1;
+	const hours = Number(match[2]);
+	const minutes = Number(match[3]);
+	return sign * (60 * hours + minutes);
+}
+vector.getSource().on("featuresloadend", function(evt) {
+	evt.features.forEach(function(feature) {
+		const tzOffset = parseOffsetFromUtc(feature.get("name"));
+		feature.set("tz-offset", tzOffset, true);
+	});
+});
+var map = new Map({
+	layers: [new TileLayer({ source: new StadiaMaps({ layer: "stamen_toner" }) }), vector],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var info = document.getElementById("info");
+info.style.pointerEvents = "none";
+var tooltip = new bootstrap.Tooltip(info, {
+	animation: false,
+	customClass: "pe-none",
+	offset: [0, 5],
+	title: "-",
+	trigger: "manual"
+});
+var currentFeature;
+var displayFeatureInfo = function(pixel, target) {
+	const feature = target.closest(".ol-control") ? void 0 : map.forEachFeatureAtPixel(pixel, function(feature) {
+		return feature;
+	});
+	if (feature) {
+		info.style.left = pixel[0] + "px";
+		info.style.top = pixel[1] + "px";
+		if (feature !== currentFeature) tooltip.setContent({ ".tooltip-inner": feature.get("name") });
+		if (currentFeature) tooltip.update();
+		else tooltip.show();
+	} else tooltip.hide();
+	currentFeature = feature;
+};
+map.on("pointermove", function(evt) {
+	if (evt.dragging) {
+		tooltip.hide();
+		currentFeature = void 0;
+		return;
+	}
+	displayFeatureInfo(evt.pixel, evt.originalEvent.target);
+});
+map.on("click", function(evt) {
+	displayFeatureInfo(evt.pixel, evt.originalEvent.target);
+});
+map.getTargetElement().addEventListener("pointerleave", function() {
+	tooltip.hide();
+	currentFeature = void 0;
+});
+//#endregion
+
 //# sourceMappingURL=kml-timezones.js.map

@@ -1,2 +1,13 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7664],{28299:function(e,n,c){var t=c(41564),a=c(87240),r=c(12185),s=c(15264);new t.A({target:"map",layers:[new r.A({source:new s.A({url:"https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=0e6fc415256d4fbb9b5166a718591d71"})})],view:new a.Ay({center:[-472202,7530279],zoom:12})})}},function(e){var n;n=28299,e(e.s=n)}]);
+import { Mn as Map, an as ImageTileSource, jn as TileLayer, or as View } from "./common.js";
+//#region examples/xyz.js
+new Map({
+	target: "map",
+	layers: [new TileLayer({ source: new ImageTileSource({ url: "https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=0e6fc415256d4fbb9b5166a718591d71" }) })],
+	view: new View({
+		center: [-472202, 7530279],
+		zoom: 12
+	})
+});
+//#endregion
+
 //# sourceMappingURL=xyz.js.map

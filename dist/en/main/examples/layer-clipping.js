@@ -1,2 +1,41 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6297],{84020:function(e,t,r){var n=r(41564),a=r(87240),o=r(12185),s=r(28e3);const c=new o.A({source:new s.A});new n.A({layers:[c],target:"map",view:new a.Ay({center:[0,0],zoom:2})});c.on("prerender",(function(e){const t=e.context,r=e.inversePixelTransform,n=Math.sqrt(r[0]*r[0]+r[1]*r[1]),a=-Math.atan2(r[1],r[0]);t.save(),t.translate(t.canvas.width/2,t.canvas.height/2),t.rotate(-a),t.scale(3*n,3*n),t.translate(-75,-80),t.beginPath(),t.moveTo(75,40),t.bezierCurveTo(75,37,70,25,50,25),t.bezierCurveTo(20,25,20,62.5,20,62.5),t.bezierCurveTo(20,80,40,102,75,120),t.bezierCurveTo(110,102,130,80,130,62.5),t.bezierCurveTo(130,62.5,130,25,100,25),t.bezierCurveTo(85,25,75,37,75,40),t.clip(),t.translate(75,80),t.scale(1/3/n,1/3/n),t.rotate(a),t.translate(-t.canvas.width/2,-t.canvas.height/2)})),c.on("postrender",(function(e){e.context.restore()}))}},function(e){var t;t=84020,e(e.s=t)}]);
+import { Cn as OSM, Mn as Map, jn as TileLayer, or as View } from "./common.js";
+//#region examples/layer-clipping.js
+var osm = new TileLayer({ source: new OSM() });
+new Map({
+	layers: [osm],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+osm.on("prerender", function(event) {
+	const ctx = event.context;
+	const matrix = event.inversePixelTransform;
+	const canvasPixelRatio = Math.sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1]);
+	const canvasRotation = -Math.atan2(matrix[1], matrix[0]);
+	ctx.save();
+	ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
+	ctx.rotate(-canvasRotation);
+	ctx.scale(3 * canvasPixelRatio, 3 * canvasPixelRatio);
+	ctx.translate(-75, -80);
+	ctx.beginPath();
+	ctx.moveTo(75, 40);
+	ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
+	ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+	ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
+	ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+	ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+	ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
+	ctx.clip();
+	ctx.translate(75, 80);
+	ctx.scale(1 / 3 / canvasPixelRatio, 1 / 3 / canvasPixelRatio);
+	ctx.rotate(canvasRotation);
+	ctx.translate(-ctx.canvas.width / 2, -ctx.canvas.height / 2);
+});
+osm.on("postrender", function(event) {
+	event.context.restore();
+});
+//#endregion
+
 //# sourceMappingURL=layer-clipping.js.map

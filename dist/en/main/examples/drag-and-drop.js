@@ -1,2 +1,82 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5253],{56896:function(e,t,n){var o=n(41564),c=n(87240),a=n(94782),i=n(49208),r=n(17534),d=n(30135),s=n(28665),l=n(56182),u=n(12185),g=n(23986),m=n(15264),p=n(29810);const f=new o.A({layers:[new u.A({source:new m.A({attributions:'<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',url:"https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",tileSize:512,maxZoom:20})})],target:"map",view:new c.Ay({center:[0,0],zoom:2})}),w=document.getElementById("extractstyles");let h;function y(){h&&f.removeInteraction(h),h=new l.A({formatConstructors:[a.A,i.A,r.A,new d.Ay({extractStyles:w.checked}),s.A]}),h.on("addfeatures",(function(e){const t=new p.A({features:e.features});f.addLayer(new g.A({source:t})),f.getView().fit(t.getExtent())})),f.addInteraction(h)}y(),w.addEventListener("change",y);const k=function(e){const t=[];if(f.forEachFeatureAtPixel(e,(function(e){t.push(e)})),t.length>0){const e=[];let n,o;for(n=0,o=t.length;n<o;++n)e.push(t[n].get("name"));document.getElementById("info").innerHTML=e.join(", ")||"&nbsp"}else document.getElementById("info").innerHTML="&nbsp;"};f.on("pointermove",(function(e){e.dragging||k(e.pixel)})),f.on("click",(function(e){k(e.pixel)}));const E=document.getElementById("download");function A(e,t){fetch(e).then((function(e){return e.blob()})).then((function(e){E.href=URL.createObjectURL(e),E.download=t,E.click()}))}document.getElementById("download-gpx").addEventListener("click",(function(){A("data/gpx/fells_loop.gpx","fells_loop.gpx")})),document.getElementById("download-geojson").addEventListener("click",(function(){A("data/geojson/roads-seoul.geojson","roads-seoul.geojson")})),document.getElementById("download-igc").addEventListener("click",(function(){A("data/igc/Ulrich-Prinz.igc","Ulrich-Prinz.igc")})),document.getElementById("download-kml").addEventListener("click",(function(){A("data/kml/states.kml","states.kml")})),document.getElementById("download-topojson").addEventListener("click",(function(){A("data/topojson/fr-departments.json","fr-departments.json")}))}},function(e){var t;t=56896,e(e.s=t)}]);
+import { J as DragAndDrop, Mn as Map, X as IGC, Y as TopoJSON, Z as GPX, an as ImageTileSource, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View, rn as GeoJSON, tn as KML } from "./common.js";
+//#region examples/drag-and-drop.js
+var map = new Map({
+	layers: [new TileLayer({ source: new ImageTileSource({
+		attributions: "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+		url: "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+		tileSize: 512,
+		maxZoom: 20
+	}) })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var extractStyles = document.getElementById("extractstyles");
+var dragAndDropInteraction;
+function setInteraction() {
+	if (dragAndDropInteraction) map.removeInteraction(dragAndDropInteraction);
+	dragAndDropInteraction = new DragAndDrop({ formatConstructors: [
+		GPX,
+		GeoJSON,
+		IGC,
+		new KML({ extractStyles: extractStyles.checked }),
+		TopoJSON
+	] });
+	dragAndDropInteraction.on("addfeatures", function(event) {
+		const vectorSource = new VectorSource({ features: event.features });
+		map.addLayer(new VectorLayer({ source: vectorSource }));
+		map.getView().fit(vectorSource.getExtent());
+	});
+	map.addInteraction(dragAndDropInteraction);
+}
+setInteraction();
+extractStyles.addEventListener("change", setInteraction);
+var displayFeatureInfo = function(pixel) {
+	const features = [];
+	map.forEachFeatureAtPixel(pixel, function(feature) {
+		features.push(feature);
+	});
+	if (features.length > 0) {
+		const info = [];
+		let i, ii;
+		for (i = 0, ii = features.length; i < ii; ++i) info.push(features[i].get("name"));
+		document.getElementById("info").innerHTML = info.join(", ") || "&nbsp";
+	} else document.getElementById("info").innerHTML = "&nbsp;";
+};
+map.on("pointermove", function(evt) {
+	if (evt.dragging) return;
+	displayFeatureInfo(evt.pixel);
+});
+map.on("click", function(evt) {
+	displayFeatureInfo(evt.pixel);
+});
+var link = document.getElementById("download");
+function download(fullpath, filename) {
+	fetch(fullpath).then(function(response) {
+		return response.blob();
+	}).then(function(blob) {
+		link.href = URL.createObjectURL(blob);
+		link.download = filename;
+		link.click();
+	});
+}
+document.getElementById("download-gpx").addEventListener("click", function() {
+	download("data/gpx/fells_loop.gpx", "fells_loop.gpx");
+});
+document.getElementById("download-geojson").addEventListener("click", function() {
+	download("data/geojson/roads-seoul.geojson", "roads-seoul.geojson");
+});
+document.getElementById("download-igc").addEventListener("click", function() {
+	download("data/igc/Ulrich-Prinz.igc", "Ulrich-Prinz.igc");
+});
+document.getElementById("download-kml").addEventListener("click", function() {
+	download("data/kml/states.kml", "states.kml");
+});
+document.getElementById("download-topojson").addEventListener("click", function() {
+	download("data/topojson/fr-departments.json", "fr-departments.json");
+});
+//#endregion
+
 //# sourceMappingURL=drag-and-drop.js.map

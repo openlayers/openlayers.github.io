@@ -1,2 +1,94 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2388],{67231:function(e,n,t){var o=t(51541),r=t(41564),l=t(87240),i=t(77833),s=t(40878),a=t(23986),u=t(66267),c=t(29810),w=t(21133),d=t(38276),g=t(44689),A=t(88292);const f=new Array(2e4),m=18e6;for(let e=0;e<2e4;++e)f[e]=new o.A({geometry:new s.A([2*m*Math.random()-m,2*m*Math.random()-m]),i:e,size:e%2?10:20});const y={10:new A.Ay({image:new w.A({radius:5,fill:new d.A({color:"#666666"}),stroke:new g.A({color:"#bada55",width:1})})}),20:new A.Ay({image:new w.A({radius:10,fill:new d.A({color:"#666666"}),stroke:new g.A({color:"#bada55",width:1})})})},p=new c.A({features:f,wrapX:!1}),h=new a.A({source:p,style:function(e){return y[e.get("size")]}}),k=new r.A({layers:[h],target:document.getElementById("map"),view:new l.Ay({center:[0,0],zoom:2})});let C=null,v=null;const b=function(e){const n=p.getClosestFeatureToCoordinate(e);if(null===n)C=null,v=null;else{const t=n.getGeometry().getClosestPoint(e);null===C?C=new s.A(t):C.setCoordinates(t),null===v?v=new i.A([e,t]):v.setCoordinates([e,t])}k.render()};k.on("pointermove",(function(e){if(e.dragging)return;const n=k.getEventCoordinate(e.originalEvent);b(n)})),k.on("click",(function(e){b(e.coordinate)}));const E=new g.A({color:"rgba(255,255,0,0.9)",width:3}),z=new A.Ay({stroke:E,image:new w.A({radius:10,stroke:E})});h.on("postrender",(function(e){const n=(0,u.r2)(e);n.setStyle(z),null!==C&&n.drawGeometry(C),null!==v&&n.drawGeometry(v)})),k.on("pointermove",(function(e){if(e.dragging)return;const n=k.hasFeatureAtPixel(e.pixel);k.getTargetElement().style.cursor=n?"pointer":""}))}},function(e){var n;n=67231,e(e.s=n)}]);
+import { Fn as Stroke, Ln as Fill, Mn as Map, Pn as Style, Rn as CircleStyle, bn as VectorLayer, ct as getVectorContext, dn as VectorSource, gn as LineString, hr as Point, or as View, xn as Feature } from "./common.js";
+//#region examples/synthetic-points.js
+var count = 2e4;
+var features = new Array(count);
+var e = 18e6;
+for (let i = 0; i < count; ++i) features[i] = new Feature({
+	"geometry": new Point([2 * e * Math.random() - e, 2 * e * Math.random() - e]),
+	"i": i,
+	"size": i % 2 ? 10 : 20
+});
+var styles = {
+	"10": new Style({ image: new CircleStyle({
+		radius: 5,
+		fill: new Fill({ color: "#666666" }),
+		stroke: new Stroke({
+			color: "#bada55",
+			width: 1
+		})
+	}) }),
+	"20": new Style({ image: new CircleStyle({
+		radius: 10,
+		fill: new Fill({ color: "#666666" }),
+		stroke: new Stroke({
+			color: "#bada55",
+			width: 1
+		})
+	}) })
+};
+var vectorSource = new VectorSource({
+	features,
+	wrapX: false
+});
+var vector = new VectorLayer({
+	source: vectorSource,
+	style: function(feature) {
+		return styles[feature.get("size")];
+	}
+});
+var map = new Map({
+	layers: [vector],
+	target: document.getElementById("map"),
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var point = null;
+var line = null;
+var displaySnap = function(coordinate) {
+	const closestFeature = vectorSource.getClosestFeatureToCoordinate(coordinate);
+	if (closestFeature === null) {
+		point = null;
+		line = null;
+	} else {
+		const closestPoint = closestFeature.getGeometry().getClosestPoint(coordinate);
+		if (point === null) point = new Point(closestPoint);
+		else point.setCoordinates(closestPoint);
+		if (line === null) line = new LineString([coordinate, closestPoint]);
+		else line.setCoordinates([coordinate, closestPoint]);
+	}
+	map.render();
+};
+map.on("pointermove", function(evt) {
+	if (evt.dragging) return;
+	displaySnap(map.getEventCoordinate(evt.originalEvent));
+});
+map.on("click", function(evt) {
+	displaySnap(evt.coordinate);
+});
+var stroke = new Stroke({
+	color: "rgba(255,255,0,0.9)",
+	width: 3
+});
+var style = new Style({
+	stroke,
+	image: new CircleStyle({
+		radius: 10,
+		stroke
+	})
+});
+vector.on("postrender", function(evt) {
+	const vectorContext = getVectorContext(evt);
+	vectorContext.setStyle(style);
+	if (point !== null) vectorContext.drawGeometry(point);
+	if (line !== null) vectorContext.drawGeometry(line);
+});
+map.on("pointermove", function(evt) {
+	if (evt.dragging) return;
+	const hit = map.hasFeatureAtPixel(evt.pixel);
+	map.getTargetElement().style.cursor = hit ? "pointer" : "";
+});
+//#endregion
+
 //# sourceMappingURL=synthetic-points.js.map

@@ -1,2 +1,995 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[962],{65679:function(e,t,s){var l=s(41564),r=s(87240),i=s(53815),a=s(22685),o=s(2218),n=s(62527),c=s(50115),h=s(12911),f=s(9466),y=s(77163),g=s(51986),d=s(2732),_=s(84333),p=s(14049);class u extends p.A{constructor(e,t){super(e),this.batch_=new _.A,this.styleRenderer_=t,this.buffers=null,this.maskVertices=new y.Ay(34962,35044),this.wantedResolution=e.grid.getResolution(e.tile.getTileCoord()[0]),this.setTile(e.tile)}generateMaskBuffer_(){const e=this.tile.getSourceTiles()[0].extent,t=e[0],s=e[1],l=e[2]-t,r=e[3]-s;this.maskVertices.fromArray([0,0,l,0,l,r,0,r]),this.helper.flushBufferData(this.maskVertices)}uploadTile(){this.generateMaskBuffer_(),this.batch_.clear();const e=this.tile.getSourceTiles(),t=e.reduce(((e,t)=>e.concat(t.getFeatures())),[]);this.batch_.addFeatures(t);const s=e[0].extent[0],l=e[0].extent[1],r=(0,h.Tl)((0,h.vt)(),-s,-l);this.styleRenderer_.generateBuffers(this.batch_,r,this.wantedResolution).then((e=>{this.buffers=e,this.setReady()}))}disposeInternal(){if(this.buffers){const e=e=>{for(const t of e)t&&this.helper.deleteBuffer(t)};this.buffers.pointBuffers&&e(this.buffers.pointBuffers),this.buffers.lineStringBuffers&&e(this.buffers.lineStringBuffers),this.buffers.polygonBuffers&&e(this.buffers.polygonBuffers),this.styleRenderer_.disposeTextInstructions(this.buffers.textInstructionsKey)}super.disposeInternal()}}var m=u,k=s(55721),b=s(12702);const x={...k.gF,...b.n,...n.Br,TILE_MASK_TEXTURE:"u_depthMask",TILE_ZOOM_LEVEL:"u_tileZoomLevel"},T="a_position";class w extends k.Ay{constructor(e,t){super(e,{cacheSize:t.cacheSize,uniforms:{[x.TILE_MASK_TEXTURE]:()=>this.tileMaskTarget_.getTexture(),[x.ONE]:1},postProcesses:t.postProcesses??[]}),this.hitDetectionEnabled_=!t.disableHitDetection,this.style_=null,this.hasText_=!1,this.styleVariables_={},this.styleRenderer_=null,this.currentFrameStateTransform_=(0,h.vt)(),this.tileMaskTarget_=null,this.tileMaskIndices_=new y.Ay(34963,35044),this.tileMaskIndices_.fromArray([0,1,3,1,2,3]),this.tileMaskAttributes_=[{name:T,size:2,type:g.jQ.FLOAT}],this.tileMaskProgram_,this.layerRevision_=-1,this.skipNextTextRender_=!1,this.applyOptions_(t)}reset(e){super.reset(e),this.applyOptions_(e),this.helper&&(this.createRenderers_(),this.initTileMask_())}applyOptions_(e){this.styleVariables_=e.variables,this.style_=e.style;const t=(0,c.pD)(this.style_),s=!!t&&(0,n.ZS)(t);s&&!this.hasText_?this.setPostProcesses([(0,n.dI)((()=>this.styleRenderer_.getTextOverlayCanvas()),(()=>this.styleRenderer_.getTextOverlayFrameState())),...this.getPostProcesses()]):!s&&this.hasText_&&this.setPostProcesses(this.getPostProcesses().slice(1)),this.hasText_=s}createRenderers_(){function e(e){const t=e.getFragmentDiscardExpression(),s=`texture2D(${x.TILE_MASK_TEXTURE}, gl_FragCoord.xy / u_pixelRatio / u_viewportSizePx).r * 50. > ${x.TILE_ZOOM_LEVEL} + 0.5`;e.setFragmentDiscardExpression(null!==t?`(${t}) || (${s})`:s),e.addUniform(x.TILE_MASK_TEXTURE,"sampler2D"),e.addUniform(x.TILE_ZOOM_LEVEL,"float")}const t=(0,c.k2)(this.style_,this.styleVariables_);for(const s of t)e(s.builder);this.styleRenderer_=new c.Ay(t,this.styleVariables_,this.helper,this.hitDetectionEnabled_)}initTileMask_(){this.tileMaskTarget_=new d.A(this.helper);const e=(new o.N).setFillColorExpression(`vec4(${x.TILE_ZOOM_LEVEL} / 50., 0., 0., 1.)`).addUniform(x.TILE_ZOOM_LEVEL,"float");this.tileMaskProgram_=this.helper.getProgram(e.getFillFragmentShader(),e.getFillVertexShader()),this.helper.flushBufferData(this.tileMaskIndices_)}afterHelperCreated(){this.createRenderers_(),this.initTileMask_()}createTileRepresentation(e){const t=new m(e,this.styleRenderer_),s=()=>{t.ready&&(this.getLayer().changed(),t.removeEventListener(a.A.CHANGE,s))};return t.addEventListener(a.A.CHANGE,s),t}beforeTilesRender(e,t){super.beforeTilesRender(e,!0);const s=this.layerRevision_<this.getLayer().getRevision();this.layerRevision_=this.getLayer().getRevision(),s&&(this.skipNextTextRender_=!1),this.helper.makeProjectionTransform(e,this.currentFrameStateTransform_)}beforeTilesMaskRender(e){this.helper.makeProjectionTransform(e,this.currentFrameStateTransform_);const t=e.pixelRatio,s=e.size;return this.tileMaskTarget_.setSize([s[0]*t,s[1]*t]),this.helper.prepareDrawToRenderTarget(e,this.tileMaskTarget_,!0,!0),this.helper.useProgram(this.tileMaskProgram_,e),!0}beforeFinalize(e){this.hasText_&&this.styleRenderer_.finalizeTextRender(e).then((()=>{this.skipNextTextRender_?this.skipNextTextRender_=!1:(this.skipNextTextRender_=!0,this.layerRevision_++,this.getLayer().changed())}))}renderTileMask(e,t,s,l){if(!e.ready)return;const r=e.buffers.invertVerticesTransform;(0,h.k3)(this.tmpTransform_,this.currentFrameStateTransform_),(0,h.lw)(this.tmpTransform_,r),this.helper.setUniformMatrixValue(x.PROJECTION_MATRIX,(0,f.Z1)(this.tmpMat4_,this.tmpTransform_)),(0,h.T9)(this.tmpTransform_,this.tmpTransform_),this.helper.setUniformMatrixValue(x.INVERT_PROJECTION_MATRIX,(0,f.Z1)(this.tmpMat4_,this.tmpTransform_)),this.helper.setUniformFloatValue(x.DEPTH,l),this.helper.setUniformFloatValue(x.TILE_ZOOM_LEVEL,t),this.helper.setUniformFloatValue(x.GLOBAL_ALPHA,1),this.applyRenderExtentUniform(s,(0,h.T9)(this.tmpTransform_,r)),this.helper.bindBuffer(e.maskVertices),this.helper.bindBuffer(this.tileMaskIndices_),this.helper.enableAttributes(this.tileMaskAttributes_);const i=this.tileMaskIndices_.getSize();this.helper.drawElements(0,i)}applyUniforms_(e,t,s,l,r,i){(0,b.x)(this.helper,this.currentFrameStateTransform_,s,i),this.helper.setUniformFloatValue(x.GLOBAL_ALPHA,e),this.helper.setUniformFloatValue(x.DEPTH,r),this.helper.setUniformFloatValue(x.TILE_ZOOM_LEVEL,l),this.applyRenderExtentUniform(t,(0,h.T9)(this.tmpTransform_,s))}renderTile(e,t,s,l,r,i,a,o,n,c,h){const f=e.tile.getTileCoord()[0],y=e.buffers;y&&this.styleRenderer_.render(y,s,(()=>{this.applyUniforms_(h,o,y.invertVerticesTransform,f,n,s)}))}renderDeclutter(e){}disposeInternal(){this.styleRenderer_?.dispose(),super.disposeInternal()}}var M=w,S=s(880);class E extends S.A{constructor(e){super(Object.assign({},e)),this.styleVariables_=e.variables||{},this.style_=e.style,this.hitDetectionDisabled_=!!e.disableHitDetection}createRenderer(){return new M(this,{style:this.style_,variables:this.styleVariables_,disableHitDetection:this.hitDetectionDisabled_,cacheSize:this.getCacheSize()})}updateStyleVariables(e){Object.assign(this.styleVariables_,e),this.changed()}setStyle(e){this.style_=e,this.clearRenderer(),this.changed()}}var R=E,v=s(98267);new l.A({layers:[new R({source:new v.A({attributions:'© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',format:new i.A,url:"https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2t0cGdwMHVnMGdlbzMxbDhwazBic2xrNSJ9.WbcTL9uj8JPAsnT9mgb7oQ"}),style:[{filter:["all",["==",["get","layer"],"landuse"],["==",["get","class"],"park"]],style:{"fill-color":"#d8e8c8"}},{filter:["all",["==",["get","layer"],"landuse"],["==",["get","class"],"cemetery"]],else:!0,style:{"fill-color":"#e0e4dd"}},{filter:["all",["==",["get","layer"],"landuse"],["==",["get","class"],"hospital"]],else:!0,style:{"fill-color":"#fde"}},{filter:["all",["==",["get","layer"],"landuse"],["==",["get","class"],"school"]],else:!0,style:{"fill-color":"#f0e8f8"}},{filter:["all",["==",["get","layer"],"landuse"],["==",["get","class"],"wood"]],else:!0,style:{"fill-color":"rgb(233,238,223)"}},{filter:["==",["get","layer"],"waterway"],else:!0,style:{"stroke-color":"#a0c8f0","stroke-width":1}},{filter:["==",["get","layer"],"water"],else:!0,style:{"fill-color":"#a0c8f0"}},{filter:["all",["==",["get","layer"],"aeroway"],["==",["geometry-type"],"Polygon"]],else:!0,style:{"fill-color":"rgb(242,239,235)"}},{filter:["all",["==",["get","layer"],"aeroway"],["==",["geometry-type"],"LineString"],["<=",["resolution"],76.43702828517625]],else:!0,style:{"fill-color":"#f0ede9"}},{filter:["==",["get","layer"],"building"],else:!0,style:{"fill-color":"#f2eae2","stroke-color":"#dfdbd7","stroke-width":1}},{filter:["all",["==",["get","layer"],"tunnel"],["==",["get","class"],"motorway_link"]],else:!0,style:{"stroke-color":"#e9ac77","stroke-width":1}},{filter:["all",["==",["get","layer"],"tunnel"],["==",["get","class"],"service"]],else:!0,style:{"stroke-color":"#cfcdca","stroke-width":1}},{filter:["all",["==",["get","layer"],"tunnel"],["any",["==",["get","class"],"street"],["==",["get","class"],"street_limited"]]],else:!0,style:{"stroke-color":"#cfcdca","stroke-width":1}},{filter:["all",["==",["get","layer"],"tunnel"],["==",["get","class"],"main"],["<=",["resolution"],1222.99245256282]],else:!0,style:{"stroke-color":"#e9ac77","stroke-width":1}},{filter:["all",["==",["get","layer"],"tunnel"],["==",["get","class"],"motorway"]],else:!0,style:{"stroke-color":"#e9ac77","stroke-width":1}},{filter:["all",["==",["get","layer"],"tunnel"],["==",["get","class"],"path"]],else:!0,style:{"stroke-color":"#cba","stroke-width":1}},{filter:["all",["==",["get","layer"],"tunnel"],["==",["get","class"],"major_rail"]],else:!0,style:{"stroke-color":"#bbb","stroke-width":2}},{filter:["all",["==",["get","layer"],"road"],["==",["get","class"],"motorway_link"]],else:!0,style:{"stroke-color":"#e9ac77","stroke-width":1}},{filter:["all",["==",["get","layer"],"road"],["any",["==",["get","class"],"street"],["==",["get","class"],"street_limited"]],["==",["geometry-type"],"LineString"]],else:!0,style:{"stroke-color":"#cfcdca","stroke-width":1}},{filter:["all",["==",["get","layer"],"road"],["==",["get","class"],"main"],["<=",["resolution"],1222.99245256282]],else:!0,style:{"stroke-color":"#e9ac77","stroke-width":1}},{filter:["all",["==",["get","layer"],"road"],["==",["get","class"],"motorway"],["<=",["resolution"],4891.96981025128]],else:!0,style:{"stroke-color":"#e9ac77","stroke-width":1}},{filter:["all",["==",["get","layer"],"road"],["==",["get","class"],"path"]],else:!0,style:{"stroke-color":"#cba","stroke-width":1}},{filter:["all",["==",["get","layer"],"road"],["==",["get","class"],"major_rail"]],else:!0,style:{"stroke-color":"#bbb","stroke-width":2}},{filter:["all",["==",["get","layer"],"bridge"],["any",["==",["get","class"],"motorway"],["==",["get","class"],"motorway_link"]]],else:!0,style:{"stroke-color":"#e9ac77","stroke-width":1}},{filter:["all",["==",["get","layer"],"bridge"],["any",["==",["get","class"],"street"],["==",["get","class"],"street_limited"],["==",["get","class"],"service"]]],else:!0,style:{"stroke-color":"#cfcdca","stroke-width":1}},{filter:["all",["==",["get","layer"],"bridge"],["==",["get","class"],"main"],["<=",["resolution"],1222.99245256282]],else:!0,style:{"stroke-color":"#e9ac77","stroke-width":1}},{filter:["all",["==",["get","layer"],"bridge"],["==",["get","class"],"path"]],else:!0,style:{"stroke-color":"#cba","stroke-width":1}},{filter:["all",["==",["get","layer"],"bridge"],["==",["get","class"],"major_rail"]],else:!0,style:{"stroke-color":"#bbb","stroke-width":2}},{filter:["all",["==",["get","layer"],"admin"],[">=",["get","admin_level"],2],["==",["get","maritime"],0]],else:!0,style:{"stroke-color":"#9e9cab","stroke-width":1}},{filter:["all",["==",["get","layer"],"admin"],[">=",["get","admin_level"],2],["==",["get","maritime"],1]],else:!0,style:{"stroke-color":"#a0c8f0","stroke-width":1}},{filter:["any",["==",["get","layer"],"country_label"],["==",["get","layer"],"place_label"]],else:!0,style:{"text-value":["get","name_en"],"text-font":'bold 11px "Open Sans", "Arial Unicode MS", sans-serif',"text-fill-color":"#334","text-stroke-color":"rgba(255,255,255,0.8)","text-stroke-width":2}},{filter:["all",["==",["get","layer"],"country_label"],["==",["get","scalerank"],2],["<=",["resolution"],19567.87924100512]],else:!0,style:{"text-value":["get","name_en"],"text-font":'bold 10px "Open Sans", "Arial Unicode MS", sans-serif',"text-fill-color":"#334","text-stroke-color":"rgba(255,255,255,0.8)","text-stroke-width":2}},{filter:["all",["==",["get","layer"],"country_label"],["==",["get","scalerank"],3],["<=",["resolution"],9783.93962050256]],else:!0,style:{"text-value":["get","name_en"],"text-font":'bold 9px "Open Sans", "Arial Unicode MS", sans-serif',"text-fill-color":"#334","text-stroke-color":"rgba(255,255,255,0.8)","text-stroke-width":2}},{filter:["all",["==",["get","layer"],"country_label"],["==",["get","scalerank"],4],["<=",["resolution"],4891.96981025128]],else:!0,style:{"text-value":["get","name_en"],"text-font":'bold 8px "Open Sans", "Arial Unicode MS", sans-serif',"text-fill-color":"#334","text-stroke-color":"rgba(255,255,255,0.8)","text-stroke-width":2}},{filter:["all",["==",["get","layer"],"marine_label"],["==",["get","labelrank"],1],["==",["geometry-type"],"Point"]],else:!0,style:{"text-value":["get","name_en"],"text-font":'italic 11px "Open Sans", "Arial Unicode MS", sans-serif',"text-fill-color":"#74aee9","text-stroke-color":"rgba(255,255,255,0.8)","text-stroke-width":1}},{filter:["all",["==",["get","layer"],"marine_label"],["==",["get","labelrank"],2],["==",["geometry-type"],"Point"]],else:!0,style:{"text-value":["get","name_en"],"text-font":'italic 11px "Open Sans", "Arial Unicode MS", sans-serif',"text-fill-color":"#74aee9","text-stroke-color":"rgba(255,255,255,0.8)","text-stroke-width":1}},{filter:["all",["==",["get","layer"],"marine_label"],["==",["get","labelrank"],3],["==",["geometry-type"],"Point"]],else:!0,style:{"text-value":["get","name_en"],"text-font":'italic 10px "Open Sans", "Arial Unicode MS", sans-serif',"text-fill-color":"#74aee9","text-stroke-color":"rgba(255,255,255,0.8)","text-stroke-width":1}},{filter:["all",["==",["get","layer"],"marine_label"],["==",["get","labelrank"],4],["==",["geometry-type"],"Point"]],else:!0,style:{"text-value":["get","name_en"],"text-font":'italic 9px "Open Sans", "Arial Unicode MS", sans-serif',"text-fill-color":"#74aee9","text-stroke-color":"rgba(255,255,255,0.8)","text-stroke-width":1}},{filter:["all",["==",["get","layer"],"place_label"],["==",["get","type"],"city"],["<=",["resolution"],1222.99245256282]],else:!0,style:{"text-value":["get","name_en"],"text-font":'11px "Open Sans", "Arial Unicode MS", sans-serif',"text-fill-color":"#333","text-stroke-color":"rgba(255,255,255,0.8)","text-stroke-width":1}},{filter:["all",["==",["get","layer"],"place_label"],["==",["get","type"],"town"],["<=",["resolution"],305.748113140705]],else:!0,style:{"text-value":["get","name_en"],"text-font":'9px "Open Sans", "Arial Unicode MS", sans-serif',"text-fill-color":"#333","text-stroke-color":"rgba(255,255,255,0.8)","text-stroke-width":1}},{filter:["all",["==",["get","layer"],"place_label"],["==",["get","type"],"village"],["<=",["resolution"],38.21851414258813]],else:!0,style:{"text-value":["get","name_en"],"text-font":'8px "Open Sans", "Arial Unicode MS", sans-serif',"text-fill-color":"#333","text-stroke-color":"rgba(255,255,255,0.8)","text-stroke-width":1}},{filter:["all",["==",["get","layer"],"place_label"],["<=",["resolution"],19.109257071294063],["any",["==",["get","type"],"hamlet"],["==",["get","type"],"suburb"],["==",["get","type"],"neighbourhood"]]],else:!0,style:{"text-value":["get","name_en"],"text-font":'bold 9px "Arial Narrow"',"text-fill-color":"#633","text-stroke-color":"rgba(255,255,255,0.8)","text-stroke-width":1}}]})],target:"map",view:new r.Ay({center:[0,0],zoom:2,multiWorld:!0})})}},function(e){var t;t=65679,e(e.s=t)}]);
+import { Mn as Map, Zt as VectorTile, en as MVT, or as View, r as WebGLVectorTileLayer } from "./common.js";
+//#region examples/webgl-vector-tiles.js
+new Map({
+	layers: [new WebGLVectorTileLayer({
+		source: new VectorTile({
+			attributions: "© <a href=\"https://www.mapbox.com/map-feedback/\">Mapbox</a> © <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap contributors</a>",
+			format: new MVT(),
+			url: "https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token=pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2t0cGdwMHVnMGdlbzMxbDhwazBic2xrNSJ9.WbcTL9uj8JPAsnT9mgb7oQ"
+		}),
+		style: [
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"landuse"
+					],
+					[
+						"==",
+						["get", "class"],
+						"park"
+					]
+				],
+				style: { "fill-color": "#d8e8c8" }
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"landuse"
+					],
+					[
+						"==",
+						["get", "class"],
+						"cemetery"
+					]
+				],
+				else: true,
+				style: { "fill-color": "#e0e4dd" }
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"landuse"
+					],
+					[
+						"==",
+						["get", "class"],
+						"hospital"
+					]
+				],
+				else: true,
+				style: { "fill-color": "#fde" }
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"landuse"
+					],
+					[
+						"==",
+						["get", "class"],
+						"school"
+					]
+				],
+				else: true,
+				style: { "fill-color": "#f0e8f8" }
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"landuse"
+					],
+					[
+						"==",
+						["get", "class"],
+						"wood"
+					]
+				],
+				else: true,
+				style: { "fill-color": "rgb(233,238,223)" }
+			},
+			{
+				filter: [
+					"==",
+					["get", "layer"],
+					"waterway"
+				],
+				else: true,
+				style: {
+					"stroke-color": "#a0c8f0",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"==",
+					["get", "layer"],
+					"water"
+				],
+				else: true,
+				style: { "fill-color": "#a0c8f0" }
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"aeroway"
+					],
+					[
+						"==",
+						["geometry-type"],
+						"Polygon"
+					]
+				],
+				else: true,
+				style: { "fill-color": "rgb(242,239,235)" }
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"aeroway"
+					],
+					[
+						"==",
+						["geometry-type"],
+						"LineString"
+					],
+					[
+						"<=",
+						["resolution"],
+						76.43702828517625
+					]
+				],
+				else: true,
+				style: { "fill-color": "#f0ede9" }
+			},
+			{
+				filter: [
+					"==",
+					["get", "layer"],
+					"building"
+				],
+				else: true,
+				style: {
+					"fill-color": "#f2eae2",
+					"stroke-color": "#dfdbd7",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"tunnel"
+					],
+					[
+						"==",
+						["get", "class"],
+						"motorway_link"
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#e9ac77",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"tunnel"
+					],
+					[
+						"==",
+						["get", "class"],
+						"service"
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#cfcdca",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"tunnel"
+					],
+					[
+						"any",
+						[
+							"==",
+							["get", "class"],
+							"street"
+						],
+						[
+							"==",
+							["get", "class"],
+							"street_limited"
+						]
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#cfcdca",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"tunnel"
+					],
+					[
+						"==",
+						["get", "class"],
+						"main"
+					],
+					[
+						"<=",
+						["resolution"],
+						1222.99245256282
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#e9ac77",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"tunnel"
+					],
+					[
+						"==",
+						["get", "class"],
+						"motorway"
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#e9ac77",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"tunnel"
+					],
+					[
+						"==",
+						["get", "class"],
+						"path"
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#cba",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"tunnel"
+					],
+					[
+						"==",
+						["get", "class"],
+						"major_rail"
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#bbb",
+					"stroke-width": 2
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"road"
+					],
+					[
+						"==",
+						["get", "class"],
+						"motorway_link"
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#e9ac77",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"road"
+					],
+					[
+						"any",
+						[
+							"==",
+							["get", "class"],
+							"street"
+						],
+						[
+							"==",
+							["get", "class"],
+							"street_limited"
+						]
+					],
+					[
+						"==",
+						["geometry-type"],
+						"LineString"
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#cfcdca",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"road"
+					],
+					[
+						"==",
+						["get", "class"],
+						"main"
+					],
+					[
+						"<=",
+						["resolution"],
+						1222.99245256282
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#e9ac77",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"road"
+					],
+					[
+						"==",
+						["get", "class"],
+						"motorway"
+					],
+					[
+						"<=",
+						["resolution"],
+						4891.96981025128
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#e9ac77",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"road"
+					],
+					[
+						"==",
+						["get", "class"],
+						"path"
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#cba",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"road"
+					],
+					[
+						"==",
+						["get", "class"],
+						"major_rail"
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#bbb",
+					"stroke-width": 2
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"bridge"
+					],
+					[
+						"any",
+						[
+							"==",
+							["get", "class"],
+							"motorway"
+						],
+						[
+							"==",
+							["get", "class"],
+							"motorway_link"
+						]
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#e9ac77",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"bridge"
+					],
+					[
+						"any",
+						[
+							"==",
+							["get", "class"],
+							"street"
+						],
+						[
+							"==",
+							["get", "class"],
+							"street_limited"
+						],
+						[
+							"==",
+							["get", "class"],
+							"service"
+						]
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#cfcdca",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"bridge"
+					],
+					[
+						"==",
+						["get", "class"],
+						"main"
+					],
+					[
+						"<=",
+						["resolution"],
+						1222.99245256282
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#e9ac77",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"bridge"
+					],
+					[
+						"==",
+						["get", "class"],
+						"path"
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#cba",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"bridge"
+					],
+					[
+						"==",
+						["get", "class"],
+						"major_rail"
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#bbb",
+					"stroke-width": 2
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"admin"
+					],
+					[
+						">=",
+						["get", "admin_level"],
+						2
+					],
+					[
+						"==",
+						["get", "maritime"],
+						0
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#9e9cab",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"admin"
+					],
+					[
+						">=",
+						["get", "admin_level"],
+						2
+					],
+					[
+						"==",
+						["get", "maritime"],
+						1
+					]
+				],
+				else: true,
+				style: {
+					"stroke-color": "#a0c8f0",
+					"stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"any",
+					[
+						"==",
+						["get", "layer"],
+						"country_label"
+					],
+					[
+						"==",
+						["get", "layer"],
+						"place_label"
+					]
+				],
+				else: true,
+				style: {
+					"text-value": ["get", "name_en"],
+					"text-font": "bold 11px \"Open Sans\", \"Arial Unicode MS\", sans-serif",
+					"text-fill-color": "#334",
+					"text-stroke-color": "rgba(255,255,255,0.8)",
+					"text-stroke-width": 2
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"country_label"
+					],
+					[
+						"==",
+						["get", "scalerank"],
+						2
+					],
+					[
+						"<=",
+						["resolution"],
+						19567.87924100512
+					]
+				],
+				else: true,
+				style: {
+					"text-value": ["get", "name_en"],
+					"text-font": "bold 10px \"Open Sans\", \"Arial Unicode MS\", sans-serif",
+					"text-fill-color": "#334",
+					"text-stroke-color": "rgba(255,255,255,0.8)",
+					"text-stroke-width": 2
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"country_label"
+					],
+					[
+						"==",
+						["get", "scalerank"],
+						3
+					],
+					[
+						"<=",
+						["resolution"],
+						9783.93962050256
+					]
+				],
+				else: true,
+				style: {
+					"text-value": ["get", "name_en"],
+					"text-font": "bold 9px \"Open Sans\", \"Arial Unicode MS\", sans-serif",
+					"text-fill-color": "#334",
+					"text-stroke-color": "rgba(255,255,255,0.8)",
+					"text-stroke-width": 2
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"country_label"
+					],
+					[
+						"==",
+						["get", "scalerank"],
+						4
+					],
+					[
+						"<=",
+						["resolution"],
+						4891.96981025128
+					]
+				],
+				else: true,
+				style: {
+					"text-value": ["get", "name_en"],
+					"text-font": "bold 8px \"Open Sans\", \"Arial Unicode MS\", sans-serif",
+					"text-fill-color": "#334",
+					"text-stroke-color": "rgba(255,255,255,0.8)",
+					"text-stroke-width": 2
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"marine_label"
+					],
+					[
+						"==",
+						["get", "labelrank"],
+						1
+					],
+					[
+						"==",
+						["geometry-type"],
+						"Point"
+					]
+				],
+				else: true,
+				style: {
+					"text-value": ["get", "name_en"],
+					"text-font": "italic 11px \"Open Sans\", \"Arial Unicode MS\", sans-serif",
+					"text-fill-color": "#74aee9",
+					"text-stroke-color": "rgba(255,255,255,0.8)",
+					"text-stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"marine_label"
+					],
+					[
+						"==",
+						["get", "labelrank"],
+						2
+					],
+					[
+						"==",
+						["geometry-type"],
+						"Point"
+					]
+				],
+				else: true,
+				style: {
+					"text-value": ["get", "name_en"],
+					"text-font": "italic 11px \"Open Sans\", \"Arial Unicode MS\", sans-serif",
+					"text-fill-color": "#74aee9",
+					"text-stroke-color": "rgba(255,255,255,0.8)",
+					"text-stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"marine_label"
+					],
+					[
+						"==",
+						["get", "labelrank"],
+						3
+					],
+					[
+						"==",
+						["geometry-type"],
+						"Point"
+					]
+				],
+				else: true,
+				style: {
+					"text-value": ["get", "name_en"],
+					"text-font": "italic 10px \"Open Sans\", \"Arial Unicode MS\", sans-serif",
+					"text-fill-color": "#74aee9",
+					"text-stroke-color": "rgba(255,255,255,0.8)",
+					"text-stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"marine_label"
+					],
+					[
+						"==",
+						["get", "labelrank"],
+						4
+					],
+					[
+						"==",
+						["geometry-type"],
+						"Point"
+					]
+				],
+				else: true,
+				style: {
+					"text-value": ["get", "name_en"],
+					"text-font": "italic 9px \"Open Sans\", \"Arial Unicode MS\", sans-serif",
+					"text-fill-color": "#74aee9",
+					"text-stroke-color": "rgba(255,255,255,0.8)",
+					"text-stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"place_label"
+					],
+					[
+						"==",
+						["get", "type"],
+						"city"
+					],
+					[
+						"<=",
+						["resolution"],
+						1222.99245256282
+					]
+				],
+				else: true,
+				style: {
+					"text-value": ["get", "name_en"],
+					"text-font": "11px \"Open Sans\", \"Arial Unicode MS\", sans-serif",
+					"text-fill-color": "#333",
+					"text-stroke-color": "rgba(255,255,255,0.8)",
+					"text-stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"place_label"
+					],
+					[
+						"==",
+						["get", "type"],
+						"town"
+					],
+					[
+						"<=",
+						["resolution"],
+						305.748113140705
+					]
+				],
+				else: true,
+				style: {
+					"text-value": ["get", "name_en"],
+					"text-font": "9px \"Open Sans\", \"Arial Unicode MS\", sans-serif",
+					"text-fill-color": "#333",
+					"text-stroke-color": "rgba(255,255,255,0.8)",
+					"text-stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"place_label"
+					],
+					[
+						"==",
+						["get", "type"],
+						"village"
+					],
+					[
+						"<=",
+						["resolution"],
+						38.21851414258813
+					]
+				],
+				else: true,
+				style: {
+					"text-value": ["get", "name_en"],
+					"text-font": "8px \"Open Sans\", \"Arial Unicode MS\", sans-serif",
+					"text-fill-color": "#333",
+					"text-stroke-color": "rgba(255,255,255,0.8)",
+					"text-stroke-width": 1
+				}
+			},
+			{
+				filter: [
+					"all",
+					[
+						"==",
+						["get", "layer"],
+						"place_label"
+					],
+					[
+						"<=",
+						["resolution"],
+						19.109257071294063
+					],
+					[
+						"any",
+						[
+							"==",
+							["get", "type"],
+							"hamlet"
+						],
+						[
+							"==",
+							["get", "type"],
+							"suburb"
+						],
+						[
+							"==",
+							["get", "type"],
+							"neighbourhood"
+						]
+					]
+				],
+				else: true,
+				style: {
+					"text-value": ["get", "name_en"],
+					"text-font": "bold 9px \"Arial Narrow\"",
+					"text-fill-color": "#633",
+					"text-stroke-color": "rgba(255,255,255,0.8)",
+					"text-stroke-width": 1
+				}
+			}
+		]
+	})],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2,
+		multiWorld: true
+	})
+});
+//#endregion
+
 //# sourceMappingURL=webgl-vector-tiles.js.map

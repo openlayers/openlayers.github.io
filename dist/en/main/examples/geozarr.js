@@ -1,2 +1,73 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[929],{13564:function(e,n,t){var l=t(41564),a=t(87240),u=t(96256),s=t(874),c=t(28e3);const o=document.getElementById("url-select"),r=document.getElementById("custom-url"),d=document.getElementById("load-url");let i;function m(){const e="custom"===o.value?r.value:o.value;if(!e)return;const n=new s.default({url:e,bands:["b04","b03","b02"]});i&&i.setTarget(null),i=new l.A({layers:[new u.A({source:new c.A}),new u.A({style:{gamma:1.5,color:["color",["interpolate",["linear"],["band",1],0,0,.5,255],["interpolate",["linear"],["band",2],0,0,.5,255],["interpolate",["linear"],["band",3],0,0,.5,255]]},source:n})],target:"map",view:(0,a.KZ)(n,(0,a.RU)(1),(0,a.nH)(2),(0,a.Ev)(),(0,a.ST)(2))})}o.addEventListener("change",(()=>{"custom"===o.value?(r.style.display="",r.focus()):r.style.display="none"})),d.addEventListener("click",m),m()}},function(e){var n;n=13564,e(e.s=n)}]);
+import { Cn as OSM, Ht as WebGLTileLayer, Mn as Map, N as GeoZarr, cr as withExtentCenter, dr as withZoom, lr as withHigherResolutions, sr as getView, ur as withLowerResolutions } from "./common.js";
+//#region examples/geozarr.js
+var select = document.getElementById("url-select");
+var input = document.getElementById("custom-url");
+var button = document.getElementById("load-url");
+function getUrl() {
+	return select.value === "custom" ? input.value : select.value;
+}
+select.addEventListener("change", () => {
+	if (select.value === "custom") {
+		input.style.display = "";
+		input.focus();
+	} else input.style.display = "none";
+});
+var map;
+function render() {
+	const url = getUrl();
+	if (!url) return;
+	const source = new GeoZarr({
+		url,
+		bands: [
+			"b04",
+			"b03",
+			"b02"
+		]
+	});
+	if (map) map.setTarget(null);
+	map = new Map({
+		layers: [new WebGLTileLayer({ source: new OSM() }), new WebGLTileLayer({
+			style: {
+				gamma: 1.5,
+				color: [
+					"color",
+					[
+						"interpolate",
+						["linear"],
+						["band", 1],
+						0,
+						0,
+						.5,
+						255
+					],
+					[
+						"interpolate",
+						["linear"],
+						["band", 2],
+						0,
+						0,
+						.5,
+						255
+					],
+					[
+						"interpolate",
+						["linear"],
+						["band", 3],
+						0,
+						0,
+						.5,
+						255
+					]
+				]
+			},
+			source
+		})],
+		target: "map",
+		view: getView(source, withLowerResolutions(1), withHigherResolutions(2), withExtentCenter(), withZoom(2))
+	});
+}
+button.addEventListener("click", render);
+render();
+//#endregion
+
 //# sourceMappingURL=geozarr.js.map

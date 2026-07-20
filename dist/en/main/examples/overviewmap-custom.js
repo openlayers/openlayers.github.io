@@ -1,2 +1,26 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6968],{85955:function(e,t,n){var c=n(41564),a=n(87240),o=n(36958),s=n(76825),l=n(95301),r=n(35947),i=n(12185),w=n(28e3);const u=document.getElementById("rotateWithView"),d=new o.A({className:"ol-overviewmap ol-custom-overviewmap",layers:[new i.A({source:new w.A({url:"https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=0e6fc415256d4fbb9b5166a718591d71"})})],collapseLabel:"»",label:"«",collapsed:!1});u.addEventListener("change",(function(){d.setRotateWithView(this.checked)}));new c.A({controls:(0,s.N)().extend([d]),interactions:(0,r.N)().extend([new l.A]),layers:[new i.A({source:new w.A})],target:"map",view:new a.Ay({center:[5e5,6e6],zoom:7})})}},function(e){var t;t=85955,e(e.s=t)}]);
+import { C as OverviewMap, Cn as OSM, K as DragRotateAndZoom, Mn as Map, Wn as defaults$1, jn as TileLayer, or as View, rr as defaults } from "./common.js";
+//#region examples/overviewmap-custom.js
+var rotateWithView = document.getElementById("rotateWithView");
+var overviewMapControl = new OverviewMap({
+	className: "ol-overviewmap ol-custom-overviewmap",
+	layers: [new TileLayer({ source: new OSM({ "url": "https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=0e6fc415256d4fbb9b5166a718591d71" }) })],
+	collapseLabel: "»",
+	label: "«",
+	collapsed: false
+});
+rotateWithView.addEventListener("change", function() {
+	overviewMapControl.setRotateWithView(this.checked);
+});
+new Map({
+	controls: defaults().extend([overviewMapControl]),
+	interactions: defaults$1().extend([new DragRotateAndZoom()]),
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [5e5, 6e6],
+		zoom: 7
+	})
+});
+//#endregion
+
 //# sourceMappingURL=overviewmap-custom.js.map

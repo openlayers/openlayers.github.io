@@ -1,2 +1,45 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6549],{94960:function(e,t,n){var o=n(41564),i=n(87240),r=n(13413),s=n(76825),c=n(12185),a=n(25231),u=n(28e3);const w=document.getElementById("view-projection"),g=(0,a.Jt)(w.value),p=new r.A({units:"metric",bar:!0,steps:4,text:!0,minWidth:140}),l=new o.A({controls:(0,s.N)().extend([p]),layers:[new c.A({source:new u.A})],target:"map",view:new i.Ay({center:(0,a.pd)([0,52],"EPSG:4326",g),zoom:6,projection:g})});w.addEventListener("change",(function(){const e=l.getView(),t=e.getProjection(),n=(0,a.Jt)(w.value),o=e.getResolution(),r=e.getCenter(),s=e.getRotation(),c=(0,a.pd)(r,t,n),u=t.getMetersPerUnit(),g=n.getMetersPerUnit(),p=o*((0,a.hO)(t,1/u,r,"m")*u)/((0,a.hO)(n,1/g,c,"m")*g),d=new i.Ay({center:c,resolution:p,rotation:s,projection:n});l.setView(d)}))}},function(e){var t;t=94960,e(e.s=t)}]);
+import { Cn as OSM, Mn as Map, Or as transform, Tr as getPointResolution, U as ScaleLine, jn as TileLayer, or as View, rr as defaults, wr as get } from "./common.js";
+//#region examples/projection-and-scale.js
+var viewProjSelect = document.getElementById("view-projection");
+var projection = get(viewProjSelect.value);
+var scaleControl = new ScaleLine({
+	units: "metric",
+	bar: true,
+	steps: 4,
+	text: true,
+	minWidth: 140
+});
+var map = new Map({
+	controls: defaults().extend([scaleControl]),
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: transform([0, 52], "EPSG:4326", projection),
+		zoom: 6,
+		projection
+	})
+});
+function onChangeProjection() {
+	const currentView = map.getView();
+	const currentProjection = currentView.getProjection();
+	const newProjection = get(viewProjSelect.value);
+	const currentResolution = currentView.getResolution();
+	const currentCenter = currentView.getCenter();
+	const currentRotation = currentView.getRotation();
+	const newCenter = transform(currentCenter, currentProjection, newProjection);
+	const currentMPU = currentProjection.getMetersPerUnit();
+	const newMPU = newProjection.getMetersPerUnit();
+	const currentPointResolution = getPointResolution(currentProjection, 1 / currentMPU, currentCenter, "m") * currentMPU;
+	const newPointResolution = getPointResolution(newProjection, 1 / newMPU, newCenter, "m") * newMPU;
+	const newView = new View({
+		center: newCenter,
+		resolution: currentResolution * currentPointResolution / newPointResolution,
+		rotation: currentRotation,
+		projection: newProjection
+	});
+	map.setView(newView);
+}
+viewProjSelect.addEventListener("change", onChangeProjection);
+//#endregion
+
 //# sourceMappingURL=projection-and-scale.js.map

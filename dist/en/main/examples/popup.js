@@ -1,2 +1,47 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[887],{16058:function(e,t,n){var o=n(41564),r=n(93595),c=n(87240),i=n(61341),p=n(12185),a=n(25231),s=n(15264);const u=document.getElementById("popup"),l=document.getElementById("popup-content"),m=document.getElementById("popup-closer"),w=new r.A({element:u,autoPan:{animation:{duration:250}}});m.onclick=function(){return w.setPosition(void 0),m.blur(),!1};new o.A({layers:[new p.A({source:new s.A({attributions:'<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',url:"https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=get_your_own_D6rA4zTHduk6KOKTXzGB",tileSize:512})})],overlays:[w],target:"map",view:new c.Ay({center:[0,0],zoom:2})}).on("singleclick",(function(e){const t=e.coordinate,n=(0,i.xi)((0,a.WP)(t));l.innerHTML="<p>You clicked here:</p><code>"+n+"</code>",w.setPosition(t)}))}},function(e){var t;t=16058,e(e.s=t)}]);
+import { Dr as toLonLat, Mn as Map, an as ImageTileSource, at as Overlay, jn as TileLayer, or as View, zr as toStringHDMS } from "./common.js";
+//#region examples/popup.js
+/**
+* Elements that make up the popup.
+*/
+var container = document.getElementById("popup");
+var content = document.getElementById("popup-content");
+var closer = document.getElementById("popup-closer");
+/**
+* Create an overlay to anchor the popup to the map.
+*/
+var overlay = new Overlay({
+	element: container,
+	autoPan: { animation: { duration: 250 } }
+});
+/**
+* Add a click handler to hide the popup.
+* @return {boolean} Don't follow the href.
+*/
+closer.onclick = function() {
+	overlay.setPosition(void 0);
+	closer.blur();
+	return false;
+};
+/**
+* Add a click handler to the map to render the popup.
+*/
+new Map({
+	layers: [new TileLayer({ source: new ImageTileSource({
+		attributions: "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+		url: "https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+		tileSize: 512
+	}) })],
+	overlays: [overlay],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+}).on("singleclick", function(evt) {
+	const coordinate = evt.coordinate;
+	content.innerHTML = "<p>You clicked here:</p><code>" + toStringHDMS(toLonLat(coordinate)) + "</code>";
+	overlay.setPosition(coordinate);
+});
+//#endregion
+
 //# sourceMappingURL=popup.js.map

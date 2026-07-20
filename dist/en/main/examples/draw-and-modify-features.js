@@ -1,2 +1,52 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4032],{92971:function(e,n,t){var c=t(41564),o=t(87240),r=t(9444),s=t(74676),a=t(90278),i=t(12185),l=t(23986),u=t(25231),w=t(28e3),f=t(29810);const d=new i.A({source:new w.A}),A=new f.A,y=new l.A({source:A,style:{"fill-color":"rgba(255, 255, 255, 0.2)","stroke-color":"#ffcc33","stroke-width":2,"circle-radius":7,"circle-fill-color":"#ffcc33"}}),k=(0,u.Jt)("EPSG:3857").getExtent().slice();k[0]+=k[0],k[2]+=k[2];const m=new c.A({layers:[d,y],target:"map",view:new o.Ay({center:[-11e6,46e5],zoom:4,extent:k})}),p=new s.A({source:A});let v,I;m.addInteraction(p);const g=document.getElementById("type");function h(){v=new r.Ay({source:A,type:g.value}),m.addInteraction(v),I=new a.A({source:A}),m.addInteraction(I)}g.onchange=function(){m.removeInteraction(v),m.removeInteraction(I),h()},h()}},function(e){var n;n=92971,e(e.s=n)}]);
+import { Cn as OSM, G as Modify, Gt as Draw, Mn as Map, W as Snap, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View, wr as get } from "./common.js";
+//#region examples/draw-and-modify-features.js
+var raster = new TileLayer({ source: new OSM() });
+var source = new VectorSource();
+var vector = new VectorLayer({
+	source,
+	style: {
+		"fill-color": "rgba(255, 255, 255, 0.2)",
+		"stroke-color": "#ffcc33",
+		"stroke-width": 2,
+		"circle-radius": 7,
+		"circle-fill-color": "#ffcc33"
+	}
+});
+var extent = get("EPSG:3857").getExtent().slice();
+extent[0] += extent[0];
+extent[2] += extent[2];
+var map = new Map({
+	layers: [raster, vector],
+	target: "map",
+	view: new View({
+		center: [-11e6, 46e5],
+		zoom: 4,
+		extent
+	})
+});
+var modify = new Modify({ source });
+map.addInteraction(modify);
+var draw;
+var snap;
+var typeSelect = document.getElementById("type");
+function addInteractions() {
+	draw = new Draw({
+		source,
+		type: typeSelect.value
+	});
+	map.addInteraction(draw);
+	snap = new Snap({ source });
+	map.addInteraction(snap);
+}
+/**
+* Handle change event.
+*/
+typeSelect.onchange = function() {
+	map.removeInteraction(draw);
+	map.removeInteraction(snap);
+	addInteractions();
+};
+addInteractions();
+//#endregion
+
 //# sourceMappingURL=draw-and-modify-features.js.map

@@ -1,2 +1,33 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7940],{54591:function(e,o,r){var n=r(41564),s=r(87240),t=r(49208),c=r(12185),a=r(23986),i=r(27542),l=r(28e3),w=r(29810);const u=new a.A({style:{"fill-color":"rgba(70, 130, 180, 0.6)","stroke-color":"rgba(25, 25, 112, 1)","stroke-width":2},source:new w.A({url:function(e){return`https://demo.mapserver.org/cgi-bin/mapserv/localdemo/ogcapi/collections/lakes/items?f=json&limit=1000&bbox=${e.join(",")}`},strategy:i.Qk,format:new t.A})});new n.A({layers:[new c.A({className:"bw",source:new l.A}),u],target:"map",view:new s.Ay({projection:"EPSG:3857",center:[0,0],zoom:4})})}},function(e){var o;o=54591,e(e.s=o)}]);
+import { Cn as OSM, Mn as Map, _n as bbox, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/mapserver-ogc-features.js
+var mapServerUrl = `https://demo.mapserver.org/cgi-bin/mapserv/localdemo/ogcapi/collections/lakes/items`;
+var params = `f=json&limit=1000`;
+var layer = new VectorLayer({
+	style: {
+		"fill-color": "rgba(70, 130, 180, 0.6)",
+		"stroke-color": "rgba(25, 25, 112, 1)",
+		"stroke-width": 2
+	},
+	source: new VectorSource({
+		url: function(extent) {
+			return `${mapServerUrl}?${params}&bbox=${extent.join(",")}`;
+		},
+		strategy: bbox,
+		format: new GeoJSON()
+	})
+});
+new Map({
+	layers: [new TileLayer({
+		className: "bw",
+		source: new OSM()
+	}), layer],
+	target: "map",
+	view: new View({
+		projection: "EPSG:3857",
+		center: [0, 0],
+		zoom: 4
+	})
+});
+//#endregion
+
 //# sourceMappingURL=mapserver-ogc-features.js.map

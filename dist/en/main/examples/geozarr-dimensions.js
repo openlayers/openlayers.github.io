@@ -1,2 +1,71 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6849],{31196:function(e,t,n){var a=n(41564),r=n(87240),s=n(96256),i=n(874),o=n(28e3);const l=new i.default({url:"https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-1-grd-rtc-staging/s1-rtc-28RBS.zarr/descending",bands:["vv","vh"]}),c=(new a.A({target:"map",layers:[new s.A({source:new o.A}),new s.A({style:{color:["color",["interpolate",["linear"],["band",1],0,0,.4,255],["interpolate",["linear"],["band",2],0,0,.1,255],["interpolate",["linear"],["/",["band",1],["band",2]],1,0,15,255]]},source:l})],view:(0,r.KZ)(l,(0,r.RU)(1),(0,r.nH)(2),(0,r.Ev)(),(0,r.ST)(2))}),document.getElementById("time")),d=document.getElementById("time-label");l.getDimensions().then((async({time:e})=>{const{units:t}=e.attributes,n=Date.parse(t.split(" since ")[1]),a=await Promise.all([...Array(e.size).keys()].map((async e=>{return{index:e,date:(t=await l.getValue("time",e),new Date(n+Number(t)/1e6))};var t})));function r(e){const{index:t,date:n}=a[e];l.updateDimensions({time:t}),d.textContent=n.toISOString().slice(0,16).replace("T"," ")}a.sort(((e,t)=>e.date-t.date)),c.max=String(e.size-1),c.disabled=!1,c.addEventListener("input",(()=>r(Number(c.value)))),r(0)})).catch((()=>d.textContent="Failed to load the GeoZarr store."))}},function(e){var t;t=31196,e(e.s=t)}]);
+import { Cn as OSM, Ht as WebGLTileLayer, Mn as Map, N as GeoZarr, cr as withExtentCenter, dr as withZoom, lr as withHigherResolutions, sr as getView, ur as withLowerResolutions } from "./common.js";
+//#region examples/geozarr-dimensions.js
+var source = new GeoZarr({
+	url: "https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-1-grd-rtc-staging/s1-rtc-28RBS.zarr/descending",
+	bands: ["vv", "vh"]
+});
+new Map({
+	target: "map",
+	layers: [new WebGLTileLayer({ source: new OSM() }), new WebGLTileLayer({
+		style: { color: [
+			"color",
+			[
+				"interpolate",
+				["linear"],
+				["band", 1],
+				0,
+				0,
+				.4,
+				255
+			],
+			[
+				"interpolate",
+				["linear"],
+				["band", 2],
+				0,
+				0,
+				.1,
+				255
+			],
+			[
+				"interpolate",
+				["linear"],
+				[
+					"/",
+					["band", 1],
+					["band", 2]
+				],
+				1,
+				0,
+				15,
+				255
+			]
+		] },
+		source
+	})],
+	view: getView(source, withLowerResolutions(1), withHigherResolutions(2), withExtentCenter(), withZoom(2))
+});
+var slider = document.getElementById("time");
+var label = document.getElementById("time-label");
+source.getDimensions().then(async ({ time }) => {
+	const { units } = time.attributes;
+	const epoch = Date.parse(units.split(" since ")[1]);
+	const toDate = (value) => new Date(epoch + Number(value) / 1e6);
+	const slices = await Promise.all([...Array(time.size).keys()].map(async (index) => ({
+		index,
+		date: toDate(await source.getValue("time", index))
+	})));
+	slices.sort((a, b) => a.date - b.date);
+	function showSlice(position) {
+		const { index, date } = slices[position];
+		source.updateDimensions({ time: index });
+		label.textContent = date.toISOString().slice(0, 16).replace("T", " ");
+	}
+	slider.max = String(time.size - 1);
+	slider.disabled = false;
+	slider.addEventListener("input", () => showSlice(Number(slider.value)));
+	showSlice(0);
+}).catch(() => label.textContent = "Failed to load the GeoZarr store.");
+//#endregion
+
 //# sourceMappingURL=geozarr-dimensions.js.map

@@ -1,2 +1,76 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7953],{79052:function(e,t,n){var a=n(41564),r=n(87240),o=n(16235),c=n(30135),s=n(30470),l=n(95907),u=n(12185),i=n(23986),w=n(66267),m=n(9226),f=n(29810),g=n(38276),A=n(75052),y=n(44689),d=n(88292);const h=function(){const e=[[0,0],[4,2],[6,0],[10,5],[6,3],[4,5],[0,0]],t=new s.Ay([e]);return t.rotate(1.2,e[0]),function(n,a){const r=t.clone();r.scale(n,n,e[0]);const c=(0,o.R)(r.getExtent());return r.translate(a-c[0],a-c[1]),r}}(),k={},p=new i.A({source:new f.A({url:"data/kml/2012_Earthquakes_Mag5.kml",format:new c.Ay({extractStyles:!1})}),style:function(e){const t=e.get("magnitude");let n=k[t];if(!n){const e=2,a=h(1+4*(t-5),Math.ceil(e/2)),r=document.createElement("canvas"),c=(0,w.J7)(r.getContext("2d"),{size:(0,o.WU)(a.getExtent()).map((t=>Math.ceil(t+e/2))),pixelRatio:l.cr});c.setStyle(new d.Ay({fill:new g.A({color:"rgba(255, 153, 0, 0.4)"}),stroke:new y.A({color:"rgba(255, 204, 0, 0.2)",width:2})})),c.drawGeometry(a),n=new d.Ay({image:new A.A({img:r,scale:1/l.cr})}),k[t]=n}return n}});p.getSource().on("featuresloadend",(function(e){e.features.forEach((e=>{var t;e.set("magnitude",(t=e.get("name"),parseFloat(t.substr(2))),!0)}))}));const b=new u.A({source:new m.A({layer:"stamen_toner"})});new a.A({layers:[b,p],target:"map",view:new r.Ay({center:[0,0],zoom:2})})}},function(e){var t;t=79052,e(e.s=t)}]);
+import { Fn as Stroke, In as Icon, Jr as getTopRight, Ln as Fill, Mn as Map, Pn as Style, Wr as getBottomLeft, Zr as DEVICE_PIXEL_RATIO, bn as VectorLayer, dn as VectorSource, fr as Polygon, jn as TileLayer, lt as toContext, or as View, tn as KML, yn as StadiaMaps } from "./common.js";
+//#region examples/earthquake-custom-symbol.js
+var getSymbolOutline = (function() {
+	const path = [
+		[0, 0],
+		[4, 2],
+		[6, 0],
+		[10, 5],
+		[6, 3],
+		[4, 5],
+		[0, 0]
+	];
+	const symbolOutline = new Polygon([path]);
+	symbolOutline.rotate(1.2, path[0]);
+	return function(scale, offset) {
+		const outline = symbolOutline.clone();
+		outline.scale(scale, scale, path[0]);
+		const origin = getBottomLeft(outline.getExtent());
+		outline.translate(offset - origin[0], offset - origin[1]);
+		return outline;
+	};
+})();
+var styleCache = {};
+var vector = new VectorLayer({
+	source: new VectorSource({
+		url: "data/kml/2012_Earthquakes_Mag5.kml",
+		format: new KML({ extractStyles: false })
+	}),
+	style: function(feature) {
+		const magnitude = feature.get("magnitude");
+		let style = styleCache[magnitude];
+		if (!style) {
+			const scale = 1 + 4 * (magnitude - 5);
+			const lineWidth = 2;
+			const outline = getSymbolOutline(scale, Math.ceil(lineWidth / 2));
+			const canvas = document.createElement("canvas");
+			const vectorContext = toContext(canvas.getContext("2d"), {
+				size: getTopRight(outline.getExtent()).map((n) => Math.ceil(n + lineWidth / 2)),
+				pixelRatio: DEVICE_PIXEL_RATIO
+			});
+			vectorContext.setStyle(new Style({
+				fill: new Fill({ color: "rgba(255, 153, 0, 0.4)" }),
+				stroke: new Stroke({
+					color: "rgba(255, 204, 0, 0.2)",
+					width: 2
+				})
+			}));
+			vectorContext.drawGeometry(outline);
+			style = new Style({ image: new Icon({
+				img: canvas,
+				scale: 1 / DEVICE_PIXEL_RATIO
+			}) });
+			styleCache[magnitude] = style;
+		}
+		return style;
+	}
+});
+function parseMagnitudeFromName(name) {
+	return parseFloat(name.substr(2));
+}
+vector.getSource().on("featuresloadend", function(evt) {
+	evt.features.forEach((f) => {
+		f.set("magnitude", parseMagnitudeFromName(f.get("name")), true);
+	});
+});
+new Map({
+	layers: [new TileLayer({ source: new StadiaMaps({ layer: "stamen_toner" }) }), vector],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+//#endregion
+
 //# sourceMappingURL=earthquake-custom-symbol.js.map

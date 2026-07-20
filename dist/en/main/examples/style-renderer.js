@@ -1,2 +1,53 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3302],{27857:function(e,t,o){var n=o(41564),s=o(87240),r=o(16235),a=o(49208),c=o(23986),l=o(66267),i=o(29810),u=o(38276),w=o(44689),f=o(88292);const g=new u.A,p=new w.A({color:"rgba(255,255,255,0.8)",width:2}),d=new f.Ay({renderer:function(e,t){const o=t.context,n=t.geometry.clone();n.setCoordinates(e);const s=n.getExtent(),a=(0,r.RG)(s),c=(0,r.Oq)(s),i=t.feature.get("flag");if(!i||c<1||a<1)return;o.save();const u=(0,l.J7)(o,{pixelRatio:1});u.setFillStrokeStyle(g,p),u.drawGeometry(n),o.clip();const w=(0,r.R)(s),f=w[0],d=w[1];o.drawImage(i,f,d,a,c),o.restore()}}),m=new c.A({source:new i.A({url:"https://openlayersbook.github.io/openlayers_book_samples/assets/data/countries.geojson",format:new a.A}),style:d});m.getSource().on("addfeature",(function(e){const t=e.feature,o=new Image;o.onload=function(){t.set("flag",o)},o.src="https://flagcdn.com/w320/"+t.get("iso_a2").toLowerCase()+".png"})),new n.A({layers:[m],target:"map",view:new s.Ay({center:[0,0],zoom:1})})}},function(e){var t;t=27857,e(e.s=t)}]);
+import { Fn as Stroke, Kr as getHeight, Ln as Fill, Mn as Map, Pn as Style, Wr as getBottomLeft, Yr as getWidth, bn as VectorLayer, dn as VectorSource, lt as toContext, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/style-renderer.js
+var fill = new Fill();
+var stroke = new Stroke({
+	color: "rgba(255,255,255,0.8)",
+	width: 2
+});
+var style = new Style({ renderer: function(pixelCoordinates, state) {
+	const context = state.context;
+	const geometry = state.geometry.clone();
+	geometry.setCoordinates(pixelCoordinates);
+	const extent = geometry.getExtent();
+	const width = getWidth(extent);
+	const height = getHeight(extent);
+	const flag = state.feature.get("flag");
+	if (!flag || height < 1 || width < 1) return;
+	context.save();
+	const renderContext = toContext(context, { pixelRatio: 1 });
+	renderContext.setFillStrokeStyle(fill, stroke);
+	renderContext.drawGeometry(geometry);
+	context.clip();
+	const bottomLeft = getBottomLeft(extent);
+	const left = bottomLeft[0];
+	const bottom = bottomLeft[1];
+	context.drawImage(flag, left, bottom, width, height);
+	context.restore();
+} });
+var vectorLayer = new VectorLayer({
+	source: new VectorSource({
+		url: "https://openlayersbook.github.io/openlayers_book_samples/assets/data/countries.geojson",
+		format: new GeoJSON()
+	}),
+	style
+});
+vectorLayer.getSource().on("addfeature", function(event) {
+	const feature = event.feature;
+	const img = new Image();
+	img.onload = function() {
+		feature.set("flag", img);
+	};
+	img.src = "https://flagcdn.com/w320/" + feature.get("iso_a2").toLowerCase() + ".png";
+});
+new Map({
+	layers: [vectorLayer],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 1
+	})
+});
+//#endregion
+
 //# sourceMappingURL=style-renderer.js.map

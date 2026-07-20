@@ -1,2 +1,129 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6680],{58227:function(e,t,o){var n=o(41564),r=o(87240),c=o(29050),i=o(40878),s=o(30470),f=o(9444),a=o(74676),u=o(90278),y=o(12185),m=o(23986),d=o(25231),g=o(28e3),l=o(29810),w=o(7074),G=o(21133),A=o(38276),p=o(44689),E=o(88292);const C=new y.A({source:new g.A}),h=new l.A,P=new E.Ay({fill:new A.A({color:"rgba(255, 255, 255, 0.2)"}),stroke:new p.A({color:"#33cc33",width:2}),image:new G.A({radius:7,fill:new A.A({color:"#ffcc33"})})}),S=new E.Ay({geometry:function(e){return e.get("modifyGeometry")||e.getGeometry()},fill:new A.A({color:"rgba(255, 255, 255, 0.2)"}),stroke:new p.A({color:"#ff3333",width:2}),image:new G.A({radius:7,fill:new A.A({color:"rgba(0, 0, 0, 0)"})})}),k=new m.A({source:h,style:function(e){return"GeometryCollection"===e.getGeometry().getType()?S:P}}),v=new n.A({layers:[C,k],target:"map",view:new r.Ay({center:[-11e6,66e5],zoom:3})}),I=new a.A({source:h}).getOverlay().getStyleFunction(),b=new a.A({source:h,style:function(e,t){return e.get("features").forEach((function(t){const o=t.get("modifyGeometry");if(o){const n=e.getGeometry().getCoordinates(),r=t.getGeometry().getGeometries(),c=r[0].getCoordinates()[0],i=r[1].getCoordinates(),f=v.getView().getProjection();let a,u,y;n[0]===i[0]&&n[1]===i[1]?(a=(0,d.pd)(c[0],f,"EPSG:4326"),u=(0,d.pd)(c[(c.length-1)/2],f,"EPSG:4326"),y=(0,w.Yf)(a,u)/2):(a=(0,d.pd)(i,f,"EPSG:4326"),u=(0,d.pd)(n,f,"EPSG:4326"),y=(0,w.Yf)(a,u));const m=(0,s.kj)((0,d.pd)(i,f,"EPSG:4326"),y,128);m.transform("EPSG:4326",f),r[0].setCoordinates(m.getCoordinates()),o.setGeometries(r)}})),I(e,t)}});let j,Y;b.on("modifystart",(function(e){e.features.forEach((function(e){const t=e.getGeometry();"GeometryCollection"===t.getType()&&e.set("modifyGeometry",t.clone(),!0)}))})),b.on("modifyend",(function(e){e.features.forEach((function(e){const t=e.get("modifyGeometry");t&&(e.setGeometry(t),e.unset("modifyGeometry",!0))}))})),v.addInteraction(b);const F=document.getElementById("type");function T(){let e,t=F.value;"Geodesic"===t&&(t="Circle",e=function(e,t,o){t||(t=new c.A([new s.Ay([]),new i.A(e[0])]));const n=t.getGeometries(),r=(0,d.pd)(e[0],o,"EPSG:4326"),f=(0,d.pd)(e[1],o,"EPSG:4326"),a=(0,w.Yf)(r,f),u=(0,s.kj)(r,a,128);return u.transform("EPSG:4326",o),n[0].setCoordinates(u.getCoordinates()),t.setGeometries(n),t}),j=new f.Ay({source:h,type:t,geometryFunction:e}),v.addInteraction(j),Y=new u.A({source:h}),v.addInteraction(Y)}F.onchange=function(){v.removeInteraction(j),v.removeInteraction(Y),T()},T()}},function(e){var t;t=58227,e(e.s=t)}]);
+import { Cn as OSM, Fn as Stroke, G as Modify, Gt as Draw, Ln as Fill, Mn as Map, Nr as getDistance, Or as transform, Pn as Style, Rn as CircleStyle, W as Snap, bn as VectorLayer, dn as VectorSource, fr as Polygon, hr as Point, in as GeometryCollection, jn as TileLayer, or as View, pr as circular } from "./common.js";
+//#region examples/draw-and-modify-geodesic.js
+var raster = new TileLayer({ source: new OSM() });
+var source = new VectorSource();
+var style = new Style({
+	fill: new Fill({ color: "rgba(255, 255, 255, 0.2)" }),
+	stroke: new Stroke({
+		color: "#33cc33",
+		width: 2
+	}),
+	image: new CircleStyle({
+		radius: 7,
+		fill: new Fill({ color: "#ffcc33" })
+	})
+});
+var geodesicStyle = new Style({
+	geometry: function(feature) {
+		return feature.get("modifyGeometry") || feature.getGeometry();
+	},
+	fill: new Fill({ color: "rgba(255, 255, 255, 0.2)" }),
+	stroke: new Stroke({
+		color: "#ff3333",
+		width: 2
+	}),
+	image: new CircleStyle({
+		radius: 7,
+		fill: new Fill({ color: "rgba(0, 0, 0, 0)" })
+	})
+});
+var map = new Map({
+	layers: [raster, new VectorLayer({
+		source,
+		style: function(feature) {
+			return feature.getGeometry().getType() === "GeometryCollection" ? geodesicStyle : style;
+		}
+	})],
+	target: "map",
+	view: new View({
+		center: [-11e6, 66e5],
+		zoom: 3
+	})
+});
+var defaultStyle = new Modify({ source }).getOverlay().getStyleFunction();
+var modify = new Modify({
+	source,
+	style: function(feature, resolution) {
+		feature.get("features").forEach(function(modifyFeature) {
+			const modifyGeometry = modifyFeature.get("modifyGeometry");
+			if (modifyGeometry) {
+				const modifyPoint = feature.getGeometry().getCoordinates();
+				const geometries = modifyFeature.getGeometry().getGeometries();
+				const polygon = geometries[0].getCoordinates()[0];
+				const center = geometries[1].getCoordinates();
+				const projection = map.getView().getProjection();
+				let first, last, radius;
+				if (modifyPoint[0] === center[0] && modifyPoint[1] === center[1]) {
+					first = transform(polygon[0], projection, "EPSG:4326");
+					last = transform(polygon[(polygon.length - 1) / 2], projection, "EPSG:4326");
+					radius = getDistance(first, last) / 2;
+				} else {
+					first = transform(center, projection, "EPSG:4326");
+					last = transform(modifyPoint, projection, "EPSG:4326");
+					radius = getDistance(first, last);
+				}
+				const circle = circular(transform(center, projection, "EPSG:4326"), radius, 128);
+				circle.transform("EPSG:4326", projection);
+				geometries[0].setCoordinates(circle.getCoordinates());
+				modifyGeometry.setGeometries(geometries);
+			}
+		});
+		return defaultStyle(feature, resolution);
+	}
+});
+modify.on("modifystart", function(event) {
+	event.features.forEach(function(feature) {
+		const geometry = feature.getGeometry();
+		if (geometry.getType() === "GeometryCollection") feature.set("modifyGeometry", geometry.clone(), true);
+	});
+});
+modify.on("modifyend", function(event) {
+	event.features.forEach(function(feature) {
+		const modifyGeometry = feature.get("modifyGeometry");
+		if (modifyGeometry) {
+			feature.setGeometry(modifyGeometry);
+			feature.unset("modifyGeometry", true);
+		}
+	});
+});
+map.addInteraction(modify);
+var draw;
+var snap;
+var typeSelect = document.getElementById("type");
+function addInteractions() {
+	let value = typeSelect.value;
+	let geometryFunction;
+	if (value === "Geodesic") {
+		value = "Circle";
+		geometryFunction = function(coordinates, geometry, projection) {
+			if (!geometry) geometry = new GeometryCollection([new Polygon([]), new Point(coordinates[0])]);
+			const geometries = geometry.getGeometries();
+			const center = transform(coordinates[0], projection, "EPSG:4326");
+			const circle = circular(center, getDistance(center, transform(coordinates[1], projection, "EPSG:4326")), 128);
+			circle.transform("EPSG:4326", projection);
+			geometries[0].setCoordinates(circle.getCoordinates());
+			geometry.setGeometries(geometries);
+			return geometry;
+		};
+	}
+	draw = new Draw({
+		source,
+		type: value,
+		geometryFunction
+	});
+	map.addInteraction(draw);
+	snap = new Snap({ source });
+	map.addInteraction(snap);
+}
+/**
+* Handle change event.
+*/
+typeSelect.onchange = function() {
+	map.removeInteraction(draw);
+	map.removeInteraction(snap);
+	addInteractions();
+};
+addInteractions();
+//#endregion
+
 //# sourceMappingURL=draw-and-modify-geodesic.js.map

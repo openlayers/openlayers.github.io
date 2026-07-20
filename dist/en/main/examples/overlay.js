@@ -1,2 +1,45 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[601],{24532:function(e,n,t){var o=t(41564),c=t(93595),s=t(87240),a=t(61341),i=t(12185),l=t(25231),p=t(28e3);const r=new i.A({source:new p.A}),d=new o.A({layers:[r],target:"map",view:new s.Ay({center:[0,0],zoom:2})}),m=(0,l.Rb)([16.3725,48.208889]),u=new c.A({element:document.getElementById("popup")});d.addOverlay(u);const w=new c.A({position:m,positioning:"center-center",element:document.getElementById("marker"),stopEvent:!1});d.addOverlay(w);const v=new c.A({position:m,element:document.getElementById("vienna")});d.addOverlay(v);const y=u.getElement();d.on("click",(function(e){const n=e.coordinate,t=(0,a.xi)((0,l.WP)(n));u.setPosition(n);let o=bootstrap.Popover.getInstance(y);o&&o.dispose(),o=new bootstrap.Popover(y,{animation:!1,container:y,content:"<p>The location you clicked was:</p><code>"+t+"</code>",html:!0,placement:"top",title:"Welcome to OpenLayers"}),o.show()}))}},function(e){var n;n=24532,e(e.s=n)}]);
+import { Cn as OSM, Cr as fromLonLat, Dr as toLonLat, Mn as Map, at as Overlay, jn as TileLayer, or as View, zr as toStringHDMS } from "./common.js";
+//#region examples/overlay.js
+var map = new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var pos = fromLonLat([16.3725, 48.208889]);
+var popup = new Overlay({ element: document.getElementById("popup") });
+map.addOverlay(popup);
+var marker = new Overlay({
+	position: pos,
+	positioning: "center-center",
+	element: document.getElementById("marker"),
+	stopEvent: false
+});
+map.addOverlay(marker);
+var vienna = new Overlay({
+	position: pos,
+	element: document.getElementById("vienna")
+});
+map.addOverlay(vienna);
+var element = popup.getElement();
+map.on("click", function(evt) {
+	const coordinate = evt.coordinate;
+	const hdms = toStringHDMS(toLonLat(coordinate));
+	popup.setPosition(coordinate);
+	let popover = bootstrap.Popover.getInstance(element);
+	if (popover) popover.dispose();
+	popover = new bootstrap.Popover(element, {
+		animation: false,
+		container: element,
+		content: "<p>The location you clicked was:</p><code>" + hdms + "</code>",
+		html: true,
+		placement: "top",
+		title: "Welcome to OpenLayers"
+	});
+	popover.show();
+});
+//#endregion
+
 //# sourceMappingURL=overlay.js.map

@@ -1,2 +1,34 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3781],{31568:function(t,e,n){var r=n(41564),a=n(87240),o=n(16235),i=n(12185),s=n(25231),g=n(58212),f=n(35603);const l=new r.A({target:"map",view:new a.Ay({zoom:5,center:(0,s.Rb)([5,45])})}),p=[],u=[],w=(0,s.Jt)("EPSG:3857"),c=(0,o.RG)(w.getExtent())/256;for(let t=0;t<20;t++)u[t]=t.toString(),p[t]=c/Math.pow(2,t);const m=new f.A({origin:[-20037508,20037508],resolutions:p,matrixIds:u}),h=new g.A({url:"https://data.geopf.fr/wmts",layer:"GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2",matrixSet:"PM",format:"image/png",projection:"EPSG:3857",tileGrid:m,style:"normal",attributions:'<a href="https://www.ign.fr/" target="_blank"><img src="https://data.geopf.fr/annexes/ressources/logos/ign.gif" title="Institut national de l\'information géographique et forestière" alt="IGN"></a>'}),G=new i.A({source:h});l.addLayer(G)}},function(t){var e;e=31568,t(t.s=e)}]);
+import { Cr as fromLonLat, Mn as Map, Yr as getWidth, bt as WMTS, jn as TileLayer, kn as WMTSTileGrid, or as View, wr as get } from "./common.js";
+//#region examples/wmts-ign.js
+var map = new Map({
+	target: "map",
+	view: new View({
+		zoom: 5,
+		center: fromLonLat([5, 45])
+	})
+});
+var resolutions = [];
+var matrixIds = [];
+var maxResolution = getWidth(get("EPSG:3857").getExtent()) / 256;
+for (let i = 0; i < 20; i++) {
+	matrixIds[i] = i.toString();
+	resolutions[i] = maxResolution / Math.pow(2, i);
+}
+var ign = new TileLayer({ source: new WMTS({
+	url: "https://data.geopf.fr/wmts",
+	layer: "GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2",
+	matrixSet: "PM",
+	format: "image/png",
+	projection: "EPSG:3857",
+	tileGrid: new WMTSTileGrid({
+		origin: [-20037508, 20037508],
+		resolutions,
+		matrixIds
+	}),
+	style: "normal",
+	attributions: "<a href=\"https://www.ign.fr/\" target=\"_blank\"><img src=\"https://data.geopf.fr/annexes/ressources/logos/ign.gif\" title=\"Institut national de l'information géographique et forestière\" alt=\"IGN\"></a>"
+}) });
+map.addLayer(ign);
+//#endregion
+
 //# sourceMappingURL=wmts-ign.js.map

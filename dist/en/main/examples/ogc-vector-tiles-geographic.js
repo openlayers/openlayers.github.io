@@ -1,2 +1,26 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4392],{42163:function(e,o,t){var r=t(41564),n=t(87240),a=t(53815),c=t(88887),s=t(96469);new r.A({target:"map",layers:[new c.A({source:new s.A({url:"https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:cultural:ne_10m_admin_0_countries/tiles/WorldCRS84Quad",format:new a.A,projection:"EPSG:4326"}),background:"#d1d1d1",style:{"stroke-width":.6,"stroke-color":"#8c8b8b","fill-color":"#f7f7e9"}})],view:new n.Ay({center:[0,0],zoom:1,projection:"EPSG:4326"})})}},function(e){var o;o=42163,e(e.s=o)}]);
+import { $t as VectorTileLayer, Et as OGCVectorTile, Mn as Map, en as MVT, or as View } from "./common.js";
+//#region examples/ogc-vector-tiles-geographic.js
+new Map({
+	target: "map",
+	layers: [new VectorTileLayer({
+		source: new OGCVectorTile({
+			url: "https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:cultural:ne_10m_admin_0_countries/tiles/WorldCRS84Quad",
+			format: new MVT(),
+			projection: "EPSG:4326"
+		}),
+		background: "#d1d1d1",
+		style: {
+			"stroke-width": .6,
+			"stroke-color": "#8c8b8b",
+			"fill-color": "#f7f7e9"
+		}
+	})],
+	view: new View({
+		center: [0, 0],
+		zoom: 1,
+		projection: "EPSG:4326"
+	})
+});
+//#endregion
+
 //# sourceMappingURL=ogc-vector-tiles-geographic.js.map

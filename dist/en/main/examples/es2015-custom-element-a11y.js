@@ -1,2 +1,35 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2823],{9162:function(e,t,s){var n=s(41564),h=s(87240),o=s(12185),a=s(28e3);class c extends HTMLElement{constructor(){super(),this.shadow=this.attachShadow({mode:"open"});const e=document.createElement("link");e.setAttribute("rel","stylesheet"),e.setAttribute("href","theme/ol.css"),this.shadow.appendChild(e);const t=document.createElement("style");t.innerText="\n      :host {\n        display: block;\n      }\n    ",this.shadow.appendChild(t);const s=document.createElement("div");s.style.width="100%",s.style.height="100%",this.shadow.appendChild(s),this.map=new n.A({target:s,layers:[new o.A({source:new a.A})],view:new h.Ay({center:[0,0],zoom:2})})}}customElements.define("ol-map",c)}},function(e){var t;t=9162,e(e.s=t)}]);
+import { Cn as OSM, Mn as Map, jn as TileLayer, or as View } from "./common.js";
+//#region examples/es2015-custom-element-a11y.js
+var OLComponent = class extends HTMLElement {
+	constructor() {
+		super();
+		this.shadow = this.attachShadow({ mode: "open" });
+		const link = document.createElement("link");
+		link.setAttribute("rel", "stylesheet");
+		link.setAttribute("href", "theme/ol.css");
+		this.shadow.appendChild(link);
+		const style = document.createElement("style");
+		style.innerText = `
+      :host {
+        display: block;
+      }
+    `;
+		this.shadow.appendChild(style);
+		const mapTarget = document.createElement("div");
+		mapTarget.style.width = "100%";
+		mapTarget.style.height = "100%";
+		this.shadow.appendChild(mapTarget);
+		this.map = new Map({
+			target: mapTarget,
+			layers: [new TileLayer({ source: new OSM() })],
+			view: new View({
+				center: [0, 0],
+				zoom: 2
+			})
+		});
+	}
+};
+customElements.define("ol-map", OLComponent);
+//#endregion
+
 //# sourceMappingURL=es2015-custom-element-a11y.js.map

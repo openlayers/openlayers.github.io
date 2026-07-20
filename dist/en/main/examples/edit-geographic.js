@@ -1,2 +1,52 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[53],{67952:function(e,n,t){var a=t(41564),o=t(87240),r=t(49208),c=t(9444),s=t(74676),d=t(68266),i=t(90278),u=t(23986),w=t(25231),m=t(29810);(0,w.n0)();const v=new m.A({url:"https://openlayers.org/data/vector/us-states.json",format:new r.A}),I=new a.A({target:"map",layers:[new u.A({background:"white",source:v})],view:new o.Ay({center:[-100,38.5],zoom:4})}),A=new d.A,f=new s.A({features:A.getFeatures()}),l=new c.Ay({type:"Polygon",source:v}),y=new i.A({source:v});const g=document.getElementById("mode");function h(){switch(I.removeInteraction(f),I.removeInteraction(A),I.removeInteraction(l),I.removeInteraction(A),g.value){case"draw":I.addInteraction(l),I.addInteraction(y);break;case"modify":I.addInteraction(A),I.addInteraction(f),I.addInteraction(y)}}g.addEventListener("change",h),h()}},function(e){var n;n=67952,e(e.s=n)}]);
+import { Ar as useGeographic, G as Modify, Gt as Draw, Mn as Map, W as Snap, bn as VectorLayer, dn as VectorSource, nn as Select, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/edit-geographic.js
+useGeographic();
+var source = new VectorSource({
+	url: "https://openlayers.org/data/vector/us-states.json",
+	format: new GeoJSON()
+});
+var map = new Map({
+	target: "map",
+	layers: [new VectorLayer({
+		background: "white",
+		source
+	})],
+	view: new View({
+		center: [-100, 38.5],
+		zoom: 4
+	})
+});
+var select = new Select();
+var modify = new Modify({ features: select.getFeatures() });
+var draw = new Draw({
+	type: "Polygon",
+	source
+});
+var snap = new Snap({ source });
+function removeInteractions() {
+	map.removeInteraction(modify);
+	map.removeInteraction(select);
+	map.removeInteraction(draw);
+	map.removeInteraction(select);
+}
+var mode = document.getElementById("mode");
+function onChange() {
+	removeInteractions();
+	switch (mode.value) {
+		case "draw":
+			map.addInteraction(draw);
+			map.addInteraction(snap);
+			break;
+		case "modify":
+			map.addInteraction(select);
+			map.addInteraction(modify);
+			map.addInteraction(snap);
+			break;
+		default:
+	}
+}
+mode.addEventListener("change", onChange);
+onChange();
+//#endregion
+
 //# sourceMappingURL=edit-geographic.js.map

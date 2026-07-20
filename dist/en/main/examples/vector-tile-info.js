@@ -1,2 +1,33 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1176],{18851:function(e,t,n){var r=n(41564),i=n(87240),s=n(53815),o=n(88887),a=n(98267);const c=new r.A({target:"map",view:new i.Ay({center:[0,0],zoom:2}),layers:[new o.A({source:new a.A({format:new s.A,url:"https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer/tile/{z}/{y}/{x}.pbf"})})]});c.getTargetElement().addEventListener("pointerleave",p),c.on("pointermove",(e=>{e.dragging||p(e)}));const l=document.getElementById("info");function p(e){const t="pointerleave"===e.type?[]:c.getFeaturesAtPixel(e.pixel);if(0==t.length)return l.innerText="",void(l.style.opacity="0");const n=t[0].getProperties();l.innerText=JSON.stringify(n,null,2),l.style.opacity="1"}}},function(e){var t;t=18851,e(e.s=t)}]);
+import { $t as VectorTileLayer, Mn as Map, Zt as VectorTile, en as MVT, or as View } from "./common.js";
+//#region examples/vector-tile-info.js
+var map = new Map({
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	}),
+	layers: [new VectorTileLayer({ source: new VectorTile({
+		format: new MVT(),
+		url: "https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer/tile/{z}/{y}/{x}.pbf"
+	}) })]
+});
+map.getTargetElement().addEventListener("pointerleave", showInfo);
+map.on("pointermove", (evt) => {
+	if (evt.dragging) return;
+	showInfo(evt);
+});
+var info = document.getElementById("info");
+function showInfo(event) {
+	const features = event.type === "pointerleave" ? [] : map.getFeaturesAtPixel(event.pixel);
+	if (features.length == 0) {
+		info.innerText = "";
+		info.style.opacity = "0";
+		return;
+	}
+	const properties = features[0].getProperties();
+	info.innerText = JSON.stringify(properties, null, 2);
+	info.style.opacity = "1";
+}
+//#endregion
+
 //# sourceMappingURL=vector-tile-info.js.map

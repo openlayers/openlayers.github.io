@@ -1,2 +1,68 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4632],{37523:function(e,t,l){var o=l(51541),r=l(41564),n=l(87240),a=l(92198),s=l(12185),c=l(23986),i=l(25231),b=l(28e3),d=l(29810),p=l(88292);const g=(0,i.Rb)([-73.98189,40.76805]),u="rgba(120, 120, 120, 1)",w="Columbus Circle";let f=null;const x=(e,t,l,o)=>{e.fillStyle="rgba(255,0,0,1)",e.strokeStyle=o,e.lineWidth=1,e.textAlign="center",e.textBaseline="middle",e.font="bold 30px verdana",e.filter="drop-shadow(7px 7px 2px #e81)",e.fillText(w,t,l),e.strokeText(w,t,l)},A=new o.A({geometry:new a.A(g,50)});A.set("label-color",u),A.setStyle(new p.Ay({renderer(e,t){const[[l,o],[r,n]]=e,a=t.context,s=r-l,c=n-o,i=Math.sqrt(s*s+c*c),b=1.4*i,d=a.createRadialGradient(l,o,0,l,o,b);d.addColorStop(0,"rgba(255,0,0,0)"),d.addColorStop(.6,"rgba(255,0,0,0.2)"),d.addColorStop(1,"rgba(255,0,0,0.8)"),a.beginPath(),a.arc(l,o,i,0,2*Math.PI,!0),a.fillStyle=d,a.fill(),a.strokeStyle="rgba(255,0,0,1)",a.stroke(),x(a,l,o,A.get("label-color"))},hitDetectionRenderer(e,t){const[l,o]=e[0],r=t.context;x(r,l,o,A.get("label-color"))}}));const h=new r.A({layers:[new s.A({source:new b.A,visible:!0}),new c.A({source:new d.A({features:[A]})})],target:"map",view:new n.Ay({center:g,zoom:19})});h.on("pointermove",(e=>{const t=h.forEachFeatureAtPixel(e.pixel,(e=>(e.set("label-color","rgba(255,255,255,1)"),e)));f&&f!=t&&f.set("label-color",u),f=t}))}},function(e){var t;t=37523,e(e.s=t)}]);
+import { Cn as OSM, Cr as fromLonLat, Jt as Circle, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+//#region examples/custom-hit-detection-renderer.js
+var columbusCircleCoords = fromLonLat([-73.98189, 40.76805]);
+var labelTextStroke = "rgba(120, 120, 120, 1)";
+var labelText = "Columbus Circle";
+var pointerOverFeature = null;
+var renderLabelText = (ctx, x, y, stroke) => {
+	ctx.fillStyle = "rgba(255,0,0,1)";
+	ctx.strokeStyle = stroke;
+	ctx.lineWidth = 1;
+	ctx.textAlign = "center";
+	ctx.textBaseline = "middle";
+	ctx.font = `bold 30px verdana`;
+	ctx.filter = "drop-shadow(7px 7px 2px #e81)";
+	ctx.fillText(labelText, x, y);
+	ctx.strokeText(labelText, x, y);
+};
+var circleFeature = new Feature({ geometry: new Circle(columbusCircleCoords, 50) });
+circleFeature.set("label-color", labelTextStroke);
+circleFeature.setStyle(new Style({
+	renderer(coordinates, state) {
+		const [[x, y], [x1, y1]] = coordinates;
+		const ctx = state.context;
+		const dx = x1 - x;
+		const dy = y1 - y;
+		const radius = Math.sqrt(dx * dx + dy * dy);
+		const innerRadius = 0;
+		const outerRadius = radius * 1.4;
+		const gradient = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
+		gradient.addColorStop(0, "rgba(255,0,0,0)");
+		gradient.addColorStop(.6, "rgba(255,0,0,0.2)");
+		gradient.addColorStop(1, "rgba(255,0,0,0.8)");
+		ctx.beginPath();
+		ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+		ctx.fillStyle = gradient;
+		ctx.fill();
+		ctx.strokeStyle = "rgba(255,0,0,1)";
+		ctx.stroke();
+		renderLabelText(ctx, x, y, circleFeature.get("label-color"));
+	},
+	hitDetectionRenderer(coordinates, state) {
+		const [x, y] = coordinates[0];
+		const ctx = state.context;
+		renderLabelText(ctx, x, y, circleFeature.get("label-color"));
+	}
+}));
+var map = new Map({
+	layers: [new TileLayer({
+		source: new OSM(),
+		visible: true
+	}), new VectorLayer({ source: new VectorSource({ features: [circleFeature] }) })],
+	target: "map",
+	view: new View({
+		center: columbusCircleCoords,
+		zoom: 19
+	})
+});
+map.on("pointermove", (evt) => {
+	const featureOver = map.forEachFeatureAtPixel(evt.pixel, (feature) => {
+		feature.set("label-color", "rgba(255,255,255,1)");
+		return feature;
+	});
+	if (pointerOverFeature && pointerOverFeature != featureOver) pointerOverFeature.set("label-color", labelTextStroke);
+	pointerOverFeature = featureOver;
+});
+//#endregion
+
 //# sourceMappingURL=custom-hit-detection-renderer.js.map

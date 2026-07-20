@@ -1,2 +1,44 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2926],{59801:function(e,n,r){var t=r(51541),w=r(41564),s=r(87240),o=r(77833),a=r(23986),c=r(29810),A=r(44689),u=r(88292);const f=new Array(1e4);let l,y,i,k,p,h=[0,0],m=1,v=-1;for(p=0;p<1e4;++p)y=2500*(p+1),p%2==0?v*=-1:m*=-1,i=y*m,k=y*v,l=[h[0]+i,h[1]+k],f[p]=new t.A({geometry:new o.A([h,l])}),h=l;const b=new a.A({source:new c.A({features:f,wrapX:!1}),style:new u.Ay({stroke:new A.A({color:"#666666",width:1})})}),g=new s.Ay({center:[0,0],zoom:0});new w.A({layers:[b],target:"map",view:g})}},function(e){var n;n=59801,e(e.s=n)}]);
+import { Fn as Stroke, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, gn as LineString, or as View, xn as Feature } from "./common.js";
+//#region examples/synthetic-lines.js
+var count = 1e4;
+var features = new Array(count);
+var startPoint = [0, 0];
+var endPoint;
+var delta;
+var deltaX;
+var deltaY;
+var signX = 1;
+var signY = -1;
+var i;
+for (i = 0; i < count; ++i) {
+	delta = (i + 1) * 2500;
+	if (i % 2 === 0) signY *= -1;
+	else signX *= -1;
+	deltaX = delta * signX;
+	deltaY = delta * signY;
+	endPoint = [startPoint[0] + deltaX, startPoint[1] + deltaY];
+	features[i] = new Feature({ "geometry": new LineString([startPoint, endPoint]) });
+	startPoint = endPoint;
+}
+var vector = new VectorLayer({
+	source: new VectorSource({
+		features,
+		wrapX: false
+	}),
+	style: new Style({ stroke: new Stroke({
+		color: "#666666",
+		width: 1
+	}) })
+});
+var view = new View({
+	center: [0, 0],
+	zoom: 0
+});
+new Map({
+	layers: [vector],
+	target: "map",
+	view
+});
+//#endregion
+
 //# sourceMappingURL=synthetic-lines.js.map

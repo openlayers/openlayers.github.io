@@ -1,2 +1,37 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8832],{95147:function(e,t,r){var a=r(51541),n=r(41564),o=r(87240),s=r(92198),l=r(12185),c=r(23986),w=r(28e3),i=r(29810),d=r(88292);const u=new a.A({geometry:new s.A([12127398.797692968,4063894.123105166],50)});u.setStyle(new d.Ay({renderer(e,t){const[[r,a],[n,o]]=e,s=t.context,l=n-r,c=o-a,w=Math.sqrt(l*l+c*c),i=1.4*w,d=s.createRadialGradient(r,a,0,r,a,i);d.addColorStop(0,"rgba(255,0,0,0)"),d.addColorStop(.6,"rgba(255,0,0,0.2)"),d.addColorStop(1,"rgba(255,0,0,0.8)"),s.beginPath(),s.arc(r,a,w,0,2*Math.PI,!0),s.fillStyle=d,s.fill(),s.arc(r,a,w,0,2*Math.PI,!0),s.strokeStyle="rgba(255,0,0,1)",s.stroke()}})),new n.A({layers:[new l.A({source:new w.A,visible:!0}),new c.A({source:new i.A({features:[u]})})],target:"map",view:new o.Ay({center:[12127398.797692968,4063894.123105166],zoom:19})})}},function(e){var t;t=95147,e(e.s=t)}]);
+import { Cn as OSM, Jt as Circle, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+//#region examples/custom-circle-render.js
+var circleFeature = new Feature({ geometry: new Circle([12127398.797692968, 4063894.123105166], 50) });
+circleFeature.setStyle(new Style({ renderer(coordinates, state) {
+	const [[x, y], [x1, y1]] = coordinates;
+	const ctx = state.context;
+	const dx = x1 - x;
+	const dy = y1 - y;
+	const radius = Math.sqrt(dx * dx + dy * dy);
+	const innerRadius = 0;
+	const outerRadius = radius * 1.4;
+	const gradient = ctx.createRadialGradient(x, y, innerRadius, x, y, outerRadius);
+	gradient.addColorStop(0, "rgba(255,0,0,0)");
+	gradient.addColorStop(.6, "rgba(255,0,0,0.2)");
+	gradient.addColorStop(1, "rgba(255,0,0,0.8)");
+	ctx.beginPath();
+	ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+	ctx.fillStyle = gradient;
+	ctx.fill();
+	ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+	ctx.strokeStyle = "rgba(255,0,0,1)";
+	ctx.stroke();
+} }));
+new Map({
+	layers: [new TileLayer({
+		source: new OSM(),
+		visible: true
+	}), new VectorLayer({ source: new VectorSource({ features: [circleFeature] }) })],
+	target: "map",
+	view: new View({
+		center: [12127398.797692968, 4063894.123105166],
+		zoom: 19
+	})
+});
+//#endregion
+
 //# sourceMappingURL=custom-circle-render.js.map

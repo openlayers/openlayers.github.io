@@ -1,2 +1,35 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9559],{1450:function(e,n,t){var i=t(4209),o=t(41564),s=t(87240),r=t(16235),a=t(47085),c=t(12185),p=t(25231),l=t(76582),u=t(56934),d=t(28e3);i.A.defs("EPSG:27700","+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs"),(0,l.kz)(i.A);const w=[0,0,7e5,13e5],m=new a.A,g=(new o.A({layers:[new c.A({source:new d.A}),m],target:"map",view:new s.Ay({center:(0,p.pd)((0,r.q1)(w),"EPSG:27700","EPSG:3857"),zoom:4})}),document.getElementById("interpolate"));function h(){const e=new u.A({url:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/British_National_Grid.svg/2000px-British_National_Grid.svg.png",crossOrigin:"",projection:"EPSG:27700",imageExtent:w,interpolate:g.checked});m.setSource(e)}h(),g.addEventListener("change",h)}},function(e){var n;n=1450,e(e.s=n)}]);
+import { At as Static, Bt as register, Cn as OSM, Gr as getCenter, It as proj4, Mn as Map, Or as transform, jn as TileLayer, or as View, un as ImageLayer } from "./common.js";
+//#region examples/reprojection-image.js
+proj4.defs("EPSG:27700", "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs");
+register(proj4);
+var imageExtent = [
+	0,
+	0,
+	7e5,
+	13e5
+];
+var imageLayer = new ImageLayer();
+new Map({
+	layers: [new TileLayer({ source: new OSM() }), imageLayer],
+	target: "map",
+	view: new View({
+		center: transform(getCenter(imageExtent), "EPSG:27700", "EPSG:3857"),
+		zoom: 4
+	})
+});
+var interpolate = document.getElementById("interpolate");
+function setSource() {
+	const source = new Static({
+		url: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/British_National_Grid.svg/2000px-British_National_Grid.svg.png",
+		crossOrigin: "",
+		projection: "EPSG:27700",
+		imageExtent,
+		interpolate: interpolate.checked
+	});
+	imageLayer.setSource(source);
+}
+setSource();
+interpolate.addEventListener("change", setSource);
+//#endregion
+
 //# sourceMappingURL=reprojection-image.js.map

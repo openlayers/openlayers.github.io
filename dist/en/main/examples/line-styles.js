@@ -1,2 +1,51 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3008],{29355:function(e,n,t){var o=t(41564),s=t(87240),i=t(49208),a=t(9444),r=t(74676),l=t(90278),c=t(35947),w=t(12185),f=t(23986),u=t(28e3),g=t(29810),h=t(44689),m=t(88292);const A=new g.A({url:"data/geojson/line-samples.geojson",format:new i.A}),p=new f.A({source:A}),y=document.getElementById("line-style-options-form");function d(){const e=new FormData(y),n=[new m.Ay({stroke:new h.A({color:e.get("color"),lineCap:e.get("lineCap"),lineJoin:e.get("lineJoin"),lineDash:e.get("lineDash")?.split(",")?.map((e=>Number(e))),lineDashOffset:e.get("lineDashOffset"),miterLimit:e.get("miterLimit"),width:e.get("width"),offset:e.get("offset")})})];Math.abs(e.get("offset"))>0&&n.push(new m.Ay({stroke:new h.A({color:"#aaa",width:1,lineDash:[3,3]})})),p.setStyle(n)}d(),y.addEventListener("change",d);const k=new r.A({source:A}),D=new a.Ay({source:A,type:"Polygon"}),b=new l.A({source:A});new o.A({layers:[new w.A({source:new u.A}),p],target:"map",view:new s.Ay({center:[-8161939,6095025],zoom:8}),interactions:(0,c.N)().extend([k,D,b])})}},function(e){var n;n=29355,e(e.s=n)}]);
+import { Cn as OSM, Fn as Stroke, G as Modify, Gt as Draw, Mn as Map, Pn as Style, W as Snap, Wn as defaults, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/line-styles.js
+var source = new VectorSource({
+	url: "data/geojson/line-samples.geojson",
+	format: new GeoJSON()
+});
+var vector = new VectorLayer({ source });
+var styleOptionsForm = document.getElementById("line-style-options-form");
+function updateStyles() {
+	const formData = new FormData(styleOptionsForm);
+	const styles = [new Style({ stroke: new Stroke({
+		color: formData.get("color"),
+		lineCap: formData.get("lineCap"),
+		lineJoin: formData.get("lineJoin"),
+		lineDash: formData.get("lineDash")?.split(",")?.map((value) => Number(value)),
+		lineDashOffset: formData.get("lineDashOffset"),
+		miterLimit: formData.get("miterLimit"),
+		width: formData.get("width"),
+		offset: formData.get("offset")
+	}) })];
+	if (Math.abs(formData.get("offset")) > 0) styles.push(new Style({ stroke: new Stroke({
+		color: "#aaa",
+		width: 1,
+		lineDash: [3, 3]
+	}) }));
+	vector.setStyle(styles);
+}
+updateStyles();
+styleOptionsForm.addEventListener("change", updateStyles);
+var modify = new Modify({ source });
+var draw = new Draw({
+	source,
+	type: "Polygon"
+});
+var snap = new Snap({ source });
+new Map({
+	layers: [new TileLayer({ source: new OSM() }), vector],
+	target: "map",
+	view: new View({
+		center: [-8161939, 6095025],
+		zoom: 8
+	}),
+	interactions: defaults().extend([
+		modify,
+		draw,
+		snap
+	])
+});
+//#endregion
+
 //# sourceMappingURL=line-styles.js.map

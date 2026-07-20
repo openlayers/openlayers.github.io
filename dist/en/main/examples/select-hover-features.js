@@ -1,2 +1,44 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1078],{90097:function(e,n,t){var o=t(41564),r=t(87240),c=t(38808),s=t(49208),l=t(68266),i=t(23986),a=t(29810),u=t(38276),w=t(44689),A=t(88292);const d=new A.Ay({fill:new u.A({color:"#eeeeee"})});function f(e){return function(n){return e.getFill().setColor(n.get("COLOR")||"#eeeeee"),e}}const g=new i.A({source:new a.A({url:"https://openlayers.org/data/vector/ecoregions.json",format:new s.A}),background:"white",style:f(d)}),y=new o.A({layers:[g],target:"map",view:new r.Ay({center:[0,0],zoom:2})}),h=new A.Ay({fill:new u.A({color:"#eeeeee"}),stroke:new w.A({color:"rgba(255, 255, 255, 0.7)",width:2})}),p=document.getElementById("status"),k=new l.A({condition:c.N1,style:f(h)});y.addInteraction(k),k.on("select",(function(e){e.selected.length>0?p.innerHTML=e.selected[0].get("ECO_NAME"):p.innerHTML="&nbsp;"}))}},function(e){var n;n=90097,e(e.s=n)}]);
+import { Fn as Stroke, Ln as Fill, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, er as pointerMove, nn as Select, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/select-hover-features.js
+var style = new Style({ fill: new Fill({ color: "#eeeeee" }) });
+function colorStyle(style) {
+	return function(f) {
+		style.getFill().setColor(f.get("COLOR") || "#eeeeee");
+		return style;
+	};
+}
+var map = new Map({
+	layers: [new VectorLayer({
+		source: new VectorSource({
+			url: "https://openlayers.org/data/vector/ecoregions.json",
+			format: new GeoJSON()
+		}),
+		background: "white",
+		style: colorStyle(style)
+	})],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var selectStyle = new Style({
+	fill: new Fill({ color: "#eeeeee" }),
+	stroke: new Stroke({
+		color: "rgba(255, 255, 255, 0.7)",
+		width: 2
+	})
+});
+var status = document.getElementById("status");
+var select = new Select({
+	condition: pointerMove,
+	style: colorStyle(selectStyle)
+});
+map.addInteraction(select);
+select.on("select", function(e) {
+	if (e.selected.length > 0) status.innerHTML = e.selected[0].get("ECO_NAME");
+	else status.innerHTML = "&nbsp;";
+});
+//#endregion
+
 //# sourceMappingURL=select-hover-features.js.map

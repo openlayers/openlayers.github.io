@@ -1,2 +1,27 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6061],{88072:function(e,n,t){var a=t(41564),r=t(87240),c=t(28567),o=t(12185),s=t(28e3);function u(e){const n=new s.A,t=new o.A({source:n}),u=new a.A({layers:[t],target:e,view:new r.Ay({center:[0,0],zoom:2})}),w=new c.A;return u.addControl(w),u}u("map1"),u("map2"),u("map3")}},function(e){var n;n=88072,e(e.s=n)}]);
+import { Cn as OSM, Mn as Map, jn as TileLayer, or as View, z as ZoomSlider } from "./common.js";
+//#region examples/zoomslider.js
+/**
+* Helper method for map-creation.
+*
+* @param {string} divId The id of the div for the map.
+* @return {Map} The map instance.
+*/
+function createMap(divId) {
+	const map = new Map({
+		layers: [new TileLayer({ source: new OSM() })],
+		target: divId,
+		view: new View({
+			center: [0, 0],
+			zoom: 2
+		})
+	});
+	const zoomslider = new ZoomSlider();
+	map.addControl(zoomslider);
+	return map;
+}
+createMap("map1");
+createMap("map2");
+createMap("map3");
+//#endregion
+
 //# sourceMappingURL=zoomslider.js.map

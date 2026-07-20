@@ -1,2 +1,13 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8269],{55256:function(e,n,s){var a=s(41564),c=s(87240),r=s(12185),t=s(28e3);new a.A({layers:[new r.A({source:new t.A})],target:"map",view:new c.Ay({center:[0,0],zoom:2})})}},function(e){var n;n=55256,e(e.s=n)}]);
+import { Cn as OSM, Mn as Map, jn as TileLayer, or as View } from "./common.js";
+//#region examples/simple.js
+new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+//#endregion
+
 //# sourceMappingURL=simple.js.map

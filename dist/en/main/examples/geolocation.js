@@ -1,2 +1,57 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3907],{97238:function(e,n,t){var c=t(51541),o=t(76661),r=t(41564),i=t(87240),a=t(40878),s=t(12185),u=t(23986),g=t(28e3),A=t(29810),d=t(21133),l=t(38276),y=t(44689),w=t(88292);const m=new i.Ay({center:[0,0],zoom:2}),f=new r.A({layers:[new s.A({source:new g.A})],target:"map",view:m}),h=new o.A({trackingOptions:{enableHighAccuracy:!0},projection:m.getProjection()});function p(e){return document.getElementById(e)}p("track").addEventListener("change",(function(){h.setTracking(this.checked)})),h.on("change",(function(){p("accuracy").innerText=h.getAccuracy()+" [m]",p("altitude").innerText=h.getAltitude()+" [m]",p("altitudeAccuracy").innerText=h.getAltitudeAccuracy()+" [m]",p("heading").innerText=h.getHeading()+" [rad]",p("speed").innerText=h.getSpeed()+" [m/s]"})),h.on("error",(function(e){const n=document.getElementById("info");n.innerHTML=e.message,n.style.display=""}));const k=new c.A;h.on("change:accuracyGeometry",(function(){k.setGeometry(h.getAccuracyGeometry())}));const T=new c.A;T.setStyle(new w.Ay({image:new d.A({radius:6,fill:new l.A({color:"#3399CC"}),stroke:new y.A({color:"#fff",width:2})})})),h.on("change:position",(function(){const e=h.getPosition();T.setGeometry(e?new a.A(e):null)})),new u.A({map:f,source:new A.A({features:[k,T]})})}},function(e){var n;n=97238,e(e.s=n)}]);
+import { Cn as OSM, Fn as Stroke, Ln as Fill, Mn as Map, Pn as Style, Rn as CircleStyle, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, ut as Geolocation, xn as Feature } from "./common.js";
+//#region examples/geolocation.js
+var view = new View({
+	center: [0, 0],
+	zoom: 2
+});
+var map = new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view
+});
+var geolocation = new Geolocation({
+	trackingOptions: { enableHighAccuracy: true },
+	projection: view.getProjection()
+});
+function el(id) {
+	return document.getElementById(id);
+}
+el("track").addEventListener("change", function() {
+	geolocation.setTracking(this.checked);
+});
+geolocation.on("change", function() {
+	el("accuracy").innerText = geolocation.getAccuracy() + " [m]";
+	el("altitude").innerText = geolocation.getAltitude() + " [m]";
+	el("altitudeAccuracy").innerText = geolocation.getAltitudeAccuracy() + " [m]";
+	el("heading").innerText = geolocation.getHeading() + " [rad]";
+	el("speed").innerText = geolocation.getSpeed() + " [m/s]";
+});
+geolocation.on("error", function(error) {
+	const info = document.getElementById("info");
+	info.innerHTML = error.message;
+	info.style.display = "";
+});
+var accuracyFeature = new Feature();
+geolocation.on("change:accuracyGeometry", function() {
+	accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+});
+var positionFeature = new Feature();
+positionFeature.setStyle(new Style({ image: new CircleStyle({
+	radius: 6,
+	fill: new Fill({ color: "#3399CC" }),
+	stroke: new Stroke({
+		color: "#fff",
+		width: 2
+	})
+}) }));
+geolocation.on("change:position", function() {
+	const coordinates = geolocation.getPosition();
+	positionFeature.setGeometry(coordinates ? new Point(coordinates) : null);
+});
+new VectorLayer({
+	map,
+	source: new VectorSource({ features: [accuracyFeature, positionFeature] })
+});
+//#endregion
+
 //# sourceMappingURL=geolocation.js.map

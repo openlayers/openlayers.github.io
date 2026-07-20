@@ -1,2 +1,151 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8615],{87896:function(e,t,n){var a=n(41564),i=n(87240),o=n(5596),r=n(36804),s=n(31716),l=n(10135),c=n(12911);const d=new function(){return new Worker(n.p+"offscreen-canvas.worker.worker.js")};let m,u,p,g,w,f;function h(){if(w){const e=f.viewState,t=w.viewState,n=e.center,a=e.resolution,i=e.rotation,o=t.center,r=t.resolution,s=t.rotation,l=(0,c.vt)(),d=o[0]-n[0],m=o[1]-n[1];(0,c.Zz)(l,(Math.cos(i)*d+Math.sin(i)*m)/a,(Math.sin(i)*d-Math.cos(i)*m)/a,r/a,r/a,i-s,0,0),u.style.transform=(0,c.dI)(l)}}const y=new a.A({layers:[new r.A({render:function(e){return m||(m=document.createElement("div"),m.style.position="absolute",m.style.width="100%",m.style.height="100%",u=document.createElement("div"),u.style.position="absolute",u.style.width="100%",u.style.height="100%",m.appendChild(u),p=document.createElement("canvas"),p.style.position="absolute",p.style.left="0",p.style.transformOrigin="top left",u.appendChild(p)),f=e,h(),g?e.animate=!0:(g=!0,d.postMessage({action:"render",frameState:{layerIndex:0,wantedTiles:{},usedTiles:{},viewHints:e.viewHints.slice(0),postRenderFunctions:[],viewState:{center:e.viewState.center.slice(0),resolution:e.viewState.resolution,rotation:e.viewState.rotation,zoom:e.viewState.zoom},pixelRatio:e.pixelRatio,size:e.size.slice(0),extent:e.extent.slice(0),coordinateToPixelTransform:e.coordinateToPixelTransform.slice(0),pixelToCoordinateTransform:e.pixelToCoordinateTransform.slice(0),layerStatesArray:e.layerStatesArray.map((e=>({zIndex:e.zIndex,visible:e.visible,extent:e.extent,maxResolution:e.maxResolution,minResolution:e.minResolution,managed:e.managed})))}})),m},source:new s.A({attributions:['<a href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a>','<a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>']})})],target:"map",view:new i.Ay({resolutions:(0,l.EN)({tileSize:512}).getResolutions(),center:[0,0],zoom:2})});y.addControl(new o.A);let v=!0;y.getTargetElement().addEventListener("pointerleave",(()=>{v=!0,S([])})),y.on("pointermove",(function(e){e.dragging||(v=!1,d.postMessage({action:"requestFeatures",pixel:e.pixel}))})),d.addEventListener("message",(e=>{if("loadImage"===e.data.action){const t=new Image;t.crossOrigin="anonymous",t.addEventListener("load",(function(){createImageBitmap(t,0,0,t.width,t.height).then((t=>{d.postMessage({action:"imageLoaded",image:t,src:e.data.src},[t])}))})),t.src=e.data.src}else"getFeatures"===e.data.action?S(e.data.features):"requestRender"===e.data.action?y.render():p&&"rendered"===e.data.action&&(requestAnimationFrame((function(){const t=e.data.imageData;p.width=t.width,p.height=t.height,p.getContext("2d").drawImage(t,0,0),p.style.transform=e.data.transform,w=e.data.frameState,h()})),g=!1)}));const x=document.getElementById("info");function S(e){if(0==e.length||v)return x.innerText="",void(x.style.opacity="0");const t=e.map((e=>Object.keys(e).filter((e=>!e.includes(":"))).reduce(((t,n)=>(t[n]=e[n],t)),{})));x.innerText=JSON.stringify(t,null,2),x.style.opacity="1"}}},function(e){var t;t=87896,e(e.s=t)}]);
+import { Dn as createXYZ, En as Source, Hn as Layer, L as FullScreen, Mn as Map, _r as compose, br as toString, or as View, yr as create } from "./common.js";
+//#region examples/offscreen-canvas.js
+var worker = new Worker(new URL(
+	/* @vite-ignore */
+	"/assets/offscreen-canvas.worker-C1Hl24GB.js",
+	"" + import.meta.url
+), { type: "module" });
+var container;
+var transformContainer;
+var canvas;
+var rendering;
+var workerFrameState;
+var mainThreadFrameState;
+function updateContainerTransform() {
+	if (workerFrameState) {
+		const viewState = mainThreadFrameState.viewState;
+		const renderedViewState = workerFrameState.viewState;
+		const center = viewState.center;
+		const resolution = viewState.resolution;
+		const rotation = viewState.rotation;
+		const renderedCenter = renderedViewState.center;
+		const renderedResolution = renderedViewState.resolution;
+		const renderedRotation = renderedViewState.rotation;
+		const transform = create();
+		const dx = renderedCenter[0] - center[0];
+		const dy = renderedCenter[1] - center[1];
+		compose(transform, (Math.cos(rotation) * dx + Math.sin(rotation) * dy) / resolution, (Math.sin(rotation) * dx - Math.cos(rotation) * dy) / resolution, renderedResolution / resolution, renderedResolution / resolution, rotation - renderedRotation, 0, 0);
+		transformContainer.style.transform = toString(transform);
+	}
+}
+var map = new Map({
+	layers: [new Layer({
+		render: function(frameState) {
+			if (!container) {
+				container = document.createElement("div");
+				container.style.position = "absolute";
+				container.style.width = "100%";
+				container.style.height = "100%";
+				transformContainer = document.createElement("div");
+				transformContainer.style.position = "absolute";
+				transformContainer.style.width = "100%";
+				transformContainer.style.height = "100%";
+				container.appendChild(transformContainer);
+				canvas = document.createElement("canvas");
+				canvas.style.position = "absolute";
+				canvas.style.left = "0";
+				canvas.style.transformOrigin = "top left";
+				transformContainer.appendChild(canvas);
+			}
+			mainThreadFrameState = frameState;
+			updateContainerTransform();
+			if (!rendering) {
+				rendering = true;
+				worker.postMessage({
+					action: "render",
+					frameState: {
+						layerIndex: 0,
+						wantedTiles: {},
+						usedTiles: {},
+						viewHints: frameState.viewHints.slice(0),
+						postRenderFunctions: [],
+						viewState: {
+							center: frameState.viewState.center.slice(0),
+							resolution: frameState.viewState.resolution,
+							rotation: frameState.viewState.rotation,
+							zoom: frameState.viewState.zoom
+						},
+						pixelRatio: frameState.pixelRatio,
+						size: frameState.size.slice(0),
+						extent: frameState.extent.slice(0),
+						coordinateToPixelTransform: frameState.coordinateToPixelTransform.slice(0),
+						pixelToCoordinateTransform: frameState.pixelToCoordinateTransform.slice(0),
+						layerStatesArray: frameState.layerStatesArray.map((l) => ({
+							zIndex: l.zIndex,
+							visible: l.visible,
+							extent: l.extent,
+							maxResolution: l.maxResolution,
+							minResolution: l.minResolution,
+							managed: l.managed
+						}))
+					}
+				});
+			} else frameState.animate = true;
+			return container;
+		},
+		source: new Source({ attributions: ["<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">© MapTiler</a>", "<a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">© OpenStreetMap contributors</a>"] })
+	})],
+	target: "map",
+	view: new View({
+		resolutions: createXYZ({ tileSize: 512 }).getResolutions(),
+		center: [0, 0],
+		zoom: 2
+	})
+});
+map.addControl(new FullScreen());
+var pointerOutside = true;
+map.getTargetElement().addEventListener("pointerleave", () => {
+	pointerOutside = true;
+	showInfo([]);
+});
+map.on("pointermove", function(evt) {
+	if (evt.dragging) return;
+	pointerOutside = false;
+	worker.postMessage({
+		action: "requestFeatures",
+		pixel: evt.pixel
+	});
+});
+worker.addEventListener("message", (message) => {
+	if (message.data.action === "loadImage") {
+		const image = new Image();
+		image.crossOrigin = "anonymous";
+		image.addEventListener("load", function() {
+			createImageBitmap(image, 0, 0, image.width, image.height).then((imageBitmap) => {
+				worker.postMessage({
+					action: "imageLoaded",
+					image: imageBitmap,
+					src: message.data.src
+				}, [imageBitmap]);
+			});
+		});
+		image.src = message.data.src;
+	} else if (message.data.action === "getFeatures") showInfo(message.data.features);
+	else if (message.data.action === "requestRender") map.render();
+	else if (canvas && message.data.action === "rendered") {
+		requestAnimationFrame(function() {
+			const imageData = message.data.imageData;
+			canvas.width = imageData.width;
+			canvas.height = imageData.height;
+			canvas.getContext("2d").drawImage(imageData, 0, 0);
+			canvas.style.transform = message.data.transform;
+			workerFrameState = message.data.frameState;
+			updateContainerTransform();
+		});
+		rendering = false;
+	}
+});
+var info = document.getElementById("info");
+function showInfo(propertiesFromFeatures) {
+	if (propertiesFromFeatures.length == 0 || pointerOutside) {
+		info.innerText = "";
+		info.style.opacity = "0";
+		return;
+	}
+	const properties = propertiesFromFeatures.map((e) => Object.keys(e).filter((key) => !key.includes(":")).reduce((newObj, currKey) => (newObj[currKey] = e[currKey], newObj), {}));
+	info.innerText = JSON.stringify(properties, null, 2);
+	info.style.opacity = "1";
+}
+//#endregion
+
 //# sourceMappingURL=offscreen-canvas.js.map

@@ -1,2 +1,20 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6568],{26595:function(e,n,r){var s=r(41564),a=r(87240),c=r(12185),o=r(28e3),t=r(6848);const u=[new c.A({source:new o.A}),new c.A({source:new t.A({url:"https://ahocevar.com/geoserver/ne/wms",params:{LAYERS:"ne:ne_10m_admin_0_countries",TILED:!0},serverType:"geoserver"})})];new s.A({layers:u,target:"map",view:new a.Ay({center:[0,0],zoom:1})})}},function(e){var n;n=26595,e(e.s=n)}]);
+import { Cn as OSM, Ct as TileWMS, Mn as Map, jn as TileLayer, or as View } from "./common.js";
+//#region examples/wms-tiled-wrap-180.js
+new Map({
+	layers: [new TileLayer({ source: new OSM() }), new TileLayer({ source: new TileWMS({
+		url: "https://ahocevar.com/geoserver/ne/wms",
+		params: {
+			"LAYERS": "ne:ne_10m_admin_0_countries",
+			"TILED": true
+		},
+		serverType: "geoserver"
+	}) })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 1
+	})
+});
+//#endregion
+
 //# sourceMappingURL=wms-tiled-wrap-180.js.map

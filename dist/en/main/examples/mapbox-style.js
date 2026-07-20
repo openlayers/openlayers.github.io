@@ -1,2 +1,8 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6190],{43577:function(n,t,o){var e=o(93895),s=o(5596);(0,e.Ay)("map","https://api.maptiler.com/maps/outdoor-v2/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB").then((function(n){n.addControl(new s.A)}))}},function(n){var t;t=43577,n(n.s=t)}]);
+import { L as FullScreen, nt as apply } from "./common.js";
+//#region examples/mapbox-style.js
+apply("map", "https://api.maptiler.com/maps/outdoor-v2/style.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB").then(function(map) {
+	map.addControl(new FullScreen());
+});
+//#endregion
+
 //# sourceMappingURL=mapbox-style.js.map

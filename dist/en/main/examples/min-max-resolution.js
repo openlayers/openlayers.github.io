@@ -1,2 +1,24 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9996],{44866:function(e,n,o){var s=o(41564),a=o(87240),t=o(12185),i=o(28e3),u=o(14407);new s.A({layers:[new t.A({source:new i.A,minResolution:200,maxResolution:2e3}),new t.A({source:new u.A({url:"https://api.tiles.mapbox.com/v4/mapbox.natural-earth-hypso-bathy.json?secure&access_token=pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2t0cGdwMHVnMGdlbzMxbDhwazBic2xrNSJ9.WbcTL9uj8JPAsnT9mgb7oQ",crossOrigin:"anonymous"}),minResolution:2e3,maxResolution:2e4})],target:"map",view:new a.Ay({center:[653600,5723680],zoom:5})})}},function(e){var n;n=44866,e(e.s=n)}]);
+import { Cn as OSM, Mn as Map, jn as TileLayer, or as View, wt as TileJSON } from "./common.js";
+//#region examples/min-max-resolution.js
+new Map({
+	layers: [new TileLayer({
+		source: new OSM(),
+		minResolution: 200,
+		maxResolution: 2e3
+	}), new TileLayer({
+		source: new TileJSON({
+			url: "https://api.tiles.mapbox.com/v4/mapbox.natural-earth-hypso-bathy.json?secure&access_token=pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2t0cGdwMHVnMGdlbzMxbDhwazBic2xrNSJ9.WbcTL9uj8JPAsnT9mgb7oQ",
+			crossOrigin: "anonymous"
+		}),
+		minResolution: 2e3,
+		maxResolution: 2e4
+	})],
+	target: "map",
+	view: new View({
+		center: [653600, 5723680],
+		zoom: 5
+	})
+});
+//#endregion
+
 //# sourceMappingURL=min-max-resolution.js.map

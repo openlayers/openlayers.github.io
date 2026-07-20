@@ -1,2 +1,102 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4298],{26789:function(e,t,o){var n=o(41564),r=o(87240),l=o(49208),s=o(96256),i=o(43003),c=o(28e3),a=o(29810);const f=new s.A({source:new c.A}),g=new i.A({source:new a.A({url:"https://openlayers.org/data/vector/ecoregions.json",format:new l.A}),style:[{filter:["==",["var","highlightedId"],["id"]],style:{"stroke-color":"white","stroke-width":3,"stroke-offset":-1,"fill-color":[255,255,255,.4]}},{else:!0,style:{"stroke-color":["*",["get","COLOR"],[220,220,220]],"stroke-width":2,"stroke-offset":-1,"fill-color":["*",["get","COLOR"],[255,255,255,.6]]}},{style:{"text-value":["coalesce",["get","ECO_NAME"],"unknown"],"text-font":'bold 12px "Open Sans", "Arial Unicode MS", sans-serif',"text-fill-color":"rgb(0,0,0)","text-stroke-color":"rgba(255, 255, 255, 0.8)","text-stroke-width":2,"text-overflow":!1}}],variables:{highlightedId:-1}}),u=new n.A({layers:[f,g],target:"map",view:new r.Ay({center:[0,0],zoom:1})});let d=-1;const h=function(e){const t=u.forEachFeatureAtPixel(e,(function(e){return e})),o=document.getElementById("info");o.innerHTML=t&&t.get("ECO_NAME")||"&nbsp;";const n=t?t.getId():-1;n!==d&&(d=n,g.updateStyleVariables({highlightedId:d}))};u.on("pointermove",(function(e){e.dragging||h(e.pixel)})),u.on("click",(function(e){h(e.pixel)}))}},function(e){var t;t=26789,e(e.s=t)}]);
+import { Cn as OSM, F as WebGLVectorLayer, Ht as WebGLTileLayer, Mn as Map, dn as VectorSource, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/webgl-vector-layer.js
+/** @type {import('../src/ol/style/flat.js').FlatStyleLike} */
+var style = [
+	{
+		filter: [
+			"==",
+			["var", "highlightedId"],
+			["id"]
+		],
+		style: {
+			"stroke-color": "white",
+			"stroke-width": 3,
+			"stroke-offset": -1,
+			"fill-color": [
+				255,
+				255,
+				255,
+				.4
+			]
+		}
+	},
+	{
+		else: true,
+		style: {
+			"stroke-color": [
+				"*",
+				["get", "COLOR"],
+				[
+					220,
+					220,
+					220
+				]
+			],
+			"stroke-width": 2,
+			"stroke-offset": -1,
+			"fill-color": [
+				"*",
+				["get", "COLOR"],
+				[
+					255,
+					255,
+					255,
+					.6
+				]
+			]
+		}
+	},
+	{ style: {
+		"text-value": [
+			"coalesce",
+			["get", "ECO_NAME"],
+			"unknown"
+		],
+		"text-font": "bold 12px \"Open Sans\", \"Arial Unicode MS\", sans-serif",
+		"text-fill-color": "rgb(0,0,0)",
+		"text-stroke-color": "rgba(255, 255, 255, 0.8)",
+		"text-stroke-width": 2,
+		"text-overflow": false
+	} }
+];
+var osm = new WebGLTileLayer({ source: new OSM() });
+var vectorLayer = new WebGLVectorLayer({
+	source: new VectorSource({
+		url: "https://openlayers.org/data/vector/ecoregions.json",
+		format: new GeoJSON()
+	}),
+	style,
+	variables: { highlightedId: -1 }
+});
+var map = new Map({
+	layers: [osm, vectorLayer],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 1
+	})
+});
+var highlightedId = -1;
+var displayFeatureInfo = function(pixel) {
+	const feature = map.forEachFeatureAtPixel(pixel, function(feature) {
+		return feature;
+	});
+	const info = document.getElementById("info");
+	if (feature) info.innerHTML = feature.get("ECO_NAME") || "&nbsp;";
+	else info.innerHTML = "&nbsp;";
+	const id = feature ? feature.getId() : -1;
+	if (id !== highlightedId) {
+		highlightedId = id;
+		vectorLayer.updateStyleVariables({ highlightedId });
+	}
+};
+map.on("pointermove", function(evt) {
+	if (evt.dragging) return;
+	displayFeatureInfo(evt.pixel);
+});
+map.on("click", function(evt) {
+	displayFeatureInfo(evt.pixel);
+});
+//#endregion
+
 //# sourceMappingURL=webgl-vector-layer.js.map

@@ -1,2 +1,49 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5856],{61707:function(e,t,n){var a=n(51541),r=n(41564),o=n(87240),s=n(40878),c=n(68266),i=n(12185),g=n(23986),u=n(9226),w=n(29810),h=n(75052),l=n(88292);function m(e,t){return new l.Ay({image:new h.A({anchor:[.5,.96],crossOrigin:"anonymous",src:e,img:t})})}const d=new a.A(new s.A([0,0]));d.set("style",m("data/icon.png",void 0));const y=new r.A({layers:[new i.A({source:new u.A({layer:"stamen_watercolor"})}),new g.A({style:function(e){return e.get("style")},source:new w.A({features:[d]})})],target:document.getElementById("map"),view:new o.Ay({center:[0,0],zoom:3})}),A={},f=new c.A({style:function(e){const t=e.get("style").getImage().getImage();if(!A[t.src]){const e=document.createElement("canvas"),n=e.getContext("2d");e.width=t.width,e.height=t.height,n.drawImage(t,0,0,t.width,t.height);const a=n.getImageData(0,0,e.width,e.height),r=a.data;for(let e=0,t=r.length;e<t;e+=e%4==2?2:1)r[e]=255-r[e];n.putImageData(a,0,0),A[t.src]=m(void 0,e)}return A[t.src]}});y.addInteraction(f),y.on("pointermove",(function(e){y.getTargetElement().style.cursor=y.hasFeatureAtPixel(e.pixel)?"pointer":""}))}},function(e){var t;t=61707,e(e.s=t)}]);
+import { In as Icon, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, nn as Select, or as View, xn as Feature, yn as StadiaMaps } from "./common.js";
+//#region examples/icon-negative.js
+function createStyle(src, img) {
+	return new Style({ image: new Icon({
+		anchor: [.5, .96],
+		crossOrigin: "anonymous",
+		src,
+		img
+	}) });
+}
+var iconFeature = new Feature(new Point([0, 0]));
+iconFeature.set("style", createStyle("data/icon.png", void 0));
+var map = new Map({
+	layers: [new TileLayer({ source: new StadiaMaps({ layer: "stamen_watercolor" }) }), new VectorLayer({
+		style: function(feature) {
+			return feature.get("style");
+		},
+		source: new VectorSource({ features: [iconFeature] })
+	})],
+	target: document.getElementById("map"),
+	view: new View({
+		center: [0, 0],
+		zoom: 3
+	})
+});
+var selectStyle = {};
+var select = new Select({ style: function(feature) {
+	const image = feature.get("style").getImage().getImage();
+	if (!selectStyle[image.src]) {
+		const canvas = document.createElement("canvas");
+		const context = canvas.getContext("2d");
+		canvas.width = image.width;
+		canvas.height = image.height;
+		context.drawImage(image, 0, 0, image.width, image.height);
+		const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+		const data = imageData.data;
+		for (let i = 0, ii = data.length; i < ii; i = i + (i % 4 == 2 ? 2 : 1)) data[i] = 255 - data[i];
+		context.putImageData(imageData, 0, 0);
+		selectStyle[image.src] = createStyle(void 0, canvas);
+	}
+	return selectStyle[image.src];
+} });
+map.addInteraction(select);
+map.on("pointermove", function(evt) {
+	map.getTargetElement().style.cursor = map.hasFeatureAtPixel(evt.pixel) ? "pointer" : "";
+});
+//#endregion
+
 //# sourceMappingURL=icon-negative.js.map

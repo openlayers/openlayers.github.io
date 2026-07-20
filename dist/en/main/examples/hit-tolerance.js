@@ -1,2 +1,54 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6360],{86803:function(e,t,n){var o=n(51541),c=n(41564),r=n(87240),a=n(77833),l=n(12185),s=n(23986),i=n(28e3),u=n(29810),h=n(44689),g=n(88292);const w=new l.A({source:new i.A}),f=new g.Ay({stroke:new h.A({color:"black",width:1})}),A=new o.A(new a.A([[-4e6,0],[4e6,0]])),k=new s.A({source:new u.A({features:[A]}),style:f}),d=new c.A({layers:[w,k],target:"map",view:new r.Ay({center:[0,0],zoom:2})});let m;const y=document.getElementById("status");d.on("singleclick",(function(e){let t=!1;d.forEachFeatureAtPixel(e.pixel,(function(){t=!0}),{hitTolerance:m}),t?(f.getStroke().setColor("green"),y.innerHTML="A feature got hit!"):(f.getStroke().setColor("black"),y.innerHTML="No feature got hit."),A.changed()}));const p=document.getElementById("hitTolerance"),b=document.getElementById("circle"),C=function(){m=parseInt(p.value,10);const e=2*m+2;b.width=e,b.height=e;const t=b.getContext("2d");t.clearRect(0,0,e,e),t.beginPath(),t.arc(m+1,m+1,m+.5,0,2*Math.PI),t.fill(),t.stroke()};p.onchange=C,C()}},function(e){var t;t=86803,e(e.s=t)}]);
+import { Cn as OSM, Fn as Stroke, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, gn as LineString, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+//#region examples/hit-tolerance.js
+var raster = new TileLayer({ source: new OSM() });
+var style = new Style({ stroke: new Stroke({
+	color: "black",
+	width: 1
+}) });
+var feature = new Feature(new LineString([[-4e6, 0], [4e6, 0]]));
+var map = new Map({
+	layers: [raster, new VectorLayer({
+		source: new VectorSource({ features: [feature] }),
+		style
+	})],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var hitTolerance;
+var statusElement = document.getElementById("status");
+map.on("singleclick", function(e) {
+	let hit = false;
+	map.forEachFeatureAtPixel(e.pixel, function() {
+		hit = true;
+	}, { hitTolerance });
+	if (hit) {
+		style.getStroke().setColor("green");
+		statusElement.innerHTML = "A feature got hit!";
+	} else {
+		style.getStroke().setColor("black");
+		statusElement.innerHTML = "No feature got hit.";
+	}
+	feature.changed();
+});
+var selectHitToleranceElement = document.getElementById("hitTolerance");
+var circleCanvas = document.getElementById("circle");
+var changeHitTolerance = function() {
+	hitTolerance = parseInt(selectHitToleranceElement.value, 10);
+	const size = 2 * hitTolerance + 2;
+	circleCanvas.width = size;
+	circleCanvas.height = size;
+	const ctx = circleCanvas.getContext("2d");
+	ctx.clearRect(0, 0, size, size);
+	ctx.beginPath();
+	ctx.arc(hitTolerance + 1, hitTolerance + 1, hitTolerance + .5, 0, 2 * Math.PI);
+	ctx.fill();
+	ctx.stroke();
+};
+selectHitToleranceElement.onchange = changeHitTolerance;
+changeHitTolerance();
+//#endregion
+
 //# sourceMappingURL=hit-tolerance.js.map

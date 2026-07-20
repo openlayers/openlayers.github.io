@@ -1,2 +1,65 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8730],{21925:function(e,t,n){var o=n(51541),r=n(41564),i=n(93595),c=n(87240),s=n(40878),l=n(12185),a=n(23986),u=n(25231),d=n(28e3),p=n(29810);(0,u.n0)();const w=[-110,45],f=new s.A(w),m=new r.A({target:"map",view:new c.Ay({center:w,zoom:8}),layers:[new l.A({source:new d.A}),new a.A({source:new p.A({features:[new o.A(f)]}),style:{"circle-radius":9,"circle-fill-color":"red"}})]}),h=document.getElementById("popup"),A=new i.A({element:h,stopEvent:!1});function y(e){return`\n    <table>\n      <tbody>\n        <tr><th>lon</th><td>${e[0].toFixed(2)}</td></tr>\n        <tr><th>lat</th><td>${e[1].toFixed(2)}</td></tr>\n      </tbody>\n    </table>`}m.addOverlay(A);const g=document.getElementById("info");let v;m.on("moveend",(function(){const e=m.getView().getCenter();g.innerHTML=y(e)})),m.on("click",(function(e){v&&(v.dispose(),v=void 0);const t=m.getFeaturesAtPixel(e.pixel)[0];if(!t)return;const n=t.getGeometry().getCoordinates();A.setPosition([n[0]+360*Math.round(e.coordinate[0]/360),n[1]]),v=new bootstrap.Popover(h,{container:h.parentElement,content:y(n),html:!0,offset:[0,20],placement:"top",sanitize:!1}),v.show()})),m.on("pointermove",(function(e){const t=m.hasFeatureAtPixel(e.pixel)?"pointer":"inherit";m.getViewport().style.cursor=t}))}},function(e){var t;t=21925,e(e.s=t)}]);
+import { Ar as useGeographic, Cn as OSM, Mn as Map, at as Overlay, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+//#region examples/geographic.js
+useGeographic();
+var place = [-110, 45];
+var point = new Point(place);
+var map = new Map({
+	target: "map",
+	view: new View({
+		center: place,
+		zoom: 8
+	}),
+	layers: [new TileLayer({ source: new OSM() }), new VectorLayer({
+		source: new VectorSource({ features: [new Feature(point)] }),
+		style: {
+			"circle-radius": 9,
+			"circle-fill-color": "red"
+		}
+	})]
+});
+var element = document.getElementById("popup");
+var popup = new Overlay({
+	element,
+	stopEvent: false
+});
+map.addOverlay(popup);
+function formatCoordinate(coordinate) {
+	return `
+    <table>
+      <tbody>
+        <tr><th>lon</th><td>${coordinate[0].toFixed(2)}</td></tr>
+        <tr><th>lat</th><td>${coordinate[1].toFixed(2)}</td></tr>
+      </tbody>
+    </table>`;
+}
+var info = document.getElementById("info");
+map.on("moveend", function() {
+	info.innerHTML = formatCoordinate(map.getView().getCenter());
+});
+var popover;
+map.on("click", function(event) {
+	if (popover) {
+		popover.dispose();
+		popover = void 0;
+	}
+	const feature = map.getFeaturesAtPixel(event.pixel)[0];
+	if (!feature) return;
+	const coordinate = feature.getGeometry().getCoordinates();
+	popup.setPosition([coordinate[0] + Math.round(event.coordinate[0] / 360) * 360, coordinate[1]]);
+	popover = new bootstrap.Popover(element, {
+		container: element.parentElement,
+		content: formatCoordinate(coordinate),
+		html: true,
+		offset: [0, 20],
+		placement: "top",
+		sanitize: false
+	});
+	popover.show();
+});
+map.on("pointermove", function(event) {
+	const type = map.hasFeatureAtPixel(event.pixel) ? "pointer" : "inherit";
+	map.getViewport().style.cursor = type;
+});
+//#endregion
+
 //# sourceMappingURL=geographic.js.map

@@ -1,2 +1,183 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4348],{45335:function(e,t,n){var o=n(41564),r=n(87240),i=n(38808),c=n(16235),s=n(7535),a=n(40878),f=n(9444),u=n(74676),m=n(22514),y=n(12185),g=n(23986),d=n(28e3),l=n(29810),w=n(21133),A=n(38276),h=n(44689),p=n(88292);const G=new y.A({source:new d.A}),C=new l.A,E=new p.Ay({geometry:function(e){const t=e.get("modifyGeometry");return t?t.geometry:e.getGeometry()},fill:new A.A({color:"rgba(255, 255, 255, 0.2)"}),stroke:new h.A({color:"#ffcc33",width:2}),image:new w.A({radius:7,fill:new A.A({color:"#ffcc33"})})});function M(e){let t,n,o;const r=e.getType();if("Polygon"===r){let o=0,r=0,i=0;n=e.getCoordinates()[0].slice(1),n.forEach((function(e){o+=e[0],r+=e[1],i++})),t=[o/i,r/i]}else"LineString"===r?(t=e.getCoordinateAt(.5),n=e.getCoordinates()):t=(0,c.q1)(e.getExtent());let i;return n?(i=n.map((function(e){const n=e[0]-t[0],o=e[1]-t[1];return n*n+o*o})),o=Math.sqrt(Math.max.apply(Math,i))/3):o=Math.max((0,c.RG)(e.getExtent()),(0,c.Oq)(e.getExtent()))/3,{center:t,coordinates:n,minRadius:o,sqDistances:i}}const k=new g.A({source:C,style:function(e){const t=[E],n=e.get("modifyGeometry"),o=M(n?n.geometry:e.getGeometry()),r=o.center;if(r){t.push(new p.Ay({geometry:new a.A(r),image:new w.A({radius:4,fill:new A.A({color:"#ff3333"})})}));const e=o.coordinates;if(e){const n=o.minRadius,r=o.sqDistances,i=n*n,c=e.filter((function(e,t){return r[t]>i}));t.push(new p.Ay({geometry:new s.A(c),image:new w.A({radius:4,fill:new A.A({color:"#33cc33"})})}))}}return t}}),q=new o.A({layers:[G,k],target:"map",view:new r.Ay({center:[-11e6,46e5],zoom:4})}),v=new u.A({source:C}).getOverlay().getStyleFunction(),x=new u.A({source:C,condition:function(e){return(0,i.fs)(e)&&!(0,i.k5)(e)},deleteCondition:i.Zm,insertVertexCondition:i.Zm,style:function(e,t){return e.get("features").forEach((function(t){const n=t.get("modifyGeometry");if(n){const t=e.getGeometry().getCoordinates();let o=n.point;if(!o){o=t,n.point=o,n.geometry0=n.geometry;const e=M(n.geometry0);n.center=e.center,n.minRadius=e.minRadius}const r=n.center,i=n.minRadius;let c,s;c=o[0]-r[0],s=o[1]-r[1];const a=Math.sqrt(c*c+s*s);if(a>i){const e=Math.atan2(s,c);c=t[0]-r[0],s=t[1]-r[1];const o=Math.sqrt(c*c+s*s);if(o>0){const t=Math.atan2(s,c),i=n.geometry0.clone();i.scale(o/a,void 0,r),i.rotate(t-e,r),n.geometry=i}}}})),v(e,t)}});let R;x.on("modifystart",(function(e){e.features.forEach((function(e){e.set("modifyGeometry",{geometry:e.getGeometry().clone()},!0)}))})),x.on("modifyend",(function(e){e.features.forEach((function(e){const t=e.get("modifyGeometry");t&&(e.setGeometry(t.geometry),e.unset("modifyGeometry",!0))}))})),q.addInteraction(x),q.addInteraction(new m.A({condition:function(e){return(0,i.fs)(e)&&(0,i.k5)(e)},layers:[k]}));const I=document.getElementById("type");function b(){R=new f.Ay({source:C,type:I.value}),q.addInteraction(R)}I.onchange=function(){q.removeInteraction(R),b()},b()}},function(e){var t;t=45335,e(e.s=t)}]);
+import { $n as platformModifierKeyOnly, Cn as OSM, D as Translate, Fn as Stroke, G as Modify, Gr as getCenter, Gt as Draw, Kr as getHeight, Ln as Fill, Mn as Map, Pn as Style, Qn as never, Rn as CircleStyle, Yr as getWidth, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, mn as MultiPoint, or as View, tr as primaryAction } from "./common.js";
+//#region examples/modify-scale-and-rotate.js
+var raster = new TileLayer({ source: new OSM() });
+var source = new VectorSource();
+var style = new Style({
+	geometry: function(feature) {
+		const modifyGeometry = feature.get("modifyGeometry");
+		return modifyGeometry ? modifyGeometry.geometry : feature.getGeometry();
+	},
+	fill: new Fill({ color: "rgba(255, 255, 255, 0.2)" }),
+	stroke: new Stroke({
+		color: "#ffcc33",
+		width: 2
+	}),
+	image: new CircleStyle({
+		radius: 7,
+		fill: new Fill({ color: "#ffcc33" })
+	})
+});
+function calculateCenter(geometry) {
+	let center, coordinates, minRadius;
+	const type = geometry.getType();
+	if (type === "Polygon") {
+		let x = 0;
+		let y = 0;
+		let i = 0;
+		coordinates = geometry.getCoordinates()[0].slice(1);
+		coordinates.forEach(function(coordinate) {
+			x += coordinate[0];
+			y += coordinate[1];
+			i++;
+		});
+		center = [x / i, y / i];
+	} else if (type === "LineString") {
+		center = geometry.getCoordinateAt(.5);
+		coordinates = geometry.getCoordinates();
+	} else center = getCenter(geometry.getExtent());
+	let sqDistances;
+	if (coordinates) {
+		sqDistances = coordinates.map(function(coordinate) {
+			const dx = coordinate[0] - center[0];
+			const dy = coordinate[1] - center[1];
+			return dx * dx + dy * dy;
+		});
+		minRadius = Math.sqrt(Math.max.apply(Math, sqDistances)) / 3;
+	} else minRadius = Math.max(getWidth(geometry.getExtent()), getHeight(geometry.getExtent())) / 3;
+	return {
+		center,
+		coordinates,
+		minRadius,
+		sqDistances
+	};
+}
+var vector = new VectorLayer({
+	source,
+	style: function(feature) {
+		const styles = [style];
+		const modifyGeometry = feature.get("modifyGeometry");
+		const result = calculateCenter(modifyGeometry ? modifyGeometry.geometry : feature.getGeometry());
+		const center = result.center;
+		if (center) {
+			styles.push(new Style({
+				geometry: new Point(center),
+				image: new CircleStyle({
+					radius: 4,
+					fill: new Fill({ color: "#ff3333" })
+				})
+			}));
+			const coordinates = result.coordinates;
+			if (coordinates) {
+				const minRadius = result.minRadius;
+				const sqDistances = result.sqDistances;
+				const rsq = minRadius * minRadius;
+				const points = coordinates.filter(function(coordinate, index) {
+					return sqDistances[index] > rsq;
+				});
+				styles.push(new Style({
+					geometry: new MultiPoint(points),
+					image: new CircleStyle({
+						radius: 4,
+						fill: new Fill({ color: "#33cc33" })
+					})
+				}));
+			}
+		}
+		return styles;
+	}
+});
+var map = new Map({
+	layers: [raster, vector],
+	target: "map",
+	view: new View({
+		center: [-11e6, 46e5],
+		zoom: 4
+	})
+});
+var defaultStyle = new Modify({ source }).getOverlay().getStyleFunction();
+var modify = new Modify({
+	source,
+	condition: function(event) {
+		return primaryAction(event) && !platformModifierKeyOnly(event);
+	},
+	deleteCondition: never,
+	insertVertexCondition: never,
+	style: function(feature, resolution) {
+		feature.get("features").forEach(function(modifyFeature) {
+			const modifyGeometry = modifyFeature.get("modifyGeometry");
+			if (modifyGeometry) {
+				const point = feature.getGeometry().getCoordinates();
+				let modifyPoint = modifyGeometry.point;
+				if (!modifyPoint) {
+					modifyPoint = point;
+					modifyGeometry.point = modifyPoint;
+					modifyGeometry.geometry0 = modifyGeometry.geometry;
+					const result = calculateCenter(modifyGeometry.geometry0);
+					modifyGeometry.center = result.center;
+					modifyGeometry.minRadius = result.minRadius;
+				}
+				const center = modifyGeometry.center;
+				const minRadius = modifyGeometry.minRadius;
+				let dx, dy;
+				dx = modifyPoint[0] - center[0];
+				dy = modifyPoint[1] - center[1];
+				const initialRadius = Math.sqrt(dx * dx + dy * dy);
+				if (initialRadius > minRadius) {
+					const initialAngle = Math.atan2(dy, dx);
+					dx = point[0] - center[0];
+					dy = point[1] - center[1];
+					const currentRadius = Math.sqrt(dx * dx + dy * dy);
+					if (currentRadius > 0) {
+						const currentAngle = Math.atan2(dy, dx);
+						const geometry = modifyGeometry.geometry0.clone();
+						geometry.scale(currentRadius / initialRadius, void 0, center);
+						geometry.rotate(currentAngle - initialAngle, center);
+						modifyGeometry.geometry = geometry;
+					}
+				}
+			}
+		});
+		return defaultStyle(feature, resolution);
+	}
+});
+modify.on("modifystart", function(event) {
+	event.features.forEach(function(feature) {
+		feature.set("modifyGeometry", { geometry: feature.getGeometry().clone() }, true);
+	});
+});
+modify.on("modifyend", function(event) {
+	event.features.forEach(function(feature) {
+		const modifyGeometry = feature.get("modifyGeometry");
+		if (modifyGeometry) {
+			feature.setGeometry(modifyGeometry.geometry);
+			feature.unset("modifyGeometry", true);
+		}
+	});
+});
+map.addInteraction(modify);
+map.addInteraction(new Translate({
+	condition: function(event) {
+		return primaryAction(event) && platformModifierKeyOnly(event);
+	},
+	layers: [vector]
+}));
+var draw;
+var typeSelect = document.getElementById("type");
+function addInteractions() {
+	draw = new Draw({
+		source,
+		type: typeSelect.value
+	});
+	map.addInteraction(draw);
+}
+/**
+* Handle change event.
+*/
+typeSelect.onchange = function() {
+	map.removeInteraction(draw);
+	addInteractions();
+};
+addInteractions();
+//#endregion
+
 //# sourceMappingURL=modify-scale-and-rotate.js.map

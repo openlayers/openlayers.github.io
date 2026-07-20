@@ -1,2 +1,151 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4858],{94837:function(e,t,n){var o=n(76661),a=n(41564),i=n(93595),c=n(87240),s=n(77833),r=n(12185),d=n(25231),g=n(28e3);const u=new c.Ay({center:(0,d.Rb)([5.8713,45.6452]),zoom:19}),l=new r.A({source:new g.A}),h=new a.A({layers:[l],target:"map",view:u}),m=document.getElementById("geolocation_marker"),p=new i.A({positioning:"center-center",element:m,stopEvent:!1});h.addOverlay(p);const f=new s.A([],"XYZM"),M=new o.A({projection:u.getProjection(),trackingOptions:{maximumAge:1e4,enableHighAccuracy:!0,timeout:6e5}});let w=500;M.on("change",(function(){const e=M.getPosition(),t=M.getAccuracy(),n=M.getHeading()||0,o=M.getSpeed()||0;!function(e,t,n,o){const a=e[0],i=e[1],c=f.getCoordinates(),s=c[c.length-1],r=s&&s[2];if(r){let e=t-(r%(2*Math.PI)+2*Math.PI)%(2*Math.PI);if(Math.abs(e)>Math.PI){e=-(e>=0?1:-1)*(2*Math.PI-Math.abs(e))}t=r+e}f.appendCoordinate([a,i,t,n]),f.setCoordinates(f.getCoordinates().slice(-20)),m.src=t&&o?"data/geolocation_marker_heading.png":"data/geolocation_marker.png"}(e,n,Date.now(),o);const a=f.getCoordinates(),i=a.length;i>=2&&(w=(a[i-1][3]-a[0][3])/(i-1));const c=["Position: "+e[0].toFixed(2)+", "+e[1].toFixed(2),"Accuracy: "+t,"Heading: "+Math.round((s=n,360*s/(2*Math.PI)))+"&deg;","Speed: "+(3.6*o).toFixed(1)+" km/h","Delta: "+Math.round(w)+"ms"].join("<br />");var s;document.getElementById("info").innerHTML=c})),M.on("error",(function(){alert("geolocation error")}));let k=0;function y(){let e=Date.now()-1.5*w;e=Math.max(e,k),k=e;const t=f.getCoordinateAtM(e,!0);t&&(u.setCenter(function(e,t,n){const o=h.getSize()[1];return[e[0]-Math.sin(t)*o*n*1/4,e[1]+Math.cos(t)*o*n*1/4]}(t,-t[2],u.getResolution())),u.setRotation(-t[2]),p.setPosition(t),h.render())}const A=document.getElementById("geolocate");let I;A.addEventListener("click",(function(){M.setTracking(!0),l.on("postrender",y),h.render(),v()}),!1);const P=new XMLHttpRequest;P.open("GET","data/geolocation-orientation.json"),P.onload=function(){I=JSON.parse(P.responseText).data},P.send();const b=document.getElementById("simulate");function C(e){const t=e.coords;M.set("accuracy",t.accuracy),M.set("heading",t.heading*Math.PI*2/360);const n=(0,d.Rb)([t.longitude,t.latitude]);M.set("position",n),M.set("speed",t.speed),M.changed()}function v(){A.disabled=!0,b.disabled=!0}b.addEventListener("click",(function(){const e=I,t=e.shift();C(t);let n=t.timestamp;!function t(){const o=e.shift();if(!o)return;const a=o.timestamp;C(o),window.setTimeout((function(){n=a,t()}),(a-n)/.5)}(),l.on("postrender",y),h.render(),v()}),!1)}},function(e){var t;t=94837,e(e.s=t)}]);
+import { Cn as OSM, Cr as fromLonLat, Mn as Map, at as Overlay, gn as LineString, jn as TileLayer, or as View, ut as Geolocation } from "./common.js";
+//#region examples/geolocation-orientation.js
+var view = new View({
+	center: fromLonLat([5.8713, 45.6452]),
+	zoom: 19
+});
+var tileLayer = new TileLayer({ source: new OSM() });
+var map = new Map({
+	layers: [tileLayer],
+	target: "map",
+	view
+});
+var markerEl = document.getElementById("geolocation_marker");
+var marker = new Overlay({
+	positioning: "center-center",
+	element: markerEl,
+	stopEvent: false
+});
+map.addOverlay(marker);
+var positions = new LineString([], "XYZM");
+var geolocation = new Geolocation({
+	projection: view.getProjection(),
+	trackingOptions: {
+		maximumAge: 1e4,
+		enableHighAccuracy: true,
+		timeout: 6e5
+	}
+});
+var deltaMean = 500;
+geolocation.on("change", function() {
+	const position = geolocation.getPosition();
+	const accuracy = geolocation.getAccuracy();
+	const heading = geolocation.getHeading() || 0;
+	const speed = geolocation.getSpeed() || 0;
+	addPosition(position, heading, Date.now(), speed);
+	const coords = positions.getCoordinates();
+	const len = coords.length;
+	if (len >= 2) deltaMean = (coords[len - 1][3] - coords[0][3]) / (len - 1);
+	const html = [
+		"Position: " + position[0].toFixed(2) + ", " + position[1].toFixed(2),
+		"Accuracy: " + accuracy,
+		"Heading: " + Math.round(radToDeg(heading)) + "&deg;",
+		"Speed: " + (speed * 3.6).toFixed(1) + " km/h",
+		"Delta: " + Math.round(deltaMean) + "ms"
+	].join("<br />");
+	document.getElementById("info").innerHTML = html;
+});
+geolocation.on("error", function() {
+	alert("geolocation error");
+});
+function radToDeg(rad) {
+	return rad * 360 / (Math.PI * 2);
+}
+function degToRad(deg) {
+	return deg * Math.PI * 2 / 360;
+}
+function mod(n) {
+	return (n % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+}
+function addPosition(position, heading, m, speed) {
+	const x = position[0];
+	const y = position[1];
+	const fCoords = positions.getCoordinates();
+	const previous = fCoords[fCoords.length - 1];
+	const prevHeading = previous && previous[2];
+	if (prevHeading) {
+		let headingDiff = heading - mod(prevHeading);
+		if (Math.abs(headingDiff) > Math.PI) headingDiff = -(headingDiff >= 0 ? 1 : -1) * (2 * Math.PI - Math.abs(headingDiff));
+		heading = prevHeading + headingDiff;
+	}
+	positions.appendCoordinate([
+		x,
+		y,
+		heading,
+		m
+	]);
+	positions.setCoordinates(positions.getCoordinates().slice(-20));
+	if (heading && speed) markerEl.src = "data/geolocation_marker_heading.png";
+	else markerEl.src = "data/geolocation_marker.png";
+}
+function getCenterWithHeading(position, rotation, resolution) {
+	const height = map.getSize()[1];
+	return [position[0] - Math.sin(rotation) * height * resolution * 1 / 4, position[1] + Math.cos(rotation) * height * resolution * 1 / 4];
+}
+var previousM = 0;
+function updateView() {
+	let m = Date.now() - deltaMean * 1.5;
+	m = Math.max(m, previousM);
+	previousM = m;
+	const c = positions.getCoordinateAtM(m, true);
+	if (c) {
+		view.setCenter(getCenterWithHeading(c, -c[2], view.getResolution()));
+		view.setRotation(-c[2]);
+		marker.setPosition(c);
+		map.render();
+	}
+}
+var geolocateBtn = document.getElementById("geolocate");
+geolocateBtn.addEventListener("click", function() {
+	geolocation.setTracking(true);
+	tileLayer.on("postrender", updateView);
+	map.render();
+	disableButtons();
+}, false);
+var simulationData;
+var client = new XMLHttpRequest();
+client.open("GET", "data/geolocation-orientation.json");
+/**
+* Handle data loading.
+*/
+client.onload = function() {
+	simulationData = JSON.parse(client.responseText).data;
+};
+client.send();
+var simulateBtn = document.getElementById("simulate");
+simulateBtn.addEventListener("click", function() {
+	const coordinates = simulationData;
+	const first = coordinates.shift();
+	simulatePositionChange(first);
+	let prevDate = first.timestamp;
+	function geolocate() {
+		const position = coordinates.shift();
+		if (!position) return;
+		const newDate = position.timestamp;
+		simulatePositionChange(position);
+		window.setTimeout(function() {
+			prevDate = newDate;
+			geolocate();
+		}, (newDate - prevDate) / .5);
+	}
+	geolocate();
+	tileLayer.on("postrender", updateView);
+	map.render();
+	disableButtons();
+}, false);
+function simulatePositionChange(position) {
+	const coords = position.coords;
+	geolocation.set("accuracy", coords.accuracy);
+	geolocation.set("heading", degToRad(coords.heading));
+	const projectedPosition = fromLonLat([coords.longitude, coords.latitude]);
+	geolocation.set("position", projectedPosition);
+	geolocation.set("speed", coords.speed);
+	geolocation.changed();
+}
+function disableButtons() {
+	geolocateBtn.disabled = true;
+	simulateBtn.disabled = true;
+}
+//#endregion
+
 //# sourceMappingURL=geolocation-orientation.js.map

@@ -1,2 +1,134 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2836],{56127:function(e,t,r){var o=r(51541),n=r(41564),s=r(87240),i=r(77833),c=r(40878),a=r(30470),u=r(87113),l=r(35947),h=r(12185),d=r(23986),p=r(28178),_=r(29810);class f extends u.A{constructor(){super({handleDownEvent:w,handleDragEvent:v,handleMoveEvent:A,handleUpEvent:y}),this.coordinate_=null,this.cursor_="pointer",this.feature_=null,this.previousCursor_=void 0}}function w(e){const t=e.map.forEachFeatureAtPixel(e.pixel,(function(e){return e}));return t&&(this.coordinate_=e.coordinate,this.feature_=t),!!t}function v(e){const t=e.coordinate[0]-this.coordinate_[0],r=e.coordinate[1]-this.coordinate_[1];this.feature_.getGeometry().translate(t,r),this.coordinate_[0]=e.coordinate[0],this.coordinate_[1]=e.coordinate[1]}function A(e){if(this.cursor_){const t=e.map.forEachFeatureAtPixel(e.pixel,(function(e){return e})),r=e.map.getTargetElement();t?r.style.cursor!=this.cursor_&&(this.previousCursor_=r.style.cursor,r.style.cursor=this.cursor_):void 0!==this.previousCursor_&&(r.style.cursor=this.previousCursor_,this.previousCursor_=void 0)}}function y(){return this.coordinate_=null,this.feature_=null,!1}const g=new o.A(new c.A([0,0])),m=new o.A(new i.A([[-1e7,1e6],[-1e6,3e6]])),x=new o.A(new a.Ay([[[-3e6,-1e6],[-3e6,1e6],[-1e6,1e6],[-1e6,-1e6],[-3e6,-1e6]]]));new n.A({interactions:(0,l.N)().extend([new f]),layers:[new h.A({source:new p.A({url:"https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:raster:HYP_HR_SR_OB_DR/map/tiles/WebMercatorQuad",crossOrigin:""})}),new d.A({source:new _.A({features:[g,m,x]}),style:{"icon-src":"data/icon.png","icon-opacity":.95,"icon-anchor":[.5,46],"icon-anchor-x-units":"fraction","icon-anchor-y-units":"pixels","stroke-width":3,"stroke-color":[255,0,0,1],"fill-color":[0,0,255,.6]}})],target:"map",view:new s.Ay({center:[0,0],zoom:2})})}},function(e){var t;t=56127,e(e.s=t)}]);
+import { Dt as OGCMapTile, Jn as PointerInteraction, Mn as Map, Wn as defaults, bn as VectorLayer, dn as VectorSource, fr as Polygon, gn as LineString, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+//#region examples/custom-interactions.js
+var Drag = class extends PointerInteraction {
+	constructor() {
+		super({
+			handleDownEvent,
+			handleDragEvent,
+			handleMoveEvent,
+			handleUpEvent
+		});
+		/**
+		* @type {import('../src/ol/coordinate.js').Coordinate}
+		* @private
+		*/
+		this.coordinate_ = null;
+		/**
+		* @type {string|undefined}
+		* @private
+		*/
+		this.cursor_ = "pointer";
+		/**
+		* @type {Feature}
+		* @private
+		*/
+		this.feature_ = null;
+		/**
+		* @type {string|undefined}
+		* @private
+		*/
+		this.previousCursor_ = void 0;
+	}
+};
+/**
+* @param {import('../src/ol/MapBrowserEvent.js').default} evt Map browser event.
+* @return {boolean} `true` to start the drag sequence.
+*/
+function handleDownEvent(evt) {
+	const feature = evt.map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+		return feature;
+	});
+	if (feature) {
+		this.coordinate_ = evt.coordinate;
+		this.feature_ = feature;
+	}
+	return !!feature;
+}
+/**
+* @param {import('../src/ol/MapBrowserEvent.js').default} evt Map browser event.
+*/
+function handleDragEvent(evt) {
+	const deltaX = evt.coordinate[0] - this.coordinate_[0];
+	const deltaY = evt.coordinate[1] - this.coordinate_[1];
+	this.feature_.getGeometry().translate(deltaX, deltaY);
+	this.coordinate_[0] = evt.coordinate[0];
+	this.coordinate_[1] = evt.coordinate[1];
+}
+/**
+* @param {import('../src/ol/MapBrowserEvent.js').default} evt Event.
+*/
+function handleMoveEvent(evt) {
+	if (this.cursor_) {
+		const feature = evt.map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+			return feature;
+		});
+		const element = evt.map.getTargetElement();
+		if (feature) {
+			if (element.style.cursor != this.cursor_) {
+				this.previousCursor_ = element.style.cursor;
+				element.style.cursor = this.cursor_;
+			}
+		} else if (this.previousCursor_ !== void 0) {
+			element.style.cursor = this.previousCursor_;
+			this.previousCursor_ = void 0;
+		}
+	}
+}
+/**
+* @return {boolean} `false` to stop the drag sequence.
+*/
+function handleUpEvent() {
+	this.coordinate_ = null;
+	this.feature_ = null;
+	return false;
+}
+var pointFeature = new Feature(new Point([0, 0]));
+var lineFeature = new Feature(new LineString([[-1e7, 1e6], [-1e6, 3e6]]));
+var polygonFeature = new Feature(new Polygon([[
+	[-3e6, -1e6],
+	[-3e6, 1e6],
+	[-1e6, 1e6],
+	[-1e6, -1e6],
+	[-3e6, -1e6]
+]]));
+new Map({
+	interactions: defaults().extend([new Drag()]),
+	layers: [new TileLayer({ source: new OGCMapTile({
+		url: "https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:raster:HYP_HR_SR_OB_DR/map/tiles/WebMercatorQuad",
+		crossOrigin: ""
+	}) }), new VectorLayer({
+		source: new VectorSource({ features: [
+			pointFeature,
+			lineFeature,
+			polygonFeature
+		] }),
+		style: {
+			"icon-src": "data/icon.png",
+			"icon-opacity": .95,
+			"icon-anchor": [.5, 46],
+			"icon-anchor-x-units": "fraction",
+			"icon-anchor-y-units": "pixels",
+			"stroke-width": 3,
+			"stroke-color": [
+				255,
+				0,
+				0,
+				1
+			],
+			"fill-color": [
+				0,
+				0,
+				255,
+				.6
+			]
+		}
+	})],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+//#endregion
+
 //# sourceMappingURL=custom-interactions.js.map

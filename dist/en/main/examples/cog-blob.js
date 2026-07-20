@@ -1,2 +1,16 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6176],{99115:function(e,t,n){var s=n(41564),a=n(96256),c=n(12430);fetch("data/example.tif").then((e=>e.blob())).then((e=>{const t=new c.A({sources:[{blob:e}]});new s.A({target:"map",layers:[new a.A({source:t})],view:t.getView().then((e=>(e.showFullExtent=!0,e)))})}))}},function(e){var t;t=99115,e(e.s=t)}]);
+import { Ht as WebGLTileLayer, Mn as Map, Rt as GeoTIFFSource } from "./common.js";
+//#region examples/cog-blob.js
+fetch("data/example.tif").then((response) => response.blob()).then((blob) => {
+	const source = new GeoTIFFSource({ sources: [{ blob }] });
+	new Map({
+		target: "map",
+		layers: [new WebGLTileLayer({ source })],
+		view: source.getView().then((viewConfig) => {
+			viewConfig.showFullExtent = true;
+			return viewConfig;
+		})
+	});
+});
+//#endregion
+
 //# sourceMappingURL=cog-blob.js.map

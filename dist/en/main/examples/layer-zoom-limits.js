@@ -1,2 +1,24 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1435],{46238:function(e,n,o){var t=o(41564),r=o(87240),s=o(12185),a=o(25231),u=o(28e3),i=o(14407);new t.A({target:"map",layers:[new s.A({maxZoom:14,source:new u.A}),new s.A({minZoom:14,source:new i.A({url:"https://api.maptiler.com/maps/outdoor-v2/tiles.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB",tileSize:512})})],view:new r.Ay({center:(0,a.Rb)([-112.18688965,36.057944835]),zoom:15,maxZoom:18,constrainOnlyCenter:!0})})}},function(e){var n;n=46238,e(e.s=n)}]);
+import { Cn as OSM, Cr as fromLonLat, Mn as Map, jn as TileLayer, or as View, wt as TileJSON } from "./common.js";
+//#region examples/layer-zoom-limits.js
+new Map({
+	target: "map",
+	layers: [new TileLayer({
+		maxZoom: 14,
+		source: new OSM()
+	}), new TileLayer({
+		minZoom: 14,
+		source: new TileJSON({
+			url: "https://api.maptiler.com/maps/outdoor-v2/tiles.json?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+			tileSize: 512
+		})
+	})],
+	view: new View({
+		center: fromLonLat([-112.18688965, 36.057944835]),
+		zoom: 15,
+		maxZoom: 18,
+		constrainOnlyCenter: true
+	})
+});
+//#endregion
+
 //# sourceMappingURL=layer-zoom-limits.js.map

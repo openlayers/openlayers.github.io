@@ -1,2 +1,54 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6096],{27643:function(e,t,n){var o=n(51541),a=n(41564),s=n(87240),r=n(40878),i=n(12185),c=n(23986),w=n(25231),u=n(28e3),h=n(29810),l=n(38276),p=n(28656),d=n(44689),A=n(88292);const f=new p.A({points:2,radius:5,stroke:new d.A({width:2,color:"black"}),rotateWithView:!0}),g=new p.A({points:3,radius:5,fill:new l.A({color:"black"}),rotateWithView:!0}),b=[new A.Ay({image:f}),new A.Ay({image:g})],k=new h.A({attributions:'Weather data by <a href="https://openweathermap.org/current">OpenWeather</a>'}),m=new a.A({layers:[new i.A({source:new u.A}),new c.A({source:k,style:function(e){const t=e.get("wind"),n=(t.deg-180)*Math.PI/180,o=t.speed/10;return f.setScale([1,o]),f.setRotation(n),g.setDisplacement([0,g.getRadius()/2+f.getRadius()*o]),g.setRotation(n),b}})],target:"map",view:new s.Ay({center:[0,0],zoom:2})});fetch("data/openweather/weather.json").then((function(e){return e.json()})).then((function(e){const t=[];e.list.forEach((function(e){const n=new o.A(new r.A((0,w.Rb)([e.coord.lon,e.coord.lat])));n.setProperties(e),t.push(n)})),k.addFeatures(t),m.getView().fit(k.getExtent())}))}},function(e){var t;t=27643,e(e.s=t)}]);
+import { Cn as OSM, Cr as fromLonLat, Fn as Stroke, Ln as Fill, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature, zn as RegularShape } from "./common.js";
+//#region examples/wind-arrows.js
+var shaft = new RegularShape({
+	points: 2,
+	radius: 5,
+	stroke: new Stroke({
+		width: 2,
+		color: "black"
+	}),
+	rotateWithView: true
+});
+var head = new RegularShape({
+	points: 3,
+	radius: 5,
+	fill: new Fill({ color: "black" }),
+	rotateWithView: true
+});
+var styles = [new Style({ image: shaft }), new Style({ image: head })];
+var source = new VectorSource({ attributions: "Weather data by <a href=\"https://openweathermap.org/current\">OpenWeather</a>" });
+var map = new Map({
+	layers: [new TileLayer({ source: new OSM() }), new VectorLayer({
+		source,
+		style: function(feature) {
+			const wind = feature.get("wind");
+			const angle = (wind.deg - 180) * Math.PI / 180;
+			const scale = wind.speed / 10;
+			shaft.setScale([1, scale]);
+			shaft.setRotation(angle);
+			head.setDisplacement([0, head.getRadius() / 2 + shaft.getRadius() * scale]);
+			head.setRotation(angle);
+			return styles;
+		}
+	})],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+fetch("data/openweather/weather.json").then(function(response) {
+	return response.json();
+}).then(function(data) {
+	const features = [];
+	data.list.forEach(function(report) {
+		const feature = new Feature(new Point(fromLonLat([report.coord.lon, report.coord.lat])));
+		feature.setProperties(report);
+		features.push(feature);
+	});
+	source.addFeatures(features);
+	map.getView().fit(source.getExtent());
+});
+//#endregion
+
 //# sourceMappingURL=wind-arrows.js.map

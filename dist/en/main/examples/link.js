@@ -1,2 +1,23 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1963],{79550:function(e,c,n){var t=n(41564),a=n(87240),d=n(52382),k=n(12185),u=n(28e3);const h=new t.A({layers:[new k.A({source:new u.A})],target:"map",view:new a.Ay({center:[0,0],zoom:2})}),o=new d.A,s=document.getElementById("example-checkbox");s.addEventListener("change",(function(){s.checked?o.update("example","checked"):o.update("example",null)}));const l=o.track("example",(e=>{s.checked="checked"===e}));s.checked="checked"===l,h.addInteraction(o)}},function(e){var c;c=79550,e(e.s=c)}]);
+import { Cn as OSM, M as Link, Mn as Map, jn as TileLayer, or as View } from "./common.js";
+//#region examples/link.js
+var map = new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var link = new Link();
+var exampleCheckbox = document.getElementById("example-checkbox");
+exampleCheckbox.addEventListener("change", function() {
+	if (exampleCheckbox.checked) link.update("example", "checked");
+	else link.update("example", null);
+});
+exampleCheckbox.checked = link.track("example", (newValue) => {
+	exampleCheckbox.checked = newValue === "checked";
+}) === "checked";
+map.addInteraction(link);
+//#endregion
+
 //# sourceMappingURL=link.js.map

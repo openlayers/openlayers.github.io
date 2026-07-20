@@ -1,2 +1,58 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[617],{72228:function(e,t,n){var a=n(41564),r=n(87240),o=n(96256),s=n(25231),u=n(90926);(0,s.n0)();const c=new u.Ay({data:[{type:"sentinel-2-l2a",dataFilter:{timeRange:{from:"2024-05-30T00:00:00Z",to:"2024-06-01T00:00:00Z"}}}],evalscript:{setup:()=>({input:["B12","B08","B04"],output:{bands:3}}),evaluatePixel:e=>[2.5*e.B12,2*e.B08,2*e.B04]},format:"image/png"});new a.A({layers:[new o.A({source:c})],target:"map",view:new r.Ay({center:[-121.75,46.85],zoom:10,minZoom:7,maxZoom:13})});document.getElementById("auth-form").addEventListener("submit",(e=>{const t=e.target.elements.id.value,n=e.target.elements.secret.value;c.setAuth({clientId:t,clientSecret:n})}));const m=document.getElementById("format");function i(){c.setFormat(m.value)}m.addEventListener("change",(()=>i())),i(),c.on("change",(()=>{"error"===c.getState()&&alert(c.getError())}))}},function(e){var t;t=72228,e(e.s=t)}]);
+import { Ar as useGeographic, Ht as WebGLTileLayer, Mn as Map, or as View, v as SentinelHub } from "./common.js";
+//#region examples/sentinel-hub-custom-format.js
+useGeographic();
+var source = new SentinelHub({
+	data: [{
+		type: "sentinel-2-l2a",
+		dataFilter: { timeRange: {
+			from: "2024-05-30T00:00:00Z",
+			to: "2024-06-01T00:00:00Z"
+		} }
+	}],
+	evalscript: {
+		setup: () => ({
+			input: [
+				"B12",
+				"B08",
+				"B04"
+			],
+			output: { bands: 3 }
+		}),
+		evaluatePixel: (sample) => [
+			2.5 * sample.B12,
+			2 * sample.B08,
+			2 * sample.B04
+		]
+	},
+	format: "image/png"
+});
+new Map({
+	layers: [new WebGLTileLayer({ source })],
+	target: "map",
+	view: new View({
+		center: [-121.75, 46.85],
+		zoom: 10,
+		minZoom: 7,
+		maxZoom: 13
+	})
+});
+document.getElementById("auth-form").addEventListener("submit", (event) => {
+	const clientId = event.target.elements["id"].value;
+	const clientSecret = event.target.elements["secret"].value;
+	source.setAuth({
+		clientId,
+		clientSecret
+	});
+});
+var format = document.getElementById("format");
+function updateInputData() {
+	source.setFormat(format.value);
+}
+format.addEventListener("change", () => updateInputData());
+updateInputData();
+source.on("change", () => {
+	if (source.getState() === "error") alert(source.getError());
+});
+//#endregion
+
 //# sourceMappingURL=sentinel-hub-custom-format.js.map

@@ -1,2 +1,66 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7523],{48166:function(e,t,n){var r=n(41564),o=n(87240),a=n(12185),i=n(25231),s=n(66267),p=n(15264);const c="get_your_own_D6rA4zTHduk6KOKTXzGB",u='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',l=new a.A({source:new p.A({attributions:u,url:"https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key="+c,tileSize:512,maxZoom:22})}),m=new a.A({source:new p.A({attributions:u,url:"https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key="+c,tileSize:512,maxZoom:20})}),w=document.getElementById("map"),h=new r.A({layers:[l,m],target:w,view:new o.Ay({center:(0,i.Rb)([-109,46.5]),zoom:6})});let d=75;document.addEventListener("keydown",(function(e){"ArrowUp"===e.key?(d=Math.min(d+5,150),h.render(),e.preventDefault()):"ArrowDown"===e.key&&(d=Math.max(d-5,25),h.render(),e.preventDefault())}));let y=null;w.addEventListener("mousemove",(function(e){y=h.getEventPixel(e),h.render()})),w.addEventListener("mouseout",(function(){y=null,h.render()})),m.on("prerender",(function(e){const t=e.context;if(t.save(),t.beginPath(),y){const n=(0,s.FY)(e,y),r=(0,s.FY)(e,[y[0]+d,y[1]]),o=Math.sqrt(Math.pow(r[0]-n[0],2)+Math.pow(r[1]-n[1],2));t.arc(n[0],n[1],o,0,2*Math.PI),t.lineWidth=5*o/d,t.strokeStyle="rgba(0,0,0,0.5)",t.stroke()}t.clip()})),m.on("postrender",(function(e){e.context.restore()}))}},function(e){var t;t=48166,e(e.s=t)}]);
+import { Cr as fromLonLat, Mn as Map, an as ImageTileSource, jn as TileLayer, or as View, st as getRenderPixel } from "./common.js";
+//#region examples/layer-spy.js
+var attributions = "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>";
+var roads = new TileLayer({ source: new ImageTileSource({
+	attributions,
+	url: "https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+	tileSize: 512,
+	maxZoom: 22
+}) });
+var imagery = new TileLayer({ source: new ImageTileSource({
+	attributions,
+	url: "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+	tileSize: 512,
+	maxZoom: 20
+}) });
+var container = document.getElementById("map");
+var map = new Map({
+	layers: [roads, imagery],
+	target: container,
+	view: new View({
+		center: fromLonLat([-109, 46.5]),
+		zoom: 6
+	})
+});
+var radius = 75;
+document.addEventListener("keydown", function(evt) {
+	if (evt.key === "ArrowUp") {
+		radius = Math.min(radius + 5, 150);
+		map.render();
+		evt.preventDefault();
+	} else if (evt.key === "ArrowDown") {
+		radius = Math.max(radius - 5, 25);
+		map.render();
+		evt.preventDefault();
+	}
+});
+var mousePosition = null;
+container.addEventListener("mousemove", function(event) {
+	mousePosition = map.getEventPixel(event);
+	map.render();
+});
+container.addEventListener("mouseout", function() {
+	mousePosition = null;
+	map.render();
+});
+imagery.on("prerender", function(event) {
+	const ctx = event.context;
+	ctx.save();
+	ctx.beginPath();
+	if (mousePosition) {
+		const pixel = getRenderPixel(event, mousePosition);
+		const offset = getRenderPixel(event, [mousePosition[0] + radius, mousePosition[1]]);
+		const canvasRadius = Math.sqrt(Math.pow(offset[0] - pixel[0], 2) + Math.pow(offset[1] - pixel[1], 2));
+		ctx.arc(pixel[0], pixel[1], canvasRadius, 0, 2 * Math.PI);
+		ctx.lineWidth = 5 * canvasRadius / radius;
+		ctx.strokeStyle = "rgba(0,0,0,0.5)";
+		ctx.stroke();
+	}
+	ctx.clip();
+});
+imagery.on("postrender", function(event) {
+	event.context.restore();
+});
+//#endregion
+
 //# sourceMappingURL=layer-spy.js.map

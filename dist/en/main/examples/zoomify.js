@@ -1,2 +1,39 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8940],{13623:function(e,t,n){var o=n(41564),i=n(87240),r=n(12185),s=n(97266);const c="https://ol-zoomify.surge.sh/zoomify/",u=new s.A({url:c,size:[4e3,3e3],crossOrigin:"anonymous",zDirection:-1}),l=u.getTileGrid().getExtent(),a=new s.A({url:c,size:[4e3,3e3],crossOrigin:"anonymous",zDirection:-1,tilePixelRatio:2,tileSize:128}),g=new r.A({source:u});new o.A({layers:[g],target:"map",view:new i.Ay({resolutions:g.getSource().getTileGrid().getResolutions(),extent:l,constrainOnlyCenter:!0})}).getView().fit(l);document.getElementById("zoomifyProtocol").addEventListener("change",(function(e){const t=e.currentTarget.value;"zoomify"===t?g.setSource(u):"zoomifyretina"===t&&g.setSource(a)}))}},function(e){var t;t=13623,e(e.s=t)}]);
+import { Mn as Map, Nt as Zoomify, jn as TileLayer, or as View } from "./common.js";
+//#region examples/zoomify.js
+var imgWidth = 4e3;
+var imgHeight = 3e3;
+var zoomifyUrl = "https://ol-zoomify.surge.sh/zoomify/";
+var source = new Zoomify({
+	url: zoomifyUrl,
+	size: [imgWidth, imgHeight],
+	crossOrigin: "anonymous",
+	zDirection: -1
+});
+var extent = source.getTileGrid().getExtent();
+var retinaPixelRatio = 2;
+var retinaSource = new Zoomify({
+	url: zoomifyUrl,
+	size: [imgWidth, imgHeight],
+	crossOrigin: "anonymous",
+	zDirection: -1,
+	tilePixelRatio: retinaPixelRatio,
+	tileSize: 256 / retinaPixelRatio
+});
+var layer = new TileLayer({ source });
+new Map({
+	layers: [layer],
+	target: "map",
+	view: new View({
+		resolutions: layer.getSource().getTileGrid().getResolutions(),
+		extent,
+		constrainOnlyCenter: true
+	})
+}).getView().fit(extent);
+document.getElementById("zoomifyProtocol").addEventListener("change", function(event) {
+	const value = event.currentTarget.value;
+	if (value === "zoomify") layer.setSource(source);
+	else if (value === "zoomifyretina") layer.setSource(retinaSource);
+});
+//#endregion
+
 //# sourceMappingURL=zoomify.js.map

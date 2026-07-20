@@ -1,2 +1,23 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4753],{24908:function(e,t,n){var a=n(41564),s=n(87240),r=n(536),i=n(76825),o=n(12185),c=n(28e3);const l=new r.A({collapsible:!1,attributions:'<a href="https://openlayers.org">I\'m a static attribution. I never disappear</a>'}),u=new a.A({layers:[new o.A({source:new c.A})],controls:(0,i.N)({attribution:!1}).extend([l]),target:"map",view:new s.Ay({center:[0,0],zoom:2})});document.getElementById("toggleLayerButton").addEventListener("click",(()=>{u.getLayers().forEach((e=>{e.setVisible(!e.getVisible())}))}))}},function(e){var t;t=24908,e(e.s=t)}]);
+import { Cn as OSM, Mn as Map, ir as Attribution, jn as TileLayer, or as View, rr as defaults } from "./common.js";
+//#region examples/static-attribution.js
+var attribution = new Attribution({
+	collapsible: false,
+	attributions: `<a href="https://openlayers.org">I'm a static attribution. I never disappear</a>`
+});
+var map = new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	controls: defaults({ attribution: false }).extend([attribution]),
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+document.getElementById("toggleLayerButton").addEventListener("click", () => {
+	map.getLayers().forEach((l) => {
+		l.setVisible(l.getVisible() ? false : true);
+	});
+});
+//#endregion
+
 //# sourceMappingURL=static-attribution.js.map

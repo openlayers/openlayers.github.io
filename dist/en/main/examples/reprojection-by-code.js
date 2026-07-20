@@ -1,2 +1,115 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4447],{45026:function(e,n,t){var o=t(4209),i=t(41564),s=t(87240),c=t(16235),r=t(43357),l=t(12185),u=t(25231),d=t(76582),a=t(28e3),g=t(64618),h=t(44689);const w=new a.A,f=new l.A({source:new g.A({tileGrid:w.getTileGrid(),projection:w.getProjection()}),visible:!1}),p=new r.A({strokeStyle:new h.A({color:"rgba(255,120,0,0.9)",width:2,lineDash:[.5,4]}),showLabels:!0,visible:!1,wrapX:!1}),m=new i.A({layers:[new l.A({source:w}),f,p],target:"map",view:new s.Ay({projection:"EPSG:3857",center:[0,0],zoom:1})}),E=document.getElementById("epsg-query"),y=document.getElementById("epsg-search"),v=document.getElementById("epsg-result"),k=document.getElementById("render-edges"),A=document.getElementById("show-tiles"),b=document.getElementById("show-graticule");function j(e,n,t,i){if(null===e||null===n||null===t||null===i)return v.innerHTML="Nothing usable found, using EPSG:3857...",void m.setView(new s.Ay({projection:"EPSG:3857",center:[0,0],zoom:1}));v.innerHTML="("+e+") "+n,o.A.defs(e,t),(0,d.kz)(o.A);const r=(0,u.Jt)(e),l=(0,u.RG)("EPSG:4326",r);r.setWorldExtent(i),i[0]>i[2]&&(i[2]+=360);const a=(0,c.NW)(i,l,void 0,8);r.setExtent(a);const g=new s.Ay({projection:r});m.setView(g),g.fit(a)}function G(){w.setRenderReprojectionEdges(k.checked)}function B(){p.setVisible(b.checked)}function L(){f.setVisible(A.checked)}y.onclick=function(e){var n;n=E.value,v.innerHTML="Searching ...",fetch(`https://api.maptiler.com/coordinates/search/${n}.json?exports=true&key=get_your_own_D6rA4zTHduk6KOKTXzGB`).then((function(e){return e.json()})).then((function(e){const n=e.results;if(n&&n.length>0)for(let e=0,t=n.length;e<t;e++){const t=n[e];if(t){const e=t.id,n=e.authority+":"+e.code,o=t.name,i=t.exports.wkt,s=t.bbox;if(n&&n.length>0&&i&&i.length>0&&s&&4==s.length)return void j(n,o,i,s)}}j(null,null,null,null)})),e.preventDefault()},b.addEventListener("change",B),k.addEventListener("change",G),A.addEventListener("change",L),G(),B(),L()}},function(e){var n;n=45026,e(e.s=n)}]);
+import { Br as applyTransform, Bt as register, Cn as OSM, Er as getTransform, Fn as Stroke, It as proj4, Mn as Map, Qt as TileDebug, jn as TileLayer, or as View, ot as Graticule, wr as get } from "./common.js";
+//#region examples/reprojection-by-code.js
+var key = "get_your_own_D6rA4zTHduk6KOKTXzGB";
+var osmSource = new OSM();
+var debugLayer = new TileLayer({
+	source: new TileDebug({
+		tileGrid: osmSource.getTileGrid(),
+		projection: osmSource.getProjection()
+	}),
+	visible: false
+});
+var graticule = new Graticule({
+	strokeStyle: new Stroke({
+		color: "rgba(255,120,0,0.9)",
+		width: 2,
+		lineDash: [.5, 4]
+	}),
+	showLabels: true,
+	visible: false,
+	wrapX: false
+});
+var map = new Map({
+	layers: [
+		new TileLayer({ source: osmSource }),
+		debugLayer,
+		graticule
+	],
+	target: "map",
+	view: new View({
+		projection: "EPSG:3857",
+		center: [0, 0],
+		zoom: 1
+	})
+});
+var queryInput = document.getElementById("epsg-query");
+var searchButton = document.getElementById("epsg-search");
+var resultSpan = document.getElementById("epsg-result");
+var renderEdgesCheckbox = document.getElementById("render-edges");
+var showTilesCheckbox = document.getElementById("show-tiles");
+var showGraticuleCheckbox = document.getElementById("show-graticule");
+function setProjection(code, name, proj4def, bbox) {
+	if (code === null || name === null || proj4def === null || bbox === null) {
+		resultSpan.innerHTML = "Nothing usable found, using EPSG:3857...";
+		map.setView(new View({
+			projection: "EPSG:3857",
+			center: [0, 0],
+			zoom: 1
+		}));
+		return;
+	}
+	resultSpan.innerHTML = "(" + code + ") " + name;
+	proj4.defs(code, proj4def);
+	register(proj4);
+	const newProj = get(code);
+	const fromLonLat = getTransform("EPSG:4326", newProj);
+	newProj.setWorldExtent(bbox);
+	if (bbox[0] > bbox[2]) bbox[2] += 360;
+	const extent = applyTransform(bbox, fromLonLat, void 0, 8);
+	newProj.setExtent(extent);
+	const newView = new View({ projection: newProj });
+	map.setView(newView);
+	newView.fit(extent);
+}
+function search(query) {
+	resultSpan.innerHTML = "Searching ...";
+	fetch(`https://api.maptiler.com/coordinates/search/${query}.json?exports=true&key=${key}`).then(function(response) {
+		return response.json();
+	}).then(function(json) {
+		const results = json["results"];
+		if (results && results.length > 0) for (let i = 0, ii = results.length; i < ii; i++) {
+			const result = results[i];
+			if (result) {
+				const id = result["id"];
+				const code = id["authority"] + ":" + id["code"];
+				const name = result["name"];
+				const proj4def = result["exports"]["wkt"];
+				const bbox = result["bbox"];
+				if (code && code.length > 0 && proj4def && proj4def.length > 0 && bbox && bbox.length == 4) {
+					setProjection(code, name, proj4def, bbox);
+					return;
+				}
+			}
+		}
+		setProjection(null, null, null, null);
+	});
+}
+/**
+* Handle click event.
+* @param {Event} event The event.
+*/
+searchButton.onclick = function(event) {
+	search(queryInput.value);
+	event.preventDefault();
+};
+/**
+* Handle checkbox change events.
+*/
+function onReprojectionChange() {
+	osmSource.setRenderReprojectionEdges(renderEdgesCheckbox.checked);
+}
+function onGraticuleChange() {
+	graticule.setVisible(showGraticuleCheckbox.checked);
+}
+function onTilesChange() {
+	debugLayer.setVisible(showTilesCheckbox.checked);
+}
+showGraticuleCheckbox.addEventListener("change", onGraticuleChange);
+renderEdgesCheckbox.addEventListener("change", onReprojectionChange);
+showTilesCheckbox.addEventListener("change", onTilesChange);
+onReprojectionChange();
+onGraticuleChange();
+onTilesChange();
+//#endregion
+
 //# sourceMappingURL=reprojection-by-code.js.map

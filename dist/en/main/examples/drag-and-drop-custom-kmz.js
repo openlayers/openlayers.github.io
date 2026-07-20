@@ -1,2 +1,90 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9190],{54929:function(e,n,t){var r=t(74977),o=t(41564),c=t(87240),a=t(94782),s=t(49208),i=t(17534),u=t(30135),d=t(28665),l=t(56182),f=t(35947),w=t(12185),g=t(23986),m=t(28e3),A=t(29810);let k;function p(e){k=(0,r.AO)(new Uint8Array(e));const n=Object.keys(k).find((e=>/\.kml$/i.test(e)));return n in k?(new TextDecoder).decode(k[n]):null}function y(e){const n=window.location.href.lastIndexOf("/");if(-1===n)return e;const t=e.slice(n+1);return t in k?URL.createObjectURL(new Blob([k[t]])):e}class h extends u.Ay{constructor(e){const n=e||{};n.iconUrlFunction=y,super(n)}getType(){return"arraybuffer"}readFeature(e,n){const t=p(e);return super.readFeature(t,n)}readFeatures(e,n){const t=p(e);return super.readFeatures(t,n)}}const b=new l.A({formatConstructors:[h,a.A,s.A,i.A,u.Ay,d.A]}),x=new o.A({interactions:(0,f.N)().extend([b]),layers:[new w.A({source:new m.A})],target:"map",view:new c.Ay({center:[0,0],zoom:2})});b.on("addfeatures",(function(e){const n=new A.A({features:e.features});x.addLayer(new g.A({source:n})),x.getView().fit(n.getExtent())}));const L=function(e){const n=x.getFeaturesAtPixel(e);let t;if(n.length>0){const e=[];for(let t=0,r=n.length;t<r;++t){const r=n[t].get("description")||n[t].get("name")||n[t].get("_name")||n[t].get("layer");r&&e.push(r)}t=e.join("<br/>")}document.getElementById("info").innerHTML=t??""};x.on("pointermove",(function(e){e.dragging||L(e.pixel)})),x.on("click",(function(e){L(e.pixel)}));const v=document.getElementById("download");document.getElementById("download-kmz").addEventListener("click",(function(){var e;e="iceland.kmz",fetch("data/kmz/iceland.kmz").then((e=>e.blob())).then((function(n){v.href=URL.createObjectURL(n),v.download=e,v.click()}))}))}},function(e){var n;n=54929,e(e.s=n)}]);
+import { Cn as OSM, J as DragAndDrop, Mn as Map, Q as unzipSync, Wn as defaults, X as IGC, Y as TopoJSON, Z as GPX, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View, rn as GeoJSON, tn as KML } from "./common.js";
+//#region examples/drag-and-drop-custom-kmz.js
+var zip;
+function getKMLData(buffer) {
+	zip = unzipSync(new Uint8Array(buffer));
+	const kml = Object.keys(zip).find((key) => /\.kml$/i.test(key));
+	if (!(kml in zip)) return null;
+	return new TextDecoder().decode(zip[kml]);
+}
+function getKMLImage(href) {
+	const index = window.location.href.lastIndexOf("/");
+	if (index === -1) return href;
+	const image = href.slice(index + 1);
+	if (!(image in zip)) return href;
+	return URL.createObjectURL(new Blob([zip[image]]));
+}
+var KMZ = class extends KML {
+	constructor(opt_options) {
+		const options = opt_options || {};
+		options.iconUrlFunction = getKMLImage;
+		super(options);
+	}
+	getType() {
+		return "arraybuffer";
+	}
+	readFeature(source, options) {
+		const kmlData = getKMLData(source);
+		return super.readFeature(kmlData, options);
+	}
+	readFeatures(source, options) {
+		const kmlData = getKMLData(source);
+		return super.readFeatures(kmlData, options);
+	}
+};
+var dragAndDropInteraction = new DragAndDrop({ formatConstructors: [
+	KMZ,
+	GPX,
+	GeoJSON,
+	IGC,
+	KML,
+	TopoJSON
+] });
+var map = new Map({
+	interactions: defaults().extend([dragAndDropInteraction]),
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+dragAndDropInteraction.on("addfeatures", function(event) {
+	const vectorSource = new VectorSource({ features: event.features });
+	map.addLayer(new VectorLayer({ source: vectorSource }));
+	map.getView().fit(vectorSource.getExtent());
+});
+var displayFeatureInfo = function(pixel) {
+	const features = map.getFeaturesAtPixel(pixel);
+	let html;
+	if (features.length > 0) {
+		const info = [];
+		for (let i = 0, ii = features.length; i < ii; ++i) {
+			const description = features[i].get("description") || features[i].get("name") || features[i].get("_name") || features[i].get("layer");
+			if (description) info.push(description);
+		}
+		html = info.join("<br/>");
+	}
+	document.getElementById("info").innerHTML = html ?? "";
+};
+map.on("pointermove", function(evt) {
+	if (evt.dragging) return;
+	displayFeatureInfo(evt.pixel);
+});
+map.on("click", function(evt) {
+	displayFeatureInfo(evt.pixel);
+});
+var link = document.getElementById("download");
+function download(fullpath, filename) {
+	fetch(fullpath).then((response) => response.blob()).then(function(blob) {
+		link.href = URL.createObjectURL(blob);
+		link.download = filename;
+		link.click();
+	});
+}
+document.getElementById("download-kmz").addEventListener("click", function() {
+	download("data/kmz/iceland.kmz", "iceland.kmz");
+});
+//#endregion
+
 //# sourceMappingURL=drag-and-drop-custom-kmz.js.map

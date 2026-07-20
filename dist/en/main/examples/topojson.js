@@ -1,2 +1,27 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6453],{52368:function(e,t,r){var o=r(41564),a=r(87240),n=r(28665),s=r(12185),p=r(23986),w=r(15264),i=r(29810);const c=new s.A({source:new w.A({attributions:'<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',url:"https://api.maptiler.com/maps/dataviz-dark/{z}/{x}/{y}.png?key=get_your_own_D6rA4zTHduk6KOKTXzGB",tileSize:512})}),l=new p.A({source:new i.A({url:"data/topojson/world-110m.json",format:new n.A({layers:["countries"]}),overlaps:!1}),style:{"stroke-color":"white","stroke-width":1.5}});new o.A({layers:[c,l],target:"map",view:new a.Ay({center:[0,0],zoom:1})})}},function(e){var t;t=52368,e(e.s=t)}]);
+import { Mn as Map, Y as TopoJSON, an as ImageTileSource, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View } from "./common.js";
+//#region examples/topojson.js
+new Map({
+	layers: [new TileLayer({ source: new ImageTileSource({
+		attributions: "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+		url: "https://api.maptiler.com/maps/dataviz-dark/{z}/{x}/{y}.png?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+		tileSize: 512
+	}) }), new VectorLayer({
+		source: new VectorSource({
+			url: "data/topojson/world-110m.json",
+			format: new TopoJSON({ layers: ["countries"] }),
+			overlaps: false
+		}),
+		style: {
+			"stroke-color": "white",
+			"stroke-width": 1.5
+		}
+	})],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 1
+	})
+});
+//#endregion
+
 //# sourceMappingURL=topojson.js.map

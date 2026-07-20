@@ -1,2 +1,29 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3435],{90510:function(e,n,t){var o=t(41564),r=t(87240),a=t(38808),c=t(57038),s=t(12185),i=t(25231),w=t(28e3);const l=new o.A({layers:[new s.A({source:new w.A})],target:"map",view:new r.Ay({center:[0,0],zoom:2})}),u=new c.A({extent:(0,i.DI)([-10,-10,10,10],"EPSG:4326","EPSG:3857"),createCondition:a.Zm,drag:!0,boxStyle:{"fill-color":"rgba(255, 255, 255, 0.4)","stroke-color":"#3399CC","stroke-width":1.25}});l.addInteraction(u)}},function(e){var n;n=90510,e(e.s=n)}]);
+import { Cn as OSM, Mn as Map, Qn as never, R as Extent, jn as TileLayer, kr as transformExtent, or as View } from "./common.js";
+//#region examples/extent-interaction-modify.js
+var map = new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var extent = new Extent({
+	extent: transformExtent([
+		-10,
+		-10,
+		10,
+		10
+	], "EPSG:4326", "EPSG:3857"),
+	createCondition: never,
+	drag: true,
+	boxStyle: {
+		"fill-color": "rgba(255, 255, 255, 0.4)",
+		"stroke-color": "#3399CC",
+		"stroke-width": 1.25
+	}
+});
+map.addInteraction(extent);
+//#endregion
+
 //# sourceMappingURL=extent-interaction-modify.js.map

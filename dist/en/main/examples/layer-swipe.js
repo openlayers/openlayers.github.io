@@ -1,2 +1,44 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7575],{64874:function(e,t,n){var o=n(41564),r=n(87240),a=n(12185),i=n(66267),p=n(15264),c=n(28e3);const s=new a.A({source:new c.A}),u=new a.A({source:new p.A({attributions:'<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',url:"https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",tileSize:512,maxZoom:20})}),l=new o.A({layers:[s,u],target:"map",view:new r.Ay({center:[0,0],zoom:2})}),w=document.getElementById("swipe");u.on("prerender",(function(e){const t=e.context,n=l.getSize(),o=n[0]*(Number(w.value)/100),r=(0,i.FY)(e,[o,0]),a=(0,i.FY)(e,[n[0],0]),p=(0,i.FY)(e,[o,n[1]]),c=(0,i.FY)(e,n);t.save(),t.beginPath(),t.moveTo(r[0],r[1]),t.lineTo(p[0],p[1]),t.lineTo(c[0],c[1]),t.lineTo(a[0],a[1]),t.closePath(),t.clip()})),u.on("postrender",(function(e){e.context.restore()})),w.addEventListener("input",(function(){l.render()}))}},function(e){var t;t=64874,e(e.s=t)}]);
+import { Cn as OSM, Mn as Map, an as ImageTileSource, jn as TileLayer, or as View, st as getRenderPixel } from "./common.js";
+//#region examples/layer-swipe.js
+var osm = new TileLayer({ source: new OSM() });
+var aerial = new TileLayer({ source: new ImageTileSource({
+	attributions: "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+	url: "https://api.maptiler.com/maps/satellite/{z}/{x}/{y}.jpg?key=get_your_own_D6rA4zTHduk6KOKTXzGB",
+	tileSize: 512,
+	maxZoom: 20
+}) });
+var map = new Map({
+	layers: [osm, aerial],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+var swipe = document.getElementById("swipe");
+aerial.on("prerender", function(event) {
+	const ctx = event.context;
+	const mapSize = map.getSize();
+	const width = mapSize[0] * (Number(swipe.value) / 100);
+	const tl = getRenderPixel(event, [width, 0]);
+	const tr = getRenderPixel(event, [mapSize[0], 0]);
+	const bl = getRenderPixel(event, [width, mapSize[1]]);
+	const br = getRenderPixel(event, mapSize);
+	ctx.save();
+	ctx.beginPath();
+	ctx.moveTo(tl[0], tl[1]);
+	ctx.lineTo(bl[0], bl[1]);
+	ctx.lineTo(br[0], br[1]);
+	ctx.lineTo(tr[0], tr[1]);
+	ctx.closePath();
+	ctx.clip();
+});
+aerial.on("postrender", function(event) {
+	event.context.restore();
+});
+swipe.addEventListener("input", function() {
+	map.render();
+});
+//#endregion
+
 //# sourceMappingURL=layer-swipe.js.map

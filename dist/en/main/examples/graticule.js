@@ -1,2 +1,21 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[3765],{33568:function(e,n,w){var a=w(41564),r=w(87240),s=w(43357),t=w(12185),o=w(25231),c=w(28e3),l=w(44689);new a.A({layers:[new t.A({source:new c.A({wrapX:!1})}),new s.A({strokeStyle:new l.A({color:"rgba(255,120,0,0.9)",width:2,lineDash:[.5,4]}),showLabels:!0,wrapX:!1})],target:"map",view:new r.Ay({center:(0,o.Rb)([4.8,47.75]),zoom:5})})}},function(e){var n;n=33568,e(e.s=n)}]);
+import { Cn as OSM, Cr as fromLonLat, Fn as Stroke, Mn as Map, jn as TileLayer, or as View, ot as Graticule } from "./common.js";
+//#region examples/graticule.js
+new Map({
+	layers: [new TileLayer({ source: new OSM({ wrapX: false }) }), new Graticule({
+		strokeStyle: new Stroke({
+			color: "rgba(255,120,0,0.9)",
+			width: 2,
+			lineDash: [.5, 4]
+		}),
+		showLabels: true,
+		wrapX: false
+	})],
+	target: "map",
+	view: new View({
+		center: fromLonLat([4.8, 47.75]),
+		zoom: 5
+	})
+});
+//#endregion
+
 //# sourceMappingURL=graticule.js.map

@@ -1,2 +1,72 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1339],{75838:function(e,t,n){var a=n(51541),g=n(41564),i=n(87240),r=n(40878),c=n(23986),s=n(29810),d=n(75052),l=n(88292);const u=document.getElementById("width-input"),m=document.getElementById("height-input"),o=document.getElementById("clear-width-button"),h=document.getElementById("clear-height-button"),w=document.getElementById("scale"),y=new a.A({geometry:new r.A([0,0]),name:"Null Island",population:4e3,rainfall:500}),I=new l.Ay({image:new d.A({src:"data/icon.png",width:Number(u.value),height:Number(m.value)})});y.setStyle(I),u.addEventListener("input",(e=>{const t=I.getImage();I.setImage(new d.A({src:"data/icon.png",width:Number(e.target.value),height:t.getHeight()})),y.setStyle(I)})),m.addEventListener("input",(e=>{const t=I.getImage();I.setImage(new d.A({src:"data/icon.png",height:Number(e.target.value),width:t.getWidth()})),y.setStyle(I)})),o.addEventListener("click",(()=>{const e=I.getImage();I.setImage(new d.A({src:"data/icon.png",height:e.getHeight()})),y.setStyle(I),u.value=String(Math.round(I.getImage().getWidth())),w.innerText=v(I.getImage().getScale()),y.setStyle(I)})),h.addEventListener("click",(()=>{const e=I.getImage();I.setImage(new d.A({src:"data/icon.png",width:e.getWidth()})),y.setStyle(I),m.value=String(Math.round(I.getImage().getHeight())),y.setStyle(I)}));const p=new s.A({features:[y]}),A=new c.A({source:p});function v(e){return Array.isArray(e)?"["+e?.map((e=>e.toFixed(2))).join(", ")+"]":e}new g.A({layers:[A],target:"map",view:new i.Ay({center:[0,0],zoom:3})}).on("rendercomplete",(()=>w.innerText=v(I.getImage().getScale())))}},function(e){var t;t=75838,e(e.s=t)}]);
+import { In as Icon, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, hr as Point, or as View, xn as Feature } from "./common.js";
+//#region examples/icon-width.js
+var widthInput = document.getElementById("width-input");
+var heightInput = document.getElementById("height-input");
+var clearWidthButton = document.getElementById("clear-width-button");
+var clearHeightButton = document.getElementById("clear-height-button");
+var scaleSpan = document.getElementById("scale");
+var iconFeature = new Feature({
+	geometry: new Point([0, 0]),
+	name: "Null Island",
+	population: 4e3,
+	rainfall: 500
+});
+var iconStyle = new Style({ image: new Icon({
+	src: "data/icon.png",
+	width: Number(widthInput.value),
+	height: Number(heightInput.value)
+}) });
+iconFeature.setStyle(iconStyle);
+widthInput.addEventListener("input", (event) => {
+	const currentIcon = iconStyle.getImage();
+	iconStyle.setImage(new Icon({
+		src: "data/icon.png",
+		width: Number(event.target.value),
+		height: currentIcon.getHeight()
+	}));
+	iconFeature.setStyle(iconStyle);
+});
+heightInput.addEventListener("input", (event) => {
+	const currentIcon = iconStyle.getImage();
+	iconStyle.setImage(new Icon({
+		src: "data/icon.png",
+		height: Number(event.target.value),
+		width: currentIcon.getWidth()
+	}));
+	iconFeature.setStyle(iconStyle);
+});
+clearWidthButton.addEventListener("click", () => {
+	const currentIcon = iconStyle.getImage();
+	iconStyle.setImage(new Icon({
+		src: "data/icon.png",
+		height: currentIcon.getHeight()
+	}));
+	iconFeature.setStyle(iconStyle);
+	widthInput.value = String(Math.round(iconStyle.getImage().getWidth()));
+	scaleSpan.innerText = formatScale(iconStyle.getImage().getScale());
+	iconFeature.setStyle(iconStyle);
+});
+clearHeightButton.addEventListener("click", () => {
+	const currentIcon = iconStyle.getImage();
+	iconStyle.setImage(new Icon({
+		src: "data/icon.png",
+		width: currentIcon.getWidth()
+	}));
+	iconFeature.setStyle(iconStyle);
+	heightInput.value = String(Math.round(iconStyle.getImage().getHeight()));
+	iconFeature.setStyle(iconStyle);
+});
+new Map({
+	layers: [new VectorLayer({ source: new VectorSource({ features: [iconFeature] }) })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 3
+	})
+}).on("rendercomplete", () => scaleSpan.innerText = formatScale(iconStyle.getImage().getScale()));
+function formatScale(scale) {
+	return Array.isArray(scale) ? "[" + scale?.map((v) => v.toFixed(2)).join(", ") + "]" : scale;
+}
+//#endregion
+
 //# sourceMappingURL=icon-width.js.map

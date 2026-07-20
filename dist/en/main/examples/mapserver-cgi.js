@@ -1,2 +1,29 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[6954],{66064:function(e,r,a){var n=a(41564),t=a(87240),i=a(16235),s=a(47085),o=a(73465),c=a(36634),m=a(16649);const p=[388039,5234969,500964,5295764],u=new s.A({extent:p,source:new o.Ay({loader:function(e){const r=e.load||c.D4,a=e.ratio??1,n=e.crossOrigin??null;return function(t,s,c){const p=new Image;p.crossOrigin=n,void 0!==e.referrerPolicy&&(p.referrerPolicy=e.referrerPolicy),t=(0,o.QD)(t,s,c,a);const u=(0,i.RG)(t)/s,g=(0,i.Oq)(t)/s,l=[u*c,g*c],d=function(e,r,a,n){const t=Math.round(n[0]),i=Math.round(n[1]),s=`${t} ${i}`,o=`${a[0]} ${a[1]} ${a[2]} ${a[3]}`,c={mode:"map",map_imagetype:"png",mapext:o,imgext:o,map_size:s,imgx:t/2,imgy:i/2,imgxy:s};return Object.assign(c,r),(0,m.LW)(e,c)}(e.url,e.params,t,l);return r(p,d).then((e=>({image:e,extent:t,pixelRatio:c})))}}({url:"https://demo.mapserver.org/cgi-bin/mapserv?",params:{map:"/mapserver/apps/itasca_legend/map/itasca3.map",layers:"boundaries water roads other cities"}})})});new n.A({layers:[u],target:"map",view:new t.Ay({center:(0,i.q1)(p),zoom:10})})}},function(e){var r;r=66064,e(e.s=r)}]);
+import { Gr as getCenter, Mn as Map, O as createLoader, ln as ImageSource, or as View, un as ImageLayer } from "./common.js";
+//#region examples/mapserver-cgi.js
+var mapserverUrl = "https://demo.mapserver.org/cgi-bin/mapserv?";
+var bounds = [
+	388039,
+	5234969,
+	500964,
+	5295764
+];
+new Map({
+	layers: [new ImageLayer({
+		extent: bounds,
+		source: new ImageSource({ loader: createLoader({
+			url: mapserverUrl,
+			params: {
+				"map": "/mapserver/apps/itasca_legend/map/itasca3.map",
+				"layers": "boundaries water roads other cities"
+			}
+		}) })
+	})],
+	target: "map",
+	view: new View({
+		center: getCenter(bounds),
+		zoom: 10
+	})
+});
+//#endregion
+
 //# sourceMappingURL=mapserver-cgi.js.map

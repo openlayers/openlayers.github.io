@@ -1,2 +1,13 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9821],{90760:function(e,n,a){var r=a(41564),s=a(87240),t=a(12185),w=a(25231),c=a(9226);new r.A({layers:[new t.A({source:new c.A({layer:"stamen_watercolor"})}),new t.A({source:new c.A({layer:"stamen_terrain_labels"})})],target:"map",view:new s.Ay({center:(0,w.Rb)([-122.416667,37.783333]),zoom:12})})}},function(e){var n;n=90760,e(e.s=n)}]);
+import { Cr as fromLonLat, Mn as Map, jn as TileLayer, or as View, yn as StadiaMaps } from "./common.js";
+//#region examples/stamen.js
+new Map({
+	layers: [new TileLayer({ source: new StadiaMaps({ layer: "stamen_watercolor" }) }), new TileLayer({ source: new StadiaMaps({ layer: "stamen_terrain_labels" }) })],
+	target: "map",
+	view: new View({
+		center: fromLonLat([-122.416667, 37.783333]),
+		zoom: 12
+	})
+});
+//#endregion
+
 //# sourceMappingURL=stamen.js.map

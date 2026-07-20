@@ -1,2 +1,53 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4836],{26383:function(e,n,t){var o=t(41564),r=t(87240),s=t(49208),a=t(12185),c=t(23986),i=t(25231),l=t(28e3),u=t(29810),w=t(21133),d=t(38276),g=t(44689),A=t(88292);const f=new u.A({url:"data/geojson/switzerland.geojson",format:new s.A}),m=new A.Ay({fill:new d.A({color:"rgba(255, 255, 255, 0.6)"}),stroke:new g.A({color:"#319FD3",width:1}),image:new w.A({radius:5,fill:new d.A({color:"rgba(255, 255, 255, 0.6)"}),stroke:new g.A({color:"#319FD3",width:1})})}),k=new c.A({source:f,style:m}),y=new r.Ay({center:(0,i.Rb)([6.6339863,46.5193823]),padding:[170,50,30,150],zoom:6});new o.A({layers:[new a.A({source:new l.A}),k],target:"map",view:y});k.getSource().on("featuresloadend",(function(){document.getElementById("zoomtoswitzerland").addEventListener("click",(function(){const e=f.getFeatures()[0].getGeometry();y.fit(e)}),!1);document.getElementById("centerlausanne").addEventListener("click",(function(){const e=f.getFeatures()[1].getGeometry();y.setCenter(e.getCoordinates())}),!1)}))}},function(e){var n;n=26383,e(e.s=n)}]);
+import { Cn as OSM, Cr as fromLonLat, Fn as Stroke, Ln as Fill, Mn as Map, Pn as Style, Rn as CircleStyle, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/view-padding.js
+/** @type {VectorSource<import('../src/ol/Feature.js').default<import('../src/ol/geom/SimpleGeometry.js').default>>} */
+var source = new VectorSource({
+	url: "data/geojson/switzerland.geojson",
+	format: new GeoJSON()
+});
+var vectorLayer = new VectorLayer({
+	source,
+	style: new Style({
+		fill: new Fill({ color: "rgba(255, 255, 255, 0.6)" }),
+		stroke: new Stroke({
+			color: "#319FD3",
+			width: 1
+		}),
+		image: new CircleStyle({
+			radius: 5,
+			fill: new Fill({ color: "rgba(255, 255, 255, 0.6)" }),
+			stroke: new Stroke({
+				color: "#319FD3",
+				width: 1
+			})
+		})
+	})
+});
+var view = new View({
+	center: fromLonLat([6.6339863, 46.5193823]),
+	padding: [
+		170,
+		50,
+		30,
+		150
+	],
+	zoom: 6
+});
+new Map({
+	layers: [new TileLayer({ source: new OSM() }), vectorLayer],
+	target: "map",
+	view
+});
+vectorLayer.getSource().on("featuresloadend", function() {
+	document.getElementById("zoomtoswitzerland").addEventListener("click", function() {
+		const polygon = source.getFeatures()[0].getGeometry();
+		view.fit(polygon);
+	}, false);
+	document.getElementById("centerlausanne").addEventListener("click", function() {
+		const point = source.getFeatures()[1].getGeometry();
+		view.setCenter(point.getCoordinates());
+	}, false);
+});
+//#endregion
+
 //# sourceMappingURL=view-padding.js.map

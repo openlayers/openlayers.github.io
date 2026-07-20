@@ -1,2 +1,24 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[759],{50378:function(e,t,n){var s=n(41564),a=n(87240),r=n(49208),o=n(74676),u=n(68266),w=n(35947),c=n(23986),i=n(25231),p=n(29810);const A=new c.A({background:"white",source:new p.A({url:"https://openlayers.org/data/vector/us-states.json",format:new r.A,wrapX:!1})}),f=new u.A,h=new o.A({features:f.getFeatures()});new s.A({interactions:(0,w.N)().extend([f,h]),layers:[A],target:"map",view:new a.Ay({center:(0,i.Rb)([-100,38.5]),zoom:4})})}},function(e){var t;t=50378,e(e.s=t)}]);
+import { Cr as fromLonLat, G as Modify, Mn as Map, Wn as defaults, bn as VectorLayer, dn as VectorSource, nn as Select, or as View, rn as GeoJSON } from "./common.js";
+//#region examples/modify-features.js
+var vector = new VectorLayer({
+	background: "white",
+	source: new VectorSource({
+		url: "https://openlayers.org/data/vector/us-states.json",
+		format: new GeoJSON(),
+		wrapX: false
+	})
+});
+var select = new Select();
+var modify = new Modify({ features: select.getFeatures() });
+new Map({
+	interactions: defaults().extend([select, modify]),
+	layers: [vector],
+	target: "map",
+	view: new View({
+		center: fromLonLat([-100, 38.5]),
+		zoom: 4
+	})
+});
+//#endregion
+
 //# sourceMappingURL=modify-features.js.map

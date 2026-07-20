@@ -1,2 +1,34 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8671],{30002:function(e,t,r){var n=r(41564),s=r(87240),o=r(16235),a=r(12185),w=r(25231),c=r(28e3),p=r(6848),u=r(45342);const i=(0,w.Jt)("EPSG:3857").getExtent(),l=(0,o.RG)(i)/256,A=new Array(22);for(let e=0,t=A.length;e<t;++e)A[e]=l/Math.pow(2,e);const h=new u.A({extent:[-13884991,2870341,-7455066,6338219],resolutions:A,tileSize:[512,256]}),v=[new a.A({source:new c.A}),new a.A({source:new p.A({url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"topp:states",TILED:!0},serverType:"geoserver",tileGrid:h})})];new n.A({layers:v,target:"map",view:new s.Ay({center:[-10997148,4569099],zoom:4})})}},function(e){var t;t=30002,e(e.s=t)}]);
+import { An as TileGrid, Cn as OSM, Ct as TileWMS, Mn as Map, Yr as getWidth, jn as TileLayer, or as View, wr as get } from "./common.js";
+//#region examples/wms-custom-tilegrid-512x256.js
+var startResolution = getWidth(get("EPSG:3857").getExtent()) / 256;
+var resolutions = new Array(22);
+for (let i = 0, ii = resolutions.length; i < ii; ++i) resolutions[i] = startResolution / Math.pow(2, i);
+var tileGrid = new TileGrid({
+	extent: [
+		-13884991,
+		2870341,
+		-7455066,
+		6338219
+	],
+	resolutions,
+	tileSize: [512, 256]
+});
+new Map({
+	layers: [new TileLayer({ source: new OSM() }), new TileLayer({ source: new TileWMS({
+		url: "https://ahocevar.com/geoserver/wms",
+		params: {
+			"LAYERS": "topp:states",
+			"TILED": true
+		},
+		serverType: "geoserver",
+		tileGrid
+	}) })],
+	target: "map",
+	view: new View({
+		center: [-10997148, 4569099],
+		zoom: 4
+	})
+});
+//#endregion
+
 //# sourceMappingURL=wms-custom-tilegrid-512x256.js.map

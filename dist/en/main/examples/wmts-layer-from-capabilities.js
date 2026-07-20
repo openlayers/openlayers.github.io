@@ -1,2 +1,28 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[8064],{82059:function(e,t,n){var a=n(41564),c=n(87240),r=n(9619),i=n(12185),o=n(28e3),s=n(58212);const u=new r.A;let w;fetch("data/WMTSCapabilities.xml").then((function(e){return e.text()})).then((function(e){const t=u.read(e),n=(0,s.t)(t,{layer:"layer-7328",matrixSet:"EPSG:3857"});w=new a.A({layers:[new i.A({source:new o.A,opacity:.7}),new i.A({opacity:1,source:new s.A(n)})],target:"map",view:new c.Ay({center:[19412406.33,-5050500.21],zoom:5})})}))}},function(e){var t;t=82059,e(e.s=t)}]);
+import { Cn as OSM, Mn as Map, b as WMTSCapabilities, bt as WMTS, jn as TileLayer, or as View, xt as optionsFromCapabilities } from "./common.js";
+//#region examples/wmts-layer-from-capabilities.js
+var parser = new WMTSCapabilities();
+fetch("data/WMTSCapabilities.xml").then(function(response) {
+	return response.text();
+}).then(function(text) {
+	const options = optionsFromCapabilities(parser.read(text), {
+		layer: "layer-7328",
+		matrixSet: "EPSG:3857"
+	});
+	new Map({
+		layers: [new TileLayer({
+			source: new OSM(),
+			opacity: .7
+		}), new TileLayer({
+			opacity: 1,
+			source: new WMTS(options)
+		})],
+		target: "map",
+		view: new View({
+			center: [19412406.33, -5050500.21],
+			zoom: 5
+		})
+	});
+});
+//#endregion
+
 //# sourceMappingURL=wmts-layer-from-capabilities.js.map

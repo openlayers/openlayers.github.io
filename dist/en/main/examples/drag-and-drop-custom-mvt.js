@@ -1,2 +1,78 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1703],{35338:function(e,t,n){var o=n(51541),r=n(41564),c=n(87240),a=n(94782),s=n(49208),u=n(17534),l=n(30135),i=n(53815),d=n(28665),f=n(56182),m=n(35947),g=n(12185),p=n(23986),v=n(28e3),A=n(29810),w=n(10135);const h=document.getElementById("tileCoordZ"),y=document.getElementById("tileCoordX"),E=document.getElementById("tileCoordY");class I extends i.A{constructor(){super({featureClass:o.A})}readFeatures(e,t){return t.extent=(0,w.EN)().getTileCoordExtent([parseInt(h.value),parseInt(y.value),parseInt(E.value)]),super.readFeatures(e,t)}}const b=new f.A({formatConstructors:[I,a.A,s.A,u.A,l.Ay,d.A]}),x=new r.A({interactions:(0,m.N)().extend([b]),layers:[new g.A({source:new v.A})],target:"map",view:new c.Ay({center:[0,0],zoom:2})});b.on("addfeatures",(function(e){const t=new A.A({features:e.features});x.addLayer(new p.A({source:t})),x.getView().fit(t.getExtent())}));const B=function(e){const t=[];if(x.forEachFeatureAtPixel(e,(function(e){t.push(e)})),t.length>0){const e=[];let n,o;for(n=0,o=t.length;n<o;++n){const o=t[n].get("name")||t[n].get("_name")||t[n].get("layer");o&&e.push(o)}document.getElementById("info").innerHTML=e.join(", ")||"&nbsp"}else document.getElementById("info").innerHTML="&nbsp;"};x.on("pointermove",(function(e){e.dragging||B(e.pixel)})),x.on("click",(function(e){B(e.pixel)}));const C=document.getElementById("download");document.getElementById("download-mvt").addEventListener("click",(function(){!function(e,t){fetch(e).then((function(e){return e.blob()})).then((function(e){C.href=URL.createObjectURL(e),C.download=t,C.click()}))}("https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer/tile/"+h.value+"/"+E.value+"/"+y.value+".pbf",h.value+"-"+y.value+"-"+E.value+".mvt")}))}},function(e){var t;t=35338,e(e.s=t)}]);
+import { Cn as OSM, Dn as createXYZ, J as DragAndDrop, Mn as Map, Wn as defaults, X as IGC, Y as TopoJSON, Z as GPX, bn as VectorLayer, dn as VectorSource, en as MVT, jn as TileLayer, or as View, rn as GeoJSON, tn as KML, xn as Feature } from "./common.js";
+//#region examples/drag-and-drop-custom-mvt.js
+var tileCoordZ = document.getElementById("tileCoordZ");
+var tileCoordX = document.getElementById("tileCoordX");
+var tileCoordY = document.getElementById("tileCoordY");
+var customMVT = class extends MVT {
+	constructor() {
+		super({ featureClass: Feature });
+	}
+	readFeatures(source, options) {
+		options.extent = createXYZ().getTileCoordExtent([
+			parseInt(tileCoordZ.value),
+			parseInt(tileCoordX.value),
+			parseInt(tileCoordY.value)
+		]);
+		return super.readFeatures(source, options);
+	}
+};
+var dragAndDropInteraction = new DragAndDrop({ formatConstructors: [
+	customMVT,
+	GPX,
+	GeoJSON,
+	IGC,
+	KML,
+	TopoJSON
+] });
+var map = new Map({
+	interactions: defaults().extend([dragAndDropInteraction]),
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+dragAndDropInteraction.on("addfeatures", function(event) {
+	const vectorSource = new VectorSource({ features: event.features });
+	map.addLayer(new VectorLayer({ source: vectorSource }));
+	map.getView().fit(vectorSource.getExtent());
+});
+var displayFeatureInfo = function(pixel) {
+	const features = [];
+	map.forEachFeatureAtPixel(pixel, function(feature) {
+		features.push(feature);
+	});
+	if (features.length > 0) {
+		const info = [];
+		let i, ii;
+		for (i = 0, ii = features.length; i < ii; ++i) {
+			const description = features[i].get("name") || features[i].get("_name") || features[i].get("layer");
+			if (description) info.push(description);
+		}
+		document.getElementById("info").innerHTML = info.join(", ") || "&nbsp";
+	} else document.getElementById("info").innerHTML = "&nbsp;";
+};
+map.on("pointermove", function(evt) {
+	if (evt.dragging) return;
+	displayFeatureInfo(evt.pixel);
+});
+map.on("click", function(evt) {
+	displayFeatureInfo(evt.pixel);
+});
+var link = document.getElementById("download");
+function download(fullpath, filename) {
+	fetch(fullpath).then(function(response) {
+		return response.blob();
+	}).then(function(blob) {
+		link.href = URL.createObjectURL(blob);
+		link.download = filename;
+		link.click();
+	});
+}
+document.getElementById("download-mvt").addEventListener("click", function() {
+	download("https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer/tile/" + tileCoordZ.value + "/" + tileCoordY.value + "/" + tileCoordX.value + ".pbf", tileCoordZ.value + "-" + tileCoordX.value + "-" + tileCoordY.value + ".mvt");
+});
+//#endregion
+
 //# sourceMappingURL=drag-and-drop-custom-mvt.js.map

@@ -1,2 +1,49 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2994],{4797:function(t,e,o){var n=o(41564),a=o(87240),i=o(12185),s=o(28e3);let r=2,w=[0,0],c=0;if(""!==window.location.hash){const t=window.location.hash.replace("#map=","").split("/");4===t.length&&(r=parseFloat(t[0]),w=[parseFloat(t[1]),parseFloat(t[2])],c=parseFloat(t[3]))}const l=new n.A({layers:[new i.A({source:new s.A})],target:"map",view:new a.Ay({center:w,zoom:r,rotation:c})});let p=!0;const g=l.getView();l.on("moveend",(function(){if(!p)return void(p=!0);const t=g.getCenter(),e="#map="+g.getZoom().toFixed(2)+"/"+t[0].toFixed(2)+"/"+t[1].toFixed(2)+"/"+g.getRotation(),o={zoom:g.getZoom(),center:g.getCenter(),rotation:g.getRotation()};window.history.pushState(o,"map",e)})),window.addEventListener("popstate",(function(t){null!==t.state&&(l.getView().setCenter(t.state.center),l.getView().setZoom(t.state.zoom),l.getView().setRotation(t.state.rotation),p=!1)}))}},function(t){var e;e=4797,t(t.s=e)}]);
+import { Cn as OSM, Mn as Map, jn as TileLayer, or as View } from "./common.js";
+//#region examples/permalink.js
+var zoom = 2;
+var center = [0, 0];
+var rotation = 0;
+if (window.location.hash !== "") {
+	const parts = window.location.hash.replace("#map=", "").split("/");
+	if (parts.length === 4) {
+		zoom = parseFloat(parts[0]);
+		center = [parseFloat(parts[1]), parseFloat(parts[2])];
+		rotation = parseFloat(parts[3]);
+	}
+}
+var map = new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center,
+		zoom,
+		rotation
+	})
+});
+var shouldUpdate = true;
+var view = map.getView();
+var updatePermalink = function() {
+	if (!shouldUpdate) {
+		shouldUpdate = true;
+		return;
+	}
+	const center = view.getCenter();
+	const hash = "#map=" + view.getZoom().toFixed(2) + "/" + center[0].toFixed(2) + "/" + center[1].toFixed(2) + "/" + view.getRotation();
+	const state = {
+		zoom: view.getZoom(),
+		center: view.getCenter(),
+		rotation: view.getRotation()
+	};
+	window.history.pushState(state, "map", hash);
+};
+map.on("moveend", updatePermalink);
+window.addEventListener("popstate", function(event) {
+	if (event.state === null) return;
+	map.getView().setCenter(event.state.center);
+	map.getView().setZoom(event.state.zoom);
+	map.getView().setRotation(event.state.rotation);
+	shouldUpdate = false;
+});
+//#endregion
+
 //# sourceMappingURL=permalink.js.map

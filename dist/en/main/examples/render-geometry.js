@@ -1,2 +1,26 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1168],{8539:function(e,n,t){var o=t(77833),r=t(40878),s=t(30470),a=t(66267),l=t(21133),w=t(38276),c=t(44689),u=t(88292);const i=document.getElementById("canvas"),d=(0,a.J7)(i.getContext("2d"),{size:[100,100]}),k=new w.A({color:"blue"}),y=new c.A({color:"black"}),A=new u.Ay({fill:k,stroke:y,image:new l.A({radius:10,fill:k,stroke:y})});d.setStyle(A),d.drawGeometry(new o.A([[10,10],[90,90]])),d.drawGeometry(new s.Ay([[[2,2],[98,2],[2,98],[2,2]]])),d.drawGeometry(new r.A([88,88]))}},function(e){var n;n=8539,e(e.s=n)}]);
+import { Fn as Stroke, Ln as Fill, Pn as Style, Rn as CircleStyle, fr as Polygon, gn as LineString, hr as Point, lt as toContext } from "./common.js";
+//#region examples/render-geometry.js
+var vectorContext = toContext(document.getElementById("canvas").getContext("2d"), { size: [100, 100] });
+var fill = new Fill({ color: "blue" });
+var stroke = new Stroke({ color: "black" });
+var style = new Style({
+	fill,
+	stroke,
+	image: new CircleStyle({
+		radius: 10,
+		fill,
+		stroke
+	})
+});
+vectorContext.setStyle(style);
+vectorContext.drawGeometry(new LineString([[10, 10], [90, 90]]));
+vectorContext.drawGeometry(new Polygon([[
+	[2, 2],
+	[98, 2],
+	[2, 98],
+	[2, 2]
+]]));
+vectorContext.drawGeometry(new Point([88, 88]));
+//#endregion
+
 //# sourceMappingURL=render-geometry.js.map

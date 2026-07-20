@@ -1,2 +1,35 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[292],{66799:function(e,n,t){var o=t(41564),r=t(87240),a=t(12185),i=t(31141),s=t(28e3);const u=new r.Ay({center:[0,0],zoom:2});new o.A({layers:[new a.A({source:new s.A})],target:"map",view:u});function c(e){return document.getElementById(e)}const d=new GyroNorm;d.init().then((function(){d.start((function(e){const n=u.getCenter(),t=u.getResolution(),o=(0,i.eh)(e.do.alpha),r=(0,i.eh)(e.do.beta),a=(0,i.eh)(e.do.gamma);c("alpha").innerText=o+" [rad]",c("beta").innerText=r+" [rad]",c("gamma").innerText=a+" [rad]",n[0]-=t*a*25,n[1]+=t*r*25,u.setCenter(n)}))}),(function(e){c("unsupported").innerText="string"==typeof e?e:"Could not initialize sensors"}))}},function(e){var n;n=66799,e(e.s=n)}]);
+import { Cn as OSM, Mn as Map, Xr as toRadians, jn as TileLayer, or as View } from "./common.js";
+//#region examples/device-orientation.js
+var view = new View({
+	center: [0, 0],
+	zoom: 2
+});
+new Map({
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view
+});
+function el(id) {
+	return document.getElementById(id);
+}
+var gn = new GyroNorm();
+gn.init().then(function() {
+	gn.start(function(event) {
+		const center = view.getCenter();
+		const resolution = view.getResolution();
+		const alpha = toRadians(event.do.alpha);
+		const beta = toRadians(event.do.beta);
+		const gamma = toRadians(event.do.gamma);
+		el("alpha").innerText = alpha + " [rad]";
+		el("beta").innerText = beta + " [rad]";
+		el("gamma").innerText = gamma + " [rad]";
+		center[0] -= resolution * gamma * 25;
+		center[1] += resolution * beta * 25;
+		view.setCenter(center);
+	});
+}, function(e) {
+	el("unsupported").innerText = typeof e === "string" ? e : "Could not initialize sensors";
+});
+//#endregion
+
 //# sourceMappingURL=device-orientation.js.map

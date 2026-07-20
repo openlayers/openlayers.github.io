@@ -1,2 +1,14 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5137],{57932:function(e,n,t){var s=t(41564),a=t(87240),c=t(95301),r=t(35947),w=t(12185),u=t(28e3);new s.A({interactions:(0,r.N)().extend([new c.A]),layers:[new w.A({source:new u.A})],target:"map",view:new a.Ay({center:[0,0],zoom:2})})}},function(e){var n;n=57932,e(e.s=n)}]);
+import { Cn as OSM, K as DragRotateAndZoom, Mn as Map, Wn as defaults, jn as TileLayer, or as View } from "./common.js";
+//#region examples/drag-rotate-and-zoom.js
+new Map({
+	interactions: defaults().extend([new DragRotateAndZoom()]),
+	layers: [new TileLayer({ source: new OSM() })],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+//#endregion
+
 //# sourceMappingURL=drag-rotate-and-zoom.js.map

@@ -1,2 +1,131 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[2784],{53675:function(t,e,n){var a=n(41564),o=n(87240),r=n(47085),s=n(12185),i=n(15264),u=n(28e3),c=n(54272);const h=new i.A({url:"https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png",maxZoom:15,attributions:'<a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md" target="_blank">Data sources and attribution</a>'}),l=new c.Ay({sources:[h],operationType:"image",operation:function(t,e){const n=t[0],a=n.width,o=n.height,r=n.data,s=new Uint8ClampedArray(r.length),i=2*e.resolution,u=a-1,c=o-1,h=[0,0,0,0],l=2*Math.PI,d=Math.PI/2,m=Math.PI*e.sunEl/180,p=Math.PI*e.sunAz/180,f=Math.cos(m),w=Math.sin(m);let v,b,g,M,A,y,z,E,I,k,x,P,C,T,B;function j(t){return 256*t[0]+t[1]+t[2]/256-32768}for(b=0;b<=c;++b)for(A=0===b?0:b-1,y=b===c?c:b+1,v=0;v<=u;++v)g=0===v?0:v-1,M=v===u?u:v+1,z=4*(b*a+g),h[0]=r[z],h[1]=r[z+1],h[2]=r[z+2],h[3]=r[z+3],E=e.vert*j(h),z=4*(b*a+M),h[0]=r[z],h[1]=r[z+1],h[2]=r[z+2],h[3]=r[z+3],I=e.vert*j(h),k=(I-E)/i,z=4*(A*a+v),h[0]=r[z],h[1]=r[z+1],h[2]=r[z+2],h[3]=r[z+3],E=e.vert*j(h),z=4*(y*a+v),h[0]=r[z],h[1]=r[z+1],h[2]=r[z+2],h[3]=r[z+3],I=e.vert*j(h),x=(I-E)/i,P=Math.atan(Math.sqrt(k*k+x*x)),C=Math.atan2(x,-k),C=C<0?d-C:C>d?l-C+d:d-C,T=w*Math.cos(P)+f*Math.sin(P)*Math.cos(p-C),z=4*(b*a+v),B=255*T,s[z]=B,s[z+1]=B,s[z+2]=B,s[z+3]=r[z+3];return{data:s,width:a,height:o,colorSpace:"srgb"}}}),d=(new a.A({target:"map",layers:[new s.A({source:new u.A}),new r.A({opacity:.3,source:l})],view:new o.Ay({center:[-13615645,4497969],zoom:13})}),{});["vert","sunEl","sunAz"].forEach((function(t){const e=document.getElementById(t),n=document.getElementById(t+"Out");e.addEventListener("input",(function(){n.innerText=e.value,l.changed()})),n.innerText=e.value,d[t]=e})),l.on("beforeoperations",(function(t){const e=t.data;e.resolution=t.resolution;for(const t in d)e[t]=Number(d[t].value)}))}},function(t){var e;e=53675,t(t.s=e)}]);
+import { Cn as OSM, Mn as Map, Tt as RasterSource, an as ImageTileSource, jn as TileLayer, or as View, un as ImageLayer } from "./common.js";
+//#region examples/shaded-relief.js
+/**
+* Generates a shaded relief image given elevation data.  Uses a 3x3
+* neighborhood for determining slope and aspect.
+* @param {Array<ImageData>} inputs Array of input images.
+* @param {Object} data Data added in the "beforeoperations" event.
+* @return {ImageData} Output image.
+*/
+function shade(inputs, data) {
+	const elevationImage = inputs[0];
+	const width = elevationImage.width;
+	const height = elevationImage.height;
+	const elevationData = elevationImage.data;
+	const shadeData = new Uint8ClampedArray(elevationData.length);
+	const dp = data.resolution * 2;
+	const maxX = width - 1;
+	const maxY = height - 1;
+	const pixel = [
+		0,
+		0,
+		0,
+		0
+	];
+	const twoPi = 2 * Math.PI;
+	const halfPi = Math.PI / 2;
+	const sunEl = Math.PI * data.sunEl / 180;
+	const sunAz = Math.PI * data.sunAz / 180;
+	const cosSunEl = Math.cos(sunEl);
+	const sinSunEl = Math.sin(sunEl);
+	let pixelX, pixelY, x0, x1, y0, y1, offset, z0, z1, dzdx, dzdy, slope, aspect, cosIncidence, scaled;
+	function calculateElevation(pixel) {
+		return pixel[0] * 256 + pixel[1] + pixel[2] / 256 - 32768;
+	}
+	for (pixelY = 0; pixelY <= maxY; ++pixelY) {
+		y0 = pixelY === 0 ? 0 : pixelY - 1;
+		y1 = pixelY === maxY ? maxY : pixelY + 1;
+		for (pixelX = 0; pixelX <= maxX; ++pixelX) {
+			x0 = pixelX === 0 ? 0 : pixelX - 1;
+			x1 = pixelX === maxX ? maxX : pixelX + 1;
+			offset = (pixelY * width + x0) * 4;
+			pixel[0] = elevationData[offset];
+			pixel[1] = elevationData[offset + 1];
+			pixel[2] = elevationData[offset + 2];
+			pixel[3] = elevationData[offset + 3];
+			z0 = data.vert * calculateElevation(pixel);
+			offset = (pixelY * width + x1) * 4;
+			pixel[0] = elevationData[offset];
+			pixel[1] = elevationData[offset + 1];
+			pixel[2] = elevationData[offset + 2];
+			pixel[3] = elevationData[offset + 3];
+			z1 = data.vert * calculateElevation(pixel);
+			dzdx = (z1 - z0) / dp;
+			offset = (y0 * width + pixelX) * 4;
+			pixel[0] = elevationData[offset];
+			pixel[1] = elevationData[offset + 1];
+			pixel[2] = elevationData[offset + 2];
+			pixel[3] = elevationData[offset + 3];
+			z0 = data.vert * calculateElevation(pixel);
+			offset = (y1 * width + pixelX) * 4;
+			pixel[0] = elevationData[offset];
+			pixel[1] = elevationData[offset + 1];
+			pixel[2] = elevationData[offset + 2];
+			pixel[3] = elevationData[offset + 3];
+			z1 = data.vert * calculateElevation(pixel);
+			dzdy = (z1 - z0) / dp;
+			slope = Math.atan(Math.sqrt(dzdx * dzdx + dzdy * dzdy));
+			aspect = Math.atan2(dzdy, -dzdx);
+			if (aspect < 0) aspect = halfPi - aspect;
+			else if (aspect > halfPi) aspect = twoPi - aspect + halfPi;
+			else aspect = halfPi - aspect;
+			cosIncidence = sinSunEl * Math.cos(slope) + cosSunEl * Math.sin(slope) * Math.cos(sunAz - aspect);
+			offset = (pixelY * width + pixelX) * 4;
+			scaled = 255 * cosIncidence;
+			shadeData[offset] = scaled;
+			shadeData[offset + 1] = scaled;
+			shadeData[offset + 2] = scaled;
+			shadeData[offset + 3] = elevationData[offset + 3];
+		}
+	}
+	return {
+		data: shadeData,
+		width,
+		height,
+		colorSpace: "srgb"
+	};
+}
+var raster = new RasterSource({
+	sources: [new ImageTileSource({
+		url: "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png",
+		maxZoom: 15,
+		attributions: "<a href=\"https://github.com/tilezen/joerd/blob/master/docs/attribution.md\" target=\"_blank\">Data sources and attribution</a>"
+	})],
+	operationType: "image",
+	operation: shade
+});
+new Map({
+	target: "map",
+	layers: [new TileLayer({ source: new OSM() }), new ImageLayer({
+		opacity: .3,
+		source: raster
+	})],
+	view: new View({
+		center: [-13615645, 4497969],
+		zoom: 13
+	})
+});
+var controlIds = [
+	"vert",
+	"sunEl",
+	"sunAz"
+];
+var controls = {};
+controlIds.forEach(function(id) {
+	const control = document.getElementById(id);
+	const output = document.getElementById(id + "Out");
+	control.addEventListener("input", function() {
+		output.innerText = control.value;
+		raster.changed();
+	});
+	output.innerText = control.value;
+	controls[id] = control;
+});
+raster.on("beforeoperations", function(event) {
+	const data = event.data;
+	data.resolution = event.resolution;
+	for (const id in controls) data[id] = Number(controls[id].value);
+});
+//#endregion
+
 //# sourceMappingURL=shaded-relief.js.map

@@ -1,2 +1,28 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[9237],{63904:function(e,t,a){var n=a(41564),r=a(87240),s=a(9619),i=a(95907),o=a(12185),p=a(58212);const u=i.cr>1,c=u?"bmaphidpi":"geolandbasemap",l=u?2:1,m=new n.A({target:"map",view:new r.Ay({center:[1823849,6143760],zoom:11})});fetch("https://mapsneu.wien.gv.at/basemapneu/1.0.0/WMTSCapabilities.xml").then((function(e){return e.text()})).then((function(e){const t=(new s.A).read(e),a=(0,p.t)(t,{layer:c,matrixSet:"google3857",style:"normal"});a.tilePixelRatio=l,a.attributions='Grundkarte: <a target="_blank" href="https://basemap.at/">basemap.at</a>',m.addLayer(new o.A({source:new p.A(a)}))}))}},function(e){var t;t=63904,e(e.s=t)}]);
+import { Mn as Map, Zr as DEVICE_PIXEL_RATIO, b as WMTSCapabilities, bt as WMTS, jn as TileLayer, or as View, xt as optionsFromCapabilities } from "./common.js";
+//#region examples/wmts-hidpi.js
+var capabilitiesUrl = "https://mapsneu.wien.gv.at/basemapneu/1.0.0/WMTSCapabilities.xml";
+var hiDPI = DEVICE_PIXEL_RATIO > 1;
+var layer = hiDPI ? "bmaphidpi" : "geolandbasemap";
+var tilePixelRatio = hiDPI ? 2 : 1;
+var map = new Map({
+	target: "map",
+	view: new View({
+		center: [1823849, 6143760],
+		zoom: 11
+	})
+});
+fetch(capabilitiesUrl).then(function(response) {
+	return response.text();
+}).then(function(text) {
+	const options = optionsFromCapabilities(new WMTSCapabilities().read(text), {
+		layer,
+		matrixSet: "google3857",
+		style: "normal"
+	});
+	options.tilePixelRatio = tilePixelRatio;
+	options.attributions = "Grundkarte: <a target=\"_blank\" href=\"https://basemap.at/\">basemap.at</a>";
+	map.addLayer(new TileLayer({ source: new WMTS(options) }));
+});
+//#endregion
+
 //# sourceMappingURL=wmts-hidpi.js.map

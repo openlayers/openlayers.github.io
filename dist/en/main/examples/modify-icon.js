@@ -1,2 +1,44 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[7461],{15904:function(e,t,n){var r=n(51541),a=n(41564),o=n(87240),s=n(40878),c=n(74676),i=n(12185),u=n(23986),l=n(28178),p=n(29810),d=n(75052),f=n(88292);const w=new r.A({geometry:new s.A([0,0]),name:"Null Island",population:4e3,rainfall:500}),y=new f.Ay({image:new d.A({anchor:[.5,46],anchorXUnits:"fraction",anchorYUnits:"pixels",src:"data/icon.png"})});w.setStyle(y);const m=new p.A({features:[w]}),g=new u.A({source:m}),A=new i.A({source:new l.A({url:"https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:raster:HYP_HR_SR_OB_DR/map/tiles/WebMercatorQuad",crossOrigin:""})}),h=document.getElementById("map"),b=new a.A({layers:[A,g],target:h,view:new o.Ay({center:[0,0],zoom:3})}),v=new c.A({hitDetection:g,source:m});v.on(["modifystart","modifyend"],(function(e){h.style.cursor="modifystart"===e.type?"grabbing":"pointer"}));v.getOverlay().getSource().on(["addfeature","removefeature"],(function(e){h.style.cursor="addfeature"===e.type?"pointer":""})),b.addInteraction(v)}},function(e){var t;t=15904,e(e.s=t)}]);
+import { Dt as OGCMapTile, G as Modify, In as Icon, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+//#region examples/modify-icon.js
+var iconFeature = new Feature({
+	geometry: new Point([0, 0]),
+	name: "Null Island",
+	population: 4e3,
+	rainfall: 500
+});
+var iconStyle = new Style({ image: new Icon({
+	anchor: [.5, 46],
+	anchorXUnits: "fraction",
+	anchorYUnits: "pixels",
+	src: "data/icon.png"
+}) });
+iconFeature.setStyle(iconStyle);
+var vectorSource = new VectorSource({ features: [iconFeature] });
+var vectorLayer = new VectorLayer({ source: vectorSource });
+var rasterLayer = new TileLayer({ source: new OGCMapTile({
+	url: "https://maps.gnosis.earth/ogcapi/collections/NaturalEarth:raster:HYP_HR_SR_OB_DR/map/tiles/WebMercatorQuad",
+	crossOrigin: ""
+}) });
+var target = document.getElementById("map");
+var map = new Map({
+	layers: [rasterLayer, vectorLayer],
+	target,
+	view: new View({
+		center: [0, 0],
+		zoom: 3
+	})
+});
+var modify = new Modify({
+	hitDetection: vectorLayer,
+	source: vectorSource
+});
+modify.on(["modifystart", "modifyend"], function(evt) {
+	target.style.cursor = evt.type === "modifystart" ? "grabbing" : "pointer";
+});
+modify.getOverlay().getSource().on(["addfeature", "removefeature"], function(evt) {
+	target.style.cursor = evt.type === "addfeature" ? "pointer" : "";
+});
+map.addInteraction(modify);
+//#endregion
+
 //# sourceMappingURL=modify-icon.js.map

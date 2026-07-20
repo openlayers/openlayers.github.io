@@ -1,2 +1,41 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4355],{77110:function(e,n,t){var o=t(41564),r=t(87240),a=t(49208),s=t(12185),c=t(23986),u=t(25231),l=t(66267),i=t(28e3),w=t(9226),f=t(29810),A=t(38276),g=t(88292);const p=new s.A({className:"toner",source:new w.A({layer:"stamen_toner"})}),d=new s.A({source:new i.A}),m=new c.A({style:null,source:new f.A({url:"./data/geojson/switzerland.geojson",format:new a.A})});m.getSource().on("addfeature",(function(){d.setExtent(m.getSource().getExtent())}));const b=new g.Ay({fill:new A.A({color:"black"})});d.on("postrender",(function(e){const n=(0,l.r2)(e);e.context.globalCompositeOperation="destination-in",m.getSource().forEachFeature((function(e){n.drawFeature(e,b)})),e.context.globalCompositeOperation="source-over"}));new o.A({layers:[p,d,m],target:"map",view:new r.Ay({center:(0,u.Rb)([8.23,46.86]),zoom:7})})}},function(e){var n;n=77110,e(e.s=n)}]);
+import { Cn as OSM, Cr as fromLonLat, Ln as Fill, Mn as Map, Pn as Style, bn as VectorLayer, ct as getVectorContext, dn as VectorSource, jn as TileLayer, or as View, rn as GeoJSON, yn as StadiaMaps } from "./common.js";
+//#region examples/layer-clipping-vector.js
+var background = new TileLayer({
+	className: "toner",
+	source: new StadiaMaps({ layer: "stamen_toner" })
+});
+var base = new TileLayer({ source: new OSM() });
+var clipLayer = new VectorLayer({
+	style: null,
+	source: new VectorSource({
+		url: "./data/geojson/switzerland.geojson",
+		format: new GeoJSON()
+	})
+});
+clipLayer.getSource().on("addfeature", function() {
+	base.setExtent(clipLayer.getSource().getExtent());
+});
+var style = new Style({ fill: new Fill({ color: "black" }) });
+base.on("postrender", function(e) {
+	const vectorContext = getVectorContext(e);
+	e.context.globalCompositeOperation = "destination-in";
+	clipLayer.getSource().forEachFeature(function(feature) {
+		vectorContext.drawFeature(feature, style);
+	});
+	e.context.globalCompositeOperation = "source-over";
+});
+new Map({
+	layers: [
+		background,
+		base,
+		clipLayer
+	],
+	target: "map",
+	view: new View({
+		center: fromLonLat([8.23, 46.86]),
+		zoom: 7
+	})
+});
+//#endregion
+
 //# sourceMappingURL=layer-clipping-vector.js.map

@@ -1,2 +1,31 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[5287],{86410:function(e,t,n){var s=n(4209),a=n(41564),c=n(87240),o=n(96256),i=n(25231),r=n(76582),u=n(12430),w=n(28e3),A=n(64618);(0,r.kz)(s.A);const d=new u.A({sources:[{url:"https://umbra-open-data-catalog.s3.amazonaws.com/sar-data/tasks/Tanna%20Island,%20Vanuatu/9c76a918-9247-42bf-b9f6-3b4f672bc148/2023-02-12-21-33-56_UMBRA-04/2023-02-12-21-33-56_UMBRA-04_GEC.tif"}]}),f=document.getElementById("show-tiles"),h=new o.A({source:new A.A({source:d}),visible:f.checked});f.addEventListener("change",(()=>{h.setVisible(f.checked)}));const l=new a.A({target:"map",layers:[new o.A({source:new w.A}),new o.A({source:d,opacity:.8}),h],view:new c.Ay});d.getView().then((e=>(0,r.f$)(e.projection.getCode()).then((()=>{const t=l.getView();t.fit((0,i.DI)(e.extent,e.projection,t.getProjection()))}))))}},function(e){var t;t=86410,e(e.s=t)}]);
+import { Bt as register, Cn as OSM, Ht as WebGLTileLayer, It as proj4, Mn as Map, Qt as TileDebug, Rt as GeoTIFFSource, kr as transformExtent, or as View, zt as fromProjectionCode } from "./common.js";
+//#region examples/cog-modeltransformation.js
+register(proj4);
+var cogSource = new GeoTIFFSource({ sources: [{ url: "https://umbra-open-data-catalog.s3.amazonaws.com/sar-data/tasks/Tanna%20Island,%20Vanuatu/9c76a918-9247-42bf-b9f6-3b4f672bc148/2023-02-12-21-33-56_UMBRA-04/2023-02-12-21-33-56_UMBRA-04_GEC.tif" }] });
+var showTilesCheckbox = document.getElementById("show-tiles");
+var debugLayer = new WebGLTileLayer({
+	source: new TileDebug({ source: cogSource }),
+	visible: showTilesCheckbox.checked
+});
+showTilesCheckbox.addEventListener("change", () => {
+	debugLayer.setVisible(showTilesCheckbox.checked);
+});
+var map = new Map({
+	target: "map",
+	layers: [
+		new WebGLTileLayer({ source: new OSM() }),
+		new WebGLTileLayer({
+			source: cogSource,
+			opacity: .8
+		}),
+		debugLayer
+	],
+	view: new View()
+});
+cogSource.getView().then((viewConfig) => fromProjectionCode(viewConfig.projection.getCode()).then(() => {
+	const view = map.getView();
+	view.fit(transformExtent(viewConfig.extent, viewConfig.projection, view.getProjection()));
+}));
+//#endregion
+
 //# sourceMappingURL=cog-modeltransformation.js.map

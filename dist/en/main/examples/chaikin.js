@@ -1,2 +1,40 @@
-(self.webpackChunk=self.webpackChunk||[]).push([[9354],{89763:function(e,n,t){var r=t(20905);e.exports=function(e,n){Array.isArray(n)||(n=[]),e.length>0&&n.push(r([0,0],e[0]));for(var t=0;t<e.length-1;t++){var o=e[t],u=e[t+1],a=o[0],s=o[1],c=u[0],i=u[1],h=[.75*a+.25*c,.75*s+.25*i],f=[.25*a+.75*c,.25*s+.75*i];n.push(h),n.push(f)}return e.length>1&&n.push(r([0,0],e[e.length-1])),n}},20905:function(e){e.exports=function(e,n){return e[0]=n[0],e[1]=n[1],e}},22965:function(e,n,t){"use strict";var r=t(89763),o=t(41564),u=t(87240),a=t(9444),s=t(12185),c=t(23986),i=t(28e3);const h=new(t(29810).A)({}),f=new o.A({layers:[new s.A({source:new i.A,opacity:.5}),new c.A({source:h})],target:"map",view:new u.Ay({center:[1078373.595,6871994.591],zoom:5})}),p=document.getElementById("shall-smoothen"),l=document.getElementById("iterations"),d=new a.Ay({source:h,type:"LineString"});f.addInteraction(d),d.on("drawend",(function(e){if(!p.checked)return;const n=e.feature.getGeometry(),t=function(e,n){for(n=Math.min(Math.max(n,1),10);n>0;)e=r(e),n--;return e}(n.getCoordinates(),parseInt(l.value,10)||5);n.setCoordinates(t)}))}},function(e){var n;n=22965,e(e.s=n)}]);
+import { r as __toESM } from "./rolldown-runtime.js";
+import { Cn as OSM, Gt as Draw, Mn as Map, Yt as require_chaikin_smooth, bn as VectorLayer, dn as VectorSource, jn as TileLayer, or as View } from "./common.js";
+//#region examples/chaikin.js
+var import_chaikin_smooth = /* @__PURE__ */ __toESM(require_chaikin_smooth(), 1);
+function makeSmooth(path, numIterations) {
+	numIterations = Math.min(Math.max(numIterations, 1), 10);
+	while (numIterations > 0) {
+		path = (0, import_chaikin_smooth.default)(path);
+		numIterations--;
+	}
+	return path;
+}
+var vectorSource = new VectorSource({});
+var map = new Map({
+	layers: [new TileLayer({
+		source: new OSM(),
+		opacity: .5
+	}), new VectorLayer({ source: vectorSource })],
+	target: "map",
+	view: new View({
+		center: [1078373.595, 6871994.591],
+		zoom: 5
+	})
+});
+var shallSmoothen = document.getElementById("shall-smoothen");
+var numIterations = document.getElementById("iterations");
+var draw = new Draw({
+	source: vectorSource,
+	type: "LineString"
+});
+map.addInteraction(draw);
+draw.on("drawend", function(event) {
+	if (!shallSmoothen.checked) return;
+	const geometry = event.feature.getGeometry();
+	const smoothened = makeSmooth(geometry.getCoordinates(), parseInt(numIterations.value, 10) || 5);
+	geometry.setCoordinates(smoothened);
+});
+//#endregion
+
 //# sourceMappingURL=chaikin.js.map

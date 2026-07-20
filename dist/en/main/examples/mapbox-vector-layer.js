@@ -1,2 +1,16 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[4062],{29785:function(e,n,s){var t=s(93895),a=s(41564),c=s(87240);new a.A({target:"map",layers:[new t.Gt({styleUrl:"mapbox://styles/mapbox/bright-v9",accessToken:"pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2t0cGdwMHVnMGdlbzMxbDhwazBic2xrNSJ9.WbcTL9uj8JPAsnT9mgb7oQ"})],view:new c.Ay({center:[0,0],zoom:2})})}},function(e){var n;n=29785,e(e.s=n)}]);
+import { Mn as Map, or as View, tt as MapboxVectorLayer } from "./common.js";
+//#region examples/mapbox-vector-layer.js
+new Map({
+	target: "map",
+	layers: [new MapboxVectorLayer({
+		styleUrl: "mapbox://styles/mapbox/bright-v9",
+		accessToken: "pk.eyJ1IjoiYWhvY2V2YXIiLCJhIjoiY2t0cGdwMHVnMGdlbzMxbDhwazBic2xrNSJ9.WbcTL9uj8JPAsnT9mgb7oQ"
+	})],
+	view: new View({
+		center: [0, 0],
+		zoom: 2
+	})
+});
+//#endregion
+
 //# sourceMappingURL=mapbox-vector-layer.js.map

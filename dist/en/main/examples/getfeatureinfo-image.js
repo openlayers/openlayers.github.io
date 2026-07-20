@@ -1,2 +1,35 @@
-"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[1105],{34588:function(e,n,t){var o=t(41564),r=t(87240),s=t(47085);const c=new(t(2091).A)({url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"ne:ne"},serverType:"geoserver",crossOrigin:"anonymous"}),i=new s.A({source:c}),a=new r.Ay({center:[0,0],zoom:1}),u=new o.A({layers:[i],target:"map",view:a});u.on("singleclick",(function(e){document.getElementById("info").innerHTML="";const n=a.getResolution(),t=c.getFeatureInfoUrl(e.coordinate,n,"EPSG:3857",{INFO_FORMAT:"text/html"});t&&fetch(t).then((e=>e.text())).then((e=>{document.getElementById("info").innerHTML=e}))})),u.on("pointermove",(function(e){if(e.dragging)return;const n=i.getData(e.pixel),t=n&&n[3]>0;u.getTargetElement().style.cursor=t?"pointer":""}))}},function(e){var n;n=34588,e(e.s=n)}]);
+import { Mn as Map, Ot as ImageWMS, or as View, un as ImageLayer } from "./common.js";
+//#region examples/getfeatureinfo-image.js
+var wmsSource = new ImageWMS({
+	url: "https://ahocevar.com/geoserver/wms",
+	params: { "LAYERS": "ne:ne" },
+	serverType: "geoserver",
+	crossOrigin: "anonymous"
+});
+var wmsLayer = new ImageLayer({ source: wmsSource });
+var view = new View({
+	center: [0, 0],
+	zoom: 1
+});
+var map = new Map({
+	layers: [wmsLayer],
+	target: "map",
+	view
+});
+map.on("singleclick", function(evt) {
+	document.getElementById("info").innerHTML = "";
+	const viewResolution = view.getResolution();
+	const url = wmsSource.getFeatureInfoUrl(evt.coordinate, viewResolution, "EPSG:3857", { "INFO_FORMAT": "text/html" });
+	if (url) fetch(url).then((response) => response.text()).then((html) => {
+		document.getElementById("info").innerHTML = html;
+	});
+});
+map.on("pointermove", function(evt) {
+	if (evt.dragging) return;
+	const data = wmsLayer.getData(evt.pixel);
+	const hit = data && data[3] > 0;
+	map.getTargetElement().style.cursor = hit ? "pointer" : "";
+});
+//#endregion
+
 //# sourceMappingURL=getfeatureinfo-image.js.map
