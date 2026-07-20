@@ -169,6 +169,15 @@ declare class Source extends BaseObject<{
      */
     getView(): Promise<import("../View.js").ViewOptions>;
     /**
+     * Resolve once the source is ready to be used (its state is `ready`), or
+     * reject if it fails to load (its state is `error`). Sources that configure
+     * asynchronously can use this to expose data (e.g. dimensions) through a
+     * promise instead of the `change` event.
+     * @return {Promise<void>} Resolves when the source is ready.
+     * @protected
+     */
+    protected ready(): Promise<void>;
+    /**
      * Get the state of the source, see {@link import("./Source.js").State} for possible states.
      * @return {import("./Source.js").State} State.
      * @api

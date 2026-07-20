@@ -28,6 +28,12 @@
  * To disable the opacity transition, pass `transition: 0`.
  * @property {boolean} [wrapX=false] Render tiles beyond the tile grid extent.
  * @property {ResampleMethod} [resample='nearest'] Resampling method if bands are not available for all multi-scale levels.
+ * @property {Object<string, number|string>} [dimensions] Fixed index for each non-spatial
+ * dimension of the band arrays, keyed by dimension name (e.g. `{time: 0}` for the first time step
+ * of a `[time, y, x]` cube); unspecified dimensions default to `0`. Names come from each array's
+ * `dimension_names`, or are the axis position as a string when it has none. Only integer indices
+ * are supported. Use the names from {@link getDimensions}, and change the selection on the fly with
+ * {@link module:ol/source/GeoZarr~GeoZarr#updateDimensions}.
  */
 /**
  * Source for GeoZarr stores conforming to the following conventions:
@@ -50,6 +56,12 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      * @private
      */
     private url_;
+    /**
+     * Fixed index per non-spatial dimension name, from the `dimensions` option.
+     * @type {Object<string, number|string>}
+     * @private
+     */
+    private dimensions_;
     /**
      * @type {Error|null}
      */
@@ -98,6 +110,33 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      */
     private bands_;
     /**
+     * Per-band selection along non-spatial dimensions: `undefined` for 2-D
+     * arrays, otherwise an array aligned to the array rank with a fixed integer
+     * at each extra axis and `null` at the two spatial axes (e.g. `[2, null,
+     * null]` for a `[time, y, x]` array with `time: 2`).
+     * @type {Array<Array<number|null>|undefined>}
+     * @private
+     */
+    private bandExtraSelection_;
+    /**
+     * Per-band spatial (y, x) axis positions, as `{row, col}`.
+     * @type {Array<{row: number, col: number}>}
+     * @private
+     */
+    private bandSpatialAxes_;
+    /**
+     * The two spatial axis names from the group's `spatial:dimensions` (`[y, x]`).
+     * @type {Array<string>|undefined}
+     * @private
+     */
+    private spatialDimensionNames_;
+    /**
+     * Non-spatial dimensions of the bands, exposed via {@link getDimensions}.
+     * @type {Array<{name: string, size: number}>}
+     * @private
+     */
+    private extraDimensions_;
+    /**
      * @type {Object<string, Array<string>> | null}
      * @private
      */
@@ -133,6 +172,109 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      * @private
      */
     private resolveBandOwnership_;
+    /**
+     * Open a Zarr array (path relative to its group) through the shared cache, so
+     * concurrent opens of the same array are deduplicated.
+     * @param {number} groupIndex The band's group index.
+     * @param {string} path The array path relative to the group.
+     * @return {Promise<import('zarrita').Array<import('zarrita').DataType, any>>} The array.
+     * @private
+     */
+    private openArray_;
+    /**
+     * Consolidated metadata for a group, with keys relative to that group.
+     * @param {number} groupIndex The group index.
+     * @return {Object} The group's consolidated metadata.
+     * @private
+     */
+    private groupMetadata_;
+    /**
+     * Look up a band's Zarr v3 array metadata from consolidated metadata, trying
+     * the multi-scale key (`<matrixId>/<band>`) first and falling back to a
+     * single-scale key (`<band>`).
+     * @param {string} band The band name.
+     * @param {number} groupIndex The index of the band's group.
+     * @return {Object|undefined} The array metadata, or undefined when unavailable.
+     * @private
+     */
+    private getBandArrayMeta_;
+    /**
+     * Locate the 1-D coordinate array for a non-spatial dimension, by name among
+     * the group's 1-D arrays.
+     * @param {string} name The dimension name.
+     * @return {{path: string, groupIndex: number, meta: Object}|null} The path
+     *     (relative to the group), group index, and array metadata; or `null`.
+     * @private
+     */
+    private coordinateArray_;
+    /**
+     * Get the non-spatial dimensions of the bands (e.g. `time`) that can be fixed
+     * through the `dimensions` option, keyed by dimension name. Each entry has its
+     * `size` and the `attributes` of its coordinate array (e.g. `units`, for
+     * interpreting the values from {@link getValue}), or `attributes: null` when
+     * there is no coordinate array. Resolves with an empty object for 2-D bands,
+     * once the source is `ready`; rejects if the source fails to load.
+     * @return {Promise<Object<string, {size: number, attributes: Object|null}>>}
+     *     The selectable dimensions.
+     */
+    getDimensions(): Promise<{
+        [x: string]: {
+            size: number;
+            attributes: any | null;
+        };
+    }>;
+    /**
+     * Read the coordinate value at an index along a non-spatial dimension (e.g.
+     * the timestamp for a `time` index), for labeling the current selection. The
+     * value is returned raw (as stored, e.g. a `bigint` for a 64-bit integer
+     * axis); use the `attributes` from {@link getDimensions} to interpret it.
+     * Returns `null` for a dimension without a coordinate array. Available once
+     * the source is `ready`.
+     * @param {string} name The dimension name (see {@link getDimensions}).
+     * @param {number} index The index along the dimension.
+     * @return {Promise<number|bigint|null>} The coordinate value, or null.
+     */
+    getValue(name: string, index: number): Promise<number | bigint | null>;
+    /**
+     * Change the fixed index of one or more non-spatial dimensions (e.g. move to
+     * another `time` slice) without rebuilding the source. Values are merged into
+     * the current selection, so a partial update like `{time: 3}` leaves the other
+     * dimensions untouched. Takes effect immediately when the source is `ready`,
+     * otherwise once it becomes ready.
+     * @param {Object<string, number|string>} dimensions Index per dimension name
+     *     to change; see the `dimensions` constructor option.
+     */
+    updateDimensions(dimensions: {
+        [x: string]: string | number;
+    }): void;
+    /**
+     * Locate the spatial (y, x) axes of an array (see {@link getSpatialAxes}) and
+     * its remaining non-spatial axes.
+     * @param {Object|undefined} arrayMeta Zarr v3 array metadata.
+     * @return {{row: number, col: number, extra: Array<number>}} The row (y) and
+     *     column (x) axis positions and the remaining extra axes, in array order.
+     * @private
+     */
+    private axesOf_;
+    /**
+     * Describe the non-spatial dimensions of an array. Each is named by its
+     * `dimension_names` entry, or by its axis position when there are none.
+     * @param {Object|undefined} arrayMeta Zarr v3 array metadata.
+     * @return {Array<{name: string, size: number, axis: number}>} The extra dimensions, outermost first.
+     * @private
+     */
+    private extraDimsOf_;
+    /**
+     * Resolve the fixed index for each non-spatial dimension of a band array from
+     * the `dimensions` option. Returns `undefined` for 2-D arrays, otherwise an
+     * array aligned to the array rank with a fixed integer at each extra axis and
+     * `null` at the two spatial axes (e.g. `[2, null, null]` for a `[time, y, x]`
+     * array with `{time: 2}`).
+     * @param {Object|undefined} arrayMeta Zarr v3 array metadata.
+     * @return {Array<number|null>|undefined} The extra-axis selection template.
+     * @private
+     */
+    private resolveExtraSelection_;
 }
 export type ShardInfo = {
     /**
@@ -194,6 +336,17 @@ export type Options = {
      * Resampling method if bands are not available for all multi-scale levels.
      */
     resample?: ResampleMethod | undefined;
+    /**
+     * Fixed index for each non-spatial
+     * dimension of the band arrays, keyed by dimension name (e.g. `{time: 0}` for the first time step
+     * of a `[time, y, x]` cube); unspecified dimensions default to `0`. Names come from each array's
+     * `dimension_names`, or are the axis position as a string when it has none. Only integer indices
+     * are supported. Use the names from {@link getDimensions}, and change the selection on the fly with
+     * {@link module :ol/source/GeoZarr~GeoZarr#updateDimensions}.
+     */
+    dimensions?: {
+        [x: string]: string | number;
+    } | undefined;
 };
 /**
  * *
@@ -205,6 +358,7 @@ export type DatasetAttributes = {
     }>;
     "spatial:bbox": import("../extent.js").Extent;
     "spatial:shape": Array<number>;
+    "spatial:dimensions"?: Array<string>;
     "proj:wkt2"?: string;
     "proj:projjson"?: any;
     "proj:code"?: string | null;
