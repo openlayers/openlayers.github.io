@@ -187,9 +187,13 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      * @param {number} h Height of the tile.
      * @param {number} gutter Tile gutter.
      * @param {boolean} transition Apply an alpha transition.
+     * @param {Array<import("../../extent.js").Extent>} [clipRects] Sub-rectangles
+     *     of the tile to draw. When not provided, the whole tile is drawn; when an
+     *     empty array is provided, nothing is drawn (the tile is fully covered by
+     *     higher-z tiles).
      * @protected
      */
-    protected drawTile(tile: import("../../Tile.js").default, frameState: import("../../Map.js").FrameState, x: number, y: number, w: number, h: number, gutter: number, transition: boolean): void;
+    protected drawTile(tile: import("../../Tile.js").default, frameState: import("../../Map.js").FrameState, x: number, y: number, w: number, h: number, gutter: number, transition: boolean, clipRects?: Array<import("../../extent.js").Extent>): void;
     /**
      * @return {HTMLCanvasElement|OffscreenCanvas} Image
      */

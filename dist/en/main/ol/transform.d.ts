@@ -148,6 +148,25 @@ export function fromString(cssTransform: string): Transform;
 export function equivalent(cssTransform1: string, cssTransform2: string): boolean;
 /**
  * An array representing an affine 2d transformation for use with
+ * {@link module:ol/transform} functions. The array has 6 elements.
+ * @typedef {!Array<number>} Transform
+ * @api
+ */
+/**
+ * Collection of affine 2d transformation functions. The functions work on an
+ * array of 6 elements. The element order is compatible with the [SVGMatrix
+ * interface](https://developer.mozilla.org/en-US/docs/Web/API/SVGMatrix) and is
+ * a subset (elements a to f) of a 3×3 matrix:
+ * ```
+ * [ a c e ]
+ * [ b d f ]
+ * [ 0 0 1 ]
+ * ```
+ */
+/** @type {Transform} */
+export const IDENTITY_TRANSFORM: Transform;
+/**
+ * An array representing an affine 2d transformation for use with
  * {@link module :ol/transform} functions. The array has 6 elements.
  */
 export type Transform = Array<number>;

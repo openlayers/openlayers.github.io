@@ -52,9 +52,11 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
      * @param {number} h Height of the tile.
      * @param {number} gutter Tile gutter.
      * @param {boolean} transition Apply an alpha transition.
+     * @param {Array<import("../../extent.js").Extent>} [clipRects] Sub-rectangles
+     *     of the tile to draw.
      * @override
      */
-    override drawTile(tile: import("../../VectorRenderTile.js").default, frameState: import("../../Map.js").FrameState, x: number, y: number, w: number, h: number, gutter: number, transition: boolean): void;
+    override drawTile(tile: import("../../VectorRenderTile.js").default, frameState: import("../../Map.js").FrameState, x: number, y: number, w: number, h: number, gutter: number, transition: boolean, clipRects?: Array<import("../../extent.js").Extent>): void;
     /**
      * @param {import("../../VectorRenderTile.js").default} tile Tile.
      * @param {number} pixelRatio Pixel ratio.
@@ -85,6 +87,21 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
      * @return {import('../../transform.js').Transform} Transform to use to render this tile
      */
     getTileRenderTransform(tile: import("../../VectorRenderTile.js").default, frameState: import("../../Map.js").FrameState): import("../../transform.js").Transform;
+    /**
+     * Clips the current tile to the regions not already covered by higher-z tiles.
+     * The tile extents are axis-aligned in world coordinates, so the covered
+     * regions can be subtracted as rectangles and a single clip applied to the
+     * disjoint remainder.
+     * @param {CanvasRenderingContext2D|import("../../render/canvas/ZIndexContext.js").ZIndexContextProxy} clipContext Context to apply the clip to.
+     * @param {import("../../extent.js").Extent} currentExtent World extent of the current tile.
+     * @param {Array<import("../../extent.js").Extent>} clips World extents of previously rendered tiles.
+     * @param {Array<number>} clipZs Zoom levels of previously rendered tiles.
+     * @param {number} currentZ Zoom level of the current tile.
+     * @param {import("../../transform.js").Transform} transform Transform from world to render coordinates.
+     * @return {boolean} The context was saved and needs to be restored.
+     * @private
+     */
+    private clipTileContext_;
     /**
      * @param {import("../../Feature.js").FeatureLike} feature Feature.
      * @param {number} squaredTolerance Squared tolerance.

@@ -410,6 +410,15 @@ export function wrapX(extent: Extent, projection: import("./proj/Projection.js")
  */
 export function wrapAndSliceX(extent: Extent, projection: import("./proj/Projection.js").default, multiWorld?: boolean): Array<Extent>;
 /**
+ * Subtract several rectangles from a base rectangle. Returns a set of disjoint
+ * rectangles that together cover the base rectangle minus the union of the
+ * subtracted rectangles, by repeatedly applying {@link module:ol/extent.getDifference}.
+ * @param {Extent} base Base rectangle.
+ * @param {Array<Extent>} subtract Rectangles to subtract.
+ * @return {Array<Extent>} Remainder rectangles.
+ */
+export function subtractExtents(base: Extent, subtract: Array<Extent>): Array<Extent>;
+/**
  * An array of numbers representing an extent: `[minx, miny, maxx, maxy]`.
  */
 export type Extent = Array<number>;

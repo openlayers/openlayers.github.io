@@ -246,6 +246,7 @@ declare namespace ol {
         export { _ol_extent$isEmpty as isEmpty };
         export { _ol_extent$returnOrUpdate as returnOrUpdate };
         export { _ol_extent$scaleFromCenter as scaleFromCenter };
+        export { _ol_extent$subtractExtents as subtractExtents };
         export { _ol_extent$wrapAndSliceX as wrapAndSliceX };
         export { _ol_extent$wrapX as wrapX };
     }
@@ -977,6 +978,7 @@ declare namespace ol {
         export { _ol_tileurlfunction$nullTileUrlFunction as nullTileUrlFunction };
     }
     export namespace transform {
+        export { _ol_transform$IDENTITY_TRANSFORM as IDENTITY_TRANSFORM };
         export { _ol_transform$apply as apply };
         export { _ol_transform$compose as compose };
         export { _ol_transform$composeCssTransform as composeCssTransform };
@@ -1285,6 +1287,7 @@ import { intersectsSegment as _ol_extent$intersectsSegment } from '../../ol/exte
 import { isEmpty as _ol_extent$isEmpty } from '../../ol/extent.js';
 import { returnOrUpdate as _ol_extent$returnOrUpdate } from '../../ol/extent.js';
 import { scaleFromCenter as _ol_extent$scaleFromCenter } from '../../ol/extent.js';
+import { subtractExtents as _ol_extent$subtractExtents } from '../../ol/extent.js';
 import { wrapAndSliceX as _ol_extent$wrapAndSliceX } from '../../ol/extent.js';
 import { wrapX as _ol_extent$wrapX } from '../../ol/extent.js';
 import { loadFeaturesXhr as _ol_featureloader$loadFeaturesXhr } from '../../ol/featureloader.js';
@@ -1835,6 +1838,7 @@ import { createFromTemplate as _ol_tileurlfunction$createFromTemplate } from '..
 import { createFromTemplates as _ol_tileurlfunction$createFromTemplates } from '../../ol/tileurlfunction.js';
 import { createFromTileUrlFunctions as _ol_tileurlfunction$createFromTileUrlFunctions } from '../../ol/tileurlfunction.js';
 import { nullTileUrlFunction as _ol_tileurlfunction$nullTileUrlFunction } from '../../ol/tileurlfunction.js';
+import { IDENTITY_TRANSFORM as _ol_transform$IDENTITY_TRANSFORM } from '../../ol/transform.js';
 import { apply as _ol_transform$apply } from '../../ol/transform.js';
 import { compose as _ol_transform$compose } from '../../ol/transform.js';
 import { composeCssTransform as _ol_transform$composeCssTransform } from '../../ol/transform.js';
