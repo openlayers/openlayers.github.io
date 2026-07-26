@@ -43896,7 +43896,7 @@ var PbfReader = class {
 	*/
 	constructor(buf) {
 		this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf);
-		this.dataView = new DataView(this.buf.buffer);
+		this.dataView = new DataView(this.buf.buffer, this.buf.byteOffset, this.buf.byteLength);
 		this.pos = 0;
 		this.type = 0;
 		this._valueStart = -1;
