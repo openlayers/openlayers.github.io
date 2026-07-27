@@ -37178,6 +37178,7 @@ var ImageArcGISRest = class extends ImageSource {
 	*/
 	setParams(params) {
 		this.params_ = Object.assign({}, params);
+		this.loader = null;
 		this.changed();
 	}
 	/**
@@ -71301,6 +71302,7 @@ var ImageMapGuide = class extends ImageSource {
 	*/
 	setParams(params) {
 		this.params_ = Object.assign({}, params);
+		this.loader = null;
 		this.changed();
 	}
 	/**
