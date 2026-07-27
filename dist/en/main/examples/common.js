@@ -53309,8 +53309,8 @@ function fromCIELab(cieLabRaster) {
 //#endregion
 //#region \0vite/preload-helper.js
 var scriptRel = "modulepreload";
-var assetsURL = function(dep) {
-	return "/" + dep;
+var assetsURL = function(dep, importerUrl) {
+	return new URL(dep, importerUrl).href;
 };
 var seen = {};
 var __vitePreload = function preload(baseModule, deps, importerUrl) {
@@ -53449,12 +53449,12 @@ function preferWorker(compression) {
 var defaultDecoderDefinitions = [
 	{
 		cases: [void 0, 1],
-		importFn: () => __vitePreload(() => Promise.resolve().then(() => raw_exports).then((m) => m.default), void 0),
+		importFn: () => __vitePreload(() => Promise.resolve().then(() => raw_exports).then((m) => m.default), void 0, import.meta.url),
 		preferWorker: false
 	},
 	{
 		cases: 5,
-		importFn: () => __vitePreload(() => Promise.resolve().then(() => lzw_exports).then((m) => m.default), void 0)
+		importFn: () => __vitePreload(() => Promise.resolve().then(() => lzw_exports).then((m) => m.default), void 0, import.meta.url)
 	},
 	{
 		cases: 6,
@@ -53464,7 +53464,7 @@ var defaultDecoderDefinitions = [
 	},
 	{
 		cases: 7,
-		importFn: () => __vitePreload(() => Promise.resolve().then(() => jpeg_exports).then((m) => m.default), void 0),
+		importFn: () => __vitePreload(() => Promise.resolve().then(() => jpeg_exports).then((m) => m.default), void 0, import.meta.url),
 		/**
 		* @param {import("../imagefiledirectory.js").ImageFileDirectory} fileDirectory
 		*/
@@ -53477,18 +53477,18 @@ var defaultDecoderDefinitions = [
 	},
 	{
 		cases: [8, 32946],
-		importFn: () => __vitePreload(() => Promise.resolve().then(() => deflate_exports).then((m) => m.default), void 0)
+		importFn: () => __vitePreload(() => Promise.resolve().then(() => deflate_exports).then((m) => m.default), void 0, import.meta.url)
 	},
 	{
 		cases: 32773,
-		importFn: () => __vitePreload(() => Promise.resolve().then(() => packbits_exports).then((m) => m.default), void 0)
+		importFn: () => __vitePreload(() => Promise.resolve().then(() => packbits_exports).then((m) => m.default), void 0, import.meta.url)
 	},
 	{
 		cases: 34887,
 		importFn: () => __vitePreload(() => Promise.resolve().then(() => lerc_exports).then(async (m) => {
 			await m.zstd.init();
 			return m;
-		}), void 0).then((m) => m.default),
+		}), void 0, import.meta.url).then((m) => m.default),
 		/**
 		* @param {import("../imagefiledirectory.js").ImageFileDirectory} fileDirectory
 		*/
@@ -53504,11 +53504,11 @@ var defaultDecoderDefinitions = [
 		importFn: () => __vitePreload(() => Promise.resolve().then(() => zstd_exports$1).then(async (m) => {
 			await m.zstd.init();
 			return m;
-		}), void 0).then((m) => m.default)
+		}), void 0, import.meta.url).then((m) => m.default)
 	},
 	{
 		cases: 50001,
-		importFn: () => __vitePreload(() => Promise.resolve().then(() => webimage_exports).then((m) => m.default), void 0),
+		importFn: () => __vitePreload(() => Promise.resolve().then(() => webimage_exports).then((m) => m.default), void 0, import.meta.url),
 		/**
 		* @param {import("../imagefiledirectory.js").ImageFileDirectory} fileDirectory
 		*/
@@ -120379,14 +120379,14 @@ function le() {
 	}, t.allowFsRead = void 0, t.loadImageFile = t.loadFile;
 }(E$1.API), function(e) {
 	function r() {
-		return (i$2.html2canvas ? Promise.resolve(i$2.html2canvas) : __vitePreload(() => Promise.resolve().then(() => /* @__PURE__ */ __toESM(require_html2canvas())), void 0)).catch(function(t) {
+		return (i$2.html2canvas ? Promise.resolve(i$2.html2canvas) : __vitePreload(() => Promise.resolve().then(() => /* @__PURE__ */ __toESM(require_html2canvas())), void 0, import.meta.url)).catch(function(t) {
 			return Promise.reject(/* @__PURE__ */ new Error("Could not load html2canvas: " + t));
 		}).then(function(t) {
 			return t.default ? t.default : t;
 		});
 	}
 	function n() {
-		return (i$2.DOMPurify ? Promise.resolve(i$2.DOMPurify) : __vitePreload(() => Promise.resolve().then(() => purify_es_exports), void 0)).catch(function(t) {
+		return (i$2.DOMPurify ? Promise.resolve(i$2.DOMPurify) : __vitePreload(() => Promise.resolve().then(() => purify_es_exports), void 0, import.meta.url)).catch(function(t) {
 			return Promise.reject(/* @__PURE__ */ new Error("Could not load dompurify: " + t));
 		}).then(function(t) {
 			return t.default ? t.default : t;
@@ -121546,7 +121546,7 @@ function le() {
 		ignoreAnimation: !0,
 		ignoreDimensions: !0
 	}, d = this;
-	return (i$2.canvg ? Promise.resolve(i$2.canvg) : __vitePreload(() => Promise.resolve().then(() => index_es_exports), void 0)).catch(function(t) {
+	return (i$2.canvg ? Promise.resolve(i$2.canvg) : __vitePreload(() => Promise.resolve().then(() => index_es_exports), void 0, import.meta.url)).catch(function(t) {
 		return Promise.reject(/* @__PURE__ */ new Error("Could not load canvg: " + t));
 	}).then(function(t) {
 		return t.default ? t.default : t;
@@ -128875,9 +128875,9 @@ var ZlibCodec = class ZlibCodec {
 //#endregion
 //#region node_modules/zarrita/dist/src/codecs.js
 function createDefaultRegistry() {
-	let blosc = () => __vitePreload(() => Promise.resolve().then(() => blosc_exports).then((m) => m.default), void 0);
-	let lz4 = () => __vitePreload(() => Promise.resolve().then(() => lz4_exports).then((m) => m.default), void 0);
-	let zstd = () => __vitePreload(() => Promise.resolve().then(() => zstd_exports).then((m) => m.default), void 0);
+	let blosc = () => __vitePreload(() => Promise.resolve().then(() => blosc_exports).then((m) => m.default), void 0, import.meta.url);
+	let lz4 = () => __vitePreload(() => Promise.resolve().then(() => lz4_exports).then((m) => m.default), void 0, import.meta.url);
+	let zstd = () => __vitePreload(() => Promise.resolve().then(() => zstd_exports).then((m) => m.default), void 0, import.meta.url);
 	let gzip = () => GzipCodec;
 	let zlib = () => ZlibCodec;
 	return (/* @__PURE__ */ new Map()).set("blosc", blosc).set("lz4", lz4).set("zstd", zstd).set("gzip", gzip).set("zlib", zlib).set("transpose", () => TransposeCodec).set("bytes", () => BytesCodec).set("crc32c", () => Crc32cCodec).set("vlen-utf8", () => VLenUTF8).set("json2", () => JsonCodec).set("bitround", () => BitroundCodec).set("cast_value", () => CastValueCodec).set("scale_offset", () => ScaleOffsetCodec).set("numcodecs.blosc", blosc).set("numcodecs.lz4", lz4).set("numcodecs.zstd", zstd).set("numcodecs.gzip", gzip).set("numcodecs.zlib", zlib).set("numcodecs.vlen-utf8", () => VLenUTF8).set("numcodecs.shuffle", () => ShuffleCodec).set("numcodecs.delta", () => DeltaCodec).set("numcodecs.bitround", () => BitroundCodec).set("numcodecs.json2", () => JsonCodec);
@@ -193491,7 +193491,7 @@ function getCustomProjectionName(projDef) {
 }
 async function getLookupFn() {
 	try {
-		const { getProjectionCodeLookup, getEPSGLookup } = await __vitePreload(() => Promise.resolve().then(() => proj4_exports), void 0);
+		const { getProjectionCodeLookup, getEPSGLookup } = await __vitePreload(() => Promise.resolve().then(() => proj4_exports), void 0, import.meta.url);
 		if (getProjectionCodeLookup) return getProjectionCodeLookup;
 		if (getEPSGLookup) return (code) => {
 			if (code.startsWith("EPSG:")) {
@@ -194563,7 +194563,7 @@ var STACLayer = class STACLayer extends LayerGroup {
 			const GeoZarr = (await __vitePreload(async () => {
 				const { default: __vite_default__ } = await Promise.resolve().then(() => GeoZarr_exports);
 				return { default: __vite_default__ };
-			}, void 0)).default;
+			}, void 0, import.meta.url)).default;
 			const source = new GeoZarr(options);
 			await new Promise((resolve, reject) => {
 				source.on("change", () => {
