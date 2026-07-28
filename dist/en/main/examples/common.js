@@ -183724,6 +183724,9 @@ var OGC_FID_PARSERS = {
 	}) },
 	"http://www.opengis.net/ogc/1.1": { "FeatureId": makeArrayPusher(function(node, objectStack) {
 		return node.getAttribute("fid");
+	}) },
+	"http://www.opengis.net/fes/2.0": { "ResourceId": makeArrayPusher(function(node, objectStack) {
+		return node.getAttribute("rid");
 	}) }
 };
 /**
@@ -183771,11 +183774,13 @@ function writeFeature(node, feature, objectStack) {
 * @param {Array<*>} objectStack Node stack.
 */
 function writeOgcFidFilter(node, fid, objectStack) {
-	const ns = OGCNS[objectStack[objectStack.length - 1]["version"]];
+	const version = objectStack[objectStack.length - 1]["version"];
+	const ns = getFilterNS(version);
+	const isV2 = version === "2.0.0";
 	const filter = createElementNS(ns, "Filter");
-	const child = createElementNS(ns, "FeatureId");
+	const child = createElementNS(ns, isV2 ? "ResourceId" : "FeatureId");
 	filter.appendChild(child);
-	child.setAttribute("fid", fid);
+	child.setAttribute(isV2 ? "rid" : "fid", fid);
 	node.appendChild(filter);
 }
 /**
