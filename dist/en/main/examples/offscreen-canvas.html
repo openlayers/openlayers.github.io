@@ -152,7 +152,10 @@ import Source from &#x27;ol/source/Source.js&#x27;;
 import {createXYZ} from &#x27;ol/tilegrid.js&#x27;;
 import {compose, create, toString as toTransformString} from &#x27;ol/transform.js&#x27;;
 
-const worker &#x3D; new Worker(&#x27;./worker.js&#x27;, {type: &#x27;module&#x27;});
+const worker &#x3D; new Worker(
+  new URL(&#x27;./offscreen-canvas.worker.js&#x27;, import.meta.url),
+  {type: &#x27;module&#x27;},
+);
 
 let container,
   transformContainer,
@@ -399,9 +402,9 @@ function showInfo(propertiesFromFeatures) {
       </details>
 
       <details open>
-        <summary class="source-heading">worker.js</summary>
-        <div class="row-fluid extra-source">
-          <pre><code class="language-js">import {stylefunction} from &#x27;ol-mapbox-style&#x27;;
+        <summary class="source-heading">offscreen-canvas.worker.js</summary>
+        <div class="row-fluid">
+          <pre><code class="language-js example-extra-source" data-filename="offscreen-canvas.worker.js">import {stylefunction} from &#x27;ol-mapbox-style&#x27;;
 import TileQueue, {
   getTilePriority as tilePriorityFunction,
 } from &#x27;ol/TileQueue.js&#x27;;
@@ -610,7 +613,7 @@ worker.addEventListener(&#x27;message&#x27;, (event) &#x3D;&gt; {
     &quot;ol-mapbox-style&quot;: &quot;^13.4.1&quot;
   },
   &quot;devDependencies&quot;: {
-    &quot;vite&quot;: &quot;^3.2.3&quot;
+    &quot;vite&quot;: &quot;^8.1.5&quot;
   },
   &quot;scripts&quot;: {
     &quot;start&quot;: &quot;vite&quot;,

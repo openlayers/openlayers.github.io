@@ -148,7 +148,13 @@
 import View from &#x27;ol/View.js&#x27;;
 import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import ImageTileSource from &#x27;ol/source/ImageTile.js&#x27;;
-const worker &#x3D; new Worker(&#x27;./worker.js&#x27;, {type: &#x27;module&#x27;});
+const worker &#x3D; new Worker(
+  new URL(
+    &#x27;./tiled-layer-rendering-in-offscreen-canvas.worker.js&#x27;,
+    import.meta.url,
+  ),
+  {type: &#x27;module&#x27;},
+);
 
 const tileQueue &#x3D; [];
 
@@ -232,9 +238,9 @@ new Map({
       </details>
 
       <details open>
-        <summary class="source-heading">worker.js</summary>
-        <div class="row-fluid extra-source">
-          <pre><code class="language-js">import Map from &#x27;ol/Map.js&#x27;;
+        <summary class="source-heading">tiled-layer-rendering-in-offscreen-canvas.worker.js</summary>
+        <div class="row-fluid">
+          <pre><code class="language-js example-extra-source" data-filename="tiled-layer-rendering-in-offscreen-canvas.worker.js">import Map from &#x27;ol/Map.js&#x27;;
 import View from &#x27;ol/View.js&#x27;;
 import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
@@ -287,7 +293,7 @@ worker.addEventListener(&#x27;message&#x27;, async ({data: {action, tile}}) &#x3
     &quot;ol&quot;: &quot;10.10.1-dev&quot;
   },
   &quot;devDependencies&quot;: {
-    &quot;vite&quot;: &quot;^3.2.3&quot;
+    &quot;vite&quot;: &quot;^8.1.5&quot;
   },
   &quot;scripts&quot;: {
     &quot;start&quot;: &quot;vite&quot;,
