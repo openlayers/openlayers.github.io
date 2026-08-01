@@ -190808,7 +190808,7 @@ function hasText(string) {
 * @returns {number|null}
 */
 function ensureNumber(num, min, max, delta = 1e-8) {
-	if (typeof num !== "number") return null;
+	if (!Number.isFinite(num)) return null;
 	const min2 = min - delta;
 	const max2 = max + delta;
 	if (num < min2 || num > max2) return null;
@@ -191094,8 +191094,15 @@ function fixGeoJson(geojson) {
 *
 * The Feature contains a Polygon or MultiPolygon based on the given number of valid bounding boxes.
 *
+* Bounding boxes that cross the antimeridian (i.e. west > east, see RFC 7946, section 5.2)
+* are always split into two polygons at the antimeridian.
+* The antimeridian fix for geometries is NOT applied as whether a bounding box
+* crosses the antimeridian is explicitly encoded (west > east) and must not be
+* inferred from the longitude span as done for geometries. Otherwise, valid
+* bounding boxes that span more than 180 degrees of longitude would be broken up.
+*
 * @param {BoundingBox|Array.<BoundingBox>} bboxes
-* @param {boolean|FixOptions} fixAntimeridian If set to `true` or an options object, geometries that cross the antimeridian are fixed (split into multi-geometries).
+* @param {boolean|FixOptions} fixAntimeridian Deprecated, has no effect. Bounding boxes are always split at the antimeridian if needed.
 * @returns {Object|null}
 */
 function toGeoJSON(bboxes, fixAntimeridian = false) {
@@ -191129,29 +191136,57 @@ function toGeoJSON(bboxes, fixAntimeridian = false) {
 		type: "MultiPolygon",
 		coordinates
 	};
-	if (geometry) return applyAntimeridianFix({
+	if (geometry) return {
 		type: "Feature",
 		geometry,
 		properties: {}
-	}, fixAntimeridian);
+	};
+}
+/**
+* Ensures a longitude is within [-180, 180].
+*
+* Longitudes outside of the range are wrapped around the antimeridian,
+* e.g. 190 becomes -170.
+*
+* @private
+* @param {number} lon The longitude.
+* @returns {number|null}
+*/
+function ensureLongitude(lon) {
+	const num = ensureNumber(lon, -180, 180);
+	if (num !== null) return num;
+	if (!Number.isFinite(lon)) return null;
+	let normalized = (lon + 180) % 360;
+	if (normalized < 0) normalized += 360;
+	return normalized - 180;
 }
 /**
 * Ensure this is a valid bounding box.
 *
 * This function will ensure that the given bounding box is valid and otherwise return `null`.
 *
-* If the bounding box is 3D, the function will return `null` unless `allow3D` is set to `true`.
+* Longitudes outside of [-180, 180] are wrapped around the antimeridian,
+* e.g. a bounding box of [175, -41, 190, -37] becomes [175, -41, -170, -37].
+* This may result in a bounding box that crosses the antimeridian (i.e. west > east)
+* as defined by GeoJSON (RFC 7946, section 5.2).
+*
+* If the bounding box is 3D, the function will return a 2D bounding box unless `allow3D` is set to `true`. Doesn't ensure that the bounding box is 3D in case `allow3D` is set to `true`.
 *
 * @param {BoundingBox|Array.<number>} bbox The bounding box to check.
-* @param {boolean} allow3D - Whether to allow 3D bounding boxes or not.
+* @param {boolean} allow3D - Whether to return 3D bounding boxes or not. By default all bounding boxes are returned as 2D.
 * @returns {BoundingBox|null}
 */
 function ensureBoundingBox(bbox, allow3D = false) {
 	if (!Array.isArray(bbox) || ![4, 6].includes(bbox.length)) return null;
 	let { west, east, south, north, base, height } = toObject(bbox);
-	west = ensureNumber(west, -180, 180);
+	if (Number.isFinite(west) && Number.isFinite(east) && east - west >= 360) {
+		west = -180;
+		east = 180;
+	} else {
+		west = ensureLongitude(west);
+		east = ensureLongitude(east);
+	}
 	south = ensureNumber(south, -90, 90);
-	east = ensureNumber(east, -180, 180);
 	north = ensureNumber(north, -90, 90);
 	if (allow3D && bbox.length === 6) bbox = [
 		west,
@@ -191185,6 +191220,11 @@ function isAntimeridianBoundingBox(bbox) {
 /**
 * Compute the union of a list of bounding boxes.
 *
+* The function is aware of the antimeridian: input boxes may cross it (west > east)
+* and the returned box may cross it, too, if that yields the smaller extent.
+* Following GeoJSON (RFC 7946, section 5.2), a box crossing the antimeridian is
+* expressed with a western longitude that is larger than the eastern longitude.
+*
 * The function ignores any invalid bounding boxes or values for the third dimension.
 *
 * @param {Array.<BoundingBox|null>} bboxes
@@ -191193,25 +191233,85 @@ function isAntimeridianBoundingBox(bbox) {
 */
 function unionBoundingBox(bboxes) {
 	if (!Array.isArray(bboxes) || bboxes.length === 0) return null;
-	const extrema = {
-		west: null,
-		south: null,
-		east: null,
-		north: null
-	};
-	const min = ["west", "south"];
+	let south = null;
+	let north = null;
+	const pieces = [];
+	let full = false;
 	for (let bbox of bboxes) {
 		bbox = ensureBoundingBox(bbox);
 		if (!bbox) continue;
-		const obj = toObject(bbox);
-		for (const key in obj) if (extrema[key] === null) extrema[key] = obj[key];
-		else extrema[key] = (min.includes(key) ? Math.min : Math.max)(extrema[key], obj[key]);
+		const { west, south: s, east, north: n } = toObject(bbox);
+		south = south === null ? s : Math.min(south, s);
+		north = north === null ? n : Math.max(north, n);
+		if (west === -180 && east === 180) {
+			full = true;
+			continue;
+		}
+		const start = west + 180;
+		const end = start + ((east + 180 - start) % 360 + 360) % 360;
+		if (end <= 360) pieces.push({
+			s: start,
+			e: end,
+			west,
+			east
+		});
+		else {
+			pieces.push({
+				s: start,
+				e: 360,
+				west,
+				east: null
+			});
+			pieces.push({
+				s: 0,
+				e: end - 360,
+				west: null,
+				east
+			});
+		}
 	}
+	if (south === null) return null;
+	if (full || pieces.length === 0) return ensureBoundingBox([
+		-180,
+		south,
+		180,
+		north
+	]);
+	pieces.sort((a, b) => a.s - b.s);
+	const merged = [{ ...pieces[0] }];
+	for (let i = 1; i < pieces.length; i++) {
+		const last = merged[merged.length - 1];
+		if (pieces[i].s <= last.e) {
+			if (pieces[i].e > last.e) {
+				last.e = pieces[i].e;
+				last.east = pieces[i].east;
+			}
+		} else merged.push({ ...pieces[i] });
+	}
+	let maxGap = -1;
+	let unionWest = merged[0].west;
+	let unionEast = merged[merged.length - 1].east;
+	for (let i = 0; i < merged.length; i++) {
+		const cur = merged[i];
+		const next = merged[(i + 1) % merged.length];
+		const gap = i + 1 < merged.length ? next.s - cur.e : next.s + 360 - cur.e;
+		if (gap > maxGap) {
+			maxGap = gap;
+			unionWest = next.west;
+			unionEast = cur.east;
+		}
+	}
+	if (maxGap <= 0) return ensureBoundingBox([
+		-180,
+		south,
+		180,
+		north
+	]);
 	return ensureBoundingBox([
-		extrema.west,
-		extrema.south,
-		extrema.east,
-		extrema.north
+		unionWest ?? -180,
+		south,
+		unionEast ?? 180,
+		north
 	]);
 }
 //#endregion
@@ -192834,7 +192934,7 @@ var CatalogLike = class extends STAC {
 	*
 	* The Feature contains a Polygon or MultiPolygon based on the given number of valid bounding boxes.
 	*
-	* @param {boolean|FixOptions} fixAntimeridian If set to `true` or an options object, geometries that cross the antimeridian are fixed (split into multi-geometries).
+	* @param {boolean|FixOptions} fixAntimeridian Deprecated, has no effect. Bounding boxes are always split at the antimeridian if needed.
 	* @returns {Object|null} GeoJSON object or `null`
 	*/
 	toGeoJSON(fixAntimeridian = false) {
@@ -193114,7 +193214,7 @@ var CollectionCollection = class extends APICollection {
 	/**
 	* Returns a GeoJSON Feature Collection for this STAC object.
 	*
-	* @param {boolean|FixOptions} fixAntimeridian If set to `true` or an options object, geometries that cross the antimeridian are fixed (split into multi-geometries).
+	* @param {boolean|FixOptions} fixAntimeridian Deprecated, has no effect. Bounding boxes are always split at the antimeridian if needed.
 	* @returns {Object|null} GeoJSON object or `null`
 	*/
 	toGeoJSON(fixAntimeridian = false) {
@@ -193624,6 +193724,59 @@ SourceType.WMTS = new SourceType("WMTS");
 * @api
 */
 SourceType.XYZ = new SourceType("XYZ");
+/**
+* Makes a bounding box continuous for use as an (OpenLayers) extent.
+*
+* Bounding boxes that cross the antimeridian have a western longitude that is
+* larger than the eastern longitude (as defined by RFC 7946, section 5.2).
+* For those, the eastern longitude is shifted by +360 so that the extent is
+* continuous across the antimeridian (i.e. `minX <= maxX`).
+*
+* Accepts both 2D (four values) and 3D (six values) bounding boxes and always
+* returns a 2D extent (four values).
+*
+* @param {Array<number>} bbox The bounding box in lon/lat degrees.
+* @return {Array<number>} The continuous 2D bounding box.
+* @api
+*/
+function toContinuousBBox(bbox) {
+	const hasZ = bbox.length >= 6;
+	const west = bbox[0];
+	const south = bbox[1];
+	const east = bbox[hasZ ? 3 : 2];
+	const north = bbox[hasZ ? 4 : 3];
+	if (west > east) return [
+		west,
+		south,
+		east + 360,
+		north
+	];
+	return [
+		west,
+		south,
+		east,
+		north
+	];
+}
+/**
+* Converts a lon/lat (EPSG:4326) bounding box into a continuous OpenLayers
+* extent in the given projection.
+*
+* Handles antimeridian-crossing bounding boxes (west > east), see
+* {@link toContinuousBBox}.
+*
+* When fitting an antimeridian-crossing extent, configure the OpenLayers
+* `View` with `multiWorld: true`; otherwise the default world constraint may
+* clamp the fitted view and clip the wrapped portion.
+*
+* @param {Array<number>} bbox The bounding box in lon/lat degrees (EPSG:4326).
+* @param {import("ol/proj.js").ProjectionLike} projection The target projection.
+* @return {Array<number>} The extent in the target projection.
+* @api
+*/
+function toOlExtent(bbox, projection) {
+	return transformExtent(toContinuousBBox(bbox), "EPSG:4326", projection);
+}
 var transparentFill = new Fill({ color: "rgba(0,0,0,0)" });
 /**
 * Check whether the installed OL version is at least the given version.
@@ -194142,7 +194295,7 @@ var STACLayer = class STACLayer extends LayerGroup {
 	isEmpty() {
 		if (this.getLayers().getLength() > 1) return false;
 		const bbox = this.getData().getBoundingBox();
-		if (!bbox || isEmpty(bbox)) return true;
+		if (!bbox || isEmpty(toContinuousBBox(bbox))) return true;
 		return !this.boundsLayer_ || !this.displayFootprint_;
 	}
 	/**
@@ -194277,7 +194430,7 @@ var STACLayer = class STACLayer extends LayerGroup {
 		let options = {
 			url: image.getAbsoluteUrl(),
 			projection,
-			imageExtent: transformExtent(bbox, "EPSG:4326", projection),
+			imageExtent: toOlExtent(bbox, projection),
 			crossOrigin: this.crossOrigin_
 		};
 		if (this.getSourceOptions_) options = await this.getSourceOptions_(SourceType.ImageStatic, options, image);
@@ -194784,7 +194937,7 @@ var STACLayer = class STACLayer extends LayerGroup {
 		if (data) bbox = data.getBoundingBox();
 		const items = this.getChildren();
 		if (items) bbox = unionBoundingBox(items.map((item) => item.getBoundingBox()));
-		if (bbox) return transformExtent(bbox, "EPSG:4326", view.getProjection());
+		if (bbox) return toOlExtent(bbox, view.getProjection());
 	}
 	getLayerState() {
 		const state = super.getLayerState();
