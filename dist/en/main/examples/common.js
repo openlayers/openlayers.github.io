@@ -75251,51 +75251,22 @@ function optionsFromCapabilities(wmtsCap, config) {
 	if (!projection) return null;
 	let wrapX = false;
 	const switchXY = projection.getAxisOrientation().startsWith("ne");
-	let matrix = matrixSetObj["TileMatrix"][0];
-	/** @type {{MinTileCol: number, MinTileRow: number, MaxTileCol: number, MaxTileRow: number, TileMatrix: (string|undefined)}} */
-	let selectedMatrixLimit = {
-		MinTileCol: 0,
-		MinTileRow: 0,
-		MaxTileCol: matrix["MatrixWidth"] - 1,
-		MaxTileRow: matrix["MatrixHeight"] - 1,
-		TileMatrix: void 0
-	};
-	if (matrixLimits) {
-		selectedMatrixLimit = matrixLimits[matrixLimits.length - 1];
-		const m = matrixSetObj["TileMatrix"].find((tileMatrixValue) => tileMatrixValue["Identifier"] === selectedMatrixLimit.TileMatrix || matrixSetObj["Identifier"] + ":" + tileMatrixValue["Identifier"] === selectedMatrixLimit.TileMatrix);
-		if (m) matrix = m;
-	}
-	const layerExtent = l["BoundingBox"]?.find((bbox) => {
+	const matrix = matrixSetObj.TileMatrix[0];
+	let extent = (l["BoundingBox"]?.find((bbox) => {
 		const bboxProjection = get$7(bbox["crs"]);
 		return bboxProjection && equivalent$1(bboxProjection, projection);
-	});
-	const resolution = matrix["ScaleDenominator"] * 28e-5 / (projection.getMetersPerUnit() || 1);
-	const topLeftCorner = matrix["TopLeftCorner"];
-	const origin = switchXY ? [topLeftCorner[1], topLeftCorner[0]] : topLeftCorner;
-	const tileSpanX = matrix["TileWidth"] * resolution;
-	const tileSpanY = matrix["TileHeight"] * resolution;
-	let matrixSetExtent = layerExtent?.["extent"] ?? matrixSetObj["BoundingBox"];
-	if (matrixSetExtent && switchXY) matrixSetExtent = [
-		matrixSetExtent[1],
-		matrixSetExtent[0],
-		matrixSetExtent[3],
-		matrixSetExtent[2]
+	}))?.extent ?? matrixSetObj["BoundingBox"];
+	if (extent && switchXY) extent = [
+		extent[1],
+		extent[0],
+		extent[3],
+		extent[2]
 	];
-	let extent = [
-		origin[0] + tileSpanX * selectedMatrixLimit.MinTileCol,
-		origin[1] - tileSpanY * (1 + selectedMatrixLimit.MaxTileRow),
-		origin[0] + tileSpanX * (1 + selectedMatrixLimit.MaxTileCol),
-		origin[1] - tileSpanY * selectedMatrixLimit.MinTileRow
-	];
-	if (matrixSetExtent !== void 0 && !containsExtent(matrixSetExtent, extent)) {
-		const wgs84BoundingBox = l["WGS84BoundingBox"];
-		const wgs84ProjectionExtent = get$7("EPSG:4326").getExtent();
-		extent = matrixSetExtent;
-		if (wgs84BoundingBox) wrapX = wgs84BoundingBox[0] === wgs84ProjectionExtent[0] && wgs84BoundingBox[2] === wgs84ProjectionExtent[2];
-		else {
-			const wgs84MatrixSetExtent = transformExtent(matrixSetExtent, matrixSetObj["SupportedCRS"], "EPSG:4326");
-			wrapX = wgs84MatrixSetExtent[0] - 1e-10 <= wgs84ProjectionExtent[0] && wgs84MatrixSetExtent[2] + 1e-10 >= wgs84ProjectionExtent[2];
-		}
+	const projectionExtent = projection.getExtent();
+	if (projection.canWrapX() && projectionExtent) {
+		const origin = switchXY ? [matrix.TopLeftCorner[1], matrix.TopLeftCorner[0]] : matrix.TopLeftCorner;
+		const pixelWidth = getWidth(projectionExtent) / (matrix.MatrixWidth * matrix.TileWidth);
+		wrapX = Math.abs(origin[0] - projectionExtent[0]) < pixelWidth;
 	}
 	const tileGrid = createFromCapabilitiesMatrixSet(matrixSetObj, extent, matrixLimits);
 	/** @type {!Array<string>} */
