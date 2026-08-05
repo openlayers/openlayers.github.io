@@ -33,7 +33,7 @@ declare class BuilderGroup {
      */
     private buildersByZIndex_;
     /**
-     * @return {!Object<string, !Object<import("../canvas.js").BuilderType, import("./Builder.js").SerializableInstructions>>} The serializable instructions
+     * @return {!Object<string, !Object<import("../canvas.js").BuilderType, import("../canvas.js").SerializableInstructions>>} The serializable instructions
      */
     finish(): {
         [x: string]: any;

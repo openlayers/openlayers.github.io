@@ -216,10 +216,10 @@ declare class TileSource<TileType extends import("../Tile.js").default = import(
      * returned.
      * @param {import("../tilecoord.js").TileCoord} tileCoord Tile coordinate.
      * @param {import("../proj/Projection.js").default} [projection] Projection.
-     * @return {import("../tilecoord.js").TileCoord} Tile coordinate to be passed to the tileUrlFunction or
+     * @return {import("../tilecoord.js").TileCoord|null} Tile coordinate to be passed to the tileUrlFunction or
      *     null if no tile URL should be created for the passed `tileCoord`.
      */
-    getTileCoordForTileUrlFunction(tileCoord: import("../tilecoord.js").TileCoord, projection?: import("../proj/Projection.js").default): import("../tilecoord.js").TileCoord;
+    getTileCoordForTileUrlFunction(tileCoord: import("../tilecoord.js").TileCoord, projection?: import("../proj/Projection.js").default): import("../tilecoord.js").TileCoord | null;
     /**
      * Remove all cached reprojected tiles from the source. The next render cycle will create new tiles.
      * @api

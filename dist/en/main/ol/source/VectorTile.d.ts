@@ -225,7 +225,7 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
      */
     private tileKeysBySourceTileUrl_;
     /**
-     @type {Object<string, Tile<FeatureType>>}
+     @type {Object<string, import("../VectorTile.js").default<FeatureType>>}
      */
     sourceTiles_: {
         [x: string]: Tile<FeatureType>;
@@ -262,9 +262,9 @@ declare class VectorTile<FeatureType extends import("../Feature.js").FeatureLike
      * @param {import("../proj/Projection.js").default} projection Projection.
      * @param {VectorRenderTile} tile Vector render tile.
      * @param {import("../Tile.js").UrlFunction} [tileUrlFunction] Tile URL function.
-     * @return {Array<import("../VectorTile.js").default>} Tile keys.
+     * @return {Array<import("../VectorTile.js").default<FeatureType>>} Tile keys.
      */
-    getSourceTiles(pixelRatio: number, projection: import("../proj/Projection.js").default, tile: VectorRenderTile, tileUrlFunction?: import("../Tile.js").UrlFunction): Array<Tile<any>>;
+    getSourceTiles(pixelRatio: number, projection: import("../proj/Projection.js").default, tile: VectorRenderTile, tileUrlFunction?: import("../Tile.js").UrlFunction): Array<import("../VectorTile.js").default<FeatureType>>;
     /**
      * @param {VectorRenderTile} tile Vector render tile.
      */

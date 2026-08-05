@@ -1,4 +1,29 @@
 export default MVT;
+export type MVTObject = {
+    [x: string]: any;
+};
+/**
+ * *
+ */
+export type MVTLayer = MVTObject & {
+    keys: Array<string>;
+    values: Array<any>;
+    features: Array<number>;
+    length?: number;
+    name?: string;
+    extent?: number;
+    version?: number;
+};
+/**
+ * *
+ */
+export type MVTRawFeature = MVTObject & {
+    layer: MVTLayer;
+    type: number;
+    properties: MVTObject;
+    id?: number;
+    geometry?: number;
+};
 export type Options<FeatureType extends import("../Feature.js").FeatureLike = RenderFeature> = {
     /**
      * Class for features returned by
@@ -25,6 +50,15 @@ export type Options<FeatureType extends import("../Feature.js").FeatureLike = Re
      */
     idProperty?: string | undefined;
 };
+/**
+ * @typedef {Object<string, *>} MVTObject
+ */
+/***
+ * @typedef {MVTObject & {keys: Array<string>, values: Array<*>, features: Array<number>, length?: number, name?: string, extent?: number, version?: number}} MVTLayer
+ */
+/***
+ * @typedef {MVTObject & {layer: MVTLayer, type: number, properties: MVTObject, id?: number, geometry?: number}} MVTRawFeature
+ */
 /**
  * @template {import("../Feature.js").FeatureLike} [FeatureType=import("../render/Feature.js").default]
  * @typedef {Object} Options
@@ -68,14 +102,15 @@ declare class MVT<FeatureType extends import("../Feature.js").FeatureLike = Rend
     private layers_;
     /**
      * @private
-     * @type {string}
+     * @type {string|undefined}
      */
     private idProperty_;
+    supportedMediaTypes: string[];
     /**
      * Read the raw geometry from the pbf offset stored in a raw feature's geometry
      * property.
      * @param {PbfReader} pbf PBF.
-     * @param {Object} feature Raw feature.
+     * @param {MVTRawFeature} feature Raw feature.
      * @param {Array<number>} flatCoordinates Array to store flat coordinates in.
      * @param {Array<number>} ends Array to store ends in.
      * @private
@@ -84,7 +119,7 @@ declare class MVT<FeatureType extends import("../Feature.js").FeatureLike = Rend
     /**
      * @private
      * @param {PbfReader} pbf PBF
-     * @param {Object} rawFeature Raw Mapbox feature.
+     * @param {MVTRawFeature} rawFeature Raw Mapbox feature.
      * @param {import("./Feature.js").ReadOptions} options Read options.
      * @return {FeatureType|null} Feature.
      */

@@ -51,10 +51,10 @@ declare class BaseTileRepresentation<TileType extends import("../Tile.js").defau
      */
     protected gutter: number;
     /**
-     * @type {import("../webgl/Helper.js").default}
+     * @type {import("./Helper.js").default|undefined}
      * @protected
      */
-    protected helper: import("../webgl/Helper.js").default;
+    protected helper: import("./Helper.js").default | undefined;
     loaded: boolean;
     ready: boolean;
     /**
@@ -68,9 +68,9 @@ declare class BaseTileRepresentation<TileType extends import("../Tile.js").defau
     protected uploadTile(): void;
     setReady(): void;
     /**
-     * @param {import("./Helper.js").default} helper The WebGL helper.
+     * @param {import("./Helper.js").default|null} helper The WebGL helper.
      */
-    setHelper(helper: import("./Helper.js").default): void;
+    setHelper(helper: import("./Helper.js").default | null): void;
 }
 import EventTarget from '../events/Target.js';
 //# sourceMappingURL=BaseTileRepresentation.d.ts.map

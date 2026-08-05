@@ -31,12 +31,12 @@ export class CustomTile extends Tile {
     private preemptive_;
     /**
      * @private
-     * @type {Array<string>}
+     * @type {Array<string>|undefined}
      */
     private grid_;
     /**
      * @private
-     * @type {Array<string>}
+     * @type {Array<string>|undefined}
      */
     private keys_;
     /**
@@ -51,9 +51,9 @@ export class CustomTile extends Tile {
     private jsonp_;
     /**
      * Get the image element for this tile.
-     * @return {HTMLImageElement} Image.
+     * @return {HTMLImageElement|null} Image.
      */
-    getImage(): HTMLImageElement;
+    getImage(): HTMLImageElement | null;
     /**
      * Synchronously returns data at given coordinate (if available).
      * @param {import("../coordinate.js").Coordinate} coordinate Coordinate.
@@ -196,7 +196,7 @@ declare class UTFGrid extends TileSource<Tile> {
     private jsonp_;
     /**
      * @private
-     * @type {LRUCache}
+     * @type {LRUCache<CustomTile>}
      */
     private tileCache_;
     /**

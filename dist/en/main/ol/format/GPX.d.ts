@@ -1,4 +1,14 @@
 export default GPX;
+export type GPXObject = {
+    [x: string]: any;
+};
+/**
+ * *
+ */
+export type GPXWriteContext = import("../xml.js").NodeStackItem & {
+    properties?: GPXObject;
+    geometryLayout?: string;
+};
 export type GPXLink = {
     /**
      * text
@@ -161,9 +171,21 @@ declare class GPX extends XMLFeature {
     readMetadataFromDocument(doc: Document): GPXMetadata | null;
     /**
      * @param {Element} node Node.
-     * @return {Object} Metadata
+     * @return {GPXMetadata | null} Metadata
      */
-    readMetadataFromNode(node: Element): any;
+    readMetadataFromNode(node: Element): GPXMetadata | null;
+    /**
+     * Encode an array of features in the GPX format as an XML node.
+     * LineString geometries are output as routes (`<rte>`), and MultiLineString
+     * as tracks (`<trk>`).
+     *
+     * @param {Array<Feature>} features Features.
+     * @param {import("./Feature.js").WriteOptions} [options] Options.
+     * @return {Node} Node.
+     * @api
+     * @override
+     */
+    override writeFeaturesNode(features: Array<Feature>, options?: import("./Feature.js").WriteOptions): Node;
 }
 import Feature from '../Feature.js';
 import XMLFeature from './XMLFeature.js';

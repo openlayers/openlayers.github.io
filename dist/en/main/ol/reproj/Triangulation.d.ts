@@ -22,12 +22,12 @@ declare class Triangulation {
      * @param {import("../proj/Projection.js").default} sourceProj Source projection.
      * @param {import("../proj/Projection.js").default} targetProj Target projection.
      * @param {import("../extent.js").Extent} targetExtent Target extent to triangulate.
-     * @param {import("../extent.js").Extent} maxSourceExtent Maximal source extent that can be used.
+     * @param {import("../extent.js").Extent|undefined} maxSourceExtent Maximal source extent that can be used.
      * @param {number} errorThreshold Acceptable error (in source units).
      * @param {?number} destinationResolution The (optional) resolution of the destination.
      * @param {import("../transform.js").Transform} [sourceMatrix] Source transform matrix.
      */
-    constructor(sourceProj: import("../proj/Projection.js").default, targetProj: import("../proj/Projection.js").default, targetExtent: import("../extent.js").Extent, maxSourceExtent: import("../extent.js").Extent, errorThreshold: number, destinationResolution: number | null, sourceMatrix?: import("../transform.js").Transform);
+    constructor(sourceProj: import("../proj/Projection.js").default, targetProj: import("../proj/Projection.js").default, targetExtent: import("../extent.js").Extent, maxSourceExtent: import("../extent.js").Extent | undefined, errorThreshold: number, destinationResolution: number | null, sourceMatrix?: import("../transform.js").Transform);
     /**
      * @type {import("../proj/Projection.js").default}
      * @private
@@ -45,7 +45,7 @@ declare class Triangulation {
      */
     private transformInv_;
     /**
-     * @type {import("../extent.js").Extent}
+     * @type {import("../extent.js").Extent|undefined}
      * @private
      */
     private maxSourceExtent_;
@@ -71,12 +71,12 @@ declare class Triangulation {
      */
     private canWrapXInSource_;
     /**
-     * @type {?number}
+     * @type {number|undefined}
      * @private
      */
     private sourceWorldWidth_;
     /**
-     * @type {?number}
+     * @type {number|undefined}
      * @private
      */
     private targetWorldWidth_;

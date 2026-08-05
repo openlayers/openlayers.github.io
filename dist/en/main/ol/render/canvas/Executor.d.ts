@@ -36,7 +36,17 @@ export type ImageOrLabelDimensions = {
     /**
      * CanvasTransform.
      */
-    canvasTransform: import("../../transform.js").Transform;
+    canvasTransform: import("../../transform.js").Transform | undefined;
+};
+export type DeclutterImageWithTextEntry = {
+    args: ReplayImageOrLabelArgs;
+    declutterMode: import("../../style/Style.js").DeclutterMode;
+};
+/**
+ * /**
+ */
+export type DeclutterImageWithTextMap = {
+    [x: number]: DeclutterImageWithTextEntry;
 };
 export type ReplayImageOrLabelArgs = {
     0: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
@@ -44,8 +54,8 @@ export type ReplayImageOrLabelArgs = {
     2: import("../canvas.js").Label | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement;
     3: ImageOrLabelDimensions;
     4: number;
-    5: Array<any>;
-    6: Array<any>;
+    5: Array<any> | null;
+    6: Array<any> | null;
 };
 export type FeatureCallback<T> = (arg0: import("../../Feature.js").FeatureLike, arg1: import("../../geom/SimpleGeometry.js").default, arg2: import("../../style/Style.js").DeclutterMode) => T;
 declare class Executor {
@@ -105,7 +115,7 @@ declare class Executor {
     protected hitDetectionInstructions: Array<any>;
     /**
      * @private
-     * @type {Array<number>}
+     * @type {Array<number>|null}
      */
     private pixelCoordinates_;
     /**
@@ -143,13 +153,13 @@ declare class Executor {
     private labels_;
     /**
      * @private
-     * @type {import("../canvas/ZIndexContext.js").default}
+     * @type {import("../canvas/ZIndexContext.js").default|null}
      */
     private zIndexContext_;
     /**
-     * @return {ZIndexContext} ZIndex context.
+     * @return {import("../canvas/ZIndexContext.js").default|null} ZIndex context.
      */
-    getZIndexContext(): ZIndexContext;
+    getZIndexContext(): import("../canvas/ZIndexContext.js").default | null;
     /**
      * @param {string|Array<string>} text Text.
      * @param {string} textKey Text style key.
@@ -159,15 +169,15 @@ declare class Executor {
      */
     createLabel(text: string | Array<string>, textKey: string, fillKey: string, strokeKey: string): import("../canvas.js").Label;
     /**
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {import("../../coordinate.js").Coordinate} p1 1st point of the background box.
      * @param {import("../../coordinate.js").Coordinate} p2 2nd point of the background box.
      * @param {import("../../coordinate.js").Coordinate} p3 3rd point of the background box.
      * @param {import("../../coordinate.js").Coordinate} p4 4th point of the background box.
-     * @param {Array<*>} fillInstruction Fill instruction.
-     * @param {Array<*>} strokeInstruction Stroke instruction.
+     * @param {Array<*>|null} fillInstruction Fill instruction.
+     * @param {Array<*>|null} strokeInstruction Stroke instruction.
      */
-    replayTextBackground_(context: CanvasRenderingContext2D, p1: import("../../coordinate.js").Coordinate, p2: import("../../coordinate.js").Coordinate, p3: import("../../coordinate.js").Coordinate, p4: import("../../coordinate.js").Coordinate, fillInstruction: Array<any>, strokeInstruction: Array<any>): void;
+    replayTextBackground_(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, p1: import("../../coordinate.js").Coordinate, p2: import("../../coordinate.js").Coordinate, p3: import("../../coordinate.js").Coordinate, p4: import("../../coordinate.js").Coordinate, fillInstruction: Array<any> | null, strokeInstruction: Array<any> | null): void;
     /**
      * @private
      * @param {number} sheetWidth Width of the sprite sheet.
@@ -191,13 +201,19 @@ declare class Executor {
     private calculateImageOrLabelDimensions_;
     /**
      * @private
-     * @param {CanvasRenderingContext2D} context Context.
+     * @param {ReplayImageOrLabelArgs} replayArgs Arguments.
+     * @return {boolean} The image or label was rendered.
+     */
+    private replayImageOrLabelArgs_;
+    /**
+     * @private
+     * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {import('../../size.js').Size} scaledCanvasSize Scaled canvas size.
      * @param {import("../canvas.js").Label|HTMLImageElement|HTMLCanvasElement|HTMLVideoElement} imageOrLabel Image.
      * @param {ImageOrLabelDimensions} dimensions Dimensions.
      * @param {number} opacity Opacity.
-     * @param {Array<*>} fillInstruction Fill instruction.
-     * @param {Array<*>} strokeInstruction Stroke instruction.
+     * @param {Array<*>|null} fillInstruction Fill instruction.
+     * @param {Array<*>|null} strokeInstruction Stroke instruction.
      * @return {boolean} The image or label was rendered.
      */
     private replayImageOrLabel_;
@@ -257,5 +273,4 @@ declare class Executor {
      */
     executeHitDetection<T>(context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D, transform: import("../../transform.js").Transform, viewRotation: number, featureCallback?: FeatureCallback<T>, hitExtent?: import("../../extent.js").Extent): T | undefined;
 }
-import ZIndexContext from '../canvas/ZIndexContext.js';
 //# sourceMappingURL=Executor.d.ts.map

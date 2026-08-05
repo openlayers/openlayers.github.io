@@ -5,15 +5,15 @@
  */
 export class ExtentEvent extends Event {
     /**
-     * @param {import("../extent.js").Extent} extent the new extent
+     * @param {import("../extent.js").Extent|null} extent the new extent
      */
-    constructor(extent: import("../extent.js").Extent);
+    constructor(extent: import("../extent.js").Extent | null);
     /**
      * The current extent.
-     * @type {import("../extent.js").Extent}
+     * @type {import("../extent.js").Extent|null}
      * @api
      */
-    extent: import("../extent.js").Extent;
+    extent: import("../extent.js").Extent | null;
 }
 export default Extent;
 export type Options = {
@@ -124,7 +124,7 @@ declare class Extent extends PointerInteraction {
     private drag_;
     /**
      * Extent of the drawn box
-     * @type {import("../extent.js").Extent}
+     * @type {import("../extent.js").Extent|null}
      * @private
      */
     private extent_;
@@ -148,13 +148,13 @@ declare class Extent extends PointerInteraction {
     private snappedToVertex_;
     /**
      * Feature for displaying the visible extent
-     * @type {Feature}
+     * @type {Feature|null}
      * @private
      */
     private extentFeature_;
     /**
      * Feature for displaying the visible pointer
-     * @type {Feature<Point>}
+     * @type {Feature<Point>|null}
      * @private
      */
     private vertexFeature_;
@@ -184,7 +184,7 @@ declare class Extent extends PointerInteraction {
      */
     private handlePointerMove_;
     /**
-     * @param {import("../extent.js").Extent} extent extent
+     * @param {import("../extent.js").Extent} [extent] extent
      * @return {Feature} extent as featrue
      * @private
      */
@@ -192,7 +192,7 @@ declare class Extent extends PointerInteraction {
     /**
      * @param {import("../coordinate.js").Coordinate} vertex location of feature
      * @param {boolean} [createIfNotExists] create the feature if it does not exist
-     * @return {Feature} vertex as feature
+     * @return {Feature<Point>|null} vertex as feature
      * @private
      */
     private updatePointerFeature_;
@@ -219,18 +219,18 @@ declare class Extent extends PointerInteraction {
     /**
      * Returns the current drawn extent in the view projection
      *
-     * @return {import("../extent.js").Extent} Drawn extent in the view projection.
+     * @return {import("../extent.js").Extent|null} Drawn extent in the view projection.
      * @api
      * @deprecated Use {@link module:ol/interaction/Extent~Extent#getExtent} instead.
      */
-    getExtentInternal(): import("../extent.js").Extent;
+    getExtentInternal(): import("../extent.js").Extent | null;
     /**
      * Manually sets the drawn extent, using the view projection.
      *
-     * @param {import("../extent.js").Extent} extent Extent
+     * @param {import("../extent.js").Extent|null} extent Extent
      * @api
      */
-    setExtent(extent: import("../extent.js").Extent): void;
+    setExtent(extent: import("../extent.js").Extent | null): void;
 }
 import PointerInteraction from './Pointer.js';
 //# sourceMappingURL=Extent.d.ts.map

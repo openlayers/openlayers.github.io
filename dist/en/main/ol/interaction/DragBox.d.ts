@@ -7,9 +7,9 @@ export class DragBoxEvent extends Event {
     /**
      * @param {string} type The event type.
      * @param {import("../coordinate.js").Coordinate} coordinate The event coordinate.
-     * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Originating event.
+     * @param {import("../MapBrowserEvent.js").default|null} mapBrowserEvent Originating event.
      */
-    constructor(type: string, coordinate: import("../coordinate.js").Coordinate, mapBrowserEvent: import("../MapBrowserEvent.js").default);
+    constructor(type: string, coordinate: import("../coordinate.js").Coordinate, mapBrowserEvent: import("../MapBrowserEvent.js").default | null);
     /**
      * The coordinate of the drag event.
      * @const
@@ -19,10 +19,10 @@ export class DragBoxEvent extends Event {
     coordinate: import("../coordinate.js").Coordinate;
     /**
      * @const
-     * @type {import("../MapBrowserEvent.js").default}
+     * @type {import("../MapBrowserEvent.js").default|null}
      * @api
      */
-    mapBrowserEvent: import("../MapBrowserEvent.js").default;
+    mapBrowserEvent: import("../MapBrowserEvent.js").default | null;
 }
 export default DragBox;
 /**
@@ -118,7 +118,7 @@ declare class DragBox extends PointerInteraction {
      */
     onBoxEnd(event: import("../MapBrowserEvent.js").default): void;
     /**
-     * @type {import("../pixel.js").Pixel}
+     * @type {import("../pixel.js").Pixel|null}
      * @private
      */
     private startPixel_;

@@ -21,7 +21,10 @@ export function getJSON(url: string): Promise<any>;
  * @return {string} The full URL.
  */
 export function resolveUrl(base: string, url: string): string;
-export function overrideXHR(xhr: any): void;
+/**
+ * @param {typeof XMLHttpRequest} xhr XMLHttpRequest constructor to use instead of the native one.
+ */
+export function overrideXHR(xhr: typeof XMLHttpRequest): void;
 export function restoreXHR(): void;
 export class ResponseError extends Error {
     /**

@@ -58,14 +58,14 @@ export function drawImageOrLabel(context: CanvasRenderingContext2D | import("../
  * @typedef Label
  * @property {number} width Width.
  * @property {number} height Height.
- * @property {Array<string|number>} contextInstructions ContextInstructions.
+ * @property {Array<*>} contextInstructions ContextInstructions.
  */
 /**
  * @typedef {Object} FillStrokeState
  * @property {import("../colorlike.js").ColorLike} [currentFillStyle] Current FillStyle.
  * @property {import("../colorlike.js").ColorLike} [currentStrokeStyle] Current StrokeStyle.
  * @property {CanvasLineCap} [currentLineCap] Current LineCap.
- * @property {Array<number>} currentLineDash Current LineDash.
+ * @property {Array<number>|null} currentLineDash Current LineDash.
  * @property {number} [currentLineDashOffset] Current LineDashOffset.
  * @property {CanvasLineJoin} [currentLineJoin] Current LineJoin.
  * @property {number} [currentLineWidth] Current LineWidth.
@@ -75,7 +75,7 @@ export function drawImageOrLabel(context: CanvasRenderingContext2D | import("../
  * @property {import("../colorlike.js").ColorLike} [fillStyle] FillStyle.
  * @property {import("../colorlike.js").ColorLike} [strokeStyle] StrokeStyle.
  * @property {CanvasLineCap} [lineCap] LineCap.
- * @property {Array<number>} lineDash LineDash.
+ * @property {Array<number>|null} lineDash LineDash.
  * @property {number} [lineDashOffset] LineDashOffset.
  * @property {CanvasLineJoin} [lineJoin] LineJoin.
  * @property {number} [lineWidth] LineWidth.
@@ -196,8 +196,8 @@ export const checkedFonts: BaseObject;
 export const textHeights: {
     [x: string]: number;
 };
-export function registerFont(fontSpec: any): Promise<void>;
-export function measureTextHeight(fontSpec: any): number;
+export function registerFont(fontSpec: string): Promise<void>;
+export function measureTextHeight(fontSpec: string): number;
 export type BuilderType = "Circle" | "Image" | "LineString" | "Polygon" | "Text" | "Default";
 export type FillState = {
     /**
@@ -217,7 +217,7 @@ export type Label = {
     /**
      * ContextInstructions.
      */
-    contextInstructions: Array<string | number>;
+    contextInstructions: Array<any>;
 };
 export type FillStrokeState = {
     /**
@@ -235,7 +235,7 @@ export type FillStrokeState = {
     /**
      * Current LineDash.
      */
-    currentLineDash: Array<number>;
+    currentLineDash: Array<number> | null;
     /**
      * Current LineDashOffset.
      */
@@ -275,7 +275,7 @@ export type FillStrokeState = {
     /**
      * LineDash.
      */
-    lineDash: Array<number>;
+    lineDash: Array<number> | null;
     /**
      * LineDashOffset.
      */

@@ -1,4 +1,25 @@
 export default WMSCapabilities;
+export type WMSObject = {
+    [x: string]: any;
+};
+export type BoundingBoxResult = {
+    /**
+     * Extent.
+     */
+    extent: Array<number | undefined>;
+    /**
+     * Resolutions.
+     */
+    res: Array<number | undefined>;
+    /**
+     * CRS.
+     */
+    crs?: string | null | undefined;
+    /**
+     * SRS.
+     */
+    srs?: string | null | undefined;
+};
 export type RootObject = {
     /**
      * Version

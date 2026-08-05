@@ -20,7 +20,7 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
     private renderedLayerRevision_;
     /**
      * @private
-     * @type {import("../../transform.js").Transform}
+     * @type {import("../../transform.js").Transform|null}
      */
     private renderedPixelToCoordinateTransform_;
     /**
@@ -40,7 +40,7 @@ declare class CanvasVectorTileLayerRenderer extends CanvasTileLayerRenderer<impo
     private tmpTransform_;
     /**
      * @private
-     * @type {Array<ZIndexContext>}
+     * @type {Array<ZIndexContext|null>|null}
      */
     private tileClipContexts_;
     /**

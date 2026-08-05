@@ -154,7 +154,7 @@ declare class Cluster<FeatureType extends import("../Feature.js").FeatureLike = 
      */
     protected geometryFunction: GeometryFunction<import("../Feature.js").FeatureLike>;
     /**
-     * @type {function(Point, Array<FeatureType>):Feature}
+     * @type {undefined|function(Point, Array<FeatureType>):Feature}
      * @private
      */
     private createCustomCluster_;

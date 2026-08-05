@@ -12,9 +12,9 @@ export function getStrideForLayout(layout: import("./Geometry.js").GeometryLayou
  * @param {SimpleGeometry} simpleGeometry Simple geometry.
  * @param {import("../transform.js").Transform} transform Transform.
  * @param {Array<number>} [dest] Destination.
- * @return {Array<number>} Transformed flat coordinates.
+ * @return {Array<number>|null} Transformed flat coordinates.
  */
-export function transformGeom2D(simpleGeometry: SimpleGeometry, transform: import("../transform.js").Transform, dest?: Array<number>): Array<number>;
+export function transformGeom2D(simpleGeometry: SimpleGeometry, transform: import("../transform.js").Transform, dest?: Array<number>): Array<number> | null;
 export default SimpleGeometry;
 /**
  * @classdesc

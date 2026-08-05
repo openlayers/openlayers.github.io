@@ -46,6 +46,14 @@ declare class WKT extends TextFeature {
      * @private
      */
     private parse_;
+    /**
+     * @protected
+     * @param {string} text Text.
+     * @param {import("./Feature.js").ReadOptions} [options] Read options.
+     * @return {import("../Feature.js").default} Feature.
+     * @override
+     */
+    protected override readFeatureFromText(text: string, options?: import("./Feature.js").ReadOptions): import("../Feature.js").default;
 }
 import TextFeature from './TextFeature.js';
 //# sourceMappingURL=WKT.d.ts.map

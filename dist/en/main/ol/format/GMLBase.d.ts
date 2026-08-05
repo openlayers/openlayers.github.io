@@ -133,13 +133,10 @@ declare class GMLBase extends XMLFeature {
      */
     protected schemaLocation: string;
     /**
-     * @type {Object<string, Object<string, Object>>}
+     * @type {import("../xml.js").ParsersNS}
      */
-    FEATURE_COLLECTION_PARSERS: {
-        [x: string]: {
-            [x: string]: any;
-        };
-    };
+    FEATURE_COLLECTION_PARSERS: import("../xml.js").ParsersNS;
+    supportedMediaTypes: string[];
     /**
      * @param {Element} node Node.
      * @param {Array<*>} objectStack Object stack.
@@ -168,9 +165,11 @@ declare class GMLBase extends XMLFeature {
      * @param {Element} node Node.
      * @param {Array<*>} objectStack Object stack.
      * @param {boolean} asFeature whether result should be wrapped as a feature.
-     * @return {Feature|Object} Feature
+     * @return {Feature|Object<string, *>} Feature
      */
-    readFeatureElementInternal(node: Element, objectStack: Array<any>, asFeature: boolean): Feature | any;
+    readFeatureElementInternal(node: Element, objectStack: Array<any>, asFeature: boolean): Feature | {
+        [x: string]: any;
+    };
     /**
      * @param {Element} node Node.
      * @param {Array<*>} objectStack Object stack.
@@ -243,9 +242,9 @@ declare class GMLBase extends XMLFeature {
     /**
      * @param {Element} node Node.
      * @param {Array<*>} objectStack Object stack.
-     * @return {Array<number>} Flat coordinates.
+     * @return {Array<number>|undefined} Flat coordinates.
      */
-    readFlatCoordinatesFromNode(node: Element, objectStack: Array<any>): Array<number>;
+    readFlatCoordinatesFromNode(node: Element, objectStack: Array<any>): Array<number> | undefined;
     namespace: string;
     /**
      * @const

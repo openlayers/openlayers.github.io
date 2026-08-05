@@ -115,7 +115,7 @@ declare class CartoDB extends XYZ {
      */
     constructor(options: Options);
     /**
-     * @type {string}
+     * @type {string|undefined}
      * @private
      */
     private account_;

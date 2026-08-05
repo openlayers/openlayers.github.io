@@ -136,6 +136,14 @@ declare class Polyline extends TextFeature {
      */
     private geometryLayout_;
     /**
+     * @protected
+     * @param {string} text Text.
+     * @param {import("./Feature.js").ReadOptions} [options] Read options.
+     * @return {import("../Feature.js").default} Feature.
+     * @override
+     */
+    protected override readFeatureFromText(text: string, options?: import("./Feature.js").ReadOptions): import("../Feature.js").default;
+    /**
      * @param {import("../Feature.js").default<LineString>} feature Features.
      * @param {import("./Feature.js").WriteOptions} [options] Write options.
      * @protected

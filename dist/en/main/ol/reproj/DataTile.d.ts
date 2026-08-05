@@ -1,4 +1,34 @@
 export default ReprojDataTile;
+export type ReprojDataSource = {
+    /**
+     * Extent.
+     */
+    extent: import("../extent.js").Extent;
+    /**
+     * Clip extent.
+     */
+    clipExtent: import("../extent.js").Extent | undefined;
+    /**
+     * Tile data.
+     */
+    data: import("../DataTile.js").ArrayLike;
+    /**
+     * Data type.
+     */
+    dataType: Float32ArrayConstructor | Uint8ClampedArrayConstructor;
+    /**
+     * Bytes per pixel.
+     */
+    bytesPerPixel: number;
+    /**
+     * Pixel size.
+     */
+    pixelSize: import("../size.js").Size;
+    /**
+     * Band count.
+     */
+    bandCount: number;
+};
 export type TileGetter = (arg0: number, arg1: number, arg2: number, arg3: number) => import("../DataTile.js").default;
 export type TileOffset = {
     /**
@@ -77,6 +107,16 @@ export type Options = {
     hasAlpha?: boolean | undefined;
 };
 /**
+ * @typedef {Object} ReprojDataSource
+ * @property {import("../extent.js").Extent} extent Extent.
+ * @property {import("../extent.js").Extent|undefined} clipExtent Clip extent.
+ * @property {import("../DataTile.js").ArrayLike} data Tile data.
+ * @property {Float32ArrayConstructor|Uint8ClampedArrayConstructor} dataType Data type.
+ * @property {number} bytesPerPixel Bytes per pixel.
+ * @property {import('../size.js').Size} pixelSize Pixel size.
+ * @property {number} bandCount Band count.
+ */
+/**
  * @typedef {function(number, number, number, number) : import("../DataTile.js").default} TileGetter
  */
 /**
@@ -140,17 +180,17 @@ declare class ReprojDataTile extends DataTile {
      */
     private gutter_;
     /**
-     * @type {import("../DataTile.js").Data}
+     * @type {import("../DataTile.js").Data|null}
      * @private
      */
     private reprojData_;
     /**
-     * @type {Error}
+     * @type {Error|null}
      * @private
      */
     private reprojError_;
     /**
-     * @type {import('../size.js').Size}
+     * @type {import('../size.js').Size|null}
      * @private
      */
     private reprojSize_;
@@ -186,7 +226,7 @@ declare class ReprojDataTile extends DataTile {
     private sourceZ_;
     /**
      * @private
-     * @type {import("../extent.js").Extent}
+     * @type {import("../extent.js").Extent|null}
      */
     private clipExtent_;
     /**

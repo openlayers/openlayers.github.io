@@ -41,9 +41,9 @@ declare class DragPan extends PointerInteraction {
      */
     private kinetic_;
     /**
-     * @type {import("../pixel.js").Pixel}
+     * @type {import("../pixel.js").Pixel|null}
      */
-    lastCentroid: import("../pixel.js").Pixel;
+    lastCentroid: import("../pixel.js").Pixel | null;
     /**
      * @type {number}
      * @private

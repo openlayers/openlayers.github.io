@@ -124,9 +124,9 @@ declare class ImageSource extends Source {
     un: ImageSourceOnSignature<void>;
     /**
      * @protected
-     * @type {import("../Image.js").Loader}
+     * @type {import("../Image.js").Loader|null}
      */
-    protected loader: import("../Image.js").Loader;
+    protected loader: import("../Image.js").Loader | null;
     /**
      * @private
      * @type {Array<number>|null}
@@ -134,7 +134,7 @@ declare class ImageSource extends Source {
     private resolutions_;
     /**
      * @private
-     * @type {import("../reproj/Image.js").default}
+     * @type {import("../reproj/Image.js").default|null}
      */
     private reprojectedImage_;
     /**
@@ -144,9 +144,9 @@ declare class ImageSource extends Source {
     private reprojectedRevision_;
     /**
      * @protected
-     * @type {import("../Image.js").default}
+     * @type {import("../Image.js").default|null}
      */
-    protected image: import("../Image.js").default;
+    protected image: import("../Image.js").default | null;
     /**
      * @private
      * @type {import("../extent.js").Extent}
@@ -164,7 +164,7 @@ declare class ImageSource extends Source {
     private static_;
     /**
      * @private
-     * @type {import("../proj/Projection.js").default}
+     * @type {import("../proj/Projection.js").default|null}
      */
     private wantedProjection_;
     /**
@@ -187,19 +187,19 @@ declare class ImageSource extends Source {
      * @param {number} resolution Resolution.
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {import("../Image.js").default} Single image.
+     * @return {import("../Image.js").default|null} Single image.
      */
-    getImage(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../Image.js").default;
+    getImage(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../Image.js").default | null;
     /**
      * @abstract
      * @param {import("../extent.js").Extent} extent Extent.
      * @param {number} resolution Resolution.
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {import("../Image.js").default} Single image.
+     * @return {import("../Image.js").default|null} Single image.
      * @protected
      */
-    protected getImageInternal(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../Image.js").default;
+    protected getImageInternal(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../Image.js").default | null;
     /**
      * Handle image change events.
      * @param {import("../events/Event.js").default} event Event.

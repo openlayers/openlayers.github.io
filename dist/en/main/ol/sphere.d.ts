@@ -1,13 +1,13 @@
 /**
  * Get the great circle distance (in meters) between two geographic coordinates.
- * @param {Array} c1 Starting coordinate.
- * @param {Array} c2 Ending coordinate.
+ * @param {import("./coordinate.js").Coordinate} c1 Starting coordinate.
+ * @param {import("./coordinate.js").Coordinate} c2 Ending coordinate.
  * @param {number} [radius] The sphere radius to use.  Defaults to the Earth's
  *     mean radius using the WGS84 ellipsoid.
  * @return {number} The great circle distance between the points (in meters).
  * @api
  */
-export function getDistance(c1: any[], c2: any[], radius?: number): number;
+export function getDistance(c1: import("./coordinate.js").Coordinate, c2: import("./coordinate.js").Coordinate, radius?: number): number;
 /**
  * Get the spherical length of a geometry.  This length is the sum of the
  * great circle distances between coordinates.  For polygons, the length is

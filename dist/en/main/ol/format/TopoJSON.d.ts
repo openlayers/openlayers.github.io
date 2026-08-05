@@ -8,6 +8,9 @@ export type TopoJSONLineString = import("topojson-specification").LineString;
 export type TopoJSONMultiLineString = import("topojson-specification").MultiLineString;
 export type TopoJSONPolygon = import("topojson-specification").Polygon;
 export type TopoJSONMultiPolygon = import("topojson-specification").MultiPolygon;
+export type TopoJSONObject = {
+    [x: string]: any;
+};
 export type Options = {
     /**
      * Default data projection.
@@ -49,6 +52,9 @@ export type Options = {
  * @typedef {import("topojson-specification").MultiLineString} TopoJSONMultiLineString
  * @typedef {import("topojson-specification").Polygon} TopoJSONPolygon
  * @typedef {import("topojson-specification").MultiPolygon} TopoJSONMultiPolygon
+ */
+/**
+ * @typedef {Object<string, *>} TopoJSONObject
  */
 /**
  * @typedef {Object} Options

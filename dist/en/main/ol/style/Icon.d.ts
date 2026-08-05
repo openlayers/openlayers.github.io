@@ -118,7 +118,7 @@ declare class Icon extends ImageStyle {
     private anchor_;
     /**
      * @private
-     * @type {Array<number>}
+     * @type {Array<number>|null}
      */
     private normalizedAnchor_;
     /**
@@ -143,12 +143,12 @@ declare class Icon extends ImageStyle {
     private crossOrigin_;
     /**
      * @private
-     * @type {ReferrerPolicy}
+     * @type {ReferrerPolicy|undefined}
      */
     private referrerPolicy_;
     /**
      * @private
-     * @type {import("../color.js").Color}
+     * @type {import("../color.js").Color|null}
      */
     private color_;
     /**
@@ -168,12 +168,12 @@ declare class Icon extends ImageStyle {
     private offsetOrigin_;
     /**
      * @private
-     * @type {Array<number>}
+     * @type {Array<number>|null}
      */
     private origin_;
     /**
      * @private
-     * @type {import("../size.js").Size}
+     * @type {import("../size.js").Size|null}
      */
     private size_;
     initialOptions_: Options | undefined;
@@ -194,10 +194,10 @@ declare class Icon extends ImageStyle {
     setAnchor(anchor: Array<number>): void;
     /**
      * Get the icon color.
-     * @return {import("../color.js").Color} Color.
+     * @return {import("../color.js").Color|null} Color.
      * @api
      */
-    getColor(): import("../color.js").Color;
+    getColor(): import("../color.js").Color | null;
     /**
      * Set the icon color.
      *
@@ -236,16 +236,16 @@ declare class Icon extends ImageStyle {
     setSrc(src: string): void;
     /**
      * Get the width of the icon (in pixels). Will return undefined when the icon image is not yet loaded.
-     * @return {number} Icon width (in pixels).
+     * @return {number|undefined} Icon width (in pixels).
      * @api
      */
-    getWidth(): number;
+    getWidth(): number | undefined;
     /**
      * Get the height of the icon (in pixels). Will return undefined when the icon image is not yet loaded.
-     * @return {number} Icon height (in pixels).
+     * @return {number|undefined} Icon height (in pixels).
      * @api
      */
-    getHeight(): number;
+    getHeight(): number | undefined;
 }
 import ImageStyle from './Image.js';
 //# sourceMappingURL=Icon.d.ts.map

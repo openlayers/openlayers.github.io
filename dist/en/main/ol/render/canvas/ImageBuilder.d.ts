@@ -2,12 +2,12 @@ export default CanvasImageBuilder;
 declare class CanvasImageBuilder extends CanvasBuilder {
     /**
      * @private
-     * @type {import('../../DataTile.js').ImageLike}
+     * @type {import('../../DataTile.js').ImageLike|null}
      */
     private hitDetectionImage_;
     /**
      * @private
-     * @type {import('../../DataTile.js').ImageLike}
+     * @type {import('../../DataTile.js').ImageLike|null}
      */
     private image_;
     /**
@@ -67,13 +67,13 @@ declare class CanvasImageBuilder extends CanvasBuilder {
     private width_;
     /**
      * @private
-     * @type {import('../../style/Style.js').DeclutterMode}
+     * @type {import('../../style/Style.js').DeclutterMode|undefined}
      */
     private declutterMode_;
     /**
      * Data shared with a text builder for combined decluttering.
      * @private
-     * @type {import("../canvas.js").DeclutterImageWithText}
+     * @type {import("../canvas.js").DeclutterImageWithText|undefined}
      */
     private declutterImageWithText_;
     /**

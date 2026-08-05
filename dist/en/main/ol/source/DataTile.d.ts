@@ -237,7 +237,7 @@ declare class DataTileSource<TileType extends import("../Tile.js").default = Dat
     private crossOrigin_;
     /**
      * @private
-     * @type {ReferrerPolicy}
+     * @type {ReferrerPolicy|undefined}
      */
     private referrerPolicy_;
     /**

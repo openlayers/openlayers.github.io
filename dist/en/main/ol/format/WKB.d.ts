@@ -92,11 +92,11 @@ declare class WKB extends FeatureFormat<Feature<import("../geom/Geometry.js").de
      *
      * @param {string|ArrayBuffer|ArrayBufferView} source Source.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
-     * @return {import("../geom/Geometry.js").default} Geometry.
+     * @return {import("../geom/Geometry.js").default|null} Geometry.
      * @api
      * @override
      */
-    override readGeometry(source: string | ArrayBuffer | ArrayBufferView, options?: import("./Feature.js").ReadOptions): import("../geom/Geometry.js").default;
+    override readGeometry(source: string | ArrayBuffer | ArrayBufferView, options?: import("./Feature.js").ReadOptions): import("../geom/Geometry.js").default | null;
     /**
      * Read the projection from a source.
      *

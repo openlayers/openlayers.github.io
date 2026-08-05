@@ -3,20 +3,24 @@
  * @param {import("../extent.js").Extent} extent Extent.
  * @param {import("../size.js").Size} size Size.
  * @param {import("../proj/Projection.js").default} projection Projection.
- * @param {Object} params OGC Map params. Will be modified in place.
+ * @param {Object<string, *>} params OGC Map params. Will be modified in place.
  * @return {string} Request URL.
  */
-export function getRequestUrl(baseUrl: string, extent: import("../extent.js").Extent, size: import("../size.js").Size, projection: import("../proj/Projection.js").default, params: any): string;
+export function getRequestUrl(baseUrl: string, extent: import("../extent.js").Extent, size: import("../size.js").Size, projection: import("../proj/Projection.js").default, params: {
+    [x: string]: any;
+}): string;
 /**
  * @param {import("../extent.js").Extent} extent Extent.
  * @param {number} resolution Resolution.
  * @param {number} pixelRatio pixel ratio.
  * @param {import("../proj.js").Projection} projection Projection.
  * @param {string} url OGC Map service url.
- * @param {Object} params OGC Map params.
+ * @param {Object<string, *>} params OGC Map params.
  * @return {string} Image src.
  */
-export function getImageSrc(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj.js").Projection, url: string, params: any): string;
+export function getImageSrc(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj.js").Projection, url: string, params: {
+    [x: string]: any;
+}): string;
 /**
  * @typedef {Object} LoaderOptions
  * @property {null|string} [crossOrigin] The `crossOrigin` attribute for loaded images.  Note that

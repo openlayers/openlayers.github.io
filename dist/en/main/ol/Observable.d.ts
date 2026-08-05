@@ -19,6 +19,12 @@ export type EventTypes = "change" | "error";
  * *
  */
 export type ObservableOnSignature<Return> = OnSignature<EventTypes, import("./events/Event.js").default, Return> & CombinedOnSignature<EventTypes, Return>;
+/**
+ * *
+ */
+export type ListenerWithKey = any & {
+    ol_key?: import("./events.js").EventsKey | Array<import("./events.js").EventsKey>;
+};
 /***
  * @template {string} Type
  * @template {Event|import("./events/Event.js").default} EventClass
@@ -36,6 +42,9 @@ export type ObservableOnSignature<Return> = OnSignature<EventTypes, import("./ev
 /***
  * @template Return
  * @typedef {OnSignature<EventTypes, import("./events/Event.js").default, Return> & CombinedOnSignature<EventTypes, Return>} ObservableOnSignature
+ */
+/***
+ * @typedef {Object & {ol_key?: import("./events.js").EventsKey|Array<import("./events.js").EventsKey>}} ListenerWithKey
  */
 /**
  * @classdesc

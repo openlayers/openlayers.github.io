@@ -74,10 +74,10 @@ declare class WebGLLayerRenderer<LayerType extends import("../../layer/Layer.js"
      */
     private uniforms_;
     /**
-     * @type {WebGLHelper}
+     * @type {import("../../webgl/Helper.js").default}
      * @protected
      */
-    protected helper: WebGLHelper;
+    protected helper: import("../../webgl/Helper.js").default;
     onMapChanged_: () => void;
     /**
      * @param {WebGLRenderingContext} context The WebGL rendering context.
@@ -146,5 +146,4 @@ declare class WebGLLayerRenderer<LayerType extends import("../../layer/Layer.js"
     protected postRender(context: WebGLRenderingContext, frameState: import("../../Map.js").FrameState): void;
 }
 import LayerRenderer from '../Layer.js';
-import WebGLHelper from '../../webgl/Helper.js';
 //# sourceMappingURL=Layer.d.ts.map

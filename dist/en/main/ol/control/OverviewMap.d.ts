@@ -126,7 +126,7 @@ declare class OverviewMap extends Control {
     private ovmapDiv_;
     /**
      * Explicitly given view to be used instead of a view derived from the main map.
-     * @type {View}
+     * @type {View|undefined}
      * @private
      */
     private view_;

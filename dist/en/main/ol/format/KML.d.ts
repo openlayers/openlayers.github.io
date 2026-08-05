@@ -72,6 +72,16 @@ export type GxTrackObject = {
      */
     whens: Array<number>;
 };
+export type KMLObject = {
+    [x: string]: any;
+};
+/**
+ * *
+ */
+export type KMLNodeStackItem = import("../xml.js").NodeStackItem & {
+    layout?: import("../geom/Geometry.js").GeometryLayout;
+    stride?: number;
+};
 export type Options = {
     /**
      * Extract styles from the KML.
@@ -142,7 +152,7 @@ declare class KML extends XMLFeature {
     constructor(options?: Options);
     /**
      * @private
-     * @type {Array<Style>}
+     * @type {Array<Style>|null}
      */
     private defaultStyle_;
     /**
@@ -169,13 +179,14 @@ declare class KML extends XMLFeature {
      */
     crossOrigin_: null | string;
     /**
-     * @type {ReferrerPolicy}
+     * @type {ReferrerPolicy|undefined}
      */
-    referrerPolicy_: ReferrerPolicy;
+    referrerPolicy_: ReferrerPolicy | undefined;
     /**
      * @type {IconUrlFunction}
      */
     iconUrlFunction_: IconUrlFunction;
+    supportedMediaTypes: string[];
     /**
      * @param {Node} node Node.
      * @param {Array<*>} objectStack Object stack.
@@ -373,6 +384,18 @@ declare class KML extends XMLFeature {
          */
         Roll?: number | undefined;
     }>;
+    /**
+     * Encode an array of features in the KML format as an XML node. GeometryCollections,
+     * MultiPoints, MultiLineStrings, and MultiPolygons are output as MultiGeometries.
+     *
+     * @param {Array<Feature>} features Features.
+     * @param {import("./Feature.js").WriteOptions} [options] Options.
+     * @return {Node} Node.
+     * @api
+     * @override
+     */
+    override writeFeaturesNode(features: Array<Feature>, options?: import("./Feature.js").WriteOptions): Node;
 }
 import XMLFeature from './XMLFeature.js';
+import Feature from '../Feature.js';
 //# sourceMappingURL=KML.d.ts.map

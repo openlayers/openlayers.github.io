@@ -188,7 +188,7 @@ export type TraceTarget = import("./tracing.js").TraceTarget;
  * geometry is the geometry that is returned when the function is called without
  * a second argument.
  */
-export type GeometryFunction = (arg0: SketchCoordType, arg1: import("../geom/SimpleGeometry.js").default, arg2: import("../proj/Projection.js").default) => import("../geom/SimpleGeometry.js").default;
+export type GeometryFunction = (arg0: SketchCoordType, arg1: import("../geom/SimpleGeometry.js").default | undefined, arg2: import("../proj/Projection.js").default) => import("../geom/SimpleGeometry.js").default;
 /**
  * Draw mode.  This collapses multi-part geometry types with their single-part
  * cousins.
@@ -250,12 +250,12 @@ declare class Draw extends PointerInteraction {
      */
     private shouldHandle_;
     /**
-     * @type {import("../pixel.js").Pixel}
+     * @type {import("../pixel.js").Pixel|null}
      * @private
      */
     private downPx_;
     /**
-     * @type {ReturnType<typeof setTimeout>}
+     * @type {ReturnType<typeof setTimeout>|undefined}
      * @private
      */
     private downTimeout_;
@@ -359,37 +359,37 @@ declare class Draw extends PointerInteraction {
     /**
      * Finish coordinate for the feature (first point for polygons, last point for
      * linestrings).
-     * @type {import("../coordinate.js").Coordinate}
+     * @type {import("../coordinate.js").Coordinate|null}
      * @private
      */
     private finishCoordinate_;
     /**
      * Sketch feature.
-     * @type {Feature<import('../geom/SimpleGeometry.js').default>}
+     * @type {Feature<import('../geom/SimpleGeometry.js').default>|null}
      * @private
      */
     private sketchFeature_;
     /**
      * Sketch point.
-     * @type {Feature<Point>}
+     * @type {Feature<Point>|null}
      * @private
      */
     private sketchPoint_;
     /**
      * Sketch coordinates. Used when drawing a line or polygon.
-     * @type {SketchCoordType}
+     * @type {SketchCoordType|null}
      * @private
      */
     private sketchCoords_;
     /**
      * Sketch line. Used when drawing polygon.
-     * @type {Feature<LineString>}
+     * @type {Feature<LineString>|null}
      * @private
      */
     private sketchLine_;
     /**
      * Sketch line coordinates. Used when drawing a polygon or circle.
-     * @type {LineCoordType}
+     * @type {LineCoordType|null}
      * @private
      */
     private sketchLineCoords_;
@@ -574,7 +574,7 @@ declare class Draw extends PointerInteraction {
     /**
      * Add a new coordinate to the drawing.
      * @param {!PointCoordType} coordinate Coordinate
-     * @return {Feature<import("../geom/SimpleGeometry.js").default>} The sketch feature.
+     * @return {Feature<import("../geom/SimpleGeometry.js").default>|null} The sketch feature.
      * @private
      */
     private addToDrawing_;

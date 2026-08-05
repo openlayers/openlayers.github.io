@@ -79,10 +79,10 @@ declare class MultiLineString extends SimpleGeometry {
     /**
      * Return the linestring at the specified index.
      * @param {number} index Index.
-     * @return {LineString} LineString.
+     * @return {LineString|null} LineString.
      * @api
      */
-    getLineString(index: number): LineString;
+    getLineString(index: number): LineString | null;
     /**
      * Return the linestrings of this multilinestring.
      * @return {Array<LineString>} LineStrings.

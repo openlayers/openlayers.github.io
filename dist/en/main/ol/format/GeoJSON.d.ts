@@ -98,6 +98,7 @@ declare class GeoJSON<FeatureType extends import("../Feature.js").FeatureLike = 
      * @private
      */
     private extractGeometryName_;
+    supportedMediaTypes: string[];
     /**
      * @param {GeoJSONGeometry} object Object.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.

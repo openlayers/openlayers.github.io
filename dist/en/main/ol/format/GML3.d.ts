@@ -1,4 +1,17 @@
 export default GML3;
+export type GML3Context = {
+    [x: string]: any;
+};
+/**
+ * *
+ */
+export type GML3WriteContext = GML3Context & {
+    serializers?: {
+        [x: string]: {
+            [x: string]: import("../xml.js").Serializer;
+        };
+    };
+};
 /**
  * @classdesc
  * Feature format for reading and writing data in the GML format
@@ -64,9 +77,9 @@ declare class GML3 extends GMLBase {
     /**
      * @param {Element} node Node.
      * @param {Array<*>} objectStack Object stack.
-     * @return {Array<(Array<number>)>|undefined} flat coordinates.
+     * @return {Array<Array<number>|null>|undefined} flat coordinates.
      */
-    readPatch(node: Element, objectStack: Array<any>): Array<(Array<number>)> | undefined;
+    readPatch(node: Element, objectStack: Array<any>): Array<Array<number> | null> | undefined;
     /**
      * @param {Element} node Node.
      * @param {Array<*>} objectStack Object stack.
@@ -76,9 +89,9 @@ declare class GML3 extends GMLBase {
     /**
      * @param {Element} node Node.
      * @param {Array<*>} objectStack Object stack.
-     * @return {Array<(Array<number>)>|undefined} flat coordinates.
+     * @return {Array<Array<number>|null>|undefined} flat coordinates.
      */
-    readPolygonPatch(node: Element, objectStack: Array<any>): Array<(Array<number>)> | undefined;
+    readPolygonPatch(node: Element, objectStack: Array<any>): Array<Array<number> | null> | undefined;
     /**
      * @param {Element} node Node.
      * @param {Array<*>} objectStack Object stack.
@@ -278,6 +291,16 @@ declare class GML3 extends GMLBase {
      * @private
      */
     private GEOMETRY_NODE_FACTORY_;
+    /**
+     * Encode a geometry in GML 3.1.1 Simple Features.
+     *
+     * @param {import("../geom/Geometry.js").default} geometry Geometry.
+     * @param {import("./Feature.js").WriteOptions} [options] Options.
+     * @return {Node} Node.
+     * @api
+     * @override
+     */
+    override writeGeometryNode(geometry: import("../geom/Geometry.js").default, options?: import("./Feature.js").WriteOptions): Node;
     /**
      * Encode an array of features in the GML 3.1.1 format as an XML node.
      *

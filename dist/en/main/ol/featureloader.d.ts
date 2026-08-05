@@ -41,14 +41,14 @@
  * @param {import("./extent.js").Extent} extent Extent.
  * @param {number} resolution Resolution.
  * @param {import("./proj/Projection.js").default} projection Projection.
- * @param {function(Array<FeatureType>, import("./proj/Projection.js").default): void} success Success
+ * @param {function(Array<FeatureType>, import("./proj/Projection.js").default|undefined): void} success Success
  *      Function called with the loaded features and optionally with the data projection.
  * @param {function(): void} failure Failure
  *      Function called when loading failed.
  */
 export function loadFeaturesXhr<FeatureType extends import("./Feature.js").FeatureLike = import("./Feature.js").default<import("./geom.js").Geometry, {
     [x: string]: any;
-}>>(url: string | FeatureUrlFunction, format: import("./format/Feature.js").default<FeatureType>, extent: import("./extent.js").Extent, resolution: number, projection: import("./proj/Projection.js").default, success: (arg0: Array<FeatureType>, arg1: import("./proj/Projection.js").default) => void, failure: () => void): void;
+}>>(url: string | FeatureUrlFunction, format: import("./format/Feature.js").default<FeatureType>, extent: import("./extent.js").Extent, resolution: number, projection: import("./proj/Projection.js").default, success: (arg0: Array<FeatureType>, arg1: import("./proj/Projection.js").default | undefined) => void, failure: () => void): void;
 /**
  * Create an XHR feature loader for a `url` and `format`. The feature loader
  * loads features (with XHR), parses the features, and adds them to the

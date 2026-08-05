@@ -12,7 +12,7 @@ declare class MapBrowserEventHandler extends Target {
      */
     private map_;
     /**
-     * @type {ReturnType<typeof setTimeout>}
+     * @type {ReturnType<typeof setTimeout>|undefined}
      * @private
      */
     private clickTimeoutId_;
@@ -55,10 +55,11 @@ declare class MapBrowserEventHandler extends Target {
     private trackedTouches_;
     /**
      * @private
+     * @type {HTMLElement|undefined}
      */
     private element_;
     /**
-     * @type {?import("./events.js").EventsKey}
+     * @type {?import("./events.js").EventsKey|undefined}
      * @private
      */
     private pointerdownListenerKey_;
@@ -68,7 +69,7 @@ declare class MapBrowserEventHandler extends Target {
      */
     private originalPointerMoveEvent_;
     /**
-     * @type {?import("./events.js").EventsKey}
+     * @type {?import("./events.js").EventsKey|undefined}
      * @private
      */
     private relayedListenerKey_;

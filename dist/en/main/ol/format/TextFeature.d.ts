@@ -16,19 +16,19 @@ declare class TextFeature extends FeatureFormat<import("../Feature.js").default<
      *
      * @param {Document|Element|Object|string} source Source.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
-     * @return {import("../Feature.js").default} Feature.
+     * @return {import("../Feature.js").default|null} Feature.
      * @api
      * @override
      */
-    override readFeature(source: Document | Element | any | string, options?: import("./Feature.js").ReadOptions): import("../Feature.js").default;
+    override readFeature(source: Document | Element | any | string, options?: import("./Feature.js").ReadOptions): import("../Feature.js").default | null;
     /**
      * @abstract
      * @param {string} text Text.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @protected
-     * @return {import("../Feature.js").default} Feature.
+     * @return {import("../Feature.js").default|null} Feature.
      */
-    protected readFeatureFromText(text: string, options?: import("./Feature.js").ReadOptions): import("../Feature.js").default;
+    protected readFeatureFromText(text: string, options?: import("./Feature.js").ReadOptions): import("../Feature.js").default | null;
     /**
      * @abstract
      * @param {string} text Text.
@@ -37,6 +37,16 @@ declare class TextFeature extends FeatureFormat<import("../Feature.js").default<
      * @return {Array<import("../Feature.js").default>} Features.
      */
     protected readFeaturesFromText(text: string, options?: import("./Feature.js").ReadOptions): Array<import("../Feature.js").default>;
+    /**
+     * Read the geometry from the source.
+     *
+     * @param {Document|Element|Object|string} source Source.
+     * @param {import("./Feature.js").ReadOptions} [options] Read options.
+     * @return {import("../geom/Geometry.js").default} Geometry.
+     * @api
+     * @override
+     */
+    override readGeometry(source: Document | Element | any | string, options?: import("./Feature.js").ReadOptions): import("../geom/Geometry.js").default;
     /**
      * @abstract
      * @param {string} text Text.

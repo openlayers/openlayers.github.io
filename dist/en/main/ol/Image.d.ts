@@ -172,9 +172,9 @@ declare class ImageWrapper extends EventTarget {
      */
     getExtent(): import("./extent.js").Extent;
     /**
-     * @return {import('./DataTile.js').ImageLike} Image.
+     * @return {import('./DataTile.js').ImageLike|null} Image.
      */
-    getImage(): import("./DataTile.js").ImageLike;
+    getImage(): import("./DataTile.js").ImageLike | null;
     /**
      * @return {number} PixelRatio.
      */

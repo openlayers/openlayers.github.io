@@ -116,7 +116,7 @@ export type Animation = {
     /**
      * Callback.
      */
-    callback: (arg0: boolean) => void;
+    callback?: ((arg0: boolean) => void) | undefined;
 };
 export type Constraints = {
     /**
@@ -525,7 +525,7 @@ declare class View extends BaseObject<ViewOptions> {
     private hints_;
     /**
      * @private
-     * @type {Array<Array<Animation>>}
+     * @type {Array<Array<Animation>|null>}
      */
     private animations_;
     /**
@@ -536,7 +536,7 @@ declare class View extends BaseObject<ViewOptions> {
     /**
      * @private
      * @const
-     * @type {import("./proj/Projection.js").default}
+     * @type {import("./proj/Projection.js").default|null}
      */
     private projection_;
     /**
@@ -546,7 +546,7 @@ declare class View extends BaseObject<ViewOptions> {
     private viewportSize_;
     /**
      * @private
-     * @type {import("./coordinate.js").Coordinate|undefined}
+     * @type {import("./coordinate.js").Coordinate|null|undefined}
      */
     private targetCenter_;
     /**
@@ -561,7 +561,7 @@ declare class View extends BaseObject<ViewOptions> {
     private targetRotation_;
     /**
      * @private
-     * @type {import("./coordinate.js").Coordinate}
+     * @type {import("./coordinate.js").Coordinate|null}
      */
     private nextCenter_;
     /**
@@ -1009,9 +1009,9 @@ declare class View extends BaseObject<ViewOptions> {
     setCenter(center: import("./coordinate.js").Coordinate | undefined): void;
     /**
      * Set the center using the view projection (not the user projection).
-     * @param {import("./coordinate.js").Coordinate|undefined} center The center of the view.
+     * @param {import("./coordinate.js").Coordinate|null|undefined} center The center of the view.
      */
-    setCenterInternal(center: import("./coordinate.js").Coordinate | undefined): void;
+    setCenterInternal(center: import("./coordinate.js").Coordinate | null | undefined): void;
     /**
      * @param {import("./ViewHint.js").default} hint Hint.
      * @param {number} delta Delta.

@@ -23,7 +23,7 @@ export type Options = {
     /**
      * Declutter mode: `declutter`, `obstacle`, `none`.
      */
-    declutterMode: import("../style/Style.js").DeclutterMode;
+    declutterMode?: import("../style/Style.js").DeclutterMode | undefined;
 };
 /**
  * @typedef {Object} Options
@@ -32,7 +32,7 @@ export type Options = {
  * @property {number} rotation Rotation.
  * @property {number|import("../size.js").Size} scale Scale.
  * @property {Array<number>} displacement Displacement.
- * @property {import('../style/Style.js').DeclutterMode} declutterMode Declutter mode: `declutter`, `obstacle`, `none`.
+ * @property {import('../style/Style.js').DeclutterMode} [declutterMode] Declutter mode: `declutter`, `obstacle`, `none`.
  */
 /**
  * @classdesc
@@ -79,7 +79,7 @@ declare class ImageStyle {
     private displacement_;
     /**
      * @private
-     * @type {import('../style/Style.js').DeclutterMode}
+     * @type {import('../style/Style.js').DeclutterMode|undefined}
      */
     private declutterMode_;
     /**
@@ -125,17 +125,17 @@ declare class ImageStyle {
     getDisplacement(): Array<number>;
     /**
      * Get the declutter mode of the shape
-     * @return {import("./Style.js").DeclutterMode} Shape's declutter mode
+     * @return {import("./Style.js").DeclutterMode|undefined} Shape's declutter mode
      * @api
      */
-    getDeclutterMode(): import("./Style.js").DeclutterMode;
+    getDeclutterMode(): import("./Style.js").DeclutterMode | undefined;
     /**
      * Get the anchor point in pixels. The anchor determines the center point for the
      * symbolizer.
      * @abstract
-     * @return {Array<number>} Anchor.
+     * @return {Array<number>|null} Anchor.
      */
-    getAnchor(): Array<number>;
+    getAnchor(): Array<number> | null;
     /**
      * Get the image element for the symbolizer.
      * @abstract
@@ -161,21 +161,21 @@ declare class ImageStyle {
     getImageState(): any;
     /**
      * @abstract
-     * @return {import("../size.js").Size} Image size.
+     * @return {import("../size.js").Size|null} Image size.
      */
-    getImageSize(): import("../size.js").Size;
+    getImageSize(): import("../size.js").Size | null;
     /**
      * Get the origin of the symbolizer.
      * @abstract
-     * @return {Array<number>} Origin.
+     * @return {Array<number>|null} Origin.
      */
-    getOrigin(): Array<number>;
+    getOrigin(): Array<number> | null;
     /**
      * Get the size of the symbolizer (in pixels).
      * @abstract
-     * @return {import("../size.js").Size} Size.
+     * @return {import("../size.js").Size|null} Size.
      */
-    getSize(): import("../size.js").Size;
+    getSize(): import("../size.js").Size | null;
     /**
      * Set the displacement.
      *

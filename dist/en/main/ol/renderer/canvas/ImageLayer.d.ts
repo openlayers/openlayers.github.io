@@ -3,12 +3,13 @@ export default CanvasImageLayerRenderer;
  * @classdesc
  * Canvas renderer for image layers.
  * @api
+ * @extends {CanvasLayerRenderer<import("../../layer/Image.js").default<import("../../source/Image.js").default>>}
  */
-declare class CanvasImageLayerRenderer extends CanvasLayerRenderer<any> {
+declare class CanvasImageLayerRenderer extends CanvasLayerRenderer<import("../../layer/Image.js").default<import("../../source/Image.js").default>> {
     /**
-     * @param {import("../../layer/Image.js").default} imageLayer Image layer.
+     * @param {import("../../layer/Image.js").default<import("../../source/Image.js").default>} imageLayer Image layer.
      */
-    constructor(imageLayer: import("../../layer/Image.js").default<any>);
+    constructor(imageLayer: import("../../layer/Image.js").default<import("../../source/Image.js").default>);
     /**
      * @protected
      * @type {?import("../../Image.js").default}
@@ -20,15 +21,15 @@ declare class CanvasImageLayerRenderer extends CanvasLayerRenderer<any> {
      */
     private renderedSourceRevision_;
     /**
-     * @return {import('../../DataTile.js').ImageLike} Image.
+     * @return {import('../../DataTile.js').ImageLike|null} Image.
      */
-    getImage(): import("../../DataTile.js").ImageLike;
+    getImage(): import("../../DataTile.js").ImageLike | null;
     /**
      * @param {import("../../pixel.js").Pixel} pixel Pixel.
-     * @return {Uint8ClampedArray} Data at the pixel location.
+     * @return {Uint8ClampedArray|null} Data at the pixel location.
      * @override
      */
-    override getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray;
+    override getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray | null;
     /**
      * Render the layer.
      * @param {import("../../Map.js").FrameState} frameState Frame state.

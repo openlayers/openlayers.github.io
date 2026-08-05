@@ -4,10 +4,10 @@
  * @param {number} resolution Resolution.
  * @param {number} pixelRatio Pixel ratio.
  * @param {import("../proj/Projection.js").default} projection Projection.
- * @param {Object} params Params.
+ * @param {Record<string, *>} params Params.
  * @return {string} Request URL.
  */
-export function getRequestUrl(baseUrl: string, extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default, params: any): string;
+export function getRequestUrl(baseUrl: string, extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default, params: Record<string, any>): string;
 /**
  * @typedef {Object} LoaderOptions
  * @property {null|string} [crossOrigin] The `crossOrigin` attribute for loaded images.  Note that

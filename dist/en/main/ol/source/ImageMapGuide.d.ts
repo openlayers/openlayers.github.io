@@ -57,7 +57,9 @@ export type Options = {
     /**
      * Additional parameters.
      */
-    params?: any;
+    params?: {
+        [x: string]: string | number;
+    } | undefined;
 };
 /**
  * @typedef {Object} Options
@@ -79,7 +81,7 @@ export type Options = {
  * @property {import("../Image.js").LoadFunction} [imageLoadFunction] Optional function to load an image given a URL.
  * @property {boolean} [interpolate=true] Use interpolated values when resampling.  By default,
  * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
- * @property {Object} [params] Additional parameters.
+ * @property {Object<string, string|number>} [params] Additional parameters.
  */
 /**
  * @classdesc
@@ -100,7 +102,7 @@ declare class ImageMapGuide extends ImageSource {
     private crossOrigin_;
     /**
      * @private
-     * @type {ReferrerPolicy}
+     * @type {ReferrerPolicy|undefined}
      */
     private referrerPolicy_;
     /**
@@ -150,7 +152,7 @@ declare class ImageMapGuide extends ImageSource {
     private renderedRevision_;
     /**
      * @private
-     * @type {import("../proj/Projection.js").default}
+     * @type {import("../proj/Projection.js").default|null}
      */
     private loaderProjection_;
     /**

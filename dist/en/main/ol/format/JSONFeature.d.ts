@@ -13,6 +13,17 @@ declare class JSONFeature<FeatureType extends import("../Feature.js").FeatureLik
     [x: string]: any;
 }>> extends FeatureFormat<FeatureType> {
     /**
+     * Read a feature.  Only works for a single feature. Use `readFeatures` to
+     * read a feature collection.
+     *
+     * @param {ArrayBuffer|Document|Element|Object|string} source Source.
+     * @param {import("./Feature.js").ReadOptions} [options] Read options.
+     * @return {FeatureType|Array<FeatureType>} Feature.
+     * @api
+     * @override
+     */
+    override readFeature(source: ArrayBuffer | Document | Element | any | string, options?: import("./Feature.js").ReadOptions): FeatureType | Array<FeatureType>;
+    /**
      * @abstract
      * @param {Object} object Object.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
@@ -28,6 +39,16 @@ declare class JSONFeature<FeatureType extends import("../Feature.js").FeatureLik
      * @return {Array<FeatureType>} Features.
      */
     protected readFeaturesFromObject(object: any, options?: import("./Feature.js").ReadOptions): Array<FeatureType>;
+    /**
+     * Read a geometry.
+     *
+     * @param {ArrayBuffer|Document|Element|Object|string} source Source.
+     * @param {import("./Feature.js").ReadOptions} [options] Read options.
+     * @return {import("../geom/Geometry.js").default} Geometry.
+     * @api
+     * @override
+     */
+    override readGeometry(source: ArrayBuffer | Document | Element | any | string, options?: import("./Feature.js").ReadOptions): import("../geom/Geometry.js").default;
     /**
      * @abstract
      * @param {Object} object Object.

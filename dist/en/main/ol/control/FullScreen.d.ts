@@ -2,6 +2,19 @@ export default FullScreen;
 /**
  * *
  */
+export type FullScreenElement = HTMLElement & {
+    webkitRequestFullscreen?: () => void;
+};
+/**
+ * *
+ */
+export type FullScreenDocument = Document & {
+    webkitIsFullScreen?: boolean;
+    webkitExitFullscreen?: () => void;
+};
+/**
+ * *
+ */
 export type FullScreenOnSignature<Return> = import("../Observable.js").OnSignature<import("../Observable.js").EventTypes | "enterfullscreen" | "leavefullscreen", import("../events/Event.js").default, Return> & import("../Observable.js").OnSignature<import("../ObjectEventType.js").Types, import("../Object.js").ObjectEvent, Return> & import("../Observable.js").CombinedOnSignature<import("../Observable.js").EventTypes | "enterfullscreen" | "leavefullscreen" | import("../ObjectEventType.js").Types, Return>;
 export type Options = {
     /**

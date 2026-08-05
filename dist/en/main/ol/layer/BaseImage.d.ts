@@ -105,7 +105,7 @@ export type Options<ImageSourceType extends import("../source/Image.js").default
  * options means that `title` is observable, and has get/set accessors.
  *
  * @template {import("../source/Image.js").default} ImageSourceType
- * @template {import("../renderer/Layer.js").default} RendererType
+ * @template {import("../renderer/Layer.js").default<*>} RendererType
  * @extends {Layer<ImageSourceType, RendererType>}
  * @api
  */

@@ -250,7 +250,7 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
      */
     private sourceInfo_;
     /**
-     * @type {Object}
+     * @type {GeoTIFFSourceOptions|undefined}
      * @private
      */
     private sourceOptions_;
@@ -290,7 +290,7 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
      */
     private normalize_;
     /**
-     * @type {Error}
+     * @type {Error|null}
      * @private
      */
     private error_;
@@ -305,7 +305,7 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
      */
     private loadMissingProjection_;
     /**
-     * @return {Error} A source loading error. When the source state is `error`, use this function
+     * @return {Error|null} A source loading error. When the source state is `error`, use this function
      * to get more information about the error. To debug a faulty configuration, you may want to use
      * a listener like
      * ```js
@@ -316,7 +316,7 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
      * });
      * ```
      */
-    getError(): Error;
+    getError(): Error | null;
     /**
      * Determine the projection of the images in this GeoTIFF.
      * The default implementation looks at the ProjectedCSTypeGeoKey and the GeographicTypeGeoKey
@@ -347,13 +347,13 @@ declare class GeoTIFFSource extends DataTile<import("../DataTile.js").default> {
      * @param {number} x The x tile index.
      * @param {number} y The y tile index.
      * @param {import('./DataTile.js').LoaderOptions} options The loader options.
-     * @return {Promise} The composed tile data.
+     * @return {Promise<import("../DataTile.js").Data>} The composed tile data.
      * @private
      */
     private loadTile_;
     /**
      * @param {import("../size.js").Size} sourceTileSize The source tile size.
-     * @param {Array} sourceSamples The source samples.
+     * @param {Array<Array<Int8Array|Uint8Array|Uint16Array|Uint32Array|Int16Array|Int32Array|Float32Array|null>|null>} sourceSamples The source samples.
      * @return {import("../DataTile.js").Data} The composed tile data.
      * @private
      */

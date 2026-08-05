@@ -38,10 +38,10 @@ declare class VectorRenderTile extends Tile {
      * @param {import("./tilecoord.js").TileCoord} tileCoord Tile coordinate.
      * @param {import("./TileState.js").default} state State.
      * @param {import("./tilecoord.js").TileCoord} urlTileCoord Wrapped tile coordinate for source urls.
-     * @param {function(VectorRenderTile):Array<import("./VectorTile.js").default>} getSourceTiles Function.
+     * @param {function(VectorRenderTile):Array<import("./VectorTile.js").default<import("./Feature.js").FeatureLike>>} getSourceTiles Function.
      * @param {function(VectorRenderTile):void} removeSourceTiles Function.
      */
-    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, urlTileCoord: import("./tilecoord.js").TileCoord, getSourceTiles: (arg0: VectorRenderTile) => Array<import("./VectorTile.js").default<any>>, removeSourceTiles: (arg0: VectorRenderTile) => void);
+    constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, urlTileCoord: import("./tilecoord.js").TileCoord, getSourceTiles: (arg0: VectorRenderTile) => Array<import("./VectorTile.js").default<import("./Feature.js").FeatureLike>>, removeSourceTiles: (arg0: VectorRenderTile) => void);
     /**
      * @private
      * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D|null}
@@ -71,9 +71,9 @@ declare class VectorRenderTile extends Tile {
      */
     private replayState_;
     /**
-     * @type {Array<import("./VectorTile.js").default>}
+     * @type {Array<import("./VectorTile.js").default<import("./Feature.js").FeatureLike>>}
      */
-    sourceTiles: Array<import("./VectorTile.js").default<any>>;
+    sourceTiles: Array<import("./VectorTile.js").default<import("./Feature.js").FeatureLike>>;
     /**
      * @type {Object<string, boolean>}
      */
@@ -85,9 +85,9 @@ declare class VectorRenderTile extends Tile {
      */
     wantedResolution: number;
     /**
-     * @type {!function():Array<import("./VectorTile.js").default>}
+     * @type {!function():Array<import("./VectorTile.js").default<import("./Feature.js").FeatureLike>>}
      */
-    getSourceTiles: () => Array<import("./VectorTile.js").default<any>>;
+    getSourceTiles: () => Array<import("./VectorTile.js").default<import("./Feature.js").FeatureLike>>;
     /**
      * @type {!function(VectorRenderTile):void}
      * @private
@@ -107,9 +107,9 @@ declare class VectorRenderTile extends Tile {
     hasContext(): boolean;
     /**
      * Get the Canvas for this tile.
-     * @return {HTMLCanvasElement|OffscreenCanvas} Canvas.
+     * @return {HTMLCanvasElement|OffscreenCanvas|null} Canvas.
      */
-    getImage(): HTMLCanvasElement | OffscreenCanvas;
+    getImage(): HTMLCanvasElement | OffscreenCanvas | null;
     /**
      * @param {import("./layer/Layer.js").default} layer Layer.
      * @return {ReplayState} The replay state.

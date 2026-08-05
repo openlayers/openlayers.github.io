@@ -67,12 +67,12 @@ declare class RenderFeature {
     private flatCoordinates_;
     /**
      * @private
-     * @type {Array<number>}
+     * @type {Array<number>|null}
      */
     private flatInteriorPoints_;
     /**
      * @private
-     * @type {Array<number>}
+     * @type {Array<number>|null}
      */
     private flatMidpoints_;
     /**

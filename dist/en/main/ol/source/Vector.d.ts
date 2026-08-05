@@ -322,7 +322,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
     private strategy_;
     /**
      * @private
-     * @type {RBush<FeatureType>}
+     * @type {RBush<FeatureType>|null}
      */
     private featuresRtree_;
     /**

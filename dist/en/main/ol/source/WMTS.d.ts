@@ -1,7 +1,7 @@
 /**
  * Generate source options from a capabilities object.
- * @param {Object} wmtsCap An object representing the capabilities document.
- * @param {!Object} config Configuration properties for the layer.  Defaults for
+ * @param {Object<string, *>} wmtsCap An object representing the capabilities document.
+ * @param {Object<string, *>} config Configuration properties for the layer.  Defaults for
  *                  the layer will apply if not provided.
  *
  * Required config properties:
@@ -22,7 +22,11 @@
  * @return {Options|null} WMTS source options object or `null` if the layer was not found.
  * @api
  */
-export function optionsFromCapabilities(wmtsCap: any, config: any): Options | null;
+export function optionsFromCapabilities(wmtsCap: {
+    [x: string]: any;
+}, config: {
+    [x: string]: any;
+}): Options | null;
 export default WMTS;
 /**
  * Request encoding. One of 'KVP', 'REST'.
@@ -220,7 +224,7 @@ declare class WMTS extends TileImage {
     private format_;
     /**
      * @private
-     * @type {!Object}
+     * @type {!Object<string, *>}
      */
     private dimensions_;
     /**
@@ -247,10 +251,12 @@ declare class WMTS extends TileImage {
      * Get the dimensions, i.e. those passed to the constructor through the
      * "dimensions" option, and possibly updated using the updateDimensions
      * method.
-     * @return {!Object} Dimensions.
+     * @return {!Object<string, *>} Dimensions.
      * @api
      */
-    getDimensions(): any;
+    getDimensions(): {
+        [x: string]: any;
+    };
     /**
      * Return the image format of the WMTS source.
      * @return {string} Format.
@@ -294,10 +300,12 @@ declare class WMTS extends TileImage {
     private getKeyForDimensions_;
     /**
      * Update the dimensions.
-     * @param {Object} dimensions Dimensions.
+     * @param {Object<string, *>} dimensions Dimensions.
      * @api
      */
-    updateDimensions(dimensions: any): void;
+    updateDimensions(dimensions: {
+        [x: string]: any;
+    }): void;
     /**
      * @param {string} template Template.
      * @return {import("../Tile.js").UrlFunction} Tile URL function.

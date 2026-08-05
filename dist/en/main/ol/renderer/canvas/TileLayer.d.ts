@@ -81,7 +81,7 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      */
     private tileCache_;
     /**
-     * @type {import("../../structs/LRUCache.js").default<import("../../Tile.js").default|null>}
+     * @type {import("../../structs/LRUCache.js").default<import("../../Tile.js").default|null>|null}
      * @private
      */
     private sourceTileCache_;
@@ -91,13 +91,13 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      */
     protected layerExtent: import("../../extent.js").Extent | null;
     /**
-     * @return {LRUCache} Tile cache.
+     * @return {import("../../structs/LRUCache.js").default<import("../../Tile.js").default>} Tile cache.
      */
-    getTileCache(): LRUCache<any>;
+    getTileCache(): import("../../structs/LRUCache.js").default<import("../../Tile.js").default>;
     /**
-     * @return {LRUCache} Tile cache.
+     * @return {import("../../structs/LRUCache.js").default<import("../../Tile.js").default|null>} Tile cache.
      */
-    getSourceTileCache(): LRUCache<any>;
+    getSourceTileCache(): import("../../structs/LRUCache.js").default<import("../../Tile.js").default | null>;
     /**
      * Get a tile from the cache or create one if needed.
      *
@@ -120,10 +120,10 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
     protected getTile(z: number, x: number, y: number, frameState: import("../../Map.js").FrameState): import("../../Tile.js").default | null;
     /**
      * @param {import("../../pixel.js").Pixel} pixel Pixel.
-     * @return {Uint8ClampedArray} Data at the pixel location.
+     * @return {Uint8ClampedArray|null} Data at the pixel location.
      * @override
      */
-    override getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray;
+    override getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray | null;
     /**
      * Determine whether tiles for next extent should be enqueued for rendering.
      * @return {boolean} Rendering tiles for next extent is supported.
@@ -195,16 +195,16 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      */
     protected drawTile(tile: import("../../Tile.js").default, frameState: import("../../Map.js").FrameState, x: number, y: number, w: number, h: number, gutter: number, transition: boolean, clipRects?: Array<import("../../extent.js").Extent>): void;
     /**
-     * @return {HTMLCanvasElement|OffscreenCanvas} Image
+     * @return {HTMLCanvasElement|OffscreenCanvas|null} Image
      */
-    getImage(): HTMLCanvasElement | OffscreenCanvas;
+    getImage(): HTMLCanvasElement | OffscreenCanvas | null;
     /**
      * Get the image from a tile.
      * @param {import("../../ImageTile.js").default} tile Tile.
-     * @return {HTMLCanvasElement|OffscreenCanvas|HTMLImageElement|HTMLVideoElement} Image.
+     * @return {HTMLCanvasElement|OffscreenCanvas|HTMLImageElement|HTMLVideoElement|null} Image.
      * @protected
      */
-    protected getTileImage(tile: import("../../ImageTile.js").default): HTMLCanvasElement | OffscreenCanvas | HTMLImageElement | HTMLVideoElement;
+    protected getTileImage(tile: import("../../ImageTile.js").default): HTMLCanvasElement | OffscreenCanvas | HTMLImageElement | HTMLVideoElement | null;
     /**
      * @param {!Object<string, !Object<string, boolean>>} usedTiles Used tiles.
      * @param {import("../../source/Tile.js").default} tileSource Tile source.
@@ -218,5 +218,4 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
     }, tileSource: import("../../source/Tile.js").default, tile: import("../../Tile.js").default): void;
 }
 import CanvasLayerRenderer from './Layer.js';
-import LRUCache from '../../structs/LRUCache.js';
 //# sourceMappingURL=TileLayer.d.ts.map

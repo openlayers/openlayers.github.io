@@ -16,7 +16,7 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
     private boundHandleImageChange_;
     /**
      * @private
-     * @type {LayerType}
+     * @type {LayerType|undefined}
      */
     private layer_;
     /**
@@ -30,10 +30,10 @@ declare class LayerRenderer<LayerType extends import("../layer/Layer.js").defaul
      */
     protected maxStaleKeys: number;
     /**
-     * @type {string}
+     * @type {string|undefined}
      * @protected
      */
-    protected renderedSourceKey_: string;
+    protected renderedSourceKey_: string | undefined;
     /**
      * @return {Array<string>} Get the list of stale keys.
      */

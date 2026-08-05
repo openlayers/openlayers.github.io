@@ -68,10 +68,10 @@ export class SelectEvent extends Event {
      * @param {SelectEventType} type The event type.
      * @param {Array<import("../Feature.js").default>} selected Selected features.
      * @param {Array<import("../Feature.js").default>} deselected Deselected features.
-     * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Associated
+     * @param {import("../MapBrowserEvent.js").default|undefined} mapBrowserEvent Associated
      *     {@link module:ol/MapBrowserEvent~MapBrowserEvent}.
      */
-    constructor(type: SelectEventType, selected: Array<import("../Feature.js").default>, deselected: Array<import("../Feature.js").default>, mapBrowserEvent: import("../MapBrowserEvent.js").default);
+    constructor(type: SelectEventType, selected: Array<import("../Feature.js").default>, deselected: Array<import("../Feature.js").default>, mapBrowserEvent: import("../MapBrowserEvent.js").default | undefined);
     /**
      * Selected features array.
      * @type {Array<import("../Feature.js").default>}
@@ -86,10 +86,10 @@ export class SelectEvent extends Event {
     deselected: Array<import("../Feature.js").default>;
     /**
      * Associated {@link module:ol/MapBrowserEvent~MapBrowserEvent}.
-     * @type {import("../MapBrowserEvent.js").default}
+     * @type {import("../MapBrowserEvent.js").default|undefined}
      * @api
      */
-    mapBrowserEvent: import("../MapBrowserEvent.js").default;
+    mapBrowserEvent: import("../MapBrowserEvent.js").default | undefined;
 }
 export default Select;
 /**
@@ -340,7 +340,7 @@ declare class Select extends Interaction {
     private removeFeature_;
     /**
      * @param {Feature} feature Feature of which to get the layer
-     * @return {VectorLayer} layer, if one was found.
+     * @return {VectorLayer|undefined} layer, if one was found.
      * @private
      */
     private findLayerOfFeature_;

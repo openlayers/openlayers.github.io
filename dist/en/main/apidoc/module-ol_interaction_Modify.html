@@ -75,6 +75,7 @@
             <li data-name="filterfunction"><a href="module-ol_interaction_Modify.html#~FilterFunction">FilterFunction</a>
             <li data-name="options"><a href="module-ol_interaction_Modify.html#~Options">Options</a>
             <li data-name="segmentdata"><a href="module-ol_interaction_Modify.html#~SegmentData">SegmentData</a>
+            <li data-name="segmentsbyfeature"><a href="module-ol_interaction_Modify.html#~SegmentsByFeature">SegmentsByFeature</a>
         </ul>
     </div>
               <li class="loading">Loading …
@@ -240,7 +241,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js">interaction/Modify.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L99">line 99</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/interaction/Modify.js#L100">line 100</a>
         </div>
         
     </div>
@@ -528,7 +529,7 @@ must be provided with the <code>features</code> option.</p>
 <span class="param-type">boolean</span>
 |
 
-<span class="param-type"><a href="module-ol_layer_BaseVector-BaseVectorLayer.html">BaseVectorLayer</a></span>
+<span class="param-type"><a href="module-ol_layer_BaseVector-BaseVectorLayer.html">BaseVectorLayer</a>&lt;any, any, any></span>
 
  | undefined
                 
@@ -929,6 +930,145 @@ at the same 2D position.</p>
 
             <td class="description last">
                 <p>FeatureSegments.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~SegmentsByFeature">
+        </div>
+        <h4 class="name">
+            SegmentsByFeature<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>right</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_interaction_Modify.html#~SegmentData">SegmentData</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Right segment.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>left</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_interaction_Modify.html#~SegmentData">SegmentData</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Left segment.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Index.</p>
                 
             </td>
         </tr>

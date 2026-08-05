@@ -91,7 +91,7 @@ declare class ZoomSlider extends Control {
     /**
      * The calculated thumb size (border box plus margins).  Set when initSlider_
      * is called.
-     * @type {import("../size.js").Size}
+     * @type {import("../size.js").Size|null}
      * @private
      */
     private thumbSize_;

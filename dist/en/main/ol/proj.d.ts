@@ -87,9 +87,9 @@ export function clearAllProjections(): void;
 /**
  * @param {Projection|string|undefined} projection Projection.
  * @param {string} defaultCode Default code.
- * @return {Projection} Projection.
+ * @return {Projection|null} Projection.
  */
-export function createProjection(projection: Projection | string | undefined, defaultCode: string): Projection;
+export function createProjection(projection: Projection | string | undefined, defaultCode: string): Projection | null;
 /**
  * Creates a {@link module:ol/proj~TransformFunction} from a simple 2D coordinate transform
  * function.
@@ -156,12 +156,12 @@ export function equivalent(projection1: Projection, projection2: Projection): bo
  * Searches in the list of transform functions for the function for converting
  * coordinates from the source projection to the destination projection.
  *
- * @param {Projection} source Source Projection object.
- * @param {Projection} destination Destination Projection
+ * @param {Projection|null} source Source Projection object.
+ * @param {Projection|null} destination Destination Projection
  *     object.
  * @return {TransformFunction|null} Transform function.
  */
-export function getTransformFromProjections(source: Projection, destination: Projection): TransformFunction | null;
+export function getTransformFromProjections(source: Projection | null, destination: Projection | null): TransformFunction | null;
 /**
  * Given the projection-like objects, searches for a transformation
  * function to convert a coordinates array from the source projection to the
@@ -169,10 +169,10 @@ export function getTransformFromProjections(source: Projection, destination: Pro
  *
  * @param {ProjectionLike} source Source.
  * @param {ProjectionLike} destination Destination.
- * @return {TransformFunction} Transform function.
+ * @return {TransformFunction|null} Transform function.
  * @api
  */
-export function getTransform(source: ProjectionLike, destination: ProjectionLike): TransformFunction;
+export function getTransform(source: ProjectionLike, destination: ProjectionLike): TransformFunction | null;
 /**
  * Transforms a coordinate from source projection to destination projection.
  * This returns a new coordinate (and does not modify the original). If there

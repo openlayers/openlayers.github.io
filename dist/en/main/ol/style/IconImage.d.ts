@@ -20,7 +20,7 @@ declare class IconImage extends EventTarget {
     constructor(image: HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap | null, src: string | undefined, imageAttributes: import("../dom.js").ImageAttributes, imageState: any | undefined, color: import("../color.js").Color | string | null);
     /**
      * @private
-     * @type {HTMLImageElement|OffscreenCanvas|HTMLCanvasElement|ImageBitmap}
+     * @type {HTMLImageElement|OffscreenCanvas|HTMLCanvasElement|ImageBitmap|null}
      */
     private hitDetectionImage_;
     /**
@@ -35,7 +35,7 @@ declare class IconImage extends EventTarget {
     private crossOrigin_;
     /**
      * @private
-     * @type {ReferrerPolicy}
+     * @type {ReferrerPolicy|undefined}
      */
     private referrerPolicy_;
     /**
@@ -114,9 +114,9 @@ declare class IconImage extends EventTarget {
     getHitDetectionImage(): HTMLImageElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap;
     /**
      * Get the size of the icon (in pixels).
-     * @return {import("../size.js").Size} Image size.
+     * @return {import("../size.js").Size|null} Image size.
      */
-    getSize(): import("../size.js").Size;
+    getSize(): import("../size.js").Size | null;
     /**
      * @return {string|undefined} Image src.
      */

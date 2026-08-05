@@ -186,7 +186,7 @@ declare class TileWMS extends TileImage {
     private gutter_;
     /**
      * @private
-     * @type {!Object}
+     * @type {!Object<string, *>}
      */
     private params_;
     /**
@@ -196,7 +196,7 @@ declare class TileWMS extends TileImage {
     private v13_;
     /**
      * @private
-     * @type {import("./wms.js").ServerType}
+     * @type {import("./wms.js").ServerType|undefined}
      */
     private serverType_;
     /**
@@ -231,14 +231,16 @@ declare class TileWMS extends TileImage {
      *
      * @param {number} [resolution] Resolution. If set to undefined, `SCALE`
      *     will not be calculated and included in URL.
-     * @param {Object} [params] GetLegendGraphic params. If `LAYER` is set, the
+     * @param {Object<string, *>} [params] GetLegendGraphic params. If `LAYER` is set, the
      *     request is generated for this wms layer, else it will try to use the
      *     configured wms layer. Default `FORMAT` is `image/png`.
      *     `VERSION` should not be specified here.
      * @return {string|undefined} GetLegendGraphic URL.
      * @api
      */
-    getLegendUrl(resolution?: number, params?: any): string | undefined;
+    getLegendUrl(resolution?: number, params?: {
+        [x: string]: any;
+    }): string | undefined;
     /**
      * Get the user-provided params, i.e. those passed to the constructor through
      * the "params" option, and possibly updated using the updateParams method.
@@ -262,23 +264,27 @@ declare class TileWMS extends TileImage {
      */
     private getKeyForParams_;
     /**
-     * @param {Object} params New URL paremeters.
+     * @param {Object<string, *>} params New URL paremeters.
      * @private
      */
     private setParams_;
     /**
      * Set the URL parameters passed to the WMS source.
-     * @param {Object} params New URL paremeters.
+     * @param {Object<string, *>} params New URL paremeters.
      * @api
      */
-    setParams(params: any): void;
+    setParams(params: {
+        [x: string]: any;
+    }): void;
     /**
      * Update the URL parameters. This method can be used to update a subset of the WMS
      * parameters. Call `setParams` to set all of the parameters.
-     * @param {Object} params Updated URL parameters.
+     * @param {Object<string, *>} params Updated URL parameters.
      * @api
      */
-    updateParams(params: any): void;
+    updateParams(params: {
+        [x: string]: any;
+    }): void;
     /**
      * @private
      */

@@ -87,12 +87,12 @@ declare class DataTile extends Tile {
      */
     private loader_;
     /**
-     * @type {Data}
+     * @type {Data|null}
      * @private
      */
     private data_;
     /**
-     * @type {Error}
+     * @type {Error|null}
      * @private
      */
     private error_;
@@ -113,16 +113,16 @@ declare class DataTile extends Tile {
     getSize(): import("./size.js").Size;
     /**
      * Get the data for the tile.
-     * @return {Data} Tile data.
+     * @return {Data|null} Tile data.
      * @api
      */
-    getData(): Data;
+    getData(): Data | null;
     /**
      * Get any loading error.
-     * @return {Error} Loading error.
+     * @return {Error|null} Loading error.
      * @api
      */
-    getError(): Error;
+    getError(): Error | null;
 }
 import Tile from './Tile.js';
 //# sourceMappingURL=DataTile.d.ts.map

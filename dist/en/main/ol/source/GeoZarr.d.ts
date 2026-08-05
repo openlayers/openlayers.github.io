@@ -72,7 +72,7 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      */
     private groups_;
     /**
-     * @type {any|null}
+     * @type {Object<string, *>|null}
      * @private
      */
     private consolidatedMetadata_;
@@ -137,7 +137,7 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      */
     private extraDimensions_;
     /**
-     * @type {Object<string, Array<string>> | null}
+     * @type {Object<string, Array<string>>|null|undefined}
      * @private
      */
     private bandsByLevel_;
@@ -162,7 +162,7 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      * @param {number} x The x tile index.
      * @param {number} y The y tile index.
      * @param {import('./DataTile.js').LoaderOptions} options The loader options.
-     * @return {Promise} The composed tile data.
+     * @return {Promise<import("../DataTile.js").Data>} The composed tile data.
      * @private
      */
     private loadTile_;
@@ -184,7 +184,7 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
     /**
      * Consolidated metadata for a group, with keys relative to that group.
      * @param {number} groupIndex The group index.
-     * @return {Object} The group's consolidated metadata.
+     * @return {Object<string, *>} The group's consolidated metadata.
      * @private
      */
     private groupMetadata_;
@@ -194,7 +194,7 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      * single-scale key (`<band>`).
      * @param {string} band The band name.
      * @param {number} groupIndex The index of the band's group.
-     * @return {Object|undefined} The array metadata, or undefined when unavailable.
+     * @return {Object<string, *>|undefined} The array metadata, or undefined when unavailable.
      * @private
      */
     private getBandArrayMeta_;
@@ -202,7 +202,7 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      * Locate the 1-D coordinate array for a non-spatial dimension, by name among
      * the group's 1-D arrays.
      * @param {string} name The dimension name.
-     * @return {{path: string, groupIndex: number, meta: Object}|null} The path
+     * @return {{path: string, groupIndex: number, meta: Object<string, *>}|null} The path
      *     (relative to the group), group index, and array metadata; or `null`.
      * @private
      */
@@ -250,7 +250,7 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
     /**
      * Locate the spatial (y, x) axes of an array (see {@link getSpatialAxes}) and
      * its remaining non-spatial axes.
-     * @param {Object|undefined} arrayMeta Zarr v3 array metadata.
+     * @param {Object<string, *>|undefined} arrayMeta Zarr v3 array metadata.
      * @return {{row: number, col: number, extra: Array<number>}} The row (y) and
      *     column (x) axis positions and the remaining extra axes, in array order.
      * @private
@@ -259,7 +259,7 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
     /**
      * Describe the non-spatial dimensions of an array. Each is named by its
      * `dimension_names` entry, or by its axis position when there are none.
-     * @param {Object|undefined} arrayMeta Zarr v3 array metadata.
+     * @param {Object<string, *>|undefined} arrayMeta Zarr v3 array metadata.
      * @return {Array<{name: string, size: number, axis: number}>} The extra dimensions, outermost first.
      * @private
      */
@@ -270,7 +270,7 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      * array aligned to the array rank with a fixed integer at each extra axis and
      * `null` at the two spatial axes (e.g. `[2, null, null]` for a `[time, y, x]`
      * array with `{time: 2}`).
-     * @param {Object|undefined} arrayMeta Zarr v3 array metadata.
+     * @param {Object<string, *>|undefined} arrayMeta Zarr v3 array metadata.
      * @return {Array<number|null>|undefined} The extra-axis selection template.
      * @private
      */
@@ -367,7 +367,9 @@ export type Multiscales = {
     /**
      * The layout.
      */
-    layout: any;
+    layout: Array<{
+        [x: string]: any;
+    }>;
 };
 export type LegacyDatasetAttributes = {
     /**

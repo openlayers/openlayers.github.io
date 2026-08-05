@@ -51,6 +51,21 @@ declare class DblClickDragZoom extends Interaction {
      */
     private duration_;
     /**
+     * @private
+     * @type {import("../coordinate.js").Coordinate|null}
+     */
+    private anchor_;
+    /**
+     * @private
+     * @type {number|undefined}
+     */
+    private lastDistance_;
+    /**
+     * @private
+     * @type {number}
+     */
+    private lastScaleDelta_;
+    /**
      * @type {boolean}
      * @private
      */
@@ -61,7 +76,7 @@ declare class DblClickDragZoom extends Interaction {
      */
     private handlingDoubleDownSequence_;
     /**
-     * @type {ReturnType<typeof setTimeout>}
+     * @type {ReturnType<typeof setTimeout>|undefined}
      * @private
      */
     private doubleTapTimeoutId_;
@@ -95,15 +110,12 @@ declare class DblClickDragZoom extends Interaction {
      * @param {import("../MapBrowserEvent.js").default<PointerEvent>} mapBrowserEvent Event.
      */
     handleDragEvent(mapBrowserEvent: import("../MapBrowserEvent.js").default<PointerEvent>): void;
-    lastDistance_: number | undefined;
-    lastScaleDelta_: number | undefined;
     /**
      * Handle pointer down events.
      * @param {import("../MapBrowserEvent.js").default<PointerEvent>} mapBrowserEvent Event.
      * @return {boolean} If the event was consumed.
      */
     handleDownEvent(mapBrowserEvent: import("../MapBrowserEvent.js").default<PointerEvent>): boolean;
-    anchor_: any;
     /**
      * Handle pointer up events zooming out.
      * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent Event.

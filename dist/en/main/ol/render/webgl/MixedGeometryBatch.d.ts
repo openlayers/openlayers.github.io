@@ -225,8 +225,8 @@ declare class MixedGeometryBatch {
      * @param {Array<number> | Array<Array<number>> | null} ends Coordinate ends
      * @param {Feature|RenderFeature} feature Feature
      * @param {string} featureUid Feature uid
-     * @param {number} stride Stride
-     * @param {import('../../geom/Geometry.js').GeometryLayout} [layout] Layout
+     * @param {number|null} stride Stride
+     * @param {import('../../geom/Geometry.js').GeometryLayout|null} [layout] Layout
      * @private
      */
     private addCoordinates_;
@@ -257,9 +257,9 @@ declare class MixedGeometryBatch {
     /**
      * Resolve the feature associated to a ref.
      * @param {number} ref Hit detected ref
-     * @return {Feature|RenderFeature} feature
+     * @return {Feature|RenderFeature|undefined} feature
      */
-    getFeatureFromRef(ref: number): Feature | RenderFeature;
+    getFeatureFromRef(ref: number): Feature | RenderFeature | undefined;
     isEmpty(): boolean;
     /**
      * Will return a new instance of this class that only contains the features

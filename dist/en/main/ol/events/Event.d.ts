@@ -41,10 +41,10 @@ declare class BaseEvent {
     type: string;
     /**
      * The event target.
-     * @type {Object}
+     * @type {Object|null}
      * @api
      */
-    target: any;
+    target: any | null;
     /**
      * Prevent default. This means that no emulated `click`, `singleclick` or `doubleclick` events
      * will be fired.

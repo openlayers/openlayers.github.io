@@ -12,9 +12,9 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
     /**
      * HTMLElement container for the layer to be rendered in.
      * @protected
-     * @type {HTMLElement}
+     * @type {HTMLElement|null}
      */
-    protected container: HTMLElement;
+    protected container: HTMLElement | null;
     /**
      * @protected
      * @type {number}
@@ -42,12 +42,12 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      */
     protected inversePixelTransform: import("../../transform.js").Transform;
     /**
-     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D}
+     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D|null}
      */
-    context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
+    context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | null;
     /**
      * @private
-     * @type {ZIndexContext}
+     * @type {ZIndexContext|null}
      */
     private deferredContext_;
     /**
@@ -57,9 +57,9 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
     containerReused: boolean;
     /**
      * @protected
-     * @type {import("../../Map.js").FrameState|null}
+     * @type {import("../../Map.js").FrameState|null|undefined}
      */
-    protected frameState: import("../../Map.js").FrameState | null;
+    protected frameState: import("../../Map.js").FrameState | null | undefined;
     /**
      * @param {import('../../DataTile.js').ImageLike} image Image.
      * @param {number} col The column index.
@@ -69,18 +69,18 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
     getImageData(image: import("../../DataTile.js").ImageLike, col: number, row: number): Uint8ClampedArray | null;
     /**
      * @param {import('../../Map.js').FrameState} frameState Frame state.
-     * @return {string} Background color.
+     * @return {string|undefined} Background color.
      */
-    getBackground(frameState: import("../../Map.js").FrameState): string;
+    getBackground(frameState: import("../../Map.js").FrameState): string | undefined;
     /**
      * Get a rendering container from an existing target, if compatible.
-     * @param {HTMLElement} target Potential render target.
-     * @param {string} transform CSS transform matrix.
+     * @param {HTMLElement|null} target Potential render target.
+     * @param {string|null} transform CSS transform matrix.
      * @param {string} [backgroundColor] Background color.
      * @param {number} [width] Physical pixel width of the rendering canvas.
      * @param {number} [height] Physical pixel height of the rendering canvas.
      */
-    useContainer(target: HTMLElement, transform: string, backgroundColor?: string, width?: number, height?: number): void;
+    useContainer(target: HTMLElement | null, transform: string | null, backgroundColor?: string, width?: number, height?: number): void;
     /**
      * @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} context Context.
      * @param {import("../../Map.js").FrameState} frameState Frame state.
@@ -122,6 +122,16 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      * @return {import('../../render/canvas/ZIndexContext.js').ZIndexContextProxy} Context.
      */
     getRenderContext(frameState: import("../../Map.js").FrameState): import("../../render/canvas/ZIndexContext.js").ZIndexContextProxy;
+    /**
+     * @protected
+     * @return {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} Canvas rendering context.
+     */
+    protected getCanvasContext(): CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
+    /**
+     * @protected
+     * @return {HTMLElement} Canvas container element.
+     */
+    protected getContainerElement(): HTMLElement;
     /**
      * Creates a transform for rendering to an element that will be rotated after rendering.
      * @param {import("../../coordinate.js").Coordinate} center Center.

@@ -36,17 +36,17 @@ declare class CanvasBuilder extends VectorContext {
     protected resolution: number;
     /**
      * @private
-     * @type {Array<*>}
+     * @type {Array<*>|null}
      */
     private beginGeometryInstruction1_;
     /**
      * @private
-     * @type {Array<*>}
+     * @type {Array<*>|null}
      */
     private beginGeometryInstruction2_;
     /**
      * @private
-     * @type {import("../../extent.js").Extent}
+     * @type {import("../../extent.js").Extent|null}
      */
     private bufferedMaxExtent_;
     /**
@@ -71,9 +71,9 @@ declare class CanvasBuilder extends VectorContext {
     protected hitDetectionInstructions: Array<any>;
     /**
      * @protected
-     * @type {import("../canvas.js").FillStrokeState}
+     * @type {import("../canvas.js").FillStrokeState|null}
      */
-    protected state: import("../canvas.js").FillStrokeState;
+    protected state: import("../canvas.js").FillStrokeState | null;
     /**
      * @protected
      * @param {Array<number>} dashArray Dash array.
@@ -123,17 +123,17 @@ declare class CanvasBuilder extends VectorContext {
      */
     reverseHitDetectionInstructions(): void;
     /**
-     * @param {import("../../style/Fill.js").default} fillStyle Fill style.
+     * @param {import("../../style/Fill.js").default|null} fillStyle Fill style.
      * @param {import('../canvas.js').FillStrokeState} [state] State.
      * @return {import('../canvas.js').FillStrokeState} State.
      */
-    fillStyleToState(fillStyle: import("../../style/Fill.js").default, state?: import("../canvas.js").FillStrokeState): import("../canvas.js").FillStrokeState;
+    fillStyleToState(fillStyle: import("../../style/Fill.js").default | null, state?: import("../canvas.js").FillStrokeState): import("../canvas.js").FillStrokeState;
     /**
-     * @param {import("../../style/Stroke.js").default} strokeStyle Stroke style.
+     * @param {import("../../style/Stroke.js").default|null} strokeStyle Stroke style.
      * @param {import("../canvas.js").FillStrokeState} state State.
      * @return {import("../canvas.js").FillStrokeState} State.
      */
-    strokeStyleToState(strokeStyle: import("../../style/Stroke.js").default, state?: import("../canvas.js").FillStrokeState): import("../canvas.js").FillStrokeState;
+    strokeStyleToState(strokeStyle: import("../../style/Stroke.js").default | null, state?: import("../canvas.js").FillStrokeState): import("../canvas.js").FillStrokeState;
     /**
      * @param {import("../canvas.js").FillStrokeState} state State.
      * @return {Array<*>} Fill instruction.

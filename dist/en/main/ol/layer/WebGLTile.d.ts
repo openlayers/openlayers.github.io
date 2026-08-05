@@ -160,18 +160,18 @@ export type ParsedStyle = {
  * property on the layer object; for example, setting `title: 'My Title'` in the
  * options means that `title` is observable, and has get/set accessors.
  *
- * @extends BaseTileLayer<SourceType, WebGLTileLayerRenderer>
+ * @extends BaseTileLayer<SourceType, WebGLTileLayerRenderer<WebGLTileLayer>>
  * @fires import("../render/Event.js").RenderEvent#prerender
  * @fires import("../render/Event.js").RenderEvent#postrender
  * @api
  */
-declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js").default<import("../ImageTile.js").default | import("../DataTile.js").default>, WebGLTileLayerRenderer<any>> {
+declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js").default<import("../ImageTile.js").default | import("../DataTile.js").default>, WebGLTileLayerRenderer<WebGLTileLayer>> {
     /**
      * @param {Options} [options] Tile layer options.
      */
     constructor(options?: Options);
     /**
-     * @type {Array<SourceType>|function(import("../extent.js").Extent, number):Array<SourceType>}
+     * @type {Array<SourceType>|function(import("../extent.js").Extent, number):Array<SourceType>|undefined}
      * @private
      */
     private sources_;
@@ -216,17 +216,12 @@ declare class WebGLTileLayer extends BaseTileLayer<import("../source/DataTile.js
      */
     getSources(extent: import("../extent.js").Extent, resolution: number): Array<SourceType>;
     /**
-     * @return {SourceType} The source being rendered.
-     * @override
-     */
-    override getRenderSource(): SourceType;
-    /**
      * @private
      */
     private handleSourceUpdate_;
     /**
      * @private
-     * @return {SourceType} The first render source (or null).
+     * @return {SourceType|null} The first render source (or null).
      */
     private getFirstSource_;
     /**

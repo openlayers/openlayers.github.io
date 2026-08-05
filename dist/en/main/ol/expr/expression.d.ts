@@ -41,7 +41,7 @@ export function isType(type: ValueType, expected: ValueType): boolean;
  */
 export function newParsingContext(inputVariables?: import("../style/flat.js").StyleVariables): ParsingContext;
 /**
- * @typedef {LiteralValue|Array} EncodedExpression
+ * @typedef {LiteralValue|Array<*>} EncodedExpression
  */
 /**
  * @param {EncodedExpression} encoded The encoded expression.
@@ -126,7 +126,7 @@ export type ParsingContext = {
         [x: string]: string | number | boolean | number[];
     } | undefined;
 };
-export type EncodedExpression = LiteralValue | any[];
+export type EncodedExpression = LiteralValue | Array<any>;
 /**
  * An argument validator applies various checks to an encoded expression arguments and
  * returns the parsed arguments if any.  The second argument is the return type of the call expression.
@@ -257,5 +257,5 @@ export type LiteralValue = boolean | number | string | Array<number>;
 /**
  * Second argument is the expected type.
  */
-export type Parser = (arg0: any[], arg1: number, arg2: ParsingContext) => Expression;
+export type Parser = (arg0: Array<any>, arg1: number, arg2: ParsingContext) => Expression;
 //# sourceMappingURL=expression.d.ts.map

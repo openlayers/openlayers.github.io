@@ -10,8 +10,8 @@
  */
 /**
  * @typedef {Object} EvaluationContext
- * @property {Object} properties The values for properties used in 'get' expressions.
- * @property {Object} variables The values for variables used in 'var' expressions.
+ * @property {Object<string, *>} properties The values for properties used in 'get' expressions.
+ * @property {Object<string, *>} variables The values for variables used in 'var' expressions.
  * @property {number} resolution The map resolution.
  * @property {string|number|null} featureId The feature id.
  * @property {string} geometryType Geometry type of the current object.
@@ -59,11 +59,15 @@ export type EvaluationContext = {
     /**
      * The values for properties used in 'get' expressions.
      */
-    properties: any;
+    properties: {
+        [x: string]: any;
+    };
     /**
      * The values for variables used in 'var' expressions.
      */
-    variables: any;
+    variables: {
+        [x: string]: any;
+    };
     /**
      * The map resolution.
      */

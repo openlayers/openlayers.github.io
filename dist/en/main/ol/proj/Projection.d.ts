@@ -121,7 +121,7 @@ declare class Projection {
      * with `TILE_PIXELS` units, this is the extent of the tile in
      * tile pixel space.
      * @private
-     * @type {import("../extent.js").Extent}
+     * @type {import("../extent.js").Extent|null}
      */
     private extent_;
     /**
@@ -129,7 +129,7 @@ declare class Projection {
      * `TILE_PIXELS` units, this is the extent of the tile in
      * projected coordinate space.
      * @private
-     * @type {import("../extent.js").Extent}
+     * @type {import("../extent.js").Extent|null}
      */
     private worldExtent_;
     /**
@@ -154,7 +154,7 @@ declare class Projection {
     private getPointResolutionFunc_;
     /**
      * @private
-     * @type {import("../tilegrid/TileGrid.js").default}
+     * @type {import("../tilegrid/TileGrid.js").default|null}
      */
     private defaultTileGrid_;
     /**
@@ -223,9 +223,9 @@ declare class Projection {
      */
     setGlobal(global: boolean): void;
     /**
-     * @return {import("../tilegrid/TileGrid.js").default} The default tile grid.
+     * @return {import("../tilegrid/TileGrid.js").default|null} The default tile grid.
      */
-    getDefaultTileGrid(): import("../tilegrid/TileGrid.js").default;
+    getDefaultTileGrid(): import("../tilegrid/TileGrid.js").default | null;
     /**
      * @param {import("../tilegrid/TileGrid.js").default} tileGrid The default tile grid.
      */

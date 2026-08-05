@@ -22,7 +22,7 @@ declare class IconImageCache {
      */
     private cache_;
     /**
-     * @type {!Object<string, CanvasPattern>}
+     * @type {!Object<string, CanvasPattern|null>}
      * @private
      */
     private patternCache_;
@@ -51,15 +51,15 @@ declare class IconImageCache {
     /**
      * @param {string} src Src.
      * @param {import("../color.js").Color|string|null} color Color.
-     * @return {import("./IconImage.js").default} Icon image.
+     * @return {import("./IconImage.js").default|null} Icon image.
      */
-    get(src: string, color: import("../color.js").Color | string | null): import("./IconImage.js").default;
+    get(src: string, color: import("../color.js").Color | string | null): import("./IconImage.js").default | null;
     /**
      * @param {string} src Src.
      * @param {import("../color.js").Color|string|null} color Color.
-     * @return {CanvasPattern} Icon image.
+     * @return {CanvasPattern|null} Icon image.
      */
-    getPattern(src: string, color: import("../color.js").Color | string | null): CanvasPattern;
+    getPattern(src: string, color: import("../color.js").Color | string | null): CanvasPattern | null;
     /**
      * @param {string} src Src.
      * @param {import("../color.js").Color|string|null} color Color.

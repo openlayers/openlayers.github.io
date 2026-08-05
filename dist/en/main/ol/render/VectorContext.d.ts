@@ -92,15 +92,15 @@ declare class VectorContext {
      */
     drawText(geometry: import("../geom/SimpleGeometry.js").default | import("./Feature.js").default, feature: import("../Feature.js").FeatureLike, index?: number): void;
     /**
-     * @param {import("../style/Fill.js").default} fillStyle Fill style.
-     * @param {import("../style/Stroke.js").default} strokeStyle Stroke style.
+     * @param {import("../style/Fill.js").default|null} fillStyle Fill style.
+     * @param {import("../style/Stroke.js").default|null} strokeStyle Stroke style.
      */
-    setFillStrokeStyle(fillStyle: import("../style/Fill.js").default, strokeStyle: import("../style/Stroke.js").default): void;
+    setFillStrokeStyle(fillStyle: import("../style/Fill.js").default | null, strokeStyle: import("../style/Stroke.js").default | null): void;
     /**
-     * @param {import("../style/Image.js").default} imageStyle Image style.
+     * @param {import("../style/Image.js").default|null} imageStyle Image style.
      * @param {import("../render/canvas.js").DeclutterImageWithText} [declutterImageWithText] Shared data for combined decluttering with a text style.
      */
-    setImageStyle(imageStyle: import("../style/Image.js").default, declutterImageWithText?: import("../render/canvas.js").DeclutterImageWithText): void;
+    setImageStyle(imageStyle: import("../style/Image.js").default | null, declutterImageWithText?: import("../render/canvas.js").DeclutterImageWithText): void;
     /**
      * @param {import("../style/Text.js").default} textStyle Text style.
      * @param {import("../render/canvas.js").DeclutterImageWithText} [declutterImageWithText] Shared data for combined decluttering with an image style.

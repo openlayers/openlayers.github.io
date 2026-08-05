@@ -126,7 +126,7 @@ declare class Feature<Geometry extends import("./geom/Geometry.js").default = im
     /**
      * User provided style.
      * @private
-     * @type {import("./style/Style.js").StyleLike}
+     * @type {import("./style/Style.js").StyleLike|null}
      */
     private style_;
     /**
@@ -174,10 +174,10 @@ declare class Feature<Geometry extends import("./geom/Geometry.js").default = im
     /**
      * Get the feature's style. Will return what was provided to the
      * {@link module:ol/Feature~Feature#setStyle} method.
-     * @return {import("./style/Style.js").StyleLike|undefined} The feature style.
+     * @return {import("./style/Style.js").StyleLike|null|undefined} The feature style.
      * @api
      */
-    getStyle(): import("./style/Style.js").StyleLike | undefined;
+    getStyle(): import("./style/Style.js").StyleLike | null | undefined;
     /**
      * Get the feature's style function.
      * @return {import("./style/Style.js").StyleFunction|undefined} Return a function
@@ -196,21 +196,21 @@ declare class Feature<Geometry extends import("./geom/Geometry.js").default = im
     /**
      * Set the default geometry for the feature.  This will update the property
      * with the name returned by {@link module:ol/Feature~Feature#getGeometryName}.
-     * @param {Geometry|undefined} geometry The new geometry.
+     * @param {Geometry|null|undefined} geometry The new geometry.
      * @api
      * @observable
      */
-    setGeometry(geometry: Geometry | undefined): void;
+    setGeometry(geometry: Geometry | null | undefined): void;
     /**
      * Set the style for the feature to override the layer style.  This can be a
      * single style object, an array of styles, or a function that takes a
      * resolution and returns an array of styles. To unset the feature style, call
      * `setStyle()` without arguments or a falsey value.
-     * @param {import("./style/Style.js").StyleLike} [style] Style for this feature.
+     * @param {import("./style/Style.js").StyleLike|null|undefined} [style] Style for this feature.
      * @api
      * @fires module:ol/events/Event~BaseEvent#event:change
      */
-    setStyle(style?: import("./style/Style.js").StyleLike): void;
+    setStyle(style?: import("./style/Style.js").StyleLike | null | undefined): void;
     /**
      * Set the feature id.  The feature id is considered stable and may be used when
      * requesting features or comparing identifiers returned from a remote source.

@@ -14,7 +14,12 @@ declare class CanvasPolygonBuilder extends CanvasBuilder {
      * @private
      */
     private setFillStrokeStyles_;
-    handleStrokeOffset_(drawGeometryCallback: any): boolean;
+    /**
+     * @private
+     * @param {function(): void} drawGeometryCallback Draw callback.
+     * @return {boolean} Whether the stroke was drawn with an offset.
+     */
+    private handleStrokeOffset_;
 }
 import CanvasBuilder from './Builder.js';
 //# sourceMappingURL=PolygonBuilder.d.ts.map

@@ -230,10 +230,10 @@ declare class FlowLayerRenderer extends WebGLTileLayerRenderer<import("../../lay
      */
     drawParticleTrails_(frameState: import("../../Map.js").FrameState): void;
     /**
-     * @param {WebGLTexture} texture The texture to draw.
+     * @param {WebGLTexture|undefined} texture The texture to draw.
      * @param {number} opacity The opacity.
      */
-    drawTexture_(texture: WebGLTexture, opacity: number): void;
+    drawTexture_(texture: WebGLTexture | undefined, opacity: number): void;
     /**
      * @param {import("../../Map.js").FrameState} frameState Frame state.
      */

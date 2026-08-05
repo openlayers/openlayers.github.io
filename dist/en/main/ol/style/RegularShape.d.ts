@@ -55,7 +55,7 @@ export type RenderOptions = {
     /**
      * StrokeStyle.
      */
-    strokeStyle: import("../colorlike.js").ColorLike | undefined;
+    strokeStyle: import("../colorlike.js").ColorLike | null | undefined;
     /**
      * StrokeWidth.
      */
@@ -105,7 +105,7 @@ export type RenderOptions = {
  */
 /**
  * @typedef {Object} RenderOptions
- * @property {import("../colorlike.js").ColorLike|undefined} strokeStyle StrokeStyle.
+ * @property {import("../colorlike.js").ColorLike|null|undefined} strokeStyle StrokeStyle.
  * @property {number} strokeWidth StrokeWidth.
  * @property {number} size Size.
  * @property {CanvasLineCap} lineCap LineCap.
@@ -188,6 +188,14 @@ declare class RegularShape extends ImageStyle {
      */
     override clone(): RegularShape;
     /**
+     * Get the anchor point in pixels. The anchor determines the center point for the
+     * symbolizer.
+     * @return {Array<number>} Anchor.
+     * @api
+     * @override
+     */
+    override getAnchor(): Array<number>;
+    /**
      * Get the angle used in generating the shape.
      * @return {number} Shape's rotation in radians.
      * @api
@@ -219,6 +227,18 @@ declare class RegularShape extends ImageStyle {
      */
     override getImage(pixelRatio: number): HTMLCanvasElement | OffscreenCanvas;
     /**
+     * @return {import("../size.js").Size} Image size.
+     * @override
+     */
+    override getImageSize(): import("../size.js").Size;
+    /**
+     * Get the origin of the symbolizer.
+     * @return {Array<number>} Origin.
+     * @api
+     * @override
+     */
+    override getOrigin(): Array<number>;
+    /**
      * Get the number of points for generating the shape.
      * @return {number} Number of points for stars and regular polygons.
      * @api
@@ -248,6 +268,13 @@ declare class RegularShape extends ImageStyle {
      * @api
      */
     setRadius2(radius2: number | undefined): void;
+    /**
+     * Get the size of the symbolizer (in pixels).
+     * @return {import("../size.js").Size} Size.
+     * @api
+     * @override
+     */
+    override getSize(): import("../size.js").Size;
     /**
      * Get the stroke style for the shape.
      * @return {import("./Stroke.js").default|null} Stroke style.

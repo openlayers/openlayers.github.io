@@ -113,7 +113,7 @@ declare class DragAndDrop extends Interaction {
     private formats_;
     /**
      * @private
-     * @type {import("../proj/Projection.js").default}
+     * @type {import("../proj/Projection.js").default|null}
      */
     private projection_;
     /**
@@ -123,7 +123,7 @@ declare class DragAndDrop extends Interaction {
     private dropListenKeys_;
     /**
      * @private
-     * @type {import("../source/Vector.js").default}
+     * @type {import("../source/Vector.js").default|null}
      */
     private source_;
     /**
@@ -154,7 +154,7 @@ declare class DragAndDrop extends Interaction {
      * @param {string} text Text.
      * @param {import("../format/Feature.js").ReadOptions} options Read options.
      * @private
-     * @return {Array<import("../Feature.js").default>} Features.
+     * @return {Array<import("../Feature.js").default>|null} Features.
      */
     private tryReadFeatures_;
     /**

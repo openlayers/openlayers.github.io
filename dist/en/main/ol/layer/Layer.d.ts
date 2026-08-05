@@ -111,7 +111,7 @@ export type State = {
     /**
      * ZIndex.
      */
-    zIndex: number;
+    zIndex: number | undefined;
     /**
      * Maximum resolution.
      */
@@ -182,7 +182,7 @@ export type State = {
  * @property {boolean} visible Visible.
  * @property {boolean} managed Managed.
  * @property {import("../extent.js").Extent} [extent] Extent.
- * @property {number} zIndex ZIndex.
+ * @property {number|undefined} zIndex ZIndex.
  * @property {number} maxResolution Maximum resolution.
  * @property {number} minResolution Minimum resolution.
  * @property {number} minZoom Minimum zoom.
@@ -211,7 +211,7 @@ export type State = {
  * @fires import("../events/Event.js").BaseEvent#sourceready
  *
  * @template {import("../source/Source.js").default} [SourceType=import("../source/Source.js").default]
- * @template {import("../renderer/Layer.js").default} [RendererType=import("../renderer/Layer.js").default]
+ * @template {import("../renderer/Layer.js").default<*>} [RendererType=import("../renderer/Layer.js").default<*>]
  * @template {Object<string, *>} [Properties=Object<string, *>]
  * @extends {BaseLayer<NoInfer<Properties>>}
  * @api
@@ -254,7 +254,7 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
     private sourceChangeKey_;
     /**
      * @private
-     * @type {RendererType}
+     * @type {RendererType|null|undefined}
      */
     private renderer_;
     /**
@@ -328,8 +328,8 @@ declare class Layer<SourceType extends import("../source/Source.js").default = i
      * Called when a layer is not visible during a map render.
      */
     unrender(): void;
-    /** @return {string} Declutter */
-    getDeclutter(): string;
+    /** @return {string|undefined} Declutter */
+    getDeclutter(): string | undefined;
     /**
      * @param {import("../Map.js").FrameState} frameState Frame state.
      * @param {import("../layer/Layer.js").State} layerState Layer state.

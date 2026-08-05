@@ -4,7 +4,7 @@
  */
 export function fromCode(code: number): Units;
 /**
- * @typedef {Object} MetersPerUnitLookup
+ * @typedef {Object<string, number|undefined>} MetersPerUnitLookup
  * @property {number} radians Radians
  * @property {number} degrees Degrees
  * @property {number} ft  Feet
@@ -23,25 +23,6 @@ export const METERS_PER_UNIT: MetersPerUnitLookup;
  */
 export type Units = "radians" | "degrees" | "ft" | "m" | "pixels" | "tile-pixels" | "us-ft";
 export type MetersPerUnitLookup = {
-    /**
-     * Radians
-     */
-    radians: number;
-    /**
-     * Degrees
-     */
-    degrees: number;
-    /**
-     * Feet
-     */
-    ft: number;
-    /**
-     * Meters
-     */
-    m: number;
-    /**
-     * US feet
-     */
-    "us-ft": number;
+    [x: string]: number | undefined;
 };
 //# sourceMappingURL=Units.d.ts.map

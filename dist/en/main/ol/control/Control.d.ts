@@ -62,12 +62,12 @@ declare class Control extends BaseObject<{
     constructor(options: Options);
     /**
      * @protected
-     * @type {HTMLElement}
+     * @type {HTMLElement|null}
      */
-    protected element: HTMLElement;
+    protected element: HTMLElement | null;
     /**
      * @private
-     * @type {HTMLElement}
+     * @type {HTMLElement|null}
      */
     private target_;
     /**

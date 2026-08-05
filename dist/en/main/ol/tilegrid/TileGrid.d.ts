@@ -129,27 +129,27 @@ declare class TileGrid {
     private origin_;
     /**
      * @private
-     * @type {Array<import("../coordinate.js").Coordinate>}
+     * @type {Array<import("../coordinate.js").Coordinate>|null}
      */
     private origins_;
     /**
      * @private
-     * @type {Array<number|import("../size.js").Size>}
+     * @type {Array<number|import("../size.js").Size>|null}
      */
     private tileSizes_;
     /**
      * @private
-     * @type {number|import("../size.js").Size}
+     * @type {number|import("../size.js").Size|null}
      */
     private tileSize_;
     /**
      * @private
-     * @type {import("../extent.js").Extent}
+     * @type {import("../extent.js").Extent|null}
      */
     private extent_;
     /**
      * @private
-     * @type {Array<import("../TileRange.js").default>}
+     * @type {Array<import("../TileRange.js").default>|null}
      */
     private fullTileRanges_;
     /**
@@ -181,10 +181,10 @@ declare class TileGrid {
     forEachTileCoordParentTileRange(tileCoord: import("../tilecoord.js").TileCoord, callback: (arg0: number, arg1: import("../TileRange.js").default) => boolean, tempTileRange?: import("../TileRange.js").default, tempExtent?: import("../extent.js").Extent): boolean;
     /**
      * Get the extent for this tile grid, if it was configured.
-     * @return {import("../extent.js").Extent} Extent.
+     * @return {import("../extent.js").Extent|null} Extent.
      * @api
      */
-    getExtent(): import("../extent.js").Extent;
+    getExtent(): import("../extent.js").Extent | null;
     /**
      * Get the maximum zoom level for the grid.
      * @return {number} Max zoom.

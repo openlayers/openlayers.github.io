@@ -157,7 +157,7 @@ declare class TileArcGISRest extends TileImage {
     constructor(options?: Options);
     /**
      * @private
-     * @type {!Object}
+     * @type {!Object<string, *>}
      */
     private params_;
     /**

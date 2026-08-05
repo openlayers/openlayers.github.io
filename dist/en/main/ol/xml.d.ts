@@ -45,12 +45,12 @@ export function parse(xml: string): Document;
 /**
  * Make an array extender function for extending the array at the top of the
  * object stack.
- * @param {function(this: T, Node, Array<*>): (Array<*>|undefined)} valueReader Value reader.
+ * @param {function(this: T, Element, Array<*>): (Array<*>|undefined)} valueReader Value reader.
  * @param {T} [thisArg] The object to use as `this` in `valueReader`.
  * @return {Parser} Parser.
  * @template T
  */
-export function makeArrayExtender<T>(valueReader: (this: T, arg1: Node, arg2: Array<any>) => (Array<any> | undefined), thisArg?: T): Parser;
+export function makeArrayExtender<T>(valueReader: (this: T, arg1: Element, arg2: Array<any>) => (Array<any> | undefined), thisArg?: T): Parser;
 /**
  * Make an array pusher function for pushing to the array at the top of the
  * object stack.
@@ -63,12 +63,12 @@ export function makeArrayPusher<T>(valueReader: (this: T, arg1: Element, arg2: A
 /**
  * Make an object stack replacer function for replacing the object at the
  * top of the stack.
- * @param {function(this: T, Node, Array<*>): *} valueReader Value reader.
+ * @param {function(this: T, Element, Array<*>): *} valueReader Value reader.
  * @param {T} [thisArg] The object to use as `this` in `valueReader`.
  * @return {Parser} Parser.
  * @template T
  */
-export function makeReplacer<T>(valueReader: (this: T, arg1: Node, arg2: Array<any>) => any, thisArg?: T): Parser;
+export function makeReplacer<T>(valueReader: (this: T, arg1: Element, arg2: Array<any>) => any, thisArg?: T): Parser;
 /**
  * Make an object property pusher function for adding a property to the
  * object at the top of the stack.
@@ -92,12 +92,12 @@ export function makeObjectPropertySetter<T>(valueReader: (this: T, arg1: Element
  * Create a serializer that appends nodes written by its `nodeWriter` to its
  * designated parent. The parent is the `node` of the
  * {@link module:ol/xml~NodeStackItem} at the top of the `objectStack`.
- * @param {function(this: T, Node, V, Array<*>): void} nodeWriter Node writer.
+ * @param {function(this: T, Element, V, Array<*>): void} nodeWriter Node writer.
  * @param {T} [thisArg] The object to use as `this` in `nodeWriter`.
  * @return {Serializer} Serializer.
  * @template T, V
  */
-export function makeChildAppender<T, V>(nodeWriter: (this: T, arg1: Node, arg2: V, arg3: Array<any>) => void, thisArg?: T): Serializer;
+export function makeChildAppender<T, V>(nodeWriter: (this: T, arg1: Element, arg2: V, arg3: Array<any>) => void, thisArg?: T): Serializer;
 /**
  * Create a serializer that calls the provided `nodeWriter` from
  * {@link module:ol/xml.serialize}. This can be used by the parent writer to have the
@@ -143,50 +143,57 @@ export function makeSequence(object: {
  * Create a namespaced structure, using the same values for each namespace.
  * This can be used as a starting point for versioned parsers, when only a few
  * values are version specific.
- * @param {Array<string>} namespaceURIs Namespace URIs.
+ * @param {Array<string|null>} namespaceURIs Namespace URIs.
  * @param {T} structure Structure.
  * @param {Object<string, T>} [structureNS] Namespaced structure to add to.
  * @return {Object<string, T>} Namespaced structure.
  * @template T
  */
-export function makeStructureNS<T>(namespaceURIs: Array<string>, structure: T, structureNS?: {
+export function makeStructureNS<T>(namespaceURIs: Array<string | null>, structure: T, structureNS?: {
     [x: string]: T;
 }): {
     [x: string]: T;
 };
 /**
+ * @param {Array<string|null>} namespaceURIs Namespace URIs.
+ * @param {Object<string, (Parser|undefined)>} structure Structure.
+ * @param {ParsersNS} [structureNS] Namespaced structure to add to.
+ * @return {ParsersNS} Namespaced structure.
+ */
+export function makeParsersNS(namespaceURIs: Array<string | null>, structure: {
+    [x: string]: Parser | undefined;
+}, structureNS?: ParsersNS): ParsersNS;
+/**
+ * @param {Array<string|null>} namespaceURIs Namespace URIs.
+ * @param {Object<string, (Serializer|undefined)>} structure Structure.
+ * @param {SerializersNS} [structureNS] Namespaced structure to add to.
+ * @return {SerializersNS} Namespaced structure.
+ */
+export function makeSerializersNS(namespaceURIs: Array<string | null>, structure: {
+    [x: string]: Serializer | undefined;
+}, structureNS?: SerializersNS): SerializersNS;
+/**
  * Parse a node using the parsers and object stack.
- * @param {Object<string, Object<string, Parser>>} parsersNS
- *     Parsers by namespace.
+ * @param {ParsersNS} parsersNS Parsers by namespace.
  * @param {Element} node Node.
  * @param {Array<*>} objectStack Object stack.
  * @param {*} [thisArg] The object to use as `this`.
  */
-export function parseNode(parsersNS: {
-    [x: string]: {
-        [x: string]: Parser;
-    };
-}, node: Element, objectStack: Array<any>, thisArg?: any): void;
+export function parseNode(parsersNS: ParsersNS, node: Element, objectStack: Array<any>, thisArg?: any): void;
 /**
  * Push an object on top of the stack, parse and return the popped object.
  * @param {T} object Object.
- * @param {Object<string, Object<string, Parser>>} parsersNS
- *     Parsers by namespace.
+ * @param {ParsersNS} parsersNS Parsers by namespace.
  * @param {Element} node Node.
  * @param {Array<*>} objectStack Object stack.
  * @param {*} [thisArg] The object to use as `this`.
  * @return {T} Object.
  * @template T
  */
-export function pushParseAndPop<T>(object: T, parsersNS: {
-    [x: string]: {
-        [x: string]: Parser;
-    };
-}, node: Element, objectStack: Array<any>, thisArg?: any): T;
+export function pushParseAndPop<T>(object: T, parsersNS: ParsersNS, node: Element, objectStack: Array<any>, thisArg?: any): T;
 /**
  * Walk through an array of `values` and call a serializer for each value.
- * @param {Object<string, Object<string, Serializer>>} serializersNS
- *     Namespaced serializers.
+ * @param {SerializersNS} serializersNS Namespaced serializers.
  * @param {function(this: T, *, Array<*>, (string|undefined)): (Node|undefined)} nodeFactory
  *     Node factory. The `nodeFactory` creates the node whose namespace and name
  *     will be used to choose a node writer from `serializersNS`. This
@@ -205,15 +212,10 @@ export function pushParseAndPop<T>(object: T, parsersNS: {
  *     serializers.
  * @template T
  */
-export function serialize<T>(serializersNS: {
-    [x: string]: {
-        [x: string]: Serializer;
-    };
-}, nodeFactory: (this: T, arg1: any, arg2: Array<any>, arg3: (string | undefined)) => (Node | undefined), values: Array<any>, objectStack: Array<any>, keys?: Array<string>, thisArg?: T): void;
+export function serialize<T>(serializersNS: SerializersNS, nodeFactory: (this: T, arg1: any, arg2: Array<any>, arg3: (string | undefined)) => (Node | undefined), values: Array<any>, objectStack: Array<any>, keys?: Array<string>, thisArg?: T): void;
 /**
  * @param {O} object Object.
- * @param {Object<string, Object<string, Serializer>>} serializersNS
- *     Namespaced serializers.
+ * @param {SerializersNS} serializersNS Namespaced serializers.
  * @param {function(this: T, *, Array<*>, (string|undefined)): (Node|undefined)} nodeFactory
  *     Node factory. The `nodeFactory` creates the node whose namespace and name
  *     will be used to choose a node writer from `serializersNS`. This
@@ -233,11 +235,7 @@ export function serialize<T>(serializersNS: {
  * @return {O|undefined} Object.
  * @template O, T
  */
-export function pushSerializeAndPop<O, T>(object: O, serializersNS: {
-    [x: string]: {
-        [x: string]: Serializer;
-    };
-}, nodeFactory: (this: T, arg1: any, arg2: Array<any>, arg3: (string | undefined)) => (Node | undefined), values: Array<any>, objectStack: Array<any>, keys?: Array<string>, thisArg?: T): O | undefined;
+export function pushSerializeAndPop<O, T>(object: O, serializersNS: SerializersNS, nodeFactory: (this: T, arg1: any, arg2: Array<any>, arg3: (string | undefined)) => (Node | undefined), values: Array<any>, objectStack: Array<any>, keys?: Array<string>, thisArg?: T): O | undefined;
 /**
  * Register a XMLSerializer. Can be used  to inject a XMLSerializer
  * where there is no globally available implementation.
@@ -277,6 +275,12 @@ export function getDocument(): Document;
  * @typedef {function(Element, *, Array<*>): void} Serializer
  */
 /**
+ * @typedef {Object<string, Object<string, (Parser|undefined)>>} ParsersNS
+ */
+/**
+ * @typedef {Object<string, Object<string, (Serializer|undefined)>>} SerializersNS
+ */
+/**
  * @type {string}
  */
 export const XML_SCHEMA_INSTANCE_URI: string;
@@ -301,4 +305,14 @@ export type NodeStackItem = {
 };
 export type Parser = (arg0: Element, arg1: Array<any>) => void;
 export type Serializer = (arg0: Element, arg1: any, arg2: Array<any>) => void;
+export type ParsersNS = {
+    [x: string]: {
+        [x: string]: Parser | undefined;
+    };
+};
+export type SerializersNS = {
+    [x: string]: {
+        [x: string]: Serializer | undefined;
+    };
+};
 //# sourceMappingURL=xml.d.ts.map

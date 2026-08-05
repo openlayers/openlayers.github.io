@@ -9,6 +9,9 @@ export type EsriJSONMultipoint = import("arcgis-rest-api").Multipoint;
 export type EsriJSONHasZM = import("arcgis-rest-api").HasZM;
 export type EsriJSONPosition = import("arcgis-rest-api").Position;
 export type EsriJSONSpatialReferenceWkid = import("arcgis-rest-api").SpatialReferenceWkid;
+export type EsriJSONObject = {
+    [x: string]: any;
+};
 export type EsriJSONMultiPolygon = {
     /**
      * Rings for the MultiPolygon.
@@ -73,6 +76,13 @@ declare class EsriJSON extends JSONFeature<Feature<import("../geom/Geometry.js")
      * @override
      */
     protected override readGeometryFromObject(object: EsriJSONGeometry, options?: import("./Feature.js").ReadOptions): import("../geom/Geometry.js").default;
+    /**
+     * @param {EsriJSONObject} object Object.
+     * @protected
+     * @return {import("../proj/Projection.js").default} Projection.
+     * @override
+     */
+    protected override readProjectionFromObject(object: EsriJSONObject): import("../proj/Projection.js").default;
     /**
      * Encode a geometry as a EsriJSON object.
      *

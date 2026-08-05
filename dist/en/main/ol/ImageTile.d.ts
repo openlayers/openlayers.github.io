@@ -11,12 +11,12 @@ declare class ImageTile extends Tile {
     constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, src: string, imageAttributes: import("./dom.js").ImageAttributes, tileLoadFunction: import("./Tile.js").LoadFunction, options?: import("./Tile.js").Options);
     /**
      * @private
-     * @type {?string}
+     * @type {string|null|undefined}
      */
     private crossOrigin_;
     /**
      * @private
-     * @type {ReferrerPolicy}
+     * @type {ReferrerPolicy|undefined}
      */
     private referrerPolicy_;
     /**
@@ -28,7 +28,7 @@ declare class ImageTile extends Tile {
     private src_;
     /**
      * @private
-     * @type {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas}
+     * @type {HTMLImageElement|HTMLCanvasElement|OffscreenCanvas|null}
      */
     private image_;
     /**
@@ -43,10 +43,10 @@ declare class ImageTile extends Tile {
     private tileLoadFunction_;
     /**
      * Get the HTML image element for this tile (may be a Canvas, OffscreenCanvas, Image, or Video).
-     * @return {HTMLCanvasElement|OffscreenCanvas|HTMLImageElement|HTMLVideoElement} Image.
+     * @return {HTMLCanvasElement|OffscreenCanvas|HTMLImageElement|HTMLVideoElement|null} Image.
      * @api
      */
-    getImage(): HTMLCanvasElement | OffscreenCanvas | HTMLImageElement | HTMLVideoElement;
+    getImage(): HTMLCanvasElement | OffscreenCanvas | HTMLImageElement | HTMLVideoElement | null;
     /**
      * Sets an HTML image element for this tile (may be a Canvas or preloaded Image).
      * @param {HTMLCanvasElement|OffscreenCanvas|HTMLImageElement} element Element.
@@ -54,14 +54,14 @@ declare class ImageTile extends Tile {
     setImage(element: HTMLCanvasElement | OffscreenCanvas | HTMLImageElement): void;
     /**
      * Get the cross origin of the ImageTile.
-     * @return {string} Cross origin.
+     * @return {string|null} Cross origin.
      */
-    getCrossOrigin(): string;
+    getCrossOrigin(): string | null;
     /**
      * Get the referrer policy of the ImageTile.
-     * @return {ReferrerPolicy} Referrer policy.
+     * @return {ReferrerPolicy|undefined} Referrer policy.
      */
-    getReferrerPolicy(): ReferrerPolicy;
+    getReferrerPolicy(): ReferrerPolicy | undefined;
     /**
      * Tracks loading or read errors.
      *

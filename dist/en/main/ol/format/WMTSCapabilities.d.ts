@@ -1,4 +1,7 @@
 export default WMTSCapabilities;
+export type WMTSObject = {
+    [x: string]: any;
+};
 /**
  * @classdesc
  * Format for reading WMTS capabilities data.

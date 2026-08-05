@@ -100,7 +100,7 @@ declare class MouseWheelZoom extends Interaction {
     private startTime_;
     /**
      * @private
-     * @type {ReturnType<typeof setTimeout>}
+     * @type {ReturnType<typeof setTimeout>|undefined}
      */
     private timeoutId_;
     /**
@@ -117,7 +117,7 @@ declare class MouseWheelZoom extends Interaction {
     private trackpadEventGap_;
     /**
      * @private
-     * @type {ReturnType<typeof setTimeout>}
+     * @type {ReturnType<typeof setTimeout>|undefined}
      */
     private trackpadTimeoutId_;
     /**

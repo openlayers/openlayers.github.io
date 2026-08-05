@@ -58,9 +58,11 @@ declare class Circle extends SimpleGeometry {
      */
     override getCoordinates(): null;
     /**
+     * @param {import("../coordinate.js").Coordinate} coordinates Coordinates.
+     * @param {import("./Geometry.js").GeometryLayout} [layout] Layout.
      * @override
      */
-    override setCoordinates(coordinates: any, layout: any): void;
+    override setCoordinates(coordinates: import("../coordinate.js").Coordinate, layout?: import("./Geometry.js").GeometryLayout): void;
     /**
      * Set the radius of the circle. The radius is in the units of the projection.
      * @param {number} radius Radius.

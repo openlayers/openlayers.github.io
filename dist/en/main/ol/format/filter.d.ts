@@ -199,7 +199,11 @@ export function like(propertyName: string, pattern: string, wildCard?: string, s
  * @api
  */
 export function during(propertyName: string, begin: string, end: string): During;
-export function resourceId(rid: any): ResourceId;
+/**
+ * @param {string} rid Resource id.
+ * @return {!ResourceId} `<ResourceId>` operator.
+ */
+export function resourceId(rid: string): ResourceId;
 import And from './filter/And.js';
 import Or from './filter/Or.js';
 import Not from './filter/Not.js';

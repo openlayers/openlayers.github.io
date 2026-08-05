@@ -143,7 +143,7 @@ declare class BaseLayer<Properties extends {
      */
     un: BaseLayerOnSignature<void>;
     /**
-     * @type {BackgroundColor|false}
+     * @type {BackgroundColor|false|undefined}
      * @private
      */
     private background_;
@@ -153,15 +153,15 @@ declare class BaseLayer<Properties extends {
      */
     private className_;
     /**
-     * @type {import("./Layer.js").State}
+     * @type {import("./Layer.js").State|null}
      * @private
      */
     private state_;
     /**
      * Get the background for this layer.
-     * @return {BackgroundColor|false} Layer background.
+     * @return {BackgroundColor|false|undefined} Layer background.
      */
-    getBackground(): BackgroundColor | false;
+    getBackground(): BackgroundColor | false | undefined;
     /**
      * @return {string} CSS class name.
      */
@@ -258,9 +258,9 @@ declare class BaseLayer<Properties extends {
     getZIndex(): number | undefined;
     /**
      * Sets the background color.
-     * @param {BackgroundColor} [background] Background color.
+     * @param {BackgroundColor|undefined} [background] Background color.
      */
-    setBackground(background?: BackgroundColor): void;
+    setBackground(background?: BackgroundColor | undefined): void;
     /**
      * Set the extent at which the layer is visible.  If `undefined`, the layer
      * will be visible at all extents.

@@ -131,7 +131,7 @@ export type MapOptionsInternal = {
     /**
      * KeyboardEventTarget.
      */
-    keyboardEventTarget: HTMLElement | Document;
+    keyboardEventTarget: HTMLElement | Document | null | undefined;
     /**
      * Overlays.
      */
@@ -320,7 +320,7 @@ declare class Map extends BaseObject<{
     private pixelRatio_;
     /**
      * @private
-     * @type {ReturnType<typeof setTimeout>}
+     * @type {ReturnType<typeof setTimeout>|undefined}
      */
     private postRenderTimeoutHandle_;
     /**
@@ -355,7 +355,7 @@ declare class Map extends BaseObject<{
     /**
      * The extent at the previous 'moveend' event.
      * @private
-     * @type {import("./extent.js").Extent}
+     * @type {import("./extent.js").Extent|null}
      */
     private previousExtent_;
     /**
@@ -373,30 +373,34 @@ declare class Map extends BaseObject<{
      * @type {?Array<import("./events.js").EventsKey>}
      */
     private layerGroupPropertyListenerKeys_;
-    viewport_: HTMLDivElement | undefined;
     /**
      * @private
-     * @type {!HTMLElement}
+     * @type {HTMLElement|undefined}
+     */
+    private viewport_;
+    /**
+     * @private
+     * @type {HTMLElement|undefined}
      */
     private overlayContainer_;
     /**
      * @private
-     * @type {!HTMLElement}
+     * @type {HTMLElement|undefined}
      */
     private overlayContainerStopEvent_;
     /**
      * @private
-     * @type {MapBrowserEventHandler}
+     * @type {MapBrowserEventHandler|null}
      */
     private mapBrowserEventHandler_;
     /**
      * @private
-     * @type {number}
+     * @type {number|undefined}
      */
     private moveTolerance_;
     /**
      * @private
-     * @type {HTMLElement|Document}
+     * @type {HTMLElement|Document|null|undefined}
      */
     private keyboardEventTarget_;
     /**
@@ -406,7 +410,7 @@ declare class Map extends BaseObject<{
     private targetChangeHandlerKeys_;
     /**
      * @private
-     * @type {HTMLElement|null}
+     * @type {HTMLElement|null|undefined}
      */
     private targetElement_;
     /**
@@ -580,10 +584,10 @@ declare class Map extends BaseObject<{
      * Get the DOM element into which this map is rendered. In contrast to
      * `getTarget` this method always return an `Element`, or `null` if the
      * map has no target.
-     * @return {HTMLElement} The element that the map is rendered in.
+     * @return {HTMLElement|null|undefined} The element that the map is rendered in.
      * @api
      */
-    getTargetElement(): HTMLElement;
+    getTargetElement(): HTMLElement | null | undefined;
     /**
      * Get the coordinate for a given pixel.  This returns a coordinate in the
      * user projection.
@@ -596,9 +600,9 @@ declare class Map extends BaseObject<{
      * Get the coordinate for a given pixel.  This returns a coordinate in the
      * map view projection.
      * @param {import("./pixel.js").Pixel} pixel Pixel position in the map viewport.
-     * @return {import("./coordinate.js").Coordinate} The coordinate for the pixel position.
+     * @return {import("./coordinate.js").Coordinate|null} The coordinate for the pixel position.
      */
-    getCoordinateFromPixelInternal(pixel: import("./pixel.js").Pixel): import("./coordinate.js").Coordinate;
+    getCoordinateFromPixelInternal(pixel: import("./pixel.js").Pixel): import("./coordinate.js").Coordinate | null;
     /**
      * Get the map controls. Modifying this collection changes the controls
      * associated with the map.
@@ -666,9 +670,9 @@ declare class Map extends BaseObject<{
      * Get the pixel for a coordinate.  This takes a coordinate in the map view
      * projection and returns the corresponding pixel.
      * @param {import("./coordinate.js").Coordinate} coordinate A map coordinate.
-     * @return {import("./pixel.js").Pixel} A pixel position in the map viewport.
+     * @return {import("./pixel.js").Pixel|null} A pixel position in the map viewport.
      */
-    getPixelFromCoordinateInternal(coordinate: import("./coordinate.js").Coordinate): import("./pixel.js").Pixel;
+    getPixelFromCoordinateInternal(coordinate: import("./coordinate.js").Coordinate): import("./pixel.js").Pixel | null;
     /**
      * Get the pixel ratio of the rendered map.
      * @return {number} Pixel ratio.
@@ -703,26 +707,26 @@ declare class Map extends BaseObject<{
     getView(): View;
     /**
      * Get the element that serves as the map viewport.
-     * @return {HTMLElement} Viewport.
+     * @return {HTMLElement|undefined} Viewport.
      * @api
      */
-    getViewport(): HTMLElement;
+    getViewport(): HTMLElement | undefined;
     /**
      * Get the element that serves as the container for overlays.  Elements added to
      * this container will let mousedown and touchstart events through to the map,
      * so clicks and gestures on an overlay will trigger {@link module:ol/MapBrowserEvent~MapBrowserEvent}
      * events.
-     * @return {!HTMLElement} The map's overlay container.
+     * @return {HTMLElement|undefined} The map's overlay container.
      */
-    getOverlayContainer(): HTMLElement;
+    getOverlayContainer(): HTMLElement | undefined;
     /**
      * Get the element that serves as a container for overlays that don't allow
      * event propagation. Elements added to this container won't let mousedown and
      * touchstart events through to the map, so clicks and gestures on an overlay
      * don't trigger any {@link module:ol/MapBrowserEvent~MapBrowserEvent}.
-     * @return {!HTMLElement} The map's overlay container that stops events.
+     * @return {HTMLElement|undefined} The map's overlay container that stops events.
      */
-    getOverlayContainerStopEvent(): HTMLElement;
+    getOverlayContainerStopEvent(): HTMLElement | undefined;
     /**
      * @return {!Document} The document where the map is displayed.
      */
@@ -851,12 +855,12 @@ declare class Map extends BaseObject<{
      * For accessibility (focus and keyboard events for map navigation), the `target` element must have a
      *  properly configured `tabindex` attribute. If the `target` element is inside a Shadow DOM, the
      *  `tabindex` atribute must be set on the custom element's host element.
-     * @param {HTMLElement|string} [target] The Element or id of the Element
+     * @param {HTMLElement|string|null|undefined} [target] The Element or id of the Element
      *     that the map is rendered in.
      * @observable
      * @api
      */
-    setTarget(target?: HTMLElement | string): void;
+    setTarget(target?: HTMLElement | string | null | undefined): void;
     /**
      * Set the view for this map.
      * @param {View|Promise<import("./View.js").ViewOptions>|null} view The view that controls this map.

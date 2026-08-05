@@ -73,7 +73,7 @@ export type BaseLayerType = import("../../layer/BaseTile.js").default<any, any>;
  * @property {Array<import('./Layer.js').PostProcessesOptions>} [postProcesses] Post-processes definitions.
  */
 /**
- * @typedef {import("../../layer/BaseTile.js").default} BaseLayerType
+ * @typedef {import("../../layer/BaseTile.js").default<any, any>} BaseLayerType
  */
 /**
  * @classdesc
@@ -147,7 +147,7 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileTy
     protected frameState: import("../../Map.js").FrameState | null;
     /**
      * @private
-     * @type {import("../../proj/Projection.js").default}
+     * @type {import("../../proj/Projection.js").default|undefined}
      */
     private renderedProjection_;
     /**
@@ -210,7 +210,17 @@ declare class WebGLBaseTileLayerRenderer<LayerType extends BaseLayerType, TileTy
      * @protected
      */
     protected renderTileMask(tileRepresentation: TileRepresentation, tileZ: number, extent: import("../../extent.js").Extent, depth: number): void;
-    drawTile_(frameState: any, tileRepresentation: any, tileZ: any, gutter: any, extent: any, alphaLookup: any, tileGrid: any): void;
+    /**
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @param {TileRepresentation} tileRepresentation Tile representation.
+     * @param {number} tileZ Tile Z.
+     * @param {number} gutter Gutter.
+     * @param {import("../../extent.js").Extent} extent Render extent.
+     * @param {Object<string, number>} alphaLookup Alpha lookup.
+     * @param {import("../../tilegrid/TileGrid.js").default} tileGrid Tile grid.
+     * @private
+     */
+    private drawTile_;
     /**
      * Render the layer.
      * @param {import("../../Map.js").FrameState} frameState Frame state.

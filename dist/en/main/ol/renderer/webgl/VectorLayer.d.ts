@@ -77,8 +77,9 @@ export type Options = {
  * Please note that the fragment shaders output should have premultiplied alpha, otherwise visual anomalies may occur.
  *
  * Note: this uses {@link module:ol/webgl/Helper~WebGLHelper} internally.
+ * @extends {WebGLLayerRenderer<import("../../layer/Vector.js").default>}
  */
-declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
+declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<import("../../layer/Vector.js").default<import("../../source/Vector.js").default<any>, any>> {
     /**
      * @param {import("../../layer/Layer.js").default} layer Layer.
      * @param {Options} options Options.
@@ -138,12 +139,12 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      */
     private hasText_;
     /**
-     * @type {VectorStyleRenderer}
+     * @type {VectorStyleRenderer|null}
      * @public
      */
-    public styleRenderer_: VectorStyleRenderer;
+    public styleRenderer_: VectorStyleRenderer | null;
     /**
-     * @type {import('../../render/webgl/VectorStyleRenderer.js').WebGLBuffers}
+     * @type {import('../../render/webgl/VectorStyleRenderer.js').WebGLBuffers|null}
      * @private
      */
     private buffers_;
@@ -158,7 +159,7 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
     private initialFeaturesAdded_;
     /**
      * @private
-     * @type {Array<import("../../events.js").EventsKey|null>}
+     * @type {Array<import("../../events.js").EventsKey|null>|null}
      */
     private sourceListenKeys_;
     /**
@@ -176,17 +177,18 @@ declare class WebGLVectorLayerRenderer extends WebGLLayerRenderer<any> {
      */
     private createRenderers_;
     /**
+     * @param {Options} options Options.
      * @override
      */
-    override reset(options: any): void;
+    override reset(options: Options): void;
     /**
-     * @param {import("../../proj.js").TransformFunction} projectionTransform Transform function.
+     * @param {import("../../proj.js").TransformFunction|undefined} projectionTransform Transform function.
      * @param {import("../../source/Vector.js").VectorSourceEvent} event Event.
      * @private
      */
     private handleSourceFeatureAdded_;
     /**
-     * @param {import("../../proj.js").TransformFunction} projectionTransform Transform function.
+     * @param {import("../../proj.js").TransformFunction|undefined} projectionTransform Transform function.
      * @param {import("../../source/Vector.js").VectorSourceEvent} event Event.
      * @private
      */

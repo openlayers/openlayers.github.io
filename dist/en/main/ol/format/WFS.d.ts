@@ -8,6 +8,9 @@
  */
 export function writeFilter(filter: import("./filter/Filter.js").default, version: string): Node;
 export default WFS;
+export type WFSObject = {
+    [x: string]: any;
+};
 export type Options = {
     /**
      * The namespace URI used for features.

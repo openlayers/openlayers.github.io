@@ -300,7 +300,7 @@ declare class WebGLHelper extends Disposable {
     private extensionCache_;
     /**
      * @private
-     * @type {WebGLProgram}
+     * @type {WebGLProgram|null}
      */
     private currentProgram_;
     /**
@@ -315,7 +315,7 @@ declare class WebGLHelper extends Disposable {
     private tmpMat4_;
     /**
      * @private
-     * @type {Object<string, Object<string, WebGLUniformLocation>>}
+     * @type {Object<string, Object<string, WebGLUniformLocation|null>>}
      */
     private uniformLocationsByProgram_;
     /**
@@ -513,9 +513,9 @@ declare class WebGLHelper extends Disposable {
     /**
      * Will get the location from the shader or the cache
      * @param {string} name Uniform name
-     * @return {WebGLUniformLocation} uniformLocation
+     * @return {WebGLUniformLocation|null} uniformLocation
      */
-    getUniformLocation(name: string): WebGLUniformLocation;
+    getUniformLocation(name: string): WebGLUniformLocation | null;
     /**
      * Will get the location from the shader or the cache
      * @param {string} name Attribute name

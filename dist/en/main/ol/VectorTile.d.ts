@@ -14,9 +14,9 @@ declare class VectorTile<FeatureType extends import("./Feature.js").FeatureLike>
     constructor(tileCoord: import("./tilecoord.js").TileCoord, state: any, src: string, format: import("./format/Feature.js").default<FeatureType>, tileLoadFunction: import("./Tile.js").LoadFunction, options?: import("./Tile.js").Options);
     /**
      * Extent of this tile; set by the source.
-     * @type {import("./extent.js").Extent}
+     * @type {import("./extent.js").Extent|null}
      */
-    extent: import("./extent.js").Extent;
+    extent: import("./extent.js").Extent | null;
     /**
      * @private
      * @type {import("./format/Feature.js").default<FeatureType>}
@@ -24,7 +24,7 @@ declare class VectorTile<FeatureType extends import("./Feature.js").FeatureLike>
     private format_;
     /**
      * @private
-     * @type {Array<FeatureType>}
+     * @type {Array<FeatureType>|null}
      */
     private features_;
     /**
@@ -34,9 +34,9 @@ declare class VectorTile<FeatureType extends import("./Feature.js").FeatureLike>
     private loader_;
     /**
      * Feature projection of this tile; set by the source.
-     * @type {import("./proj/Projection.js").default}
+     * @type {import("./proj/Projection.js").default|null}
      */
-    projection: import("./proj/Projection.js").default;
+    projection: import("./proj/Projection.js").default | null;
     /**
      * Resolution of this tile; set by the source.
      * @type {number}
@@ -64,10 +64,10 @@ declare class VectorTile<FeatureType extends import("./Feature.js").FeatureLike>
     getFormat(): import("./format/Feature.js").default<FeatureType>;
     /**
      * Get the features for this tile. Geometries will be in the view projection.
-     * @return {Array<FeatureType>} Features.
+     * @return {Array<FeatureType>|null} Features.
      * @api
      */
-    getFeatures(): Array<FeatureType>;
+    getFeatures(): Array<FeatureType> | null;
     /**
      * Handler for successful tile load.
      * @param {Array<FeatureType>} features The loaded features.

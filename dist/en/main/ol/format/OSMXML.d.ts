@@ -1,4 +1,23 @@
 export default OSMXML;
+export type OSMObject = {
+    [x: string]: any;
+};
+export type OSMState = {
+    /**
+     * Nodes.
+     */
+    nodes: {
+        [x: string]: import("../coordinate.js").Coordinate;
+    };
+    /**
+     * Ways.
+     */
+    ways: Array<OSMObject>;
+    /**
+     * Features.
+     */
+    features: Array<import("../Feature.js").default>;
+};
 /**
  * @classdesc
  * Feature format for reading data in the

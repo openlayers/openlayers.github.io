@@ -1,7 +1,7 @@
 export default ReprojImage;
-export type FunctionType = (arg0: import("../extent.js").Extent, arg1: number, arg2: number) => import("../Image.js").default;
+export type FunctionType = (arg0: import("../extent.js").Extent, arg1: number, arg2: number) => import("../Image.js").default | null;
 /**
- * @typedef {function(import("../extent.js").Extent, number, number) : import("../Image.js").default} FunctionType
+ * @typedef {function(import("../extent.js").Extent, number, number) : import("../Image.js").default|null} FunctionType
  */
 /**
  * @classdesc
@@ -47,7 +47,7 @@ declare class ReprojImage extends ImageWrapper {
     private targetExtent_;
     /**
      * @private
-     * @type {import("../Image.js").default}
+     * @type {import("../Image.js").default|null}
      */
     private sourceImage_;
     /**
@@ -62,7 +62,7 @@ declare class ReprojImage extends ImageWrapper {
     private interpolate_;
     /**
      * @private
-     * @type {HTMLCanvasElement|OffscreenCanvas}
+     * @type {HTMLCanvasElement|OffscreenCanvas|null}
      */
     private canvas_;
     /**
@@ -71,10 +71,10 @@ declare class ReprojImage extends ImageWrapper {
      */
     private sourceListenerKey_;
     /**
-     * @return {HTMLCanvasElement|OffscreenCanvas} Image.
+     * @return {HTMLCanvasElement|OffscreenCanvas|null} Image.
      * @override
      */
-    override getImage(): HTMLCanvasElement | OffscreenCanvas;
+    override getImage(): HTMLCanvasElement | OffscreenCanvas | null;
     /**
      * @return {import("../proj/Projection.js").default} Projection.
      */

@@ -163,13 +163,13 @@ declare class Translate extends PointerInteraction {
     un: TranslateOnSignature<void>;
     /**
      * The last position we translated to.
-     * @type {import("../coordinate.js").Coordinate}
+     * @type {import("../coordinate.js").Coordinate|null}
      * @private
      */
     private lastCoordinate_;
     /**
      * The start position before translation started.
-     * @type {import("../coordinate.js").Coordinate}
+     * @type {import("../coordinate.js").Coordinate|null}
      * @private
      */
     private startCoordinate_;
@@ -208,7 +208,7 @@ declare class Translate extends PointerInteraction {
      * features.
      * @param {import("../pixel.js").Pixel} pixel Pixel coordinate to test for intersection.
      * @param {import("../Map.js").default} map Map to test the intersection on.
-     * @return {Feature} Returns the feature found at the specified pixel
+     * @return {Feature|undefined} Returns the feature found at the specified pixel
      * coordinates.
      * @private
      */
@@ -239,7 +239,7 @@ declare class Translate extends PointerInteraction {
      */
     private handleActiveChanged_;
     /**
-     * @param {import("../Map.js").default} oldMap Old map.
+     * @param {import("../Map.js").default|null} oldMap Old map.
      * @private
      */
     private updateState_;

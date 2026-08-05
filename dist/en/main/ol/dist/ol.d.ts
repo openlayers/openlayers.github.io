@@ -1063,8 +1063,10 @@ declare namespace ol {
         export { _ol_xml$makeChildAppender as makeChildAppender };
         export { _ol_xml$makeObjectPropertyPusher as makeObjectPropertyPusher };
         export { _ol_xml$makeObjectPropertySetter as makeObjectPropertySetter };
+        export { _ol_xml$makeParsersNS as makeParsersNS };
         export { _ol_xml$makeReplacer as makeReplacer };
         export { _ol_xml$makeSequence as makeSequence };
+        export { _ol_xml$makeSerializersNS as makeSerializersNS };
         export { _ol_xml$makeSimpleNodeFactory as makeSimpleNodeFactory };
         export { _ol_xml$makeStructureNS as makeStructureNS };
         export { _ol_xml$parse as parse };
@@ -1909,8 +1911,10 @@ import { makeArraySerializer as _ol_xml$makeArraySerializer } from '../../ol/xml
 import { makeChildAppender as _ol_xml$makeChildAppender } from '../../ol/xml.js';
 import { makeObjectPropertyPusher as _ol_xml$makeObjectPropertyPusher } from '../../ol/xml.js';
 import { makeObjectPropertySetter as _ol_xml$makeObjectPropertySetter } from '../../ol/xml.js';
+import { makeParsersNS as _ol_xml$makeParsersNS } from '../../ol/xml.js';
 import { makeReplacer as _ol_xml$makeReplacer } from '../../ol/xml.js';
 import { makeSequence as _ol_xml$makeSequence } from '../../ol/xml.js';
+import { makeSerializersNS as _ol_xml$makeSerializersNS } from '../../ol/xml.js';
 import { makeSimpleNodeFactory as _ol_xml$makeSimpleNodeFactory } from '../../ol/xml.js';
 import { makeStructureNS as _ol_xml$makeStructureNS } from '../../ol/xml.js';
 import { parse as _ol_xml$parse } from '../../ol/xml.js';

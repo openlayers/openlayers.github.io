@@ -26,7 +26,7 @@ declare class CanvasVectorImageLayerRenderer extends CanvasImageLayerRenderer {
     private coordinateToVectorPixelTransform_;
     /**
      * @private
-     * @type {import("../../transform.js").Transform}
+     * @type {import("../../transform.js").Transform|null}
      */
     private renderedPixelToCoordinateTransform_;
     /**

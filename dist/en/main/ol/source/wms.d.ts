@@ -12,27 +12,35 @@
  * @param {import("../extent.js").Extent} extent Extent.
  * @param {import("../size.js").Size} size Size.
  * @param {import("../proj/Projection.js").default} projection Projection.
- * @param {Object} params WMS params. Will be modified in place.
+ * @param {Object<string, *>} params WMS params. Will be modified in place.
  * @return {string} Request URL.
  */
-export function getRequestUrl(baseUrl: string, extent: import("../extent.js").Extent, size: import("../size.js").Size, projection: import("../proj/Projection.js").default, params: any): string;
+export function getRequestUrl(baseUrl: string, extent: import("../extent.js").Extent, size: import("../size.js").Size, projection: import("../proj/Projection.js").default, params: {
+    [x: string]: any;
+}): string;
 /**
  * @param {import("../extent.js").Extent} extent Extent.
  * @param {number} resolution Resolution.
  * @param {number} pixelRatio pixel ratio.
  * @param {import("../proj.js").Projection} projection Projection.
  * @param {string} url WMS service url.
- * @param {Object} params WMS params.
+ * @param {Object<string, *>} params WMS params.
  * @param {import("./wms.js").ServerType} serverType The type of the remote WMS server.
  * @return {string} Image src.
  */
-export function getImageSrc(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj.js").Projection, url: string, params: any, serverType: import("./wms.js").ServerType): string;
+export function getImageSrc(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj.js").Projection, url: string, params: {
+    [x: string]: any;
+}, serverType: import("./wms.js").ServerType): string;
 /**
- * @param {Object} params WMS params.
+ * @param {Object<string, *>} params WMS params.
  * @param {string} request WMS `REQUEST`.
- * @return {Object} WMS params with required properties set.
+ * @return {Object<string, *>} WMS params with required properties set.
  */
-export function getRequestParams(params: any, request: string): any;
+export function getRequestParams(params: {
+    [x: string]: any;
+}, request: string): {
+    [x: string]: any;
+};
 /**
  * @typedef {Object} LoaderOptions
  * @property {null|string} [crossOrigin] The `crossOrigin` attribute for loaded images.  Note that

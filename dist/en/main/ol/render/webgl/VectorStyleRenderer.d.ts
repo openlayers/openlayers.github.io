@@ -275,11 +275,12 @@ declare class VectorStyleRenderer extends Disposable {
      */
     private textOverlayCanvas_;
     /**
+     * @type {CanvasRenderingContext2D|null}
      * @private
      */
     private textOverlayContext_;
     /**
-     * @type {import("../../Map.js").FrameState}
+     * @type {import("../../Map.js").FrameState|null}
      * @private
      */
     private textOverlayRenderFrameState_;
@@ -309,7 +310,7 @@ declare class VectorStyleRenderer extends Disposable {
      * @param {Float32Array|null} renderInstructions Render instructions
      * @param {import("../../geom/Geometry.js").Type} geometryType Geometry type
      * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
-     * @return {Promise<WebGLArrayBufferSet>|null} Indices buffer and vertices buffer; null if nothing to render
+     * @return {Promise<WebGLArrayBufferSet|undefined>|null} Indices buffer and vertices buffer; null if nothing to render
      * @private
      */
     private generateBuffersForType_;
@@ -318,7 +319,7 @@ declare class VectorStyleRenderer extends Disposable {
      * @param {import('../../webgl/LabelsArray.js').default} labelsArray Labels array
      * @param {import("../../transform.js").Transform} transform Transform to apply to coordinates
      * @param {number} resolution View resolution to be used as a basis when computing text overflow
-     * @return {Promise<string>|null} Resolves to a key corresponding to the text draw instructions; null if no text to render
+     * @return {Promise<string|null>|null} Resolves to a key corresponding to the text draw instructions; null if no text to render
      * @private
      */
     private generateTextInstructions_;
@@ -352,11 +353,11 @@ declare class VectorStyleRenderer extends Disposable {
     finalizeTextRender(frameState: import("../../Map.js").FrameState): Promise<void>;
     /**
      * @param {import('../../webgl/Helper.js').default} helper Helper
-     * @param {WebGLBuffers} buffers WebGL Buffers to reload if any
+     * @param {WebGLBuffers|null} [buffers] WebGL Buffers to reload if any
      */
-    setHelper(helper: import("../../webgl/Helper.js").default, buffers?: WebGLBuffers): void;
+    setHelper(helper: import("../../webgl/Helper.js").default, buffers?: WebGLBuffers | null): void;
     getTextOverlayCanvas(): HTMLCanvasElement | undefined;
-    getTextOverlayFrameState(): import("../../Map.js").FrameState;
+    getTextOverlayFrameState(): import("../../Map.js").FrameState | null;
     /**
      * Dispose of text instructions in worker.
      * @param {string} key Key corresponding to the instructions set to dispose

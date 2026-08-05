@@ -3,12 +3,13 @@ export default CanvasVectorLayerRenderer;
  * @classdesc
  * Canvas renderer for vector layers.
  * @api
+ * @extends {CanvasLayerRenderer<import("../../layer/Vector.js").default>}
  */
-declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
+declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<import("../../layer/Vector.js").default<import("../../source.js").Vector<any>, any>> {
     /**
-     * @param {import("../../layer/BaseVector.js").default} vectorLayer Vector layer.
+     * @param {import("../../layer/Vector.js").default} vectorLayer Vector layer.
      */
-    constructor(vectorLayer: import("../../layer/BaseVector.js").default<any, any, any>);
+    constructor(vectorLayer: import("../../layer/Vector.js").default);
     /** @private */
     private boundHandleStyleImageChange_;
     /**
@@ -23,7 +24,7 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     private hitDetectionImageData_;
     /**
      * @private
-     * @type {import("../../extent.js").Extent}
+     * @type {import("../../extent.js").Extent|null}
      */
     private clipExtent_;
     /**
@@ -35,7 +36,7 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     private extendX_;
     /**
      * @private
-     * @type {Array<import("../../Feature.js").default>}
+     * @type {Array<import("../../Feature.js").default>|null}
      */
     private renderedFeatures_;
     /**
@@ -65,12 +66,12 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     private renderedRotation_;
     /**
      * @private
-     * @type {import("../../coordinate.js").Coordinate}
+     * @type {import("../../coordinate.js").Coordinate|null}
      */
     private renderedCenter_;
     /**
      * @private
-     * @type {import("../../proj/Projection.js").default}
+     * @type {import("../../proj/Projection.js").default|null}
      */
     private renderedProjection_;
     /**
@@ -90,7 +91,7 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     private renderedFrameDeclutter_;
     /**
      * @private
-     * @type {import("../../render/canvas/ExecutorGroup.js").default}
+     * @type {import("../../render/canvas/ExecutorGroup.js").default|null}
      */
     private replayGroup_;
     /**
@@ -105,7 +106,7 @@ declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<any> {
     clipping: boolean;
     /**
      * @private
-     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D}
+     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D|null}
      */
     private targetContext_;
     /**

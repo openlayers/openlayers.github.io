@@ -165,7 +165,9 @@ export type Orbit = {
     /**
      * Metadata for each tile.
      */
-    tiles: any[];
+    tiles: Array<{
+        [x: string]: any;
+    }>;
 };
 export type Tile = {
     /**

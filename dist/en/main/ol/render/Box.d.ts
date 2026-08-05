@@ -5,7 +5,7 @@ declare class RenderBox extends Disposable {
      */
     constructor(className: string);
     /**
-     * @type {import("../geom/Polygon.js").default}
+     * @type {import("../geom/Polygon.js").default|null}
      * @private
      */
     private geometry_;
@@ -21,12 +21,12 @@ declare class RenderBox extends Disposable {
     private map_;
     /**
      * @private
-     * @type {import("../pixel.js").Pixel}
+     * @type {import("../pixel.js").Pixel|null}
      */
     private startPixel_;
     /**
      * @private
-     * @type {import("../pixel.js").Pixel}
+     * @type {import("../pixel.js").Pixel|null}
      */
     private endPixel_;
     /**

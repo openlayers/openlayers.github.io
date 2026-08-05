@@ -8,10 +8,10 @@ export class ModifyEvent extends Event {
      * @param {ModifyEventType} type Type.
      * @param {Collection<Feature>} features
      * The features modified.
-     * @param {import("../MapBrowserEvent.js").default} mapBrowserEvent
+     * @param {import("../MapBrowserEvent.js").default|null} mapBrowserEvent
      * Associated {@link module:ol/MapBrowserEvent~MapBrowserEvent}.
      */
-    constructor(type: ModifyEventType, features: Collection<Feature>, mapBrowserEvent: import("../MapBrowserEvent.js").default);
+    constructor(type: ModifyEventType, features: Collection<Feature>, mapBrowserEvent: import("../MapBrowserEvent.js").default | null);
     /**
      * The features being modified.
      * @type {Collection<Feature>}
@@ -20,10 +20,10 @@ export class ModifyEvent extends Event {
     features: Collection<Feature>;
     /**
      * Associated {@link module:ol/MapBrowserEvent~MapBrowserEvent}.
-     * @type {import("../MapBrowserEvent.js").default}
+     * @type {import("../MapBrowserEvent.js").default|null}
      * @api
      */
-    mapBrowserEvent: import("../MapBrowserEvent.js").default;
+    mapBrowserEvent: import("../MapBrowserEvent.js").default | null;
 }
 export default Modify;
 export type SegmentData = {
@@ -58,6 +58,20 @@ export type SegmentData = {
  */
 export type FilterFunction = (arg0: Feature) => boolean;
 export type DragSegment = [SegmentData, number];
+export type SegmentsByFeature = {
+    /**
+     * Right segment.
+     */
+    right?: SegmentData | undefined;
+    /**
+     * Left segment.
+     */
+    left?: SegmentData | undefined;
+    /**
+     * Index.
+     */
+    index?: number | undefined;
+};
 export type Options = {
     /**
      * A function that
@@ -223,12 +237,12 @@ declare class Modify extends PointerInteraction {
      */
     private handleSourceRemove_;
     /**
-     * @param {import("../Collection.js").CollectionEvent} event Event.
+     * @param {import("../Collection.js").CollectionEvent<Feature>} event Event.
      * @private
      */
     private handleExternalCollectionAdd_;
     /**
-     * @param {import("../Collection.js").CollectionEvent} event Event.
+     * @param {import("../Collection.js").CollectionEvent<Feature>} event Event.
      * @private
      */
     private handleExternalCollectionRemove_;
@@ -274,13 +288,13 @@ declare class Modify extends PointerInteraction {
     private insertVertexCondition_;
     /**
      * Editing vertex.
-     * @type {Feature<Point>}
+     * @type {Feature<Point>|null}
      * @private
      */
     private vertexFeature_;
     /**
      * Segments intersecting {@link this.vertexFeature_} by segment uid.
-     * @type {Object<string, boolean>}
+     * @type {Object<string, boolean>|null}
      * @private
      */
     private vertexSegments_;
@@ -297,7 +311,7 @@ declare class Modify extends PointerInteraction {
      */
     private ignoreNextSingleClick_;
     /**
-     * @type {Collection<Feature>}
+     * @type {Collection<Feature>|null}
      * @private
      */
     private featuresBeingModified_;
@@ -342,7 +356,7 @@ declare class Modify extends PointerInteraction {
      */
     private SEGMENT_WRITERS_;
     /**
-     * @type {VectorSource}
+     * @type {VectorSource|null}
      * @private
      */
     private source_;
@@ -367,7 +381,7 @@ declare class Modify extends PointerInteraction {
      */
     private traceSegments_;
     /**
-     * @type {boolean|import("../layer/BaseVector.js").default}
+     * @type {boolean|import("../layer/BaseVector.js").default<any, any, any>|null}
      * @private
      */
     private hitDetection_;
@@ -387,9 +401,8 @@ declare class Modify extends PointerInteraction {
      * @type {function(import("../coordinate.js").Coordinate, import("../coordinate.js").Coordinate): boolean}
      */
     private coordinatesEqual_;
-    featuresCollection_: Collection<Feature<import("../geom/Geometry.js").default, {
-        [x: string]: any;
-    }>> | undefined;
+    /** @type {Collection<Feature>} */
+    featuresCollection_: Collection<Feature>;
     /**
      * Internal features array.  When adding or removing features, be sure to use
      * addFeature_()/removeFeature_() so that the the segment index is adjusted.
@@ -398,7 +411,7 @@ declare class Modify extends PointerInteraction {
      */
     private features_;
     /**
-     * @type {import("../MapBrowserEvent.js").default}
+     * @type {import("../MapBrowserEvent.js").default|null}
      * @private
      */
     private lastPointerEvent_;
@@ -560,9 +573,12 @@ declare class Modify extends PointerInteraction {
      * @private
      */
     private updateTrace_;
-    getTraceCandidates_(event: any): Feature<import("../geom/Geometry.js").default, {
-        [x: string]: any;
-    }>[];
+    /**
+     * @param {import("../MapBrowserEvent.js").default} event Event.
+     * @return {Array<import("../Feature.js").default>} Features.
+     * @private
+     */
+    private getTraceCandidates_;
     /**
      * Activate or deactivate trace state based on a browser event.
      * @param {import("../MapBrowserEvent.js").default} event Event.
@@ -672,7 +688,7 @@ declare class Modify extends PointerInteraction {
     insertPoint(coordinate?: import("../coordinate.js").Coordinate): boolean;
     /**
      * @param {import("../geom/SimpleGeometry.js").default} geometry Geometry.
-     * @param {Array} coordinates Coordinates.
+     * @param {*} coordinates Coordinates.
      * @private
      */
     private setGeometryCoordinates_;

@@ -168,8 +168,9 @@ export type Options = {
  * This uses {@link module:ol/webgl/Helper~WebGLHelper} internally.
  *
  * @api
+ * @extends {WebGLLayerRenderer<import("../../layer/WebGLPoints.js").default<any>>}
  */
-declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
+declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<import("../../layer/WebGLPoints.js").default<any>> {
     /**
      * @param {import("../../layer/Layer.js").default} layer Layer.
      * @param {Options} options Options.
@@ -243,7 +244,7 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
      */
     private invertRenderTransform_;
     /**
-     * @type {Float32Array}
+     * @type {Float32Array|null}
      * @private
      */
     private renderInstructions_;
@@ -276,6 +277,7 @@ declare class WebGLPointsLayerRenderer extends WebGLLayerRenderer<any> {
     private featureCount_;
     /**
      * @private
+     * @type {Array<import("../../events.js").EventsKey|null>|null}
      */
     private sourceListenKeys_;
     /**

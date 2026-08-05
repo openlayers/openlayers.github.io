@@ -51,12 +51,12 @@ declare class CanvasImmediateRenderer extends VectorContext {
     private viewRotation_;
     /**
      * @private
-     * @type {number}
+     * @type {number|undefined}
      */
     private squaredTolerance_;
     /**
      * @private
-     * @type {import("../../proj.js").TransformFunction}
+     * @type {import("../../proj.js").TransformFunction|undefined}
      */
     private userTransform_;
     /**
@@ -86,7 +86,7 @@ declare class CanvasImmediateRenderer extends VectorContext {
     private strokeState_;
     /**
      * @private
-     * @type {import('../../DataTile.js').ImageLike}
+     * @type {import('../../DataTile.js').ImageLike|null}
      */
     private image_;
     /**
@@ -339,18 +339,18 @@ declare class CanvasImmediateRenderer extends VectorContext {
      * Set the image style for subsequent draw operations.  Pass null to remove
      * the image style.
      *
-     * @param {import("../../style/Image.js").default} imageStyle Image style.
+     * @param {import("../../style/Image.js").default|null} imageStyle Image style.
      * @override
      */
-    override setImageStyle(imageStyle: import("../../style/Image.js").default): void;
+    override setImageStyle(imageStyle: import("../../style/Image.js").default | null): void;
     /**
      * Set the text style for subsequent draw operations.  Pass null to
      * remove the text style.
      *
-     * @param {import("../../style/Text.js").default} textStyle Text style.
+     * @param {import("../../style/Text.js").default|null} textStyle Text style.
      * @override
      */
-    override setTextStyle(textStyle: import("../../style/Text.js").default): void;
+    override setTextStyle(textStyle: import("../../style/Text.js").default | null): void;
 }
 import VectorContext from '../VectorContext.js';
 //# sourceMappingURL=Immediate.d.ts.map

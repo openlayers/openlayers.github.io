@@ -1,4 +1,17 @@
 export default GML2;
+export type GML2Context = {
+    [x: string]: any;
+};
+/**
+ * *
+ */
+export type GML2WriteContext = GML2Context & {
+    serializers?: {
+        [x: string]: {
+            [x: string]: import("../xml.js").Serializer;
+        };
+    };
+};
 /**
  * @classdesc
  * Feature format for reading and writing data in the GML format,

@@ -45,7 +45,9 @@ export type LoaderOptions = {
     /**
      * Additional query parameters.
      */
-    params?: any;
+    params?: {
+        [x: string]: string | number;
+    } | undefined;
     /**
      * Function
      * to perform loading of the image. Receives the created `HTMLImageElement` and the desired `src` as argument and

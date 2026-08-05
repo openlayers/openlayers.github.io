@@ -107,7 +107,7 @@ declare class ImageWMS extends ImageSource {
     private crossOrigin_;
     /**
      * @private
-     * @type {ReferrerPolicy}
+     * @type {ReferrerPolicy|undefined}
      */
     private referrerPolicy_;
     /**
@@ -127,7 +127,7 @@ declare class ImageWMS extends ImageSource {
     private params_;
     /**
      * @private
-     * @type {import("./wms.js").ServerType}
+     * @type {import("./wms.js").ServerType|undefined}
      */
     private serverType_;
     /**
@@ -147,7 +147,7 @@ declare class ImageWMS extends ImageSource {
     private ratio_;
     /**
      * @private
-     * @type {import("../proj/Projection.js").default}
+     * @type {import("../proj/Projection.js").default|undefined}
      */
     private loaderProjection_;
     /**

@@ -131,7 +131,7 @@ declare class BaseVectorLayer<FeatureType extends import("../Feature.js").Featur
     constructor(options?: Options<FeatureType, VectorSourceType>);
     /**
      * @private
-     * @type {string}
+     * @type {string|undefined}
      */
     private declutter_;
     /**
@@ -141,7 +141,7 @@ declare class BaseVectorLayer<FeatureType extends import("../Feature.js").Featur
     private renderBuffer_;
     /**
      * User provided style.
-     * @type {import("../style/Style.js").StyleLike|import("../style/flat.js").FlatStyleLike}
+     * @type {import("../style/Style.js").StyleLike|import("../style/flat.js").FlatStyleLike|null}
      * @private
      */
     private style_;

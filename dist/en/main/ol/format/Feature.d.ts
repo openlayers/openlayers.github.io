@@ -21,9 +21,9 @@ export function createRenderFeature(object: FeatureObject, options?: WriteOption
 /**
  * @param {GeometryObject|null} object Geometry object.
  * @param {WriteOptions|ReadOptions} [options] Options.
- * @return {import("../geom/Geometry.js").default} Geometry.
+ * @return {import("../geom/Geometry.js").default|null} Geometry.
  */
-export function createGeometry(object: GeometryObject | null, options?: WriteOptions | ReadOptions): import("../geom/Geometry.js").default;
+export function createGeometry(object: GeometryObject | null, options?: WriteOptions | ReadOptions): import("../geom/Geometry.js").default | null;
 export default FeatureFormat;
 export type ReadOptions = {
     /**
@@ -231,9 +231,9 @@ declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureL
     protected featureClass: FeatureToFeatureClass<FeatureType>;
     /**
      * A list media types supported by the format in descending order of preference.
-     * @type {Array<string>}
+     * @type {Array<string>|undefined}
      */
-    supportedMediaTypes: Array<string>;
+    supportedMediaTypes: Array<string> | undefined;
     /**
      * Adds the data projection to the read options.
      * @param {Document|Element|Object|string} source Source.
@@ -263,9 +263,9 @@ declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureL
      * @abstract
      * @param {Document|Element|Object|string} source Source.
      * @param {ReadOptions} [options] Read options.
-     * @return {FeatureType|Array<FeatureType>} Feature.
+     * @return {FeatureType|Array<FeatureType>|null} Feature.
      */
-    readFeature(source: Document | Element | any | string, options?: ReadOptions): FeatureType | Array<FeatureType>;
+    readFeature(source: Document | Element | any | string, options?: ReadOptions): FeatureType | Array<FeatureType> | null;
     /**
      * Read all features from a source.
      *
@@ -281,9 +281,9 @@ declare class FeatureFormat<FeatureType extends import("../Feature.js").FeatureL
      * @abstract
      * @param {Document|Element|Object|string} source Source.
      * @param {ReadOptions} [options] Read options.
-     * @return {import("../geom/Geometry.js").default} Geometry.
+     * @return {import("../geom/Geometry.js").default|null} Geometry.
      */
-    readGeometry(source: Document | Element | any | string, options?: ReadOptions): import("../geom/Geometry.js").default;
+    readGeometry(source: Document | Element | any | string, options?: ReadOptions): import("../geom/Geometry.js").default | null;
     /**
      * Read the projection from a source.
      *

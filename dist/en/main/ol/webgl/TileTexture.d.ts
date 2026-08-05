@@ -29,6 +29,11 @@ declare class TileTexture extends BaseTileRepresentation<TileType> {
      */
     coords: WebGLArrayBuffer;
     /**
+     * @override
+     * @param {import("./Helper.js").default} helper The WebGL helper.
+     */
+    override setHelper(helper: import("./Helper.js").default): void;
+    /**
      * @param {import("../DataTile.js").ImageLike} image The image.
      * @param {number} renderCol The column index (in rendered tile space).
      * @param {number} renderRow The row index (in rendered tile space).

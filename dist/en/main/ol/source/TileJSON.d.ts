@@ -179,12 +179,12 @@ declare class TileJSON extends TileImage {
      */
     constructor(options: Options);
     /**
-     * @type {Config}
+     * @type {Config|null}
      * @private
      */
     private tileJSON_;
     /**
-     * @type {number|import("../size.js").Size}
+     * @type {number|import("../size.js").Size|undefined}
      * @private
      */
     private tileSize_;
@@ -199,10 +199,10 @@ declare class TileJSON extends TileImage {
      */
     private onXHRError_;
     /**
-     * @return {Config} The tilejson object.
+     * @return {Config|null} The tilejson object.
      * @api
      */
-    getTileJSON(): Config;
+    getTileJSON(): Config | null;
     /**
      * @protected
      * @param {Config} tileJSON Tile JSON.

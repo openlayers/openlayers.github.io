@@ -295,7 +295,7 @@ declare class Graticule extends VectorLayer<VectorSource<Feature<import("../geom
      */
     constructor(options?: Options);
     /**
-     * @type {import("../proj/Projection.js").default}
+     * @type {import("../proj/Projection.js").default|null}
      * @private
      */
     private projection_;
@@ -375,37 +375,37 @@ declare class Graticule extends VectorLayer<VectorSource<Feature<import("../geom
      */
     private toLonLatTransform_;
     /**
-     * @type {import("../coordinate.js").Coordinate}
+     * @type {import("../coordinate.js").Coordinate|null}
      * @private
      */
     private projectionCenterLonLat_;
     /**
-     * @type {import("../coordinate.js").Coordinate}
+     * @type {import("../coordinate.js").Coordinate|null}
      * @private
      */
     private bottomLeft_;
     /**
-     * @type {import("../coordinate.js").Coordinate}
+     * @type {import("../coordinate.js").Coordinate|null}
      * @private
      */
     private bottomRight_;
     /**
-     * @type {import("../coordinate.js").Coordinate}
+     * @type {import("../coordinate.js").Coordinate|null}
      * @private
      */
     private topLeft_;
     /**
-     * @type {import("../coordinate.js").Coordinate}
+     * @type {import("../coordinate.js").Coordinate|null}
      * @private
      */
     private topRight_;
     /**
-     * @type {Array<GraticuleLabelDataType>}
+     * @type {Array<GraticuleLabelDataType>|null}
      * @private
      */
     private meridiansLabels_;
     /**
-     * @type {Array<GraticuleLabelDataType>}
+     * @type {Array<GraticuleLabelDataType>|null}
      * @private
      */
     private parallelsLabels_;

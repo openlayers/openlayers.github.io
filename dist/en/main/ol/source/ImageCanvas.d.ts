@@ -8,7 +8,7 @@ export default ImageCanvasSource;
  * this function is cached by the source. The this keyword inside the function
  * references the {@link module :ol/source/ImageCanvas~ImageCanvasSource}.
  */
-export type FunctionType = (this: import("../ImageCanvas.js").default, arg1: import("../extent.js").Extent, arg2: number, arg3: number, arg4: import("../size.js").Size, arg5: import("../proj/Projection.js").default) => HTMLCanvasElement;
+export type FunctionType = (this: import("./ImageCanvas.js").default, arg1: import("../extent.js").Extent, arg2: number, arg3: number, arg4: import("../size.js").Size, arg5: import("../proj/Projection.js").default) => HTMLCanvasElement;
 export type Options = {
     /**
      * Attributions.
@@ -59,7 +59,7 @@ export type Options = {
  * this function is cached by the source. The this keyword inside the function
  * references the {@link module:ol/source/ImageCanvas~ImageCanvasSource}.
  *
- * @typedef {function(this:import("../ImageCanvas.js").default, import("../extent.js").Extent, number,
+ * @typedef {function(this:import("./ImageCanvas.js").default, import("../extent.js").Extent, number,
  *     number, import("../size.js").Size, import("../proj/Projection.js").default): HTMLCanvasElement} FunctionType
  */
 /**
@@ -95,12 +95,12 @@ declare class ImageCanvasSource extends ImageSource {
     constructor(options?: Options);
     /**
      * @private
-     * @type {FunctionType}
+     * @type {FunctionType|undefined}
      */
     private canvasFunction_;
     /**
      * @private
-     * @type {import("../ImageCanvas.js").default}
+     * @type {import("../ImageCanvas.js").default|null}
      */
     private canvas_;
     /**
@@ -118,10 +118,10 @@ declare class ImageCanvasSource extends ImageSource {
      * @param {number} resolution Resolution.
      * @param {number} pixelRatio Pixel ratio.
      * @param {import("../proj/Projection.js").default} projection Projection.
-     * @return {import("../ImageCanvas.js").default} Single image.
+     * @return {import("../ImageCanvas.js").default|null} Single image.
      * @override
      */
-    override getImageInternal(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../ImageCanvas.js").default;
+    override getImageInternal(extent: import("../extent.js").Extent, resolution: number, pixelRatio: number, projection: import("../proj/Projection.js").default): import("../ImageCanvas.js").default | null;
 }
 import ImageSource from './Image.js';
 //# sourceMappingURL=ImageCanvas.d.ts.map

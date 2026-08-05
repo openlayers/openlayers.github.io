@@ -74,12 +74,12 @@ export class ShaderBuilder {
      */
     private texCoordExpression_;
     /**
-     * @type {string}
+     * @type {string|null}
      * @private
      */
     private fragmentDiscardExpression_;
     /**
-     * @type {string}
+     * @type {string|null}
      * @private
      */
     private shapeDiscardExpression_;
@@ -125,7 +125,7 @@ export class ShaderBuilder {
     private strokeDistanceFieldExpression_;
     /**
      * @private
-     * @type {string}
+     * @type {string|null}
      */
     private strokePatternLengthExpression_;
     /**
@@ -140,7 +140,7 @@ export class ShaderBuilder {
     private fillColorExpression_;
     /**
      * @private
-     * @type {string}
+     * @type {string|null}
      */
     private fillPatternSizeExpression_;
     /**
@@ -237,9 +237,9 @@ export class ShaderBuilder {
      */
     setFragmentDiscardExpression(expression: string): ShaderBuilder;
     /**
-     * @return {string} The current fragment discard expression; null if none has been set
+     * @return {string|null} The current fragment discard expression; null if none has been set
      */
-    getFragmentDiscardExpression(): string;
+    getFragmentDiscardExpression(): string | null;
     /**
      * Sets an expression to determine whether a whole shape (triangle) should be filtered out
      * and not rasterized at all. If the expression evaluates to `true`, the shape is discarded.
@@ -251,9 +251,9 @@ export class ShaderBuilder {
      */
     setShapeDiscardExpression(expression: string): ShaderBuilder;
     /**
-     * @return {string} The current shape discard expression; null if none has been set
+     * @return {string|null} The current shape discard expression; null if none has been set
      */
-    getShapeDiscardExpression(): string;
+    getShapeDiscardExpression(): string | null;
     /**
      * Sets whether the symbols should rotate with the view or stay aligned with the map.
      * Note: will only be used for point geometry shaders.
@@ -312,9 +312,9 @@ export class ShaderBuilder {
      */
     setStrokePatternLengthExpression(expression: string): ShaderBuilder;
     /**
-     * @return {string} The current stroke pattern length expression.
+     * @return {string|null} The current stroke pattern length expression.
      */
-    getStrokePatternLengthExpression(): string;
+    getStrokePatternLengthExpression(): string | null;
     /**
      * @param {string} expression Fill color expression, evaluate to `vec4`
      * @return {ShaderBuilder} the builder object
@@ -333,11 +333,11 @@ export class ShaderBuilder {
      */
     setFillPatternSizeExpression(expression: string): ShaderBuilder;
     /**
-     * @return {string} The current fill pattern size expression.
+     * @return {string|null} The current fill pattern size expression.
      */
-    getFillPatternSizeExpression(): string;
-    addVertexShaderFunction(code: any): this;
-    addFragmentShaderFunction(code: any): this;
+    getFillPatternSizeExpression(): string | null;
+    addVertexShaderFunction(code: string): this;
+    addFragmentShaderFunction(code: string): this;
     /**
      * Generates a symbol vertex shader from the builder parameters
      * @return {string|null} The full shader as a string; null if no size or color specified

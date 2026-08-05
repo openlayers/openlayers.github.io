@@ -94,7 +94,7 @@ declare class OGCMap extends ImageSource {
     private crossOrigin_;
     /**
      * @private
-     * @type {ReferrerPolicy}
+     * @type {ReferrerPolicy|undefined}
      */
     private referrerPolicy_;
     /**
@@ -129,7 +129,7 @@ declare class OGCMap extends ImageSource {
     private ratio_;
     /**
      * @private
-     * @type {import("../proj/Projection.js").default}
+     * @type {import("../proj/Projection.js").default|null}
      */
     private loaderProjection_;
     /**

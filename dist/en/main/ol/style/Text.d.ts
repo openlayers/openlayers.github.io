@@ -268,7 +268,7 @@ declare class Text {
     private padding_;
     /**
      * @private
-     * @type {import('../style/Style.js').DeclutterMode}
+     * @type {import('../style/Style.js').DeclutterMode|undefined}
      */
     private declutterMode_;
     /**
@@ -404,10 +404,10 @@ declare class Text {
     getPadding(): Array<number> | null;
     /**
      * Get the declutter mode of the shape
-     * @return {import("./Style.js").DeclutterMode} Shape's declutter mode
+     * @return {import("./Style.js").DeclutterMode|undefined} Shape's declutter mode
      * @api
      */
-    getDeclutterMode(): import("./Style.js").DeclutterMode;
+    getDeclutterMode(): import("./Style.js").DeclutterMode | undefined;
     /**
      * Set the `overflow` property.
      *

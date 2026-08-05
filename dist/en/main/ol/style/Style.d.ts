@@ -377,10 +377,10 @@ declare class Style {
     getText(): import("./Text.js").default | null;
     /**
      * Set the text style.
-     * @param {import("./Text.js").default} text Text style.
+     * @param {import("./Text.js").default|null} text Text style.
      * @api
      */
-    setText(text: import("./Text.js").default): void;
+    setText(text: import("./Text.js").default | null): void;
     /**
      * Get the z-index for the style.
      * @return {number|undefined} ZIndex.

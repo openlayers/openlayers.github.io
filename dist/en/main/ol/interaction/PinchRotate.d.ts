@@ -29,7 +29,7 @@ declare class PinchRotate extends PointerInteraction {
     constructor(options?: Options);
     /**
      * @private
-     * @type {import("../coordinate.js").Coordinate}
+     * @type {import("../coordinate.js").Coordinate|null}
      */
     private anchor_;
     /**

@@ -171,9 +171,9 @@ declare class TileImage extends UrlTile {
     protected crossOrigin: string | null;
     /**
      * @protected
-     * @type {ReferrerPolicy}
+     * @type {ReferrerPolicy|undefined}
      */
-    protected referrerPolicy: ReferrerPolicy;
+    protected referrerPolicy: ReferrerPolicy | undefined;
     /**
      * @protected
      * @type {typeof ImageTile}

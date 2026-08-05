@@ -129,14 +129,14 @@ declare class Source extends BaseObject<{
     private interpolate_;
     /**
      * @protected
-     * @type {function(import("../View.js").ViewOptions):void}
+     * @type {null|function(import("../View.js").ViewOptions):void}
      */
-    protected viewResolver: (arg0: import("../View.js").ViewOptions) => void;
+    protected viewResolver: null | ((arg0: import("../View.js").ViewOptions) => void);
     /**
      * @protected
-     * @type {function(Error):void}
+     * @type {null|function(Error):void}
      */
-    protected viewRejector: (arg0: Error) => void;
+    protected viewRejector: null | ((arg0: Error) => void);
     /**
      * @private
      * @type {Promise<import("../View.js").ViewOptions>}

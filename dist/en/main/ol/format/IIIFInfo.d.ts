@@ -76,6 +76,40 @@ export type IiifProfile = {
      */
     maxWidth?: number | undefined;
 };
+export type IIIFImageOptions = {
+    /**
+     * Image service URL.
+     */
+    url?: string | undefined;
+    /**
+     * Supported sizes.
+     */
+    sizes?: Array<Array<number>> | undefined;
+    /**
+     * Tile size.
+     */
+    tileSize?: Array<number> | undefined;
+    /**
+     * Resolution factors.
+     */
+    resolutions?: Array<number> | undefined;
+    /**
+     * Supported features.
+     */
+    supports?: string[] | undefined;
+    /**
+     * Supported formats.
+     */
+    formats?: string[] | undefined;
+    /**
+     * Supported qualities.
+     */
+    qualities?: string[] | undefined;
+    /**
+     * Preferred format.
+     */
+    preferredFormat?: string | undefined;
+};
 export type ImageInformationResponse = {
     [x: string]: string | number | (string | number | IiifProfile | {
         [x: string]: number;
@@ -114,9 +148,9 @@ declare class IIIFInfo {
     getComplianceLevelEntryFromProfile(version: Versions): string | undefined;
     /**
      * @param {Versions} version Optional IIIF image API version
-     * @return {string} Compliance level, on of 'level0', 'level1' or 'level2' or undefined
+     * @return {string|undefined} Compliance level, on of 'level0', 'level1' or 'level2' or undefined
      */
-    getComplianceLevelFromProfile(version: Versions): string;
+    getComplianceLevelFromProfile(version: Versions): string | undefined;
     /**
      * @return {SupportedFeatures|undefined} Image formats, qualities and region / size calculation
      * methods that are supported by the IIIF service.

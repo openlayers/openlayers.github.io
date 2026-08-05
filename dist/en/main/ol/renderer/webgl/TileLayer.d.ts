@@ -83,7 +83,7 @@ declare class WebGLTileLayerRenderer<LayerType extends import("../../layer/WebGL
      */
     constructor(tileLayer: LayerType, options: Options);
     /**
-     * @type {WebGLProgram}
+     * @type {WebGLProgram|undefined}
      * @private
      */
     private program_;
@@ -96,21 +96,8 @@ declare class WebGLTileLayerRenderer<LayerType extends import("../../layer/WebGL
      */
     private fragmentShader_;
     /**
-     * Tiles are rendered as a quad with the following structure:
-     *
-     *  [P3]---------[P2]
-     *   |`           |
-     *   |  `     B   |
-     *   |    `       |
-     *   |      `     |
-     *   |   A    `   |
-     *   |          ` |
-     *  [P0]---------[P1]
-     *
-     * Triangle A: P0, P1, P3
-     * Triangle B: P1, P2, P3
-     *
      * @private
+     * @type {WebGLArrayBuffer|undefined}
      */
     private indices_;
     /**
@@ -123,24 +110,6 @@ declare class WebGLTileLayerRenderer<LayerType extends import("../../layer/WebGL
      * @override
      */
     override reset(options: Options): void;
-    /**
-     * @override
-     */
-    override createTileRepresentation(options: any): TileTexture;
-    /**
-     * @override
-     */
-    override beforeTilesRender(frameState: any, tilesWithAlpha: any): void;
-    /**
-     * @override
-     */
-    override renderTile(tileTexture: any, tileTransform: any, frameState: any, renderExtent: any, tileResolution: any, tileSize: any, tileOrigin: any, tileExtent: any, depth: any, gutter: any, alpha: any): void;
-    /**
-     * @param {import("../../pixel.js").Pixel} pixel Pixel.
-     * @return {Uint8ClampedArray|Uint8Array|Float32Array|DataView} Data at the pixel location.
-     * @override
-     */
-    override getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray | Uint8Array | Float32Array | DataView;
 }
 import TileTexture from '../../webgl/TileTexture.js';
 import WebGLBaseTileLayerRenderer from './TileLayerBase.js';

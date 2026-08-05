@@ -35,10 +35,10 @@ declare class MultiPoint extends SimpleGeometry {
     /**
      * Return the point at the specified index.
      * @param {number} index Index.
-     * @return {Point} Point.
+     * @return {Point|null} Point.
      * @api
      */
-    getPoint(index: number): Point;
+    getPoint(index: number): Point | null;
     /**
      * Return the points of this multipoint.
      * @return {Array<Point>} Points.

@@ -1,5 +1,19 @@
 export default ReprojTile;
-export type FunctionType = (arg0: number, arg1: number, arg2: number, arg3: number) => (import("../ImageTile.js").default);
+export type FunctionType = (arg0: number, arg1: number, arg2: number, arg3: number) => import("../ImageTile.js").default;
+export type ReprojTileSource = {
+    /**
+     * Extent.
+     */
+    extent: import("../extent.js").Extent;
+    /**
+     * Clip extent.
+     */
+    clipExtent: import("../extent.js").Extent | undefined;
+    /**
+     * Image.
+     */
+    image: import("../DataTile.js").ImageLike;
+};
 export type TileOffset = {
     /**
      * Tile.
@@ -15,7 +29,13 @@ export type TileOffset = {
     offset: number;
 };
 /**
- * @typedef {function(number, number, number, number) : (import("../ImageTile.js").default)} FunctionType
+ * @typedef {function(number, number, number, number) : import("../ImageTile.js").default} FunctionType
+ */
+/**
+ * @typedef {Object} ReprojTileSource
+ * @property {import("../extent.js").Extent} extent Extent.
+ * @property {import("../extent.js").Extent|undefined} clipExtent Clip extent.
+ * @property {import("../DataTile.js").ImageLike} image Image.
  */
 /**
  * @typedef {Object} TileOffset
@@ -63,7 +83,7 @@ declare class ReprojTile extends Tile {
     private gutter_;
     /**
      * @private
-     * @type {HTMLCanvasElement|OffscreenCanvas}
+     * @type {HTMLCanvasElement|OffscreenCanvas|null}
      */
     private canvas_;
     /**
@@ -98,7 +118,7 @@ declare class ReprojTile extends Tile {
     private sourceZ_;
     /**
      * @private
-     * @type {import("../extent.js").Extent}
+     * @type {import("../extent.js").Extent|undefined}
      */
     private clipExtent_;
     /**
@@ -108,9 +128,9 @@ declare class ReprojTile extends Tile {
     private triangulation_;
     /**
      * Get the HTML Canvas element for this tile.
-     * @return {HTMLCanvasElement|OffscreenCanvas} Canvas.
+     * @return {HTMLCanvasElement|OffscreenCanvas|null} Canvas.
      */
-    getImage(): HTMLCanvasElement | OffscreenCanvas;
+    getImage(): HTMLCanvasElement | OffscreenCanvas | null;
     /**
      * @private
      */

@@ -1,17 +1,23 @@
 /**
+ * @typedef {Object<string, *>} CapabilitiesMatrixSet
+ */
+/**
  * Create a tile grid from a WMTS capabilities matrix set and an
  * optional TileMatrixSetLimits.
- * @param {Object} matrixSet An object representing a matrixSet in the
+ * @param {CapabilitiesMatrixSet} matrixSet An object representing a matrixSet in the
  *     capabilities document.
  * @param {import("../extent.js").Extent} [extent] An optional extent to restrict the tile
  *     ranges the server provides.
- * @param {Array<Object>} [matrixLimits] An optional object representing
+ * @param {Array<CapabilitiesMatrixSet>} [matrixLimits] An optional object representing
  *     the available matrices for tileGrid.
  * @return {WMTSTileGrid} WMTS tileGrid instance.
  * @api
  */
-export function createFromCapabilitiesMatrixSet(matrixSet: any, extent?: import("../extent.js").Extent, matrixLimits?: Array<any>): WMTSTileGrid;
+export function createFromCapabilitiesMatrixSet(matrixSet: CapabilitiesMatrixSet, extent?: import("../extent.js").Extent, matrixLimits?: Array<CapabilitiesMatrixSet>): WMTSTileGrid;
 export default WMTSTileGrid;
+export type CapabilitiesMatrixSet = {
+    [x: string]: any;
+};
 export type Options = {
     /**
      * Extent for the tile grid. No tiles

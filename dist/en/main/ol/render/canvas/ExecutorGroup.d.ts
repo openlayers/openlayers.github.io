@@ -24,10 +24,10 @@ export const NON_DECLUTTER: Array<import("../canvas.js").BuilderType>;
 export default ExecutorGroup;
 declare class ExecutorGroup {
     /**
-     * @param {import("../../extent.js").Extent} maxExtent Max extent for clipping. When a
+     * @param {import("../../extent.js").Extent|null} maxExtent Max extent for clipping. When a
      * `maxExtent` was set on the Builder for this executor group, the same `maxExtent`
      * should be set here, unless the target context does not exceed that extent (which
-     * can be the case when rendering to tiles).
+     * can be the case when rendering to tiles). Pass `null` to disable clipping.
      * @param {number} resolution Resolution.
      * @param {number} pixelRatio Pixel ratio.
      * @param {boolean} overlaps The executor group can have overlapping geometries.
@@ -36,12 +36,12 @@ declare class ExecutorGroup {
      * @param {number} [renderBuffer] Optional rendering buffer.
      * @param {boolean} [deferredRendering] Enable deferred rendering with renderDeferred().
      */
-    constructor(maxExtent: import("../../extent.js").Extent, resolution: number, pixelRatio: number, overlaps: boolean, allInstructions: {
+    constructor(maxExtent: import("../../extent.js").Extent | null, resolution: number, pixelRatio: number, overlaps: boolean, allInstructions: {
         [x: string]: any;
     }, renderBuffer?: number, deferredRendering?: boolean);
     /**
      * @private
-     * @type {import("../../extent.js").Extent}
+     * @type {import("../../extent.js").Extent|null}
      */
     private maxExtent_;
     /**
@@ -71,7 +71,7 @@ declare class ExecutorGroup {
     private executorsByZIndex_;
     /**
      * @private
-     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D}
+     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D|null}
      */
     private hitDetectionContext_;
     /**
@@ -81,7 +81,7 @@ declare class ExecutorGroup {
     private hitDetectionTransform_;
     /**
      * @private
-     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D}
+     * @type {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D|null}
      */
     private renderedContext_;
     /**
@@ -141,7 +141,7 @@ declare class ExecutorGroup {
     getDeferredZIndexContexts(): {
         [x: number]: import("./ZIndexContext.js").default[];
     };
-    getRenderedContext(): CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
+    getRenderedContext(): CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | null;
     renderDeferred(): void;
 }
 //# sourceMappingURL=ExecutorGroup.d.ts.map

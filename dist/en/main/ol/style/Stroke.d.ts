@@ -68,7 +68,7 @@ declare class Stroke {
     constructor(options?: Options);
     /**
      * @private
-     * @type {import("../color.js").Color|import("../colorlike.js").ColorLike}
+     * @type {import("../color.js").Color|import("../colorlike.js").ColorLike|null}
      */
     private color_;
     /**
@@ -114,10 +114,10 @@ declare class Stroke {
     clone(): Stroke;
     /**
      * Get the stroke color.
-     * @return {import("../color.js").Color|import("../colorlike.js").ColorLike} Color.
+     * @return {import("../color.js").Color|import("../colorlike.js").ColorLike|null} Color.
      * @api
      */
-    getColor(): import("../color.js").Color | import("../colorlike.js").ColorLike;
+    getColor(): import("../color.js").Color | import("../colorlike.js").ColorLike | null;
     /**
      * Get the line cap type for the stroke.
      * @return {CanvasLineCap|undefined} Line cap.
