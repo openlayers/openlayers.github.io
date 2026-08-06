@@ -655,6 +655,13 @@ declare class Map extends BaseObject<{
      */
     getLayers(): Collection<import("./layer/Base.js").default>;
     /**
+     * Determine whether the last rendered frame shows everything the map wants to
+     * show. Only relevant when something is listening for the map to finish
+     * loading, so the check is skipped otherwise.
+     * @private
+     */
+    private updateRenderComplete_;
+    /**
      * @return {boolean} Layers have sources that are still loading.
      */
     getLoadingOrNotReady(): boolean;

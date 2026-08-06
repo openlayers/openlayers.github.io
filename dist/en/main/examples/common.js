@@ -21824,6 +21824,15 @@ var Map$2 = class extends BaseObject {
 		return this.getLayerGroup().getLayers();
 	}
 	/**
+	* Determine whether the last rendered frame shows everything the map wants to
+	* show. Only relevant when something is listening for the map to finish
+	* loading, so the check is skipped otherwise.
+	* @private
+	*/
+	updateRenderComplete_() {
+		this.renderComplete_ = (this.hasListener(MapEventType_default.LOADSTART) || this.hasListener(MapEventType_default.LOADEND) || this.hasListener(EventType_default.RENDERCOMPLETE)) && !this.tileQueue_.getTilesLoading() && !this.tileQueue_.getCount() && !this.getLoadingOrNotReady();
+	}
+	/**
 	* @return {boolean} Layers have sources that are still loading.
 	*/
 	getLoadingOrNotReady() {
@@ -21992,14 +22001,15 @@ var Map$2 = class extends BaseObject {
 			let maxTotalLoading = this.maxTilesLoading_;
 			let maxNewLoads = maxTotalLoading;
 			const hints = frameState ? frameState.viewHints : void 0;
-			const animatingOrInteracting = hints ? hints[ViewHint_default.ANIMATING] || hints[ViewHint_default.INTERACTING] : false;
-			if (animatingOrInteracting) {
+			if (hints ? hints[ViewHint_default.ANIMATING] || hints[ViewHint_default.INTERACTING] : false) {
 				const lowOnFrameBudget = Date.now() - frameState.time > 8;
 				maxTotalLoading = lowOnFrameBudget ? 0 : 8;
 				maxNewLoads = lowOnFrameBudget ? 0 : 2;
 			}
 			if (tileQueue.getTilesLoading() < maxTotalLoading) {
-				if (animatingOrInteracting) tileQueue.reprioritize();
+				const count = tileQueue.getCount();
+				tileQueue.reprioritize();
+				if (tileQueue.getCount() < count) this.updateRenderComplete_();
 				tileQueue.loadMoreTiles(maxTotalLoading, maxNewLoads);
 			}
 		}
@@ -22284,7 +22294,7 @@ var Map$2 = class extends BaseObject {
 			}
 		}
 		this.dispatchEvent(new MapEvent(MapEventType_default.POSTRENDER, this, frameState));
-		this.renderComplete_ = (this.hasListener(MapEventType_default.LOADSTART) || this.hasListener(MapEventType_default.LOADEND) || this.hasListener(EventType_default.RENDERCOMPLETE)) && !this.tileQueue_.getTilesLoading() && !this.tileQueue_.getCount() && !this.getLoadingOrNotReady();
+		this.updateRenderComplete_();
 		if (!this.postRenderTimeoutHandle_) this.postRenderTimeoutHandle_ = setTimeout(() => {
 			this.postRenderTimeoutHandle_ = void 0;
 			this.handlePostRender();
