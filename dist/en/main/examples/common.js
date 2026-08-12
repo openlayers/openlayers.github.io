@@ -130988,6 +130988,12 @@ var REQUIRED_ZARR_CONVENTIONS = [
 * (e.g. `'measurements/reflectance'`).
 */
 /**
+* @typedef {Object} GeoZarrStoreOptions
+* @property {Object<string, string>} [headers] additional key-value pairs of headers to be passed with each request. Key is the header name, value the header value.
+* @property {string} [credentials] How credentials shall be handled. See
+* https://developer.mozilla.org/en-US/docs/Web/API/fetch for reference and possible values
+*/
+/**
 * @typedef {Object} Options
 * @property {string} url When `bands` contains plain strings, this must be the full URL to the
 * multiscales group (e.g. `'https://example.com/store.zarr/measurements/reflectance'`).
@@ -131002,6 +131008,8 @@ var REQUIRED_ZARR_CONVENTIONS = [
 * `proj:code`, and `spatial:shape` (or the array shape from consolidated metadata).
 * Bands from additional groups do not need to follow any convention; they can be multi-scale
 * (array located at `<matrixId>/<bandName>`) or single-scale (array at the group root).
+* @property {GeoZarrStoreOptions} [storeOptions] Additional options to be passed to
+* [zarrita](https://zarrita.dev/)'s `FetchStore` with each request to the Zarr store.
 * @property {import("../proj.js").ProjectionLike} [projection] Source projection.  If not provided, the GeoZarr metadata
 * will be read for projection information.
 * @property {number} [transition=250] Duration of the opacity transition for rendering.
@@ -131044,6 +131052,11 @@ var GeoZarr = class extends DataTileSource {
 		* @private
 		*/
 		this.url_ = options.url;
+		/**
+		* @type {GeoZarrStoreOptions|undefined}
+		* @private
+		*/
+		this.storeOptions_ = options.storeOptions;
 		/**
 		* Fixed index per non-spatial dimension name, from the `dimensions` option.
 		* @type {Object<string, number|string>}
@@ -131173,7 +131186,8 @@ var GeoZarr = class extends DataTileSource {
 		});
 	}
 	async configure_() {
-		const store = withRangeCoalescing(new FetchStore(this.url_));
+		const overrides = this.storeOptions_ || {};
+		const store = withRangeCoalescing(new FetchStore(this.url_, { overrides }));
 		const groupBytes = await store.get("/zarr.json");
 		if (groupBytes) try {
 			this.consolidatedMetadata_ = JSON.parse(new TextDecoder().decode(groupBytes)).consolidated_metadata.metadata;
