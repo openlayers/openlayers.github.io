@@ -1008,6 +1008,7 @@ declare namespace ol {
         export { _ol_util$VERSION as VERSION };
         export { _ol_util$abstract as abstract };
         export { _ol_util$getUid as getUid };
+        export { _ol_util$isThenable as isThenable };
     }
     export namespace vec {
         namespace mat4 {
@@ -1866,6 +1867,7 @@ import { renderXYZTemplate as _ol_uri$renderXYZTemplate } from '../../ol/uri.js'
 import { VERSION as _ol_util$VERSION } from '../../ol/util.js';
 import { abstract as _ol_util$abstract } from '../../ol/util.js';
 import { getUid as _ol_util$getUid } from '../../ol/util.js';
+import { isThenable as _ol_util$isThenable } from '../../ol/util.js';
 import { create as _ol_vec_mat4$create } from '../../ol/vec/mat4.js';
 import { fromTransform as _ol_vec_mat4$fromTransform } from '../../ol/vec/mat4.js';
 import { orthographic as _ol_vec_mat4$orthographic } from '../../ol/vec/mat4.js';

@@ -15,6 +15,12 @@ export function abstract(): never;
  * @api
  */
 export function getUid(obj: any): string;
+/***
+ * Determine whether a value is thenable, i.e. it has `then` and `catch` methods.
+ * @param {*} value The value to check.
+ * @return {value is Promise<any>} The value is thenable.
+ */
+export function isThenable(value: any): value is Promise<any>;
 /**
  * OpenLayers version.
  * @type {string}
