@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>GeoZarr dimensions</title>
+    <title>GeoZarr datacubes</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
@@ -65,7 +65,7 @@
         <a href="#" id="codepen-button" class="btn btn-link float-end">
           <i class="fab fa-codepen fa-lg"></i> Edit
         </a>
-        <h4 id="title">GeoZarr dimensions</h4>
+        <h4 id="title">GeoZarr datacubes</h4>
         <p class="tags">
           <span class="badge-group">
             <a
@@ -78,8 +78,8 @@
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-stretch.html&quot;&gt;Band Selection and Contrast Stretch&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr.html&quot;&gt;GeoZarr&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-datacube.html&quot;&gt;GeoZarr datacubes&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./geozarr-dimensions.html&quot;&gt;GeoZarr dimensions&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./geozarr-datacube.html&quot;&gt;GeoZarr datacubes&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-dimensions.html&quot;&gt;GeoZarr dimensions&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-groups.html&quot;&gt;GeoZarr Multi-Group&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-sparse.html&quot;&gt;GeoZarr Resampling&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-storytelling.html&quot;&gt;GeoZarr storytelling&lt;/a&gt;
@@ -98,8 +98,8 @@
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-stretch.html&quot;&gt;Band Selection and Contrast Stretch&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr.html&quot;&gt;GeoZarr&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-datacube.html&quot;&gt;GeoZarr datacubes&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./geozarr-dimensions.html&quot;&gt;GeoZarr dimensions&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./geozarr-datacube.html&quot;&gt;GeoZarr datacubes&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-dimensions.html&quot;&gt;GeoZarr dimensions&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-groups.html&quot;&gt;GeoZarr Multi-Group&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-sparse.html&quot;&gt;GeoZarr Resampling&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-storytelling.html&quot;&gt;GeoZarr storytelling&lt;/a&gt;
@@ -109,52 +109,31 @@
           </span>
           <span class="badge-group">
             <a
-              href="./index.html?q=sentinel-1" class="badge badge-info">sentinel-1</a
+              href="./index.html?q=datacube" class="badge badge-info">datacube</a
             ><a
               class="badge badge-info tag-modal-toggle"
               data-bs-toggle="modal"
               data-bs-target="#tag-example-list"
-              data-title="sentinel-1"
+              data-title="datacube"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./geozarr-dimensions.html&quot;&gt;GeoZarr dimensions&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-storytelling.html&quot;&gt;GeoZarr storytelling&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./geozarr-datacube.html&quot;&gt;GeoZarr datacubes&lt;/a&gt;
                 &lt;/ul&gt;"
               tabindex="0"
-              >2</a>
+              >1</a>
           </span>
           <span class="badge-group">
             <a
-              href="./index.html?q=time" class="badge badge-info">time</a
+              href="./index.html?q=multiscale" class="badge badge-info">multiscale</a
             ><a
               class="badge badge-info tag-modal-toggle"
               data-bs-toggle="modal"
               data-bs-target="#tag-example-list"
-              data-title="time"
+              data-title="multiscale"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./geozarr-dimensions.html&quot;&gt;GeoZarr dimensions&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-storytelling.html&quot;&gt;GeoZarr storytelling&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-time.html&quot;&gt;WMS Time&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-time-webgl.html&quot;&gt;WMS Time (WebGL)&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./geozarr-datacube.html&quot;&gt;GeoZarr datacubes&lt;/a&gt;
                 &lt;/ul&gt;"
               tabindex="0"
-              >4</a>
-          </span>
-          <span class="badge-group">
-            <a
-              href="./index.html?q=dimensions" class="badge badge-info">dimensions</a
-            ><a
-              class="badge badge-info tag-modal-toggle"
-              data-bs-toggle="modal"
-              data-bs-target="#tag-example-list"
-              data-title="dimensions"
-              data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./geozarr-dimensions.html&quot;&gt;GeoZarr dimensions&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./geozarr-storytelling.html&quot;&gt;GeoZarr storytelling&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-time.html&quot;&gt;WMS Time&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-time-webgl.html&quot;&gt;WMS Time (WebGL)&lt;/a&gt;
-                &lt;/ul&gt;"
-              tabindex="0"
-              >4</a>
+              >1</a>
           </span>
         </p>
         <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -171,15 +150,23 @@
           </div>
         </div>
         <div id="map" class="map"></div>
-<div class="row mt-2 g-2 align-items-center">
+<div class="row mt-2">
   <div class="col-auto">
-    <label class="col-form-label" for="time">Time</label>
-  </div>
-  <div class="col-auto">
-    <input type="range" class="form-range align-middle" id="time" min="0" max="0" value="0" step="1" style="width: 220px;" disabled>
-  </div>
-  <div class="col-auto">
-    <span id="time-label" class="text-body-secondary">loading…</span>
+    <div class="input-group">
+      <label class="input-group-text" for="dataset-select">Dataset</label>
+      <select class="form-select" id="dataset-select">
+        <option value="ftw-rgb" selected>FTW Field Predictions 2025 (RGB, multiscale v3)</option>
+        <option value="ftw-field-2024">FTW Field Probability 2024 (single band, multiscale v3)</option>
+        <option value="usgs-dem">USGS CONUS DEM 10m (multiscale v3)</option>
+        <option value="hurricane">Hurricane Florence — ERA5 surface pressure (v3)</option>
+        <option value="antarctic-era5">Antarctic ERA5 wind speed (v3, polar stereographic)</option>
+        <option value="polar">Thwaites Glacier ice velocity (v2, EPSG:3031)</option>
+        <option value="fgco2">Delta FG CO2 (v2, south-up)</option>
+        <option value="carbonplan-4d">Monthly average temperature (v2 pyramid, EPSG:3857)</option>
+        <option value="cmip6-tasmax">CMIP6 max. temperature (v2 pyramid)</option>
+        <option value="tos-con">Ocean surface temperature (v3 pyramid, EPSG:3857)</option>
+      </select>
+    </div>
   </div>
 </div>
 
@@ -189,9 +176,9 @@
       </div>
 
       <div class="row-fluid">
-        <p id="shortdesc">Stepping through the time dimension of a GeoZarr cube with a slider.</p>
-        <div id="docs"><p>A GeoZarr array can have non-spatial dimensions such as <code>time</code>. This example steps through the <code>time</code> axis of a Sentinel-1 radar cube with a slider: <code>getDimensions()</code> reports the axis with its size and units, <code>updateDimensions()</code> reloads the chosen slice in place, and <code>getValue</code> reads the axis value to label it with the acquisition date.</p>
-<p>The cube images the 2021 Cumbre Vieja eruption on La Palma as a dual-polarization composite: the VV and VH bands (vertical transmit, vertical vs. horizontal receive) map to red and green, and their ratio to blue.</p>
+        <p id="shortdesc">GeoZarr sources rendering bands from a single n-dimensional data array.</p>
+        <div id="docs"><p>Besides one array per band, the GeoZarr source supports datacubes where all bands are packed into a single n-dimensional data array (e.g. <code>(time, band, y, x)</code>): the <code>variable</code> option names the array, and the <code>dimensions</code> option fixes its non-spatial dimensions by index or coordinate label, with one dimension optionally selecting multiple bands.</p>
+<p>The datasets above are real-world Zarr v2 and v3 stores from different producers, in different projections and multiscale layouts. The extent, resolution, projection and y-axis orientation are read from the store metadata (proj:/spatial: conventions, <code>bounds</code>/<code>proj4</code>/<code>spatial_ref</code> attributes) or inferred from the coordinate arrays; where the store provides neither (Delta FG CO2), the <code>extent</code> and <code>flipY</code> options fill the gap. Data with non-square pixels (CMIP6) and south-up rows (Delta FG CO2) is handled transparently.</p>
 </div>
       </div>
 
@@ -204,74 +191,200 @@ import {
   withExtentCenter,
   withHigherResolutions,
   withLowerResolutions,
-  withZoom,
 } from &#x27;ol/View.js&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
+import {register} from &#x27;ol/proj/proj4.js&#x27;;
 import GeoZarr from &#x27;ol/source/GeoZarr.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
+import proj4 from &#x27;proj4&#x27;;
 
-// Point the url straight at the cube&#x27;s &#x60;descending&#x60; orbit group, which keeps
-// this a plain single-group source whose only non-spatial dimension is time.
-const url &#x3D;
-  &#x27;https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-1-grd-rtc-staging/s1-rtc-28RBS.zarr/descending&#x27;;
-const source &#x3D; new GeoZarr({url, bands: [&#x27;vv&#x27;, &#x27;vh&#x27;]});
+register(proj4);
 
-// Dual-polarization composite from two geo-bands: VV -&gt; red, VH -&gt; green, and
-// their ratio VV/VH -&gt; blue. Radar backscatter is a small float, so each
-// channel is rescaled from a fixed [low, high] range to the 0-255 display range.
-const style &#x3D; {
-  color: [
-    &#x27;color&#x27;,
-    [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;band&#x27;, 1], 0, 0, 0.4, 255], // VV
-    [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;band&#x27;, 2], 0, 0, 0.1, 255], // VH
-    [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;/&#x27;, [&#x27;band&#x27;, 1], [&#x27;band&#x27;, 2]], 1, 0, 15, 255], // VV/VH
-  ],
+// A single-band color ramp style with evenly spaced color stops.
+function ramp(min, max, colors) {
+  const stops &#x3D; [];
+  for (let i &#x3D; 0; i &lt; colors.length; i++) {
+    stops.push(min + (i / (colors.length - 1)) * (max - min), colors[i]);
+  }
+  return {color: [&#x27;interpolate&#x27;, [&#x27;linear&#x27;], [&#x27;band&#x27;, 1], ...stops]};
+}
+
+// An RGB composite style stretching each band from [min, max] to 0..255.
+function rgb(min, max) {
+  const stretch &#x3D; (band) &#x3D;&gt; [
+    &#x27;interpolate&#x27;,
+    [&#x27;linear&#x27;],
+    [&#x27;band&#x27;, band],
+    min,
+    0,
+    max,
+    255,
+  ];
+  return {color: [&#x27;color&#x27;, stretch(1), stretch(2), stretch(3)]};
+}
+
+const FTW_URL &#x3D;
+  &#x27;https://data.source.coop/ftw/global-data/predictions/zarr/alpha/global.zarr&#x27;;
+
+const datasets &#x3D; {
+  &#x27;ftw-rgb&#x27;: {
+    source: {
+      url: FTW_URL,
+      variable: &#x27;variables&#x27;,
+      // The three class probabilities as RGB, for the most recent year
+      dimensions: {band: [0, 1, 2], time: 1},
+    },
+    style: rgb(0, 0.5),
+  },
+  &#x27;ftw-field-2024&#x27;: {
+    source: {
+      url: FTW_URL,
+      variable: &#x27;variables&#x27;,
+      dimensions: {band: [1], time: 0}, // band 1 is the &#x60;field&#x60; probability
+    },
+    style: ramp(0, 1, [
+      [255, 255, 178],
+      [0, 104, 55],
+    ]),
+  },
+  &#x27;usgs-dem&#x27;: {
+    source: {
+      url: &#x27;https://carbonplan-share.s3.us-west-2.amazonaws.com/zarr-layer-examples/USGS-CONUS-DEM-10m.zarr&#x27;,
+      variable: &#x27;DEM&#x27;,
+    },
+    style: ramp(0, 3500, [
+      [26, 152, 80],
+      [254, 224, 139],
+      [140, 81, 10],
+      [255, 255, 255],
+    ]),
+  },
+  &#x27;hurricane&#x27;: {
+    source: {
+      url: &#x27;https://atlantis-vis-o.s3-ext.jc.rl.ac.uk/hurricanes/era5/florence&#x27;,
+      variable: &#x27;surface_pressure&#x27;,
+      dimensions: {time: 0},
+    },
+    style: ramp(96000, 103000, [
+      [68, 1, 84],
+      [33, 145, 140],
+      [253, 231, 37],
+    ]),
+  },
+  &#x27;antarctic-era5&#x27;: {
+    source: {
+      url: &#x27;https://carbonplan-share.s3.us-west-2.amazonaws.com/zarr-layer-examples/antarctic_era5.zarr&#x27;,
+      variable: &#x27;wind_speed&#x27;,
+    },
+    style: ramp(0, 12, [
+      [247, 251, 255],
+      [107, 174, 214],
+      [8, 48, 107],
+    ]),
+  },
+  &#x27;polar&#x27;: {
+    source: {
+      url: &#x27;https://carbonplan-share.s3.us-west-2.amazonaws.com/zarr-layer-examples/polar-subset.zarr&#x27;,
+      variable: &#x27;velocity&#x27;,
+    },
+    style: ramp(0, 1, [
+      [255, 245, 240],
+      [251, 106, 74],
+      [103, 0, 13],
+    ]),
+  },
+  &#x27;fgco2&#x27;: {
+    source: {
+      url: &#x27;https://carbonplan-oae-efficiency.s3.us-west-2.amazonaws.com/fgco2-2021-180x360.zarr&#x27;,
+      variable: &#x27;FG_CO2_2&#x27;,
+      dimensions: {time: 0},
+      // The store has neither spatial metadata nor coordinate arrays, so the
+      // extent and the south-up orientation have to be provided.
+      extent: [-180, -90, 180, 90],
+      flipY: true,
+    },
+    style: ramp(-5, 5, [
+      [230, 97, 1],
+      [255, 255, 255],
+      [5, 113, 176],
+    ]),
+  },
+  &#x27;carbonplan-4d&#x27;: {
+    source: {
+      url: &#x27;https://carbonplan-maps.s3.us-west-2.amazonaws.com/v2/demo/4d/tavg-prec-month&#x27;,
+      variable: &#x27;climate&#x27;,
+      // Bands can also be selected by coordinate label
+      dimensions: {band: [&#x27;tavg&#x27;], month: 0},
+    },
+    style: ramp(-30, 30, [
+      [5, 113, 176],
+      [255, 255, 255],
+      [202, 0, 32],
+    ]),
+  },
+  &#x27;cmip6-tasmax&#x27;: {
+    source: {
+      url: &#x27;https://carbonplan-benchmarks.s3.us-west-2.amazonaws.com/data/NEX-GDDP-CMIP6/ACCESS-CM2/historical/r1i1p1f1/tasmax/tasmax_day_ACCESS-CM2_historical_r1i1p1f1_gn/pyramids-v2-4326-True-128-1-0-0-f4-0-0-0-gzipL1-100&#x27;,
+      variable: &#x27;tasmax&#x27;,
+      dimensions: {time: 0},
+    },
+    style: ramp(250, 320, [
+      [5, 113, 176],
+      [255, 255, 255],
+      [253, 174, 97],
+      [165, 0, 38],
+    ]),
+  },
+  &#x27;tos-con&#x27;: {
+    source: {
+      url: &#x27;https://atlantis-vis-o.s3-ext.jc.rl.ac.uk/noc-npd-era5-demo/npd-eorca1-era5v1/gn/T1y/tos_con&#x27;,
+      variable: &#x27;tos_con&#x27;,
+      dimensions: {time: 0},
+    },
+    style: ramp(-2, 30, [
+      [5, 48, 97],
+      [247, 247, 247],
+      [178, 24, 43],
+    ]),
+  },
 };
 
-const map &#x3D; new Map({
-  target: &#x27;map&#x27;,
-  layers: [new TileLayer({source: new OSM()}), new TileLayer({style, source})],
-  view: getView(
-    source,
-    withLowerResolutions(1),
-    withHigherResolutions(2),
-    withExtentCenter(),
-    withZoom(2),
-  ),
-});
+const select &#x3D; document.getElementById(&#x27;dataset-select&#x27;);
 
-const slider &#x3D; document.getElementById(&#x27;time&#x27;);
-const label &#x3D; document.getElementById(&#x27;time-label&#x27;);
+let map;
 
-source
-  .getDimensions()
-  .then(async ({time}) &#x3D;&gt; {
-    const {units} &#x3D; time.attributes;
-    // units is something like &quot;nanoseconds since 1970-01-01&quot;,
-    const epoch &#x3D; Date.parse(units.split(&#x27; since &#x27;)[1]);
-    const toDate &#x3D; (value) &#x3D;&gt; new Date(epoch + Number(value) / 1e6);
+function render() {
+  const dataset &#x3D; datasets[select.value];
 
-    const slices &#x3D; await Promise.all(
-      [...Array(time.size).keys()].map(async (index) &#x3D;&gt; ({
-        index,
-        date: toDate(await source.getValue(&#x27;time&#x27;, index)),
-      })),
-    );
-    // The cube stores its time slices out of chronological order, so sort them.
-    slices.sort((a, b) &#x3D;&gt; a.date - b.date);
+  const source &#x3D; new GeoZarr(dataset.source);
 
-    function showSlice(position) {
-      const {index, date} &#x3D; slices[position];
-      source.updateDimensions({time: index});
-      label.textContent &#x3D; date.toISOString().slice(0, 16).replace(&#x27;T&#x27;, &#x27; &#x27;);
-    }
+  if (map) {
+    map.setTarget(null);
+  }
 
-    slider.max &#x3D; String(time.size - 1);
-    slider.disabled &#x3D; false;
-    slider.addEventListener(&#x27;input&#x27;, () &#x3D;&gt; showSlice(Number(slider.value)));
-    showSlice(0);
-  })
-  .catch(() &#x3D;&gt; (label.textContent &#x3D; &#x27;Failed to load the GeoZarr store.&#x27;));
+  map &#x3D; new Map({
+    layers: [
+      new TileLayer({
+        source: new OSM(),
+      }),
+      new TileLayer({
+        style: dataset.style,
+        source,
+      }),
+    ],
+    target: &#x27;map&#x27;,
+    view: getView(
+      source,
+      withLowerResolutions(2),
+      withHigherResolutions(2),
+      withExtentCenter(),
+    ),
+  });
+}
+
+select.addEventListener(&#x27;change&#x27;, render);
+
+render();
 </code></pre>
         </div>
       </details>
@@ -283,7 +396,7 @@ source
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;GeoZarr dimensions&lt;/title&gt;
+    &lt;title&gt;GeoZarr datacubes&lt;/title&gt;
     &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
@@ -294,15 +407,23 @@ source
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div class&#x3D;&quot;row mt-2 g-2 align-items-center&quot;&gt;
+    &lt;div class&#x3D;&quot;row mt-2&quot;&gt;
       &lt;div class&#x3D;&quot;col-auto&quot;&gt;
-        &lt;label class&#x3D;&quot;col-form-label&quot; for&#x3D;&quot;time&quot;&gt;Time&lt;/label&gt;
-      &lt;/div&gt;
-      &lt;div class&#x3D;&quot;col-auto&quot;&gt;
-        &lt;input type&#x3D;&quot;range&quot; class&#x3D;&quot;form-range align-middle&quot; id&#x3D;&quot;time&quot; min&#x3D;&quot;0&quot; max&#x3D;&quot;0&quot; value&#x3D;&quot;0&quot; step&#x3D;&quot;1&quot; style&#x3D;&quot;width: 220px;&quot; disabled&gt;
-      &lt;/div&gt;
-      &lt;div class&#x3D;&quot;col-auto&quot;&gt;
-        &lt;span id&#x3D;&quot;time-label&quot; class&#x3D;&quot;text-body-secondary&quot;&gt;loading…&lt;/span&gt;
+        &lt;div class&#x3D;&quot;input-group&quot;&gt;
+          &lt;label class&#x3D;&quot;input-group-text&quot; for&#x3D;&quot;dataset-select&quot;&gt;Dataset&lt;/label&gt;
+          &lt;select class&#x3D;&quot;form-select&quot; id&#x3D;&quot;dataset-select&quot;&gt;
+            &lt;option value&#x3D;&quot;ftw-rgb&quot; selected&gt;FTW Field Predictions 2025 (RGB, multiscale v3)&lt;/option&gt;
+            &lt;option value&#x3D;&quot;ftw-field-2024&quot;&gt;FTW Field Probability 2024 (single band, multiscale v3)&lt;/option&gt;
+            &lt;option value&#x3D;&quot;usgs-dem&quot;&gt;USGS CONUS DEM 10m (multiscale v3)&lt;/option&gt;
+            &lt;option value&#x3D;&quot;hurricane&quot;&gt;Hurricane Florence — ERA5 surface pressure (v3)&lt;/option&gt;
+            &lt;option value&#x3D;&quot;antarctic-era5&quot;&gt;Antarctic ERA5 wind speed (v3, polar stereographic)&lt;/option&gt;
+            &lt;option value&#x3D;&quot;polar&quot;&gt;Thwaites Glacier ice velocity (v2, EPSG:3031)&lt;/option&gt;
+            &lt;option value&#x3D;&quot;fgco2&quot;&gt;Delta FG CO2 (v2, south-up)&lt;/option&gt;
+            &lt;option value&#x3D;&quot;carbonplan-4d&quot;&gt;Monthly average temperature (v2 pyramid, EPSG:3857)&lt;/option&gt;
+            &lt;option value&#x3D;&quot;cmip6-tasmax&quot;&gt;CMIP6 max. temperature (v2 pyramid)&lt;/option&gt;
+            &lt;option value&#x3D;&quot;tos-con&quot;&gt;Ocean surface temperature (v3 pyramid, EPSG:3857)&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
 
@@ -317,9 +438,10 @@ source
         <summary class="source-heading">package.json</summary>
         <div class="row-fluid">
           <pre><code id="example-pkg-source" class="language-json">{
-  &quot;name&quot;: &quot;geozarr-dimensions&quot;,
+  &quot;name&quot;: &quot;geozarr-datacube&quot;,
   &quot;dependencies&quot;: {
-    &quot;ol&quot;: &quot;10.10.1-dev&quot;
+    &quot;ol&quot;: &quot;10.10.1-dev&quot;,
+    &quot;proj4&quot;: &quot;2.20.9&quot;
   },
   &quot;devDependencies&quot;: {
     &quot;vite&quot;: &quot;^8.1.5&quot;
@@ -334,7 +456,7 @@ source
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="module" src="geozarr-dimensions.js"></script>
+    <script type="module" src="geozarr-datacube.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/toolbar/prism-toolbar.min.js"></script>

@@ -19,7 +19,8 @@
  * multiscales group (e.g. `'https://example.com/store.zarr/measurements/reflectance'`).
  * When `bands` contains {@link Band} objects, this is the base URL from which each band's
  * `group` path is resolved (e.g. `'https://example.com/store.zarr/satellite/sentinel2'`).
- * @property {Array<string|Band>} bands The bands to render.  Each entry is either a band name
+ * @property {Array<string|Band>} [bands] The bands to render, for stores where each
+ * band is a separate array. Mutually exclusive with `variable`.  Each entry is either a band name
  * string (single-group mode) or a {@link Band} object specifying both the band name and the
  * group it belongs to (multi-group mode).  In multi-group mode, the first band's group
  * determines the tile grid and must follow at least the proj: and spatial: conventions.
@@ -30,18 +31,33 @@
  * (array located at `<matrixId>/<bandName>`) or single-scale (array at the group root).
  * @property {GeoZarrStoreOptions} [storeOptions] Additional options to be passed to
  * [zarrita](https://zarrita.dev/)'s `FetchStore` with each request to the Zarr store.
- * @property {import("../proj.js").ProjectionLike} [projection] Source projection.  If not provided, the GeoZarr metadata
- * will be read for projection information.
+ * @property {import("../proj.js").ProjectionLike} [projection] Source projection.
+ * If not provided, the GeoZarr metadata will be read for projection information.
  * @property {number} [transition=250] Duration of the opacity transition for rendering.
  * To disable the opacity transition, pass `transition: 0`.
  * @property {boolean} [wrapX=false] Render tiles beyond the tile grid extent.
- * @property {ResampleMethod} [resample='nearest'] Resampling method if bands are not available for all multi-scale levels.
- * @property {Object<string, number|string>} [dimensions] Fixed index for each non-spatial
- * dimension of the band arrays, keyed by dimension name (e.g. `{time: 0}` for the first time step
- * of a `[time, y, x]` cube); unspecified dimensions default to `0`. Names come from each array's
- * `dimension_names`, or are the axis position as a string when it has none. Only integer indices
- * are supported. Use the names from {@link getDimensions}, and change the selection on the fly with
+ * @property {ResampleMethod} [resample='linear'] Resampling method if bands are not available for all multi-scale levels.
+ * @property {Object<string, number|string|Array<number|string>>} [dimensions] How to slice
+ * each non-spatial dimension of the band arrays, keyed by dimension name (e.g. `{time: 0}` for
+ * the first time step of a `[time, y, x]` cube). Values are 0-based indices (number) or
+ * coordinate labels (string); unlisted dimensions default to index 0. Names come from each
+ * array's `dimension_names`, or are the axis position as a string when it has none; use the
+ * names from {@link getDimensions}. Labels are resolved against the dimension's coordinate
+ * array; if that array cannot be read, pass indices instead. With `variable`, at most one
+ * dimension may map to an array of values, whose entries are rendered as separate bands in
+ * the given order. Change the selection on the fly with
  * {@link module:ol/source/GeoZarr~GeoZarr#updateDimensions}.
+ * @property {string} [variable] The name of an n-dimensional data array (variable) to
+ * render, for stores where all bands are packed into a single array (e.g. a
+ * `(time, band, y, x)` datacube). The array must exist within each multiscale level
+ * group (or at the group root for single-scale stores). Mutually exclusive with `bands`,
+ * and required to select several bands from one dimension through `dimensions`.
+ * @property {import("../extent.js").Extent} [extent] Fallback extent of the data, in
+ * coordinates of the source projection. Only used when the store neither declares its
+ * extent (`spatial:bbox` or `bounds` attributes) nor has coordinate arrays to infer it.
+ * @property {boolean} [flipY] Fallback orientation: set to `true` when the data is
+ * stored south-up (ascending y). Only used when the orientation can neither be read
+ * from the store metadata nor inferred from its coordinate arrays.
  */
 /**
  * Source for GeoZarr stores conforming to the following conventions:
@@ -49,10 +65,25 @@
  * - [Geospatial projection convention](https://github.com/zarr-conventions/geo-proj)
  * - [Spatial convention](https://github.com/zarr-conventions/spatial)
  *
- * When all three conventions are present, multiple resolution levels are supported.
- * When only proj: and spatial: are present, a single-resolution tile grid is derived
- * from `spatial:bbox`, `proj:code`, and `spatial:shape`.
- * The legacy `tile_matrix_set` attribute is also supported.
+ * The store is read as a stack of resolution levels, enumerated from the
+ * `multiscales` attribute in either its `{layout: [{asset, ...}]}` or its
+ * `[{datasets: [{path, ...}]}]` form; a store with neither has the group itself as
+ * its only level. The legacy `tile_matrix_set` attribute is also supported, and
+ * describes the levels itself.
+ *
+ * Extent, resolution, projection and y-axis orientation are read from the store
+ * metadata (`spatial:bbox`, `spatial:shape`, `spatial:transform`, `proj:code`,
+ * ...) where declared, and otherwise inferred from the coordinate arrays. The
+ * conventions above are what make that metadata available, but none of them has
+ * to be declared for a store that provides the attributes.
+ *
+ * Two data layouts are supported:
+ * - One array per band (`bands` option), addressed by name at `<matrixId>/<bandName>`
+ *   (multi-scale) or at the group root (single-scale).
+ * - A single n-dimensional data array shared by all bands (`variable` + `dimensions`
+ *   options), e.g. a `(time, band, y, x)` datacube.
+ *
+ * Both layouts support Zarr v2 and v3.
  */
 export default class GeoZarr extends DataTileSource<import("../DataTile.js").default> {
     /**
@@ -70,11 +101,57 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      */
     private storeOptions_;
     /**
-     * Fixed index per non-spatial dimension name, from the `dimensions` option.
-     * @type {Object<string, number|string>}
+     * Selection per non-spatial dimension name, from the `dimensions` option.
+     * Coordinate labels are replaced by their index once resolved.
+     * @type {Object<string, number|string|Array<number|string>>}
      * @private
      */
     private dimensions_;
+    /**
+     * @type {string|undefined}
+     * @private
+     */
+    private variable_;
+    /**
+     * @type {import("../extent.js").Extent|undefined}
+     * @private
+     */
+    private fallbackExtent_;
+    /**
+     * @type {boolean|undefined}
+     * @private
+     */
+    private fallbackFlipY_;
+    /**
+     * The zarrita open function, pinned to the store's Zarr version by
+     * `configure_`. Never the unpinned `open`, which probes v2 metadata first
+     * and so requests keys that a v3 store does not have.
+     * @type {Function}
+     * @private
+     */
+    private openFn_;
+    /**
+     * Group path prefix per tile matrix id, for stores whose levels are not
+     * addressed by the matrix id itself (empty string for the group root).
+     * `null` when the matrix id is the prefix.
+     * @type {Object<string, string>|null}
+     * @private
+     */
+    private levelPaths_;
+    /**
+     * Row axis information per tile matrix id, for data with non-square
+     * pixels or south-up (flipped) rows.
+     * @type {Object<string, {rowResolution: number, shapeY: number|undefined, flip: boolean}>|null}
+     * @private
+     */
+    private levelRowInfo_;
+    /**
+     * The axis selected as multiple bands through the `dimensions` option,
+     * or -1.
+     * @type {number}
+     * @private
+     */
+    private multiAxis_;
     /**
      * @type {Error|null}
      */
@@ -253,12 +330,13 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      * another `time` slice) without rebuilding the source. Values are merged into
      * the current selection, so a partial update like `{time: 3}` leaves the other
      * dimensions untouched. Takes effect immediately when the source is `ready`,
-     * otherwise once it becomes ready.
-     * @param {Object<string, number|string>} dimensions Index per dimension name
+     * otherwise once it becomes ready. Only integer indices are accepted here;
+     * coordinate labels are resolved once, when the source configures.
+     * @param {Object<string, number>} dimensions Index per dimension name
      *     to change; see the `dimensions` constructor option.
      */
     updateDimensions(dimensions: {
-        [x: string]: string | number;
+        [x: string]: number;
     }): void;
     /**
      * Locate the spatial (y, x) axes of an array (see {@link getSpatialAxes}) and
@@ -284,10 +362,52 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      * `null` at the two spatial axes (e.g. `[2, null, null]` for a `[time, y, x]`
      * array with `{time: 2}`).
      * @param {Object<string, *>|undefined} arrayMeta Zarr v3 array metadata.
+     * @param {Object<string, number|string|Array<number|string>>} dimensions The
+     *     dimension indices to resolve against.
      * @return {Array<number|null>|undefined} The extra-axis selection template.
      * @private
      */
     private resolveExtraSelection_;
+    /**
+     * Build the tile grid and the per-level band layout. Every store is read as a
+     * stack of levels holding n-dimensional arrays: in `variable` mode all bands
+     * are slices of one array, otherwise each band has an array of its own.
+     * @param {Object<string, *>} attributes The dataset attributes.
+     * @param {FetchStore} store The store, for metadata requests not covered
+     * by consolidated metadata.
+     * @return {Promise<boolean>} Whether the tile grid has explicit tile sizes.
+     * @private
+     */
+    private configureLevels_;
+    /**
+     * Determine the projection from the store metadata: the proj: convention,
+     * a CRS code from the multiscale metadata or xarray-style attributes, a
+     * `proj4` definition, or (for degree-like extents) EPSG:4326.
+     * @param {Object<string, *>} attributes The dataset attributes.
+     * @param {string|null} crsHint A CRS code from the multiscale metadata.
+     * @param {import("../extent.js").Extent} extent The extent.
+     * @return {import("../proj/Projection.js").default} The projection.
+     * @private
+     */
+    private inferProjection_;
+    /**
+     * Read the first and last value of a 1-dimensional coordinate array.
+     * @param {string} levelPath The level group path ('' for the root).
+     * @param {string} dimName The dimension (and coordinate array) name.
+     * @return {Promise<Array<number>>} The first value, last value, and length.
+     * @private
+     */
+    private readCoordinateEndpoints_;
+    /**
+     * Resolve a coordinate label to its index by reading the dimension's
+     * coordinate array.
+     * @param {string} dimName The dimension name.
+     * @param {string} label The label to resolve.
+     * @param {string} path The coordinate array path, relative to the group.
+     * @return {Promise<number>} The index of the label.
+     * @private
+     */
+    private resolveCoordinateLabel_;
 }
 export type ShardInfo = {
     /**
@@ -333,7 +453,8 @@ export type Options = {
      */
     url: string;
     /**
-     * The bands to render.  Each entry is either a band name
+     * The bands to render, for stores where each
+     * band is a separate array. Mutually exclusive with `variable`.  Each entry is either a band name
      * string (single-group mode) or a {@link Band} object specifying both the band name and the
      * group it belongs to (multi-group mode).  In multi-group mode, the first band's group
      * determines the tile grid and must follow at least the proj: and spatial: conventions.
@@ -343,15 +464,15 @@ export type Options = {
      * Bands from additional groups do not need to follow any convention; they can be multi-scale
      * (array located at `<matrixId>/<bandName>`) or single-scale (array at the group root).
      */
-    bands: Array<string | Band>;
+    bands?: (string | Band)[] | undefined;
     /**
      * Additional options to be passed to
      * [zarrita](https://zarrita.dev/)'s `FetchStore` with each request to the Zarr store.
      */
     storeOptions?: GeoZarrStoreOptions | undefined;
     /**
-     * Source projection.  If not provided, the GeoZarr metadata
-     * will be read for projection information.
+     * Source projection.
+     * If not provided, the GeoZarr metadata will be read for projection information.
      */
     projection?: import("../proj.js").ProjectionLike;
     /**
@@ -368,16 +489,40 @@ export type Options = {
      */
     resample?: ResampleMethod | undefined;
     /**
-     * Fixed index for each non-spatial
-     * dimension of the band arrays, keyed by dimension name (e.g. `{time: 0}` for the first time step
-     * of a `[time, y, x]` cube); unspecified dimensions default to `0`. Names come from each array's
-     * `dimension_names`, or are the axis position as a string when it has none. Only integer indices
-     * are supported. Use the names from {@link getDimensions}, and change the selection on the fly with
+     * How to slice
+     * each non-spatial dimension of the band arrays, keyed by dimension name (e.g. `{time: 0}` for
+     * the first time step of a `[time, y, x]` cube). Values are 0-based indices (number) or
+     * coordinate labels (string); unlisted dimensions default to index 0. Names come from each
+     * array's `dimension_names`, or are the axis position as a string when it has none; use the
+     * names from {@link getDimensions}. Labels are resolved against the dimension's coordinate
+     * array; if that array cannot be read, pass indices instead. With `variable`, at most one
+     * dimension may map to an array of values, whose entries are rendered as separate bands in
+     * the given order. Change the selection on the fly with
      * {@link module :ol/source/GeoZarr~GeoZarr#updateDimensions}.
      */
     dimensions?: {
-        [x: string]: string | number;
+        [x: string]: string | number | (string | number)[];
     } | undefined;
+    /**
+     * The name of an n-dimensional data array (variable) to
+     * render, for stores where all bands are packed into a single array (e.g. a
+     * `(time, band, y, x)` datacube). The array must exist within each multiscale level
+     * group (or at the group root for single-scale stores). Mutually exclusive with `bands`,
+     * and required to select several bands from one dimension through `dimensions`.
+     */
+    variable?: string | undefined;
+    /**
+     * Fallback extent of the data, in
+     * coordinates of the source projection. Only used when the store neither declares its
+     * extent (`spatial:bbox` or `bounds` attributes) nor has coordinate arrays to infer it.
+     */
+    extent?: import("../extent.js").Extent | undefined;
+    /**
+     * Fallback orientation: set to `true` when the data is
+     * stored south-up (ascending y). Only used when the orientation can neither be read
+     * from the store metadata nor inferred from its coordinate arrays.
+     */
+    flipY?: boolean | undefined;
 };
 /**
  * *
@@ -427,20 +572,6 @@ export type TileGridInfo = {
      * The projection.
      */
     projection: import("../proj/Projection.js").default;
-    /**
-     * Available bands by level.
-     */
-    bandsByLevel?: {
-        [x: string]: string[];
-    } | undefined;
-    /**
-     * The fill value.
-     */
-    fillValue?: number | undefined;
-    /**
-     * The tile sizes for each level, if available.
-     */
-    tileSizes?: Array<import("../size.js").Size> | undefined;
 };
 import DataTileSource from './DataTile.js';
 import WMTSTileGrid from '../tilegrid/WMTS.js';
