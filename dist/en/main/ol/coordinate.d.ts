@@ -248,6 +248,17 @@ export function toStringXY(coordinate: Coordinate, fractionDigits?: number): str
  */
 export function wrapX(coordinate: Coordinate, projection: import("./proj/Projection.js").default): Coordinate;
 /**
+ * Modifies the provided coordinate in-place to be the world copy nearest to
+ * the given reference X position. Useful for getting the screen pixel of a
+ * coordinate when the map has been panned past the antimeridian.
+ *
+ * @param {Coordinate} coordinate Coordinate (modified in place).
+ * @param {import("./proj/Projection.js").default} projection Projection.
+ * @param {number} referenceX Reference X position to find the nearest world to.
+ * @return {Coordinate} The coordinate in the nearest world copy.
+ */
+export function wrapXNearest(coordinate: Coordinate, projection: import("./proj/Projection.js").default, referenceX: number): Coordinate;
+/**
  * @param {Coordinate} coordinate Coordinate.
  * @param {import("./proj/Projection.js").default} projection Projection.
  * @param {number} [sourceExtentWidth] Width of the source extent.

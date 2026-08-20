@@ -72,10 +72,12 @@
         <span class="subtitle">Typedefs</span>
         <ul>
             <li data-name="atpixeloptions"><a href="module-ol_Map.html#~AtPixelOptions">AtPixelOptions</a>
+            <li data-name="coordinatetopixeloptions"><a href="module-ol_Map.html#~CoordinateToPixelOptions">CoordinateToPixelOptions</a>
             <li data-name="framestate"><a href="module-ol_Map.html#~FrameState">FrameState</a>
             <li data-name="mapobjecteventtypes"><a href="module-ol_Map.html#~MapObjectEventTypes">MapObjectEventTypes</a>
             <li data-name="mapoptions"><a href="module-ol_Map.html#~MapOptions">MapOptions</a>
             <li data-name="mapoptionsinternal"><a href="module-ol_Map.html#~MapOptionsInternal">MapOptionsInternal</a>
+            <li data-name="pixeltocoordinateoptions"><a href="module-ol_Map.html#~PixelToCoordinateOptions">PixelToCoordinateOptions</a>
             <li data-name="postrenderfunction"><a href="module-ol_Map.html#~PostRenderFunction">PostRenderFunction</a>
         </ul>
     </div>
@@ -294,6 +296,104 @@ inside the radius around the given position will be checked for features.</p>
             <td class="description last">
                 <p>Check-Wrapped Will check for wrapped geometries inside the range of
   +/- 1 world width. Works only if a projection is used that can be wrapped.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~CoordinateToPixelOptions">
+        </div>
+        <h4 class="name">
+            CoordinateToPixelOptions<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>wrapX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    <br>(defaults to false)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Whether to find the pixel for the
+world copy of the coordinate nearest to the view center. If <code>true</code>, the
+returned pixel will be within the map viewport even if the coordinate is
+in a different world copy.</p>
                 
             </td>
         </tr>
@@ -1485,6 +1585,103 @@ fetched unless this is specified at construction time or through
             
                 
 <dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~PixelToCoordinateOptions">
+        </div>
+        <h4 class="name">
+            PixelToCoordinateOptions<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>wrapX</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    <br>(defaults to false)
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Whether to wrap the coordinate to the
+projection extent. If <code>true</code>, the returned coordinate's longitude will be
+within the extent of the projection (e.g. <code>-180</code> to <code>180</code> for EPSG:4326).</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
     
     <div class="nameContainer">
         <div class="anchor" id="~PostRenderFunction">
@@ -1498,7 +1695,7 @@ fetched unless this is specified at construction time or through
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L79">line 79</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L84">line 84</a>
         </div>
         
     </div>

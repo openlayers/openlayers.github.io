@@ -94,6 +94,7 @@ declare namespace ol {
         export { _ol_coordinate$toStringHDMS as toStringHDMS };
         export { _ol_coordinate$toStringXY as toStringXY };
         export { _ol_coordinate$wrapX as wrapX };
+        export { _ol_coordinate$wrapXNearest as wrapXNearest };
     }
     export namespace css {
         export { _ol_css$CLASS_COLLAPSED as CLASS_COLLAPSED };
@@ -1160,6 +1161,7 @@ import { squaredDistanceToSegment as _ol_coordinate$squaredDistanceToSegment } f
 import { toStringHDMS as _ol_coordinate$toStringHDMS } from '../../ol/coordinate.js';
 import { toStringXY as _ol_coordinate$toStringXY } from '../../ol/coordinate.js';
 import { wrapX as _ol_coordinate$wrapX } from '../../ol/coordinate.js';
+import { wrapXNearest as _ol_coordinate$wrapXNearest } from '../../ol/coordinate.js';
 import { CLASS_COLLAPSED as _ol_css$CLASS_COLLAPSED } from '../../ol/css.js';
 import { CLASS_CONTROL as _ol_css$CLASS_CONTROL } from '../../ol/css.js';
 import { CLASS_HIDDEN as _ol_css$CLASS_HIDDEN } from '../../ol/css.js';

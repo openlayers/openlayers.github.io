@@ -242,7 +242,7 @@ groups, and so on.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L250">line 250</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L270">line 270</a>
         </div>
         
     </div>
@@ -1023,7 +1023,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L630">line 630</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L650">line 650</a>
         </div>
         
     </div>
@@ -1149,7 +1149,7 @@ event is delayed by 250 ms to ensure that it is not a double click.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L643">line 643</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L663">line 663</a>
         </div>
         
     </div>
@@ -1279,7 +1279,7 @@ get to handle the events in the reverse order of this collection.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L654">line 654</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L674">line 674</a>
         </div>
         
     </div>
@@ -1407,7 +1407,7 @@ elsewhere in the stack, use <code>getLayers()</code> and the methods available o
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L672">line 672</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L692">line 692</a>
         </div>
         
     </div>
@@ -1759,7 +1759,7 @@ Object with a <code>type</code> property.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L724">line 724</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L744">line 744</a>
         </div>
         
     </div>
@@ -2190,7 +2190,7 @@ Value.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L776">line 776</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L796">line 796</a>
         </div>
         
     </div>
@@ -2280,7 +2280,7 @@ Layers.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L938">line 938</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L964">line 964</a>
         </div>
         
     </div>
@@ -2363,7 +2363,7 @@ Controls.
         <div class="anchor" id="getCoordinateFromPixel">
         </div>
         <h4 class="name">
-            getCoordinateFromPixel<span class="signature">(pixel)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>}</span>
+            getCoordinateFromPixel<span class="signature">(pixel, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_coordinate.html#~Coordinate">Coordinate</a>}</span>
             
             
 
@@ -2371,7 +2371,7 @@ Controls.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L909">line 909</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L930">line 930</a>
         </div>
         
     </div>
@@ -2434,6 +2434,69 @@ user projection.</p>
             <td  class="description last">
                 
                 <p>Pixel position in the map viewport.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+
+            
+
+            <td colspan=2 class="description last">
+                
+                <p>Options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>wrapX</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    (defaults to false)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Whether to wrap the coordinate to the
+projection extent. If <code>true</code>, the returned coordinate's longitude will be
+within the extent of the projection (e.g. <code>-180</code> to <code>180</code> for EPSG:4326).</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+            </td>
         </tr>
 
 	
@@ -2507,7 +2570,7 @@ The coordinate for the pixel position.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L835">line 835</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L855">line 855</a>
         </div>
         
     </div>
@@ -2642,7 +2705,7 @@ Coordinate.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L856">line 856</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L876">line 876</a>
         </div>
         
     </div>
@@ -2780,7 +2843,7 @@ Pixel.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L758">line 758</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L778">line 778</a>
         </div>
         
     </div>
@@ -3041,7 +3104,7 @@ an empty array if none were found.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L973">line 973</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L999">line 999</a>
         </div>
         
     </div>
@@ -3225,7 +3288,7 @@ List of property names.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L983">line 983</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1009">line 1009</a>
         </div>
         
     </div>
@@ -3315,7 +3378,7 @@ A layer group containing the layers in this map.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1009">line 1009</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1035">line 1035</a>
         </div>
         
     </div>
@@ -3405,7 +3468,7 @@ Layers.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L960">line 960</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L986">line 986</a>
         </div>
         
     </div>
@@ -3545,7 +3608,7 @@ Overlay.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L948">line 948</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L974">line 974</a>
         </div>
         
     </div>
@@ -3628,7 +3691,7 @@ Overlays.
         <div class="anchor" id="getPixelFromCoordinate">
         </div>
         <h4 class="name">
-            getPixelFromCoordinate<span class="signature">(coordinate)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_pixel.html#~Pixel">Pixel</a>}</span>
+            getPixelFromCoordinate<span class="signature">(coordinate, <span class="optional">options</span>)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_pixel.html#~Pixel">Pixel</a>}</span>
             
             
 
@@ -3636,7 +3699,7 @@ Overlays.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1059">line 1059</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1086">line 1086</a>
         </div>
         
     </div>
@@ -3699,6 +3762,70 @@ projection and returns the corresponding pixel.</p>
             <td  class="description last">
                 
                 <p>A map coordinate.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>options</code></td>
+            
+
+            
+
+            <td colspan=2 class="description last">
+                
+                <p>Options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>wrapX</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+                
+                    (defaults to false)
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Whether to find the pixel for the
+world copy of the coordinate nearest to the view center. If <code>true</code>, the
+returned pixel will be within the map viewport even if the coordinate is
+in a different world copy.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+            </td>
         </tr>
 
 	
@@ -3772,7 +3899,7 @@ A pixel position in the map viewport.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1091">line 1091</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1124">line 1124</a>
         </div>
         
     </div>
@@ -4047,7 +4174,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1122">line 1122</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1155">line 1155</a>
         </div>
         
     </div>
@@ -4137,7 +4264,7 @@ The size in pixels of the map in the DOM.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L885">line 885</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L905">line 905</a>
         </div>
         
     </div>
@@ -4230,7 +4357,7 @@ The Element or id of the Element that the
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L898">line 898</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L918">line 918</a>
         </div>
         
     </div>
@@ -4322,7 +4449,7 @@ The element that the map is rendered in.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1135">line 1135</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1168">line 1168</a>
         </div>
         
     </div>
@@ -4413,7 +4540,7 @@ The view that controls this map.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1144">line 1144</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1177">line 1177</a>
         </div>
         
     </div>
@@ -4503,7 +4630,7 @@ Viewport.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L808">line 808</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L828">line 828</a>
         </div>
         
     </div>
@@ -5098,7 +5225,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1642">line 1642</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1675">line 1675</a>
         </div>
         
     </div>
@@ -5234,7 +5361,7 @@ The removed control (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1653">line 1653</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1686">line 1686</a>
         </div>
         
     </div>
@@ -5370,7 +5497,7 @@ The removed interaction (or
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1664">line 1664</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1697">line 1697</a>
         </div>
         
     </div>
@@ -5506,7 +5633,7 @@ The removed layer (or undefined if the
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1684">line 1684</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1717">line 1717</a>
         </div>
         
     </div>
@@ -5642,7 +5769,7 @@ The removed overlay (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1629">line 1629</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1662">line 1662</a>
         </div>
         
     </div>
@@ -5723,7 +5850,7 @@ The removed overlay (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1600">line 1600</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1633">line 1633</a>
         </div>
         
     </div>
@@ -5982,7 +6109,7 @@ The removed overlay (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1819">line 1819</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1852">line 1852</a>
         </div>
         
     </div>
@@ -6108,7 +6235,7 @@ The removed overlay (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L992">line 992</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1018">line 1018</a>
         </div>
         
     </div>
@@ -6237,7 +6364,7 @@ The removed overlay (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1100">line 1100</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1133">line 1133</a>
         </div>
         
     </div>
@@ -6517,7 +6644,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1833">line 1833</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1866">line 1866</a>
         </div>
         
     </div>
@@ -6646,7 +6773,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1847">line 1847</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1880">line 1880</a>
         </div>
         
     </div>
@@ -6785,7 +6912,7 @@ For accessibility (focus and keyboard events for map navigation), the <code>targ
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1860">line 1860</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1893">line 1893</a>
         </div>
         
     </div>
@@ -7229,7 +7356,7 @@ view-related metadata.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1878">line 1878</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1911">line 1911</a>
         </div>
         
     </div>

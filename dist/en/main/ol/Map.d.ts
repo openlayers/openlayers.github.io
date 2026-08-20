@@ -119,6 +119,23 @@ export type AtPixelOptions = {
      */
     checkWrapped?: boolean | undefined;
 };
+export type PixelToCoordinateOptions = {
+    /**
+     * Whether to wrap the coordinate to the
+     * projection extent. If `true`, the returned coordinate's longitude will be
+     * within the extent of the projection (e.g. `-180` to `180` for EPSG:4326).
+     */
+    wrapX?: boolean | undefined;
+};
+export type CoordinateToPixelOptions = {
+    /**
+     * Whether to find the pixel for the
+     * world copy of the coordinate nearest to the view center. If `true`, the
+     * returned pixel will be within the map viewport even if the coordinate is
+     * in a different world copy.
+     */
+    wrapX?: boolean | undefined;
+};
 export type MapOptionsInternal = {
     /**
      * Controls.
@@ -592,10 +609,11 @@ declare class Map extends BaseObject<{
      * Get the coordinate for a given pixel.  This returns a coordinate in the
      * user projection.
      * @param {import("./pixel.js").Pixel} pixel Pixel position in the map viewport.
+     * @param {PixelToCoordinateOptions} [options] Options.
      * @return {import("./coordinate.js").Coordinate} The coordinate for the pixel position.
      * @api
      */
-    getCoordinateFromPixel(pixel: import("./pixel.js").Pixel): import("./coordinate.js").Coordinate;
+    getCoordinateFromPixel(pixel: import("./pixel.js").Pixel, options?: PixelToCoordinateOptions): import("./coordinate.js").Coordinate;
     /**
      * Get the coordinate for a given pixel.  This returns a coordinate in the
      * map view projection.
@@ -669,10 +687,11 @@ declare class Map extends BaseObject<{
      * Get the pixel for a coordinate.  This takes a coordinate in the user
      * projection and returns the corresponding pixel.
      * @param {import("./coordinate.js").Coordinate} coordinate A map coordinate.
+     * @param {CoordinateToPixelOptions} [options] Options.
      * @return {import("./pixel.js").Pixel} A pixel position in the map viewport.
      * @api
      */
-    getPixelFromCoordinate(coordinate: import("./coordinate.js").Coordinate): import("./pixel.js").Pixel;
+    getPixelFromCoordinate(coordinate: import("./coordinate.js").Coordinate, options?: CoordinateToPixelOptions): import("./pixel.js").Pixel;
     /**
      * Get the pixel for a coordinate.  This takes a coordinate in the map view
      * projection and returns the corresponding pixel.
