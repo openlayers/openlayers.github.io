@@ -285,7 +285,7 @@ declare class VectorStyleRenderer extends Disposable {
      */
     private textOverlayRenderFrameState_;
     /**
-     * @type {Worker}
+     * @type {Promise<Worker>}
      * @private
      */
     private textOverlayWorker_;
