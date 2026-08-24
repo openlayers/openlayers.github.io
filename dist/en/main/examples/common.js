@@ -129267,14 +129267,20 @@ var BytesCodec = class BytesCodec {
 	}
 	encode(arr) {
 		let bytes = new Uint8Array(arr.data.buffer);
-		if (LITTLE_ENDIAN_OS && this.#endian === "big") byteswapInplace(bytes, bytesPerElement(this.#TypedArray));
+		if (LITTLE_ENDIAN_OS && this.#endian === "big") {
+			bytes = bytes.slice();
+			byteswapInplace(bytes, bytesPerElement(this.#TypedArray));
+		}
 		return bytes;
 	}
 	computeEncodedSize(decodedSize) {
 		return decodedSize;
 	}
 	decode(bytes) {
-		if (LITTLE_ENDIAN_OS && this.#endian === "big") byteswapInplace(bytes, bytesPerElement(this.#TypedArray));
+		if (LITTLE_ENDIAN_OS && this.#endian === "big") {
+			bytes = bytes.slice();
+			byteswapInplace(bytes, bytesPerElement(this.#TypedArray));
+		}
 		return {
 			data: new this.#TypedArray(bytes.buffer, bytes.byteOffset, bytes.byteLength / this.#BYTES_PER_ELEMENT),
 			shape: this.#shape,
@@ -129786,8 +129792,8 @@ function proxy(arr) {
 }
 function emptyLike(chunk, order) {
 	let data;
-	if (chunk.data instanceof ByteStringArray || chunk.data instanceof UnicodeStringArray) data = new chunk.constructor(chunk.data.length, chunk.data.chars);
-	else data = new chunk.constructor(chunk.data.length);
+	if (chunk.data instanceof ByteStringArray || chunk.data instanceof UnicodeStringArray) data = new chunk.data.constructor(chunk.data.chars, chunk.data.length);
+	else data = new chunk.data.constructor(chunk.data.length);
 	return {
 		data,
 		shape: chunk.shape,
@@ -129797,13 +129803,17 @@ function emptyLike(chunk, order) {
 function convertArrayOrder(src, target) {
 	let out = emptyLike(src, target);
 	let nDims = src.shape.length;
-	let size = src.data.length;
+	let size = src.shape.reduce((a, b) => a * b, 1);
 	let index = Array(nDims).fill(0);
 	let srcData = proxy(src.data);
 	let outData = proxy(out.data);
-	for (let srcIdx = 0; srcIdx < size; srcIdx++) {
+	for (let n = 0; n < size; n++) {
+		let srcIdx = 0;
 		let outIdx = 0;
-		for (let dim = 0; dim < nDims; dim++) outIdx += index[dim] * out.stride[dim];
+		for (let dim = 0; dim < nDims; dim++) {
+			srcIdx += index[dim] * src.stride[dim];
+			outIdx += index[dim] * out.stride[dim];
+		}
 		outData[outIdx] = srcData[srcIdx];
 		index[0] += 1;
 		for (let dim = 0; dim < nDims; dim++) if (index[dim] === src.shape[dim]) {
@@ -129831,36 +129841,28 @@ function matchesOrder(chunk, target) {
 var TransposeCodec = class TransposeCodec {
 	kind = "array_to_array";
 	#order;
-	#inverseOrder;
 	constructor(configuration, meta) {
 		let value = configuration.order ?? "C";
 		let rank = meta.shape.length;
 		let order = new Array(rank);
-		let inverseOrder = new Array(rank);
-		if (value === "C") for (let i = 0; i < rank; ++i) {
-			order[i] = i;
-			inverseOrder[i] = i;
-		}
-		else if (value === "F") for (let i = 0; i < rank; ++i) {
-			order[i] = rank - i - 1;
-			inverseOrder[i] = rank - i - 1;
-		}
+		if (value === "C") for (let i = 0; i < rank; ++i) order[i] = i;
+		else if (value === "F") for (let i = 0; i < rank; ++i) order[i] = rank - i - 1;
 		else {
 			order = value;
-			order.forEach((x, i) => {
-				assert(inverseOrder[x] === void 0, `Invalid permutation: ${JSON.stringify(value)}`);
-				inverseOrder[x] = i;
+			let seen = new Array(rank);
+			order.forEach((x) => {
+				assert(!seen[x], `Invalid permutation: ${JSON.stringify(value)}`);
+				seen[x] = true;
 			});
 		}
 		this.#order = order;
-		this.#inverseOrder = inverseOrder;
 	}
 	static fromConfig(configuration, meta) {
 		return new TransposeCodec(configuration, meta);
 	}
 	encode(arr) {
-		if (matchesOrder(arr, this.#inverseOrder)) return arr;
-		return convertArrayOrder(arr, this.#inverseOrder);
+		if (matchesOrder(arr, this.#order)) return arr;
+		return convertArrayOrder(arr, this.#order);
 	}
 	decode(arr) {
 		return {
@@ -130094,6 +130096,22 @@ var Group = class extends Location$1 {
 function getArrayOrder(codecs) {
 	return codecs.find((c) => c.name === "transpose")?.configuration?.order ?? "C";
 }
+/**
+* Project a full-rank axis permutation onto a subset of axes, preserving the
+* relative order of the surviving axes. `axes` lists the original axis indices
+* that survive (ascending, matching the output shape). For order `[2, 1, 0]`
+* and surviving axes `[1, 2]` (axis 0 dropped) this yields `[1, 0]`: of the
+* kept axes, axis 2 comes before axis 1 in the original order.
+*/
+function projectOrder(order, axes) {
+	let rank = new Map(axes.map((axis, i) => [axis, i]));
+	return order.filter((axis) => rank.has(axis)).map((axis) => rank.get(axis));
+}
+function makeStrideGetter(nativeOrder) {
+	return (shape, axes) => {
+		return getStrides(shape, globalThis.Array.isArray(nativeOrder) && axes ? projectOrder(nativeOrder, axes) : nativeOrder);
+	};
+}
 var CONTEXT_MARKER = Symbol("zarrita.context");
 function getContext(obj) {
 	return obj[CONTEXT_MARKER];
@@ -130117,9 +130135,7 @@ function createContext(location, metadata) {
 				codecs: configuration.codecs,
 				fillValue: metadata.fill_value
 			}),
-			getStrides(shape) {
-				return getStrides(shape, nativeOrder);
-			},
+			getStrides: makeStrideGetter(nativeOrder),
 			getChunkBytes: createShardedChunkGetter(location, metadata.chunk_grid.configuration.chunk_shape, sharedContext.encodeChunkKey, configuration)
 		};
 	}
@@ -130134,9 +130150,7 @@ function createContext(location, metadata) {
 			codecs: metadata.codecs,
 			fillValue: metadata.fill_value
 		}),
-		getStrides(shape) {
-			return getStrides(shape, nativeOrder);
-		},
+		getStrides: makeStrideGetter(nativeOrder),
 		async getChunkBytes(chunkCoords, options) {
 			let chunkKey = sharedContext.encodeChunkKey(chunkCoords);
 			let chunkPath = location.resolve(chunkKey).path;
@@ -130783,6 +130797,12 @@ function normalizeSelection(selection, shape) {
 var BasicIndexer = class {
 	dimIndexers;
 	shape;
+	/**
+	* Original axis indices that survive the selection (slices, not integer
+	* indices), in ascending order — i.e. the input axis each output dimension
+	* came from. Used to project the array's native order onto the output.
+	*/
+	outputAxes;
 	constructor({ selection, shape, chunkShape }) {
 		this.dimIndexers = normalizeSelection(selection, shape).map((dimSel, i) => {
 			return new (typeof dimSel === "number" ? IntDimIndexer : SliceDimIndexer)({
@@ -130792,6 +130812,10 @@ var BasicIndexer = class {
 			});
 		});
 		this.shape = this.dimIndexers.filter((ixr) => ixr instanceof SliceDimIndexer).map((sixr) => sixr.nitems);
+		this.outputAxes = this.dimIndexers.map((ixr, axis) => ({
+			ixr,
+			axis
+		})).filter(({ ixr }) => ixr instanceof SliceDimIndexer).map(({ axis }) => axis);
 	}
 	*[Symbol.iterator]() {
 		for (const dimProjections of product(...this.dimIndexers)) yield {
@@ -130839,7 +130863,7 @@ async function get$3(arr, selection, opts, setter) {
 			data = new context.TypedArray(buffer, 0, size);
 		}
 	} else data = new context.TypedArray(size);
-	let out = setter.prepare(data, indexer.shape, context.getStrides(indexer.shape));
+	let out = setter.prepare(data, indexer.shape, context.getStrides(indexer.shape, indexer.outputAxes));
 	let queue = opts.createQueue?.() ?? createQueue();
 	for (const { chunkCoords, mapping } of indexer) queue.add(async () => {
 		signal?.throwIfAborted();
@@ -130852,7 +130876,7 @@ async function get$3(arr, selection, opts, setter) {
 }
 //#endregion
 //#region node_modules/zarrita/dist/src/indexing/ops.js
-/** A 1D "view" of an array that can be used to set values in the array. */
+/** A 1D view of an array. Use it to set values in the array. */
 function objectArrayView(arr, offset = 0, size) {
 	let length = size ?? arr.length - offset;
 	return {
@@ -130869,14 +130893,13 @@ function objectArrayView(arr, offset = 0, size) {
 	};
 }
 /**
-* Convert a chunk to a Uint8Array that can be used with the binary
-* set functions. This is necessary because the binary set functions
-* require a contiguous block of memory, and allows us to support more than
-* just the browser's TypedArray objects.
+* Convert a chunk to a `Uint8Array` for the binary set functions.
 *
-* WARNING: This function is not meant to be used directly and is NOT type-safe.
-* In the case of `Array` instances, it will return a `objectArrayView` of
-* the underlying, which is supported by our binary set functions.
+* The binary set functions need a contiguous block of memory. This conversion
+* also accepts data that is not a browser `TypedArray`.
+*
+* WARNING: This function is not type-safe. Do not call it directly. For an
+* `Array`, it returns an `objectArrayView` of the chunk data.
 */
 function compatChunk(arr) {
 	if (globalThis.Array.isArray(arr.data)) return {
@@ -130890,20 +130913,19 @@ function compatChunk(arr) {
 		bytesPerElement: arr.data.BYTES_PER_ELEMENT
 	};
 }
-/** Hack to get the constructor of a typed array constructor from an existing TypedArray. */
+/** Get the constructor of an existing `TypedArray`. */
 function getTypedArrayConstructor(arr) {
 	if ("chars" in arr) return arr.constructor.bind(null, arr.chars);
 	return arr.constructor;
 }
 /**
-* Convert a scalar to a Uint8Array that can be used with the binary
-* set functions. This is necessary because the binary set functions
-* require a contiguous block of memory, and allows us to support more
-* than just the browser's TypedArray objects.
+* Convert a scalar to a `Uint8Array` for the binary set functions.
 *
-* WARNING: This function is not meant to be used directly and is NOT type-safe.
-* In the case of `Array` instances, it will return a `objectArrayView` of
-* the scalar, which is supported by our binary set functions.
+* The binary set functions need a contiguous block of memory. This conversion
+* also accepts data that is not a browser `TypedArray`.
+*
+* WARNING: This function is not type-safe. Do not call it directly. For an
+* `Array`, it returns an `objectArrayView` of the scalar.
 */
 function compatScalar(arr, value) {
 	if (globalThis.Array.isArray(arr.data)) return objectArrayView([value]);
@@ -130961,13 +130983,54 @@ function setScalarBinary(out, outSelection, value, bytesPerElement) {
 		stride
 	}, slices, value, bytesPerElement);
 }
+/**
+* Find the selection that is one unbroken run of memory on both sides, which
+* the caller can copy with a single `set`.
+*
+* The run exists when each remaining dimension is a step-1 slice and each
+* stride is the product of the lengths inside it, checked from the innermost
+* dimension outward. The test is on the strides, so a transposed chunk fails
+* it and falls to the element-by-element path, which is always correct. The
+* limit to C-contiguous layouts is deliberate.
+*
+* Returns the size of the run and its start offset on each side, or `null`
+* when the caller must recurse.
+*/
+function contiguousSpan(projections, destStride, srcStride) {
+	if (projections.length !== destStride.length || projections.length !== srcStride.length) return null;
+	let size = 1;
+	let destOffset = 0;
+	let srcOffset = 0;
+	for (let i = projections.length - 1; i >= 0; i--) {
+		const proj = projections[i];
+		if (proj.from === null || proj.to === null) return null;
+		if (destStride[i] !== size || srcStride[i] !== size) return null;
+		const [from, to, step] = proj.to;
+		const [sfrom, , sstep] = proj.from;
+		if (step !== 1 || sstep !== 1) return null;
+		destOffset += size * from;
+		srcOffset += size * sfrom;
+		size *= indicesLen(from, to, step);
+	}
+	return {
+		size,
+		destOffset,
+		srcOffset
+	};
+}
 function setFromChunkBinary(dest, src, bytesPerElement, projections) {
+	const span = contiguousSpan(projections, dest.stride, src.stride);
+	if (span !== null) {
+		const offset = span.srcOffset * bytesPerElement;
+		dest.data.set(src.data.subarray(offset, offset + span.size * bytesPerElement), span.destOffset * bytesPerElement);
+		return;
+	}
 	const [proj, ...projs] = projections;
 	const [dstride, ...dstrides] = dest.stride;
 	const [sstride, ...sstrides] = src.stride;
 	if (proj.from === null) {
 		if (projs.length === 0) {
-			dest.data.set(src.data.subarray(0, bytesPerElement), proj.to * bytesPerElement);
+			dest.data.set(src.data.subarray(0, bytesPerElement), dstride * proj.to * bytesPerElement);
 			return;
 		}
 		setFromChunkBinary({
@@ -130978,7 +131041,7 @@ function setFromChunkBinary(dest, src, bytesPerElement, projections) {
 	}
 	if (proj.to === null) {
 		if (projs.length === 0) {
-			let offset = proj.from * bytesPerElement;
+			let offset = sstride * proj.from * bytesPerElement;
 			dest.data.set(src.data.subarray(offset, offset + bytesPerElement), 0);
 			return;
 		}
@@ -130992,12 +131055,6 @@ function setFromChunkBinary(dest, src, bytesPerElement, projections) {
 	const [sfrom, _, sstep] = proj.from;
 	const len = indicesLen(from, to, step);
 	if (projs.length === 0) {
-		if (step === 1 && sstep === 1 && dstride === 1 && sstride === 1) {
-			let offset = sfrom * bytesPerElement;
-			let size = len * bytesPerElement;
-			dest.data.set(src.data.subarray(offset, offset + size), from * bytesPerElement);
-			return;
-		}
 		for (let i = 0; i < len; i++) {
 			let offset = sstride * (sfrom + sstep * i) * bytesPerElement;
 			dest.data.set(src.data.subarray(offset, offset + bytesPerElement), dstride * (from + step * i) * bytesPerElement);
