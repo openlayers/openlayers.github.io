@@ -2,7 +2,7 @@ import { Mn as Map, an as ImageTileSource, jn as TileLayer, or as View } from ".
 //#region examples/tiled-layer-rendering-in-offscreen-canvas.js
 var worker = new Worker(new URL(
 	/* @vite-ignore */
-	"" + new URL("assets/tiled-layer-rendering-in-offscreen-canvas.worker-Dr3BVE20.js", import.meta.url).href,
+	"" + new URL("assets/tiled-layer-rendering-in-offscreen-canvas.worker-9yVtl7bc.js", import.meta.url).href,
 	"" + import.meta.url
 ), { type: "module" });
 var tileQueue = [];

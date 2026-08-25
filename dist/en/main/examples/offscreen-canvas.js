@@ -2,7 +2,7 @@ import { Dn as createXYZ, En as Source, Hn as Layer, L as FullScreen, Mn as Map,
 //#region examples/offscreen-canvas.js
 var worker = new Worker(new URL(
 	/* @vite-ignore */
-	"" + new URL("assets/offscreen-canvas.worker-Bnz4X6Vt.js", import.meta.url).href,
+	"" + new URL("assets/offscreen-canvas.worker-Dk9wJXK8.js", import.meta.url).href,
 	"" + import.meta.url
 ), { type: "module" });
 var container;

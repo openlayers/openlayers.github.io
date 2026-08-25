@@ -192,8 +192,12 @@ export type ArgValidator = (arg0: Array<EncodedExpression>, arg1: ValueType, arg
  *     the rate of increase from stop A to stop B (i.e. power to which the interpolation ratio is raised); a value
  *     of 1 is equivalent to `['linear']`.
  *     `input` and `stopX` values must all be of type `number`. `outputX` values can be `number` or `color` values.
+ *     Colors are interpolated component-wise in sRGB.
  *     Note: `input` will be clamped between `stop1` and `stopN`, meaning that all output values will be comprised
  *     between `output1` and `outputN`.
+ *   * `['interpolate-hcl', interpolation, input, stop1, output1, ...stopN, outputN]` works like `interpolate`, but
+ *     the `outputX` values must be colors, and they are interpolated in the Hue-Chroma-Luminance color space.
+ *     This keeps gradients bright where sRGB interpolation would take them through a muddy midpoint (Canvas only).
  *   * `['string', value1, value2, ...]` returns the first value in the list that evaluates to a string.
  *     An example would be to provide a default value for get: `['string', ['get', 'propertyname'], 'default value']]`
  *     (Canvas only).

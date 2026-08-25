@@ -188,7 +188,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L620">line 620</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L631">line 631</a>
         </div>
         
     </div>
@@ -436,8 +436,12 @@ pairs of inputs and outputs; <code>interpolation</code> can either be <code>['li
 the rate of increase from stop A to stop B (i.e. power to which the interpolation ratio is raised); a value
 of 1 is equivalent to <code>['linear']</code>.
 <code>input</code> and <code>stopX</code> values must all be of type <code>number</code>. <code>outputX</code> values can be <code>number</code> or <code>color</code> values.
+Colors are interpolated component-wise in sRGB.
 Note: <code>input</code> will be clamped between <code>stop1</code> and <code>stopN</code>, meaning that all output values will be comprised
 between <code>output1</code> and <code>outputN</code>.</li>
+<li><code>['interpolate-hcl', interpolation, input, stop1, output1, ...stopN, outputN]</code> works like <code>interpolate</code>, but
+the <code>outputX</code> values must be colors, and they are interpolated in the Hue-Chroma-Luminance color space.
+This keeps gradients bright where sRGB interpolation would take them through a muddy midpoint (Canvas only).</li>
 <li><code>['string', value1, value2, ...]</code> returns the first value in the list that evaluates to a string.
 An example would be to provide a default value for get: <code>['string', ['get', 'propertyname'], 'default value']]</code>
 (Canvas only).</li>
@@ -598,7 +602,7 @@ Literal values can be of the following types:</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js">expr/expression.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L447">line 447</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/expr/expression.js#L452">line 452</a>
         </div>
         
     </div>
