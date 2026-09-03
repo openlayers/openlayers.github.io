@@ -185040,8 +185040,30 @@ function like(propertyName, pattern, wildCard, singleChar, escapeChar, matchCase
 */
 var FEATURE_COLLECTION_PARSERS = {
 	"http://www.opengis.net/gml": { "boundedBy": makeObjectPropertySetter(GMLBase.prototype.readExtentElement, "bounds") },
-	"http://www.opengis.net/wfs/2.0": { "member": makeArrayPusher(GMLBase.prototype.readFeaturesInternal) }
+	"http://www.opengis.net/wfs/2.0": { "member": readMember }
 };
+/**
+* Reads a `wfs:member`, which contains either a feature or, in GetFeature
+* responses for multiple type names, a nested `wfs:FeatureCollection`.
+* @param {Element} node Node.
+* @param {Array<*>} objectStack Object stack.
+* @this {GMLBase}
+*/
+function readMember(node, objectStack) {
+	const features = objectStack[objectStack.length - 1];
+	const child = node.firstElementChild;
+	if (child && child.localName === "FeatureCollection") {
+		const context = objectStack[0];
+		const featureType = context["featureType"];
+		const featureNS = context["featureNS"];
+		features.push(...pushParseAndPop([], FEATURE_COLLECTION_PARSERS, child, objectStack, this));
+		context["featureType"] = featureType;
+		context["featureNS"] = featureNS;
+		return;
+	}
+	const feature = GMLBase.prototype.readFeaturesInternal.call(this, node, objectStack);
+	if (feature !== void 0) features.push(feature);
+}
 /**
 * @const
 * @type {import("../xml.js").ParsersNS}
