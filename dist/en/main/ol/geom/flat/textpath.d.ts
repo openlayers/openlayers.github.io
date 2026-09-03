@@ -20,4 +20,9 @@ export function drawTextOnPath(flatCoordinates: Array<number>, offset: number, e
 }) => number, font: string, cache: {
     [x: string]: number;
 }, rotation: number, keepUpright?: boolean): Array<Array<any>> | null;
+/**
+ * Matches characters of right-to-left scripts.
+ * @type {RegExp}
+ */
+export const rtlRegEx: RegExp;
 //# sourceMappingURL=textpath.d.ts.map

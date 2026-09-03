@@ -466,6 +466,7 @@ declare namespace ol {
             }
             namespace textpath {
                 export { _ol_geom_flat_textpath$drawTextOnPath as drawTextOnPath };
+                export { _ol_geom_flat_textpath$rtlRegEx as rtlRegEx };
             }
             namespace topology {
                 export { _ol_geom_flat_topology$lineStringIsClosed as lineStringIsClosed };
@@ -1459,6 +1460,7 @@ import { simplifyLineString as _ol_geom_flat_simplify$simplifyLineString } from 
 import { snap as _ol_geom_flat_simplify$snap } from '../../ol/geom/flat/simplify.js';
 import { matchingChunk as _ol_geom_flat_straightchunk$matchingChunk } from '../../ol/geom/flat/straightchunk.js';
 import { drawTextOnPath as _ol_geom_flat_textpath$drawTextOnPath } from '../../ol/geom/flat/textpath.js';
+import { rtlRegEx as _ol_geom_flat_textpath$rtlRegEx } from '../../ol/geom/flat/textpath.js';
 import { lineStringIsClosed as _ol_geom_flat_topology$lineStringIsClosed } from '../../ol/geom/flat/topology.js';
 import { rotate as _ol_geom_flat_transform$rotate } from '../../ol/geom/flat/transform.js';
 import { scale as _ol_geom_flat_transform$scale } from '../../ol/geom/flat/transform.js';
