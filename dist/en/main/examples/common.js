@@ -40234,7 +40234,7 @@ var JSONFeature = class extends FeatureFormat {
 	*
 	* @param {ArrayBuffer|Document|Element|Object|string} source Source.
 	* @param {import("./Feature.js").ReadOptions} [options] Read options.
-	* @return {import("../geom/Geometry.js").default} Geometry.
+	* @return {import("../geom/Geometry.js").default|null} Geometry.
 	* @api
 	* @override
 	*/
@@ -40248,7 +40248,7 @@ var JSONFeature = class extends FeatureFormat {
 	* @param {Object} object Object.
 	* @param {import("./Feature.js").ReadOptions} [options] Read options.
 	* @protected
-	* @return {import("../geom/Geometry.js").default} Geometry.
+	* @return {import("../geom/Geometry.js").default|null} Geometry.
 	*/
 	readGeometryFromObject(object, options) {
 		return abstract();
@@ -40483,13 +40483,11 @@ var GeoJSON = class extends JSONFeature {
 	* @param {GeoJSONGeometry} object Object.
 	* @param {import("./Feature.js").ReadOptions} [options] Read options.
 	* @protected
-	* @return {import("../geom/Geometry.js").default} Geometry.
+	* @return {import("../geom/Geometry.js").default|null} Geometry.
 	* @override
 	*/
 	readGeometryFromObject(object, options) {
-		const geometry = readGeometry$1(object, options);
-		if (!geometry) throw new Error("Cannot read geometry from object");
-		return geometry;
+		return readGeometry$1(object, options);
 	}
 	/**
 	* @param {Object} object Object.
@@ -40571,7 +40569,7 @@ var GeoJSON = class extends JSONFeature {
 * @return {import("./Feature.js").GeometryObject|null} Geometry.
 */
 function readGeometryInternal(object, options) {
-	if (!object) return null;
+	if (!object || object.type !== "GeometryCollection" && Array.isArray(object.coordinates) && !object.coordinates.length) return null;
 	/** @type {import("./Feature.js").GeometryObject} */
 	let geometry;
 	switch (object["type"]) {
@@ -40616,17 +40614,14 @@ function readGeometry$1(object, options) {
 * @return {import("./Feature.js").GeometryCollectionObject} Geometry collection.
 */
 function readGeometryCollectionGeometry(object, options) {
-	return object["geometries"].map(
-		/**
-		* @param {GeoJSONGeometry} geometry Geometry.
-		* @return {import("./Feature.js").GeometryObject} geometry Geometry.
-		*/
-		function(geometry) {
-			const geom = readGeometryInternal(geometry, options);
-			if (!geom) throw new Error("Invalid geometry in GeometryCollection");
-			return geom;
-		}
-	);
+	const geometryObjects = object["geometries"];
+	const geometries = [];
+	for (const geometry of geometryObjects) {
+		const geom = readGeometryInternal(geometry, options);
+		if (!geom) continue;
+		geometries.push(geom);
+	}
+	return geometries;
 }
 /**
 * @param {GeoJSONPoint} object Input object.

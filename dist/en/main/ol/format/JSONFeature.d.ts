@@ -40,23 +40,13 @@ declare class JSONFeature<FeatureType extends import("../Feature.js").FeatureLik
      */
     protected readFeaturesFromObject(object: any, options?: import("./Feature.js").ReadOptions): Array<FeatureType>;
     /**
-     * Read a geometry.
-     *
-     * @param {ArrayBuffer|Document|Element|Object|string} source Source.
-     * @param {import("./Feature.js").ReadOptions} [options] Read options.
-     * @return {import("../geom/Geometry.js").default} Geometry.
-     * @api
-     * @override
-     */
-    override readGeometry(source: ArrayBuffer | Document | Element | any | string, options?: import("./Feature.js").ReadOptions): import("../geom/Geometry.js").default;
-    /**
      * @abstract
      * @param {Object} object Object.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @protected
-     * @return {import("../geom/Geometry.js").default} Geometry.
+     * @return {import("../geom/Geometry.js").default|null} Geometry.
      */
-    protected readGeometryFromObject(object: any, options?: import("./Feature.js").ReadOptions): import("../geom/Geometry.js").default;
+    protected readGeometryFromObject(object: any, options?: import("./Feature.js").ReadOptions): import("../geom/Geometry.js").default | null;
     /**
      * Read the projection.
      *

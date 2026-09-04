@@ -103,10 +103,10 @@ declare class GeoJSON<FeatureType extends import("../Feature.js").FeatureLike = 
      * @param {GeoJSONGeometry} object Object.
      * @param {import("./Feature.js").ReadOptions} [options] Read options.
      * @protected
-     * @return {import("../geom/Geometry.js").default} Geometry.
+     * @return {import("../geom/Geometry.js").default|null} Geometry.
      * @override
      */
-    protected override readGeometryFromObject(object: GeoJSONGeometry, options?: import("./Feature.js").ReadOptions): import("../geom/Geometry.js").default;
+    protected override readGeometryFromObject(object: GeoJSONGeometry, options?: import("./Feature.js").ReadOptions): import("../geom/Geometry.js").default | null;
     /**
      * Encode a feature as a GeoJSON Feature object.
      *
