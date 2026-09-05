@@ -89,6 +89,14 @@ export type Options = {
      * The Google Tile server URL.
      */
     url?: string | undefined;
+    /**
+     * Function to
+     * fetch a session token, called with the `createSession` URL and the request config. Defaults to
+     * `fetch`. Use this e.g. to persist session tokens across page reloads, so tile URLs stay the same
+     * and cached tiles can be reused. Note that the session token response includes an `expiry`, which
+     * is used to renew the session before it expires.
+     */
+    fetchSessionToken?: ((arg0: string, arg1: RequestInit) => Promise<Response>) | undefined;
 };
 export type SessionTokenRequest = {
     /**
@@ -186,6 +194,11 @@ export type SessionTokenResponse = {
  * Choose whether to use tiles with a higher or lower zoom level when between integer
  * zoom levels. See {@link module:ol/tilegrid/TileGrid~TileGrid#getZForResolution}.
  * @property {string} [url='https://tile.googleapis.com/'] The Google Tile server URL.
+ * @property {function(string, RequestInit): Promise<Response>} [fetchSessionToken] Function to
+ * fetch a session token, called with the `createSession` URL and the request config. Defaults to
+ * `fetch`. Use this e.g. to persist session tokens across page reloads, so tile URLs stay the same
+ * and cached tiles can be reused. Note that the session token response includes an `expiry`, which
+ * is used to renew the session before it expires.
  */
 /**
  * @typedef {Object} SessionTokenRequest
@@ -262,6 +275,13 @@ declare class Google extends TileImage {
      */
     private createSessionUrl_;
     /**
+     * Fetch a session token. Can be replaced with the `fetchSessionToken` option.
+     * @param {string} url The URL.
+     * @param {RequestInit} config The config.
+     * @return {Promise<Response>} A promise that resolves with the response.
+     */
+    fetchSessionToken(url: string, config: RequestInit): Promise<Response>;
+    /**
      * @type {string}
      * @private
      */
@@ -284,13 +304,6 @@ declare class Google extends TileImage {
      * ```
      */
     getError(): Error | null;
-    /**
-     * Exposed here so it can be overridden in the tests.
-     * @param {string} url The URL.
-     * @param {RequestInit} config The config.
-     * @return {Promise<Response>} A promise that resolves with the response.
-     */
-    fetchSessionToken(url: string, config: RequestInit): Promise<Response>;
     /**
      * Get or renew a session token for use with tile requests.
      * @private

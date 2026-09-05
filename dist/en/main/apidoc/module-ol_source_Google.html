@@ -706,6 +706,33 @@ zoom levels. See <a href="module-ol_tilegrid_TileGrid-TileGrid.html#getZForResol
         </tr>
 
 	
+
+        <tr>
+            
+                <td class="name"><code>fetchSessionToken</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Function to
+fetch a session token, called with the <code>createSession</code> URL and the request config. Defaults to
+<code>fetch</code>. Use this e.g. to persist session tokens across page reloads, so tile URLs stay the same
+and cached tiles can be reused. Note that the session token response includes an <code>expiry</code>, which
+is used to renew the session before it expires.</p>
+                
+            </td>
+        </tr>
+
+	
 	</tbody>
 </table></dl>
         
