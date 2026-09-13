@@ -129379,6 +129379,7 @@ var BytesCodec = class BytesCodec {
 			bytes = bytes.slice();
 			byteswapInplace(bytes, bytesPerElement(this.#TypedArray));
 		}
+		if (bytes.byteOffset % this.#BYTES_PER_ELEMENT !== 0) bytes = bytes.slice();
 		return {
 			data: new this.#TypedArray(bytes.buffer, bytes.byteOffset, bytes.byteLength / this.#BYTES_PER_ELEMENT),
 			shape: this.#shape,
