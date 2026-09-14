@@ -1,4 +1,4 @@
-import { $t as VectorTileLayer, Et as OGCVectorTile, Mn as Map, en as MVT, or as View } from "./common.js";
+import { $t as VectorTileLayer, Mn as Map, Tt as OGCVectorTile, en as MVT, or as View } from "./common.js";
 //#region examples/ogc-vector-tiles-geographic.js
 new Map({
 	target: "map",

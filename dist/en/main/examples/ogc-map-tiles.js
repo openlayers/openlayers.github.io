@@ -1,4 +1,4 @@
-import { Dt as OGCMapTile, Mn as Map, jn as TileLayer, or as View } from "./common.js";
+import { Et as OGCMapTile, Mn as Map, jn as TileLayer, or as View } from "./common.js";
 //#region examples/ogc-map-tiles.js
 new Map({
 	target: "map",

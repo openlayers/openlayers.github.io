@@ -1,4 +1,4 @@
-import { Mn as Map, Nt as Zoomify, jn as TileLayer, or as View } from "./common.js";
+import { Mn as Map, Mt as Zoomify, jn as TileLayer, or as View } from "./common.js";
 //#region examples/zoomify.js
 var imgWidth = 4e3;
 var imgHeight = 3e3;

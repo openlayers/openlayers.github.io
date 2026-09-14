@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>NDVI from a Sentinel 2 COG</title>
+    <title>NDVI from a COG with a raster source</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
@@ -60,7 +60,7 @@
         <a href="#" id="codepen-button" class="btn btn-link float-end">
           <i class="fab fa-codepen fa-lg"></i> Edit
         </a>
-        <h4 id="title">NDVI from a Sentinel 2 COG</h4>
+        <h4 id="title">NDVI from a COG with a raster source</h4>
         <p class="tags">
           <span class="badge-group">
             <a
@@ -82,8 +82,8 @@
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-pyramid.html&quot;&gt;GeoTIFF tile pyramid&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-overviews.html&quot;&gt;GeoTIFF with Overviews&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./multiple-cogs.html&quot;&gt;Multiple COG sources&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-math-raster.html&quot;&gt;NDVI from a COG with a raster source&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-math.html&quot;&gt;NDVI from a Sentinel 2 COG&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-math-raster.html&quot;&gt;NDVI from a COG with a raster source&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-math.html&quot;&gt;NDVI from a Sentinel 2 COG&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-colors.html&quot;&gt;NDVI with a Dynamic Color Ramp&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-math-multisource.html&quot;&gt;NDVI+NDWI from two 16-bit COGs&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./stac-item.html&quot;&gt;STAC support&lt;/a&gt;
@@ -100,13 +100,33 @@
               data-bs-target="#tag-example-list"
               data-title="ndvi"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-math-raster.html&quot;&gt;NDVI from a COG with a raster source&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-math.html&quot;&gt;NDVI from a Sentinel 2 COG&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-math-raster.html&quot;&gt;NDVI from a COG with a raster source&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-math.html&quot;&gt;NDVI from a Sentinel 2 COG&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-colors.html&quot;&gt;NDVI with a Dynamic Color Ramp&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./cog-math-multisource.html&quot;&gt;NDVI+NDWI from two 16-bit COGs&lt;/a&gt;
                 &lt;/ul&gt;"
               tabindex="0"
               >4</a>
+          </span>
+          <span class="badge-group">
+            <a
+              href="./index.html?q=raster" class="badge badge-info">raster</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="raster"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./contour-interpolation.html&quot;&gt;Interpolating Contours from a DEM&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./cog-math-raster.html&quot;&gt;NDVI from a COG with a raster source&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./pmtiles-image.html&quot;&gt;PMTiles Image Tiles&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./raster.html&quot;&gt;Raster Source&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./region-growing.html&quot;&gt;Region Growing&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./sea-level.html&quot;&gt;Sea Level&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./shaded-relief.html&quot;&gt;Shaded Relief&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >7</a>
           </span>
         </p>
         <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -123,7 +143,7 @@
           </div>
         </div>
         <div id="map" class="map"></div>
-<div>NDVI: <span id="output"></span></div>
+<div>NDVI at pointer: <span id="output">&nbsp;</span></div>
 
         <form method="POST" id="codepen-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
           <input id="codesandbox-params" type="hidden" name="parameters">
@@ -131,8 +151,8 @@
       </div>
 
       <div class="row-fluid">
-        <p id="shortdesc">Calculating NDVI and applying a custom color map.</p>
-        <div id="docs"><p>The GeoTIFF layer in this example draws from two Sentinel 2 sources: a red band and a near-infrared band. The layer style includes a <code>color</code> expression that calculates the Normalized Difference Vegetation Index (NDVI) from values in the two bands.  The <code>interpolate</code> expression is used to map NDVI values to colors. The <code>layer.getData()</code> method can be used to retrieve pixel values from the GeoTIFF.  Move your mouse or tap on the map to see calculated NDVI values based on the red and near-infrared pixel values.</p>
+        <p id="shortdesc">Running a pixel operation over multi-band data tiles.</p>
+        <div id="docs"><p>This example computes the Normalized Difference Vegetation Index (NDVI) from two Sentinel 2 bands using an <code>ol/source/Raster</code> operation.  The raster source takes a <code>GeoTIFF</code> data tile source as input, samples it at its native tile resolution, and runs a pixel operation that maps NDVI to a color ramp.  The map view is in Web Mercator, so the operation runs in the source&#39;s own projection and its result is reprojected to the view - the OSM base layer shows the alignment. Compare with the <a href="../cog-math.html">NDVI from a Sentinel 2 COG</a> example, which uses a WebGL layer style instead.  Move the pointer over the map to read the NDVI value from the source&#39;s <code>getData()</code> lookup.</p>
 </div>
       </div>
 
@@ -140,95 +160,152 @@
         <summary class="source-heading">main.js</summary>
         <div class="row-fluid">
           <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
-import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
+import ImageLayer from &#x27;ol/layer/Image.js&#x27;;
 import GeoTIFF from &#x27;ol/source/GeoTIFF.js&#x27;;
+import RasterSource from &#x27;ol/source/Raster.js&#x27;;
 
-const source &#x3D; new GeoTIFF({
+// &#x60;normalize: false&#x60; keeps the raw 16-bit reflectance as Float32Array data, so
+// the operation runs the NDVI math on the actual band values.
+const cog &#x3D; new GeoTIFF({
+  normalize: false,
   sources: [
     {
-      // visible red, band 1 in the style expression above
+      // visible red
       url: &#x27;https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/B04.tif&#x27;,
-      max: 10000,
     },
     {
-      // near infrared, band 2 in the style expression above
+      // near infrared
       url: &#x27;https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/B08.tif&#x27;,
-      max: 10000,
     },
   ],
 });
 
-const layer &#x3D; new TileLayer({
-  style: {
-    color: [
-      &#x27;interpolate&#x27;,
-      [&#x27;linear&#x27;],
-      // calculate NDVI, bands come from the sources below
-      [&#x27;/&#x27;, [&#x27;-&#x27;, [&#x27;band&#x27;, 2], [&#x27;band&#x27;, 1]], [&#x27;+&#x27;, [&#x27;band&#x27;, 2], [&#x27;band&#x27;, 1]]],
-      // color ramp for NDVI values, ranging from -1 to 1
-      -0.2,
-      [191, 191, 191],
-      -0.1,
-      [219, 219, 219],
-      0,
-      [255, 255, 224],
-      0.025,
-      [255, 250, 204],
-      0.05,
-      [237, 232, 181],
-      0.075,
-      [222, 217, 156],
-      0.1,
-      [204, 199, 130],
-      0.125,
-      [189, 184, 107],
-      0.15,
-      [176, 194, 97],
-      0.175,
-      [163, 204, 89],
-      0.2,
-      [145, 191, 82],
-      0.25,
-      [128, 179, 71],
-      0.3,
-      [112, 163, 64],
-      0.35,
-      [97, 150, 54],
-      0.4,
-      [79, 138, 46],
-      0.45,
-      [64, 125, 36],
-      0.5,
-      [48, 110, 28],
-      0.55,
-      [33, 97, 18],
-      0.6,
-      [15, 84, 10],
-      0.65,
-      [0, 69, 0],
-    ],
+// NDVI color ramp, handed to the operation in &quot;beforeoperations&quot;.
+const ndviStops &#x3D; [
+  -0.2,
+  [191, 191, 191],
+  -0.1,
+  [219, 219, 219],
+  0,
+  [255, 255, 224],
+  0.025,
+  [255, 250, 204],
+  0.05,
+  [237, 232, 181],
+  0.075,
+  [222, 217, 156],
+  0.1,
+  [204, 199, 130],
+  0.125,
+  [189, 184, 107],
+  0.15,
+  [176, 194, 97],
+  0.175,
+  [163, 204, 89],
+  0.2,
+  [145, 191, 82],
+  0.25,
+  [128, 179, 71],
+  0.3,
+  [112, 163, 64],
+  0.35,
+  [97, 150, 54],
+  0.4,
+  [79, 138, 46],
+  0.45,
+  [64, 125, 36],
+  0.5,
+  [48, 110, 28],
+  0.55,
+  [33, 97, 18],
+  0.6,
+  [15, 84, 10],
+  0.65,
+  [0, 69, 0],
+];
+
+/**
+ * Map a value to an &#x60;[r, g, b, a]&#x60; color using a ramp of &#x60;value, [r, g, b]&#x60;
+ * stops.  Provided to the operation with the &#x60;lib&#x60; option so it is available in
+ * the worker.
+ * @param {number} value The value to map.
+ * @param {Array&lt;number|Array&lt;number&gt;&gt;} stops Flat &#x60;value, color&#x60; ramp stops.
+ * @return {Array&lt;number&gt;} The &#x60;[r, g, b, a]&#x60; color.
+ */
+function colorFromRamp(value, stops) {
+  if (value &lt;&#x3D; stops[0]) {
+    const first &#x3D; stops[1];
+    return [first[0], first[1], first[2], 255];
+  }
+  for (let i &#x3D; 2; i &lt; stops.length; i +&#x3D; 2) {
+    if (value &lt;&#x3D; stops[i]) {
+      const lowValue &#x3D; stops[i - 2];
+      const lowColor &#x3D; stops[i - 1];
+      const highValue &#x3D; stops[i];
+      const highColor &#x3D; stops[i + 1];
+      const f &#x3D; (value - lowValue) / (highValue - lowValue);
+      return [
+        lowColor[0] + f * (highColor[0] - lowColor[0]),
+        lowColor[1] + f * (highColor[1] - lowColor[1]),
+        lowColor[2] + f * (highColor[2] - lowColor[2]),
+        255,
+      ];
+    }
+  }
+  const last &#x3D; stops[stops.length - 1];
+  return [last[0], last[1], last[2], 255];
+}
+
+/**
+ * Compute NDVI from the two input bands and map it through the color ramp.
+ * @param {Array&lt;Array&lt;number&gt;&gt;} pixels One pixel per input source; the first
+ *     (and only) input carries the red and near-infrared bands.
+ * @param {Object} data The object populated in the &quot;beforeoperations&quot; event.
+ * @return {Array&lt;number&gt;} An &#x60;[r, g, b, a]&#x60; pixel.
+ */
+function ndviToColor(pixels, data) {
+  const red &#x3D; pixels[0][0];
+  const nir &#x3D; pixels[0][1];
+  const sum &#x3D; nir + red;
+  if (!sum) {
+    // transparent outside the data
+    return [0, 0, 0, 0];
+  }
+  return colorFromRamp((nir - red) / sum, data.stops);
+}
+
+const raster &#x3D; new RasterSource({
+  sources: [cog],
+  operation: ndviToColor,
+  // Functions in the &#x60;lib&#x60; object are available to the operation in the worker.
+  lib: {
+    colorFromRamp: colorFromRamp,
   },
-  source: source,
+});
+
+raster.on(&#x27;beforeoperations&#x27;, (event) &#x3D;&gt; {
+  event.data.stops &#x3D; ndviStops;
 });
 
 const map &#x3D; new Map({
   target: &#x27;map&#x27;,
-  layers: [layer],
-  view: source.getView(),
+  layers: [new ImageLayer({source: raster})],
+  view: cog.getView(),
 });
 
+// getData() returns the input band values at a coordinate, so we can compute
+// and show the NDVI value the color above was derived from.
 const output &#x3D; document.getElementById(&#x27;output&#x27;);
-function displayPixelValue(event) {
-  const data &#x3D; layer.getData(event.pixel);
-  if (!data) {
+map.on([&#x27;pointermove&#x27;, &#x27;click&#x27;], function (event) {
+  const pixels &#x3D; raster.getData(event.coordinate);
+  if (!pixels) {
+    output.textContent &#x3D; &#x27; &#x27;;
     return;
   }
-  const red &#x3D; data[0];
-  const nir &#x3D; data[1];
-  const ndvi &#x3D; (nir - red) / (nir + red);
-  output.textContent &#x3D; ndvi.toFixed(2);
-}
-map.on([&#x27;pointermove&#x27;, &#x27;click&#x27;], displayPixelValue);
+  const [red, nir] &#x3D; pixels[0];
+  const sum &#x3D; nir + red;
+  output.textContent &#x3D; sum ? ((nir - red) / sum).toFixed(2) : &#x27; &#x27;;
+});
 </code></pre>
         </div>
       </details>
@@ -240,7 +317,7 @@ map.on([&#x27;pointermove&#x27;, &#x27;click&#x27;], displayPixelValue);
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;NDVI from a Sentinel 2 COG&lt;/title&gt;
+    &lt;title&gt;NDVI from a COG with a raster source&lt;/title&gt;
     &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
@@ -251,7 +328,7 @@ map.on([&#x27;pointermove&#x27;, &#x27;click&#x27;], displayPixelValue);
   &lt;/head&gt;
   &lt;body&gt;
     &lt;div id&#x3D;&quot;map&quot; class&#x3D;&quot;map&quot;&gt;&lt;/div&gt;
-    &lt;div&gt;NDVI: &lt;span id&#x3D;&quot;output&quot;&gt;&lt;/span&gt;&lt;/div&gt;
+    &lt;div&gt;NDVI at pointer: &lt;span id&#x3D;&quot;output&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/div&gt;
 
     &lt;script type="module" src="main.js"&gt;&lt;/script&gt;
   &lt;/body&gt;
@@ -264,7 +341,7 @@ map.on([&#x27;pointermove&#x27;, &#x27;click&#x27;], displayPixelValue);
         <summary class="source-heading">package.json</summary>
         <div class="row-fluid">
           <pre><code id="example-pkg-source" class="language-json">{
-  &quot;name&quot;: &quot;cog-math&quot;,
+  &quot;name&quot;: &quot;cog-math-raster&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;10.10.1-dev&quot;
   },
@@ -281,7 +358,7 @@ map.on([&#x27;pointermove&#x27;, &#x27;click&#x27;], displayPixelValue);
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="module" src="cog-math.js"></script>
+    <script type="module" src="cog-math-raster.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/toolbar/prism-toolbar.min.js"></script>

@@ -1,4 +1,4 @@
-import { Bt as register, Cr as fromLonLat, It as proj4, Mn as Map, Ot as ImageWMS, U as ScaleLine, jr as Projection, or as View, rr as defaults, un as ImageLayer } from "./common.js";
+import { Bt as register, Cr as fromLonLat, Dt as ImageWMS, Ft as proj4, Mn as Map, U as ScaleLine, jr as Projection, or as View, rr as defaults, un as ImageLayer } from "./common.js";
 //#region examples/wms-image-custom-proj.js
 proj4.defs("EPSG:21781", "+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel +towgs84=660.077,13.551,369.344,2.484,1.783,2.939,5.66 +units=m +no_defs");
 register(proj4);

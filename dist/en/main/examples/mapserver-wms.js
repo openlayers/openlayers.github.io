@@ -1,4 +1,4 @@
-import { Mn as Map, kt as createLoader, ln as ImageSource, or as View, un as ImageLayer } from "./common.js";
+import { Mn as Map, Ot as createLoader, ln as ImageSource, or as View, un as ImageLayer } from "./common.js";
 //#region examples/mapserver-wms.js
 new Map({
 	layers: [new ImageLayer({ source: new ImageSource({ loader: createLoader({

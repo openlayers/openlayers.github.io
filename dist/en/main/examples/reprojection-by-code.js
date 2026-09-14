@@ -1,4 +1,4 @@
-import { Br as applyTransform, Bt as register, Cn as OSM, Er as getTransform, Fn as Stroke, It as proj4, Mn as Map, Qt as TileDebug, jn as TileLayer, or as View, ot as Graticule, wr as get } from "./common.js";
+import { Br as applyTransform, Bt as register, Cn as OSM, Er as getTransform, Fn as Stroke, Ft as proj4, Mn as Map, Qt as TileDebug, jn as TileLayer, or as View, ot as Graticule, wr as get } from "./common.js";
 //#region examples/reprojection-by-code.js
 var key = "get_your_own_D6rA4zTHduk6KOKTXzGB";
 var osmSource = new OSM();

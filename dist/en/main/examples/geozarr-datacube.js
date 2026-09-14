@@ -1,4 +1,4 @@
-import { Bt as register, Cn as OSM, Ht as WebGLTileLayer, It as proj4, Mn as Map, N as GeoZarr, cr as withExtentCenter, lr as withHigherResolutions, sr as getView, ur as withLowerResolutions } from "./common.js";
+import { Bt as register, Cn as OSM, Ft as proj4, Ht as WebGLTileLayer, Mn as Map, N as GeoZarr, cr as withExtentCenter, lr as withHigherResolutions, sr as getView, ur as withLowerResolutions } from "./common.js";
 //#region examples/geozarr-datacube.js
 register(proj4);
 function ramp(min, max, colors) {

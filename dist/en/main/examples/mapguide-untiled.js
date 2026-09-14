@@ -1,4 +1,4 @@
-import { Mn as Map, jt as ImageMapGuide, or as View, un as ImageLayer } from "./common.js";
+import { At as ImageMapGuide, Mn as Map, or as View, un as ImageLayer } from "./common.js";
 //#region examples/mapguide-untiled.js
 new Map({
 	layers: [new ImageLayer({

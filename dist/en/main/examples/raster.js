@@ -1,4 +1,4 @@
-import { Mn as Map, Tt as RasterSource, an as ImageTileSource, ft as select_default, gt as max, jn as TileLayer, or as View, un as ImageLayer, y as linear } from "./common.js";
+import { It as RasterSource, Mn as Map, an as ImageTileSource, ft as select_default, gt as max, jn as TileLayer, or as View, un as ImageLayer, y as linear } from "./common.js";
 //#region examples/raster.js
 var minVgi = 0;
 var maxVgi = .5;

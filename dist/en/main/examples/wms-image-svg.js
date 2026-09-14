@@ -1,4 +1,4 @@
-import { Bn as load, Cn as OSM, Mn as Map, jn as TileLayer, kt as createLoader, ln as ImageSource, or as View, un as ImageLayer } from "./common.js";
+import { Bn as load, Cn as OSM, Mn as Map, Ot as createLoader, jn as TileLayer, ln as ImageSource, or as View, un as ImageLayer } from "./common.js";
 //#region examples/wms-image-svg.js
 new Map({
 	layers: [new TileLayer({ source: new OSM() }), new ImageLayer({

@@ -1,4 +1,4 @@
-import { Cn as OSM, Mn as Map, Tt as RasterSource, an as ImageTileSource, jn as TileLayer, or as View, un as ImageLayer } from "./common.js";
+import { Cn as OSM, It as RasterSource, Mn as Map, an as ImageTileSource, jn as TileLayer, or as View, un as ImageLayer } from "./common.js";
 //#region examples/shaded-relief.js
 /**
 * Generates a shaded relief image given elevation data.  Uses a 3x3

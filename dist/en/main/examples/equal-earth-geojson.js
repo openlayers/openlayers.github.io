@@ -1,4 +1,4 @@
-import { Bt as register, Cr as fromLonLat, Dr as toLonLat, It as proj4, Mn as Map, bn as VectorLayer, dn as VectorSource, fn as RenderFeature, or as View, rn as GeoJSON, wr as get } from "./common.js";
+import { Bt as register, Cr as fromLonLat, Dr as toLonLat, Ft as proj4, Mn as Map, bn as VectorLayer, dn as VectorSource, fn as RenderFeature, or as View, rn as GeoJSON, wr as get } from "./common.js";
 //#region examples/equal-earth-geojson.js
 function dynEqualEarth(center, round = 15) {
 	const lon0 = Math.round(center[0] / round) * round;

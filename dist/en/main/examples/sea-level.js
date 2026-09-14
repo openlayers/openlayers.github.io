@@ -1,4 +1,4 @@
-import { Cr as fromLonLat, Mn as Map, Tt as RasterSource, an as ImageTileSource, jn as TileLayer, or as View, un as ImageLayer } from "./common.js";
+import { Cr as fromLonLat, It as RasterSource, Mn as Map, an as ImageTileSource, jn as TileLayer, or as View, un as ImageLayer } from "./common.js";
 //#region examples/sea-level.js
 function flood(pixels, data) {
 	const pixel = pixels[0];
@@ -35,6 +35,17 @@ var map = new Map({
 		center: fromLonLat([-122.3267, 37.8377]),
 		zoom: 11
 	})
+});
+var elevationOutput = document.getElementById("elevation");
+map.on(["pointermove", "click"], function(event) {
+	const pixels = raster.getData(event.coordinate);
+	const pixel = pixels && pixels[0];
+	if (!pixel || !pixel[3]) {
+		elevationOutput.innerText = " ";
+		return;
+	}
+	const height = -1e4 + (pixel[0] * 256 * 256 + pixel[1] * 256 + pixel[2]) * .1;
+	elevationOutput.innerText = Math.round(height) + " m";
 });
 var control = document.getElementById("level");
 var output = document.getElementById("output");

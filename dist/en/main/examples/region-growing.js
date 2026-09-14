@@ -1,4 +1,4 @@
-import { Cr as fromLonLat, Mn as Map, Tt as RasterSource, an as ImageTileSource, jn as TileLayer, or as View, un as ImageLayer } from "./common.js";
+import { Cr as fromLonLat, It as RasterSource, Mn as Map, an as ImageTileSource, jn as TileLayer, or as View, un as ImageLayer } from "./common.js";
 //#region examples/region-growing.js
 function growRegion(inputs, data) {
 	const image = inputs[0];

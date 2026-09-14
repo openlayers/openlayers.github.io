@@ -1,4 +1,4 @@
-import { Mn as Map, Tt as RasterSource, or as View, un as ImageLayer, yn as StadiaMaps } from "./common.js";
+import { It as RasterSource, Mn as Map, or as View, un as ImageLayer, yn as StadiaMaps } from "./common.js";
 //#region examples/color-manipulation.js
 /**
 * Color manipulation functions below are adapted from

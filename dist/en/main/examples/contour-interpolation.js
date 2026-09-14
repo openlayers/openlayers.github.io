@@ -1,4 +1,4 @@
-import { Cn as OSM, Cr as fromLonLat, Dr as toLonLat, Ht as WebGLTileLayer, Mn as Map, Tt as RasterSource, on as DataTileSource, or as View, un as ImageLayer, vt as MousePosition, zr as toStringHDMS } from "./common.js";
+import { Cn as OSM, Cr as fromLonLat, Dr as toLonLat, Ht as WebGLTileLayer, It as RasterSource, Mn as Map, on as DataTileSource, or as View, un as ImageLayer, vt as MousePosition, zr as toStringHDMS } from "./common.js";
 //#region examples/contour-interpolation.js
 var attribution = "<a href=\"https://github.com/tilezen/joerd/blob/master/docs/attribution.md\" target=\"_blank\">Data sources and attribution</a>";
 var calculateElevation = function(pixel) {

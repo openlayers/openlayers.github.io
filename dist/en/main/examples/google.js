@@ -1,4 +1,4 @@
-import { Ft as Google, Ht as WebGLTileLayer, Mn as Map, ar as Control, or as View, rr as defaults } from "./common.js";
+import { Ht as WebGLTileLayer, Mn as Map, Pt as Google, ar as Control, or as View, rr as defaults } from "./common.js";
 //#region examples/google.js
 function showMap(key) {
 	const source = new Google({

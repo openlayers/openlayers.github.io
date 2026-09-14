@@ -77,6 +77,7 @@
             <li data-name="get"><a href="module-ol_source_Raster-RasterSource.html#get">get</a>
             <li data-name="getattributions"><a href="module-ol_source_Raster-RasterSource.html#getAttributions">getAttributions</a>
             <li data-name="getattributionscollapsible"><a href="module-ol_source_Raster-RasterSource.html#getAttributionsCollapsible">getAttributionsCollapsible</a>
+            <li data-name="getdata"><a href="module-ol_source_Raster-RasterSource.html#getData">getData</a>
             <li data-name="getkeys"><a href="module-ol_source_Raster-RasterSource.html#getKeys">getKeys</a>
             <li data-name="getprojection"><a href="module-ol_source_Raster-RasterSource.html#getProjection">getProjection</a>
             <li data-name="getproperties"><a href="module-ol_source_Raster-RasterSource.html#getProperties">getProperties</a>
@@ -167,7 +168,7 @@ output pixel values.</p></div>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js">source/Raster.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js#L533">line 533</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js#L634">line 634</a>
         </div>
         
     </div>
@@ -225,7 +226,17 @@ output pixel values.</p></div>
             <td  class="description last">
                 
                 <p>Input
-sources or layers.</p></td>
+sources or layers.  Most sources and layers are rendered to an image and read back as RGBA
+pixels.  A <a href="module-ol_source_DataTile-DataTileSource.html"><code>DataTileSource</code></a> (such as a
+<a href="module-ol_source_GeoTIFF-GeoTIFFSource.html"><code>GeoTIFFSource</code></a>) provided directly as a source preserves the data
+type and precision of the tiles (e.g. <code>Float32Array</code> values are passed to the operation unchanged
+rather than clamped to bytes), and the operation receives all of the source's bands per pixel.
+To render a data tile source through a layer instead (for example a
+<a href="module-ol_layer_WebGLTile-WebGLTileLayer.html"><code>WebGLTileLayer</code></a> that styles it to RGBA), pass the layer rather
+than the source.  For data tile inputs, there are some limitations: only <code>'pixel'</code> operations are
+supported (an <code>'image'</code> operation requires image inputs); resampling to the view resolution uses
+nearest neighbor regardless of the <code>interpolate</code> option; the tile data must match the tile grid
+pixel for pixel, so sources with a gutter are not supported.</p></td>
         </tr>
 
 	
@@ -817,7 +828,7 @@ Object with a <code>type</code> property.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js">source/Raster.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js#L950">line 950</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js#L1171">line 1171</a>
         </div>
         
     </div>
@@ -1191,6 +1202,146 @@ Attribution function.
 
 <h5>Returns:</h5>
 Attributions are collapsible.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
+        <div class="anchor" id="getData">
+        </div>
+        <h4 class="name">
+            getData<span class="signature">(coordinate)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{Array.&lt;(Array.&lt;number>|Uint8ClampedArray|Uint8Array|Float32Array)> | null}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js">source/Raster.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js#L973">line 973</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the input source values at a coordinate, as the operation receives them:
+one array of values per input source, in source order.  Data tile inputs yield
+their native band values (in the tiles' array type); other inputs yield the
+<code>[r, g, b, a]</code> values read back from their layer renderer.  Returns <code>null</code> if
+the source has not been rendered at least once, or if an input is not yet available.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>coordinate</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>The coordinate, in
+    the view projection.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+The values per input source.
 <br />
 
     
@@ -2404,7 +2555,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js">source/Raster.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js#L688">line 688</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js#L802">line 802</a>
         </div>
         
     </div>

@@ -1,4 +1,4 @@
-import { At as Static, Gr as getCenter, Mn as Map, jr as Projection, or as View, un as ImageLayer } from "./common.js";
+import { Gr as getCenter, Mn as Map, jr as Projection, kt as Static, or as View, un as ImageLayer } from "./common.js";
 //#region examples/static-image.js
 var extent = [
 	0,

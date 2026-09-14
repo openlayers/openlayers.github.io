@@ -1,4 +1,4 @@
-import { Cr as fromLonLat, Dt as OGCMapTile, In as Icon, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+import { Cr as fromLonLat, Et as OGCMapTile, In as Icon, Mn as Map, Pn as Style, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
 //#region examples/icon-color.js
 var rome = new Feature({ geometry: new Point(fromLonLat([12.5, 41.9])) });
 var london = new Feature({ geometry: new Point(fromLonLat([-.12755, 51.507222])) });

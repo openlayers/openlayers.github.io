@@ -125,6 +125,23 @@ declare class CanvasTileLayerRenderer<LayerType extends import("../../layer/Tile
      */
     override getData(pixel: import("../../pixel.js").Pixel): Uint8ClampedArray | null;
     /**
+     * Read tile data over the frame extent, resampled with nearest-neighbor
+     * sampling onto the frame's output grid, keeping the tiles' own array type so
+     * floating point precision is preserved.  This is used by
+     * {@link module:ol/source/Raster~RasterSource} to run operations on native
+     * band values.  Returns `null` until every covering tile is loaded.  Sources
+     * with a gutter are not supported.
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @return {{data: Uint8Array|Uint8ClampedArray|Int8Array|Uint16Array|Int16Array|Uint32Array|Int32Array|Float32Array|Float64Array, width: number, height: number, bandCount: number}|null}
+     *     The resampled data, or `null` if not all covering tiles are loaded yet.
+     */
+    readData(frameState: import("../../Map.js").FrameState): {
+        data: Uint8Array | Uint8ClampedArray | Int8Array | Uint16Array | Int16Array | Uint32Array | Int32Array | Float32Array | Float64Array;
+        width: number;
+        height: number;
+        bandCount: number;
+    } | null;
+    /**
      * Determine whether tiles for next extent should be enqueued for rendering.
      * @return {boolean} Rendering tiles for next extent is supported.
      * @protected

@@ -1,4 +1,4 @@
-import { Cn as OSM, Mn as Map, Ot as ImageWMS, jn as TileLayer, or as View, un as ImageLayer } from "./common.js";
+import { Cn as OSM, Dt as ImageWMS, Mn as Map, jn as TileLayer, or as View, un as ImageLayer } from "./common.js";
 //#region examples/wms-getlegendgraphic.js
 var wmsSource = new ImageWMS({
 	url: "https://ahocevar.com/geoserver/wms",

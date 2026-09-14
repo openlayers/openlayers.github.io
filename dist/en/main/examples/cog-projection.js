@@ -1,4 +1,4 @@
-import { Bt as register, Ht as WebGLTileLayer, It as proj4, Mn as Map, Rt as GeoTIFFSource, wn as XYZ } from "./common.js";
+import { Bt as register, Ft as proj4, Ht as WebGLTileLayer, Mn as Map, Rt as GeoTIFFSource, wn as XYZ } from "./common.js";
 //#region examples/cog-projection.js
 var attributions = "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>";
 register(proj4);

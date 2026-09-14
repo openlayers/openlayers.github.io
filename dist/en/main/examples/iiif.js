@@ -1,4 +1,4 @@
-import { Mn as Map, Mt as IIIF, Pt as IIIFInfo, jn as TileLayer, or as View } from "./common.js";
+import { Mn as Map, Nt as IIIFInfo, jn as TileLayer, jt as IIIF, or as View } from "./common.js";
 //#region examples/iiif.js
 var layer = new TileLayer();
 var map = new Map({

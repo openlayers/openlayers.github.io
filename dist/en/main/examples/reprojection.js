@@ -1,4 +1,4 @@
-import { An as TileGrid, Bt as register, Cn as OSM, Ct as TileWMS, Dn as createXYZ, Gr as getCenter, Ht as WebGLTileLayer, It as proj4, Mn as Map, Tn as TileImage, Yr as getWidth, b as WMTSCapabilities, bt as WMTS, kr as transformExtent, or as View, wr as get, xt as optionsFromCapabilities } from "./common.js";
+import { An as TileGrid, Bt as register, Cn as OSM, Ct as TileWMS, Dn as createXYZ, Ft as proj4, Gr as getCenter, Ht as WebGLTileLayer, Mn as Map, Tn as TileImage, Yr as getWidth, b as WMTSCapabilities, bt as WMTS, kr as transformExtent, or as View, wr as get, xt as optionsFromCapabilities } from "./common.js";
 //#region examples/reprojection.js
 proj4.defs("EPSG:27700", "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs");
 proj4.defs("EPSG:23032", "+proj=utm +zone=32 +ellps=intl +towgs84=-87,-98,-121,0,0,0,0 +units=m +no_defs");

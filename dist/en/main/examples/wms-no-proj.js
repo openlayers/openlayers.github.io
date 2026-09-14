@@ -1,4 +1,4 @@
-import { Ct as TileWMS, Mn as Map, Ot as ImageWMS, U as ScaleLine, jn as TileLayer, jr as Projection, or as View, rr as defaults, un as ImageLayer } from "./common.js";
+import { Ct as TileWMS, Dt as ImageWMS, Mn as Map, U as ScaleLine, jn as TileLayer, jr as Projection, or as View, rr as defaults, un as ImageLayer } from "./common.js";
 //#region examples/wms-no-proj.js
 var layers = [new TileLayer({ source: new TileWMS({
 	attributions: "© <a href=\"https://shop.swisstopo.admin.ch/en/products/maps/national/lk1000\"target=\"_blank\">Pixelmap 1:1000000 / geo.admin.ch</a>",

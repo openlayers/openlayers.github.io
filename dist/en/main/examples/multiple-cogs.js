@@ -1,4 +1,4 @@
-import { Bt as register, Gr as getCenter, Hr as createEmpty, Ht as WebGLTileLayer, It as proj4, Mn as Map, Rt as GeoTIFFSource, Ur as extend, kr as transformExtent } from "./common.js";
+import { Bt as register, Ft as proj4, Gr as getCenter, Hr as createEmpty, Ht as WebGLTileLayer, Mn as Map, Rt as GeoTIFFSource, Ur as extend, kr as transformExtent } from "./common.js";
 //#region examples/multiple-cogs.js
 proj4.defs("EPSG:32631", "+proj=utm +zone=31 +datum=WGS84 +units=m +no_defs");
 proj4.defs("EPSG:32632", "+proj=utm +zone=32 +datum=WGS84 +units=m +no_defs");

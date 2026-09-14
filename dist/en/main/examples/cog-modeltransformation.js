@@ -1,4 +1,4 @@
-import { Bt as register, Cn as OSM, Ht as WebGLTileLayer, It as proj4, Mn as Map, Qt as TileDebug, Rt as GeoTIFFSource, kr as transformExtent, or as View, zt as fromProjectionCode } from "./common.js";
+import { Bt as register, Cn as OSM, Ft as proj4, Ht as WebGLTileLayer, Mn as Map, Qt as TileDebug, Rt as GeoTIFFSource, kr as transformExtent, or as View, zt as fromProjectionCode } from "./common.js";
 //#region examples/cog-modeltransformation.js
 register(proj4);
 var cogSource = new GeoTIFFSource({ sources: [{ url: "https://umbra-open-data-catalog.s3.amazonaws.com/sar-data/tasks/Tanna%20Island,%20Vanuatu/9c76a918-9247-42bf-b9f6-3b4f672bc148/2023-02-12-21-33-56_UMBRA-04/2023-02-12-21-33-56_UMBRA-04_GEC.tif" }] });

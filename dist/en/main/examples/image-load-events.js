@@ -1,4 +1,4 @@
-import { Mn as Map, Ot as ImageWMS, or as View, un as ImageLayer } from "./common.js";
+import { Dt as ImageWMS, Mn as Map, or as View, un as ImageLayer } from "./common.js";
 //#region examples/image-load-events.js
 /**
 * Renders a progress bar.

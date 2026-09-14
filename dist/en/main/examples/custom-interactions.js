@@ -1,4 +1,4 @@
-import { Dt as OGCMapTile, Jn as PointerInteraction, Mn as Map, Wn as defaults, bn as VectorLayer, dn as VectorSource, fr as Polygon, gn as LineString, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+import { Et as OGCMapTile, Jn as PointerInteraction, Mn as Map, Wn as defaults, bn as VectorLayer, dn as VectorSource, fr as Polygon, gn as LineString, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
 //#region examples/custom-interactions.js
 var Drag = class extends PointerInteraction {
 	constructor() {

@@ -72,6 +72,7 @@
         <span class="subtitle">Typedefs</span>
         <ul>
             <li data-name="fauxmessageevent"><a href="module-ol_source_Raster.html#~FauxMessageEvent">FauxMessageEvent</a>
+            <li data-name="input"><a href="module-ol_source_Raster.html#~Input">Input</a>
             <li data-name="job"><a href="module-ol_source_Raster.html#~Job">Job</a>
             <li data-name="jobcallback"><a href="module-ol_source_Raster.html#~JobCallback">JobCallback</a>
             <li data-name="miniondata"><a href="module-ol_source_Raster.html#~MinionData">MinionData</a>
@@ -80,6 +81,7 @@
             <li data-name="processoroptions"><a href="module-ol_source_Raster.html#~ProcessorOptions">ProcessorOptions</a>
             <li data-name="rasteroperationtype"><a href="module-ol_source_Raster.html#~RasterOperationType">RasterOperationType</a>
             <li data-name="rastersourceeventtypes"><a href="module-ol_source_Raster.html#~RasterSourceEventTypes">RasterSourceEventTypes</a>
+            <li data-name="typedarray"><a href="module-ol_source_Raster.html#~TypedArray">TypedArray</a>
         </ul>
     </div>
               <li class="loading">Loading …
@@ -280,6 +282,168 @@
                 
 <dt class="">
     <div class="nameContainer">
+        <div class="anchor" id="~Input">
+        </div>
+        <h4 class="name">
+            Input<span class="type-signature type object">{Object}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_source_Raster.html#~TypedArray">TypedArray</a></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Interleaved band data.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Width in pixels.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Height in pixels.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>bandCount</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Number of bands per pixel.</p>
+                
+            </td>
+        </tr>
+
+	
+	</tbody>
+</table></dl>
+        
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
         <div class="anchor" id="~Job">
         </div>
         <h4 class="name">
@@ -348,7 +512,7 @@
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;ImageData></span>
+<span class="param-type">Array&lt;<a href="module-ol_source_Raster.html#~Input">Input</a>></span>
 
 
                 
@@ -356,7 +520,8 @@
             </td>
 
             <td class="description last">
-                <p>Array of input data.</p>
+                <p>Array of input data, normalized by
+    <code>toInput</code> so every input carries a band count.</p>
                 
             </td>
         </tr>
@@ -431,7 +596,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js">source/Raster.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js#L148">line 148</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js#L206">line 206</a>
         </div>
         
     </div>
@@ -646,6 +811,52 @@
         </tr>
 
 	
+
+        <tr>
+            
+                <td class="name"><code>bandCounts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The number of bands in each input.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>dtypes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>The typed array constructor name of each input.</p>
+                
+            </td>
+        </tr>
+
+	
 	</tbody>
 </table></dl>
         
@@ -692,7 +903,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js">source/Raster.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js#L398">line 398</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/source/Raster.js#L486">line 486</a>
         </div>
         
     </div>
@@ -708,8 +919,11 @@
         <p>A function that takes an array of input data, performs some operation, and
 returns an array of output data.
 For <code>pixel</code> type operations, the function will be called with an array of
-pixels, where each pixel is an array of four numbers (<code>[r, g, b, a]</code>) in the
-range of 0 - 255. It should return a single pixel array.
+pixels, one per input source, and should return a single pixel as an array of
+four numbers (<code>[r, g, b, a]</code>) in the range of 0 - 255.  For sources rendered
+as images, each input pixel is an <code>[r, g, b, a]</code> array; for data tile sources
+(see <code>sources</code>), each input pixel is an array of that source's band values in
+their native type (e.g. floating point).
 For <code>'image'</code> type operations, functions will be called with an array of
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData">ImageData</a>
 and should return a single
@@ -826,7 +1040,17 @@ data object is accessible from raster events, where it can be initialized in
 
             <td class="description last">
                 <p>Input
-sources or layers.</p>
+sources or layers.  Most sources and layers are rendered to an image and read back as RGBA
+pixels.  A <a href="module-ol_source_DataTile-DataTileSource.html"><code>DataTileSource</code></a> (such as a
+<a href="module-ol_source_GeoTIFF-GeoTIFFSource.html"><code>GeoTIFFSource</code></a>) provided directly as a source preserves the data
+type and precision of the tiles (e.g. <code>Float32Array</code> values are passed to the operation unchanged
+rather than clamped to bytes), and the operation receives all of the source's bands per pixel.
+To render a data tile source through a layer instead (for example a
+<a href="module-ol_layer_WebGLTile-WebGLTileLayer.html"><code>WebGLTileLayer</code></a> that styles it to RGBA), pass the layer rather
+than the source.  For data tile inputs, there are some limitations: only <code>'pixel'</code> operations are
+supported (an <code>'image'</code> operation requires image inputs); resampling to the view resolution uses
+nearest neighbor regardless of the <code>interpolate</code> option; the tile data must match the tile grid
+pixel for pixel, so sources with a gutter are not supported.</p>
                 
             </td>
         </tr>
@@ -1272,6 +1496,59 @@ specified will be used, if any. Set to <code>null</code> to use any view resolut
     
 </dt>
 <dd class="">
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
+        <div class="anchor" id="~TypedArray">
+        </div>
+        <h4 class="name">
+            TypedArray<span class="type-signature type uint8array">{Uint8Array}</span> <span class="type-signature type uint8clampedarray">{Uint8ClampedArray}</span> <span class="type-signature type int8array">{Int8Array}</span> <span class="type-signature type uint16array">{Uint16Array}</span> <span class="type-signature type int16array">{Int16Array}</span> <span class="type-signature type uint32array">{Uint32Array}</span> <span class="type-signature type int32array">{Int32Array}</span> <span class="type-signature type float32array">{Float32Array}</span> <span class="type-signature type float64array">{Float64Array}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>A single input to an operation.  All inputs for a job share the same width
+and height (the output pixel dimensions); they may differ in band count and
+array type.  For image inputs, the data is <code>Uint8ClampedArray</code> RGBA (four
+bands); for data tile inputs, the data is the native interleaved array.</p>
+    </div>
     
 
     

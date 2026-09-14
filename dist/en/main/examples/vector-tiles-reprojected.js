@@ -1,4 +1,4 @@
-import { $t as VectorTileLayer, Bt as register, Cr as fromLonLat, Dn as createXYZ, It as proj4, Mn as Map, Zt as VectorTile, it as applyStyle, or as View, rt as applyBackground } from "./common.js";
+import { $t as VectorTileLayer, Bt as register, Cr as fromLonLat, Dn as createXYZ, Ft as proj4, Mn as Map, Zt as VectorTile, it as applyStyle, or as View, rt as applyBackground } from "./common.js";
 //#region examples/vector-tiles-reprojected.js
 proj4.defs("ESRI:102017", "+proj=laea +lat_0=90 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs +type=crs");
 register(proj4);

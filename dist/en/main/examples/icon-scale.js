@@ -1,4 +1,4 @@
-import { Dt as OGCMapTile, Fn as Stroke, In as Icon, Ln as Fill, Mn as Map, Nn as Text, Pn as Style, Rn as CircleStyle, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+import { Et as OGCMapTile, Fn as Stroke, In as Icon, Ln as Fill, Mn as Map, Nn as Text, Pn as Style, Rn as CircleStyle, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
 //#region examples/icon-scale.js
 var iconFeature = new Feature({ geometry: new Point([0, 0]) });
 var iconStyle = new Style({

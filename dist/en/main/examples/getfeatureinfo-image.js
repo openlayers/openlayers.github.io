@@ -1,4 +1,4 @@
-import { Mn as Map, Ot as ImageWMS, or as View, un as ImageLayer } from "./common.js";
+import { Dt as ImageWMS, Mn as Map, or as View, un as ImageLayer } from "./common.js";
 //#region examples/getfeatureinfo-image.js
 var wmsSource = new ImageWMS({
 	url: "https://ahocevar.com/geoserver/wms",

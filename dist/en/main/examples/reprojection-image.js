@@ -1,4 +1,4 @@
-import { At as Static, Bt as register, Cn as OSM, Gr as getCenter, It as proj4, Mn as Map, Or as transform, jn as TileLayer, or as View, un as ImageLayer } from "./common.js";
+import { Bt as register, Cn as OSM, Ft as proj4, Gr as getCenter, Mn as Map, Or as transform, jn as TileLayer, kt as Static, or as View, un as ImageLayer } from "./common.js";
 //#region examples/reprojection-image.js
 proj4.defs("EPSG:27700", "+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs");
 register(proj4);

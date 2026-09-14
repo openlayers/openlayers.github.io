@@ -1,4 +1,4 @@
-import { Dt as OGCMapTile, In as Icon, Mn as Map, Pn as Style, at as Overlay, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
+import { Et as OGCMapTile, In as Icon, Mn as Map, Pn as Style, at as Overlay, bn as VectorLayer, dn as VectorSource, hr as Point, jn as TileLayer, or as View, xn as Feature } from "./common.js";
 //#region examples/icon.js
 var iconFeature = new Feature({
 	geometry: new Point([0, 0]),
