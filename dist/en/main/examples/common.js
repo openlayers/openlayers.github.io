@@ -26314,7 +26314,7 @@ var TileGrid = class {
 		const tileCoordZ = tileCoord[0];
 		const tileCoordX = tileCoord[1];
 		const tileCoordY = tileCoord[2];
-		if (z === tileCoordZ) return createOrUpdate$1(tileCoordX, tileCoordY, tileCoordX, tileCoordY, tempTileRange);
+		if (z === tileCoordZ) return createOrUpdate$1(tileCoordX, tileCoordX, tileCoordY, tileCoordY, tempTileRange);
 		if (this.zoomFactor_) {
 			const factor = Math.pow(this.zoomFactor_, z - tileCoordZ);
 			const minX = Math.floor(tileCoordX * factor);
