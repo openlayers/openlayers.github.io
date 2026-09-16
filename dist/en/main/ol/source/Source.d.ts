@@ -113,6 +113,11 @@ declare class Source extends BaseObject<{
      */
     loading: boolean | number;
     /**
+     * Rotation can be requested from the source.
+     * @type {boolean}
+     */
+    canRotate: boolean;
+    /**
      * @private
      * @type {import("./Source.js").State}
      */

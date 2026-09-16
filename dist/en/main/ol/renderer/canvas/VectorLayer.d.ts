@@ -1,4 +1,14 @@
 export default CanvasVectorLayerRenderer;
+export type VectorLayerRendererOptions = {
+    /**
+     * If possible, request viewport rotated content from the source.
+     */
+    wantRotation?: boolean | undefined;
+};
+/**
+ * @typedef {Object} VectorLayerRendererOptions
+ * @property {boolean} [wantRotation] If possible, request viewport rotated content from the source.
+ */
 /**
  * @classdesc
  * Canvas renderer for vector layers.
@@ -8,8 +18,9 @@ export default CanvasVectorLayerRenderer;
 declare class CanvasVectorLayerRenderer extends CanvasLayerRenderer<import("../../layer/Vector.js").default<import("../../source.js").Vector<any>, any>> {
     /**
      * @param {import("../../layer/Vector.js").default} vectorLayer Vector layer.
+     * @param {VectorLayerRendererOptions} [options] Options.
      */
-    constructor(vectorLayer: import("../../layer/Vector.js").default);
+    constructor(vectorLayer: import("../../layer/Vector.js").default, options?: VectorLayerRendererOptions);
     /** @private */
     private boundHandleStyleImageChange_;
     /**

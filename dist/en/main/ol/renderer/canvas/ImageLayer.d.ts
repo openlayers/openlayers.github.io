@@ -21,6 +21,12 @@ declare class CanvasImageLayerRenderer extends CanvasLayerRenderer<import("../..
      */
     private renderedSourceRevision_;
     /**
+     * Rotation baked into the current image.
+     * @protected
+     * @type {number}
+     */
+    protected renderedRotation: number;
+    /**
      * @return {import('../../DataTile.js').ImageLike|null} Image.
      */
     getImage(): import("../../DataTile.js").ImageLike | null;

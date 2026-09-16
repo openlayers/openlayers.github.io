@@ -10,6 +10,12 @@ export default CanvasLayerRenderer;
  */
 declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js").default> extends LayerRenderer<LayerType> {
     /**
+     * If possible, request viewport rotated content from the source.
+     * @protected
+     * @type {boolean}
+     */
+    protected wantRotation: boolean;
+    /**
      * HTMLElement container for the layer to be rendered in.
      * @protected
      * @type {HTMLElement|null}
@@ -145,6 +151,11 @@ declare class CanvasLayerRenderer<LayerType extends import("../../layer/Layer.js
      * @return {!import("../../transform.js").Transform} Transform.
      */
     protected getRenderTransform(center: import("../../coordinate.js").Coordinate, resolution: number, rotation: number, pixelRatio: number, width: number, height: number, offsetX: number): import("../../transform.js").Transform;
+    /**
+     * @protected
+     * @return {boolean} Request rotation from the source.
+     */
+    protected sourceRotates(): boolean;
 }
 import LayerRenderer from '../Layer.js';
 //# sourceMappingURL=Layer.d.ts.map

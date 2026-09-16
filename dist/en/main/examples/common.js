@@ -24769,6 +24769,12 @@ var CanvasLayerRenderer = class extends LayerRenderer {
 	constructor(layer) {
 		super(layer);
 		/**
+		* If possible, request viewport rotated content from the source.
+		* @protected
+		* @type {boolean}
+		*/
+		this.wantRotation = false;
+		/**
 		* HTMLElement container for the layer to be rendered in.
 		* @protected
 		* @type {HTMLElement|null}
@@ -24943,10 +24949,11 @@ var CanvasLayerRenderer = class extends LayerRenderer {
 	prepareContainer(frameState, target) {
 		const extent = frameState.extent;
 		const resolution = frameState.viewState.resolution;
-		const rotation = frameState.viewState.rotation;
+		const sourceRotates = this.sourceRotates();
+		const rotation = sourceRotates ? 0 : frameState.viewState.rotation;
 		const pixelRatio = frameState.pixelRatio;
-		const width = Math.round(getWidth(extent) / resolution * pixelRatio);
-		const height = Math.round(getHeight(extent) / resolution * pixelRatio);
+		const width = sourceRotates ? Math.round(frameState.size[0] * pixelRatio) : Math.round(getWidth(extent) / resolution * pixelRatio);
+		const height = sourceRotates ? Math.round(frameState.size[1] * pixelRatio) : Math.round(getHeight(extent) / resolution * pixelRatio);
 		compose(this.pixelTransform, frameState.size[0] / 2, frameState.size[1] / 2, 1 / pixelRatio, 1 / pixelRatio, rotation, -width / 2, -height / 2);
 		makeInverse(this.inversePixelTransform, this.pixelTransform);
 		const canvasTransform = toString$3(this.pixelTransform);
@@ -25059,6 +25066,13 @@ var CanvasLayerRenderer = class extends LayerRenderer {
 		const dx2 = -center[0] + offsetX;
 		const dy2 = -center[1];
 		return compose(this.tempTransform, dx1, dy1, sx, sy, -rotation, dx2, dy2);
+	}
+	/**
+	* @protected
+	* @return {boolean} Request rotation from the source.
+	*/
+	sourceRotates() {
+		return this.wantRotation && !!this.getLayer().getSource()?.canRotate;
 	}
 	/**
 	* Clean up.
@@ -27028,6 +27042,11 @@ var Source = class extends BaseObject {
 		* @type {boolean|number}
 		*/
 		this.loading = false;
+		/**
+		* Rotation can be requested from the source.
+		* @type {boolean}
+		*/
+		this.canRotate = false;
 		/**
 		* @private
 		* @type {import("./Source.js").State}
@@ -33289,6 +33308,10 @@ function renderPolygonGeometry(builderGroup, geometry, style, feature, index) {
 * @module ol/renderer/canvas/VectorLayer
 */
 /**
+* @typedef {Object} VectorLayerRendererOptions
+* @property {boolean} [wantRotation] If possible, request viewport rotated content from the source.
+*/
+/**
 * @classdesc
 * Canvas renderer for vector layers.
 * @api
@@ -33297,8 +33320,9 @@ function renderPolygonGeometry(builderGroup, geometry, style, feature, index) {
 var CanvasVectorLayerRenderer = class extends CanvasLayerRenderer {
 	/**
 	* @param {import("../../layer/Vector.js").default} vectorLayer Vector layer.
+	* @param {VectorLayerRendererOptions} [options] Options.
 	*/
-	constructor(vectorLayer) {
+	constructor(vectorLayer, options) {
 		super(vectorLayer);
 		/** @private */
 		this.boundHandleStyleImageChange_ = this.handleStyleImageChange_.bind(this);
@@ -33404,6 +33428,7 @@ var CanvasVectorLayerRenderer = class extends CanvasLayerRenderer {
 		* @type {number}
 		*/
 		this.opacity_ = 1;
+		if (options?.wantRotation !== void 0) this.wantRotation = options.wantRotation;
 	}
 	/**
 	* @param {ExecutorGroup} executorGroup Executor group.
@@ -33425,15 +33450,15 @@ var CanvasVectorLayerRenderer = class extends CanvasLayerRenderer {
 		const viewHints = frameState.viewHints;
 		const snapToPixel = !(viewHints[ViewHint_default.ANIMATING] || viewHints[ViewHint_default.INTERACTING]);
 		const context = this.context;
-		const width = Math.round(getWidth(extent) / resolution * pixelRatio);
-		const height = Math.round(getHeight(extent) / resolution * pixelRatio);
+		const width = context.canvas.width;
+		const height = context.canvas.height;
 		const multiWorld = vectorSource.getWrapX() && projection.canWrapX();
 		const worldWidth = multiWorld ? getWidth(projectionExtent) : null;
 		const viewExtent = extent;
 		const endWorld = multiWorld ? Math.ceil((viewExtent[2] - projectionExtent[2]) / worldWidth) + (this.extendX_ ? 2 : 1) : 1;
 		let world = multiWorld ? Math.floor((viewExtent[0] - projectionExtent[0]) / worldWidth) - (this.extendX_ ? 1 : 0) : 0;
 		do {
-			let transform = this.getRenderTransform(center, resolution, 0, pixelRatio, width, height, world * worldWidth);
+			let transform = this.getRenderTransform(center, resolution, this.sourceRotates() ? rotation : 0, pixelRatio, width, height, world * worldWidth);
 			if (frameState.declutter) transform = transform.slice(0);
 			executorGroup.execute(context, [context.canvas.width, context.canvas.height], transform, rotation, snapToPixel, declutterable === void 0 ? ALL : declutterable ? DECLUTTER : NON_DECLUTTER, declutterable ? declutter && frameState.declutter[declutter] : void 0);
 		} while (++world < endWorld);
@@ -35974,6 +35999,7 @@ var VectorSource = class extends Source {
 			state: "ready",
 			wrapX: options.wrapX !== void 0 ? options.wrapX : true
 		});
+		this.canRotate = true;
 		/***
 		* @type {VectorSourceOnSignature<import("../events.js").EventsKey, FeatureType>}
 		*/
@@ -36763,6 +36789,12 @@ var CanvasImageLayerRenderer = class extends CanvasLayerRenderer {
 		* @type {number}
 		*/
 		this.renderedSourceRevision_ = 0;
+		/**
+		* Rotation baked into the current image.
+		* @protected
+		* @type {number}
+		*/
+		this.renderedRotation = 0;
 	}
 	/**
 	* @return {import('../../DataTile.js').ImageLike|null} Image.
@@ -36791,8 +36823,10 @@ var CanvasImageLayerRenderer = class extends CanvasLayerRenderer {
 			const projection = viewState.projection;
 			const image = imageSource.getImage(renderedExtent, viewResolution, pixelRatio, projection);
 			if (image) {
-				if (this.loadImage(image)) this.image = image;
-				else if (image.getState() === ImageState_default.EMPTY) this.image = null;
+				if (this.loadImage(image)) {
+					this.image = image;
+					this.renderedRotation = this.sourceRotates() ? viewState.rotation : 0;
+				} else if (image.getState() === ImageState_default.EMPTY) this.image = null;
 			}
 		} else this.image = null;
 		return !!this.image;
@@ -36814,6 +36848,16 @@ var CanvasImageLayerRenderer = class extends CanvasLayerRenderer {
 		const imageExtent = this.image.getExtent();
 		const img = this.image.getImage();
 		if (!img) return null;
+		const imageRotation = this.renderedRotation;
+		if (imageRotation !== 0) {
+			const imageCenter = getCenter(imageExtent);
+			const cosRotation = Math.cos(-imageRotation);
+			const sinRotation = Math.sin(-imageRotation);
+			const deltaX = coordinate[0] - imageCenter[0];
+			const deltaY = coordinate[1] - imageCenter[1];
+			coordinate[0] = imageCenter[0] + cosRotation * deltaX - sinRotation * deltaY;
+			coordinate[1] = imageCenter[1] + sinRotation * deltaX + cosRotation * deltaY;
+		}
 		const imageMapWidth = getWidth(imageExtent);
 		const col = Math.floor(img.width * ((coordinate[0] - imageExtent[0]) / imageMapWidth));
 		if (col < 0 || col >= img.width) return null;
@@ -36836,11 +36880,15 @@ var CanvasImageLayerRenderer = class extends CanvasLayerRenderer {
 		const imageResolution = image.getResolution();
 		const [imageResolutionX, imageResolutionY] = Array.isArray(imageResolution) ? imageResolution : [imageResolution, imageResolution];
 		const imagePixelRatio = image.getPixelRatio();
+		const imageRotation = this.renderedRotation;
+		const imageSource = this.getLayer().getSource();
+		const sourceRotates = this.sourceRotates();
 		const layerState = frameState.layerStatesArray[frameState.layerIndex];
 		const pixelRatio = frameState.pixelRatio;
 		const viewState = frameState.viewState;
 		const viewCenter = viewState.center;
 		const viewResolution = viewState.resolution;
+		const viewRotation = viewState.rotation;
 		const scaleX = pixelRatio * imageResolutionX / (viewResolution * imagePixelRatio);
 		const scaleY = pixelRatio * imageResolutionY / (viewResolution * imagePixelRatio);
 		this.prepareContainer(frameState, target);
@@ -36858,22 +36906,43 @@ var CanvasImageLayerRenderer = class extends CanvasLayerRenderer {
 		}
 		const img = image.getImage();
 		if (!img) return this.getContainerElement();
-		const transform = compose(this.tempTransform, width / 2, height / 2, scaleX, scaleY, 0, imagePixelRatio * (imageExtent[0] - viewCenter[0]) / imageResolutionX, imagePixelRatio * (viewCenter[1] - imageExtent[3]) / imageResolutionY);
+		let transform, dw, dh;
+		if (!sourceRotates) {
+			transform = compose(this.tempTransform, width / 2, height / 2, scaleX, scaleY, 0, imagePixelRatio * (imageExtent[0] - viewCenter[0]) / imageResolutionX, imagePixelRatio * (viewCenter[1] - imageExtent[3]) / imageResolutionY);
+			dw = img.width * transform[0];
+			dh = img.height * transform[3];
+		} else {
+			const scale = pixelRatio / viewResolution;
+			const cosRotation = Math.cos(viewRotation);
+			const sinRotation = Math.sin(viewRotation);
+			const imageCenter = getCenter(imageExtent);
+			const centerX = imageCenter[0] - viewCenter[0];
+			const centerY = imageCenter[1] - viewCenter[1];
+			transform = compose(this.tempTransform, width / 2 + scale * (cosRotation * centerX + sinRotation * centerY), height / 2 + scale * (sinRotation * centerX - cosRotation * centerY), scaleX, scaleY, viewRotation - imageRotation, -img.width / 2, -img.height / 2);
+			dw = img.width * scaleX;
+			dh = img.height * scaleY;
+		}
 		this.renderedResolution = imageResolutionY * pixelRatio / imagePixelRatio;
-		const dw = img.width * transform[0];
-		const dh = img.height * transform[3];
-		if (!this.getLayer().getSource()?.getInterpolate()) context.imageSmoothingEnabled = false;
+		if (!imageSource?.getInterpolate() && (!sourceRotates || viewRotation === imageRotation)) context.imageSmoothingEnabled = false;
 		this.preRender(context, frameState);
 		if (render && dw >= .5 && dh >= .5) {
-			const dx = transform[4];
-			const dy = transform[5];
 			const opacity = layerState.opacity;
-			if (opacity !== 1) {
+			if (!sourceRotates) {
+				const dx = transform[4];
+				const dy = transform[5];
+				if (opacity !== 1) {
+					context.save();
+					context.globalAlpha = opacity;
+				}
+				context.drawImage(img, 0, 0, img.width, img.height, dx, dy, dw, dh);
+				if (opacity !== 1) context.restore();
+			} else {
 				context.save();
-				context.globalAlpha = opacity;
+				if (opacity !== 1) context.globalAlpha = opacity;
+				context.setTransform(transform[0], transform[1], transform[2], transform[3], transform[4], transform[5]);
+				context.drawImage(img, 0, 0);
+				context.restore();
 			}
-			context.drawImage(img, 0, 0, img.width, img.height, dx, dy, dw, dh);
-			if (opacity !== 1) context.restore();
 		}
 		this.postRender(this.getCanvasContext(), frameState);
 		if (clipped) context.restore();
@@ -95329,10 +95398,15 @@ var CanvasVectorImageLayerRenderer = class extends CanvasImageLayerRenderer {
 	constructor(layer) {
 		super(layer);
 		/**
+		* @protected
+		* @type {boolean}
+		*/
+		this.wantRotation = true;
+		/**
 		* @private
 		* @type {import("./VectorLayer.js").default}
 		*/
-		this.vectorRenderer_ = new CanvasVectorLayerRenderer(layer);
+		this.vectorRenderer_ = new CanvasVectorLayerRenderer(layer, { wantRotation: true });
 		/**
 		* @private
 		* @type {number}
@@ -95387,13 +95461,14 @@ var CanvasVectorImageLayerRenderer = class extends CanvasImageLayerRenderer {
 		const viewResolution = viewState.resolution;
 		const hints = frameState.viewHints;
 		const vectorRenderer = this.vectorRenderer_;
-		let renderedExtent = frameState.extent;
-		if (this.layerImageRatio_ !== 1) {
-			renderedExtent = renderedExtent.slice(0);
-			scaleFromCenter(renderedExtent, this.layerImageRatio_);
-		}
-		const width = getWidth(renderedExtent) / viewResolution;
-		const height = getHeight(renderedExtent) / viewResolution;
+		const imageRotation = viewState.rotation;
+		const canvasWidth = Math.round(frameState.size[0] * pixelRatio);
+		const canvasHeight = Math.round(frameState.size[1] * pixelRatio);
+		const padX = Math.round(canvasWidth * (this.layerImageRatio_ - 1) / 2);
+		const padY = Math.round(canvasHeight * (this.layerImageRatio_ - 1) / 2);
+		const imageSize = [(canvasWidth + 2 * padX) / pixelRatio, (canvasHeight + 2 * padY) / pixelRatio];
+		const imageExtent = getForViewAndSize(viewState.center, viewResolution, 0, imageSize);
+		const renderedExtent = getForViewAndSize(viewState.center, viewResolution, imageRotation, imageSize);
 		if (!hints[ViewHint_default.ANIMATING] && !hints[ViewHint_default.INTERACTING] && !isEmpty(renderedExtent)) {
 			vectorRenderer.useContainer(null, null);
 			const context = vectorRenderer.context;
@@ -95401,16 +95476,15 @@ var CanvasVectorImageLayerRenderer = class extends CanvasImageLayerRenderer {
 			const imageLayerState = Object.assign({}, layerState, { opacity: 1 });
 			const imageFrameState = Object.assign({}, frameState, {
 				extent: renderedExtent,
-				size: [width, height],
-				viewState: Object.assign({}, frameState.viewState, { rotation: 0 }),
+				size: imageSize,
 				layerStatesArray: [imageLayerState],
 				layerIndex: 0,
 				declutter: null
 			});
 			const declutter = this.getLayer().getDeclutter();
 			if (declutter) imageFrameState.declutter = { [declutter]: new RBush$2(9) };
-			const image = new ImageCanvas(renderedExtent, viewResolution, pixelRatio, context.canvas, function(callback) {
-				if (vectorRenderer.prepareFrame(imageFrameState) && vectorRenderer.replayGroupChanged) {
+			const image = new ImageCanvas(imageExtent, viewResolution, pixelRatio, context.canvas, (callback) => {
+				if (vectorRenderer.prepareFrame(imageFrameState) && (vectorRenderer.replayGroupChanged || !this.image || this.renderedRotation !== imageRotation || !equals$1(this.image.getExtent(), imageExtent))) {
 					vectorRenderer.clipping = false;
 					vectorRenderer.renderFrame(imageFrameState, null);
 					vectorRenderer.renderDeclutter(imageFrameState);
@@ -95421,10 +95495,11 @@ var CanvasVectorImageLayerRenderer = class extends CanvasImageLayerRenderer {
 			image.addEventListener(EventType_default$2.CHANGE, () => {
 				if (image.getState() !== ImageState_default.LOADED) return;
 				this.image = image;
+				this.renderedRotation = imageRotation;
 				const imagePixelRatio = image.getPixelRatio();
 				const renderedResolution = fromResolutionLike(image.getResolution()) * pixelRatio / imagePixelRatio;
 				this.renderedResolution = renderedResolution;
-				this.coordinateToVectorPixelTransform_ = compose(this.coordinateToVectorPixelTransform_, width / 2, height / 2, 1 / renderedResolution, -1 / renderedResolution, 0, -viewState.center[0], -viewState.center[1]);
+				this.coordinateToVectorPixelTransform_ = compose(this.coordinateToVectorPixelTransform_, imageSize[0] / 2, imageSize[1] / 2, 1 / renderedResolution, -1 / renderedResolution, -imageRotation, -viewState.center[0], -viewState.center[1]);
 			});
 			image.load();
 		}
@@ -95511,9 +95586,8 @@ var CanvasVectorImageLayerRenderer = class extends CanvasImageLayerRenderer {
 /**
 * @classdesc
 * Vector data is rendered client-side, to an image. This layer type provides great performance
-* during panning and zooming, but point symbols and texts are always rotated with the view and
-* pixels are scaled during zoom animations. For more accurate rendering of vector data, use
-* {@link module:ol/layer/Vector~VectorLayer} instead.
+* during panning and zooming, but pixels are scaled during zoom animations. For more accurate
+* rendering of vector data, use {@link module:ol/layer/Vector~VectorLayer} instead.
 *
 * Note that any property set in the options is set as a {@link module:ol/Object~BaseObject}
 * property on the layer object; for example, setting `title: 'My Title'` in the
