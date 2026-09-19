@@ -12,6 +12,7 @@ declare namespace _default {
     let FOCUS: string;
     let KEYDOWN: string;
     let KEYPRESS: string;
+    let KEYUP: string;
     let LOAD: string;
     let RESIZE: string;
     let TOUCHMOVE: string;

@@ -326,6 +326,14 @@ declare class Map extends BaseObject<{
     /** @private */
     private boundHandleBrowserEvent_;
     /**
+     * Whether the Control key is physically held down.
+     * @private
+     * @type {boolean}
+     */
+    private ctrlKey_;
+    /** @private */
+    private boundHandleCtrlKey_;
+    /**
      * @type {number}
      * @private
      */
@@ -770,6 +778,11 @@ declare class Map extends BaseObject<{
      * @param {string} [type] Type.
      */
     handleBrowserEvent(browserEvent: PointerEvent | KeyboardEvent | WheelEvent, type?: string): void;
+    /**
+     * @param {Event} event Key event.
+     * @private
+     */
+    private handleCtrlKey_;
     /**
      * @param {MapBrowserEvent} mapBrowserEvent The event to handle.
      */

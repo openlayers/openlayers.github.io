@@ -194,6 +194,7 @@ var EventType_default$2 = {
 	FOCUS: "focus",
 	KEYDOWN: "keydown",
 	KEYPRESS: "keypress",
+	KEYUP: "keyup",
 	LOAD: "load",
 	RESIZE: "resize",
 	TOUCHMOVE: "touchmove",
@@ -1411,6 +1412,13 @@ var MapBrowserEvent = class extends MapEvent {
 		* @type {Array<PointerEvent>|undefined}
 		*/
 		this.activePointers = activePointers;
+		/**
+		* The Control key is physically held down. Unlike `originalEvent.ctrlKey`,
+		* this is `false` for the wheel events that browsers synthesize with
+		* `ctrlKey: true` for trackpad pinch-to-zoom.
+		* @type {boolean}
+		*/
+		this.ctrlKey = false;
 	}
 	/**
 	* The map pixel relative to the viewport corresponding to the original event.
@@ -12390,36 +12398,6 @@ var MouseWheelZoom = class extends Interaction {
 		* @type {number}
 		*/
 		this.deltaPerZoom_ = 300;
-		/**
-		* Tracks whether the Ctrl key is physically held down (as opposed to the
-		* browser synthesizing ctrlKey=true for pinch-to-zoom trackpad gestures).
-		* @private
-		* @type {boolean}
-		*/
-		this.ctrlKeyPressed_ = false;
-		/**
-		* @private
-		* @type {Array<import('../events.js').EventsKey>}
-		*/
-		this.ctrlKeyListenerKeys_ = [];
-	}
-	/**
-	* @param {import('../Map.js').default|null} map Map.
-	* @override
-	*/
-	setMap(map) {
-		this.ctrlKeyListenerKeys_.forEach(unlistenByKey);
-		this.ctrlKeyListenerKeys_.length = 0;
-		this.ctrlKeyPressed_ = false;
-		super.setMap(map);
-		if (map) {
-			const doc = map.getOwnerDocument();
-			this.ctrlKeyListenerKeys_.push(listen(doc, "keydown", ((e) => {
-				if (e.key === "Control") this.ctrlKeyPressed_ = true;
-			})), listen(doc, "keyup", ((e) => {
-				if (e.key === "Control") this.ctrlKeyPressed_ = false;
-			})));
-		}
 	}
 	/**
 	* @private
@@ -12445,8 +12423,7 @@ var MouseWheelZoom = class extends Interaction {
 		const map = mapBrowserEvent.map;
 		const wheelEvent = mapBrowserEvent.originalEvent;
 		wheelEvent.preventDefault();
-		const isPinchToZoom = wheelEvent.ctrlKey && !this.ctrlKeyPressed_;
-		if (!wheelEvent.ctrlKey) this.ctrlKeyPressed_ = false;
+		const isPinchToZoom = wheelEvent.ctrlKey && !mapBrowserEvent.ctrlKey;
 		if (this.useAnchor_) this.lastAnchor_ = mapBrowserEvent.pixel;
 		let delta = wheelEvent.deltaY;
 		switch (wheelEvent.deltaMode) {
@@ -21436,6 +21413,14 @@ var Map$2 = class extends BaseObject {
 		/** @private */
 		this.boundHandleBrowserEvent_ = this.handleBrowserEvent.bind(this);
 		/**
+		* Whether the Control key is physically held down.
+		* @private
+		* @type {boolean}
+		*/
+		this.ctrlKey_ = false;
+		/** @private */
+		this.boundHandleCtrlKey_ = this.handleCtrlKey_.bind(this);
+		/**
 		* @type {number}
 		* @private
 		*/
@@ -22108,9 +22093,19 @@ var Map$2 = class extends BaseObject {
 		this.handleMapBrowserEvent(mapBrowserEvent);
 	}
 	/**
+	* @param {Event} event Key event.
+	* @private
+	*/
+	handleCtrlKey_(event) {
+		const keyEvent = event;
+		this.ctrlKey_ = keyEvent.key === "Control" ? keyEvent.type === EventType_default$2.KEYDOWN : keyEvent.ctrlKey;
+	}
+	/**
 	* @param {MapBrowserEvent} mapBrowserEvent The event to handle.
 	*/
 	handleMapBrowserEvent(mapBrowserEvent) {
+		if (mapBrowserEvent.originalEvent.ctrlKey === false) this.ctrlKey_ = false;
+		mapBrowserEvent.ctrlKey = this.ctrlKey_;
 		if (!this.frameState_) return;
 		const originalEvent = mapBrowserEvent.originalEvent;
 		const eventType = originalEvent.type;
@@ -22184,6 +22179,10 @@ var Map$2 = class extends BaseObject {
 			const targetChangeHandlerKeys = this.targetChangeHandlerKeys_;
 			for (let i = 0, ii = targetChangeHandlerKeys.length; i < ii; ++i) unlistenByKey(targetChangeHandlerKeys[i]);
 			this.targetChangeHandlerKeys_ = null;
+			const doc = this.getOwnerDocument();
+			doc.removeEventListener(EventType_default$2.KEYDOWN, this.boundHandleCtrlKey_, true);
+			doc.removeEventListener(EventType_default$2.KEYUP, this.boundHandleCtrlKey_, true);
+			this.ctrlKey_ = false;
 			/** @type {!HTMLElement} */ this.viewport_.removeEventListener(EventType_default$2.CONTEXTMENU, this.boundHandleBrowserEvent_);
 			/** @type {!HTMLElement} */ this.viewport_.removeEventListener(EventType_default$2.WHEEL, this.boundHandleBrowserEvent_);
 			this.mapBrowserEventHandler_.dispose();
@@ -22223,6 +22222,9 @@ var Map$2 = class extends BaseObject {
 				);
 				/** @type {!HTMLElement} */ this.viewport_.addEventListener(EventType_default$2.CONTEXTMENU, this.boundHandleBrowserEvent_, false);
 				/** @type {!HTMLElement} */ this.viewport_.addEventListener(EventType_default$2.WHEEL, this.boundHandleBrowserEvent_, PASSIVE_EVENT_LISTENERS ? { passive: false } : false);
+				const doc = this.getOwnerDocument();
+				doc.addEventListener(EventType_default$2.KEYDOWN, this.boundHandleCtrlKey_, true);
+				doc.addEventListener(EventType_default$2.KEYUP, this.boundHandleCtrlKey_, true);
 				let keyboardEventTarget;
 				if (!this.keyboardEventTarget_) {
 					const targetRoot = targetElement.getRootNode();

@@ -46,6 +46,13 @@ declare class MapBrowserEvent<EVENT extends PointerEvent | KeyboardEvent | Wheel
      * @type {Array<PointerEvent>|undefined}
      */
     activePointers: Array<PointerEvent> | undefined;
+    /**
+     * The Control key is physically held down. Unlike `originalEvent.ctrlKey`,
+     * this is `false` for the wheel events that browsers synthesize with
+     * `ctrlKey: true` for trackpad pinch-to-zoom.
+     * @type {boolean}
+     */
+    ctrlKey: boolean;
     set pixel(pixel: import("./pixel.js").Pixel);
     /**
      * The map pixel relative to the viewport corresponding to the original event.
