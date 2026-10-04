@@ -98,6 +98,53 @@
               tabindex="0"
               >3</a>
           </span>
+          <span class="badge-group">
+            <a
+              href="./index.html?q=rotate" class="badge badge-info">rotate</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="rotate"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./custom-controls.html&quot;&gt;Custom Controls&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-rotate-and-zoom.html&quot;&gt;Drag, Rotate, and Zoom&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./full-screen-drag-rotate-and-zoom.html&quot;&gt;Full Screen Drag, Rotate, and Zoom&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-scale-and-rotate.html&quot;&gt;Scale and Rotate using Modify Interaction&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >4</a>
+          </span>
+          <span class="badge-group">
+            <a
+              href="./index.html?q=north" class="badge badge-info">north</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="north"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./custom-controls.html&quot;&gt;Custom Controls&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >1</a>
+          </span>
+          <span class="badge-group">
+            <a
+              href="./index.html?q=svg" class="badge badge-info">svg</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="svg"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./custom-controls.html&quot;&gt;Custom Controls&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./svg-layer.html&quot;&gt;SVG Layer&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-image-svg.html&quot;&gt;WMS loader with SVG format&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >3</a>
+          </span>
         </p>
         <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
           <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -121,7 +168,7 @@
 
       <div class="row-fluid">
         <p id="shortdesc">Shows how to create custom controls.</p>
-        <div id="docs"><p>This example creates a &quot;rotate to north&quot; button.</p>
+        <div id="docs"><p>This example creates a &quot;rotate to north&quot; control with an inline SVG north arrow. The control&#39;s <code>render</code> method rotates the arrow together with the map, so it always points north, and hides the control with the <code>ol-hidden</code> class when the map is not rotated. The control replaces the default <code>ol/control/Rotate</code> control, which is left out of the map&#39;s controls. Use <code>Alt+Shift+Drag</code> to rotate the map.</p>
 </div>
       </div>
 
@@ -139,6 +186,12 @@ import OSM from &#x27;ol/source/OSM.js&#x27;;
 // Define rotate to north control.
 //
 
+const northArrow &#x3D;
+  &#x27;&lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;currentColor&quot;&gt;&#x27; +
+  &#x27;&lt;path d&#x3D;&quot;M12 2 5 21l7-4z&quot;/&gt;&#x27; +
+  &#x27;&lt;path d&#x3D;&quot;M12 2l7 19-7-4z&quot; opacity&#x3D;&quot;.5&quot;/&gt;&#x27; +
+  &#x27;&lt;/svg&gt;&#x27;;
+
 class RotateNorthControl extends Control {
   /**
    * @param {Object} [opt_options] Control options.
@@ -147,7 +200,9 @@ class RotateNorthControl extends Control {
     const options &#x3D; opt_options || {};
 
     const button &#x3D; document.createElement(&#x27;button&#x27;);
-    button.innerHTML &#x3D; &#x27;N&#x27;;
+    button.type &#x3D; &#x27;button&#x27;;
+    button.title &#x3D; &#x27;Rotate to north&#x27;;
+    button.innerHTML &#x3D; northArrow;
 
     const element &#x3D; document.createElement(&#x27;div&#x27;);
     element.className &#x3D; &#x27;rotate-north ol-unselectable ol-control&#x27;;
@@ -158,20 +213,54 @@ class RotateNorthControl extends Control {
       target: options.target,
     });
 
+    /**
+     * The north arrow, rotated together with the map.
+     * @type {SVGElement}
+     * @private
+     */
+    this.arrow_ &#x3D; button.querySelector(&#x27;svg&#x27;);
+
+    /**
+     * The rotation the arrow was last rendered with.
+     * @type {number|undefined}
+     * @private
+     */
+    this.rotation_ &#x3D; undefined;
+
     button.addEventListener(&#x27;click&#x27;, this.handleRotateNorth.bind(this), false);
   }
 
   handleRotateNorth() {
-    this.getMap().getView().setRotation(0);
+    this.getMap().getView().animate({rotation: 0, duration: 250});
+  }
+
+  /**
+   * Keep the arrow pointing north, and hide the control when the map is
+   * already rotated to north.
+   * @param {import(&#x27;ol/MapEvent.js&#x27;).default} mapEvent Map event.
+   * @override
+   */
+  render(mapEvent) {
+    const frameState &#x3D; mapEvent.frameState;
+    if (!frameState) {
+      return;
+    }
+    const rotation &#x3D; frameState.viewState.rotation;
+    if (rotation !&#x3D;&#x3D; this.rotation_) {
+      this.arrow_.style.transform &#x3D; &#x27;rotate(&#x27; + rotation + &#x27;rad)&#x27;;
+      this.element.classList.toggle(&#x27;ol-hidden&#x27;, rotation &#x3D;&#x3D;&#x3D; 0);
+      this.rotation_ &#x3D; rotation;
+    }
   }
 }
 
 //
-// Create map, giving it a rotate to north control.
+// Create map, giving it a rotate to north control instead of the default
+// rotate control.
 //
 
 const map &#x3D; new Map({
-  controls: defaultControls().extend([new RotateNorthControl()]),
+  controls: defaultControls({rotate: false}).extend([new RotateNorthControl()]),
   layers: [
     new TileLayer({
       source: new OSM(),
@@ -208,6 +297,16 @@ const map &#x3D; new Map({
       }
       .ol-touch .rotate-north {
         top: 80px;
+      }
+      .rotate-north svg {
+        width: 1em;
+        height: 1em;
+        vertical-align: middle;
+      }
+      .rotate-north.ol-hidden {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity .25s linear, visibility 0s linear .25s;
       }
     &lt;/style&gt;
   &lt;/head&gt;
