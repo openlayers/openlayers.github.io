@@ -36,7 +36,7 @@ export function getUid(obj) {
  * OpenLayers version.
  * @type {string}
  */
-export const VERSION = '10.10.1-dev';
+export const VERSION = '10.11.1-dev';
 
 /***
  * Determine whether a value is thenable, i.e. it has `then` and `catch` methods.
