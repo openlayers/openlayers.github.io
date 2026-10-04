@@ -5,6 +5,14 @@ export type Options = {
      * multiple features on reading.
      */
     splitCollection?: boolean | undefined;
+    /**
+     * Default data projection.
+     */
+    dataProjection?: import("../proj.js").ProjectionLike;
+    /**
+     * Default feature projection.
+     */
+    featureProjection?: import("../proj.js").ProjectionLike;
 };
 export type Token = {
     /**

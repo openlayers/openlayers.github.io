@@ -126170,6 +126170,8 @@ var GeometryConstructor = {
 * @typedef {Object} Options
 * @property {boolean} [splitCollection=false] Whether to split GeometryCollections into
 * multiple features on reading.
+* @property {import("../proj.js").ProjectionLike} [dataProjection] Default data projection.
+* @property {import("../proj.js").ProjectionLike} [featureProjection] Default feature projection.
 */
 /**
 * @typedef {Object} Token
@@ -126626,6 +126628,8 @@ var WKT = class extends TextFeature {
 		* @private
 		*/
 		this.splitCollection_ = options.splitCollection !== void 0 ? options.splitCollection : false;
+		this.dataProjection = get$7(options.dataProjection) ?? void 0;
+		this.defaultFeatureProjection = get$7(options.featureProjection) ?? void 0;
 	}
 	/**
 	* Parse a WKT string.
