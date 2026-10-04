@@ -1,0 +1,10 @@
+.wrapper {
+  max-width: 566px;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+#export-pdf {
+  margin-top: 10px;
+}

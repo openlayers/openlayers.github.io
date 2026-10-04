@@ -1,0 +1,10 @@
+@media (min-width: 800px) {
+  .wrapper {
+    display: flex;
+  }
+  .half {
+    padding: 0 10px;
+    width: 50%;
+    float: left;
+  }
+}

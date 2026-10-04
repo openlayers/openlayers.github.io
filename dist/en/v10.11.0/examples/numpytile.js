@@ -1,0 +1,84 @@
+import { r as __toESM } from "./rolldown-runtime.js";
+import { Cr as fromLonLat, Ht as WebGLTileLayer, Mn as Map, T as require_ol_numpytiles, on as DataTileSource, or as View } from "./common.js";
+//#region examples/numpytile.js
+var import_ol_numpytiles = /* @__PURE__ */ __toESM(require_ol_numpytiles(), 1);
+var COG = "https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2_analytic.tif";
+function numpyTileLoader(z, x, y) {
+	const url = `https://titiler.xyz/cog/tiles/WebMercatorQuad/${z}/${x}/${y}?format=npy&url=${encodeURIComponent(COG)}`;
+	return fetch(url).then((r) => r.arrayBuffer()).then((buffer) => import_ol_numpytiles.fromArrayBuffer(buffer)).then((numpyData) => {
+		const dataTile = new Float32Array(256 * 256 * 5);
+		const bandSize = 256 * 256;
+		for (let x = 0; x < 256; x++) for (let y = 0; y < 256; y++) {
+			const px = x + y * 256;
+			dataTile[px * 5 + 0] = numpyData.data[y * 256 + x];
+			dataTile[px * 5 + 1] = numpyData.data[bandSize + y * 256 + x];
+			dataTile[px * 5 + 2] = numpyData.data[bandSize * 2 + y * 256 + x];
+			dataTile[px * 5 + 3] = numpyData.data[bandSize * 3 + y * 256 + x];
+			dataTile[px * 5 + 4] = numpyData.data[bandSize * 4 + y * 256 + x] > 0 ? 1 : 0;
+		}
+		return dataTile;
+	});
+}
+var interpolateBand = (bandIdx) => [
+	"interpolate",
+	["linear"],
+	["band", bandIdx],
+	["var", "bMin"],
+	0,
+	["var", "bMax"],
+	1
+];
+var initialMin = 3e3;
+var initialMax = 18e3;
+var numpyLayer = new WebGLTileLayer({
+	style: {
+		color: [
+			"array",
+			interpolateBand(3),
+			interpolateBand(2),
+			interpolateBand(1),
+			["band", 5]
+		],
+		variables: {
+			"bMin": initialMin,
+			"bMax": initialMax
+		}
+	},
+	source: new DataTileSource({
+		loader: numpyTileLoader,
+		bandCount: 5
+	})
+});
+new Map({
+	target: "map",
+	layers: [numpyLayer],
+	view: new View({
+		center: fromLonLat([172.933, 1.3567]),
+		zoom: 15
+	})
+});
+var inputMin = document.getElementById("input-min");
+var inputMax = document.getElementById("input-max");
+var outputMin = document.getElementById("output-min");
+var outputMax = document.getElementById("output-max");
+inputMin.addEventListener("input", (evt) => {
+	numpyLayer.updateStyleVariables({
+		"bMin": parseFloat(evt.target.value),
+		"bMax": parseFloat(inputMax.value)
+	});
+	outputMin.innerText = evt.target.value;
+});
+inputMax.addEventListener("input", (evt) => {
+	numpyLayer.updateStyleVariables({
+		"bMin": parseFloat(inputMin.value),
+		"bMax": parseFloat(evt.target.value)
+	});
+	outputMax.innerText = evt.target.value;
+});
+inputMin.value = String(initialMin);
+inputMax.value = String(initialMax);
+outputMin.innerText = String(initialMin);
+outputMax.innerText = String(initialMax);
+//#endregion
+
+//# sourceMappingURL=numpytile.js.map

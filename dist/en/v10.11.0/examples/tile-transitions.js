@@ -1,0 +1,35 @@
+import { Mn as Map, an as ImageTileSource, jn as TileLayer, or as View } from "./common.js";
+//#region examples/tile-transitions.js
+var attributions = "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>";
+var url = "https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=get_your_own_D6rA4zTHduk6KOKTXzGB";
+var withTransition = new TileLayer({ source: new ImageTileSource({
+	url,
+	tileSize: 512,
+	attributions
+}) });
+var withoutTransition = new TileLayer({
+	source: new ImageTileSource({
+		url,
+		transition: 0,
+		tileSize: 512,
+		attributions
+	}),
+	visible: false
+});
+new Map({
+	layers: [withTransition, withoutTransition],
+	target: "map",
+	view: new View({
+		center: [0, 0],
+		zoom: 2,
+		maxZoom: 11
+	})
+});
+document.getElementById("transition").addEventListener("change", function(event) {
+	const transition = event.target.checked;
+	withTransition.setVisible(transition);
+	withoutTransition.setVisible(!transition);
+});
+//#endregion
+
+//# sourceMappingURL=tile-transitions.js.map
