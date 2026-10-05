@@ -94327,7 +94327,7 @@ function writeLink(node, value, objectStack) {
 function writeWptType(node, coordinate, objectStack) {
 	const context = objectStack[objectStack.length - 1];
 	const namespaceURI = context.node.namespaceURI;
-	const properties = context["properties"];
+	const properties = Object.assign({}, context["properties"]);
 	node.setAttributeNS(null, "lat", String(coordinate[1]));
 	node.setAttributeNS(null, "lon", String(coordinate[0]));
 	switch (context["geometryLayout"]) {
