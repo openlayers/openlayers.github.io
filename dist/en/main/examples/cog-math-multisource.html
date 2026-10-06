@@ -185,26 +185,24 @@
         <summary class="source-heading">main.js</summary>
         <div class="row-fluid">
           <pre><code id="example-js-source" class="language-js">import Map from &#x27;ol/Map.js&#x27;;
+import View from &#x27;ol/View.js&#x27;;
 import TileLayer from &#x27;ol/layer/WebGLTile.js&#x27;;
 import GeoTIFF from &#x27;ol/source/GeoTIFF.js&#x27;;
 
 const source &#x3D; new GeoTIFF({
   sources: [
     {
-      url: &#x27;https://s2downloads.eox.at/demo/Sentinel-2/3857/R10m.tif&#x27;,
+      url: &#x27;https://cloudlessdownloads.eox.at/api/public/dl/jvu06wnt/OpenLayers_Sentinel-2_samples/R10m.tif&#x27;,
       bands: [3, 4],
-      min: 0,
       nodata: 0,
-      max: 65535,
     },
     {
-      url: &#x27;https://s2downloads.eox.at/demo/Sentinel-2/3857/R60m.tif&#x27;,
+      url: &#x27;https://cloudlessdownloads.eox.at/api/public/dl/jvu06wnt/OpenLayers_Sentinel-2_samples/R60m.tif&#x27;,
       bands: [9],
-      min: 0,
       nodata: 0,
-      max: 65535,
     },
   ],
+  normalize: false,
 });
 source.setAttributions(
   &quot;&lt;a href&#x3D;&#x27;https://s2maps.eu&#x27;&gt;Sentinel-2 cloudless&lt;/a&gt; by &lt;a href&#x3D;&#x27;https://eox.at/&#x27;&gt;EOX IT Services GmbH&lt;/a&gt; (Contains modified Copernicus Sentinel data 2019)&quot;,
@@ -228,21 +226,32 @@ const map &#x3D; new Map({
     new TileLayer({
       style: {
         color: [
-          &#x27;color&#x27;,
-          // red: | NDVI - NDWI |
-          [&#x27;*&#x27;, 255, [&#x27;abs&#x27;, [&#x27;-&#x27;, ndvi, ndwi]]],
-          // green: NDVI
-          [&#x27;*&#x27;, 255, ndvi],
-          // blue: NDWI
-          [&#x27;*&#x27;, 255, ndwi],
-          // alpha
-          [&#x27;band&#x27;, 4],
+          &#x27;case&#x27;,
+          [
+            &#x27;any&#x27;,
+            [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;band&#x27;, 1], 0],
+            [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;band&#x27;, 2], 0],
+            [&#x27;&#x3D;&#x3D;&#x27;, [&#x27;band&#x27;, 3], 0],
+          ],
+          [0, 0, 0, 0],
+          [
+            &#x27;color&#x27;,
+            // red: | NDVI - NDWI |
+            [&#x27;*&#x27;, 255, [&#x27;abs&#x27;, [&#x27;-&#x27;, ndvi, ndwi]]],
+            // green: NDVI
+            [&#x27;*&#x27;, 255, ndvi],
+            // blue: NDWI
+            [&#x27;*&#x27;, 255, ndwi],
+          ],
         ],
       },
       source,
     }),
   ],
-  view: source.getView(),
+  view: new View({
+    center: [1447120, 6165360],
+    zoom: 11,
+  }),
 });
 </code></pre>
         </div>

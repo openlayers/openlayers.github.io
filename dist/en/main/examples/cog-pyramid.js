@@ -23,7 +23,7 @@ new Map({
 			[4096, 2048],
 			[4096, 4096]
 		]
-	}), ([z, x, y]) => new GeoTIFFSource({ sources: [{ url: `https://s2downloads.eox.at/demo/EOxCloudless/2019/rgb/${z}/${y}/${x}.tif` }] })) })],
+	}), ([z, x, y]) => new GeoTIFFSource({ sources: [{ url: `https://cloudlessdownloads.eox.at/api/public/dl/jvu06wnt/STACTA-TileDirectory-2025-viewing-basic-epsg-4326-zoom-6-0/${z}/${y}/${x}.tif` }] })) })],
 	view: new View({
 		projection: "EPSG:4326",
 		center: [0, 0],

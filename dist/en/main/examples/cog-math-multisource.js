@@ -1,18 +1,17 @@
-import { Ht as WebGLTileLayer, Mn as Map, Rt as GeoTIFFSource } from "./common.js";
+import { Ht as WebGLTileLayer, Mn as Map, Rt as GeoTIFFSource, or as View } from "./common.js";
 //#region examples/cog-math-multisource.js
-var source = new GeoTIFFSource({ sources: [{
-	url: "https://s2downloads.eox.at/demo/Sentinel-2/3857/R10m.tif",
-	bands: [3, 4],
-	min: 0,
-	nodata: 0,
-	max: 65535
-}, {
-	url: "https://s2downloads.eox.at/demo/Sentinel-2/3857/R60m.tif",
-	bands: [9],
-	min: 0,
-	nodata: 0,
-	max: 65535
-}] });
+var source = new GeoTIFFSource({
+	sources: [{
+		url: "https://cloudlessdownloads.eox.at/api/public/dl/jvu06wnt/OpenLayers_Sentinel-2_samples/R10m.tif",
+		bands: [3, 4],
+		nodata: 0
+	}, {
+		url: "https://cloudlessdownloads.eox.at/api/public/dl/jvu06wnt/OpenLayers_Sentinel-2_samples/R60m.tif",
+		bands: [9],
+		nodata: 0
+	}],
+	normalize: false
+});
 source.setAttributions("<a href='https://s2maps.eu'>Sentinel-2 cloudless</a> by <a href='https://eox.at/'>EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2019)");
 var ndvi = [
 	"/",
@@ -44,31 +43,60 @@ new Map({
 	target: "map",
 	layers: [new WebGLTileLayer({
 		style: { color: [
-			"color",
+			"case",
 			[
-				"*",
-				255,
-				["abs", [
-					"-",
-					ndvi,
+				"any",
+				[
+					"==",
+					["band", 1],
+					0
+				],
+				[
+					"==",
+					["band", 2],
+					0
+				],
+				[
+					"==",
+					["band", 3],
+					0
+				]
+			],
+			[
+				0,
+				0,
+				0,
+				0
+			],
+			[
+				"color",
+				[
+					"*",
+					255,
+					["abs", [
+						"-",
+						ndvi,
+						ndwi
+					]]
+				],
+				[
+					"*",
+					255,
+					ndvi
+				],
+				[
+					"*",
+					255,
 					ndwi
-				]]
-			],
-			[
-				"*",
-				255,
-				ndvi
-			],
-			[
-				"*",
-				255,
-				ndwi
-			],
-			["band", 4]
+				]
+			]
 		] },
 		source
 	})],
-	view: source.getView()
+	view: new View({
+		center: [1447120, 6165360],
+		zoom: 11
+	})
 });
 //#endregion
 
