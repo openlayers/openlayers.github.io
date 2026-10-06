@@ -48377,12 +48377,11 @@ var Draw = class extends PointerInteraction {
 		/** @type {import("../coordinate.js").Coordinate} */
 		let last;
 		while (coordinate.length < stride) coordinate.push(0);
-		const finishCoordinate = this.finishCoordinate_;
 		if (this.mode_ === "Point") last = sketchCoords;
 		else if (this.mode_ === "Polygon") {
 			coordinates = sketchCoords[0];
 			last = coordinates[coordinates.length - 1];
-			if (finishCoordinate && this.atFinish_(map.getPixelFromCoordinate(coordinate))) coordinate = finishCoordinate.slice();
+			if (this.atFinish_(map.getPixelFromCoordinate(coordinate)) && this.finishCoordinate_) coordinate = this.finishCoordinate_.slice();
 		} else {
 			coordinates = sketchCoords;
 			last = coordinates[coordinates.length - 1];
