@@ -128080,8 +128080,7 @@ var Polyline = class extends TextFeature {
 		geometry = transformGeometryWithOptions(geometry, true, this.adaptOptions(options));
 		const flatCoordinates = geometry.getFlatCoordinates();
 		const stride = geometry.getStride();
-		flipXY(flatCoordinates, 0, flatCoordinates.length, stride, flatCoordinates);
-		return encodeDeltas(flatCoordinates, stride, this.factor_);
+		return encodeDeltas(flipXY(flatCoordinates, 0, flatCoordinates.length, stride), stride, this.factor_);
 	}
 };
 /**
