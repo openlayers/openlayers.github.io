@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>Custom Controls</title>
+    <title>Screen Capture Control</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/solid.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/brands.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./theme/ol.css">
     <link rel="stylesheet" type="text/css" href="./theme/site.css">
-    <link rel="stylesheet" type="text/css" href="custom-controls.css">
+    <link rel="stylesheet" type="text/css" href="screen-capture.css">
     <link rel="icon" type="image/svg+xml" href="./theme/img/logo-light.svg" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href="./theme/img/logo-dark.svg" media="(prefers-color-scheme: dark)" />
   </head>
@@ -61,7 +61,7 @@
         <a href="#" id="codepen-button" class="btn btn-link float-end">
           <i class="fab fa-codepen fa-lg"></i> Edit
         </a>
-        <h4 id="title">Custom Controls</h4>
+        <h4 id="title">Screen Capture Control</h4>
         <p class="tags">
           <span class="badge-group">
             <a
@@ -73,11 +73,11 @@
               data-title="custom"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./custom-circle-render.html&quot;&gt;Custom Circle Render&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./custom-controls.html&quot;&gt;Custom Controls&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./custom-controls.html&quot;&gt;Custom Controls&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./custom-hit-detection-renderer.html&quot;&gt;Custom Hit Detection Render&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./custom-interactions.html&quot;&gt;Custom Interactions&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./button-title.html&quot;&gt;Custom Tooltips&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./screen-capture.html&quot;&gt;Screen Capture Control&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./screen-capture.html&quot;&gt;Screen Capture Control&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./style-renderer.html&quot;&gt;Style renderer&lt;/a&gt;
                 &lt;/ul&gt;"
               tabindex="0"
@@ -92,9 +92,9 @@
               data-bs-target="#tag-example-list"
               data-title="control"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./custom-controls.html&quot;&gt;Custom Controls&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./custom-controls.html&quot;&gt;Custom Controls&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./navigation-controls.html&quot;&gt;Navigation Controls&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./screen-capture.html&quot;&gt;Screen Capture Control&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./screen-capture.html&quot;&gt;Screen Capture Control&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./zoomslider.html&quot;&gt;Zoom Sliders&lt;/a&gt;
                 &lt;/ul&gt;"
               tabindex="0"
@@ -102,31 +102,60 @@
           </span>
           <span class="badge-group">
             <a
-              href="./index.html?q=rotate" class="badge badge-info">rotate</a
+              href="./index.html?q=capture" class="badge badge-info">capture</a
             ><a
               class="badge badge-info tag-modal-toggle"
               data-bs-toggle="modal"
               data-bs-target="#tag-example-list"
-              data-title="rotate"
+              data-title="capture"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./custom-controls.html&quot;&gt;Custom Controls&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./drag-rotate-and-zoom.html&quot;&gt;Drag, Rotate, and Zoom&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./full-screen-drag-rotate-and-zoom.html&quot;&gt;Full Screen Drag, Rotate, and Zoom&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./modify-scale-and-rotate.html&quot;&gt;Scale and Rotate using Modify Interaction&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./screen-capture.html&quot;&gt;Screen Capture Control&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >1</a>
+          </span>
+          <span class="badge-group">
+            <a
+              href="./index.html?q=export" class="badge badge-info">export</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="export"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./export-pdf.html&quot;&gt;Export PDF example&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./export-map.html&quot;&gt;Map Export&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./print-to-scale.html&quot;&gt;Print to scale example&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./screen-capture.html&quot;&gt;Screen Capture Control&lt;/a&gt;
                 &lt;/ul&gt;"
               tabindex="0"
               >4</a>
           </span>
           <span class="badge-group">
             <a
-              href="./index.html?q=north" class="badge badge-info">north</a
+              href="./index.html?q=png" class="badge badge-info">png</a
             ><a
               class="badge badge-info tag-modal-toggle"
               data-bs-toggle="modal"
               data-bs-target="#tag-example-list"
-              data-title="north"
+              data-title="png"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./custom-controls.html&quot;&gt;Custom Controls&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./export-map.html&quot;&gt;Map Export&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./screen-capture.html&quot;&gt;Screen Capture Control&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >2</a>
+          </span>
+          <span class="badge-group">
+            <a
+              href="./index.html?q=screenshot" class="badge badge-info">screenshot</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="screenshot"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./screen-capture.html&quot;&gt;Screen Capture Control&lt;/a&gt;
                 &lt;/ul&gt;"
               tabindex="0"
               >1</a>
@@ -140,13 +169,47 @@
               data-bs-target="#tag-example-list"
               data-title="svg"
               data-content="&lt;ul class=&quot;list-group&quot;&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./custom-controls.html&quot;&gt;Custom Controls&lt;/a&gt;
-                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./screen-capture.html&quot;&gt;Screen Capture Control&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./custom-controls.html&quot;&gt;Custom Controls&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./screen-capture.html&quot;&gt;Screen Capture Control&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./svg-layer.html&quot;&gt;SVG Layer&lt;/a&gt;
                 &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./wms-image-svg.html&quot;&gt;WMS loader with SVG format&lt;/a&gt;
                 &lt;/ul&gt;"
               tabindex="0"
               >4</a>
+          </span>
+          <span class="badge-group">
+            <a
+              href="./index.html?q=button" class="badge badge-info">button</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="button"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./screen-capture.html&quot;&gt;Screen Capture Control&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >1</a>
+          </span>
+          <span class="badge-group">
+            <a
+              href="./index.html?q=canvas" class="badge badge-info">canvas</a
+            ><a
+              class="badge badge-info tag-modal-toggle"
+              data-bs-toggle="modal"
+              data-bs-target="#tag-example-list"
+              data-title="canvas"
+              data-content="&lt;ul class=&quot;list-group&quot;&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./canvas-tiles.html&quot;&gt;Canvas Tiles&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./canvas-tiles-tms.html&quot;&gt;Custom Canvas Tiles&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./earthquake-custom-symbol.html&quot;&gt;Earthquakes with custom symbols&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./icon-negative.html&quot;&gt;Icon Pixel Operations&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./render-geometry.html&quot;&gt;Render geometries to a canvas&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action active&quot; href=&quot;./screen-capture.html&quot;&gt;Screen Capture Control&lt;/a&gt;
+                &lt;li&gt;&lt;a class=&quot;list-group-item list-group-item-action&quot; href=&quot;./canvas-gradient-pattern.html&quot;&gt;Styling feature with CanvasGradient or CanvasPattern&lt;/a&gt;
+                &lt;/ul&gt;"
+              tabindex="0"
+              >7</a>
           </span>
         </p>
         <div class="modal modal-tag-example" id="tag-example-list" tabindex="-1" role="dialog" aria-labelledby="tag-example-title" aria-hidden="true">
@@ -170,8 +233,8 @@
       </div>
 
       <div class="row-fluid">
-        <p id="shortdesc">Shows how to create custom controls.</p>
-        <div id="docs"><p>This example creates a &quot;rotate to north&quot; control with an inline SVG north arrow. The control&#39;s <code>render</code> method rotates the arrow together with the map, so it always points north, and hides the control with the <code>ol-hidden</code> class when the map is not rotated. The control replaces the default <code>ol/control/Rotate</code> control, which is left out of the map&#39;s controls. Use <code>Alt+Shift+Drag</code> to rotate the map.</p>
+        <p id="shortdesc">A custom control that captures the map as a PNG image.</p>
+        <div id="docs"><p>This example shows a custom control that captures the current map as an image. Click the camera button to render the map into a canvas and show a preview on top of the map. From the preview, the image can be downloaded as a PNG file with a time stamped file name, or discarded to return to the map. The layer attributions are drawn onto the captured image.</p>
 </div>
       </div>
 
@@ -183,32 +246,35 @@ import View from &#x27;ol/View.js&#x27;;
 import Control from &#x27;ol/control/Control.js&#x27;;
 import {defaults as defaultControls} from &#x27;ol/control/defaults.js&#x27;;
 import TileLayer from &#x27;ol/layer/Tile.js&#x27;;
+import {fromLonLat} from &#x27;ol/proj.js&#x27;;
 import OSM from &#x27;ol/source/OSM.js&#x27;;
 
 //
-// Define rotate to north control.
+// Define the screen capture control.
 //
 
-const northArrow &#x3D;
-  &#x27;&lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;currentColor&quot;&gt;&#x27; +
-  &#x27;&lt;path d&#x3D;&quot;M12 2 5 21l7-4z&quot;/&gt;&#x27; +
-  &#x27;&lt;path d&#x3D;&quot;M12 2l7 19-7-4z&quot; opacity&#x3D;&quot;.5&quot;/&gt;&#x27; +
-  &#x27;&lt;/svg&gt;&#x27;;
+const cameraIcon &#x3D;
+  &#x27;&lt;svg xmlns&#x3D;&quot;http://www.w3.org/2000/svg&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; &#x27; +
+  &#x27;stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;&#x27; +
+  &#x27;&lt;path d&#x3D;&quot;M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z&quot;/&gt;&#x27; +
+  &#x27;&lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;13&quot; r&#x3D;&quot;4&quot;/&gt;&lt;/svg&gt;&#x27;;
 
-class RotateNorthControl extends Control {
+class ScreenCaptureControl extends Control {
   /**
-   * @param {Object} [opt_options] Control options.
+   * @param {Object} [options] Control options.
+   * @param {HTMLElement|string} [options.target] Specify a target if you want
+   * the control to be rendered outside of the map&#x27;s viewport.
    */
-  constructor(opt_options) {
-    const options &#x3D; opt_options || {};
+  constructor(options) {
+    options &#x3D; options || {};
 
     const button &#x3D; document.createElement(&#x27;button&#x27;);
     button.type &#x3D; &#x27;button&#x27;;
-    button.title &#x3D; &#x27;Rotate to north&#x27;;
-    button.innerHTML &#x3D; northArrow;
+    button.title &#x3D; &#x27;Capture the map&#x27;;
+    button.innerHTML &#x3D; cameraIcon;
 
     const element &#x3D; document.createElement(&#x27;div&#x27;);
-    element.className &#x3D; &#x27;rotate-north ol-unselectable ol-control&#x27;;
+    element.className &#x3D; &#x27;screen-capture ol-unselectable ol-control&#x27;;
     element.appendChild(button);
 
     super({
@@ -217,53 +283,168 @@ class RotateNorthControl extends Control {
     });
 
     /**
-     * The north arrow, rotated together with the map.
-     * @type {SVGElement}
+     * The preview shown on top of the map after a capture.
+     * @type {HTMLElement|null}
      * @private
      */
-    this.arrow_ &#x3D; button.querySelector(&#x27;svg&#x27;);
+    this.preview_ &#x3D; null;
 
     /**
-     * The rotation the arrow was last rendered with.
-     * @type {number|undefined}
+     * Object URL of the captured image.
+     * @type {string|null}
      * @private
      */
-    this.rotation_ &#x3D; undefined;
+    this.imageUrl_ &#x3D; null;
 
-    button.addEventListener(&#x27;click&#x27;, this.handleRotateNorth.bind(this), false);
-  }
-
-  handleRotateNorth() {
-    this.getMap().getView().animate({rotation: 0, duration: 250});
+    button.addEventListener(&#x27;click&#x27;, this.handleCapture.bind(this), false);
   }
 
   /**
-   * Keep the arrow pointing north, and hide the control when the map is
-   * already rotated to north.
-   * @param {import(&#x27;ol/MapEvent.js&#x27;).default} mapEvent Map event.
+   * @param {import(&#x27;ol/Map.js&#x27;).default|null} map Map.
    * @override
    */
-  render(mapEvent) {
-    const frameState &#x3D; mapEvent.frameState;
-    if (!frameState) {
-      return;
+  setMap(map) {
+    this.closePreview_();
+    super.setMap(map);
+  }
+
+  /**
+   * Render the map into a canvas and show a preview.
+   */
+  handleCapture() {
+    const map &#x3D; this.getMap();
+    const target &#x3D; map.getTargetElement();
+    const size &#x3D; map.getSize();
+    const canvas &#x3D; document.createElement(&#x27;canvas&#x27;);
+    canvas.width &#x3D; size[0];
+    canvas.height &#x3D; size[1];
+
+    map.once(&#x27;rendercomplete&#x27;, (event) &#x3D;&gt; {
+      const attributions &#x3D; map
+        .getAllLayers()
+        .flatMap((layer) &#x3D;&gt; layer.getAttributions(event.frameState));
+      map.setTarget(target);
+      map.render();
+      Promise.all(attributions).then((resolved) &#x3D;&gt; {
+        drawAttributions(canvas, resolved);
+        canvas.toBlob((blob) &#x3D;&gt; this.showPreview_(blob, size), &#x27;image/png&#x27;);
+      });
+    });
+    map.setTarget(canvas);
+  }
+
+  /**
+   * @param {Blob} blob PNG image.
+   * @param {import(&#x27;ol/size.js&#x27;).Size} size Map size.
+   * @private
+   */
+  showPreview_(blob, size) {
+    this.closePreview_();
+    this.imageUrl_ &#x3D; URL.createObjectURL(blob);
+
+    const image &#x3D; document.createElement(&#x27;img&#x27;);
+    image.src &#x3D; this.imageUrl_;
+    image.width &#x3D; size[0] / 2;
+    image.height &#x3D; size[1] / 2;
+    image.alt &#x3D; &#x27;Map capture preview&#x27;;
+
+    const download &#x3D; document.createElement(&#x27;button&#x27;);
+    download.type &#x3D; &#x27;button&#x27;;
+    download.textContent &#x3D; &#x27;Download picture&#x27;;
+    download.addEventListener(&#x27;click&#x27;, () &#x3D;&gt; {
+      this.download_(blob);
+      this.closePreview_();
+    });
+
+    const cancel &#x3D; document.createElement(&#x27;button&#x27;);
+    cancel.type &#x3D; &#x27;button&#x27;;
+    cancel.textContent &#x3D; &#x27;Return to map&#x27;;
+    cancel.addEventListener(&#x27;click&#x27;, () &#x3D;&gt; this.closePreview_());
+
+    const buttons &#x3D; document.createElement(&#x27;div&#x27;);
+    buttons.appendChild(download);
+    buttons.appendChild(cancel);
+
+    const preview &#x3D; document.createElement(&#x27;div&#x27;);
+    preview.className &#x3D; &#x27;screen-capture-preview&#x27;;
+    preview.appendChild(image);
+    preview.appendChild(buttons);
+
+    this.getMap().getOverlayContainerStopEvent().appendChild(preview);
+    this.preview_ &#x3D; preview;
+  }
+
+  /**
+   * @private
+   */
+  closePreview_() {
+    if (this.preview_) {
+      this.preview_.remove();
+      this.preview_ &#x3D; null;
     }
-    const rotation &#x3D; frameState.viewState.rotation;
-    if (rotation !&#x3D;&#x3D; this.rotation_) {
-      this.arrow_.style.transform &#x3D; &#x27;rotate(&#x27; + rotation + &#x27;rad)&#x27;;
-      this.element.classList.toggle(&#x27;ol-hidden&#x27;, rotation &#x3D;&#x3D;&#x3D; 0);
-      this.rotation_ &#x3D; rotation;
+    if (this.imageUrl_) {
+      URL.revokeObjectURL(this.imageUrl_);
+      this.imageUrl_ &#x3D; null;
     }
+  }
+
+  /**
+   * Save the image as a PNG file named after the current date and time.
+   * @param {Blob} blob PNG image.
+   * @private
+   */
+  download_(blob) {
+    const link &#x3D; document.createElement(&#x27;a&#x27;);
+    link.href &#x3D; URL.createObjectURL(blob);
+    link.download &#x3D; &#x27;screencapture_&#x27; + timestamp() + &#x27;.png&#x27;;
+    link.click();
+    URL.revokeObjectURL(link.href);
   }
 }
 
+/**
+ * Draw the attributions in the lower right corner of the canvas.
+ * @param {HTMLCanvasElement} canvas Canvas.
+ * @param {Array&lt;string&gt;} attributions Attributions (may contain HTML).
+ */
+function drawAttributions(canvas, attributions) {
+  const element &#x3D; document.createElement(&#x27;div&#x27;);
+  element.innerHTML &#x3D; attributions.join(&#x27; &#x27;);
+  const text &#x3D; element.textContent.trim();
+  if (!text) {
+    return;
+  }
+  const context &#x3D; canvas.getContext(&#x27;2d&#x27;);
+  const padding &#x3D; 4;
+  context.font &#x3D; &#x27;12px sans-serif&#x27;;
+  context.textBaseline &#x3D; &#x27;bottom&#x27;;
+  context.textAlign &#x3D; &#x27;right&#x27;;
+  const width &#x3D; context.measureText(text).width + 2 * padding;
+  const height &#x3D; 12 + 2 * padding;
+  context.fillStyle &#x3D; &#x27;rgba(255, 255, 255, 0.75)&#x27;;
+  context.fillRect(canvas.width - width, canvas.height - height, width, height);
+  context.fillStyle &#x3D; &#x27;black&#x27;;
+  context.fillText(text, canvas.width - padding, canvas.height - padding);
+}
+
+/**
+ * @return {string} The current local date and time as &#x60;YYYY-MM-DD_HH-MM-SS&#x60;.
+ */
+function timestamp() {
+  const now &#x3D; new Date();
+  const pad &#x3D; (n) &#x3D;&gt; String(n).padStart(2, &#x27;0&#x27;);
+  return (
+    &#x60;${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_&#x60; +
+    &#x60;${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}&#x60;
+  );
+}
+
 //
-// Create map, giving it a rotate to north control instead of the default
-// rotate control.
+// Create the map, giving it a screen capture control.
 //
 
 const map &#x3D; new Map({
-  controls: defaultControls({rotate: false}).extend([new RotateNorthControl()]),
+  controls: defaultControls().extend([new ScreenCaptureControl()]),
   layers: [
     new TileLayer({
       source: new OSM(),
@@ -271,9 +452,8 @@ const map &#x3D; new Map({
   ],
   target: &#x27;map&#x27;,
   view: new View({
-    center: [0, 0],
-    zoom: 3,
-    rotation: 1,
+    center: fromLonLat([80.7, 7.8]),
+    zoom: 7,
   }),
 });
 </code></pre>
@@ -287,29 +467,50 @@ const map &#x3D; new Map({
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;Custom Controls&lt;/title&gt;
+    &lt;title&gt;Screen Capture Control&lt;/title&gt;
     &lt;link rel="stylesheet" href="node_modules/ol/ol.css"&gt;
     &lt;style&gt;
       .map {
         width: 100%;
         height: 400px;
       }
-      .rotate-north {
+      .screen-capture {
         top: 65px;
         left: .5em;
       }
-      .ol-touch .rotate-north {
+      .ol-touch .screen-capture {
         top: 80px;
       }
-      .rotate-north svg {
+      .screen-capture button svg {
         width: 1em;
         height: 1em;
         vertical-align: middle;
       }
-      .rotate-north.ol-hidden {
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity .25s linear, visibility 0s linear .25s;
+      .screen-capture-preview {
+        pointer-events: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: .75em;
+        background-color: rgba(255, 255, 255, .8);
+      }
+      .screen-capture-preview img {
+        outline: 2px solid white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .5);
+      }
+      .screen-capture-preview button {
+        border: 1px solid #555555;
+        border-radius: 8px;
+        margin: 0 .25em;
+        padding: .4em .8em;
+        font-size: 1em;
+        cursor: pointer;
       }
     &lt;/style&gt;
   &lt;/head&gt;
@@ -327,7 +528,7 @@ const map &#x3D; new Map({
         <summary class="source-heading">package.json</summary>
         <div class="row-fluid">
           <pre><code id="example-pkg-source" class="language-json">{
-  &quot;name&quot;: &quot;custom-controls&quot;,
+  &quot;name&quot;: &quot;screen-capture&quot;,
   &quot;dependencies&quot;: {
     &quot;ol&quot;: &quot;10.11.1-dev&quot;
   },
@@ -344,7 +545,7 @@ const map &#x3D; new Map({
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="module" src="custom-controls.js"></script>
+    <script type="module" src="screen-capture.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/toolbar/prism-toolbar.min.js"></script>
