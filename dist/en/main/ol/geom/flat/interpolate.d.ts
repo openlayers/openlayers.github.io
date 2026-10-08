@@ -14,11 +14,12 @@ export function interpolatePoint(flatCoordinates: Array<number>, offset: number,
  * @param {number} offset Offset.
  * @param {number} end End.
  * @param {number} stride Stride.
- * @param {number} m M.
+ * @param {number} m M, or the 2D length along the line string if `hasM` is `false`.
  * @param {boolean} extrapolate Extrapolate.
+ * @param {boolean} [hasM] Whether the last ordinate of each coordinate is M (default is `true`).
  * @return {import("../../coordinate.js").Coordinate|null} Coordinate.
  */
-export function lineStringCoordinateAtM(flatCoordinates: Array<number>, offset: number, end: number, stride: number, m: number, extrapolate: boolean): import("../../coordinate.js").Coordinate | null;
+export function lineStringCoordinateAtM(flatCoordinates: Array<number>, offset: number, end: number, stride: number, m: number, extrapolate: boolean, hasM?: boolean): import("../../coordinate.js").Coordinate | null;
 /**
  * @param {Array<number>} flatCoordinates Flat coordinates.
  * @param {number} offset Offset.
@@ -27,7 +28,10 @@ export function lineStringCoordinateAtM(flatCoordinates: Array<number>, offset: 
  * @param {number} m M.
  * @param {boolean} extrapolate Extrapolate.
  * @param {boolean} interpolate Interpolate.
+ * @param {boolean} [hasM] Whether the last ordinate of each coordinate is M (default is `true`).
+ * If `false`, `m` is the 2D length along the line strings, including the gaps between them
+ * when `interpolate` is `true`.
  * @return {import("../../coordinate.js").Coordinate|null} Coordinate.
  */
-export function lineStringsCoordinateAtM(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, m: number, extrapolate: boolean, interpolate: boolean): import("../../coordinate.js").Coordinate | null;
+export function lineStringsCoordinateAtM(flatCoordinates: Array<number>, offset: number, ends: Array<number>, stride: number, m: number, extrapolate: boolean, interpolate: boolean, hasM?: boolean): import("../../coordinate.js").Coordinate | null;
 //# sourceMappingURL=interpolate.d.ts.map

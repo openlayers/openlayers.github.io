@@ -1405,7 +1405,7 @@ Closest point.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js">geom/LineString.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L208">line 208</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L210">line 210</a>
         </div>
         
     </div>
@@ -1568,7 +1568,7 @@ Coordinate of the interpolated point.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js">geom/LineString.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L168">line 168</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L172">line 172</a>
         </div>
         
     </div>
@@ -1584,9 +1584,12 @@ Coordinate of the interpolated point.
         <p>Returns the coordinate at <code>m</code> using linear interpolation, or <code>null</code> if no
 such coordinate exists.</p>
 <p><code>extrapolate</code> controls extrapolation beyond the range of Ms in the
-MultiLineString. If <code>extrapolate</code> is <code>true</code> then Ms less than the first
+LineString. If <code>extrapolate</code> is <code>true</code> then Ms less than the first
 M will return the first coordinate and Ms greater than the last M will
 return the last coordinate.</p>
+<p>If the layout has no M (<code>XY</code> or <code>XYZ</code>), <code>m</code> is the 2D length along the
+LineString, measured from its first coordinate in the units of the
+coordinates (like <a href="module-ol_geom_LineString-LineString.html#getLength"><code>getLength</code></a>).</p>
     </div>
     
 
@@ -1733,7 +1736,7 @@ Coordinate.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js">geom/LineString.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L189">line 189</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L191">line 191</a>
         </div>
         
     </div>
@@ -2328,7 +2331,7 @@ Layout.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js">geom/LineString.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L225">line 225</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L227">line 227</a>
         </div>
         
     </div>
@@ -2603,7 +2606,7 @@ Revision.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js">geom/LineString.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L275">line 275</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L277">line 277</a>
         </div>
         
     </div>
@@ -2831,7 +2834,7 @@ Contains coordinate.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js">geom/LineString.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L286">line 286</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L288">line 288</a>
         </div>
         
     </div>
@@ -3812,7 +3815,7 @@ coordinates in place.</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js">geom/LineString.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L304">line 304</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/geom/LineString.js#L306">line 306</a>
         </div>
         
     </div>
