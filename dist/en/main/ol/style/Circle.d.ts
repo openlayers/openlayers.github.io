@@ -32,6 +32,15 @@ export type Options = {
      */
     rotateWithView?: boolean | undefined;
     /**
+     * Placement.
+     */
+    placement?: import("./Image.js").ImageStylePlacement | undefined;
+    /**
+     * Repeat interval. When set, the circle will be repeated at this interval, which specifies
+     * the distance between two anchors in pixels. Only available when `placement` is set to `'line'`.
+     */
+    repeat?: number | undefined;
+    /**
      * Declutter mode
      */
     declutterMode?: import("./Style.js").DeclutterMode | undefined;
@@ -48,6 +57,9 @@ export type Options = {
  * (positive rotation clockwise, meaningful only when used in conjunction with a two dimensional scale).
  * @property {boolean} [rotateWithView=false] Whether to rotate the shape with the view
  * (meaningful only when used in conjunction with a two dimensional scale).
+ * @property {import("./Image.js").ImageStylePlacement} [placement='point'] Placement.
+ * @property {number} [repeat] Repeat interval. When set, the circle will be repeated at this interval, which specifies
+ * the distance between two anchors in pixels. Only available when `placement` is set to `'line'`.
  * @property {import('./Style.js').DeclutterMode} [declutterMode] Declutter mode
  */
 /**

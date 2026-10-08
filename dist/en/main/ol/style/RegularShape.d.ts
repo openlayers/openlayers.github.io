@@ -47,6 +47,15 @@ export type Options = {
      */
     scale?: number | import("../size.js").Size | undefined;
     /**
+     * Placement.
+     */
+    placement?: import("./Image.js").ImageStylePlacement | undefined;
+    /**
+     * Repeat interval. When set, the shape will be repeated at this interval, which specifies
+     * the distance between two anchors in pixels. Only available when `placement` is set to `'line'`.
+     */
+    repeat?: number | undefined;
+    /**
      * Declutter mode.
      */
     declutterMode?: import("./Style.js").DeclutterMode | undefined;
@@ -101,6 +110,9 @@ export type RenderOptions = {
  * @property {boolean} [rotateWithView=false] Whether to rotate the shape with the view.
  * @property {number|import("../size.js").Size} [scale=1] Scale. Unless two dimensional scaling is required a better
  * result may be obtained with appropriate settings for `radius` and `radius2`.
+ * @property {import("./Image.js").ImageStylePlacement} [placement='point'] Placement.
+ * @property {number} [repeat] Repeat interval. When set, the shape will be repeated at this interval, which specifies
+ * the distance between two anchors in pixels. Only available when `placement` is set to `'line'`.
  * @property {import('./Style.js').DeclutterMode} [declutterMode] Declutter mode.
  */
 /**

@@ -97,6 +97,15 @@ export type Options = {
      */
     src?: string | undefined;
     /**
+     * Icon placement.
+     */
+    placement?: import("./Image.js").ImageStylePlacement | undefined;
+    /**
+     * Repeat interval. When set, the icon will be repeated at this interval, which specifies
+     * the distance between two icon anchors in pixels. Only available when `placement` is set to `'line'`.
+     */
+    repeat?: number | undefined;
+    /**
      * Declutter mode.
      */
     declutterMode?: import("./Style.js").DeclutterMode | undefined;

@@ -80,9 +80,11 @@
             <li data-name="getimage"><a href="module-ol_style_RegularShape-RegularShape.html#getImage">getImage</a>
             <li data-name="getopacity"><a href="module-ol_style_RegularShape-RegularShape.html#getOpacity">getOpacity</a>
             <li data-name="getorigin"><a href="module-ol_style_RegularShape-RegularShape.html#getOrigin">getOrigin</a>
+            <li data-name="getplacement"><a href="module-ol_style_RegularShape-RegularShape.html#getPlacement">getPlacement</a>
             <li data-name="getpoints"><a href="module-ol_style_RegularShape-RegularShape.html#getPoints">getPoints</a>
             <li data-name="getradius"><a href="module-ol_style_RegularShape-RegularShape.html#getRadius">getRadius</a>
             <li data-name="getradius2"><a href="module-ol_style_RegularShape-RegularShape.html#getRadius2">getRadius2</a>
+            <li data-name="getrepeat"><a href="module-ol_style_RegularShape-RegularShape.html#getRepeat">getRepeat</a>
             <li data-name="getrotatewithview"><a href="module-ol_style_RegularShape-RegularShape.html#getRotateWithView">getRotateWithView</a>
             <li data-name="getrotation"><a href="module-ol_style_RegularShape-RegularShape.html#getRotation">getRotation</a>
             <li data-name="getscale"><a href="module-ol_style_RegularShape-RegularShape.html#getScale">getScale</a>
@@ -91,8 +93,10 @@
             <li data-name="setdisplacement"><a href="module-ol_style_RegularShape-RegularShape.html#setDisplacement">setDisplacement</a>
             <li data-name="setfill"><a href="module-ol_style_RegularShape-RegularShape.html#setFill">setFill</a>
             <li data-name="setopacity"><a href="module-ol_style_RegularShape-RegularShape.html#setOpacity">setOpacity</a>
+            <li data-name="setplacement"><a href="module-ol_style_RegularShape-RegularShape.html#setPlacement">setPlacement</a>
             <li data-name="setradius"><a href="module-ol_style_RegularShape-RegularShape.html#setRadius">setRadius</a>
             <li data-name="setradius2"><a href="module-ol_style_RegularShape-RegularShape.html#setRadius2">setRadius2</a>
+            <li data-name="setrepeat"><a href="module-ol_style_RegularShape-RegularShape.html#setRepeat">setRepeat</a>
             <li data-name="setrotatewithview"><a href="module-ol_style_RegularShape-RegularShape.html#setRotateWithView">setRotateWithView</a>
             <li data-name="setrotation"><a href="module-ol_style_RegularShape-RegularShape.html#setRotation">setRotation</a>
             <li data-name="setscale"><a href="module-ol_style_RegularShape-RegularShape.html#setScale">setScale</a>
@@ -160,7 +164,7 @@ a regular polygon when <code>radius</code> is provided, or a star when both <cod
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L59">line 59</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L62">line 62</a>
         </div>
         
     </div>
@@ -465,6 +469,59 @@ result may be obtained with appropriate settings for <code>radius</code> and <co
 
         <tr class="">
             
+                <td class="name"><code>placement</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_Image.html#~ImageStylePlacement">ImageStylePlacement</a></span>
+
+
+                
+                    (defaults to 'point')
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Placement.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>repeat</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Repeat interval. When set, the shape will be repeated at this interval, which specifies
+the distance between two anchors in pixels. Only available when <code>placement</code> is set to <code>'line'</code>.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
                 <td class="name"><code>declutterMode</code></td>
             
 
@@ -584,7 +641,7 @@ result may be obtained with appropriate settings for <code>radius</code> and <co
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L154">line 154</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L159">line 159</a>
         </div>
         
     </div>
@@ -674,7 +731,7 @@ The cloned style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L180">line 180</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L187">line 187</a>
         </div>
         
     </div>
@@ -765,7 +822,7 @@ Anchor.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L197">line 197</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L204">line 204</a>
         </div>
         
     </div>
@@ -857,7 +914,7 @@ Shape's rotation in radians.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L148">line 148</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L179">line 179</a>
         </div>
         
     </div>
@@ -949,7 +1006,7 @@ Shape's declutter mode
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L139">line 139</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L170">line 170</a>
         </div>
         
     </div>
@@ -1039,7 +1096,7 @@ Shape's center displacement
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L206">line 206</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L213">line 213</a>
         </div>
         
     </div>
@@ -1129,7 +1186,7 @@ Fill style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L240">line 240</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L247">line 247</a>
         </div>
         
     </div>
@@ -1266,7 +1323,7 @@ Image or Canvas element.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L95">line 95</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L126">line 126</a>
         </div>
         
     </div>
@@ -1356,7 +1413,7 @@ Opacity.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L303">line 303</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L310">line 310</a>
         </div>
         
     </div>
@@ -1434,6 +1491,98 @@ Origin.
             
 <dt class="">
     
+    <div class="nameContainer inherited">
+        <div class="anchor" id="getPlacement">
+        </div>
+        <h4 class="name">
+            getPlacement<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{<a href="module-ol_style_Image.html#~ImageStylePlacement">ImageStylePlacement</a>}</span>
+            
+                <span class="inherited"><a href="module-ol_style_Image-ImageStyle.html#getPlacement">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L188">line 188</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the placement.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Placement.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
     <div class="nameContainer">
         <div class="anchor" id="getPoints">
         </div>
@@ -1446,7 +1595,7 @@ Origin.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L312">line 312</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L319">line 319</a>
         </div>
         
     </div>
@@ -1536,7 +1685,7 @@ Number of points for stars and regular polygons.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L321">line 321</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L328">line 328</a>
         </div>
         
     </div>
@@ -1626,7 +1775,7 @@ Radius.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L343">line 343</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L350">line 350</a>
         </div>
         
     </div>
@@ -1705,6 +1854,98 @@ Radius2.
 <dt class="">
     
     <div class="nameContainer inherited">
+        <div class="anchor" id="getRepeat">
+        </div>
+        <h4 class="name">
+            getRepeat<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number | undefined}</span>
+            
+                <span class="inherited"><a href="module-ol_style_Image-ImageStyle.html#getRepeat">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L207">line 207</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the repeat interval.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Repeat interval in pixels.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
         <div class="anchor" id="getRotateWithView">
         </div>
         <h4 class="name">
@@ -1718,7 +1959,7 @@ Radius2.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L104">line 104</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L135">line 135</a>
         </div>
         
     </div>
@@ -1810,7 +2051,7 @@ Rotate with map.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L113">line 113</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L144">line 144</a>
         </div>
         
     </div>
@@ -1902,7 +2143,7 @@ Rotation.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L122">line 122</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L153">line 153</a>
         </div>
         
     </div>
@@ -1992,7 +2233,7 @@ Scale.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L366">line 366</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L373">line 373</a>
         </div>
         
     </div>
@@ -2082,7 +2323,7 @@ Size.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L375">line 375</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L382">line 382</a>
         </div>
         
     </div>
@@ -2174,7 +2415,7 @@ Stroke style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L229">line 229</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L297">line 297</a>
         </div>
         
     </div>
@@ -2300,7 +2541,7 @@ Stroke style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L215">line 215</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L222">line 222</a>
         </div>
         
     </div>
@@ -2431,7 +2672,7 @@ Stroke style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L239">line 239</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L307">line 307</a>
         </div>
         
     </div>
@@ -2545,6 +2786,134 @@ Stroke style.
             
 <dt class="">
     
+    <div class="nameContainer inherited">
+        <div class="anchor" id="setPlacement">
+        </div>
+        <h4 class="name">
+            setPlacement<span class="signature">(placement)</span>
+            
+                <span class="inherited"><a href="module-ol_style_Image-ImageStyle.html#setPlacement">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L198">line 198</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Set the placement.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>placement</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_Image.html#~ImageStylePlacement">ImageStylePlacement</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Placement.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
     <div class="nameContainer">
         <div class="anchor" id="setRadius">
         </div>
@@ -2557,7 +2926,7 @@ Stroke style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L330">line 330</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L337">line 337</a>
         </div>
         
     </div>
@@ -2683,7 +3052,7 @@ Stroke style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L352">line 352</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L359">line 359</a>
         </div>
         
     </div>
@@ -2801,6 +3170,137 @@ Stroke style.
 <dt class="">
     
     <div class="nameContainer inherited">
+        <div class="anchor" id="setRepeat">
+        </div>
+        <h4 class="name">
+            setRepeat<span class="signature">(<span class="optional">repeat</span>)</span>
+            
+                <span class="inherited"><a href="module-ol_style_Image-ImageStyle.html#setRepeat">inherited</a></span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L216">line 216</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Set the repeat interval.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>repeat</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Repeat interval in pixels.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer inherited">
         <div class="anchor" id="setRotateWithView">
         </div>
         <h4 class="name">
@@ -2814,7 +3314,7 @@ Stroke style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L249">line 249</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L317">line 317</a>
         </div>
         
     </div>
@@ -2942,7 +3442,7 @@ Stroke style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L259">line 259</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L327">line 327</a>
         </div>
         
     </div>
@@ -3070,7 +3570,7 @@ Stroke style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js">style/Image.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L269">line 269</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Image.js#L337">line 337</a>
         </div>
         
     </div>
@@ -3199,7 +3699,7 @@ Stroke style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js">style/RegularShape.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L384">line 384</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/RegularShape.js#L391">line 391</a>
         </div>
         
     </div>

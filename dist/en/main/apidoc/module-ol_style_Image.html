@@ -63,6 +63,18 @@
           </div>
           <div class="navigation-list-wrapper">
             <ul class="navigation-list search-empty">
+<li class="item item-module toggle-manual toggle-manual-show" data-longname="module:ol/style/Image" data-name="ol/style/image">
+    <span class="title toggle">
+        <span class="fa fa-plus me-2 mt-1"></span>
+        <span><a href="module-ol_style_Image.html">ol​/style​/Image</a></span>
+    </span>
+    <div class="member-list" data-type="typedefs">
+        <span class="subtitle">Typedefs</span>
+        <ul>
+            <li data-name="imagestyleplacement"><a href="module-ol_style_Image.html#~ImageStylePlacement">ImageStylePlacement</a>
+            <li data-name="options"><a href="module-ol_style_Image.html#~Options">Options</a>
+        </ul>
+    </div>
               <li class="loading">Loading …
             </ul>
           </div>
@@ -165,6 +177,62 @@
                 
 <dt class="">
     <div class="nameContainer">
+        <div class="anchor" id="~ImageStylePlacement">
+        </div>
+        <h4 class="name">
+            ImageStylePlacement<span class="type-signature type 'point'">{'point'}</span> <span class="type-signature type 'line'">{'line'}</span> 
+            
+
+        </h4>
+    </div>
+    
+</dt>
+<dd class="">
+    
+    <div class="description">
+        <p>Default placement is <code>'point'</code>, meaning the symbolizer is only drawn for <code>Point</code>/<code>MultiPoint</code>
+geometries. For a <a href="module-ol_geom_LineString-LineString.html"><code>LineString</code></a>, <a href="module-ol_geom_MultiLineString-MultiLineString.html"><code>MultiLineString</code></a>,
+<a href="module-ol_geom_Polygon-Polygon.html"><code>Polygon</code></a> or <a href="module-ol_geom_MultiPolygon-MultiPolygon.html"><code>MultiPolygon</code></a> geometry, set <code>placement</code>
+to <code>'line'</code> to draw the symbolizer along the path (only the exterior ring for polygons), repeated at the <code>repeat</code>
+interval when set, and rotated according to <code>rotateWithView</code>. A single symbolizer at the geometry's own midpoint,
+using only the style's own fixed <code>rotation</code>, can be obtained with <code>placement: 'line'</code>, no <code>repeat</code>, and
+<code>rotateWithView: false</code>.</p>
+    </div>
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+</dd>
+
+            
+                
+<dt class="">
+    <div class="nameContainer">
         <div class="anchor" id="~Options">
         </div>
         <h4 class="name">
@@ -241,7 +309,9 @@
             </td>
 
             <td class="description last">
-                <p>If the image should get rotated with the view.</p>
+                <p>If the image should get rotated with the view. When <code>placement</code> is set to
+<code>'line'</code>, this also controls whether the symbolizer follows the local direction of the line (<code>true</code>) or keeps
+its own fixed <code>rotation</code> (<code>false</code>).</p>
                 
             </td>
         </tr>
@@ -314,6 +384,55 @@
 
             <td class="description last">
                 <p>Displacement.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>placement</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_Image.html#~ImageStylePlacement">ImageStylePlacement</a></span>
+
+
+                
+                    <br>(defaults to 'point')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Placement.</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>repeat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Repeat interval. When set, the symbolizer will be repeated at this interval, which
+specifies the distance between two anchors in pixels. Only available when <code>placement</code> is set to <code>'line'</code>.</p>
                 
             </td>
         </tr>

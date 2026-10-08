@@ -435,6 +435,9 @@ declare namespace ol {
                 export { _ol_geom_flat_length$lineStringLength as lineStringLength };
                 export { _ol_geom_flat_length$linearRingLength as linearRingLength };
             }
+            namespace lineanchors {
+                export { _ol_geom_flat_lineanchors$lineAnchors as lineAnchors };
+            }
             namespace orient {
                 export { _ol_geom_flat_orient$inflateEnds as inflateEnds };
                 export { _ol_geom_flat_orient$linearRingIsClockwise as linearRingIsClockwise };
@@ -1440,6 +1443,7 @@ import { intersectsLinearRingArray as _ol_geom_flat_intersectsextent$intersectsL
 import { intersectsLinearRingMultiArray as _ol_geom_flat_intersectsextent$intersectsLinearRingMultiArray } from '../../ol/geom/flat/intersectsextent.js';
 import { lineStringLength as _ol_geom_flat_length$lineStringLength } from '../../ol/geom/flat/length.js';
 import { linearRingLength as _ol_geom_flat_length$linearRingLength } from '../../ol/geom/flat/length.js';
+import { lineAnchors as _ol_geom_flat_lineanchors$lineAnchors } from '../../ol/geom/flat/lineanchors.js';
 import { inflateEnds as _ol_geom_flat_orient$inflateEnds } from '../../ol/geom/flat/orient.js';
 import { linearRingIsClockwise as _ol_geom_flat_orient$linearRingIsClockwise } from '../../ol/geom/flat/orient.js';
 import { linearRingsAreOriented as _ol_geom_flat_orient$linearRingsAreOriented } from '../../ol/geom/flat/orient.js';

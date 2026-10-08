@@ -1,11 +1,23 @@
 export default ImageStyle;
+/**
+ * Default placement is `'point'`, meaning the symbolizer is only drawn for `Point`/`MultiPoint`
+ * geometries. For a {@link module :ol/geom/LineString~LineString}, {@link module :ol/geom/MultiLineString~MultiLineString},
+ * {@link module :ol/geom/Polygon~Polygon} or {@link module :ol/geom/MultiPolygon~MultiPolygon} geometry, set `placement`
+ * to `'line'` to draw the symbolizer along the path (only the exterior ring for polygons), repeated at the `repeat`
+ * interval when set, and rotated according to `rotateWithView`. A single symbolizer at the geometry's own midpoint,
+ * using only the style's own fixed `rotation`, can be obtained with `placement: 'line'`, no `repeat`, and
+ * `rotateWithView: false`.
+ */
+export type ImageStylePlacement = "point" | "line";
 export type Options = {
     /**
      * Opacity.
      */
     opacity: number;
     /**
-     * If the image should get rotated with the view.
+     * If the image should get rotated with the view. When `placement` is set to
+     * `'line'`, this also controls whether the symbolizer follows the local direction of the line (`true`) or keeps
+     * its own fixed `rotation` (`false`).
      */
     rotateWithView: boolean;
     /**
@@ -21,17 +33,41 @@ export type Options = {
      */
     displacement: Array<number>;
     /**
+     * Placement.
+     */
+    placement?: ImageStylePlacement | undefined;
+    /**
+     * Repeat interval. When set, the symbolizer will be repeated at this interval, which
+     * specifies the distance between two anchors in pixels. Only available when `placement` is set to `'line'`.
+     */
+    repeat?: number | undefined;
+    /**
      * Declutter mode: `declutter`, `obstacle`, `none`.
      */
     declutterMode?: import("../style/Style.js").DeclutterMode | undefined;
 };
 /**
+ * @typedef {'point' | 'line'} ImageStylePlacement
+ * Default placement is `'point'`, meaning the symbolizer is only drawn for `Point`/`MultiPoint`
+ * geometries. For a {@link module:ol/geom/LineString~LineString}, {@link module:ol/geom/MultiLineString~MultiLineString},
+ * {@link module:ol/geom/Polygon~Polygon} or {@link module:ol/geom/MultiPolygon~MultiPolygon} geometry, set `placement`
+ * to `'line'` to draw the symbolizer along the path (only the exterior ring for polygons), repeated at the `repeat`
+ * interval when set, and rotated according to `rotateWithView`. A single symbolizer at the geometry's own midpoint,
+ * using only the style's own fixed `rotation`, can be obtained with `placement: 'line'`, no `repeat`, and
+ * `rotateWithView: false`.
+ */
+/**
  * @typedef {Object} Options
  * @property {number} opacity Opacity.
- * @property {boolean} rotateWithView If the image should get rotated with the view.
+ * @property {boolean} rotateWithView If the image should get rotated with the view. When `placement` is set to
+ * `'line'`, this also controls whether the symbolizer follows the local direction of the line (`true`) or keeps
+ * its own fixed `rotation` (`false`).
  * @property {number} rotation Rotation.
  * @property {number|import("../size.js").Size} scale Scale.
  * @property {Array<number>} displacement Displacement.
+ * @property {ImageStylePlacement} [placement='point'] Placement.
+ * @property {number} [repeat] Repeat interval. When set, the symbolizer will be repeated at this interval, which
+ * specifies the distance between two anchors in pixels. Only available when `placement` is set to `'line'`.
  * @property {import('../style/Style.js').DeclutterMode} [declutterMode] Declutter mode: `declutter`, `obstacle`, `none`.
  */
 /**
@@ -77,6 +113,16 @@ declare class ImageStyle {
      * @type {Array<number>}
      */
     private displacement_;
+    /**
+     * @private
+     * @type {ImageStylePlacement}
+     */
+    private placement_;
+    /**
+     * @private
+     * @type {number|undefined}
+     */
+    private repeat_;
     /**
      * @private
      * @type {import('../style/Style.js').DeclutterMode|undefined}
@@ -129,6 +175,31 @@ declare class ImageStyle {
      * @api
      */
     getDeclutterMode(): import("./Style.js").DeclutterMode | undefined;
+    /**
+     * Get the placement.
+     * @return {ImageStylePlacement} Placement.
+     * @api
+     */
+    getPlacement(): ImageStylePlacement;
+    /**
+     * Set the placement.
+     *
+     * @param {ImageStylePlacement} placement Placement.
+     * @api
+     */
+    setPlacement(placement: ImageStylePlacement): void;
+    /**
+     * Get the repeat interval.
+     * @return {number|undefined} Repeat interval in pixels.
+     * @api
+     */
+    getRepeat(): number | undefined;
+    /**
+     * Set the repeat interval.
+     * @param {number|undefined} [repeat] Repeat interval in pixels.
+     * @api
+     */
+    setRepeat(repeat?: number | undefined): void;
     /**
      * Get the anchor point in pixels. The anchor determines the center point for the
      * symbolizer.

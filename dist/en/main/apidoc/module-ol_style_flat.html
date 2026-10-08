@@ -1654,7 +1654,58 @@ with <code>scale</code>. (Expressions only in WebGL)</p>
             </td>
 
             <td class="description last">
-                <p>Whether to rotate the icon with the view. (Expressions only supported in Canvas)</p>
+                <p>Whether to rotate the icon with the view. When
+<code>icon-placement</code> is set to <code>'line'</code>, this also controls whether the icon follows the local direction of the line
+(<code>true</code>) or keeps its own fixed <code>icon-rotation</code> (<code>false</code>). (Expressions only supported in Canvas)</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>icon-placement</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~StringExpression">StringExpression</a></span>
+
+
+                
+                    <br>(defaults to 'point')
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Icon placement. (Canvas only)</p>
+                
+            </td>
+        </tr>
+
+	
+
+        <tr>
+            
+                <td class="name"><code>icon-repeat</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_style_flat.html#~NumberExpression">NumberExpression</a></span>
+
+ | undefined
+                
+            
+            </td>
+
+            <td class="description last">
+                <p>Repeat interval in pixels. When set, the icon will be repeated at this
+interval. Only available when <code>icon-placement</code> is set to <code>'line'</code>. (Canvas only)</p>
                 
             </td>
         </tr>
