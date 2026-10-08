@@ -2,7 +2,7 @@
  * @param {WebGLRenderingContext} gl Rendering Context.
  * @param {string} fragmentSource Fragment shader source.
  * @param {string} vertexSource Vertex shader source.
- * @return {WebGLProgram} [progam] The program.
+ * @return {WebGLProgram} [program] The program.
  */
 export function createProgram(gl: WebGLRenderingContext, fragmentSource: string, vertexSource: string): WebGLProgram;
 /** @typedef {import("../transform.js").Transform} Matrix */

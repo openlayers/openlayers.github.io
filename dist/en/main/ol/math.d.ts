@@ -40,7 +40,7 @@ export function squaredDistance(x1: number, y1: number, x2: number, y2: number):
  */
 export function solveLinearSystem(mat: Array<Array<number>>): Array<number> | null;
 /**
- * Converts radians to to degrees.
+ * Converts radians to degrees.
  *
  * @param {number} angleInRadians Angle in radians.
  * @return {number} Angle in degrees.

@@ -67,7 +67,7 @@ export type Options = {
      */
     wrapX?: boolean | undefined;
     /**
-     * Transition time when fading in new tiles (in miliseconds).
+     * Transition time when fading in new tiles (in milliseconds).
      */
     transition?: number | undefined;
     /**

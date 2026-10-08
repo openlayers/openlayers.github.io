@@ -231,7 +231,7 @@ export type MapOptions = {
      * the map's pixel ratio.
      * For accessibility (focus and keyboard events for map navigation), the `target` element must have a
      * properly configured `tabindex` attribute. If the `target` element is inside a Shadow DOM, the
-     * `tabindex` atribute must be set on the custom element's host element.
+     * `tabindex` attribute must be set on the custom element's host element.
      * **Note:** CSS `transform` support for the target element is limited to `scale`.
      */
     target?: string | HTMLElement | HTMLCanvasElement | OffscreenCanvas | undefined;
@@ -893,7 +893,7 @@ declare class Map extends BaseObject<{
      * Set the target element to render this map into.
      * For accessibility (focus and keyboard events for map navigation), the `target` element must have a
      *  properly configured `tabindex` attribute. If the `target` element is inside a Shadow DOM, the
-     *  `tabindex` atribute must be set on the custom element's host element.
+     *  `tabindex` attribute must be set on the custom element's host element.
      * @param {HTMLElement|string|null|undefined} [target] The Element or id of the Element
      *     that the map is rendered in.
      * @observable

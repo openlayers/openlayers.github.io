@@ -229,7 +229,7 @@ export type ProcessRequestInput = {
      */
     bounds: ProcessRequestInputBounds;
     /**
-     * The intput data.
+     * The input data.
      */
     data: Array<ProcessRequestInputDataItem>;
 };

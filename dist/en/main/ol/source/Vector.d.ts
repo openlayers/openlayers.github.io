@@ -437,7 +437,7 @@ declare class VectorSource<FeatureType extends import("../Feature.js").FeatureLi
      *
      * @param {import("../coordinate.js").Coordinate} coordinate Coordinate.
      * @param {function(FeatureType): T} callback Called with each feature
-     *     whose goemetry contains the provided coordinate.
+     *     whose geometry contains the provided coordinate.
      * @return {T|undefined} The return value from the last call to the callback.
      * @template T
      */

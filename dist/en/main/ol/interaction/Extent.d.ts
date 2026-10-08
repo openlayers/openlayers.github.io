@@ -185,7 +185,7 @@ declare class Extent extends PointerInteraction {
     private handlePointerMove_;
     /**
      * @param {import("../extent.js").Extent} [extent] extent
-     * @return {Feature} extent as featrue
+     * @return {Feature} extent as feature
      * @private
      */
     private createOrUpdateExtentFeature_;

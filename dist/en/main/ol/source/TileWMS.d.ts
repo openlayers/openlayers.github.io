@@ -264,13 +264,13 @@ declare class TileWMS extends TileImage {
      */
     private getKeyForParams_;
     /**
-     * @param {Object<string, *>} params New URL paremeters.
+     * @param {Object<string, *>} params New URL parameters.
      * @private
      */
     private setParams_;
     /**
      * Set the URL parameters passed to the WMS source.
-     * @param {Object<string, *>} params New URL paremeters.
+     * @param {Object<string, *>} params New URL parameters.
      * @api
      */
     setParams(params: {

@@ -31,7 +31,7 @@ export type SourceInfo = {
      * scaled from 0 to 1 based on the configured min and max.  If not provided and raster statistics are available,
      * those will be used instead.  If neither are available, the maximum for the data type will be used.  To disable
      * this behavior, set the `normalize` option to `false` in the constructor.  If an array is provided, values
-     * correspond to the bands in the file (not the `bands` option).  Array values can be left `undefined` to to trigger
+     * correspond to the bands in the file (not the `bands` option).  Array values can be left `undefined` to trigger
      * the default behavior.
      */
     max?: number | (number | undefined)[] | undefined;
