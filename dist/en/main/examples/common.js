@@ -45340,7 +45340,7 @@ var MVT = class extends FeatureFormat {
 		if (!this.idProperty_) id = rawFeature.id;
 		else {
 			id = values[this.idProperty_];
-			values[this.idProperty_] = void 0;
+			delete values[this.idProperty_];
 		}
 		values[this.layerName_] = rawFeature.layer.name;
 		const flatCoordinates = [];
