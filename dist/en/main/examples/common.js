@@ -34397,20 +34397,28 @@ function loadFeaturesXhr(url, format, extent, resolution, projection, success, f
 	xhr.onload = function(event) {
 		if (!xhr.status || xhr.status >= 200 && xhr.status < 300) {
 			const type = format.getType();
-			try {
-				/** @type {Document|Node|Object|string|undefined} */
-				let source;
-				if (type == "text" || type == "json") source = xhr.responseText;
-				else if (type == "xml") source = xhr.responseXML || xhr.responseText;
-				else if (type == "arraybuffer") source = xhr.response;
-				if (source) success(format.readFeatures(source, {
-					extent,
-					featureProjection: projection
-				}), format.readProjection(source));
-				else failure();
-			} catch {
-				failure();
-			}
+			/** @type {Document|Node|Object|string|undefined} */
+			let source;
+			if (type == "text" || type == "json") source = xhr.responseText;
+			else if (type == "xml") source = xhr.responseXML || xhr.responseText;
+			else if (type == "arraybuffer") source = xhr.response;
+			if (source) {
+				/** @type {Array<FeatureType>} */
+				let features;
+				/** @type {import("./proj/Projection.js").default|undefined} */
+				let dataProjection;
+				try {
+					features = format.readFeatures(source, {
+						extent,
+						featureProjection: projection
+					});
+					dataProjection = format.readProjection(source);
+				} catch {
+					failure();
+					return;
+				}
+				success(features, dataProjection);
+			} else failure();
 		} else failure();
 	};
 	/**
