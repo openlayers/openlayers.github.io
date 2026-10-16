@@ -381,7 +381,8 @@ export type State = {
      */
     nextCenter?: import("./coordinate.js").Coordinate | undefined;
     /**
-     * The next resolution during an animation series.
+     * The next resolution during an animation series. When
+     * only the center is animated, the current resolution.
      */
     nextResolution?: number | undefined;
     /**

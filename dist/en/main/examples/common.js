@@ -8235,7 +8235,8 @@ function(rotation, isMoving) {
 * @property {import("./proj/Projection.js").default} projection Projection.
 * @property {number} resolution Resolution.
 * @property {import("./coordinate.js").Coordinate} [nextCenter] The next center during an animation series.
-* @property {number} [nextResolution] The next resolution during an animation series.
+* @property {number} [nextResolution] The next resolution during an animation series. When
+* only the center is animated, the current resolution.
 * @property {number} [nextRotation] The next rotation during an animation series.
 * @property {number} rotation Rotation.
 * @property {number} zoom Zoom.
@@ -9064,7 +9065,7 @@ function(resolution) {
 			projection: projection !== void 0 ? projection : null,
 			resolution,
 			nextCenter: this.nextCenter_,
-			nextResolution: this.nextResolution_,
+			nextResolution: this.nextCenter_ && isNaN(this.nextResolution_) ? resolution : this.nextResolution_,
 			nextRotation: this.nextRotation_,
 			rotation,
 			zoom: this.getZoom()
