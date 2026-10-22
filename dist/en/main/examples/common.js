@@ -51897,6 +51897,8 @@ var WebGLBaseTileLayerRenderer = class extends WebGLLayerRenderer {
 		}
 		this.enqueueTiles(frameState, extent, z, tileRepresentationLookup, 0);
 		if (preload > 0) setTimeout(() => {
+			/** Skip the deferred preload if the layer was disposed before the timeout ran, to avoid a runtime error */
+			if (!this.getLayer()) return;
 			this.enqueueTiles(frameState, extent, z - 1, tileRepresentationLookup, preload - 1);
 		}, 0);
 		/**
