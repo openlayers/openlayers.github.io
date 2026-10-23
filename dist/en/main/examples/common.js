@@ -36198,8 +36198,9 @@ var VectorSourceEvent = class extends BaseEvent {
 	* @param {string} type Type.
 	* @param {FeatureType} [feature] Feature.
 	* @param {Array<FeatureType>} [features] Features.
+	* @param {import("../extent.js").Extent} [extent] Extent.
 	*/
-	constructor(type, feature, features) {
+	constructor(type, feature, features, extent) {
 		super(type);
 		/**
 		* The added or removed feature for the `ADDFEATURE` and `REMOVEFEATURE` events, `undefined` otherwise.
@@ -36213,6 +36214,15 @@ var VectorSourceEvent = class extends BaseEvent {
 		* @api
 		*/
 		this.features = features;
+		/**
+		* The extent being loaded for the `FEATURESLOADSTART`, `FEATURESLOADEND` and
+		* `FEATURESLOADERROR` events, `undefined` otherwise. To retry a failed load, pass
+		* it to {@link module:ol/source/Vector~VectorSource#removeLoadedExtent} and call
+		* `changed()` on the source.
+		* @type {import("../extent.js").Extent|undefined}
+		* @api
+		*/
+		this.extent = extent;
 	}
 };
 /***
@@ -36956,18 +36966,18 @@ var VectorSource = class extends Source {
 				}
 			)) {
 				this.loading = Number(this.loading) + 1;
-				this.dispatchEvent(new VectorSourceEvent(VectorEventType_default.FEATURESLOADSTART));
+				this.dispatchEvent(new VectorSourceEvent(VectorEventType_default.FEATURESLOADSTART, void 0, void 0, extentToLoad));
 				/**
 				* @param {Array<FeatureType>} features Loaded features
 				*/
 				const success = (features) => {
 					this.loading = Number(this.loading) - 1;
-					this.dispatchEvent(new VectorSourceEvent(VectorEventType_default.FEATURESLOADEND, void 0, features));
+					this.dispatchEvent(new VectorSourceEvent(VectorEventType_default.FEATURESLOADEND, void 0, features, extentToLoad));
 				};
 				const failure = () => {
 					this.changed();
 					this.loading = Number(this.loading) - 1;
-					this.dispatchEvent(new VectorSourceEvent(VectorEventType_default.FEATURESLOADERROR));
+					this.dispatchEvent(new VectorSourceEvent(VectorEventType_default.FEATURESLOADERROR, void 0, void 0, extentToLoad));
 				};
 				let disableCallbacks = false;
 				const loaded = this.loader_.call(this, extentToLoad, resolution, projection, (features) => disableCallbacks || success(features), () => disableCallbacks || failure());

@@ -19,8 +19,9 @@ export class VectorSourceEvent<FeatureType extends import("../Feature.js").Featu
      * @param {string} type Type.
      * @param {FeatureType} [feature] Feature.
      * @param {Array<FeatureType>} [features] Features.
+     * @param {import("../extent.js").Extent} [extent] Extent.
      */
-    constructor(type: string, feature?: FeatureType, features?: Array<FeatureType>);
+    constructor(type: string, feature?: FeatureType, features?: Array<FeatureType>, extent?: import("../extent.js").Extent);
     /**
      * The added or removed feature for the `ADDFEATURE` and `REMOVEFEATURE` events, `undefined` otherwise.
      * @type {FeatureType|undefined}
@@ -33,6 +34,15 @@ export class VectorSourceEvent<FeatureType extends import("../Feature.js").Featu
      * @api
      */
     features: Array<FeatureType> | undefined;
+    /**
+     * The extent being loaded for the `FEATURESLOADSTART`, `FEATURESLOADEND` and
+     * `FEATURESLOADERROR` events, `undefined` otherwise. To retry a failed load, pass
+     * it to {@link module:ol/source/Vector~VectorSource#removeLoadedExtent} and call
+     * `changed()` on the source.
+     * @type {import("../extent.js").Extent|undefined}
+     * @api
+     */
+    extent: import("../extent.js").Extent | undefined;
 }
 export default VectorSource;
 /**
