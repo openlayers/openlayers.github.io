@@ -215,6 +215,13 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      */
     private bandSpatialAxes_;
     /**
+     * Array metadata per band group and name, read from the store when
+     * there is no consolidated metadata.
+     * @type {Object<string, Object<string, *>>}
+     * @private
+     */
+    private arrayMetaByBand_;
+    /**
      * The two spatial axis names from the group's `spatial:dimensions` (`[y, x]`).
      * @type {Array<string>|undefined}
      * @private
@@ -281,7 +288,8 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
     /**
      * Look up a band's Zarr v3 array metadata from consolidated metadata, trying
      * the multi-scale key (`<matrixId>/<band>`) first and falling back to a
-     * single-scale key (`<band>`).
+     * single-scale key (`<band>`). Without consolidated metadata, return the
+     * metadata read from the store while configuring.
      * @param {string} band The band name.
      * @param {number} groupIndex The index of the band's group.
      * @return {Object<string, *>|undefined} The array metadata, or undefined when unavailable.
@@ -373,8 +381,8 @@ export default class GeoZarr extends DataTileSource<import("../DataTile.js").def
      * stack of levels holding n-dimensional arrays: in `variable` mode all bands
      * are slices of one array, otherwise each band has an array of its own.
      * @param {Object<string, *>} attributes The dataset attributes.
-     * @param {FetchStore} store The store, for metadata requests not covered
-     * by consolidated metadata.
+     * @param {import('zarrita').Readable} store The store, for metadata requests
+     * not covered by consolidated metadata.
      * @return {Promise<boolean>} Whether the tile grid has explicit tile sizes.
      * @private
      */

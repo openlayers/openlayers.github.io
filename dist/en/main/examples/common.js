@@ -132091,6 +132091,13 @@ var GeoZarr = class extends DataTileSource {
 		*/
 		this.bandSpatialAxes_ = new Array(bands.length);
 		/**
+		* Array metadata per band group and name, read from the store when
+		* there is no consolidated metadata.
+		* @type {Object<string, Object<string, *>>}
+		* @private
+		*/
+		this.arrayMetaByBand_ = {};
+		/**
 		* The two spatial axis names from the group's `spatial:dimensions` (`[y, x]`).
 		* @type {Array<string>|undefined}
 		* @private
@@ -132180,7 +132187,7 @@ var GeoZarr = class extends DataTileSource {
 		);
 		const legacyOnly = !!multiscales && "tile_matrix_set" in multiscales && !hasMultiscaleLevels;
 		let hasTileSizes = false;
-		if (this.variable_ || !legacyOnly && (hasMultiscaleLevels || "spatial:bbox" in attributes || "bounds" in attributes)) hasTileSizes = await this.configureLevels_(attributes, store);
+		if (this.variable_ || !legacyOnly && (hasMultiscaleLevels || "spatial:bbox" in attributes || "bounds" in attributes)) hasTileSizes = await this.configureLevels_(attributes, cachedStore);
 		if (!hasTileSizes && multiscales && "tile_matrix_set" in multiscales) {
 			const { tileGrid, projection } = getTileGridInfoFromLegacyAttributes(attributes);
 			this.tileGrid = tileGrid;
@@ -132380,14 +132387,15 @@ var GeoZarr = class extends DataTileSource {
 	/**
 	* Look up a band's Zarr v3 array metadata from consolidated metadata, trying
 	* the multi-scale key (`<matrixId>/<band>`) first and falling back to a
-	* single-scale key (`<band>`).
+	* single-scale key (`<band>`). Without consolidated metadata, return the
+	* metadata read from the store while configuring.
 	* @param {string} band The band name.
 	* @param {number} groupIndex The index of the band's group.
 	* @return {Object<string, *>|undefined} The array metadata, or undefined when unavailable.
 	* @private
 	*/
 	getBandArrayMeta_(band, groupIndex) {
-		if (!this.consolidatedMetadata_) return;
+		if (!this.consolidatedMetadata_) return this.arrayMetaByBand_[`${groupIndex}/${band}`];
 		const meta = this.groupMetadata_(groupIndex);
 		if (this.bandsByLevel_) {
 			for (const matrixId of Object.keys(this.bandsByLevel_)) if (this.bandsByLevel_[matrixId].includes(band) && meta[`${matrixId}/${band}`]) return meta[`${matrixId}/${band}`];
@@ -132579,8 +132587,8 @@ var GeoZarr = class extends DataTileSource {
 	* stack of levels holding n-dimensional arrays: in `variable` mode all bands
 	* are slices of one array, otherwise each band has an array of its own.
 	* @param {Object<string, *>} attributes The dataset attributes.
-	* @param {FetchStore} store The store, for metadata requests not covered
-	* by consolidated metadata.
+	* @param {import('zarrita').Readable} store The store, for metadata requests
+	* not covered by consolidated metadata.
 	* @return {Promise<boolean>} Whether the tile grid has explicit tile sizes.
 	* @private
 	*/
@@ -132628,11 +132636,21 @@ var GeoZarr = class extends DataTileSource {
 			});
 		}
 		if (levels.length === 0) throw new Error(`No level found holding ${what}`);
+		const groupIndexOf = (i) => variable ? 0 : this.bandGroupIndex_[i];
+		const storePathOf = (i) => {
+			const groupPath = this.groupPaths_?.[groupIndexOf(i)];
+			const path = arrayPathOf(levels[0].path, levels[0].bands[i]);
+			return groupPath ? `${groupPath}/${path}` : path;
+		};
 		let meta = levels.find((level) => level.meta)?.meta;
 		if (!meta && (variable || !levels.every((l) => Array.isArray(l.shape)))) {
-			meta = await getArrayMeta(store, arrayPathOf(levels[0].path, levels[0].bands[0]), this.openFn_ === open$1.v2);
+			meta = await getArrayMeta(store, storePathOf(0), this.openFn_ === open$1.v2);
 			levels[0].meta = meta;
 		}
+		if (!this.consolidatedMetadata_) await Promise.all(levels[0].bands.map(async (name, i) => {
+			const arrayMeta = i === 0 && meta ? meta : await getArrayMeta(store, storePathOf(i), this.openFn_ === open$1.v2);
+			if (arrayMeta) this.arrayMetaByBand_[`${groupIndexOf(i)}/${name}`] = arrayMeta;
+		}));
 		const hasMeta = !!meta && Array.isArray(meta.shape);
 		if (variable && !hasMeta) throw new Error(`Could not read metadata for variable "${variable}"`);
 		const ndim = hasMeta ? meta.shape.length : 2;
@@ -133271,11 +133289,11 @@ function normalizeV2Metadata(v2Metadata) {
 * Probe the store for an optional metadata document. Absence yields
 * `undefined`; any other failure is thrown, so that a server error is not
 * mistaken for a missing document.
-* @param {FetchStore} store The store.
+* @param {import('zarrita').Readable} store The store.
 * @param {string} key The key to probe.
 * @return {Promise<Uint8Array|undefined>} The document, if present.
 */
-function probe(store, key) {
+async function probe(store, key) {
 	return store.get(key);
 }
 /**
@@ -133291,7 +133309,7 @@ function storeFetch(request) {
 /**
 * Read a single array's metadata directly from the store, for stores
 * without consolidated metadata (Zarr v3 zarr.json or v2 .zarray/.zattrs).
-* @param {FetchStore} store The store.
+* @param {import('zarrita').Readable} store The store.
 * @param {string} path The array path.
 * @param {boolean} v2 Whether the store is Zarr v2.
 * @return {Promise<Object|undefined>} The array metadata (v3 shape).
