@@ -154,6 +154,7 @@ export type ArgValidator = (arg0: Array<EncodedExpression>, arg1: ValueType, arg
  *     `Circle` geometries are returned as 'Polygon'
  *     `GeometryCollection` geometries are returned as the type of the first geometry found in the collection (WebGL only).
  *   * `['resolution']` returns the current resolution
+ *   * `['rotation']` returns the current view rotation in radians (WebGL only).
  *   * `['time']` The time in seconds since the creation of the layer (WebGL only).
  *   * `['var', 'varName']` fetches a value from the style variables; will throw an error if that variable is undefined
  *   * `['zoom']` The current zoom level (WebGL only).

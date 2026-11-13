@@ -179,6 +179,7 @@ Choose a predefined style from the list below or edit it as JSON manually.
   <option value="circles">Circles, size related to population</option>
   <option value="circles-zoom">Circles, size related to zoom</option>
   <option value="circles-text">Circles with label</option>
+  <option value="triangles-rotation">Triangles, color related to view rotation</option>
   <option value="rotating-bars">Rotating bars</option>
 </select>
 <textarea style="width: 100%; height: 20rem; font-family: monospace; font-size: small;" id="style-editor"></textarea>
@@ -201,6 +202,9 @@ Choose a predefined style from the list below or edit it as JSON manually.
 </p>
 <p>
   Consult the <a href="/en/latest/apidoc/module-ol_expr_expression.html#~ExpressionValue">documentation on expressions</a> to know which operators to use and how.
+</p>
+<p>
+  Use <code>Alt+Shift</code> and drag to rotate the map.
 </p>
 </div>
       </div>
@@ -320,6 +324,20 @@ const predefinedStyles &#x3D; {
     &#x27;circle-fill-color&#x27;: [&#x27;match&#x27;, [&#x27;get&#x27;, &#x27;hover&#x27;], 1, &#x27;#ff3f3f&#x27;, &#x27;#006688&#x27;],
     &#x27;circle-displacement&#x27;: [0, 0],
     &#x27;circle-opacity&#x27;: 0.95,
+  },
+  &#x27;triangles-rotation&#x27;: {
+    &#x27;shape-points&#x27;: 3,
+    &#x27;shape-radius&#x27;: 9,
+    &#x27;shape-fill-color&#x27;: [
+      &#x27;interpolate&#x27;,
+      [&#x27;linear&#x27;],
+      [&#x27;abs&#x27;, [&#x27;sin&#x27;, [&#x27;/&#x27;, [&#x27;rotation&#x27;], 2]]],
+      0,
+      &#x27;#006688&#x27;,
+      1,
+      &#x27;#ff3f3f&#x27;,
+    ],
+    &#x27;shape-rotate-with-view&#x27;: true,
   },
   &#x27;rotating-bars&#x27;: {
     &#x27;shape-rotation&#x27;: [&#x27;*&#x27;, [&#x27;time&#x27;], 0.13],
@@ -469,6 +487,7 @@ animate();
       &lt;option value&#x3D;&quot;circles&quot;&gt;Circles, size related to population&lt;/option&gt;
       &lt;option value&#x3D;&quot;circles-zoom&quot;&gt;Circles, size related to zoom&lt;/option&gt;
       &lt;option value&#x3D;&quot;circles-text&quot;&gt;Circles with label&lt;/option&gt;
+      &lt;option value&#x3D;&quot;triangles-rotation&quot;&gt;Triangles, color related to view rotation&lt;/option&gt;
       &lt;option value&#x3D;&quot;rotating-bars&quot;&gt;Rotating bars&lt;/option&gt;
     &lt;/select&gt;
     &lt;textarea style&#x3D;&quot;width: 100%; height: 20rem; font-family: monospace; font-size: small;&quot; id&#x3D;&quot;style-editor&quot;&gt;&lt;/textarea&gt;

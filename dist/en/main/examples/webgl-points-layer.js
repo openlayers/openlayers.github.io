@@ -120,6 +120,24 @@ var predefinedStyles = {
 		"circle-displacement": [0, 0],
 		"circle-opacity": .95
 	},
+	"triangles-rotation": {
+		"shape-points": 3,
+		"shape-radius": 9,
+		"shape-fill-color": [
+			"interpolate",
+			["linear"],
+			["abs", ["sin", [
+				"/",
+				["rotation"],
+				2
+			]]],
+			0,
+			"#006688",
+			1,
+			"#ff3f3f"
+		],
+		"shape-rotate-with-view": true
+	},
 	"rotating-bars": {
 		"shape-rotation": [
 			"*",
