@@ -32140,7 +32140,7 @@ var ExecutorGroup = class {
 	* @param {number} rotation Rotation.
 	* @param {number} hitTolerance Hit tolerance in pixels.
 	* @param {function(import("../../Feature.js").FeatureLike, import("../../geom/SimpleGeometry.js").default, number): T} callback Feature callback.
-	* @param {Array<import("../../Feature.js").FeatureLike>} declutteredFeatures Decluttered features.
+	* @param {Array<import("../../Feature.js").FeatureLike>|null} declutteredFeatures Decluttered features.
 	* @return {T|undefined} Callback result.
 	* @template T
 	*/
@@ -33945,7 +33945,7 @@ var CanvasVectorLayerRenderer = class extends CanvasLayerRenderer {
 			}
 		};
 		const declutter = this.getLayer().getDeclutter();
-		return this.replayGroup_.forEachFeatureAtCoordinate(coordinate, resolution, rotation, hitTolerance, featureCallback, declutter ? frameState.declutter?.[declutter]?.all().map((item) => item.value) : null);
+		return this.replayGroup_.forEachFeatureAtCoordinate(coordinate, resolution, rotation, hitTolerance, featureCallback, declutter ? frameState.declutter?.[declutter]?.all().map((item) => item.value) ?? null : null);
 	}
 	/**
 	* Perform action necessary to get the layer rendered after new fonts have loaded
@@ -45819,7 +45819,7 @@ var CanvasVectorTileLayerRenderer = class extends CanvasTileLayerRenderer {
 		const renderedTiles = this.renderedTiles;
 		const layerUid = getUid(layer);
 		const declutter = layer.getDeclutter();
-		const declutteredFeatures = declutter ? frameState.declutter?.[declutter]?.all().map((item) => item.value) ?? [] : [];
+		const declutteredFeatures = declutter ? frameState.declutter?.[declutter]?.all().map((item) => item.value) ?? null : null;
 		let found;
 		foundFeature: for (let i = renderedTiles.length - 1; i >= 0; --i) {
 			const tile = renderedTiles[i];
