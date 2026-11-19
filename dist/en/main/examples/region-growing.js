@@ -89,7 +89,11 @@ var thresholdControl = document.getElementById("threshold");
 raster.on("beforeoperations", function(event) {
 	const data = event.data;
 	data.delta = thresholdControl.value;
-	if (coordinate) data.pixel = map.getPixelFromCoordinate(coordinate);
+	if (coordinate) {
+		const extent = event.extent;
+		const resolution = event.resolution;
+		data.pixel = [Math.floor((coordinate[0] - extent[0]) / resolution), Math.floor((extent[3] - coordinate[1]) / resolution)];
+	}
 });
 function updateControlValue() {
 	document.getElementById("threshold-value").innerText = thresholdControl.value;
