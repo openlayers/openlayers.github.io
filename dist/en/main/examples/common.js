@@ -41031,10 +41031,8 @@ var GeoJSON = class extends JSONFeature {
 		if (!feature.hasProperties()) return object;
 		const properties = feature.getProperties();
 		const geometry = feature.getGeometry();
-		if (geometry) {
-			object.geometry = writeGeometry$1(geometry, options);
-			delete properties[feature.getGeometryName()];
-		}
+		if (geometry) object.geometry = writeGeometry$1(geometry, options);
+		delete properties[feature.getGeometryName()];
 		if (!isEmpty$1(properties)) object.properties = properties;
 		return object;
 	}
@@ -184055,8 +184053,8 @@ var EsriJSON = class extends JSONFeature {
 				const proj = get$7(projection);
 				if (proj) object["geometry"]["spatialReference"] = { wkid: Number(proj.getCode().split(":").pop()) };
 			}
-			delete properties[feature.getGeometryName()];
 		}
+		delete properties[feature.getGeometryName()];
 		if (!isEmpty$1(properties)) object["attributes"] = properties;
 		else object["attributes"] = {};
 		return object;
