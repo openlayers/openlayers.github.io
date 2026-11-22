@@ -124,6 +124,13 @@ declare class Executor {
      */
     private viewRotation_;
     /**
+     * Transform from canvas pixels to screen pixels for declutter boxes, set while
+     * decluttering on a canvas that is not rotated with the view.
+     * @private
+     * @type {import("../../transform.js").Transform|null}
+     */
+    private declutterTransform_;
+    /**
      * @type {!Object<string, import("../canvas.js").FillState>}
      */
     fillStates: {
