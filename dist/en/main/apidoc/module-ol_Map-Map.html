@@ -98,6 +98,7 @@
             <li data-name="getsize"><a href="module-ol_Map-Map.html#getSize">getSize</a>
             <li data-name="gettarget"><a href="module-ol_Map-Map.html#getTarget">getTarget</a>
             <li data-name="gettargetelement"><a href="module-ol_Map-Map.html#getTargetElement">getTargetElement</a>
+            <li data-name="gettilepriority"><a href="module-ol_Map-Map.html#getTilePriority">getTilePriority</a>
             <li data-name="getview"><a href="module-ol_Map-Map.html#getView">getView</a>
             <li data-name="getviewport"><a href="module-ol_Map-Map.html#getViewport">getViewport</a>
             <li data-name="hasfeatureatpixel"><a href="module-ol_Map-Map.html#hasFeatureAtPixel">hasFeatureAtPixel</a>
@@ -4438,6 +4439,227 @@ The element that the map is rendered in.
 <dt class="">
     
     <div class="nameContainer">
+        <div class="anchor" id="getTilePriority">
+        </div>
+        <h4 class="name">
+            getTilePriority<span class="signature">(tile, tileSourceKey, tileCenter, tileResolution)</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{number}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1242">line 1242</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get the priority of a tile in the map's tile queue. Tiles with lower
+values load first, and a value of <code>Infinity</code> drops the tile from the queue.
+By default, tiles the current frame does not ask for get <code>Infinity</code>. The
+others get a value that combines their resolution and their distance from
+the view center: finer tiles usually load first, and tiles of the same
+resolution load nearest first.
+Override this method in a subclass to change the order, e.g. to load the
+tiles of one source before those of another, but return <code>Infinity</code>
+wherever <code>super.getTilePriority()</code> does. It is called when a tile is
+queued and, after a rendered frame, again for every queued tile before
+more tiles start loading, so it should be fast.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>tile</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_Tile-Tile.html">Tile</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Tile.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>tileSourceKey</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Tile source key, the uid of the tile's source
+(see <a href="module-ol_util.html#.getUid"><code>getUid</code></a>).</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>tileCenter</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="module-ol_coordinate.html#~Coordinate">Coordinate</a></span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Tile center.</p></td>
+        </tr>
+
+	
+
+        <tr class="">
+            
+                <td class="name"><code>tileResolution</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Tile resolution.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Tile priority.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
         <div class="anchor" id="getView">
         </div>
         <h4 class="name">
@@ -5225,7 +5447,7 @@ Unique key for the listener. If
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1715">line 1715</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1729">line 1729</a>
         </div>
         
     </div>
@@ -5361,7 +5583,7 @@ The removed control (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1726">line 1726</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1740">line 1740</a>
         </div>
         
     </div>
@@ -5497,7 +5719,7 @@ The removed interaction (or
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1737">line 1737</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1751">line 1751</a>
         </div>
         
     </div>
@@ -5633,7 +5855,7 @@ The removed layer (or undefined if the
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1757">line 1757</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1771">line 1771</a>
         </div>
         
     </div>
@@ -5769,7 +5991,7 @@ The removed overlay (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1702">line 1702</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1716">line 1716</a>
         </div>
         
     </div>
@@ -5850,7 +6072,7 @@ The removed overlay (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1673">line 1673</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1687">line 1687</a>
         </div>
         
     </div>
@@ -6109,7 +6331,7 @@ The removed overlay (or undefined
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1892">line 1892</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1906">line 1906</a>
         </div>
         
     </div>
@@ -6644,7 +6866,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1906">line 1906</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1920">line 1920</a>
         </div>
         
     </div>
@@ -6773,7 +6995,7 @@ properties and adds new ones (it does not remove any existing properties).</p>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1920">line 1920</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1934">line 1934</a>
         </div>
         
     </div>
@@ -6912,7 +7134,7 @@ For accessibility (focus and keyboard events for map navigation), the <code>targ
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1933">line 1933</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1947">line 1947</a>
         </div>
         
     </div>
@@ -7356,7 +7578,7 @@ view-related metadata.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js">Map.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1951">line 1951</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/Map.js#L1965">line 1965</a>
         </div>
         
     </div>
