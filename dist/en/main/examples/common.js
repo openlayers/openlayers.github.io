@@ -24990,7 +24990,7 @@ var CanvasLayerRenderer = class extends LayerRenderer {
 		}
 		const layerClassName = this.getLayer().getClassName();
 		let container, context;
-		if (target && target.className === layerClassName && (!backgroundColor || target && target.style.backgroundColor && equals$2(asArray$2(target.style.backgroundColor), asArray$2(backgroundColor)))) {
+		if (target && target.className === layerClassName && !backgroundColor) {
 			const canvas = target.firstElementChild;
 			if (isCanvas(canvas)) context = canvas.getContext("2d");
 		}
