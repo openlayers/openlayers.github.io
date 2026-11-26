@@ -39518,7 +39518,7 @@ var ReprojDataTile = class extends DataTile {
 		releaseGLCanvas(gl);
 		canvasGLPool.push(gl.canvas);
 		if (imageLike) {
-			const context = createCanvasContext2D(targetWidth, targetHeight);
+			const context = createCanvasContext2D(outWidth, outHeight);
 			context.putImageData(context.createImageData(outWidth, outHeight), 0, 0);
 			const imageData = context.getImageData(0, 0, outWidth, outHeight);
 			imageData.data.set(dataR);
