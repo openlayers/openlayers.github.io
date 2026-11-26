@@ -33853,7 +33853,10 @@ var CanvasVectorLayerRenderer = class extends CanvasLayerRenderer {
 	* @override
 	*/
 	renderDeferredInternal(frameState) {
-		if (!this.replayGroup_) return;
+		if (!this.replayGroup_) {
+			this.resetDrawContext_();
+			return;
+		}
 		if (this.clipExtent_) this.clipUnrotated(this.context, frameState, this.clipExtent_);
 		this.replayGroup_.renderDeferred();
 		if (this.clipExtent_) {
