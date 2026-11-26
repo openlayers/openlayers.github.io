@@ -50083,6 +50083,21 @@ var AttributeType = {
 */
 var canvasCache = {};
 /**
+* @typedef {Object} SharedProgram
+* @property {WebGLProgram} program Program.
+* @property {number} refCount Number of users of the program.
+*/
+/**
+* Programs of each context, by program key (the concatenation of the shader sources).
+* @type {WeakMap<WebGLRenderingContext, Map<string, SharedProgram>>}
+*/
+var sharedPrograms = /* @__PURE__ */ new WeakMap();
+/**
+* Program key of each shared program.
+* @type {WeakMap<WebGLProgram, string>}
+*/
+var programKeys = /* @__PURE__ */ new WeakMap();
+/**
 * @param {string} key The cache key for the canvas.
 * @return {string} The shared cache key.
 */
@@ -50704,12 +50719,57 @@ var WebGLHelper = class extends Disposable {
 		return shader;
 	}
 	/**
-	* Create a program for a vertex and fragment shader.  Throws if shader compilation fails.
+	* Get a program for a vertex and fragment shader. Throws if shader compilation fails.
+	* Helpers drawing to the same context share the program of the same shaders, so a program
+	* must be released with `deleteProgram()` rather than deleted directly.
 	* @param {string} fragmentShaderSource Fragment shader source.
 	* @param {string} vertexShaderSource Vertex shader source.
 	* @return {WebGLProgram} Program
 	*/
 	getProgram(fragmentShaderSource, vertexShaderSource) {
+		let programs = sharedPrograms.get(this.gl_);
+		if (!programs) {
+			programs = /* @__PURE__ */ new Map();
+			sharedPrograms.set(this.gl_, programs);
+		}
+		const key = vertexShaderSource + "\0" + fragmentShaderSource;
+		let sharedProgram = programs.get(key);
+		if (!sharedProgram) {
+			const program = this.linkProgram_(fragmentShaderSource, vertexShaderSource);
+			sharedProgram = {
+				program,
+				refCount: 0
+			};
+			programs.set(key, sharedProgram);
+			programKeys.set(program, key);
+		}
+		sharedProgram.refCount++;
+		return sharedProgram.program;
+	}
+	/**
+	* Release a program obtained with `getProgram()`. It is deleted once no other user holds it.
+	* @param {WebGLProgram} program Program.
+	*/
+	deleteProgram(program) {
+		const key = programKeys.get(program);
+		const programs = sharedPrograms.get(this.gl_);
+		const sharedProgram = key ? programs?.get(key) : void 0;
+		if (key && programs && sharedProgram?.program === program) {
+			sharedProgram.refCount--;
+			if (sharedProgram.refCount > 0) return;
+			programs.delete(key);
+		}
+		programKeys.delete(program);
+		this.gl_.deleteProgram(program);
+	}
+	/**
+	* Compile and link a program for a vertex and fragment shader.  Throws if shader compilation fails.
+	* @param {string} fragmentShaderSource Fragment shader source.
+	* @param {string} vertexShaderSource Vertex shader source.
+	* @return {WebGLProgram} Program
+	* @private
+	*/
+	linkProgram_(fragmentShaderSource, vertexShaderSource) {
 		const gl = this.gl_;
 		const fragmentShader = this.compileShader(fragmentShaderSource, gl.FRAGMENT_SHADER);
 		const vertexShader = this.compileShader(vertexShaderSource, gl.VERTEX_SHADER);
@@ -50867,6 +50927,7 @@ var WebGLHelper = class extends Disposable {
 	handleWebGLContextLost(event) {
 		clear(this.bufferCache_);
 		this.currentProgram_ = null;
+		sharedPrograms.delete(this.gl_);
 		event.preventDefault();
 	}
 	/**
@@ -52258,7 +52319,9 @@ var WebGLTileLayerRenderer = class extends WebGLBaseTileLayerRenderer {
 		this.fragmentShader_ = options.fragmentShader;
 		this.paletteTextures_ = options.paletteTextures || [];
 		if (this.helper) {
+			const previousProgram = this.program_;
 			this.program_ = this.helper.getProgram(this.fragmentShader_, this.vertexShader_);
+			if (previousProgram) this.helper.deleteProgram(previousProgram);
 			const gl = this.helper.getGL();
 			for (const paletteTexture of this.paletteTextures_) paletteTexture.getTexture(gl);
 		}
@@ -52281,6 +52344,10 @@ var WebGLTileLayerRenderer = class extends WebGLBaseTileLayerRenderer {
 		if (this.helper) {
 			const gl = this.helper.getGL();
 			for (const paletteTexture of this.paletteTextures_) paletteTexture.delete(gl);
+			if (this.program_) {
+				this.helper.deleteProgram(this.program_);
+				this.program_ = void 0;
+			}
 		}
 		super.removeHelper();
 	}
@@ -52415,7 +52482,7 @@ var WebGLTileLayerRenderer = class extends WebGLBaseTileLayerRenderer {
 			for (const paletteTexture of this.paletteTextures_) paletteTexture.delete(gl);
 			this.paletteTextures_.length = 0;
 			const program = this.program_;
-			if (program) gl.deleteProgram(program);
+			if (program) helper.deleteProgram(program);
 			this.program_ = void 0;
 			const indicesBuffer = this.indices_;
 			if (indicesBuffer) helper.deleteBuffer(indicesBuffer);
@@ -102275,6 +102342,7 @@ var VectorStyleRenderer = class extends Disposable {
 	* @param {WebGLBuffers|null} [buffers] WebGL Buffers to reload if any
 	*/
 	setHelper(helper, buffers = null) {
+		this.deletePrograms_();
 		this.helper_ = helper;
 		for (const renderPass of this.renderPasses_) {
 			if (renderPass.fillRenderPass) renderPass.fillRenderPass.program = this.helper_.getProgram(renderPass.fillRenderPass.fragmentShader, renderPass.fillRenderPass.vertexShader);
@@ -102317,10 +102385,26 @@ var VectorStyleRenderer = class extends Disposable {
 		}));
 	}
 	/**
+	* Release the programs obtained from the current helper.
+	* @private
+	*/
+	deletePrograms_() {
+		if (!this.helper_) return;
+		for (const renderPass of this.renderPasses_) for (const subRenderPass of [
+			renderPass.fillRenderPass,
+			renderPass.strokeRenderPass,
+			renderPass.symbolRenderPass
+		]) if (subRenderPass?.program) {
+			this.helper_.deleteProgram(subRenderPass.program);
+			delete subRenderPass.program;
+		}
+	}
+	/**
 	* Clean up.
 	* @override
 	*/
 	disposeInternal() {
+		this.deletePrograms_();
 		this.textOverlayWorker_?.then((worker) => worker.terminate());
 		super.disposeInternal();
 	}
@@ -102788,6 +102872,7 @@ var WebGLVectorLayerRenderer = class extends WebGLLayerRenderer {
 	*/
 	createRenderers_() {
 		this.buffers_ = null;
+		this.styleRenderer_?.dispose();
 		this.styleRenderer_ = new VectorStyleRenderer(this.style_, this.styleVariables_, this.helper, this.hitDetectionEnabled_);
 	}
 	/**
@@ -198061,6 +198146,7 @@ var WebGLVectorTileLayerRenderer = class extends WebGLBaseTileLayerRenderer {
 		this.applyOptions_(options);
 		if (this.helper) {
 			this.createRenderers_();
+			if (this.tileMaskProgram_) this.helper.deleteProgram(this.tileMaskProgram_);
 			this.initTileMask_();
 		}
 	}
@@ -198095,6 +198181,7 @@ var WebGLVectorTileLayerRenderer = class extends WebGLBaseTileLayerRenderer {
 		}
 		const styleShaders = convertStyleToShaders(this.style_, this.styleVariables_ ?? {});
 		for (const styleShader of styleShaders) addBuilderParams(styleShader.builder);
+		this.styleRenderer_?.dispose();
 		this.styleRenderer_ = new VectorStyleRenderer(styleShaders, this.styleVariables_ ?? {}, this.helper, this.hitDetectionEnabled_);
 	}
 	/**
@@ -198105,6 +198192,16 @@ var WebGLVectorTileLayerRenderer = class extends WebGLBaseTileLayerRenderer {
 		const builder = new ShaderBuilder().setFillColorExpression(`vec4(${Uniforms.TILE_ZOOM_LEVEL} / 50., 0., 0., 1.)`).addUniform(Uniforms.TILE_ZOOM_LEVEL, "float");
 		this.tileMaskProgram_ = this.helper.getProgram(builder.getFillFragmentShader(), builder.getFillVertexShader());
 		this.helper.flushBufferData(this.tileMaskIndices_);
+	}
+	/**
+	* @override
+	*/
+	removeHelper() {
+		if (this.helper && this.tileMaskProgram_) {
+			this.helper.deleteProgram(this.tileMaskProgram_);
+			this.tileMaskProgram_ = void 0;
+		}
+		super.removeHelper();
 	}
 	/**
 	* @override
@@ -201324,6 +201421,18 @@ var FlowLayerRenderer = class extends WebGLTileLayerRenderer {
 		* @private
 		*/
 		this.renderedHeight_ = 0;
+	}
+	/**
+	* @override
+	*/
+	removeHelper() {
+		const helper = this.helper;
+		if (helper) {
+			helper.deleteProgram(this.particlePositionProgram_);
+			helper.deleteProgram(this.particleColorProgram_);
+			helper.deleteProgram(this.textureProgram_);
+		}
+		super.removeHelper();
 	}
 	/**
 	* @override

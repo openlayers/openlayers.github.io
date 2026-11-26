@@ -141,6 +141,16 @@ export type CanvasCacheItem = {
      */
     users: number;
 };
+export type SharedProgram = {
+    /**
+     * Program.
+     */
+    program: WebGLProgram;
+    /**
+     * Number of users of the program.
+     */
+    refCount: number;
+};
 import { UNSIGNED_BYTE } from '../webgl.js';
 import { UNSIGNED_SHORT } from '../webgl.js';
 import { UNSIGNED_INT } from '../webgl.js';
@@ -504,12 +514,27 @@ declare class WebGLHelper extends Disposable {
      */
     compileShader(source: string, type: ShaderType): WebGLShader;
     /**
-     * Create a program for a vertex and fragment shader.  Throws if shader compilation fails.
+     * Get a program for a vertex and fragment shader. Throws if shader compilation fails.
+     * Helpers drawing to the same context share the program of the same shaders, so a program
+     * must be released with `deleteProgram()` rather than deleted directly.
      * @param {string} fragmentShaderSource Fragment shader source.
      * @param {string} vertexShaderSource Vertex shader source.
      * @return {WebGLProgram} Program
      */
     getProgram(fragmentShaderSource: string, vertexShaderSource: string): WebGLProgram;
+    /**
+     * Release a program obtained with `getProgram()`. It is deleted once no other user holds it.
+     * @param {WebGLProgram} program Program.
+     */
+    deleteProgram(program: WebGLProgram): void;
+    /**
+     * Compile and link a program for a vertex and fragment shader.  Throws if shader compilation fails.
+     * @param {string} fragmentShaderSource Fragment shader source.
+     * @param {string} vertexShaderSource Vertex shader source.
+     * @return {WebGLProgram} Program
+     * @private
+     */
+    private linkProgram_;
     /**
      * Will get the location from the shader or the cache
      * @param {string} name Uniform name

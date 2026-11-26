@@ -363,6 +363,11 @@ declare class VectorStyleRenderer extends Disposable {
      * @param {string} key Key corresponding to the instructions set to dispose
      */
     disposeTextInstructions(key: string): void;
+    /**
+     * Release the programs obtained from the current helper.
+     * @private
+     */
+    private deletePrograms_;
 }
 import WebGLArrayBuffer from '../../webgl/Buffer.js';
 import Disposable from '../../Disposable.js';
