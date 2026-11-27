@@ -59,6 +59,13 @@ export type Options = {
      * Declutter mode.
      */
     declutterMode?: import("./Style.js").DeclutterMode | undefined;
+    /**
+     * Whether the text of the same style may be rendered when
+     * this image is hidden by decluttering. If omitted, image and text are only hidden together
+     * when both use the `declutter` mode. Only applies to Canvas rendering of Point and
+     * MultiPoint geometries.
+     */
+    optional?: boolean | undefined;
 };
 export type RenderOptions = {
     /**
@@ -114,6 +121,10 @@ export type RenderOptions = {
  * @property {number} [repeat] Repeat interval. When set, the shape will be repeated at this interval, which specifies
  * the distance between two anchors in pixels. Only available when `placement` is set to `'line'`.
  * @property {import('./Style.js').DeclutterMode} [declutterMode] Declutter mode.
+ * @property {boolean} [optional] Whether the text of the same style may be rendered when
+ * this image is hidden by decluttering. If omitted, image and text are only hidden together
+ * when both use the `declutter` mode. Only applies to Canvas rendering of Point and
+ * MultiPoint geometries.
  */
 /**
  * @typedef {Object} RenderOptions

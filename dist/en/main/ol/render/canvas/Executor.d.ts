@@ -42,12 +42,7 @@ export type DeclutterImageWithTextEntry = {
     args: ReplayImageOrLabelArgs;
     declutterMode: import("../../style/Style.js").DeclutterMode;
 };
-/**
- * /**
- */
-export type DeclutterImageWithTextMap = {
-    [x: number]: DeclutterImageWithTextEntry;
-};
+export type DeclutterImageWithTextMap = import("../canvas.js").DeclutterImageWithText;
 export type ReplayImageOrLabelArgs = {
     0: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
     1: import("../../size.js").Size;

@@ -119,7 +119,12 @@ export function drawImageOrLabel(context: CanvasRenderingContext2D | import("../
  * @property {!Object<string, StrokeState>} [strokeStates] The stroke states (decluttering).
  */
 /**
- * @typedef {Object<number, import("./canvas/Executor.js").ReplayImageOrLabelArgs>} DeclutterImageWithText
+ * @typedef {Object} DeclutterImageWithTextOptions
+ * @property {boolean} [imageOptional] Whether the text may be rendered when the image is decluttered.
+ * @property {boolean} [textOptional] Whether the image may be rendered when the text is decluttered.
+ */
+/**
+ * @typedef {Object<number, import("./canvas/Executor.js").DeclutterImageWithTextEntry> & DeclutterImageWithTextOptions} DeclutterImageWithText
  */
 /**
  * @const
@@ -417,8 +422,18 @@ export type SerializableInstructions = {
         [x: string]: StrokeState;
     } | undefined;
 };
-export type DeclutterImageWithText = {
-    [x: number]: import("./canvas/Executor.js").ReplayImageOrLabelArgs;
+export type DeclutterImageWithTextOptions = {
+    /**
+     * Whether the text may be rendered when the image is decluttered.
+     */
+    imageOptional?: boolean | undefined;
+    /**
+     * Whether the image may be rendered when the text is decluttered.
+     */
+    textOptional?: boolean | undefined;
 };
+export type DeclutterImageWithText = {
+    [x: number]: import("./canvas/Executor.js").DeclutterImageWithTextEntry;
+} & DeclutterImageWithTextOptions;
 import BaseObject from '../Object.js';
 //# sourceMappingURL=canvas.d.ts.map

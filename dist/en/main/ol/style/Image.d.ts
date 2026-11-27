@@ -45,6 +45,13 @@ export type Options = {
      * Declutter mode: `declutter`, `obstacle`, `none`.
      */
     declutterMode?: import("../style/Style.js").DeclutterMode | undefined;
+    /**
+     * Whether the text of the same style may be rendered when
+     * this image is hidden by decluttering. If omitted, image and text are only hidden together
+     * when both use the `declutter` mode. Only applies to Canvas rendering of Point and
+     * MultiPoint geometries.
+     */
+    optional?: boolean | undefined;
 };
 /**
  * @typedef {'point' | 'line'} ImageStylePlacement
@@ -69,6 +76,10 @@ export type Options = {
  * @property {number} [repeat] Repeat interval. When set, the symbolizer will be repeated at this interval, which
  * specifies the distance between two anchors in pixels. Only available when `placement` is set to `'line'`.
  * @property {import('../style/Style.js').DeclutterMode} [declutterMode] Declutter mode: `declutter`, `obstacle`, `none`.
+ * @property {boolean} [optional] Whether the text of the same style may be rendered when
+ * this image is hidden by decluttering. If omitted, image and text are only hidden together
+ * when both use the `declutter` mode. Only applies to Canvas rendering of Point and
+ * MultiPoint geometries.
  */
 /**
  * @classdesc
@@ -129,6 +140,11 @@ declare class ImageStyle {
      */
     private declutterMode_;
     /**
+     * @private
+     * @type {boolean|undefined}
+     */
+    private optional_;
+    /**
      * Clones the style.
      * @return {ImageStyle} The cloned style.
      * @api
@@ -175,6 +191,21 @@ declare class ImageStyle {
      * @api
      */
     getDeclutterMode(): import("./Style.js").DeclutterMode | undefined;
+    /**
+     * Get whether the text of the same style may be rendered when this image is
+     * hidden by decluttering.
+     * @return {boolean|undefined} Optional setting.
+     * @api
+     */
+    getOptional(): boolean | undefined;
+    /**
+     * Set whether the text of the same style may be rendered when this image is
+     * hidden by decluttering. With `undefined`, image and text are only hidden
+     * together when both use the `declutter` mode.
+     * @param {boolean|undefined} optional Optional setting.
+     * @api
+     */
+    setOptional(optional: boolean | undefined): void;
     /**
      * Get the placement.
      * @return {ImageStylePlacement} Placement.

@@ -109,6 +109,13 @@ export type Options = {
      * Declutter mode: `declutter`, `obstacle`, `none`
      */
     declutterMode?: import("../style/Style.js").DeclutterMode | undefined;
+    /**
+     * Whether the image of the same style may be rendered when
+     * this text is hidden by decluttering. If omitted, image and text are only hidden together
+     * when both use the `declutter` mode. Only applies to Canvas rendering of Point and
+     * MultiPoint geometries.
+     */
+    optional?: boolean | undefined;
 };
 /**
  * @typedef {Object} Options
@@ -150,6 +157,10 @@ export type Options = {
  * @property {Array<number>} [padding=[0, 0, 0, 0]] Padding in pixels around the text for decluttering and background. The order of
  * values in the array is `[top, right, bottom, left]`.
  * @property {import('../style/Style.js').DeclutterMode} [declutterMode] Declutter mode: `declutter`, `obstacle`, `none`
+ * @property {boolean} [optional] Whether the image of the same style may be rendered when
+ * this text is hidden by decluttering. If omitted, image and text are only hidden together
+ * when both use the `declutter` mode. Only applies to Canvas rendering of Point and
+ * MultiPoint geometries.
  */
 /**
  * @classdesc
@@ -271,6 +282,11 @@ declare class Text {
      * @type {import('../style/Style.js').DeclutterMode|undefined}
      */
     private declutterMode_;
+    /**
+     * @private
+     * @type {boolean|undefined}
+     */
+    private optional_;
     /**
      * Clones the style.
      * @return {Text} The cloned style.
@@ -408,6 +424,21 @@ declare class Text {
      * @api
      */
     getDeclutterMode(): import("./Style.js").DeclutterMode | undefined;
+    /**
+     * Get whether the image of the same style may be rendered when this text is
+     * hidden by decluttering.
+     * @return {boolean|undefined} Optional setting.
+     * @api
+     */
+    getOptional(): boolean | undefined;
+    /**
+     * Set whether the image of the same style may be rendered when this text is
+     * hidden by decluttering. With `undefined`, image and text are only hidden
+     * together when both use the `declutter` mode.
+     * @param {boolean|undefined} optional Optional setting.
+     * @api
+     */
+    setOptional(optional: boolean | undefined): void;
     /**
      * Set the `overflow` property.
      *

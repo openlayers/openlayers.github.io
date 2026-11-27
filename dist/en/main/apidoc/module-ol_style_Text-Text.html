@@ -82,6 +82,7 @@
             <li data-name="getmaxangle"><a href="module-ol_style_Text-Text.html#getMaxAngle">getMaxAngle</a>
             <li data-name="getoffsetx"><a href="module-ol_style_Text-Text.html#getOffsetX">getOffsetX</a>
             <li data-name="getoffsety"><a href="module-ol_style_Text-Text.html#getOffsetY">getOffsetY</a>
+            <li data-name="getoptional"><a href="module-ol_style_Text-Text.html#getOptional">getOptional</a>
             <li data-name="getoverflow"><a href="module-ol_style_Text-Text.html#getOverflow">getOverflow</a>
             <li data-name="getpadding"><a href="module-ol_style_Text-Text.html#getPadding">getPadding</a>
             <li data-name="getplacement"><a href="module-ol_style_Text-Text.html#getPlacement">getPlacement</a>
@@ -102,6 +103,7 @@
             <li data-name="setmaxangle"><a href="module-ol_style_Text-Text.html#setMaxAngle">setMaxAngle</a>
             <li data-name="setoffsetx"><a href="module-ol_style_Text-Text.html#setOffsetX">setOffsetX</a>
             <li data-name="setoffsety"><a href="module-ol_style_Text-Text.html#setOffsetY">setOffsetY</a>
+            <li data-name="setoptional"><a href="module-ol_style_Text-Text.html#setOptional">setOptional</a>
             <li data-name="setoverflow"><a href="module-ol_style_Text-Text.html#setOverflow">setOverflow</a>
             <li data-name="setpadding"><a href="module-ol_style_Text-Text.html#setPadding">setPadding</a>
             <li data-name="setplacement"><a href="module-ol_style_Text-Text.html#setPlacement">setPlacement</a>
@@ -174,7 +176,7 @@
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L74">line 74</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L78">line 78</a>
         </div>
         
     </div>
@@ -781,6 +783,34 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
         </tr>
 
 	
+
+        <tr class="">
+            
+                <td class="name"><code>optional</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+ | undefined
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Whether the image of the same style may be rendered when
+this text is hidden by decluttering. If omitted, image and text are only hidden together
+when both use the <code>declutter</code> mode. Only applies to Canvas rendering of Point and
+MultiPoint geometries.</p></td>
+        </tr>
+
+	
 	</tbody>
 </table>
     
@@ -865,7 +895,7 @@ values in the array is <code>[top, right, bottom, left]</code>.</p></td>
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L228">line 228</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L238">line 238</a>
         </div>
         
     </div>
@@ -955,7 +985,7 @@ The cloned style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L424">line 424</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L435">line 435</a>
         </div>
         
     </div>
@@ -1045,7 +1075,7 @@ Fill style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L433">line 433</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L444">line 444</a>
         </div>
         
     </div>
@@ -1135,7 +1165,7 @@ Stroke style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L451">line 451</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L462">line 462</a>
         </div>
         
     </div>
@@ -1225,7 +1255,7 @@ Shape's declutter mode
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L326">line 326</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L337">line 337</a>
         </div>
         
     </div>
@@ -1315,7 +1345,7 @@ Fill style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L272">line 272</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L283">line 283</a>
         </div>
         
     </div>
@@ -1405,7 +1435,7 @@ Font.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L406">line 406</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L417">line 417</a>
         </div>
         
     </div>
@@ -1495,7 +1525,7 @@ Justification.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L344">line 344</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L355">line 355</a>
         </div>
         
     </div>
@@ -1585,7 +1615,7 @@ Keep text upright.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L281">line 281</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L292">line 292</a>
         </div>
         
     </div>
@@ -1675,7 +1705,7 @@ Angle in radians.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L308">line 308</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L319">line 319</a>
         </div>
         
     </div>
@@ -1765,7 +1795,7 @@ Horizontal text offset.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L317">line 317</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L328">line 328</a>
         </div>
         
     </div>
@@ -1844,6 +1874,97 @@ Vertical text offset.
 <dt class="">
     
     <div class="nameContainer">
+        <div class="anchor" id="getOptional">
+        </div>
+        <h4 class="name">
+            getOptional<span class="signature">()</span><span class="fa fa-arrow-circle-right"></span><span class="type-signature returnType">{boolean | undefined}</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L472">line 472</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Get whether the image of the same style may be rendered when this text is
+hidden by decluttering.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+
+
+<h5>Returns:</h5>
+Optional setting.
+<br />
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
         <div class="anchor" id="getOverflow">
         </div>
         <h4 class="name">
@@ -1855,7 +1976,7 @@ Vertical text offset.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L263">line 263</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L274">line 274</a>
         </div>
         
     </div>
@@ -1945,7 +2066,7 @@ Let text overflow the length of the path they follow.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L442">line 442</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L453">line 453</a>
         </div>
         
     </div>
@@ -2035,7 +2156,7 @@ Padding.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L290">line 290</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L301">line 301</a>
         </div>
         
     </div>
@@ -2125,7 +2246,7 @@ Text placement.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L299">line 299</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L310">line 310</a>
         </div>
         
     </div>
@@ -2215,7 +2336,7 @@ Repeat interval in pixels.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L335">line 335</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L346">line 346</a>
         </div>
         
     </div>
@@ -2305,7 +2426,7 @@ Rotate with map.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L353">line 353</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L364">line 364</a>
         </div>
         
     </div>
@@ -2395,7 +2516,7 @@ Rotation.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L362">line 362</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L373">line 373</a>
         </div>
         
     </div>
@@ -2485,7 +2606,7 @@ Scale.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L379">line 379</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L390">line 390</a>
         </div>
         
     </div>
@@ -2575,7 +2696,7 @@ Stroke style.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L388">line 388</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L399">line 399</a>
         </div>
         
     </div>
@@ -2665,7 +2786,7 @@ Text.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L397">line 397</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L408">line 408</a>
         </div>
         
     </div>
@@ -2755,7 +2876,7 @@ Text align.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L415">line 415</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L426">line 426</a>
         </div>
         
     </div>
@@ -2845,7 +2966,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L631">line 631</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L663">line 663</a>
         </div>
         
     </div>
@@ -2974,7 +3095,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L641">line 641</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L673">line 673</a>
         </div>
         
     </div>
@@ -3103,7 +3224,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L550">line 550</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L582">line 582</a>
         </div>
         
     </div>
@@ -3232,7 +3353,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L471">line 471</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L503">line 503</a>
         </div>
         
     </div>
@@ -3361,7 +3482,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L611">line 611</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L643">line 643</a>
         </div>
         
     </div>
@@ -3490,7 +3611,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L540">line 540</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L572">line 572</a>
         </div>
         
     </div>
@@ -3616,7 +3737,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L481">line 481</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L513">line 513</a>
         </div>
         
     </div>
@@ -3742,7 +3863,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L491">line 491</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L523">line 523</a>
         </div>
         
     </div>
@@ -3868,7 +3989,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L501">line 501</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L533">line 533</a>
         </div>
         
     </div>
@@ -3983,6 +4104,137 @@ Text baseline.
 <dt class="">
     
     <div class="nameContainer">
+        <div class="anchor" id="setOptional">
+        </div>
+        <h4 class="name">
+            setOptional<span class="signature">(optional)</span>
+            
+            
+
+        </h4>
+        
+        <div class="tag-source">
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L483">line 483</a>
+        </div>
+        
+    </div>
+    
+    
+</dt>
+<dd class="">
+
+
+
+    
+    <div class="description">
+        <p>Set whether the image of the same style may be rendered when this text is
+hidden by decluttering. With <code>undefined</code>, image and text are only hidden
+together when both use the <code>declutter</code> mode.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+
+		<th>Type</th>
+
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	
+
+        <tr class="">
+            
+                <td class="name"><code>optional</code></td>
+            
+
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+                
+            
+            </td>
+
+            
+
+            <td  class="description last">
+                
+                <p>Optional setting.</p></td>
+        </tr>
+
+	
+	</tbody>
+</table>
+    
+    
+
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+            
+<dt class="">
+    
+    <div class="nameContainer">
         <div class="anchor" id="setOverflow">
         </div>
         <h4 class="name">
@@ -3994,7 +4246,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L461">line 461</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L493">line 493</a>
         </div>
         
     </div>
@@ -4120,7 +4372,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L651">line 651</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L683">line 683</a>
         </div>
         
     </div>
@@ -4249,7 +4501,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L511">line 511</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L543">line 543</a>
         </div>
         
     </div>
@@ -4375,7 +4627,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L520">line 520</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L552">line 552</a>
         </div>
         
     </div>
@@ -4504,7 +4756,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L530">line 530</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L562">line 562</a>
         </div>
         
     </div>
@@ -4630,7 +4882,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L560">line 560</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L592">line 592</a>
         </div>
         
     </div>
@@ -4759,7 +5011,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L570">line 570</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L602">line 602</a>
         </div>
         
     </div>
@@ -4891,7 +5143,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L581">line 581</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L613">line 613</a>
         </div>
         
     </div>
@@ -5020,7 +5272,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L591">line 591</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L623">line 623</a>
         </div>
         
     </div>
@@ -5152,7 +5404,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L601">line 601</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L633">line 633</a>
         </div>
         
     </div>
@@ -5281,7 +5533,7 @@ Text baseline.
         
         <div class="tag-source">
             <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js">style/Text.js</a>,
-            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L621">line 621</a>
+            <a href="https://github.com/openlayers/openlayers/blob/main/src/ol/style/Text.js#L653">line 653</a>
         </div>
         
     </div>

@@ -109,6 +109,13 @@ export type Options = {
      * Declutter mode.
      */
     declutterMode?: import("./Style.js").DeclutterMode | undefined;
+    /**
+     * Whether the text of the same style may be rendered when
+     * this image is hidden by decluttering. If omitted, image and text are only hidden together
+     * when both use the `declutter` mode. Only applies to Canvas rendering of Point and
+     * MultiPoint geometries.
+     */
+    optional?: boolean | undefined;
 };
 /**
  * @classdesc
