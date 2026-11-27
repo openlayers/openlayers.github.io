@@ -775,11 +775,23 @@ declare class View extends BaseObject<ViewOptions> {
      */
     getMaxResolution(): number;
     /**
+     * Set a new maximum resolution for the view.
+     * @param {number} maxResolution The maximum resolution.
+     * @api
+     */
+    setMaxResolution(maxResolution: number): void;
+    /**
      * Get the minimum resolution of the view.
      * @return {number} The minimum resolution of the view.
      * @api
      */
     getMinResolution(): number;
+    /**
+     * Set a new minimum resolution for the view.
+     * @param {number} minResolution The minimum resolution.
+     * @api
+     */
+    setMinResolution(minResolution: number): void;
     /**
      * Get the maximum zoom level for the view.
      * @return {number} The maximum zoom level.
@@ -830,6 +842,16 @@ declare class View extends BaseObject<ViewOptions> {
      * @api
      */
     getResolutions(): Array<number> | undefined;
+    /**
+     * Set a new resolutions array for the view. If the resolution at a configured
+     * minZoom or maxZoom is in the new array, its zoom level is updated to match.
+     * Otherwise, zoom limits beyond the last level are clamped to that level.
+     * If the limits would cross, the limit with a matching resolution is kept.
+     * The current view state is constrained to the new range.
+     * @param {Array<number>} resolutions The resolutions array.
+     * @api
+     */
+    setResolutions(resolutions: Array<number>): void;
     /**
      * Get the resolution for a provided extent (in map units) and size (in pixels).
      * @param {import("./extent.js").Extent} extent Extent.
@@ -883,6 +905,12 @@ declare class View extends BaseObject<ViewOptions> {
      * @return {ViewStateLayerStateExtent} Like `FrameState`, but just `viewState` and `extent`.
      */
     getViewStateAndExtent(): ViewStateLayerStateExtent;
+    /**
+     * Set a new extent for the view.
+     * @param {import('./extent.js').Extent} extent The extent.
+     * @api
+     */
+    setExtent(extent: import("./extent.js").Extent): void;
     /**
      * Get the current zoom level. This method may return non-integer zoom levels
      * if the view does not constrain the resolution, or if an interaction or

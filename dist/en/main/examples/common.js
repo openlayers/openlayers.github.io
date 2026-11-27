@@ -8889,12 +8889,28 @@ var View = class extends BaseObject {
 		return this.maxResolution_;
 	}
 	/**
+	* Set a new maximum resolution for the view.
+	* @param {number} maxResolution The maximum resolution.
+	* @api
+	*/
+	setMaxResolution(maxResolution) {
+		this.applyOptions_(this.getUpdatedOptions_({ maxResolution }));
+	}
+	/**
 	* Get the minimum resolution of the view.
 	* @return {number} The minimum resolution of the view.
 	* @api
 	*/
 	getMinResolution() {
 		return this.minResolution_;
+	}
+	/**
+	* Set a new minimum resolution for the view.
+	* @param {number} minResolution The minimum resolution.
+	* @api
+	*/
+	setMinResolution(minResolution) {
+		this.applyOptions_(this.getUpdatedOptions_({ minResolution }));
 	}
 	/**
 	* Get the maximum zoom level for the view.
@@ -8961,6 +8977,42 @@ var View = class extends BaseObject {
 	*/
 	getResolutions() {
 		return this.resolutions_;
+	}
+	/**
+	* Set a new resolutions array for the view. If the resolution at a configured
+	* minZoom or maxZoom is in the new array, its zoom level is updated to match.
+	* Otherwise, zoom limits beyond the last level are clamped to that level.
+	* If the limits would cross, the limit with a matching resolution is kept.
+	* The current view state is constrained to the new range.
+	* @param {Array<number>} resolutions The resolutions array.
+	* @api
+	*/
+	setResolutions(resolutions) {
+		const options = this.getUpdatedOptions_({ resolutions });
+		if (resolutions) {
+			const lastZoom = resolutions.length - 1;
+			/**
+			* @param {number|undefined} zoom Zoom level in the previous resolutions array.
+			* @return {{zoom: number, matched: boolean}|undefined} Updated zoom limit.
+			*/
+			const updateZoom = (zoom) => {
+				if (zoom === void 0) return;
+				const resolution = this.resolutions_?.[zoom];
+				const matchIndex = resolution === void 0 ? -1 : resolutions.indexOf(resolution);
+				const matched = matchIndex !== -1;
+				return {
+					zoom: !matched ? Math.min(zoom, lastZoom) : matchIndex,
+					matched
+				};
+			};
+			const minZoom = updateZoom(options.minZoom);
+			const maxZoom = updateZoom(options.maxZoom);
+			if (minZoom && maxZoom && minZoom.zoom > maxZoom.zoom) if (minZoom.matched) maxZoom.zoom = minZoom.zoom;
+			else minZoom.zoom = maxZoom.zoom;
+			if (minZoom) options.minZoom = minZoom.zoom;
+			if (maxZoom) options.maxZoom = maxZoom.zoom;
+		}
+		this.applyOptions_(options);
 	}
 	/**
 	* Get the resolution for a provided extent (in map units) and size (in pixels).
@@ -9079,6 +9131,14 @@ function(resolution) {
 			viewState: this.getState(),
 			extent: this.calculateExtent()
 		};
+	}
+	/**
+	* Set a new extent for the view.
+	* @param {import('./extent.js').Extent} extent The extent.
+	* @api
+	*/
+	setExtent(extent) {
+		this.applyOptions_(this.getUpdatedOptions_({ extent: fromUserExtent(extent, this.getProjection()) }));
 	}
 	/**
 	* Get the current zoom level. This method may return non-integer zoom levels
